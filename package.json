@@ -1,0 +1,23 @@
+{
+	"name": "manawg-landing",
+	"private": true,
+	"packageManager": "pnpm@9.0.0",
+	"engines": {
+		"node": ">=22",
+		"pnpm": ">=9"
+	},
+	"scripts": {
+		"dev": "pnpm --filter @manawg/landing dev",
+		"build": "pnpm --filter @manawg/landing build",
+		"test": "pnpm -r run test",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"typecheck": "pnpm -r --if-present run typecheck",
+		"clean": "rm -rf apps/landing/.next node_modules/.cache",
+		"e2e": "pnpm --filter @manawg/landing test:e2e"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.0",
+		"typescript": "^5.7.0"
+	}
+}

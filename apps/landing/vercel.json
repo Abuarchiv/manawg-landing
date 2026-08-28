@@ -1,0 +1,7 @@
+{
+	"framework": "nextjs",
+	"buildCommand": "cd ../.. && pnpm --filter @manawg/landing build",
+	"installCommand": "cd ../.. && pnpm install",
+	"outputDirectory": ".next",
+	"ignoreCommand": "exit 1"
+}

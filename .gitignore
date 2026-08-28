@@ -1,0 +1,90 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Turbo
+.turbo
+
+# Testing
+coverage
+.nyc_output
+test-results
+playwright-report
+
+# Environment
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.test
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+
+# pnpm
+.pnpm-debug.log
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vercel
+.vercel
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# Local agent/vector databases
+**/agentdb.rvf
+**/agentdb.rvf.lock
+**/ruvector.db
+.gstack/
+.claude/
+.claude-flow/
+.swarm/
+
+# Local agent working state (not part of repo)
+.hermes/
+plans/active/
+AGENT_COMPANY_PLAN.md
+
+# Bug-Hunt-Loop Log
+BUGS.md
+
+# Standalone landing-page design prototypes (not part of the app build)
+landing-designs/
+
+# graphify knowledge graph (generated, rebuild with `graphify update .`)
+graphify-out/
+
+# Vercel CLI writes these on `vercel link` (OIDC tokens) — but keep the templates
+.env*
+!.env.example
+
+# Graphy index data
+.graphy/

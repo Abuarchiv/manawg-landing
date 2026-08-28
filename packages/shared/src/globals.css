@@ -1,0 +1,1363 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── RESPONSIVE FOUNDATIONS ───────────────────────────────────────────────
+   Added: iOS text-size fix, reduced-motion, media defaults, form fonts,
+   body baseline, and container helper.
+   Do NOT remove — these correct cross-device rendering bugs.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* 1. Prevent iOS Safari from auto-scaling text when orientation changes */
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+/* 2. Mobile tap highlight suppressed globally (html already has it for legacy,
+      but * catches SVGs, custom elements, and pseudo-elements) */
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
+/* 2a. Native-app feel primitives — kill 300ms tap delay + browser overscroll bounce.
+      touch-action:manipulation prevents double-tap zoom (the 300ms wait gone).
+      overscroll-behavior:none on html stops the rubber-band that reveals the URL
+      bar / browser chrome and makes the app feel like a webpage instead of an app. */
+html {
+	overscroll-behavior: none;
+}
+body {
+	overscroll-behavior-y: none;
+	touch-action: manipulation;
+}
+button,
+[role="button"],
+a[href],
+label[for],
+input[type="checkbox"],
+input[type="radio"] {
+	touch-action: manipulation;
+}
+
+/* 2b. App-chrome elements never selectable — nav bars, headers, FABs, modal
+      handles. Body content (text, inputs, textareas) stays selectable. */
+nav,
+header,
+[data-app-chrome] {
+	user-select: none;
+	-webkit-user-select: none;
+}
+input,
+textarea,
+[contenteditable],
+[data-app-chrome] input,
+[data-app-chrome] textarea {
+	user-select: text;
+	-webkit-user-select: text;
+}
+
+/* 2c. Smooth momentum scrolling on iOS for any explicit overflow container */
+[data-scroll-y],
+.scroll-y {
+	-webkit-overflow-scrolling: touch;
+	scroll-behavior: smooth;
+}
+
+/* 3. Respect reduced-motion OS preference — squash all animations/transitions */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* 4. Responsive media — never overflow their container */
+img,
+video {
+	max-width: 100%;
+	height: auto;
+}
+
+/* 5. Form elements inherit document font (browsers default to system UI) */
+input,
+textarea,
+button,
+select {
+	font-family: inherit;
+}
+
+/* 6. Mobile body baseline — 16px prevents iOS zoom on focused inputs */
+body {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+/* 7. App container helper with fluid padding */
+.container-app {
+	max-width: 1280px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+@media (min-width: 640px) {
+	.container-app {
+		padding-left: 1.5rem;
+		padding-right: 1.5rem;
+	}
+}
+@media (min-width: 1024px) {
+	.container-app {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+}
+
+/* ─── END RESPONSIVE FOUNDATIONS ────────────────────────────────────────── */
+
+@layer base {
+	:root {
+		color-scheme: light;
+		/* LIGHT (default) — Vercel Geist palette, darkened secondary text
+		   for readability. Default Geist greys (#6e6e6e / #737373) at small
+		   letterspaced label sizes are too washed on pure white. */
+		--bg-base: #ffffff;
+		--bg-1: rgba(255, 255, 255, 0.72);
+		--bg-2: rgba(255, 255, 255, 0.5);
+		--surface: rgba(255, 255, 255, 0.65);
+		--surface-strong: rgba(255, 255, 255, 0.85);
+		--border: rgba(20, 20, 30, 0.08);
+		--border-strong: rgba(20, 20, 30, 0.14);
+
+		--text-1: #1a1f1c;
+		--text-2: #3a4340; /* WCAG AA ≥4.5:1 on --bg-base */
+		--text-3: #4a5450;
+		--text-label: #2f5d4a;
+
+		/* Signature accent: deep forest pine. Sophisticated, calm, German-natural.
+		   Not violet, not coral — distinctly editorial. */
+		--accent: #2f5d4a;
+		--accent-bright: #4a7d65;
+		--accent-deep: #1f3d30;
+		--accent-soft: rgba(47, 93, 74, 0.12);
+
+		--success: #2f5d4a;
+		--warning: #b8792a;
+		--danger: #a83a2c;
+		/* Foreground tokens used on var(--accent) and var(--danger) chips/buttons.
+		   In dark mode these flip from white→dark because the bg gets brighter. */
+		--danger-fg: #ffffff;
+		/* State chip/banner tokens — bg/border/fg trios for success/warning/danger/info
+		   panels. Replaces hardcoded emerald-50/amber-50 Tailwind palette so banners
+		   stay consistent in both light and dark mode. */
+		--success-fg: #14532d;
+		--success-bg: #ecfdf5;
+		--success-border: rgba(47, 93, 74, 0.25);
+		--warning-fg: #7c2d12;
+		--warning-bg: #fef3c7;
+		--warning-border: rgba(184, 121, 42, 0.3);
+		--danger-bg: #fef2f2;
+		--danger-border: rgba(168, 58, 44, 0.3);
+		--info-fg: #0c4a6e;
+		--info-bg: #f0f9ff;
+		--info-border: rgba(74, 93, 107, 0.25);
+		--chart-1: #2f5d4a;
+		--chart-2: #6b8e5d;
+		--chart-3: #b8932a;
+		--chart-4: #a83a2c;
+		--chart-5: #4a5d6b;
+		--chart-6: #7d8a76;
+
+		/* Forest Editorial base tones — the two still referenced by components. */
+		--clay: #a85638;
+		--ink: #1a1f1c;
+
+		/* Legacy beige-theme tokens still used by older components. Each one below
+		   has live consumers; the unused rest of the set was removed. */
+		--bg: #f7f3ec;
+		--bg-raised: #ede7da;
+		--paper: #f4efe6;
+		--ink-2: #4a5450;
+		--ink-3: #6e7872;
+		--accent-fg: #fdfbf6;
+		--red: #a03b2d;
+	}
+
+	.dark {
+		color-scheme: dark;
+		--bg-base: #000000;
+		--bg-1: #0a0a0a;
+		--bg-2: #111111;
+		--surface: #0a0a0a;
+		--surface-strong: #1a1a1a;
+		--border: #2a2a2a;
+		--border-strong: #3a3a3a;
+
+		--text-1: #ededed;
+		--text-2: #a1a1a1;
+		/* #9ca3af, not #8b8b8b: a second, later --text-3 declaration used to override
+		   this one further down the same block. Kept the value that actually applied. */
+		--text-3: #9ca3af;
+		--text-label: #b8f5d8;
+
+		--accent: #84e1bc;
+		--accent-bright: #b8f5d8;
+		--accent-deep: #4a7d65;
+		--accent-soft: rgba(132, 225, 188, 0.15);
+
+		--success: #84e1bc;
+		--warning: #d4a84a;
+		--danger: #d97864;
+		--success-fg: #b8f5d8;
+		--success-bg: rgba(132, 225, 188, 0.1);
+		--success-border: rgba(132, 225, 188, 0.25);
+		--warning-fg: #fcd34d;
+		--warning-bg: rgba(212, 168, 74, 0.12);
+		--warning-border: rgba(212, 168, 74, 0.3);
+		--danger-bg: rgba(217, 120, 100, 0.12);
+		--danger-border: rgba(217, 120, 100, 0.3);
+		--info-fg: #93c5fd;
+		--info-bg: rgba(96, 165, 250, 0.1);
+		--info-border: rgba(96, 165, 250, 0.25);
+		--chart-1: #84e1bc;
+		--chart-2: #4a7d65;
+		--chart-3: #d4a84a;
+		--chart-4: #d97864;
+		--chart-5: #6b8e5d;
+		--chart-6: #c4a875;
+
+		/* Compat token overrides — map legacy beige theme tokens onto Geist dark.
+		   Without these, components using var(--ink)/var(--bg)/var(--paper) keep
+		   light-mode warm values and become unreadable on the black background. */
+		--bg: #000000;
+		--bg-raised: #111111;
+		--paper: #0a0a0a;
+		--ink: #ededed;
+		--ink-2: #a1a1a1;
+		--ink-3: #707070;
+		/* Dark mode: accent is pale mint, danger is light coral — flip text to dark
+		   so labels stay readable (white-on-mint and white-on-coral both fail AA). */
+		--accent-fg: #0a0a0a;
+		--danger-fg: #0a0a0a;
+		--red: #f87171;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	html {
+		-webkit-tap-highlight-color: transparent;
+		background-color: var(--bg-base);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		html {
+			scroll-behavior: smooth;
+		}
+	}
+
+	body {
+		background-color: var(--bg-base);
+		color: var(--text-1);
+		font-family: "Geist", ui-sans-serif, system-ui, sans-serif;
+		font-feature-settings: "kern" on, "ss01" on, "cv11" on;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		min-height: 100dvh;
+		overflow-x: hidden;
+	}
+
+	::selection {
+		background-color: var(--accent);
+		color: #ffffff;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+		border-radius: 6px;
+	}
+
+	/* WCAG 2.4.1 — keyboard-accessible skip link.
+	   Hidden off-screen by default; revealed on focus for keyboard users. */
+	.skip-link {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		transform: translateY(-200%);
+		padding: 0.75rem 1rem;
+		background-color: var(--accent);
+		color: #ffffff;
+		border-radius: 0 0 0.5rem 0;
+		font-weight: 600;
+		font-size: 0.875rem;
+		text-decoration: none;
+		transition: transform 150ms ease-out;
+	}
+	.skip-link:focus,
+	.skip-link:focus-visible {
+		transform: translateY(0);
+		outline: 2px solid var(--accent-bright, var(--accent));
+		outline-offset: 2px;
+	}
+}
+
+/* ─── LEGACY UI COMPONENT CLASSES (auth/dashboard pages) ─── */
+@layer components {
+	.btn-primary {
+		background-color: #3d5a3d;
+		color: #fdfbf6;
+		@apply px-4 py-2 rounded-lg font-medium text-base transition-colors duration-150 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed;
+	}
+	.btn-primary:hover:not(:disabled) {
+		background-color: #2f4630;
+	}
+
+	.btn-ghost {
+		color: var(--ink-2);
+		@apply px-4 py-2 rounded-lg font-medium text-base transition-colors duration-150 flex items-center justify-center gap-2 bg-transparent;
+	}
+	.btn-ghost:hover {
+		background-color: var(--bg-raised);
+		color: var(--ink);
+	}
+
+	.btn-outline {
+		color: var(--ink);
+		border: 1px solid var(--border-strong);
+		background-color: transparent;
+		@apply px-4 py-2 rounded-lg font-medium text-base transition-colors duration-150 flex items-center justify-center gap-2;
+	}
+	.btn-outline:hover {
+		background-color: var(--bg-raised);
+	}
+
+	.btn-danger {
+		background-color: var(--red);
+		color: #fdfbf6;
+		@apply px-4 py-2 rounded-lg font-medium text-base transition-colors duration-150 flex items-center justify-center gap-2;
+	}
+	.btn-danger:hover {
+		filter: brightness(0.92);
+	}
+
+	.input-field {
+		background-color: #fdfbf6;
+		color: var(--ink);
+		border: 1px solid #ddd4c2;
+		@apply w-full px-3 py-2 rounded-lg text-base transition-colors duration-150 outline-none;
+	}
+	.input-field::placeholder {
+		color: var(--ink-3);
+	}
+	.input-field:focus {
+		border-color: #3d5a3d;
+		outline: none;
+	}
+
+	.input-error {
+		border-color: var(--red);
+	}
+	.input-error:focus {
+		border-color: var(--red);
+	}
+
+	.card {
+		background-color: #fdfbf6;
+		border: 1px solid #ddd4c2;
+		@apply rounded-xl p-4 transition-colors duration-150;
+	}
+
+	.amount-positive {
+		color: #3d5a3d;
+		@apply font-semibold;
+	}
+	.amount-negative {
+		color: var(--red);
+		@apply font-semibold;
+	}
+	.amount-neutral {
+		color: var(--ink);
+		@apply font-medium;
+	}
+}
+
+/* ─── DARK MODE LEGACY OVERRIDES ───────────────────────────────────────────
+   The legacy component classes above hardcode beige/light values
+   (#fdfbf6, #ddd4c2, #3d5a3d). When .dark is active they keep those
+   values and break contrast. These rules swap them to Geist dark
+   equivalents while leaving light mode untouched.
+   ──────────────────────────────────────────────────────────────────────── */
+.dark .btn-primary {
+	background-color: var(--text-1);
+	color: var(--bg-base);
+}
+.dark .btn-primary:hover:not(:disabled) {
+	background-color: var(--text-1);
+	opacity: 0.85;
+}
+
+.dark .btn-ghost {
+	color: var(--text-2);
+}
+.dark .btn-ghost:hover {
+	background-color: var(--surface-strong);
+	color: var(--text-1);
+}
+
+.dark .btn-outline {
+	color: var(--text-1);
+	border-color: var(--border-strong);
+}
+.dark .btn-outline:hover {
+	background-color: var(--surface-strong);
+}
+
+.dark .btn-danger {
+	background-color: var(--danger);
+	color: #0a0a0a;
+}
+
+.dark .input-field {
+	background-color: var(--surface);
+	color: var(--text-1);
+	border-color: var(--border);
+}
+.dark .input-field::placeholder {
+	color: var(--text-3);
+}
+.dark .input-field:focus {
+	border-color: var(--accent);
+}
+
+.dark .card {
+	background-color: var(--surface);
+	border-color: var(--border);
+}
+
+.dark .amount-positive {
+	color: var(--success);
+}
+.dark .amount-neutral {
+	color: var(--text-1);
+}
+
+.pb-safe {
+	padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pt-safe {
+	padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Main content area in the auth app shell.
+   Clears the fixed MobileHeader (3.5rem) + iOS status bar, and the
+   BottomNav (5rem) + iOS home-indicator.  At lg+ the sidebar takes over
+   and both paddings reset to 0. Done in plain CSS so env() is never
+   parsed by Tailwind's JIT regex (which can misread the fallback comma). */
+.app-main {
+	padding-top: calc(3.5rem + env(safe-area-inset-top, 0px));
+	padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 1024px) {
+	.app-main {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+/* ─── Mesh background — landing only ─── */
+.mesh-bg {
+	position: relative;
+	overflow: hidden;
+	isolation: isolate;
+}
+.mesh-bg::before {
+	content: "";
+	position: absolute;
+	inset: -20%;
+	/* Forest editorial washes — deep pine, sage, honey, sand. Calm, organic.
+	   Soft alphas, blurred — soft transitions through transparent glass. */
+	background: radial-gradient(circle 1100px at 8% 8%, rgba(47, 93, 74, 0.16), transparent 55%),
+		radial-gradient(circle 1000px at 92% 18%, rgba(107, 142, 93, 0.16), transparent 60%),
+		radial-gradient(circle 900px at 18% 92%, rgba(184, 147, 42, 0.14), transparent 55%),
+		radial-gradient(circle 800px at 86% 82%, rgba(196, 168, 117, 0.14), transparent 55%);
+	pointer-events: none;
+	z-index: -1;
+	filter: blur(50px);
+}
+.dark .mesh-bg::before {
+	background: radial-gradient(circle 700px at 20% 20%, rgba(132, 225, 188, 0.18), transparent 50%),
+		radial-gradient(circle 800px at 80% 30%, rgba(74, 125, 101, 0.16), transparent 55%),
+		radial-gradient(circle 700px at 30% 90%, rgba(184, 147, 42, 0.12), transparent 50%),
+		radial-gradient(circle 600px at 90% 80%, rgba(196, 168, 117, 0.1), transparent 50%);
+}
+
+.spotlight {
+	position: relative;
+}
+.spotlight::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	/* Hero spotlight: forest glow top-center, soft. */
+	background: radial-gradient(ellipse 85% 65% at 50% 0%, rgba(47, 93, 74, 0.18), transparent 65%);
+	pointer-events: none;
+	z-index: 0;
+}
+.dark .spotlight::after {
+	background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(132, 225, 188, 0.22), transparent 65%);
+}
+
+/* Glassmorphism — themed via tokens.
+   Light mode: real frosted glass — translucent + heavy blur over colored mesh
+   creates the lively-but-clean look. Border highlight + soft elevation shadow.
+   Dark mode: original token-driven glass. */
+/* Apple Liquid Glass — TRANSPARENT, refractive, real frosted glass.
+   Low alpha (0.18-0.32) lets the colored mesh + 3D scene shine through.
+   Heavy blur + 200% saturation pulls color from behind = lively glass.
+   Multi-layer drop shadows = real 3D lift off the page. */
+.glass {
+	position: relative;
+	background: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0.18) 0%,
+		rgba(255, 255, 255, 0.08) 50%,
+		rgba(255, 255, 255, 0.14) 100%
+	);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	backdrop-filter: blur(56px) saturate(240%) brightness(1.08);
+	-webkit-backdrop-filter: blur(56px) saturate(240%) brightness(1.08);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.85) inset,
+		0 -1px 0 rgba(255, 255, 255, 0.3) inset,
+		0 0 0 0.5px rgba(255, 255, 255, 0.18),
+		0 2px 4px rgba(15, 15, 25, 0.05),
+		0 8px 16px rgba(15, 15, 25, 0.06),
+		0 20px 40px rgba(47, 93, 74, 0.1),
+		0 40px 80px rgba(47, 93, 74, 0.08);
+	transform: translateZ(0);
+	transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s
+		cubic-bezier(0.22, 1, 0.36, 1);
+}
+.glass:hover {
+	transform: translateY(-4px) translateZ(0);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.9) inset,
+		0 -1px 0 rgba(255, 255, 255, 0.32) inset,
+		0 0 0 0.5px rgba(255, 255, 255, 0.22),
+		0 4px 8px rgba(15, 15, 25, 0.06),
+		0 16px 32px rgba(15, 15, 25, 0.08),
+		0 32px 60px rgba(47, 93, 74, 0.14),
+		0 56px 100px rgba(47, 93, 74, 0.1);
+}
+.glass::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.55) 0%,
+		rgba(255, 255, 255, 0.08) 30%,
+		rgba(255, 255, 255, 0) 55%,
+		rgba(255, 255, 255, 0.05) 75%,
+		rgba(255, 255, 255, 0.28) 100%
+	);
+	pointer-events: none;
+	mix-blend-mode: overlay;
+}
+/* Top edge specular highlight — the "Apple shine" */
+.glass::after {
+	content: "";
+	position: absolute;
+	left: 8%;
+	right: 8%;
+	top: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.9) 50%, transparent 100%);
+	pointer-events: none;
+	border-radius: inherit;
+}
+.dark .glass {
+	background: var(--surface);
+	border-color: var(--border);
+	backdrop-filter: blur(20px) saturate(140%);
+	-webkit-backdrop-filter: blur(20px) saturate(140%);
+	box-shadow: none;
+}
+/* Kill the white specular highlight layers in dark mode — they leak as milky
+   reflections over black surfaces (audit by Aiko). */
+.dark .glass::before,
+.dark .glass::after,
+.dark .glass-strong::before,
+.dark .glass-strong::after {
+	display: none;
+}
+/* Apple Liquid Glass — strong variant for nav. Slightly more opacity for legibility. */
+.glass-strong {
+	position: relative;
+	background: linear-gradient(
+		180deg,
+		rgba(255, 255, 255, 0.36) 0%,
+		rgba(255, 255, 255, 0.22) 50%,
+		rgba(255, 255, 255, 0.3) 100%
+	);
+	border: 1px solid rgba(255, 255, 255, 0.55);
+	backdrop-filter: blur(64px) saturate(240%) brightness(1.08);
+	-webkit-backdrop-filter: blur(64px) saturate(240%) brightness(1.08);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.95) inset,
+		0 -1px 0 rgba(255, 255, 255, 0.35) inset,
+		0 0 0 0.5px rgba(255, 255, 255, 0.22),
+		0 2px 4px rgba(15, 15, 25, 0.04),
+		0 12px 28px rgba(15, 15, 25, 0.07),
+		0 28px 56px rgba(47, 93, 74, 0.08);
+}
+.glass-strong::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.6) 0%,
+		rgba(255, 255, 255, 0.05) 30%,
+		rgba(255, 255, 255, 0) 65%,
+		rgba(255, 255, 255, 0.28) 100%
+	);
+	pointer-events: none;
+	mix-blend-mode: overlay;
+}
+.glass-strong::after {
+	content: "";
+	position: absolute;
+	left: 6%;
+	right: 6%;
+	top: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 1) 50%, transparent 100%);
+	pointer-events: none;
+	border-radius: inherit;
+}
+.dark .glass-strong {
+	background: var(--surface-strong);
+	border-color: var(--border-strong);
+	backdrop-filter: blur(24px) saturate(160%);
+	-webkit-backdrop-filter: blur(24px) saturate(160%);
+	box-shadow: none;
+}
+
+/* App-internal buttons */
+.btn-app-primary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 8px 14px;
+	border-radius: 10px;
+	font-family: "Geist", sans-serif;
+	font-weight: 600;
+	font-size: 13px;
+	letter-spacing: -0.005em;
+	background: var(--text-1);
+	color: var(--bg-base);
+	border: 1px solid var(--text-1);
+	transition: opacity 150ms ease, transform 150ms ease;
+}
+.btn-app-primary:hover {
+	opacity: 0.85;
+}
+.btn-app-primary:active {
+	transform: scale(0.98);
+}
+.btn-app-primary:disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+}
+
+.btn-app-secondary {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 8px 14px;
+	border-radius: 10px;
+	font-family: "Geist", sans-serif;
+	font-weight: 600;
+	font-size: 13px;
+	letter-spacing: -0.005em;
+	background: var(--surface);
+	color: var(--text-1);
+	border: 1px solid var(--border);
+	transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+.btn-app-secondary:hover {
+	background: var(--surface-strong);
+	border-color: var(--border-strong);
+}
+.btn-app-secondary:active {
+	transform: scale(0.98);
+}
+.btn-app-secondary:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+/* Primary CTA pill.
+   Light mode: solid ink (Vercel-style minimal).
+   Dark mode: original mint glow gradient. */
+/* Apple Liquid Glass — primary action. Tinted coral glass, real transparent. */
+.btn-modern {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 14px 28px;
+	border-radius: 999px;
+	font-family: "Geist", sans-serif;
+	font-weight: 600;
+	font-size: 14px;
+	letter-spacing: -0.01em;
+	background: linear-gradient(
+		180deg,
+		rgba(47, 93, 74, 0.92) 0%,
+		rgba(31, 61, 48, 0.92) 55%,
+		rgba(20, 45, 33, 0.95) 100%
+	);
+	color: #ffffff;
+	border: 1px solid rgba(255, 255, 255, 0.28);
+	backdrop-filter: blur(20px) saturate(180%) brightness(1.04);
+	-webkit-backdrop-filter: blur(20px) saturate(180%) brightness(1.04);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.65) inset,
+		0 -1px 0 rgba(0, 0, 0, 0.12) inset,
+		0 0 0 0.5px rgba(255, 255, 255, 0.22),
+		0 2px 4px rgba(20, 40, 30, 0.12),
+		0 10px 28px rgba(47, 93, 74, 0.28),
+		0 24px 48px rgba(47, 93, 74, 0.14);
+	text-shadow: 0 1px 2px rgba(20, 40, 30, 0.35);
+	overflow: hidden;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-modern::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.4) 0%,
+		rgba(255, 255, 255, 0.05) 35%,
+		rgba(255, 255, 255, 0) 60%,
+		rgba(255, 255, 255, 0.18) 100%
+	);
+	pointer-events: none;
+	mix-blend-mode: overlay;
+}
+.btn-modern::after {
+	content: "";
+	position: absolute;
+	left: 8%;
+	right: 8%;
+	top: 0;
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.95) 50%,
+		transparent 100%
+	);
+	pointer-events: none;
+	border-radius: inherit;
+}
+.btn-modern > * {
+	position: relative;
+	z-index: 1;
+}
+.btn-modern:hover {
+	transform: translateY(-2px);
+	filter: brightness(1.06);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.7) inset,
+		0 -1px 0 rgba(0, 0, 0, 0.14) inset,
+		0 0 0 0.5px rgba(255, 255, 255, 0.28),
+		0 4px 8px rgba(20, 40, 30, 0.14),
+		0 16px 36px rgba(47, 93, 74, 0.38),
+		0 32px 60px rgba(47, 93, 74, 0.2);
+}
+.btn-modern:active {
+	transform: scale(0.98);
+}
+.install-home-button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.7rem;
+	border-radius: 999px;
+	font-family: "Geist", sans-serif;
+	font-weight: 650;
+	font-size: 14px;
+	letter-spacing: -0.01em;
+	background: linear-gradient(180deg, #ffffff 0%, #f7f7f4 100%);
+	color: #11130f;
+	border: 1px solid rgba(17, 19, 15, 0.12);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset, 0 -1px 0 rgba(17, 19, 15, 0.06) inset, 0 10px
+		28px rgba(17, 19, 15, 0.1);
+	transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.install-home-button:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 1) inset, 0 -1px 0 rgba(17, 19, 15, 0.08) inset, 0 14px
+		34px rgba(17, 19, 15, 0.14);
+}
+.install-home-button:active {
+	transform: scale(0.98);
+}
+.dark .install-home-button {
+	background: linear-gradient(180deg, #ffffff 0%, #e8e8e3 100%);
+	color: #07070a;
+	border-color: rgba(255, 255, 255, 0.24);
+	box-shadow: 0 10px 32px rgba(255, 255, 255, 0.12);
+}
+.dark .btn-modern {
+	background: linear-gradient(180deg, #b8f5d8 0%, #84e1bc 100%);
+	color: #0a1f15;
+	border: 1px solid rgba(132, 225, 188, 0.4);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 24px rgba(74, 125, 101, 0.45), 0 0 0 1px
+		rgba(132, 225, 188, 0.2);
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dark .btn-modern:hover {
+	transform: translateY(-1px);
+	opacity: 1;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 32px rgba(74, 125, 101, 0.6), 0 0 0 1px
+		rgba(132, 225, 188, 0.3);
+}
+/* Apple Liquid Glass — ghost button variant. */
+.btn-modern-ghost {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.9rem 1.7rem;
+	border-radius: 999px;
+	font-family: "Geist", sans-serif;
+	font-weight: 500;
+	font-size: 14px;
+	color: var(--text-1);
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.5) 100%);
+	backdrop-filter: blur(24px) saturate(200%) brightness(1.04);
+	-webkit-backdrop-filter: blur(24px) saturate(200%) brightness(1.04);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.95) inset,
+		0 -1px 0 rgba(255, 255, 255, 0.4) inset, 0 0 0 0.5px rgba(255, 255, 255, 0.3),
+		0 2px 4px rgba(15, 15, 25, 0.04), 0 8px 20px rgba(47, 93, 74, 0.1);
+	transition: all 0.2s ease;
+}
+.btn-modern-ghost:hover {
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.65) 100%);
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 1) inset, 0 -1px 0 rgba(255, 255, 255, 0.5) inset,
+		0 0 0 0.5px rgba(255, 255, 255, 0.4), 0 2px 4px rgba(15, 15, 25, 0.05),
+		0 12px 24px rgba(47, 93, 74, 0.16);
+	transform: translateY(-1px);
+}
+.dark .btn-modern-ghost {
+	color: var(--text-1);
+	border-color: var(--border);
+	background: var(--surface);
+}
+.dark .btn-modern-ghost:hover {
+	background: var(--surface-strong);
+	border-color: var(--border-strong);
+	color: var(--text-1);
+}
+
+/* Glow / shadow accents — neutral shadow in light, colored glow in dark only */
+.glow-mint {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.dark .glow-mint {
+	box-shadow: 0 0 0 1px rgba(132, 225, 188, 0.2), 0 8px 32px rgba(132, 225, 188, 0.18), 0 0 80px
+		rgba(132, 225, 188, 0.12);
+}
+.glow-violet {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+.dark .glow-violet {
+	box-shadow: 0 0 0 1px rgba(74, 125, 101, 0.3), 0 8px 32px rgba(74, 125, 101, 0.22);
+}
+
+/* Light mode: tonal mint→deep gradient — adds richness, stays on-brand.
+   Dark mode: full vibrant gradient as designed. */
+/* Headline gradient — ink→deep-moss→forest. Soft, organic. */
+.heading-grad {
+	background: linear-gradient(135deg, #1a1f1c 0%, #2c352f 35%, #345c47 75%, #2f5d4a 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+}
+.dark .heading-grad {
+	background: linear-gradient(135deg, #ededed 0%, #c8ddd5 35%, #84e1bc 75%, #4a7d65 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+}
+/* Accent gradient — forest→sage→honey, soft transition for highlight words. */
+.text-gradient {
+	background: linear-gradient(120deg, #2f5d4a 0%, #4a7d65 50%, #6b8e5d 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+}
+.dark .text-gradient {
+	background: linear-gradient(120deg, #b8f5d8 0%, #84e1bc 35%, #b8932a 75%, #c4a875 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+}
+.text-gradient-mint {
+	color: var(--text-1);
+}
+.dark .text-gradient-mint {
+	background: linear-gradient(180deg, #f5f5f7 0%, #84e1bc 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	color: transparent;
+}
+
+.grid-pattern {
+	/* Faint violet dot grid over white — reads through glass. */
+	background-image: radial-gradient(rgba(47, 93, 74, 0.16) 1.5px, transparent 1.5px);
+	background-size: 30px 30px;
+	background-position: -1px -1px;
+}
+.dark .grid-pattern {
+	background-image: linear-gradient(var(--border) 1px, transparent 1px),
+		linear-gradient(90deg, var(--border) 1px, transparent 1px);
+}
+.grid-mask {
+	mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 80%);
+	-webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 80%);
+}
+
+@keyframes scroll-x {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-50%);
+	}
+}
+.animate-scroll-x {
+	animation: scroll-x 40s linear infinite;
+}
+@keyframes float-y {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-12px);
+	}
+}
+@keyframes float-y-2 {
+	0%,
+	100% {
+		transform: translateY(-4px);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+}
+.animate-float-y {
+	animation: float-y 6s ease-in-out infinite;
+}
+.animate-float-y-2 {
+	animation: float-y-2 7.5s ease-in-out infinite 0.8s;
+}
+@keyframes pulse-glow {
+	0%,
+	100% {
+		opacity: 0.4;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.8;
+		transform: scale(1.05);
+	}
+}
+.animate-pulse-glow {
+	animation: pulse-glow 4s ease-in-out infinite;
+}
+@keyframes aurora {
+	0%,
+	100% {
+		transform: translate3d(0, 0, 0) rotate(0deg);
+	}
+	50% {
+		transform: translate3d(-10%, 5%, 0) rotate(2deg);
+	}
+}
+.animate-aurora {
+	animation: aurora 22s ease-in-out infinite;
+}
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+.gradient-border {
+	position: relative;
+	border-radius: 1.5rem;
+}
+/* Decorative neon edge — dark mode only. Off-brand on clean white. */
+.dark .gradient-border {
+	background: linear-gradient(180deg, var(--surface), transparent);
+}
+.dark .gradient-border::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	padding: 1px;
+	background: linear-gradient(
+		160deg,
+		rgba(132, 225, 188, 0.4),
+		rgba(184, 147, 42, 0.22) 50%,
+		transparent 80%
+	);
+	-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+	-webkit-mask-composite: xor;
+	mask-composite: exclude;
+	pointer-events: none;
+}
+
+.label-mono {
+	font-family: "Geist Mono", ui-monospace, monospace;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--text-label);
+	font-variant-numeric: tabular-nums slashed-zero;
+	font-feature-settings: "zero" 1, "ss01" on;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+@keyframes fade-up {
+	0% {
+		opacity: 0;
+		transform: translateY(24px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.animate-fade-up {
+	animation: fade-up 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+	.animate-fade-up,
+	.animate-float-y,
+	.animate-float-y-2,
+	.animate-pulse-glow,
+	.animate-aurora,
+	.animate-marquee,
+	.animate-scroll-x,
+	.animate-float-1,
+	.animate-float-2,
+	.animate-float-3,
+	.animate-confetti-burst,
+	.animate-toast-progress {
+		animation: none !important;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}
+
+@keyframes toast-progress {
+	from {
+		transform: scaleX(1);
+	}
+	to {
+		transform: scaleX(0);
+	}
+}
+.animate-toast-progress {
+	animation: toast-progress var(--toast-duration, 4s) linear forwards;
+	transform-origin: left;
+}
+
+@keyframes confetti-burst {
+	0% {
+		opacity: 1;
+		transform: rotate(var(--tw-rotate, 0deg)) translateY(0px) scale(1);
+	}
+	60% {
+		opacity: 1;
+		transform: rotate(var(--tw-rotate, 0deg)) translateY(-40px) scale(1.2);
+	}
+	100% {
+		opacity: 0;
+		transform: rotate(var(--tw-rotate, 0deg)) translateY(-60px) scale(0.4);
+	}
+}
+.animate-confetti-burst {
+	animation: confetti-burst 0.8s ease-out forwards;
+}
+
+.dot-grid {
+	background-image: radial-gradient(var(--border) 1px, transparent 1px);
+	background-size: 24px 24px;
+}
+.moss-glow {
+	position: relative;
+}
+.moss-glow::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(
+		ellipse 80% 50% at 50% 0%,
+		rgba(132, 225, 188, 0.18) 0%,
+		transparent 70%
+	);
+	pointer-events: none;
+}
+@keyframes marquee {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-50%);
+	}
+}
+.animate-marquee {
+	animation: marquee 28s linear infinite;
+}
+@keyframes float-note-1 {
+	0%,
+	100% {
+		transform: rotate(2deg) translateY(0px);
+	}
+	50% {
+		transform: rotate(2deg) translateY(-12px);
+	}
+}
+.animate-float-1 {
+	animation: float-note-1 5s ease-in-out infinite;
+}
+.animate-float-2 {
+	animation: float-note-1 6.5s ease-in-out infinite 0.8s;
+}
+.animate-float-3 {
+	animation: float-note-1 4.5s ease-in-out infinite 1.5s;
+}
+
+/* Card primitive — Vercel-style */
+.card-flat {
+	background: var(--bg-base);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	transition: border-color 150ms ease, background-color 150ms ease;
+}
+.card-flat:hover {
+	border-color: var(--border-strong);
+}
+
+.card-elevated {
+	background: var(--bg-base);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+/* iOS Safari zoom-on-focus fix — inputs must be >= 16px on mobile */
+@media (max-width: 640px) {
+	input[type="text"],
+	input[type="email"],
+	input[type="password"],
+	input[type="number"],
+	input[type="tel"],
+	input[type="search"],
+	textarea,
+	select {
+		font-size: 16px;
+	}
+}
+.dark .card-elevated {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Touch device only — strip hover-translate from ModuleCard so the card
+   doesn't stick in lifted state after tap (Tobias HIG audit) */
+@media (hover: none) {
+	.module-card:hover {
+		transform: none !important;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+		border-color: var(--border) !important;
+	}
+
+	/* Global tactile feedback on touch devices.
+	   Tiny brief scale gives users haptic-like confirmation on tap.
+	   Excludes disabled state and respects prefers-reduced-motion. */
+	button:not(:disabled):active,
+	[role="button"]:not([aria-disabled="true"]):active,
+	a[href]:active,
+	label[for]:active {
+		transform: scale(0.97);
+		transition: transform 80ms ease-out;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	button:active,
+	[role="button"]:active,
+	a[href]:active,
+	label[for]:active {
+		transform: none !important;
+	}
+}
+
+/* ─── NATIVE-APP POLISH ──────────────────────────────────────────────────
+   Bottom-sheet drag handle, skeleton loader, app-page transition, keyboard-
+   aware FAB. Mobile-only fragments so desktop stays unchanged.
+   ────────────────────────────────────────────────────────────────────── */
+
+/* Drag handle for bottom-sheet modals — pure visual cue, no actual drag yet.
+   Iconography matches iOS/Material bottom-sheet conventions. */
+.sheet-handle {
+	display: block;
+	width: 2.25rem;
+	height: 0.25rem;
+	border-radius: 9999px;
+	background-color: var(--text-3);
+	opacity: 0.4;
+	margin: 0 auto 0.75rem;
+}
+@media (min-width: 640px) {
+	.sheet-handle {
+		display: none;
+	}
+}
+
+/* Skeleton shimmer used by data-loading placeholders */
+.skeleton {
+	background: linear-gradient(
+		90deg,
+		var(--surface) 0%,
+		var(--bg-elevated, var(--surface)) 50%,
+		var(--surface) 100%
+	);
+	background-size: 200% 100%;
+	animation: skeleton-shimmer 1.4s ease-in-out infinite;
+	border-radius: 0.5rem;
+}
+@keyframes skeleton-shimmer {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.skeleton {
+		animation: none;
+		opacity: 0.7;
+	}
+}
+
+/* Page-route fade for inner WG views — gives navigation an app-y feel
+   without committing to a full Framer Motion transition system. */
+.app-page-enter {
+	animation: app-page-fade-in 180ms ease-out;
+}
+@keyframes app-page-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.app-page-enter {
+		animation: none;
+	}
+}
+
+/* Bottom-nav active-state animation — gentle scale + opacity for engaged tab */
+[data-bottom-nav-item][aria-current="page"] {
+	animation: nav-tab-pop 220ms ease-out;
+}
+@keyframes nav-tab-pop {
+	0% {
+		transform: scale(0.92);
+	}
+	60% {
+		transform: scale(1.06);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	[data-bottom-nav-item][aria-current="page"] {
+		animation: none;
+	}
+}
+
+/* Floating Action Button base — visually distinct, sits above bottom-nav,
+   respects safe-area-inset-bottom, and lifts when virtual keyboard appears
+   thanks to the dynamic viewport unit. */
+.fab-mobile {
+	position: fixed;
+	right: 1rem;
+	bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+	z-index: 30;
+}
+@media (min-width: 640px) {
+	.fab-mobile {
+		position: static;
+		bottom: auto;
+		right: auto;
+	}
+}
+
+/* Hide native scrollbars on mobile chrome (visible but thin on desktop) */
+@media (max-width: 639px) {
+	.scroll-hide-mobile::-webkit-scrollbar {
+		display: none;
+	}
+	.scroll-hide-mobile {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+}

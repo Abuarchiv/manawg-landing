@@ -1,0 +1,234 @@
+import { TEXT_LINK } from '@manawg/shared/lib/text-link';
+import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+	title: 'Nutzungsbedingungen — ManaWG',
+};
+
+// craftsman-ignore: TS002
+export default function AgbPage() {
+	return (
+		<main id="main" tabIndex={-1} className="min-h-screen flex flex-col focus:outline-none">
+			<div className="flex-1 max-w-2xl mx-auto w-full px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
+				<Link
+					href="/"
+					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+					aria-label="Zurück zur Startseite"
+				>
+					<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />
+					Zurück
+				</Link>
+
+				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Nutzungsbedingungen</h1>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-05-19</p>
+
+				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Geltungsbereich</h2>
+						<p>
+							Diese Nutzungsbedingungen regeln die Nutzung von ManaWG — einer kostenlosen Web-App
+							für Wohngemeinschaften. ManaWG wird privat und unentgeltlich betrieben und ist kein
+							kommerzielles Produkt. Betreiber: Abubakar Abditube, Frankfurt am Main (Kontakt:{' '}
+							<a href="mailto:abubakarabditube@gmail.com" className="break-all">
+								abubakarabditube@gmail.com
+							</a>
+							).
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">2. Leistungen</h2>
+						<p>
+							ManaWG stellt eine Plattform zur Organisation gemeinsamer Haushalts- und WG-Aufgaben
+							bereit (Ausgabenverwaltung, Putzplan, Einkaufsliste, Pinnwand). Die Nutzung ist
+							kostenlos. Die App wird nach bestem Aufwand betrieben; es besteht kein Anspruch auf
+							Verfügbarkeit, Datenwiederherstellung, Support oder bestimmte Funktionen.
+						</p>
+						<p className="mt-2">
+							<strong>Mindestalter:</strong> Die Nutzung von ManaWG setzt ein Mindestalter von 16
+							Jahren voraus (Art. 8 DSGVO). Personen unter 16 Jahren dürfen ManaWG nicht ohne
+							ausdrückliche Einwilligung einer erziehungsberechtigten Person nutzen.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+							3. Mitgliedschaft und Pflichten
+						</h2>
+						<p>
+							Zur Nutzung wird beim ersten Aufruf eine anonyme Mitgliedskennung (UUID) erzeugt und
+							im Local Storage deines Browsers gespeichert. Eine Registrierung mit E-Mail oder
+							Passwort findet nicht statt. Du bist verantwortlich für die Inhalte, die du
+							einstellst, sowie für den Schutz deines Gerätes und Browser-Speichers vor unbefugtem
+							Zugriff. Beim Löschen des Browser-Speichers geht der lokale Zugang zu deiner WG
+							verloren; ein Wiederherstellungsverfahren existiert nicht. Rechtswidrige Inhalte,
+							Missbrauch und automatisierte Angriffe sind untersagt.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">4. Foto-Uploads</h2>
+						<p>
+							Du darfst nur Fotos hochladen, an denen du die nötigen Rechte hast. Persönlichkeits-
+							und Urheberrechte Dritter sind zu wahren. Fotos werden bei unserem Auftragsverarbeiter{' '}
+							<strong>Cloudinary, Inc.</strong> (USA, DPF-zertifiziert, SCCs) gespeichert und
+							ausgeliefert. Wir löschen Fotos auf Anfrage oder bei Beendigung der Mitgliedschaft;
+							technische Backups laufen nach max. 30 Tagen aus. Details siehe Datenschutzerklärung
+							Abschnitt 4d.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+							5. Nutzungsrechte an User-Content
+						</h2>
+						<p>
+							Du behältst alle Rechte an deinen Inhalten (Pinnwand-Beiträge, Fotos, sonstige
+							Uploads). Du räumst uns für die Dauer deiner Mitgliedschaft eine einfache,
+							nicht-übertragbare Lizenz ein, deine Inhalte technisch zu speichern, zu übertragen,
+							anzuzeigen und in Backups zu sichern, soweit das für den Betrieb des Dienstes
+							erforderlich ist. Mit Löschung deiner WG oder der betroffenen Inhalte erlischt diese
+							Lizenz; technische Backups laufen nach maximal 30 Tagen aus.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+							6. Kein Widerrufsrecht (unentgeltlicher Dienst)
+						</h2>
+						<p>
+							ManaWG wird kostenlos und ohne entgeltliche Gegenleistung im Sinne der §§ 312 Abs. 1,
+							327 BGB bereitgestellt. Mangels eines entgeltlichen Verbraucher­vertrags besteht{' '}
+							<strong>kein Widerrufsrecht</strong> nach §§ 355 ff. BGB. Du kannst deine
+							Mitgliedschaft jederzeit nach Ziffer 10 beenden.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">7. Haftung</h2>
+						<p>
+							Wir haften unbeschränkt bei Vorsatz und grober Fahrlässigkeit, bei Verletzung von
+							Leben, Körper oder Gesundheit sowie nach den Vorschriften des Produkthaftungsgesetzes.
+							Bei einfacher Fahrlässigkeit haften wir nur für die Verletzung wesentlicher
+							Vertragspflichten (Kardinalpflichten); die Haftung ist hierbei der Höhe nach auf den
+							vertragstypischen, vorhersehbaren Schaden begrenzt. Eine weitergehende Haftung ist
+							ausgeschlossen, soweit gesetzlich zulässig. ManaWG wird unentgeltlich bereitgestellt;
+							nutze die App daher nicht als alleinige Grundlage für kritische finanzielle,
+							rechtliche oder organisatorische Entscheidungen.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+							8. Lizenz / Quellcode
+						</h2>
+						<p>
+							Der Quellcode von ManaWG ist nicht öffentlich einsehbar. Die Nutzung der App erlaubt
+							keine Einsichtnahme, Vervielfältigung, Weitergabe oder kommerzielle Verwertung des
+							Quellcodes.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+							9. Meldung rechtswidriger Inhalte (DSA Art. 16)
+						</h2>
+						<p>
+							Meldungen rechtswidriger Inhalte bitte an:{' '}
+							<a href="mailto:abubakarabditube@gmail.com" className="break-all">
+								abubakarabditube@gmail.com
+							</a>
+							. Wir prüfen jede Meldung und entfernen rechtswidrige Inhalte unverzüglich.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">10. Kündigung</h2>
+						<p>
+							Du kannst deine Mitgliedschaft auf diesem Gerät jederzeit über{' '}
+							<em>Einstellungen → WG verlassen</em> beenden — der lokale Zugang wird entfernt, deine
+							bisherigen Beiträge bleiben für die WG erhalten. Die WG-Erstellerin oder der
+							WG-Ersteller kann die gesamte WG inklusive aller Inhalte und Bilder über{' '}
+							<em>Einstellungen → WG dauerhaft löschen</em> sofort und unwiderruflich entfernen.
+							Eine zusätzliche Löschung von Daten, die dir zugeordnet werden können
+							(Mitgliedskennung, von dir erstellte Inhalte, Fotos), kann auf Anfrage per E-Mail an{' '}
+							<a href="mailto:abubakarabditube@gmail.com" className="break-all">
+								abubakarabditube@gmail.com
+							</a>{' '}
+							angefordert werden und wird binnen 30 Tagen gemäß Art. 12 Abs. 3 DSGVO bearbeitet. Wir
+							behalten uns vor, Mitgliedschaften oder WGs bei Verstößen gegen diese Bedingungen zu
+							sperren oder zu löschen.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">11. Änderungen</h2>
+						<p>
+							Diese Bedingungen können angepasst werden, wenn sich Funktionen, Hosting oder
+							rechtliche Anforderungen ändern. Wesentliche Änderungen werden in der App oder auf der
+							Webseite kenntlich gemacht. Wenn du die Bedingungen nicht akzeptierst, kannst du die
+							App nicht weiter nutzen und deine WG bzw. deine Daten löschen lassen.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">12. Geltendes Recht</h2>
+						<p>
+							Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts. Gerichtsstand ist
+							Frankfurt am Main, soweit gesetzlich zulässig.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+							13. Verbraucherschlichtung
+						</h2>
+						<p>
+							Wir sind weder verpflichtet noch bereit, an einem Streitbeilegungsverfahren vor einer
+							Verbraucherschlichtungsstelle teilzunehmen (§ 36 Abs. 1 Nr. 1 VSBG).
+						</p>
+						<p className="mt-2">
+							Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS)
+							bereit:{' '}
+							<a
+								href="https://ec.europa.eu/consumers/odr/"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="break-all"
+							>
+								https://ec.europa.eu/consumers/odr/
+							</a>
+							. Da ManaWG ein kostenloser Dienst ist, ist diese Plattform für unsere Nutzer
+							regelmäßig nicht einschlägig.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+							14. Salvatorische Klausel
+						</h2>
+						<p>
+							Sollte eine Bestimmung dieser Bedingungen unwirksam sein, bleibt die Wirksamkeit der
+							übrigen Bestimmungen unberührt. An die Stelle der unwirksamen Bestimmung tritt die
+							gesetzliche Regelung.
+						</p>
+					</section>
+				</div>
+			</div>
+
+			<footer className="pb-[max(1.5rem,env(safe-area-inset-bottom))] px-4 text-center">
+				<p className="text-xs text-[var(--text-3)]">
+					<Link href="/impressum" className={TEXT_LINK}>
+						Impressum
+					</Link>
+					{' · '}
+					<Link href="/datenschutz" className={TEXT_LINK}>
+						Datenschutz
+					</Link>
+				</p>
+			</footer>
+		</main>
+	);
+}
