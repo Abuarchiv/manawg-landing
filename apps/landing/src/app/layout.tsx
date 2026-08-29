@@ -1,5 +1,3 @@
-import { InstallPrompt } from '@manawg/shared/components/install-prompt';
-import { PwaRegister } from '@manawg/shared/components/pwa-register';
 import { ThemeProvider } from '@manawg/shared/components/theme/ThemeProvider';
 import { getAppUrl } from '@manawg/shared/lib/app-url';
 import { Analytics } from '@vercel/analytics/next';
@@ -95,7 +93,10 @@ export const metadata: Metadata = {
 		description: 'Die WG-App, die einfach funktioniert.',
 		images: ['/opengraph-image'],
 	},
-	manifest: '/manifest.json',
+	// No manifest on purpose: manawg.com is the marketing site. The installable
+	// app is app.manawg.com, which ships its own manifest and service worker.
+	// Two installable origins would compete for the same "ManaWG" install —
+	// that is exactly what sent PWA installs to this page instead of the app.
 	icons: {
 		icon: [
 			{ url: '/favicon.svg', type: 'image/svg+xml' },
@@ -103,11 +104,6 @@ export const metadata: Metadata = {
 			{ url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
 		],
 		apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
-	},
-	appleWebApp: {
-		capable: true,
-		statusBarStyle: 'black-translucent',
-		title: 'ManaWG',
 	},
 	formatDetection: {
 		telephone: false,
@@ -137,17 +133,7 @@ export default function RootLayout({
 			className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
 		>
 			<head>
-				<meta name="apple-mobile-web-app-capable" content="yes" />
-				<meta name="mobile-web-app-capable" content="yes" />
-				<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-				<meta name="apple-mobile-web-app-title" content="ManaWG" />
 				<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-				{/* Sehr früh den beforeinstallprompt-Event abfangen — bevor React mountet.
-            Browser feuert das Event nur einmal; ohne diesen Catcher verlieren
-            spät-mountende Komponenten ihn komplett. */}
-				<Script id="manawg-install-ready" strategy="beforeInteractive">
-					{`(function(){if(typeof window==='undefined')return;window.__manawgDeferredInstallEvent=null;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__manawgDeferredInstallEvent=e;window.dispatchEvent(new CustomEvent('manawg:install-ready'));});})();`}
-				</Script>
 				{/* Anti-flicker theme bootstrap — runs synchronously before first paint.
             Safe: no dynamic data interpolated, only reads from localStorage.
             Pattern used by next-themes and every major theme library. */}
@@ -170,11 +156,7 @@ export default function RootLayout({
 				<a href="#main" className="skip-link">
 					Zum Hauptinhalt springen
 				</a>
-				<ThemeProvider>
-					{children}
-					<PwaRegister />
-					<InstallPrompt />
-				</ThemeProvider>
+				<ThemeProvider>{children}</ThemeProvider>
 				<Analytics />
 				<SpeedInsights />
 			</body>

@@ -13,12 +13,16 @@ const securityHeaders = [
 	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
 ];
 
-// This zone owns the domain root ("/") in the multi-zone setup — every path
-// not listed here is served by this app directly. The listed prefixes proxy
-// through to the `web` zone's deployment so the browser never leaves
-// manawg.com (required for the shared-origin localStorage auth model — see
-// specs/anonymous-auth-no-login.md).
-const APP_ZONE_URL = (process.env.APP_ZONE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
+// manawg.com is the marketing site only. The app lives on its own origin
+// (app.manawg.com) so that installing the PWA opens the app rather than this
+// page — the multi-zone proxy that used to serve /wg and /neu from here made
+// the install land on the landing page, which is why the two were split.
+//
+// Old app paths still REDIRECT rather than 404, so existing links and
+// bookmarks keep working. They are 307 (temporary) on purpose while the new
+// origin settles; make them permanent once app.manawg.com is confirmed
+// stable, because a 308 is cached hard by browsers and painful to walk back.
+const APP_ORIGIN = (process.env.APP_ZONE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
 
 // craftsman-ignore: TS002 — Next.js config requires default export
 const nextConfig: NextConfig = {
@@ -39,17 +43,20 @@ const nextConfig: NextConfig = {
 	experimental: {
 		optimizePackageImports: ['lucide-react', '@react-three/drei'],
 	},
+	async redirects() {
+		return [
+			{ source: '/wg', destination: `${APP_ORIGIN}/wg`, permanent: false },
+			{ source: '/wg/:path*', destination: `${APP_ORIGIN}/wg/:path*`, permanent: false },
+			{ source: '/neu', destination: `${APP_ORIGIN}/neu`, permanent: false },
+			{ source: '/offline', destination: `${APP_ORIGIN}/offline`, permanent: false },
+		];
+	},
 	async rewrites() {
 		return [
-			{ source: '/wg', destination: `${APP_ZONE_URL}/wg` },
-			{ source: '/wg/:path*', destination: `${APP_ZONE_URL}/wg/:path*` },
-			{ source: '/api/:path*', destination: `${APP_ZONE_URL}/api/:path*` },
-			{ source: '/neu', destination: `${APP_ZONE_URL}/neu` },
-			{ source: '/offline', destination: `${APP_ZONE_URL}/offline` },
-			{ source: '/.well-known/:path*', destination: `${APP_ZONE_URL}/.well-known/:path*` },
-			// The web zone's own static assets — see its `assetPrefix` in
-			// apps/web/next.config.ts for why this prefix exists.
-			{ source: '/wg-assets/:path*', destination: `${APP_ZONE_URL}/wg-assets/:path*` },
+			// Domain-association files must be served from the apex domain the
+			// native apps claim, so these stay proxied rather than redirected —
+			// a redirect would break association.
+			{ source: '/.well-known/:path*', destination: `${APP_ORIGIN}/.well-known/:path*` },
 		];
 	},
 };
