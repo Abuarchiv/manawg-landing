@@ -57,7 +57,8 @@
 			"test-results",
 			"playwright-report",
 			"*.min.js",
-			"drizzle/meta"
+			"drizzle/meta",
+			"graphify-out"
 		]
 	}
 }
