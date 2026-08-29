@@ -602,60 +602,6 @@ body {
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 8px 32px rgba(74, 125, 101, 0.6), 0 0 0 1px
 		rgba(132, 225, 188, 0.3);
 }
-/* Apple Liquid Glass — ghost button variant. */
-.btn-modern-ghost {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.5rem;
-	padding: 0.9rem 1.7rem;
-	border-radius: 999px;
-	font-family: "Geist", sans-serif;
-	font-weight: 500;
-	font-size: 14px;
-	color: var(--text-1);
-	border: 1px solid rgba(0, 0, 0, 0.12);
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.5) 100%);
-	backdrop-filter: blur(24px) saturate(200%) brightness(1.04);
-	-webkit-backdrop-filter: blur(24px) saturate(200%) brightness(1.04);
-	box-shadow:
-		0 1px 0 rgba(255, 255, 255, 0.95) inset,
-		0 -1px 0 rgba(255, 255, 255, 0.4) inset, 0 0 0 0.5px rgba(255, 255, 255, 0.3),
-		0 2px 4px rgba(15, 15, 25, 0.04), 0 8px 20px rgba(47, 93, 74, 0.1);
-	transition: all 0.2s ease;
-}
-.btn-modern-ghost:hover {
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.65) 100%);
-	box-shadow:
-		0 1px 0 rgba(255, 255, 255, 1) inset, 0 -1px 0 rgba(255, 255, 255, 0.5) inset,
-		0 0 0 0.5px rgba(255, 255, 255, 0.4), 0 2px 4px rgba(15, 15, 25, 0.05),
-		0 12px 24px rgba(47, 93, 74, 0.16);
-	transform: translateY(-1px);
-}
-.dark .btn-modern-ghost {
-	color: var(--text-1);
-	border-color: var(--border);
-	background: var(--surface);
-}
-.dark .btn-modern-ghost:hover {
-	background: var(--surface-strong);
-	border-color: var(--border-strong);
-	color: var(--text-1);
-}
-
-/* Glow / shadow accents — neutral shadow in light, colored glow in dark only */
-.glow-mint {
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
-}
-.dark .glow-mint {
-	box-shadow: 0 0 0 1px rgba(132, 225, 188, 0.2), 0 8px 32px rgba(132, 225, 188, 0.18), 0 0 80px
-		rgba(132, 225, 188, 0.12);
-}
-.glow-violet {
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
-}
-.dark .glow-violet {
-	box-shadow: 0 0 0 1px rgba(74, 125, 101, 0.3), 0 8px 32px rgba(74, 125, 101, 0.22);
-}
 
 /* Light mode: tonal mint→deep gradient — adds richness, stays on-brand.
    Dark mode: full vibrant gradient as designed. */
@@ -689,16 +635,6 @@ body {
 	background-clip: text;
 	color: transparent;
 }
-.text-gradient-mint {
-	color: var(--text-1);
-}
-.dark .text-gradient-mint {
-	background: linear-gradient(180deg, #f5f5f7 0%, #84e1bc 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
-	color: transparent;
-}
 
 .grid-pattern {
 	/* Faint violet dot grid over white — reads through glass. */
@@ -715,41 +651,6 @@ body {
 	-webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 80%);
 }
 
-@keyframes scroll-x {
-	0% {
-		transform: translateX(0);
-	}
-	100% {
-		transform: translateX(-50%);
-	}
-}
-.animate-scroll-x {
-	animation: scroll-x 40s linear infinite;
-}
-@keyframes float-y {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-	50% {
-		transform: translateY(-12px);
-	}
-}
-@keyframes float-y-2 {
-	0%,
-	100% {
-		transform: translateY(-4px);
-	}
-	50% {
-		transform: translateY(-20px);
-	}
-}
-.animate-float-y {
-	animation: float-y 6s ease-in-out infinite;
-}
-.animate-float-y-2 {
-	animation: float-y-2 7.5s ease-in-out infinite 0.8s;
-}
 @keyframes pulse-glow {
 	0%,
 	100% {
@@ -775,14 +676,6 @@ body {
 }
 .animate-aurora {
 	animation: aurora 22s ease-in-out infinite;
-}
-@keyframes shimmer {
-	0% {
-		background-position: -200% 0;
-	}
-	100% {
-		background-position: 200% 0;
-	}
 }
 
 .gradient-border {
@@ -845,118 +738,12 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
 	.animate-fade-up,
-	.animate-float-y,
-	.animate-float-y-2,
 	.animate-pulse-glow,
-	.animate-aurora,
-	.animate-marquee,
-	.animate-scroll-x,
-	.animate-float-1,
-	.animate-float-2,
-	.animate-float-3,
-	.animate-confetti-burst,
-	.animate-toast-progress {
+	.animate-aurora {
 		animation: none !important;
 		opacity: 1 !important;
 		transform: none !important;
 	}
-}
-
-@keyframes toast-progress {
-	from {
-		transform: scaleX(1);
-	}
-	to {
-		transform: scaleX(0);
-	}
-}
-.animate-toast-progress {
-	animation: toast-progress var(--toast-duration, 4s) linear forwards;
-	transform-origin: left;
-}
-
-@keyframes confetti-burst {
-	0% {
-		opacity: 1;
-		transform: rotate(var(--tw-rotate, 0deg)) translateY(0px) scale(1);
-	}
-	60% {
-		opacity: 1;
-		transform: rotate(var(--tw-rotate, 0deg)) translateY(-40px) scale(1.2);
-	}
-	100% {
-		opacity: 0;
-		transform: rotate(var(--tw-rotate, 0deg)) translateY(-60px) scale(0.4);
-	}
-}
-.animate-confetti-burst {
-	animation: confetti-burst 0.8s ease-out forwards;
-}
-
-.dot-grid {
-	background-image: radial-gradient(var(--border) 1px, transparent 1px);
-	background-size: 24px 24px;
-}
-.moss-glow {
-	position: relative;
-}
-.moss-glow::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background: radial-gradient(
-		ellipse 80% 50% at 50% 0%,
-		rgba(132, 225, 188, 0.18) 0%,
-		transparent 70%
-	);
-	pointer-events: none;
-}
-@keyframes marquee {
-	0% {
-		transform: translateX(0);
-	}
-	100% {
-		transform: translateX(-50%);
-	}
-}
-.animate-marquee {
-	animation: marquee 28s linear infinite;
-}
-@keyframes float-note-1 {
-	0%,
-	100% {
-		transform: rotate(2deg) translateY(0px);
-	}
-	50% {
-		transform: rotate(2deg) translateY(-12px);
-	}
-}
-.animate-float-1 {
-	animation: float-note-1 5s ease-in-out infinite;
-}
-.animate-float-2 {
-	animation: float-note-1 6.5s ease-in-out infinite 0.8s;
-}
-.animate-float-3 {
-	animation: float-note-1 4.5s ease-in-out infinite 1.5s;
-}
-
-/* Card primitive — Vercel-style */
-.card-flat {
-	background: var(--bg-base);
-	border: 1px solid var(--border);
-	border-radius: 12px;
-	transition: border-color 150ms ease, background-color 150ms ease;
-}
-.card-flat:hover {
-	border-color: var(--border-strong);
-}
-
-.card-elevated {
-	background: var(--bg-base);
-	border: 1px solid var(--border);
-	border-radius: 12px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 /* iOS Safari zoom-on-focus fix — inputs must be >= 16px on mobile */
@@ -971,9 +758,6 @@ body {
 	select {
 		font-size: 16px;
 	}
-}
-.dark .card-elevated {
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 @media (hover: none) {
