@@ -141,11 +141,12 @@ export default function LandingPage() {
 									Ausgaben, Putzplan, Einkaufsliste, Pinnwand — ein Tab für die ganze WG.
 									<br className="hidden sm:block" />
 									<span className="sm:hidden"> </span>
-									Kein Account, kein Tracking, dauerhaft kostenlos.
+									Mit Google, Apple oder Facebook anmelden, kein eigenes Passwort nötig, dauerhaft
+									kostenlos.
 								</p>
 							</ScrollFade>
 
-							{/* Trust badge — DSGVO / No-Account / EU servers */}
+							{/* Trust badge — DSGVO / Social Login / EU servers */}
 							<ScrollFade immediate delay={0.32} y={12}>
 								<p className="mt-4 max-w-md text-xs text-[var(--text-3)]">
 									DSGVO-konform · Server in Deutschland
@@ -291,8 +292,7 @@ export default function LandingPage() {
 
 						<ScrollFade delay={0.3}>
 							<p className="mx-auto mt-8 max-w-lg text-lg text-[var(--text-2)] leading-relaxed">
-								Name eingeben, Code teilen, loslegen — fertig. Kein Account, kein Passwort, kein
-								Tracking.
+								Mit Google, Apple oder Facebook anmelden, deinen Namen wählen, Code teilen — fertig.
 							</p>
 						</ScrollFade>
 

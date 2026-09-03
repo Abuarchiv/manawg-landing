@@ -15,7 +15,7 @@ const faqs = [
 	},
 	{
 		q: 'Was passiert mit meinen Daten, wenn ich aufhöre?',
-		a: 'Die App speichert den Gerätezugang lokal im Browser. Gemeinsame WG-Daten werden nur für die Funktionen der WG verarbeitet. Wenn eine WG gelöscht wird, werden die dazugehörigen Daten gelöscht; zusätzliche Löschanfragen kannst du jederzeit per E-Mail stellen (DSGVO-Recht auf Löschung).',
+		a: 'Dein Zugang ist an dein Google-, Apple- oder Facebook-Konto gebunden und nicht nur an ein einzelnes Gerät. So kannst du deine WGs nach der Anmeldung auf weiteren Geräten wiederfinden. Wenn eine WG gelöscht wird, werden die dazugehörigen Daten gelöscht; zusätzliche Löschanfragen kannst du jederzeit per E-Mail stellen (DSGVO-Recht auf Löschung).',
 	},
 	{
 		q: 'Kann ich meine WG-Daten exportieren oder löschen?',

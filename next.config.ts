@@ -22,7 +22,7 @@ const securityHeaders = [
 // bookmarks keep working. They are 307 (temporary) on purpose while the new
 // origin settles; make them permanent once app.manawg.com is confirmed
 // stable, because a 308 is cached hard by browsers and painful to walk back.
-const APP_ORIGIN = (process.env.APP_ZONE_URL ?? 'http://localhost:3000').replace(/\/$/, '');
+const APP_ORIGIN = 'https://app.manawg.com';
 
 // craftsman-ignore: TS002 — Next.js config requires default export
 const nextConfig: NextConfig = {

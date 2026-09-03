@@ -70,7 +70,7 @@ export default function DatenschutzPage() {
 						</h2>
 
 						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
-							4a. Mitgliedskennung (anonyme UUID, Anzeigename)
+							4a. Konto, Authentifizierung und lokale Daten
 						</h3>
 						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 							<li>
@@ -80,21 +80,18 @@ export default function DatenschutzPage() {
 								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)
 							</li>
 							<li>
-								<strong>Hinweis zur Identifikation:</strong> ManaWG nutzt keine Registrierung mit
-								E-Mail oder Passwort. Stattdessen wird beim ersten Aufruf eine anonyme
-								Mitgliedskennung (UUID) erzeugt und ausschließlich im <strong>Local Storage</strong>{' '}
-								des Browsers gespeichert. Es werden <strong>keine Cookies</strong> und{' '}
-								<strong>keine Server-Session</strong> für die Authentifizierung verwendet. Beim
-								Löschen des Browser-Speichers geht der Zugang zu einer WG verloren.
+								<strong>Hinweis zur Identifikation:</strong> ManaWG nutzt Social Login über Google,
+								Apple oder Facebook. Die Authentifizierung erfolgt über Supabase Auth; die Sitzung
+								wird in Cookies verwaltet. Im Browser können lokale WG-Zuordnungen und
+								Namensentwürfe im <strong>Local Storage</strong> gespeichert werden.
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Bis zur Löschung der WG-Mitgliedschaft oder bis zur
-								manuellen Löschung des Browser-Speichers. Wenn der lokale Browser-Speicher gelöscht
-								wird, ist der lokale Zugang zu dieser WG weg.
+								<strong>Speicherdauer:</strong> Lokale WG-Zuordnungen und Namensentwürfe bleiben bis
+								zur manuellen Löschung des Browser-Speichers gespeichert.
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Neon, Inc. (Datenbankhosting,
-								siehe § 5); keine Übermittlung an Dritte zu Werbe- oder Analysezwecken
+								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Authentifizierung und
+								Datenbankhosting, siehe § 5)
 							</li>
 							<li>
 								<strong>Drittland-Transfer:</strong> Nein — die Datenbank wird in der Region
@@ -118,8 +115,7 @@ export default function DatenschutzPage() {
 								werden die zugehörigen WG-Daten aus der aktiven Datenbank entfernt.
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Neon, Inc. (USA, Verarbeitung auf
-								EU-Servern in Frankfurt, AVV nach Art. 28 DSGVO, SCCs)
+								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datenbankhosting)
 							</li>
 							<li>
 								<strong>Drittland-Transfer:</strong> Nein (Verarbeitung auf EU-Server)
@@ -213,8 +209,7 @@ export default function DatenschutzPage() {
 						<p className="mb-2">Wir setzen folgende Auftragsverarbeiter ein (Art. 28 DSGVO):</p>
 						<ul className="list-disc pl-5 space-y-2 text-sm">
 							<li>
-								<strong>Neon, Inc.</strong> (USA) — Postgres-Datenbankhosting auf EU-Servern
-								(Frankfurt). AVV nach Art. 28 DSGVO, SCCs vorhanden.
+								<strong>Supabase</strong> — Authentifizierung und Postgres-Datenbankhosting.
 							</li>
 							<li>
 								<strong>Vercel Inc.</strong> (USA) — Hosting der Web-App, Edge-Netzwerk,
@@ -252,12 +247,10 @@ export default function DatenschutzPage() {
 							7. Cookies &amp; Local Storage
 						</h2>
 						<p>
-							ManaWG setzt <strong>keine Cookies</strong> zur Authentifizierung oder zu
-							Tracking-Zwecken. Die Mitgliedskennung wird ausschließlich im{' '}
-							<strong>Local Storage</strong> des Browsers gespeichert (technisch notwendig zur
-							Bereitstellung des Dienstes, Art. 6 Abs. 1 lit. b DSGVO, § 25 Abs. 2 Nr. 2 TDDDG).
-							Eine Einwilligung im Sinne des § 25 Abs. 1 TDDDG ist daher nicht erforderlich. Beim
-							Löschen des Browser-Speichers geht der Zugang zur WG verloren.
+							ManaWG verwendet Cookies für die Supabase-Authentifizierung. Zusätzlich können lokale
+							WG-Zuordnungen und Namensentwürfe im <strong>Local Storage</strong> des Browsers
+							gespeichert werden. Beim Löschen des Browser-Speichers werden diese lokalen Daten
+							gelöscht.
 						</p>
 					</section>
 
@@ -341,10 +334,8 @@ export default function DatenschutzPage() {
 						</h2>
 						<p>
 							Eine gesetzliche oder vertragliche Pflicht zur Bereitstellung personenbezogener Daten
-							besteht nicht (Art. 13 Abs. 2 lit. e DSGVO). Für die Nutzung der App wird lediglich
-							eine technisch erzeugte, anonyme Mitgliedskennung (UUID) im Local Storage angelegt
-							sowie ein frei gewählter Anzeigename verlangt. Eine Identifikation per E-Mail oder
-							Klarname ist nicht erforderlich.
+							besteht nicht (Art. 13 Abs. 2 lit. e DSGVO). Für die Nutzung der App ist die Anmeldung
+							mit Google, Apple oder Facebook sowie ein Anzeigename erforderlich.
 						</p>
 					</section>
 

@@ -58,13 +58,10 @@ export default function AgbPage() {
 							3. Mitgliedschaft und Pflichten
 						</h2>
 						<p>
-							Zur Nutzung wird beim ersten Aufruf eine anonyme Mitgliedskennung (UUID) erzeugt und
-							im Local Storage deines Browsers gespeichert. Eine Registrierung mit E-Mail oder
-							Passwort findet nicht statt. Du bist verantwortlich für die Inhalte, die du
-							einstellst, sowie für den Schutz deines Gerätes und Browser-Speichers vor unbefugtem
-							Zugriff. Beim Löschen des Browser-Speichers geht der lokale Zugang zu deiner WG
-							verloren; ein Wiederherstellungsverfahren existiert nicht. Rechtswidrige Inhalte,
-							Missbrauch und automatisierte Angriffe sind untersagt.
+							Zur Nutzung meldest du dich mit deinem Google-, Apple- oder Facebook-Konto an. Du bist
+							verantwortlich für die Inhalte, die du einstellst, sowie für den Schutz deines Gerätes
+							und Browser-Speichers vor unbefugtem Zugriff. Rechtswidrige Inhalte, Missbrauch und
+							automatisierte Angriffe sind untersagt.
 						</p>
 					</section>
 
