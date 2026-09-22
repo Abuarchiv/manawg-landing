@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { APP_ORIGIN } from './src/lib/app-origin';
 
 const securityHeaders = [
 	{ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
@@ -22,7 +23,8 @@ const securityHeaders = [
 // bookmarks keep working. They are 307 (temporary) on purpose while the new
 // origin settles; make them permanent once app.manawg.com is confirmed
 // stable, because a 308 is cached hard by browsers and painful to walk back.
-const APP_ORIGIN = 'https://app.manawg.com';
+// The origin itself lives in src/lib/app-origin.ts so the redirects, the
+// sitemap and the in-page CTAs cannot drift apart.
 
 // craftsman-ignore: TS002 — Next.js config requires default export
 const nextConfig: NextConfig = {

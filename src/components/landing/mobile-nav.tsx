@@ -2,6 +2,7 @@
 
 import { Drawer } from '@/components/ui/Drawer';
 import { Wordmark } from '@/components/ui/Wordmark';
+import { appUrl } from '@/lib/app-origin';
 import { haptic } from '@/lib/haptics';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { useState } from 'react';
@@ -76,7 +77,7 @@ export function MobileNav() {
 					{/* CTAs */}
 					<div className="flex flex-col gap-3 pt-6 border-t border-black/[0.06] dark:border-white/[0.06]">
 						<a
-							href="https://app.manawg.com/neu"
+							href={appUrl('/neu')}
 							onClick={() => {
 								haptic('medium');
 								close();

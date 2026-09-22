@@ -34,8 +34,7 @@ import { LandingFooter } from '@/components/landing/footer';
 import { MobileNav } from '@/components/landing/mobile-nav';
 import { ScrollFade } from '@/components/landing/scroll-fade';
 import { Wordmark } from '@/components/ui/Wordmark';
-
-const APP_URL = 'https://app.manawg.com';
+import { appUrl } from '@/lib/app-origin';
 
 // craftsman-ignore: TS002 — Next.js App Router requires default export for pages
 export default function LandingPage() {
@@ -157,7 +156,7 @@ export default function LandingPage() {
 							<ScrollFade delay={0.4}>
 								<div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
 									<a
-										href={`${APP_URL}/neu?action=create`}
+										href={appUrl('/neu?action=create')}
 										className="btn-modern w-full justify-center min-h-12 sm:w-auto"
 									>
 										WG in 30 Sek erstellen
@@ -298,7 +297,7 @@ export default function LandingPage() {
 
 						<ScrollFade delay={0.55}>
 							<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-								<a href={`${APP_URL}/neu?action=create`} className="btn-modern text-base">
+								<a href={appUrl('/neu?action=create')} className="btn-modern text-base">
 									WG in 30 Sek erstellen
 									<ArrowRight className="h-4 w-4" aria-hidden="true" />
 								</a>

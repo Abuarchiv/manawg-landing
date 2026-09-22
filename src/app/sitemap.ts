@@ -9,12 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	return [
 		{ url: `${appUrl}/`, lastModified: LAST_MODIFIED, changeFrequency: 'weekly', priority: 1 },
 		{
-			url: `${appUrl}/neu`,
-			lastModified: LAST_MODIFIED,
-			changeFrequency: 'monthly',
-			priority: 0.8,
-		},
-		{
 			url: `${appUrl}/agb`,
 			lastModified: LAST_MODIFIED,
 			changeFrequency: 'yearly',
