@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 	title: 'Datenschutzerklärung — ManaWG',
 	description:
 		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung, Tracking oder Analytics. Transparente Speicherung und Löschung.',
+	alternates: { canonical: '/datenschutz' },
 };
 
 // craftsman-ignore: TS002

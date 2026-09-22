@@ -5,6 +5,9 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Nutzungsbedingungen — ManaWG',
+	description:
+		'Nutzungsbedingungen für ManaWG: kostenlose Nutzung, Fair-Use, Haftung und Kündigung der privaten WG-App.',
+	alternates: { canonical: '/agb' },
 };
 
 // craftsman-ignore: TS002
