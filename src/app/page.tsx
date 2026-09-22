@@ -1,47 +1,28 @@
-'use client';
-
-import { LenisProvider } from '@/components/landing/lenis-provider';
-import { ArrowRight } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-
-const Hero3D = dynamic(
-	() => import('@/components/landing/hero-3d').then((m) => ({ default: m.Hero3D })),
-	{
-		ssr: false,
-		loading: () => (
-			<div className="h-[88dvh] bg-gradient-to-b from-[var(--bg-base)] to-[var(--surface)]" />
-		),
-	},
-);
-
-const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
-
-function useShouldLoadHero3D(): boolean {
-	const [enabled, setEnabled] = useState(false);
-	useEffect(() => {
-		if (typeof window === 'undefined' || typeof matchMedia === 'undefined') return;
-		const reduced = matchMedia(REDUCED_MOTION_QUERY).matches;
-		setEnabled(!reduced);
-	}, []);
-	return enabled;
-}
 import { ComparisonTable } from '@/components/landing/comparison-table';
 import { FAQ } from '@/components/landing/faq';
+import { FAQ_JSON_LD } from '@/components/landing/faq-data';
 import { FeatureBento } from '@/components/landing/feature-bento';
 import { LandingFooter } from '@/components/landing/footer';
+import { Hero3DMount } from '@/components/landing/hero-3d-mount';
+import { LenisProvider } from '@/components/landing/lenis-provider';
 import { MobileNav } from '@/components/landing/mobile-nav';
 import { ScrollFade } from '@/components/landing/scroll-fade';
 import { Wordmark } from '@/components/ui/Wordmark';
 import { appUrl } from '@/lib/app-origin';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 // craftsman-ignore: TS002 — Next.js App Router requires default export for pages
 export default function LandingPage() {
-	const showHero3D = useShouldLoadHero3D();
-
 	return (
 		<LenisProvider>
+			{/* FAQ rich result — static JSON built from local constants, rendered
+			    in the initial HTML instead of being injected on the client. */}
+			<script
+				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: static JSON.stringify of trusted local constants, no user input
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
+			/>
 			<main
 				id="main"
 				tabIndex={-1}
@@ -94,13 +75,10 @@ export default function LandingPage() {
 					{/* grid backdrop */}
 					<div className="absolute inset-0 grid-pattern grid-mask opacity-50" aria-hidden />
 
-					{/* 3D scene — desktop only, gated by prefers-reduced-motion.
-					    Saves ~740 kB of three.js + drei on mobile devices. */}
-					{showHero3D && (
-						<div className="absolute inset-0 z-0">
-							<Hero3D />
-						</div>
-					)}
+					{/* 3D scene — client-only, gated by prefers-reduced-motion. */}
+					<div className="absolute inset-0 z-0">
+						<Hero3DMount />
+					</div>
 
 					{/* aurora blob — desktop only, dark-mode only */}
 					<div
