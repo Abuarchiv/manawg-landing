@@ -3,6 +3,9 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Seite nicht gefunden — ManaWG',
+	description:
+		'Diese Seite existiert nicht. Zurück zur Startseite von ManaWG — der WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand.',
+	robots: { index: false, follow: false },
 };
 
 // craftsman-ignore: TS002 — Next.js App Router requires default export for pages

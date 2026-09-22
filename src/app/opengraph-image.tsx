@@ -15,6 +15,10 @@ export default function OgImage() {
 				flexDirection: 'column',
 				alignItems: 'center',
 				justifyContent: 'center',
+				// The mint glow and the bottom tag are positioned absolutely —
+				// they need this box as their positioned ancestor, otherwise
+				// both resolve against the SVG viewport instead.
+				position: 'relative',
 				background: '#07070a',
 				fontFamily: 'system-ui, sans-serif',
 			}}
