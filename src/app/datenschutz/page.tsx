@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'Datenschutzerklärung — ManaWG',
 	description:
-		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung, Tracking oder Analytics. Transparente Speicherung und Löschung.',
+		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung, ohne Tracking und ohne Personenprofile. Transparente Speicherung, Löschung und eine cookielos betriebene Produktanalyse.',
 };
 
 // craftsman-ignore: TS002
@@ -24,7 +24,7 @@ export default function DatenschutzPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-05-19</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-23</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
@@ -57,9 +57,10 @@ export default function DatenschutzPage() {
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">3. Wer wir sind</h2>
 						<p>
 							ManaWG ist eine kostenlose WG-App für private Wohngemeinschaften. Die App wird
-							unentgeltlich betrieben, ohne Werbung, ohne Analytics und ohne Verkauf von Daten. Der
-							Quellcode war früher teilweise offen einsehbar, ist inzwischen aber privat und wird
-							nicht veröffentlicht.
+							unentgeltlich betrieben, ohne Werbung, ohne Tracking und ohne Verkauf von Daten.
+							Anonyme Produktanalyse wird cookielos über PostHog Cloud EU betrieben und in 4f
+							beschrieben. Der Quellcode war früher teilweise offen einsehbar, ist inzwischen aber
+							privat und wird nicht veröffentlicht.
 						</p>
 					</section>
 
@@ -199,6 +200,45 @@ export default function DatenschutzPage() {
 								mit Sitz USA, SCCs vorhanden.
 							</li>
 						</ul>
+
+						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+							4f. Anonyme Produktanalyse (PostHog)
+						</h3>
+						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
+							<li>
+								<strong>Zweck:</strong> Anonyme Produktanalyse — gezählt werden Seitenaufrufe sowie
+								die erfolgreiche Erstellung und der erfolgreiche Beitritt zu einer WG, um ManaWG zu
+								verbessern
+							</li>
+							<li>
+								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse
+								an der Weiterentwicklung des Angebots)
+							</li>
+							<li>
+								<strong>Speicherdauer:</strong> ManaWG speichert selbst keine Analyseprofile; die
+								Speicherdauer der Ereignisse bestimmt PostHog Cloud EU als Auftragsverarbeiter.
+								Löschungsanfragen an info@manawg.com
+							</li>
+							<li>
+								<strong>Empfänger / Auftragsverarbeiter:</strong> PostHog Inc. — PostHog Cloud EU,
+								Region Frankfurt (eu.i.posthog.com). Übertragen werden ausschließlich Seitenaufrufe
+								sowie die Ereignisse wg_created und wg_joined; alle anderen Ereignisse und alle
+								zusätzlichen Eigenschaften werden vor dem Senden verworfen.
+							</li>
+							<li>
+								<strong>Drittland-Transfer:</strong> Nein — Verarbeitung in der EU-Region
+								(Frankfurt).
+							</li>
+						</ul>
+						<p className="mb-3">
+							Die Analyse läuft <strong>cookielos</strong>: kein Analyse-Cookie, keine Speicherung
+							im Local Storage, kein Personenprofil, keine automatische Klickerfassung, keine
+							Session-Aufzeichnung und keine Umfragen. Namen, E-Mail-Adressen, WG-Namen, WG-Codes,
+							Nachrichten, Einkaufs- und Finanzdaten werden nicht übertragen. Technisch notwendige
+							Verbindungsdaten wie die IP-Adresse der Anfrage und die Browser-Kennung erreichen
+							PostHog mit der Anfrage. Browser-Schutzfunktionen oder Inhaltsblocker können die
+							Analyse verhindern; ManaWG funktioniert dann unverändert weiter.
+						</p>
 					</section>
 
 					{/* 5. Auftragsverarbeiter */}
@@ -224,20 +264,26 @@ export default function DatenschutzPage() {
 								<strong>Vercel KV / Upstash, Inc.</strong> (USA) — Redis-basiertes Rate-Limiting
 								(Counter pro IP/Kennung), Verarbeitung auf EU-Servern. AVV, SCCs vorhanden.
 							</li>
+							<li>
+								<strong>PostHog Inc.</strong> — Anonyme Produktanalyse über PostHog Cloud EU, Region
+								Frankfurt (siehe 4f).
+							</li>
 						</ul>
 					</section>
 
 					{/* 6. Keine Werbung, kein Tracking */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							6. Keine Werbung, keine Analyse, kein Tracking
+							6. Keine Werbung, kein Tracking, keine Personenprofile
 						</h2>
 						<p>
 							ManaWG enthält <strong>keine Werbung</strong>, <strong>kein Google Analytics</strong>,
-							keine sonstigen Reichweiten- oder Analyse-Tools, keine Social-Media-Tracker, kein
-							Fingerprinting und keine Weitergabe von Daten an Dritte zu Werbezwecken. Es findet
-							ausdrücklich <strong>keine Werbe- oder Cross-Site-Verfolgung</strong> statt. ManaWG
-							wird unentgeltlich bereitgestellt und richtet sich an private WGs.
+							keine Social-Media-Tracker, kein Fingerprinting und keine Weitergabe von Daten an
+							Dritte zu Werbezwecken. Es findet ausdrücklich{' '}
+							<strong>keine Werbe- oder Cross-Site-Verfolgung</strong> statt. Die einzige Ausnahme
+							ist die anonyme Produktanalyse über PostHog Cloud EU (4f): cookielos, ohne
+							Personenprofile und ohne Weitergabe von Nutzungsdaten an Dritte zu Werbezwecken.
+							ManaWG wird unentgeltlich bereitgestellt und richtet sich an private WGs.
 						</p>
 					</section>
 
