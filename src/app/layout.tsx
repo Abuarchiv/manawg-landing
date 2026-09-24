@@ -38,7 +38,7 @@ const organizationSchema = {
 	url: appUrl,
 	logo: `${appUrl}/icon-512.png`,
 	description:
-		'Die WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand. Kostenlos, Social Login mit Google, Apple oder Facebook, kein Tracking.',
+		'Die WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand. Kostenlos, Anmeldung mit Google oder E-Mail, kein Tracking.',
 };
 
 const softwareApplicationSchema = {
@@ -46,7 +46,7 @@ const softwareApplicationSchema = {
 	'@type': 'SoftwareApplication',
 	name: 'ManaWG',
 	description:
-		'Die WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand. Kostenlos, Social Login mit Google, Apple oder Facebook, kein Tracking.',
+		'Die WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand. Kostenlos, Anmeldung mit Google oder E-Mail, kein Tracking.',
 	url: appUrl,
 	applicationCategory: 'LifestyleApplication',
 	operatingSystem: 'Web, iOS, Android',
