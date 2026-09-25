@@ -1,6 +1,4 @@
 import { getAppUrl } from '@/lib/app-url';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
 import Script from 'next/script';
@@ -150,8 +148,6 @@ export default function RootLayout({
 					Zum Hauptinhalt springen
 				</a>
 				{children}
-				<Analytics />
-				<SpeedInsights />
 			</body>
 		</html>
 	);
