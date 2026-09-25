@@ -141,8 +141,7 @@ export default function LandingPage() {
 									Ausgaben, Putzplan, Einkaufsliste, Pinnwand — ein Tab für die ganze WG.
 									<br className="hidden sm:block" />
 									<span className="sm:hidden"> </span>
-									Mit Google, Apple oder Facebook anmelden, kein eigenes Passwort nötig, dauerhaft
-									kostenlos.
+									Mit Google oder E-Mail anmelden, dauerhaft kostenlos.
 								</p>
 							</ScrollFade>
 
@@ -292,7 +291,7 @@ export default function LandingPage() {
 
 						<ScrollFade delay={0.3}>
 							<p className="mx-auto mt-8 max-w-lg text-lg text-[var(--text-2)] leading-relaxed">
-								Mit Google, Apple oder Facebook anmelden, deinen Namen wählen, Code teilen — fertig.
+								Mit Google oder E-Mail anmelden, deinen Namen wählen, Code teilen — fertig.
 							</p>
 						</ScrollFade>
 

@@ -24,7 +24,7 @@ export default function DatenschutzPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-23</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-25</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
@@ -81,14 +81,18 @@ export default function DatenschutzPage() {
 								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)
 							</li>
 							<li>
-								<strong>Hinweis zur Identifikation:</strong> ManaWG nutzt Social Login über Google,
-								Apple oder Facebook. Die Authentifizierung erfolgt über Supabase Auth; die Sitzung
-								wird in Cookies verwaltet. Im Browser können lokale WG-Zuordnungen und
-								Namensentwürfe im <strong>Local Storage</strong> gespeichert werden.
+								<strong>Hinweis zur Identifikation:</strong> Du meldest dich mit deinem Google-Konto
+								oder mit E-Mail-Adresse und Passwort an. Bei der Anmeldung mit Google übermittelt
+								Google uns deine E-Mail-Adresse und deinen Namen. Bei der Anmeldung per E-Mail
+								versendet Supabase Bestätigungs- und Passwort-Reset-E-Mails an deine Adresse. Die
+								Authentifizierung erfolgt über Supabase Auth; die Sitzung wird in Cookies verwaltet.
+								Im Browser können lokale WG-Zuordnungen und Namensentwürfe im{' '}
+								<strong>Local Storage</strong> gespeichert werden.
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Lokale WG-Zuordnungen und Namensentwürfe bleiben bis
-								zur manuellen Löschung des Browser-Speichers gespeichert.
+								<strong>Speicherdauer:</strong> Kontodaten bis zur Löschung deines Kontos über{' '}
+								<em>Einstellungen → Zugang → Konto löschen</em>. Lokale WG-Zuordnungen und
+								Namensentwürfe bleiben bis zur manuellen Löschung des Browser-Speichers gespeichert.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Authentifizierung und
@@ -101,7 +105,8 @@ export default function DatenschutzPage() {
 						</ul>
 
 						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
-							4b. WG-Daten (WG-Name, Mitgliedschaften, Ausgaben, Putzplan, Einkaufsliste, Pinnwand)
+							4b. WG-Daten (WG-Name, Mitgliedschaften, Ausgaben, Fixkosten, Putzplan, Einkaufsliste,
+							Vorräte, Kalender, Pinnwand, Chat)
 						</h3>
 						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 							<li>
@@ -113,7 +118,11 @@ export default function DatenschutzPage() {
 							<li>
 								<strong>Speicherdauer:</strong> Bis zur Löschung der Mitgliedschaft bzw. WG;
 								technische Backups laufen nach max. 30 Tagen aus. Wird eine WG dauerhaft gelöscht,
-								werden die zugehörigen WG-Daten aus der aktiven Datenbank entfernt.
+								werden die zugehörigen WG-Daten aus der aktiven Datenbank entfernt. Löschst du dein
+								Konto, während andere Mitglieder in der WG bleiben, bleibt dein Anzeigename an den
+								von dir erfassten Ausgaben und Beiträgen stehen, damit die Abrechnung der übrigen
+								Mitglieder korrekt bleibt (Art. 6 Abs. 1 lit. f DSGVO); die Verknüpfung zu deinem
+								Konto wird entfernt.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datenbankhosting)
@@ -164,13 +173,13 @@ export default function DatenschutzPage() {
 								Mitgliedschaft bzw. WG; technische Backups laufen nach max. 30 Tagen aus
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Cloudinary, Inc. (USA, AVV nach
-								Art. 28 DSGVO, SCCs, DPF-zertifiziert)
+								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datei-Speicher, siehe §
+								5). Fotos liegen in einem nicht öffentlichen Speicher und werden nur Mitgliedern der
+								WG ausgeliefert.
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Ja — die Verarbeitung erfolgt durch Cloudinary
-								in den USA. Die Übermittlung stützt sich auf das EU-US Data Privacy Framework (DPF)
-								sowie ergänzend auf Standardvertragsklauseln (SCCs).
+								<strong>Drittland-Transfer:</strong> Nein — der Speicher wird in der Region
+								Frankfurt (EU) betrieben.
 							</li>
 						</ul>
 
@@ -239,6 +248,37 @@ export default function DatenschutzPage() {
 							PostHog mit der Anfrage. Browser-Schutzfunktionen oder Inhaltsblocker können die
 							Analyse verhindern; ManaWG funktioniert dann unverändert weiter.
 						</p>
+
+						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+							4g. Push-Benachrichtigungen
+						</h3>
+						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
+							<li>
+								<strong>Zweck:</strong> Hinweise auf neue WG-Ereignisse (z.B. Ausgaben, Aufgaben,
+								Nachrichten), wenn du Benachrichtigungen in der App einschaltest
+							</li>
+							<li>
+								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (Einwilligung über die
+								Browser-Abfrage); jederzeit widerrufbar in den App-Einstellungen oder im Browser
+							</li>
+							<li>
+								<strong>Verarbeitete Daten:</strong> die vom Browser erzeugte Push-Adresse und deren
+								Schlüssel sowie der Inhalt der Benachrichtigung
+							</li>
+							<li>
+								<strong>Speicherdauer:</strong> Bis du Benachrichtigungen ausschaltest, die WG
+								verlässt oder dein Konto löschst
+							</li>
+							<li>
+								<strong>Empfänger:</strong> der Push-Dienst deines Browser- bzw.
+								Betriebssystemherstellers (z.B. Google, Apple, Mozilla), der die Nachricht an dein
+								Gerät zustellt
+							</li>
+							<li>
+								<strong>Drittland-Transfer:</strong> Möglich — diese Push-Dienste können Server in
+								den USA nutzen.
+							</li>
+						</ul>
 					</section>
 
 					{/* 5. Auftragsverarbeiter */}
@@ -249,16 +289,12 @@ export default function DatenschutzPage() {
 						<p className="mb-2">Wir setzen folgende Auftragsverarbeiter ein (Art. 28 DSGVO):</p>
 						<ul className="list-disc pl-5 space-y-2 text-sm">
 							<li>
-								<strong>Supabase</strong> — Authentifizierung und Postgres-Datenbankhosting.
+								<strong>Supabase</strong> — Authentifizierung, Postgres-Datenbankhosting und
+								Datei-Speicher für Fotos, Region Frankfurt (EU).
 							</li>
 							<li>
 								<strong>Vercel Inc.</strong> (USA) — Hosting der Web-App, Edge-Netzwerk,
 								Server-Logs. AVV, SCCs vorhanden.
-							</li>
-							<li>
-								<strong>Cloudinary, Inc.</strong> (USA) — Speicherung und Auslieferung hochgeladener
-								Fotos. AVV nach Art. 28 DSGVO, SCCs, EU-US Data Privacy Framework (DPF)
-								zertifiziert.
 							</li>
 							<li>
 								<strong>Vercel KV / Upstash, Inc.</strong> (USA) — Redis-basiertes Rate-Limiting
@@ -314,11 +350,15 @@ export default function DatenschutzPage() {
 								<strong>Art. 16 DSGVO</strong> — Berichtigung unrichtiger Daten
 							</li>
 							<li>
-								<strong>Art. 17 DSGVO</strong> — Löschung. Die Erstellerin oder der Ersteller einer
-								WG kann sie über <em>Einstellungen → WG dauerhaft löschen</em> unwiderruflich
-								entfernen. Dabei werden alle Mitglieder, Ausgaben, Listen, Aufgaben und
-								Pinnwand-Beiträge der WG sowie alle zugehörigen Bilder sofort gelöscht. Zusätzlich
-								kann eine Löschung der eigenen Mitgliedschaft auf Anfrage per E-Mail an{' '}
+								<strong>Art. 17 DSGVO</strong> — Löschung. Du kannst dein Konto jederzeit selbst
+								über <em>Einstellungen → Zugang → Konto löschen</em> löschen. Dabei werden deine
+								Anmeldedaten gelöscht und du verlässt alle WGs; WGs, in denen du allein warst,
+								werden vollständig gelöscht. In WGs mit weiteren Mitgliedern bleibt dein Anzeigename
+								an deinen bisherigen Beiträgen stehen (siehe 4b). Die Erstellerin oder der Ersteller
+								einer WG kann sie über <em>Einstellungen → Zugang → WG dauerhaft löschen</em>{' '}
+								unwiderruflich entfernen. Dabei werden alle Mitglieder, Ausgaben, Listen, Aufgaben
+								und Pinnwand-Beiträge der WG sowie alle zugehörigen Bilder sofort gelöscht.
+								Zusätzlich kann eine weitergehende Löschung per E-Mail an{' '}
 								<a href="mailto:info@manawg.com" className="break-all">
 									info@manawg.com
 								</a>{' '}
@@ -381,7 +421,7 @@ export default function DatenschutzPage() {
 						<p>
 							Eine gesetzliche oder vertragliche Pflicht zur Bereitstellung personenbezogener Daten
 							besteht nicht (Art. 13 Abs. 2 lit. e DSGVO). Für die Nutzung der App ist die Anmeldung
-							mit Google, Apple oder Facebook sowie ein Anzeigename erforderlich.
+							mit Google oder mit E-Mail-Adresse und Passwort sowie ein Anzeigename erforderlich.
 						</p>
 					</section>
 

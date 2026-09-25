@@ -22,7 +22,7 @@ export default function AgbPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Nutzungsbedingungen</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-05-19</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-25</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					<section>
@@ -58,10 +58,10 @@ export default function AgbPage() {
 							3. Mitgliedschaft und Pflichten
 						</h2>
 						<p>
-							Zur Nutzung meldest du dich mit deinem Google-, Apple- oder Facebook-Konto an. Du bist
-							verantwortlich für die Inhalte, die du einstellst, sowie für den Schutz deines Gerätes
-							und Browser-Speichers vor unbefugtem Zugriff. Rechtswidrige Inhalte, Missbrauch und
-							automatisierte Angriffe sind untersagt.
+							Zur Nutzung meldest du dich mit deinem Google-Konto oder mit E-Mail-Adresse und
+							Passwort an. Du bist verantwortlich für die Inhalte, die du einstellst, sowie für den
+							Schutz deines Gerätes und Browser-Speichers vor unbefugtem Zugriff. Rechtswidrige
+							Inhalte, Missbrauch und automatisierte Angriffe sind untersagt.
 						</p>
 					</section>
 
@@ -70,8 +70,8 @@ export default function AgbPage() {
 						<p>
 							Du darfst nur Fotos hochladen, an denen du die nötigen Rechte hast. Persönlichkeits-
 							und Urheberrechte Dritter sind zu wahren. Fotos werden bei unserem Auftragsverarbeiter{' '}
-							<strong>Cloudinary, Inc.</strong> (USA, DPF-zertifiziert, SCCs) gespeichert und
-							ausgeliefert. Wir löschen Fotos auf Anfrage oder bei Beendigung der Mitgliedschaft;
+							<strong>Supabase</strong> (Region Frankfurt, EU) gespeichert und nur an Mitglieder der
+							WG ausgeliefert. Wir löschen Fotos auf Anfrage oder bei Beendigung der Mitgliedschaft;
 							technische Backups laufen nach max. 30 Tagen aus. Details siehe Datenschutzerklärung
 							Abschnitt 4d.
 						</p>
@@ -145,11 +145,13 @@ export default function AgbPage() {
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">10. Kündigung</h2>
 						<p>
 							Du kannst deine Mitgliedschaft auf diesem Gerät jederzeit über{' '}
-							<em>Einstellungen → WG verlassen</em> beenden — der lokale Zugang wird entfernt, deine
-							bisherigen Beiträge bleiben für die WG erhalten. Die WG-Erstellerin oder der
-							WG-Ersteller kann die gesamte WG inklusive aller Inhalte und Bilder über{' '}
-							<em>Einstellungen → WG dauerhaft löschen</em> sofort und unwiderruflich entfernen.
-							Eine zusätzliche Löschung von Daten, die dir zugeordnet werden können
+							<em>Einstellungen → Zugang → WG verlassen</em> beenden — deine bisherigen Beiträge
+							bleiben für die WG erhalten. Dein Konto kannst du jederzeit über{' '}
+							<em>Einstellungen → Zugang → Konto löschen</em> löschen; Details siehe
+							Datenschutzerklärung Abschnitt 8. Die WG-Erstellerin oder der WG-Ersteller kann die
+							gesamte WG inklusive aller Inhalte und Bilder über{' '}
+							<em>Einstellungen → Zugang → WG dauerhaft löschen</em> sofort und unwiderruflich
+							entfernen. Eine zusätzliche Löschung von Daten, die dir zugeordnet werden können
 							(Mitgliedskennung, von dir erstellte Inhalte, Fotos), kann auf Anfrage per E-Mail an{' '}
 							<a href="mailto:info@manawg.com" className="break-all">
 								info@manawg.com
