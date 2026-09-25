@@ -118,7 +118,7 @@ export default function LandingPage() {
 					<div className="relative z-10 mx-auto max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[1480px] px-5 pt-16 md:pt-24">
 						<div className="flex flex-col items-center text-center">
 							{/* headline */}
-							<ScrollFade immediate delay={0.1} y={32}>
+							<ScrollFade delay={0.1}>
 								<p className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1 text-[12px] font-medium uppercase tracking-[0.1em] text-[var(--text-2)]">
 									Die WG-App
 								</p>
@@ -136,7 +136,7 @@ export default function LandingPage() {
 							</ScrollFade>
 
 							{/* subhead */}
-							<ScrollFade immediate delay={0.25} y={20}>
+							<ScrollFade delay={0.25}>
 								<p className="mt-7 max-w-md sm:max-w-lg md:max-w-xl text-base sm:text-lg md:text-xl leading-relaxed text-[var(--text-2)]">
 									Ausgaben, Putzplan, Einkaufsliste, Pinnwand — ein Tab für die ganze WG.
 									<br className="hidden sm:block" />
@@ -147,14 +147,14 @@ export default function LandingPage() {
 							</ScrollFade>
 
 							{/* Trust badge — DSGVO / Social Login / EU servers */}
-							<ScrollFade immediate delay={0.32} y={12}>
+							<ScrollFade delay={0.32}>
 								<p className="mt-4 max-w-md text-xs text-[var(--text-3)]">
 									DSGVO-konform · Server in Deutschland
 								</p>
 							</ScrollFade>
 
 							{/* CTA row */}
-							<ScrollFade immediate delay={0.4}>
+							<ScrollFade delay={0.4}>
 								<div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
 									<a
 										href={`${APP_URL}/neu?action=create`}
@@ -276,7 +276,7 @@ export default function LandingPage() {
 					/>
 
 					<div className="relative mx-auto max-w-5xl xl:max-w-6xl 2xl:max-w-[1280px] text-center">
-						<ScrollFade delay={0.1} y={32}>
+						<ScrollFade delay={0.1}>
 							<h2
 								className="heading-grad font-extrabold leading-[0.96] tracking-[-0.045em]"
 								style={{

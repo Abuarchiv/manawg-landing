@@ -4,7 +4,7 @@
 
 /* ─── RESPONSIVE FOUNDATIONS ───────────────────────────────────────────────
    Added: iOS text-size fix, reduced-motion, media defaults, form fonts,
-   body baseline, and container helper.
+   and body baseline.
    Do NOT remove — these correct cross-device rendering bugs.
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -57,13 +57,6 @@ textarea,
 	-webkit-user-select: text;
 }
 
-/* 2c. Smooth momentum scrolling on iOS for any explicit overflow container */
-[data-scroll-y],
-.scroll-y {
-	-webkit-overflow-scrolling: touch;
-	scroll-behavior: smooth;
-}
-
 /* 3. Respect reduced-motion OS preference — squash all animations/transitions */
 @media (prefers-reduced-motion: reduce) {
 	*,
@@ -95,27 +88,6 @@ select {
 body {
 	font-size: 16px;
 	line-height: 1.5;
-}
-
-/* 7. App container helper with fluid padding */
-.container-app {
-	max-width: 1280px;
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 1rem;
-	padding-right: 1rem;
-}
-@media (min-width: 640px) {
-	.container-app {
-		padding-left: 1.5rem;
-		padding-right: 1.5rem;
-	}
-}
-@media (min-width: 1024px) {
-	.container-app {
-		padding-left: 2rem;
-		padding-right: 2rem;
-	}
 }
 
 /* ─── END RESPONSIVE FOUNDATIONS ────────────────────────────────────────── */
