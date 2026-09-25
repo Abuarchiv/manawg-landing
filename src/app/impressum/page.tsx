@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 	title: 'Impressum — ManaWG',
 	description:
 		'Kontaktdaten und Anbieterinformation für ManaWG. Privat und kostenlos betrieben von Abubakar Abditube, Frankfurt am Main.',
+	alternates: { canonical: '/impressum' },
 };
 
 // craftsman-ignore: TS002

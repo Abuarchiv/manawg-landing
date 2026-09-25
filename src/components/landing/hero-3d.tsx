@@ -246,8 +246,13 @@ function WGObject({
 
 	const handleClick = () => {
 		const target = SCROLL_TARGETS[type];
-		const el = document.querySelector(target);
-		if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		// Prefer the id lookup, fall back to the selector: the section ids are
+		// rendered by the page, and a missing target must not throw.
+		const el = document.getElementById(target.replace(/^#/, '')) ?? document.querySelector(target);
+		el?.scrollIntoView({
+			behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+			block: 'start',
+		});
 	};
 
 	return (
@@ -544,9 +549,37 @@ function useWebGLSupported() {
 	return supported;
 }
 
+/** Detect whether the hero container is on screen; drives the render loop. */
+function useInViewport<T extends Element>(): [React.RefObject<T | null>, boolean] {
+	const ref = useRef<T>(null);
+	const [inView, setInView] = useState(false);
+
+	useEffect(() => {
+		const el = ref.current;
+		if (!el || typeof IntersectionObserver === 'undefined') {
+			// Without IntersectionObserver there is nothing to gate on — keep
+			// animating rather than freezing the scene forever.
+			setInView(true);
+			return;
+		}
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const entry = entries[0];
+				if (entry) setInView(entry.isIntersecting);
+			},
+			{ rootMargin: '100px' },
+		);
+		observer.observe(el);
+		return () => observer.disconnect();
+	}, []);
+
+	return [ref, inView];
+}
+
 export function Hero3D() {
 	const webgl = useWebGLSupported();
 	const [isMobile, setIsMobile] = useState(false);
+	const [containerRef, inView] = useInViewport<HTMLDivElement>();
 
 	useEffect(() => {
 		const mq = window.matchMedia('(max-width: 767px)');
@@ -578,6 +611,7 @@ export function Hero3D() {
 
 	return (
 		<div
+			ref={containerRef}
 			aria-hidden="true"
 			className="absolute inset-0 opacity-95 dark:opacity-[0.78]"
 			style={{ maskImage: maskEllipse, WebkitMaskImage: maskEllipse }}
@@ -585,6 +619,10 @@ export function Hero3D() {
 			{webgl !== false ? (
 				<CanvasErrorBoundary>
 					<Canvas
+						// Stop the render loop while the hero is scrolled out of
+						// view — an off-screen canvas has nothing to show and
+						// otherwise keeps burning GPU/CPU on every frame.
+						frameloop={inView ? 'always' : 'never'}
 						style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}
 						camera={{ position: [0, 0, 9], fov: 50 }}
 						dpr={[1, 1.5]}

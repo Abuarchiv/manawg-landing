@@ -12,7 +12,7 @@ export default function GlobalError({
 	}, [error]);
 
 	return (
-		<html lang="de">
+		<html lang="de" suppressHydrationWarning>
 			<body
 				style={{
 					fontFamily: 'system-ui',
