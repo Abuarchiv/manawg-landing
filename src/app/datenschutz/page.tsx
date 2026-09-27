@@ -100,8 +100,8 @@ export default function DatenschutzPage() {
 								Datenbankhosting, siehe § 5)
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein — die Datenbank wird in der Region
-								Frankfurt (EU) betrieben.
+								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
+								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus.
 							</li>
 						</ul>
 
@@ -117,19 +117,20 @@ export default function DatenschutzPage() {
 								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Bis zur Löschung der Mitgliedschaft bzw. WG;
-								technische Backups laufen nach max. 30 Tagen aus. Wird eine WG dauerhaft gelöscht,
-								werden die zugehörigen WG-Daten aus der aktiven Datenbank entfernt. Löschst du dein
-								Konto, während andere Mitglieder in der WG bleiben, bleibt dein Anzeigename an den
-								von dir erfassten Ausgaben und Beiträgen stehen, damit die Abrechnung der übrigen
-								Mitglieder korrekt bleibt (Art. 6 Abs. 1 lit. f DSGVO); die Verknüpfung zu deinem
-								Konto wird entfernt.
+								<strong>Speicherdauer:</strong> Gemeinsame WG-Daten bleiben erhalten, solange die WG
+								besteht; das Ausscheiden eines Mitglieds löscht sie nicht. Wird eine WG dauerhaft
+								gelöscht, werden die zugehörigen WG-Daten aus der aktiven Datenbank entfernt.
+								Löschst du dein Konto, während andere Mitglieder in der WG bleiben, bleibt dein
+								Anzeigename an den von dir erfassten Ausgaben und Beiträgen stehen, damit die
+								Abrechnung der übrigen Mitglieder korrekt bleibt (Art. 6 Abs. 1 lit. f DSGVO); die
+								Verknüpfung zu deinem Konto wird entfernt.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datenbankhosting)
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein (Verarbeitung auf EU-Server)
+								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
+								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus.
 							</li>
 						</ul>
 
@@ -178,8 +179,12 @@ export default function DatenschutzPage() {
 								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Bis zur Löschung durch Nutzer oder bei Löschung der
-								Mitgliedschaft bzw. WG; technische Backups laufen nach max. 30 Tagen aus
+								<strong>Speicherdauer:</strong> Fotos in geteilten WG-Inhalten bleiben für aktive
+								Mitglieder verfügbar, solange diese Inhalte auf sie verweisen; das Ausscheiden eines
+								Mitglieds entfernt die geteilten Fotos nicht. Wird die letzte Referenz entfernt oder
+								die WG gelöscht, wird der Abruf sofort gesperrt und die physische Löschung durch
+								einen späteren Wartungslauf angestoßen. Eine maximale Frist für die physische
+								Löschung oder Anbieter-Backups ist nicht zugesichert.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datei-Speicher, siehe §
@@ -187,8 +192,9 @@ export default function DatenschutzPage() {
 								WG ausgeliefert.
 							</li>
 							<li>
-								<strong>Drittland-Transfer (Supabase-Fotos):</strong> Nein — der Speicher wird in
-								der Region Frankfurt (EU) betrieben.
+								<strong>Speicherort / Drittland-Transfer (Supabase-Fotos):</strong>{' '}
+								Datenspeicherregion Frankfurt (EU); die Regionseinstellung schließt weitere
+								Datenübermittlungen nicht aus.
 							</li>
 						</ul>
 
@@ -224,17 +230,19 @@ export default function DatenschutzPage() {
 								am Schutz der Infrastruktur)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Kurzlebige Counter (Minuten bis max. 24 Stunden);
-								keine dauerhafte Speicherung
+								<strong>Rate-Limit-Fenster:</strong> Die Zähler verwenden rollierende Zeitfenster
+								von einer Minute oder einer Stunde.
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel KV / Upstash, Inc. (USA,
-								Verarbeitung auf EU-Servern, AVV, SCCs) — gespeichert werden ausschließlich
-								Rate-Limit-Counter; IP-Adressen werden gekürzt/anonymisiert verarbeitet.
+								<strong>Speicherdauer:</strong> Rate-Limit-Zähler verfallen spätestens 2 Stunden und
+								1 Sekunde nach ihrer Anlage; separate Upstash-Analytics-Ereignisse werden nicht
+								aufgezeichnet.
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Verarbeitung primär auf EU-Servern; Betreiber
-								mit Sitz USA, SCCs vorhanden.
+								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel KV / Upstash, Inc. (USA)
+								erhält bei IP-basierten Limits die ermittelte Client-IP als Schlüsselwert; der
+								Anwendungscode kürzt oder hasht sie nicht. Andere Limits verwenden
+								Mitgliedskennungen.
 							</li>
 						</ul>
 
@@ -263,8 +271,8 @@ export default function DatenschutzPage() {
 								zusätzlichen Eigenschaften werden vor dem Senden verworfen.
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein — Verarbeitung in der EU-Region
-								(Frankfurt).
+								<strong>Verarbeitungsregion / Drittland-Transfer:</strong> PostHog Cloud EU,
+								Frankfurt; diese Regionseinstellung schließt weitere Datenübermittlungen nicht aus.
 							</li>
 						</ul>
 						<p className="mb-3">
@@ -328,7 +336,7 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Vercel KV / Upstash, Inc.</strong> (USA) — Redis-basiertes Rate-Limiting
-								(Counter pro IP/Kennung), Verarbeitung auf EU-Servern. AVV, SCCs vorhanden.
+								(Counter pro IP/Kennung, siehe 4e).
 							</li>
 							<li>
 								<strong>PostHog Inc.</strong> — Anonyme Produktanalyse über PostHog Cloud EU, Region
