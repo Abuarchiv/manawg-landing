@@ -187,10 +187,29 @@ export default function DatenschutzPage() {
 								WG ausgeliefert.
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein — der Speicher wird in der Region
-								Frankfurt (EU) betrieben.
+								<strong>Drittland-Transfer (Supabase-Fotos):</strong> Nein — der Speicher wird in
+								der Region Frankfurt (EU) betrieben.
 							</li>
 						</ul>
+
+						<p className="mb-3 text-sm">
+							Wenn du die Belegerkennung (OCR) startest, lädt die App bei Bedarf Tesseract-Worker-
+							und Core-Dateien sowie deutsche und englische Sprachmodelle von jsDelivr. Die
+							Erkennung läuft lokal im Browser; Belegbild und erkannter Text werden nicht an
+							jsDelivr übertragen. Laut der{' '}
+							<a
+								href="https://www.jsdelivr.com/terms/privacy-policy"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								jsDelivr-Datenschutzerklärung
+							</a>{' '}
+							können jsDelivr und seine CDN-Dienstleister bei Asset-Abrufen technische Daten wie
+							IP-Adresse, Browsertyp und -version, Referrer-Domain, angeforderte Asset-URL,
+							Abrufzeit, Gerätekennungen und weitere Diagnosedaten erhalten. Wenn du anschließend
+							die Vorschau oder Übernahme des Imports auslöst, sendet ManaWG die erkannten Daten an
+							die eigene Import-API.
+						</p>
 
 						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
 							4e. Rate-Limiting (Missbrauchsschutz)
@@ -325,6 +344,10 @@ export default function DatenschutzPage() {
 								<a href="https://sentry.io/legal/dpa/" target="_blank" rel="noopener noreferrer">
 									offizielles Data Processing Addendum
 								</a>
+							</li>
+							<li>
+								<strong>jsDelivr und CDN-Dienstleister</strong> — CDN für Tesseract-Worker-, Core-
+								und Sprachmodelle bei der ausdrücklich gestarteten lokalen OCR (siehe 4d).
 							</li>
 						</ul>
 					</section>
