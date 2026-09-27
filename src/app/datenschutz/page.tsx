@@ -25,7 +25,7 @@ export default function DatenschutzPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-25</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-27</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
@@ -134,7 +134,7 @@ export default function DatenschutzPage() {
 						</ul>
 
 						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
-							4c. Technische Logs (Serveranfragen, Fehlermeldungen)
+							4c. Technische Logs und Fehlerdiagnose
 						</h3>
 						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 							<li>
@@ -145,12 +145,20 @@ export default function DatenschutzPage() {
 								an sicherem und stabilem Betrieb)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Vercel-Logs max. 30 Tage
+								<strong>Speicherdauer:</strong> Vercel-Logs maximal 30 Tage
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel Inc. (USA, AVV, SCCs —
-								Hosting, Server- und Fehler-Logs). Ein separater Error-Monitoring-Dienst wird{' '}
-								<strong>nicht</strong> eingesetzt; Fehlermeldungen bleiben in den Vercel-Logs.
+								<strong>Empfänger:</strong> Vercel Inc. (USA; Hosting und Server-Logs) sowie Sentry
+								(Functional Software, Inc.; technische Fehlerdiagnose). Die bei Sentry konfigurierte
+								Datenspeicherregion ist Europäische Union (EU); diese Angabe zur Speicherung
+								schließt weitere Datenübermittlungen nicht aus. Bei Fehlern erhält Sentry technische
+								Diagnosedaten wie Fehlertyp, Stacktrace und freigegebene Diagnoselabels. Variable
+								Fehlertexte, Nutzerangaben, nicht freigegebene Kontextdaten sowie Request-Header und
+								-Inhalte werden vor der Übermittlung entfernt. Request-Routen werden bereinigt;
+								Query- und Fragmentwerte, WG-Codes, Kalender-Zugriffstokens und signierte Datei-URLs
+								werden redigiert. Die SDK-Konfiguration ordnet Fehlerereignissen keine
+								Nutzerinformationen oder automatisch ermittelte Besucher-IP zu; automatische
+								Nutzersitzungen und Performance-Traces werden nicht gesendet.
 							</li>
 							<li>
 								<strong>Drittland-Transfer:</strong> Vercel-Logs können US-Server passieren (SCCs
@@ -282,12 +290,14 @@ export default function DatenschutzPage() {
 						</ul>
 					</section>
 
-					{/* 5. Auftragsverarbeiter */}
+					{/* 5. Empfänger und Auftragsverarbeiter */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							5. Auftragsverarbeiter
+							5. Empfänger und Auftragsverarbeiter
 						</h2>
-						<p className="mb-2">Wir setzen folgende Auftragsverarbeiter ein (Art. 28 DSGVO):</p>
+						<p className="mb-2">
+							Folgende Dienste erhalten Daten für die jeweils genannten Zwecke:
+						</p>
 						<ul className="list-disc pl-5 space-y-2 text-sm">
 							<li>
 								<strong>Supabase</strong> — Authentifizierung, Postgres-Datenbankhosting und
@@ -304,6 +314,17 @@ export default function DatenschutzPage() {
 							<li>
 								<strong>PostHog Inc.</strong> — Anonyme Produktanalyse über PostHog Cloud EU, Region
 								Frankfurt (siehe 4f).
+							</li>
+							<li>
+								<strong>Sentry (Functional Software, Inc.)</strong> — Technische Fehlerdiagnose
+								(siehe 4c).{' '}
+								<a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">
+									Datenschutzhinweise von Sentry
+								</a>{' '}
+								und{' '}
+								<a href="https://sentry.io/legal/dpa/" target="_blank" rel="noopener noreferrer">
+									offizielles Data Processing Addendum
+								</a>
 							</li>
 						</ul>
 					</section>
