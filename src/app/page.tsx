@@ -38,7 +38,7 @@ export default function LandingPage() {
 						<Link
 							href="/"
 							aria-label="manawg — Startseite"
-							className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+							className="inline-flex min-h-11 items-center rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
 						>
 							<Wordmark />
 						</Link>
@@ -46,19 +46,19 @@ export default function LandingPage() {
 						<div className="hidden items-center gap-8 md:flex">
 							<a
 								href="#features"
-								className="text-sm text-[var(--text-2)] transition-colors hover:text-[var(--text-1)] px-2 py-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+								className="inline-flex min-h-11 items-center text-sm text-[var(--text-2)] transition-colors hover:text-[var(--text-1)] px-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
 							>
 								Features
 							</a>
 							<a
 								href="#vergleich"
-								className="text-sm text-[var(--text-2)] transition-colors hover:text-[var(--text-1)] px-2 py-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+								className="inline-flex min-h-11 items-center text-sm text-[var(--text-2)] transition-colors hover:text-[var(--text-1)] px-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
 							>
 								Vergleich
 							</a>
 							<a
 								href="#faq"
-								className="text-sm text-[var(--text-2)] transition-colors hover:text-[var(--text-1)] px-2 py-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+								className="inline-flex min-h-11 items-center text-sm text-[var(--text-2)] transition-colors hover:text-[var(--text-1)] px-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
 							>
 								FAQ
 							</a>
