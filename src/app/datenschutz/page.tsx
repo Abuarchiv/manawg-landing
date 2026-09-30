@@ -376,14 +376,14 @@ export default function DatenschutzPage() {
 					{/* 6. Keine Werbung, kein Tracking */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							6. Keine Werbung, kein Tracking, keine Personenprofile
+							6. Keine Werbung oder Personenprofile
 						</h2>
 						<p>
 							ManaWG enthält <strong>keine Werbung</strong>, <strong>kein Google Analytics</strong>,
 							keine Social-Media-Tracker, kein Fingerprinting und keine Weitergabe von Daten an
 							Dritte zu Werbezwecken. Es findet ausdrücklich{' '}
-							<strong>keine Werbe- oder Cross-Site-Verfolgung</strong> statt. Die einzige Ausnahme
-							ist die anonyme Produktanalyse über PostHog Cloud EU (4f): cookielos, ohne
+							<strong>keine Werbe- oder Cross-Site-Verfolgung</strong> statt. Die eng begrenzte
+							anonyme Produktanalyse über PostHog Cloud EU (4f) erfolgt cookielos, ohne
 							Personenprofile und ohne Weitergabe von Nutzungsdaten an Dritte zu Werbezwecken.
 							ManaWG wird unentgeltlich bereitgestellt und richtet sich an private WGs.
 						</p>
