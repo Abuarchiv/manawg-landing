@@ -25,7 +25,7 @@ export default function DatenschutzPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-27</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-30</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
@@ -234,9 +234,11 @@ export default function DatenschutzPage() {
 								von einer Minute oder einer Stunde.
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Rate-Limit-Zähler verfallen spätestens 2 Stunden und
-								1 Sekunde nach ihrer Anlage; separate Upstash-Analytics-Ereignisse werden nicht
-								aufgezeichnet.
+								<strong>Speicherdauer:</strong> Für den produktiven Betrieb ist die zusätzliche
+								Upstash-Analytics-Aufzeichnung deaktiviert. Bereits gespeicherte
+								Upstash-Analytics-Metadaten haben keine automatische Ablaufzeit und wurden bislang
+								nicht bereinigt; ihre Löschung erfordert eine gesonderte Bereinigung.
+								Rate-Limit-Zähler verfallen spätestens 2 Stunden und 1 Sekunde nach ihrer Anlage.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel KV / Upstash, Inc. (USA)
@@ -405,13 +407,15 @@ export default function DatenschutzPage() {
 							<li>
 								<strong>Art. 17 DSGVO</strong> — Löschung. Du kannst dein Konto jederzeit selbst
 								über <em>Einstellungen → Zugang → Konto löschen</em> löschen. Dabei werden deine
-								Anmeldedaten gelöscht und du verlässt alle WGs; WGs, in denen du allein warst,
-								werden vollständig gelöscht. In WGs mit weiteren Mitgliedern bleibt dein Anzeigename
-								an deinen bisherigen Beiträgen stehen (siehe 4b). Die Erstellerin oder der Ersteller
-								einer WG kann sie über <em>Einstellungen → Zugang → WG dauerhaft löschen</em>{' '}
-								unwiderruflich entfernen. Dabei werden alle Mitglieder, Ausgaben, Listen, Aufgaben
-								und Pinnwand-Beiträge der WG sowie alle zugehörigen Bilder sofort gelöscht.
-								Zusätzlich kann eine weitergehende Löschung per E-Mail an{' '}
+								Anmeldedaten gelöscht und du verlässt alle WGs; Daten alleiniger WGs werden aus der
+								aktiven Datenbank entfernt (für zugehörige Fotos siehe 4d). In WGs mit weiteren
+								Mitgliedern bleibt dein Anzeigename an deinen bisherigen Beiträgen stehen (siehe
+								4b). Die Erstellerin oder der Ersteller einer WG kann sie über{' '}
+								<em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich entfernen.
+								Dabei werden alle Mitglieder, Ausgaben, Listen, Aufgaben und Pinnwand-Beiträge der
+								WG aus der aktiven Datenbank entfernt. Der Abruf zugehöriger Bilder wird sofort
+								gesperrt; ihre physische Löschung erfolgt später (siehe 4d). Zusätzlich kann eine
+								weitergehende Löschung per E-Mail an{' '}
 								<a href="mailto:info@manawg.com" className="break-all">
 									info@manawg.com
 								</a>{' '}
