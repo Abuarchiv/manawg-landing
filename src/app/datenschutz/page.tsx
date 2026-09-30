@@ -245,10 +245,10 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Speicherdauer:</strong> Für den produktiven Betrieb ist die zusätzliche
-								Upstash-Analytics-Aufzeichnung deaktiviert. Bereits gespeicherte
-								Upstash-Analytics-Metadaten haben keine automatische Ablaufzeit und wurden bislang
-								nicht bereinigt; ihre Löschung erfordert eine gesonderte Bereinigung.
-								Rate-Limit-Zähler verfallen spätestens 2 Stunden und 1 Sekunde nach ihrer Anlage.
+								Upstash-Analytics-Aufzeichnung deaktiviert. Die bis zum 30.09.2026 gespeicherten
+								zusätzlichen Upstash-Analytics-Ereignismetadaten wurden am 30.09.2026 gelöscht; für
+								diese Metadaten bestand keine automatische Ablaufzeit. Rate-Limit-Zähler verfallen
+								spätestens 2 Stunden und 1 Sekunde nach ihrer Anlage.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel KV / Upstash, Inc. (USA)
