@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'Datenschutzerklärung — ManaWG',
 	description:
-		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung, ohne Tracking und ohne Personenprofile. Transparente Speicherung, Löschung und eine cookielos betriebene Produktanalyse.',
+		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung oder Personenprofile. Transparente Speicherung, Löschung und eine cookielose, eng begrenzte Produktanalyse.',
 	alternates: { canonical: '/datenschutz' },
 };
 
@@ -58,10 +58,10 @@ export default function DatenschutzPage() {
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">3. Wer wir sind</h2>
 						<p>
 							ManaWG ist eine kostenlose WG-App für private Wohngemeinschaften. Die App wird
-							unentgeltlich betrieben, ohne Werbung, ohne Tracking und ohne Verkauf von Daten.
-							Anonyme Produktanalyse wird cookielos über PostHog Cloud EU betrieben und in 4f
-							beschrieben. Der Quellcode war früher teilweise offen einsehbar, ist inzwischen aber
-							privat und wird nicht veröffentlicht.
+							unentgeltlich ohne Werbung, ohne Verkauf personenbezogener Daten und ohne
+							Nutzerprofile betrieben. Eine cookielose, eng begrenzte Produktanalyse über PostHog
+							Cloud EU ist in 4f beschrieben. Der Quellcode war früher teilweise offen einsehbar,
+							ist inzwischen aber privat und wird nicht veröffentlicht.
 						</p>
 					</section>
 
@@ -146,20 +146,30 @@ export default function DatenschutzPage() {
 								an sicherem und stabilem Betrieb)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Vercel-Logs maximal 30 Tage
+								<strong>Speicherdauer:</strong> Vercel-Logs maximal 30 Tage. Wenn Sentry für die
+								jeweilige Bereitstellung aktiviert ist, werden Fehlerereignisse gemäß der für den
+								Sentry-Tarif geltenden Aufbewahrungsdauer gelöscht.{' '}
+								<a
+									href="https://docs.sentry.io/security-legal-pii/security/data-retention-periods/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Sentry dokumentiert die Fristen je Tarif.
+								</a>
 							</li>
 							<li>
-								<strong>Empfänger:</strong> Vercel Inc. (USA; Hosting und Server-Logs) sowie Sentry
-								(Functional Software, Inc.; technische Fehlerdiagnose). Die bei Sentry konfigurierte
-								Datenspeicherregion ist Europäische Union (EU); diese Angabe zur Speicherung
-								schließt weitere Datenübermittlungen nicht aus. Bei Fehlern erhält Sentry technische
-								Diagnosedaten wie Fehlertyp, Stacktrace und freigegebene Diagnoselabels. Variable
-								Fehlertexte, Nutzerangaben, nicht freigegebene Kontextdaten sowie Request-Header und
-								-Inhalte werden vor der Übermittlung entfernt. Request-Routen werden bereinigt;
-								Query- und Fragmentwerte, WG-Codes, Kalender-Zugriffstokens und signierte Datei-URLs
-								werden redigiert. Die SDK-Konfiguration ordnet Fehlerereignissen keine
-								Nutzerinformationen oder automatisch ermittelte Besucher-IP zu; automatische
-								Nutzersitzungen und Performance-Traces werden nicht gesendet.
+								<strong>Empfänger:</strong> Vercel Inc. (USA; Hosting und Server-Logs). Wenn Sentry
+								für die jeweilige App-Bereitstellung konfiguriert ist, erhält Sentry (Functional
+								Software, Inc.) technische Fehlerdiagnosedaten wie Fehlertyp, Stacktrace und
+								freigegebene Diagnoselabels. Die für ManaWG verwendete Sentry-Datenspeicherregion
+								ist Europäische Union (EU); diese Angabe zur Speicherung schließt weitere
+								Datenübermittlungen nicht aus. Variable Fehlertexte, Nutzerangaben, nicht
+								freigegebene Kontextdaten sowie Request-Header und -Inhalte werden vor der
+								Übermittlung entfernt. Request-Routen werden bereinigt; Query- und Fragmentwerte,
+								WG-Codes, Kalender-Zugriffstokens und signierte Datei-URLs werden redigiert. Die
+								SDK-Konfiguration ordnet Fehlerereignissen keine Nutzerinformationen oder
+								automatisch ermittelte Besucher-IP zu. Automatische Nutzersitzungen und
+								Performance-Traces werden nicht gesendet.
 							</li>
 							<li>
 								<strong>Drittland-Transfer:</strong> Vercel-Logs können US-Server passieren (SCCs
@@ -345,8 +355,8 @@ export default function DatenschutzPage() {
 								Frankfurt (siehe 4f).
 							</li>
 							<li>
-								<strong>Sentry (Functional Software, Inc.)</strong> — Technische Fehlerdiagnose
-								(siehe 4c).{' '}
+								<strong>Sentry (Functional Software, Inc.)</strong> — Technische Fehlerdiagnose,
+								sofern Sentry für die jeweilige App-Bereitstellung konfiguriert ist (siehe 4c).{' '}
 								<a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">
 									Datenschutzhinweise von Sentry
 								</a>{' '}
@@ -354,6 +364,7 @@ export default function DatenschutzPage() {
 								<a href="https://sentry.io/legal/dpa/" target="_blank" rel="noopener noreferrer">
 									offizielles Data Processing Addendum
 								</a>
+								. Das Data Processing Addendum (AVV) wurde am 30.09.2026 abgeschlossen.
 							</li>
 							<li>
 								<strong>jsDelivr und CDN-Dienstleister</strong> — CDN für Tesseract-Worker-, Core-
