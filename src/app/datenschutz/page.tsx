@@ -103,8 +103,8 @@ export default function DatenschutzPage() {
 							<li>
 								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
 								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus. Resend
-								(Resend, Inc., USA) verarbeitet E-Mail-Adresse und Nachrichteninhalt beim Versand in
-								den USA; die Übermittlung stützt sich auf EU-Standardvertragsklauseln bzw. das EU-US
+								(Resend, Inc., USA) verarbeitet E-Mail-Adresse und Nachrichteninhalt beim Versand; eine
+								Übermittlung in die USA stützt sich auf EU-Standardvertragsklauseln bzw. das EU-US
 								Data Privacy Framework.
 							</li>
 						</ul>
