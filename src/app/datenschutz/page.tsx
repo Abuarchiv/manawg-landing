@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'Datenschutzerklärung — ManaWG',
 	description:
-		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung, ohne Tracking und ohne Personenprofile. Transparente Speicherung, Löschung und eine cookielos betriebene Produktanalyse.',
+		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung oder Personenprofile. Transparente Speicherung, Löschung und eine cookielose, eng begrenzte Produktanalyse.',
 	alternates: { canonical: '/datenschutz' },
 };
 
@@ -25,7 +25,7 @@ export default function DatenschutzPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-25</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-30</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
@@ -58,10 +58,10 @@ export default function DatenschutzPage() {
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">3. Wer wir sind</h2>
 						<p>
 							ManaWG ist eine kostenlose WG-App für private Wohngemeinschaften. Die App wird
-							unentgeltlich betrieben, ohne Werbung, ohne Tracking und ohne Verkauf von Daten.
-							Anonyme Produktanalyse wird cookielos über PostHog Cloud EU betrieben und in 4f
-							beschrieben. Der Quellcode war früher teilweise offen einsehbar, ist inzwischen aber
-							privat und wird nicht veröffentlicht.
+							unentgeltlich ohne Werbung, ohne Verkauf personenbezogener Daten und ohne
+							Nutzerprofile betrieben. Eine cookielose, eng begrenzte Produktanalyse über PostHog
+							Cloud EU ist in 4f beschrieben. Der Quellcode war früher teilweise offen einsehbar,
+							ist inzwischen aber privat und wird nicht veröffentlicht.
 						</p>
 					</section>
 
@@ -100,8 +100,8 @@ export default function DatenschutzPage() {
 								Datenbankhosting, siehe § 5)
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein — die Datenbank wird in der Region
-								Frankfurt (EU) betrieben.
+								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
+								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus.
 							</li>
 						</ul>
 
@@ -117,24 +117,25 @@ export default function DatenschutzPage() {
 								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Bis zur Löschung der Mitgliedschaft bzw. WG;
-								technische Backups laufen nach max. 30 Tagen aus. Wird eine WG dauerhaft gelöscht,
-								werden die zugehörigen WG-Daten aus der aktiven Datenbank entfernt. Löschst du dein
-								Konto, während andere Mitglieder in der WG bleiben, bleibt dein Anzeigename an den
-								von dir erfassten Ausgaben und Beiträgen stehen, damit die Abrechnung der übrigen
-								Mitglieder korrekt bleibt (Art. 6 Abs. 1 lit. f DSGVO); die Verknüpfung zu deinem
-								Konto wird entfernt.
+								<strong>Speicherdauer:</strong> Gemeinsame WG-Daten bleiben erhalten, solange die WG
+								besteht; das Ausscheiden eines Mitglieds löscht sie nicht. Wird eine WG dauerhaft
+								gelöscht, werden die zugehörigen WG-Daten aus der aktiven Datenbank entfernt.
+								Löschst du dein Konto, während andere Mitglieder in der WG bleiben, bleibt dein
+								Anzeigename an den von dir erfassten Ausgaben und Beiträgen stehen, damit die
+								Abrechnung der übrigen Mitglieder korrekt bleibt (Art. 6 Abs. 1 lit. f DSGVO); die
+								Verknüpfung zu deinem Konto wird entfernt.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datenbankhosting)
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein (Verarbeitung auf EU-Server)
+								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
+								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus.
 							</li>
 						</ul>
 
 						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
-							4c. Technische Logs (Serveranfragen, Fehlermeldungen)
+							4c. Technische Logs und Fehlerdiagnose
 						</h3>
 						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 							<li>
@@ -145,12 +146,29 @@ export default function DatenschutzPage() {
 								an sicherem und stabilem Betrieb)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Vercel-Logs max. 30 Tage
+								<strong>Speicherdauer:</strong> Vercel-Logs maximal 30 Tage. Fehlerereignisse bei
+								Sentry werden gemäß der für den Sentry-Tarif geltenden Aufbewahrungsdauer gelöscht.{' '}
+								<a
+									href="https://docs.sentry.io/security-legal-pii/security/data-retention-periods/"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Sentry dokumentiert die Fristen je Tarif.
+								</a>
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel Inc. (USA, AVV, SCCs —
-								Hosting, Server- und Fehler-Logs). Ein separater Error-Monitoring-Dienst wird{' '}
-								<strong>nicht</strong> eingesetzt; Fehlermeldungen bleiben in den Vercel-Logs.
+								<strong>Empfänger:</strong> Vercel Inc. (USA; Hosting und Server-Logs) sowie Sentry
+								(Functional Software, Inc.; technische Fehlerdiagnose). Die bei Sentry konfigurierte
+								Datenspeicherregion ist Europäische Union (EU); diese Angabe zur Speicherung
+								schließt weitere Datenübermittlungen nicht aus. Bei Fehlern erhält Sentry technische
+								Diagnosedaten wie Fehlertyp, Stacktrace und freigegebene Diagnoselabels. Variable
+								Fehlertexte, Nutzerangaben, nicht freigegebene Kontextdaten sowie Request-Header und
+								-Inhalte werden vor der Übermittlung entfernt. Request-Routen werden bereinigt;
+								Query- und Fragmentwerte, WG-Codes, Kalender-Zugriffstokens und signierte Datei-URLs
+								werden redigiert. Die SDK-Konfiguration ordnet Fehlerereignissen keine
+								Nutzerinformationen oder IP-Adressen zu. Zusätzlich ist in den
+								Sentry-Projekteinstellungen die Speicherung von IP-Adressen deaktiviert.
+								Automatische Nutzersitzungen und Performance-Traces werden nicht gesendet.
 							</li>
 							<li>
 								<strong>Drittland-Transfer:</strong> Vercel-Logs können US-Server passieren (SCCs
@@ -170,8 +188,12 @@ export default function DatenschutzPage() {
 								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Bis zur Löschung durch Nutzer oder bei Löschung der
-								Mitgliedschaft bzw. WG; technische Backups laufen nach max. 30 Tagen aus
+								<strong>Speicherdauer:</strong> Fotos in geteilten WG-Inhalten bleiben für aktive
+								Mitglieder verfügbar, solange diese Inhalte auf sie verweisen; das Ausscheiden eines
+								Mitglieds entfernt die geteilten Fotos nicht. Wird die letzte Referenz entfernt oder
+								die WG gelöscht, wird der Abruf sofort gesperrt und die physische Löschung durch
+								einen späteren Wartungslauf angestoßen. Eine maximale Frist für die physische
+								Löschung oder Anbieter-Backups ist nicht zugesichert.
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datei-Speicher, siehe §
@@ -179,10 +201,30 @@ export default function DatenschutzPage() {
 								WG ausgeliefert.
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein — der Speicher wird in der Region
-								Frankfurt (EU) betrieben.
+								<strong>Speicherort / Drittland-Transfer (Supabase-Fotos):</strong>{' '}
+								Datenspeicherregion Frankfurt (EU); die Regionseinstellung schließt weitere
+								Datenübermittlungen nicht aus.
 							</li>
 						</ul>
+
+						<p className="mb-3 text-sm">
+							Wenn du die Belegerkennung (OCR) startest, lädt die App bei Bedarf Tesseract-Worker-
+							und Core-Dateien sowie deutsche und englische Sprachmodelle von jsDelivr. Die
+							Erkennung läuft lokal im Browser; Belegbild und erkannter Text werden nicht an
+							jsDelivr übertragen. Laut der{' '}
+							<a
+								href="https://www.jsdelivr.com/terms/privacy-policy"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								jsDelivr-Datenschutzerklärung
+							</a>{' '}
+							können jsDelivr und seine CDN-Dienstleister bei Asset-Abrufen technische Daten wie
+							IP-Adresse, Browsertyp und -version, Referrer-Domain, angeforderte Asset-URL,
+							Abrufzeit, Gerätekennungen und weitere Diagnosedaten erhalten. Wenn du anschließend
+							die Vorschau oder Übernahme des Imports auslöst, sendet ManaWG die erkannten Daten an
+							die eigene Import-API.
+						</p>
 
 						<h3 className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
 							4e. Rate-Limiting (Missbrauchsschutz)
@@ -197,17 +239,21 @@ export default function DatenschutzPage() {
 								am Schutz der Infrastruktur)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Kurzlebige Counter (Minuten bis max. 24 Stunden);
-								keine dauerhafte Speicherung
+								<strong>Rate-Limit-Fenster:</strong> Die Zähler verwenden rollierende Zeitfenster
+								von einer Minute oder einer Stunde.
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel KV / Upstash, Inc. (USA,
-								Verarbeitung auf EU-Servern, AVV, SCCs) — gespeichert werden ausschließlich
-								Rate-Limit-Counter; IP-Adressen werden gekürzt/anonymisiert verarbeitet.
+								<strong>Speicherdauer:</strong> Für den produktiven Betrieb ist die zusätzliche
+								Upstash-Analytics-Aufzeichnung deaktiviert. Bereits gespeicherte
+								Upstash-Analytics-Metadaten haben keine automatische Ablaufzeit und wurden bislang
+								nicht bereinigt; ihre Löschung erfordert eine gesonderte Bereinigung.
+								Rate-Limit-Zähler verfallen spätestens 2 Stunden und 1 Sekunde nach ihrer Anlage.
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Verarbeitung primär auf EU-Servern; Betreiber
-								mit Sitz USA, SCCs vorhanden.
+								<strong>Empfänger / Auftragsverarbeiter:</strong> Vercel KV / Upstash, Inc. (USA)
+								erhält bei IP-basierten Limits die ermittelte Client-IP als Schlüsselwert; der
+								Anwendungscode kürzt oder hasht sie nicht. Andere Limits verwenden
+								Mitgliedskennungen.
 							</li>
 						</ul>
 
@@ -236,8 +282,8 @@ export default function DatenschutzPage() {
 								zusätzlichen Eigenschaften werden vor dem Senden verworfen.
 							</li>
 							<li>
-								<strong>Drittland-Transfer:</strong> Nein — Verarbeitung in der EU-Region
-								(Frankfurt).
+								<strong>Verarbeitungsregion / Drittland-Transfer:</strong> PostHog Cloud EU,
+								Frankfurt; diese Regionseinstellung schließt weitere Datenübermittlungen nicht aus.
 							</li>
 						</ul>
 						<p className="mb-3">
@@ -282,12 +328,14 @@ export default function DatenschutzPage() {
 						</ul>
 					</section>
 
-					{/* 5. Auftragsverarbeiter */}
+					{/* 5. Empfänger und Auftragsverarbeiter */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							5. Auftragsverarbeiter
+							5. Empfänger und Auftragsverarbeiter
 						</h2>
-						<p className="mb-2">Wir setzen folgende Auftragsverarbeiter ein (Art. 28 DSGVO):</p>
+						<p className="mb-2">
+							Folgende Dienste erhalten Daten für die jeweils genannten Zwecke:
+						</p>
 						<ul className="list-disc pl-5 space-y-2 text-sm">
 							<li>
 								<strong>Supabase</strong> — Authentifizierung, Postgres-Datenbankhosting und
@@ -299,11 +347,27 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Vercel KV / Upstash, Inc.</strong> (USA) — Redis-basiertes Rate-Limiting
-								(Counter pro IP/Kennung), Verarbeitung auf EU-Servern. AVV, SCCs vorhanden.
+								(Counter pro IP/Kennung, siehe 4e).
 							</li>
 							<li>
 								<strong>PostHog Inc.</strong> — Anonyme Produktanalyse über PostHog Cloud EU, Region
 								Frankfurt (siehe 4f).
+							</li>
+							<li>
+								<strong>Sentry (Functional Software, Inc.)</strong> — Technische Fehlerdiagnose
+								(siehe 4c).{' '}
+								<a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">
+									Datenschutzhinweise von Sentry
+								</a>{' '}
+								und{' '}
+								<a href="https://sentry.io/legal/dpa/" target="_blank" rel="noopener noreferrer">
+									offizielles Data Processing Addendum
+								</a>
+								. Das Data Processing Addendum (AVV) wurde am 30.09.2026 abgeschlossen.
+							</li>
+							<li>
+								<strong>jsDelivr und CDN-Dienstleister</strong> — CDN für Tesseract-Worker-, Core-
+								und Sprachmodelle bei der ausdrücklich gestarteten lokalen OCR (siehe 4d).
 							</li>
 						</ul>
 					</section>
@@ -353,13 +417,15 @@ export default function DatenschutzPage() {
 							<li>
 								<strong>Art. 17 DSGVO</strong> — Löschung. Du kannst dein Konto jederzeit selbst
 								über <em>Einstellungen → Zugang → Konto löschen</em> löschen. Dabei werden deine
-								Anmeldedaten gelöscht und du verlässt alle WGs; WGs, in denen du allein warst,
-								werden vollständig gelöscht. In WGs mit weiteren Mitgliedern bleibt dein Anzeigename
-								an deinen bisherigen Beiträgen stehen (siehe 4b). Die Erstellerin oder der Ersteller
-								einer WG kann sie über <em>Einstellungen → Zugang → WG dauerhaft löschen</em>{' '}
-								unwiderruflich entfernen. Dabei werden alle Mitglieder, Ausgaben, Listen, Aufgaben
-								und Pinnwand-Beiträge der WG sowie alle zugehörigen Bilder sofort gelöscht.
-								Zusätzlich kann eine weitergehende Löschung per E-Mail an{' '}
+								Anmeldedaten gelöscht und du verlässt alle WGs; Daten alleiniger WGs werden aus der
+								aktiven Datenbank entfernt (für zugehörige Fotos siehe 4d). In WGs mit weiteren
+								Mitgliedern bleibt dein Anzeigename an deinen bisherigen Beiträgen stehen (siehe
+								4b). Die Erstellerin oder der Ersteller einer WG kann sie über{' '}
+								<em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich entfernen.
+								Dabei werden alle Mitglieder, Ausgaben, Listen, Aufgaben und Pinnwand-Beiträge der
+								WG aus der aktiven Datenbank entfernt. Der Abruf zugehöriger Bilder wird sofort
+								gesperrt; ihre physische Löschung erfolgt später (siehe 4d). Zusätzlich kann eine
+								weitergehende Löschung per E-Mail an{' '}
 								<a href="mailto:info@manawg.com" className="break-all">
 									info@manawg.com
 								</a>{' '}
