@@ -146,8 +146,9 @@ export default function DatenschutzPage() {
 								an sicherem und stabilem Betrieb)
 							</li>
 							<li>
-								<strong>Speicherdauer:</strong> Vercel-Logs maximal 30 Tage. Fehlerereignisse bei
-								Sentry werden gemäß der für den Sentry-Tarif geltenden Aufbewahrungsdauer gelöscht.{' '}
+								<strong>Speicherdauer:</strong> Vercel-Logs maximal 30 Tage. Wenn Sentry für die
+								jeweilige Bereitstellung aktiviert ist, werden Fehlerereignisse gemäß der für den
+								Sentry-Tarif geltenden Aufbewahrungsdauer gelöscht.{' '}
 								<a
 									href="https://docs.sentry.io/security-legal-pii/security/data-retention-periods/"
 									target="_blank"
@@ -157,18 +158,18 @@ export default function DatenschutzPage() {
 								</a>
 							</li>
 							<li>
-								<strong>Empfänger:</strong> Vercel Inc. (USA; Hosting und Server-Logs) sowie Sentry
-								(Functional Software, Inc.; technische Fehlerdiagnose). Die bei Sentry konfigurierte
-								Datenspeicherregion ist Europäische Union (EU); diese Angabe zur Speicherung
-								schließt weitere Datenübermittlungen nicht aus. Bei Fehlern erhält Sentry technische
-								Diagnosedaten wie Fehlertyp, Stacktrace und freigegebene Diagnoselabels. Variable
-								Fehlertexte, Nutzerangaben, nicht freigegebene Kontextdaten sowie Request-Header und
-								-Inhalte werden vor der Übermittlung entfernt. Request-Routen werden bereinigt;
-								Query- und Fragmentwerte, WG-Codes, Kalender-Zugriffstokens und signierte Datei-URLs
-								werden redigiert. Die SDK-Konfiguration ordnet Fehlerereignissen keine
-								Nutzerinformationen oder IP-Adressen zu. Zusätzlich ist in den
-								Sentry-Projekteinstellungen die Speicherung von IP-Adressen deaktiviert.
-								Automatische Nutzersitzungen und Performance-Traces werden nicht gesendet.
+								<strong>Empfänger:</strong> Vercel Inc. (USA; Hosting und Server-Logs). Wenn Sentry
+								für die jeweilige App-Bereitstellung konfiguriert ist, erhält Sentry (Functional
+								Software, Inc.) technische Fehlerdiagnosedaten wie Fehlertyp, Stacktrace und
+								freigegebene Diagnoselabels. Die für ManaWG verwendete Sentry-Datenspeicherregion
+								ist Europäische Union (EU); diese Angabe zur Speicherung schließt weitere
+								Datenübermittlungen nicht aus. Variable Fehlertexte, Nutzerangaben, nicht
+								freigegebene Kontextdaten sowie Request-Header und -Inhalte werden vor der
+								Übermittlung entfernt. Request-Routen werden bereinigt; Query- und Fragmentwerte,
+								WG-Codes, Kalender-Zugriffstokens und signierte Datei-URLs werden redigiert. Die
+								SDK-Konfiguration ordnet Fehlerereignissen keine Nutzerinformationen oder
+								automatisch ermittelte Besucher-IP zu. Automatische Nutzersitzungen und
+								Performance-Traces werden nicht gesendet.
 							</li>
 							<li>
 								<strong>Drittland-Transfer:</strong> Vercel-Logs können US-Server passieren (SCCs
@@ -354,8 +355,8 @@ export default function DatenschutzPage() {
 								Frankfurt (siehe 4f).
 							</li>
 							<li>
-								<strong>Sentry (Functional Software, Inc.)</strong> — Technische Fehlerdiagnose
-								(siehe 4c).{' '}
+								<strong>Sentry (Functional Software, Inc.)</strong> — Technische Fehlerdiagnose,
+								sofern Sentry für die jeweilige App-Bereitstellung konfiguriert ist (siehe 4c).{' '}
 								<a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">
 									Datenschutzhinweise von Sentry
 								</a>{' '}
