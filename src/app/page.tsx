@@ -12,7 +12,6 @@ import { appUrl } from '@/lib/app-origin';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-// craftsman-ignore: TS002 — Next.js App Router requires default export for pages
 export default function LandingPage() {
 	return (
 		<LenisProvider>

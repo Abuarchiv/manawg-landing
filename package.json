@@ -16,8 +16,6 @@
 		"format": "biome format --write .",
 		"test": "vitest run",
 		"test:watch": "vitest",
-		"test:e2e": "playwright test",
-		"test:e2e:ui": "playwright test --ui",
 		"clean": "rm -rf .next node_modules/.cache"
 	},
 	"dependencies": {
@@ -34,7 +32,6 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.0",
-		"@playwright/test": "^1.52.0",
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.2",
 		"@types/node": "^22",
@@ -42,7 +39,6 @@
 		"@types/react-dom": "19.0.3",
 		"@types/three": "^0.184.0",
 		"@vitejs/plugin-react": "^6.0.1",
-		"@vitest/coverage-v8": "^4.1.5",
 		"autoprefixer": "^10.4.21",
 		"jsdom": "^29.1.1",
 		"postcss": "^8.5.3",

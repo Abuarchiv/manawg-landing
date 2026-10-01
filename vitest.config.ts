@@ -2,7 +2,6 @@ import path from 'node:path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
-// craftsman-ignore: TS002
 export default defineConfig({
 	plugins: [react()],
 	test: {

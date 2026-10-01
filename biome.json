@@ -15,7 +15,9 @@
 				"noExplicitAny": "warn",
 				"noConsole": {
 					"level": "warn",
-					"options": { "allow": ["warn", "error"] }
+					"options": {
+						"allow": ["warn", "error"]
+					}
 				}
 			}
 		}
@@ -44,20 +46,12 @@
 	"files": {
 		"ignore": [
 			"node_modules",
-			"dist",
 			".next",
-			".next-e2e-*",
+			".next-*",
 			".vercel",
-			".turbo",
-			".claude",
-			".claude-flow",
-			"**/.claude-flow",
-			".kilo",
 			"coverage",
 			"test-results",
 			"playwright-report",
-			"*.min.js",
-			"drizzle/meta",
 			"graphify-out"
 		]
 	}

@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 	robots: { index: false, follow: false },
 };
 
-// craftsman-ignore: TS002 — Next.js App Router requires default export for pages
 export default function NotFound() {
 	return (
 		<div className="min-h-dvh bg-[var(--bg-base)] flex flex-col items-center justify-center px-4 text-center">
