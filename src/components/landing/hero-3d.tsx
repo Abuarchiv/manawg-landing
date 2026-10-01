@@ -10,7 +10,7 @@ import {
 	Sphere,
 	Torus,
 } from '@react-three/drei';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import type React from 'react';
 import {
 	Component,
@@ -383,6 +383,27 @@ function Scene() {
 	const group = useRef<Group>(null);
 	const [reducedMotion, setReducedMotion] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
+	// Mobile: world-y for the lower pair, centred in the free space below the CTA;
+	// null when there is no room (short phones), so nothing covers text or button.
+	const [lowerY, setLowerY] = useState<number | null>(null);
+	const canvas = useThree((state) => state.gl.domElement);
+	const viewportHeight = useThree((state) => state.viewport.height);
+
+	useEffect(() => {
+		if (!isMobile) return;
+		const place = () => {
+			const box = canvas.getBoundingClientRect();
+			const cta = canvas.closest('section')?.querySelector('a.btn-modern');
+			if (!cta || box.height === 0) return setLowerY(null);
+			const free = box.bottom - cta.getBoundingClientRect().bottom;
+			if (free < 150) return setLowerY(null);
+			const centerPx = box.height - free / 2;
+			setLowerY(viewportHeight / 2 - (centerPx / box.height) * viewportHeight);
+		};
+		place();
+		window.addEventListener('resize', place);
+		return () => window.removeEventListener('resize', place);
+	}, [canvas, isMobile, viewportHeight]);
 
 	useEffect(() => {
 		setReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -404,7 +425,7 @@ function Scene() {
 	if (isMobile) {
 		return (
 			<group ref={group}>
-				{/* Mobile: four corner objects, compact positions visible in narrow viewport */}
+				{/* Mobile: four corner objects; the lower pair sits below the CTA so it never covers the subhead */}
 				<WGObject
 					type="house"
 					position={[-2.0, 2.0, -0.5]}
@@ -419,20 +440,24 @@ function Scene() {
 					floatIntensity={1.3}
 					speed={1.1}
 				/>
-				<WGObject
-					type="checklist"
-					position={[-2.0, -2.0, -0.5]}
-					scale={0.65}
-					floatIntensity={1.6}
-					speed={1.2}
-				/>
-				<WGObject
-					type="bag"
-					position={[2.0, -1.8, -0.5]}
-					scale={0.65}
-					floatIntensity={1.5}
-					speed={1.3}
-				/>
+				{lowerY !== null && (
+					<>
+						<WGObject
+							type="checklist"
+							position={[-1.9, lowerY, -0.5]}
+							scale={0.65}
+							floatIntensity={1.6}
+							speed={1.2}
+						/>
+						<WGObject
+							type="bag"
+							position={[1.9, lowerY, -0.5]}
+							scale={0.65}
+							floatIntensity={1.5}
+							speed={1.3}
+						/>
+					</>
+				)}
 			</group>
 		);
 	}
