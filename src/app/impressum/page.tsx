@@ -91,11 +91,11 @@ export default function ImpressumPage() {
 
 			<footer className="pb-[max(1.5rem,env(safe-area-inset-bottom))] px-4 text-center">
 				<p className="text-xs text-[var(--text-3)]">
-					<Link href="/agb" className={TEXT_LINK}>
+					<Link href="/agb" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
 						AGB
 					</Link>
 					{' · '}
-					<Link href="/datenschutz" className={TEXT_LINK}>
+					<Link href="/datenschutz" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
 						Datenschutz
 					</Link>
 				</p>

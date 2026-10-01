@@ -85,7 +85,8 @@ export default function DatenschutzPage() {
 								<strong>Hinweis zur Identifikation:</strong> Du meldest dich mit deinem Google-Konto
 								oder mit E-Mail-Adresse und Passwort an. Bei der Anmeldung mit Google übermittelt
 								Google uns deine E-Mail-Adresse und deinen Namen. Bei der Anmeldung per E-Mail
-								versendet Supabase Bestätigungs- und Passwort-Reset-E-Mails an deine Adresse. Die
+								versendet Supabase Bestätigungs- und Passwort-Reset-E-Mails an deine Adresse; der
+								Versand erfolgt über den E-Mail-Dienst Resend (Absender noreply@manawg.com). Die
 								Authentifizierung erfolgt über Supabase Auth; die Sitzung wird in Cookies verwaltet.
 								Im Browser können lokale WG-Zuordnungen und Namensentwürfe im{' '}
 								<strong>Local Storage</strong> gespeichert werden.
@@ -97,11 +98,14 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Authentifizierung und
-								Datenbankhosting, siehe § 5)
+								Datenbankhosting) sowie Resend (E-Mail-Versand, siehe § 5)
 							</li>
 							<li>
 								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
-								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus.
+								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus. Resend
+								(Resend, Inc., USA) verarbeitet E-Mail-Adresse und Nachrichteninhalt beim Versand; eine
+								Übermittlung in die USA stützt sich auf EU-Standardvertragsklauseln bzw. das EU-US
+								Data Privacy Framework.
 							</li>
 						</ul>
 
@@ -343,6 +347,12 @@ export default function DatenschutzPage() {
 								Datei-Speicher für Fotos, Region Frankfurt (EU).
 							</li>
 							<li>
+								<strong>Resend, Inc.</strong> (USA) — E-Mail-Versand (SMTP) der von Supabase Auth
+								ausgelösten Bestätigungs- und Passwort-Reset-E-Mails im Produktivbetrieb, Absender
+								noreply@manawg.com (siehe 4a). Drittland-Transfer auf Grundlage von
+								EU-Standardvertragsklauseln bzw. des EU-US Data Privacy Framework.
+							</li>
+							<li>
 								<strong>Vercel Inc.</strong> (USA) — Hosting der Web-App, Edge-Netzwerk,
 								Server-Logs. AVV, SCCs vorhanden.
 							</li>
@@ -509,11 +519,11 @@ export default function DatenschutzPage() {
 
 			<footer className="pb-[max(1.5rem,env(safe-area-inset-bottom))] px-4 text-center">
 				<p className="text-xs text-[var(--text-3)]">
-					<Link href="/impressum" className={TEXT_LINK}>
+					<Link href="/impressum" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
 						Impressum
 					</Link>
 					{' · '}
-					<Link href="/agb" className={TEXT_LINK}>
+					<Link href="/agb" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
 						AGB
 					</Link>
 				</p>
