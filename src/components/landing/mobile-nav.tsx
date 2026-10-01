@@ -1,7 +1,7 @@
 'use client';
 
-import { Drawer } from '@/components/ui/Drawer';
-import { Wordmark } from '@/components/ui/Wordmark';
+import { Drawer } from '@/components/ui/drawer';
+import { Wordmark } from '@/components/ui/wordmark';
 import { appUrl } from '@/lib/app-origin';
 import { haptic } from '@/lib/haptics';
 import { ArrowRight, Menu, X } from 'lucide-react';

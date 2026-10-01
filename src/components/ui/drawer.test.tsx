@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { Drawer } from './Drawer';
+import { Drawer } from './drawer';
 
 describe('Drawer', () => {
 	afterEach(() => {
