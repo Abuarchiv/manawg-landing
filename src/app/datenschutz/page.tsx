@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 	alternates: { canonical: '/datenschutz' },
 };
 
-// craftsman-ignore: TS002
 export default function DatenschutzPage() {
 	return (
 		<main id="main" tabIndex={-1} className="min-h-screen flex flex-col focus:outline-none">
@@ -103,9 +102,9 @@ export default function DatenschutzPage() {
 							<li>
 								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
 								die Regionseinstellung schließt weitere Datenübermittlungen nicht aus. Resend
-								(Resend, Inc., USA) verarbeitet E-Mail-Adresse und Nachrichteninhalt beim Versand; eine
-								Übermittlung in die USA stützt sich auf EU-Standardvertragsklauseln bzw. das EU-US
-								Data Privacy Framework.
+								(Resend, Inc., USA) verarbeitet E-Mail-Adresse und Nachrichteninhalt beim Versand;
+								eine Übermittlung in die USA stützt sich auf EU-Standardvertragsklauseln bzw. das
+								EU-US Data Privacy Framework.
 							</li>
 						</ul>
 

@@ -117,7 +117,6 @@ export const viewport: Viewport = {
 	],
 };
 
-// craftsman-ignore: TS002 — Next.js App Router requires default export for layouts
 export default function RootLayout({
 	children,
 }: {

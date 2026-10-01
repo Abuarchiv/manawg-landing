@@ -23,7 +23,7 @@ import {
 } from 'react';
 import type { Group } from 'three';
 
-// craftsman-ignore: TS001 — R3F Suspense typing workaround; ReactSuspense generic causes JSX compat issues
+// R3F Suspense typing workaround; ReactSuspense generic causes JSX compat issues
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const Suspense = ReactSuspense as unknown as typeof ReactSuspense;
 

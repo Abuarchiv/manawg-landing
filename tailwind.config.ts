@@ -14,5 +14,4 @@ const config: Config = {
 	},
 };
 
-// craftsman-ignore: TS002
 export default config;

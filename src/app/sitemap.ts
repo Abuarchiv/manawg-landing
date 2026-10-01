@@ -3,7 +3,6 @@ import type { MetadataRoute } from 'next';
 
 const LAST_MODIFIED = '2026-05-18';
 
-// craftsman-ignore: TS002 — Next.js App Router requires default export for route handlers
 export default function sitemap(): MetadataRoute.Sitemap {
 	const appUrl = getAppUrl();
 	return [

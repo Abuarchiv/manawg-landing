@@ -1,7 +1,6 @@
 import { getAppUrl } from '@/lib/app-url';
 import type { MetadataRoute } from 'next';
 
-// craftsman-ignore: TS002 — Next.js App Router requires default export for route handlers
 export default function robots(): MetadataRoute.Robots {
 	const appUrl = getAppUrl();
 	return {

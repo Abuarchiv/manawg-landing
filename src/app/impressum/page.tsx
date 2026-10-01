@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 	alternates: { canonical: '/impressum' },
 };
 
-// craftsman-ignore: TS002
 export default function ImpressumPage() {
 	return (
 		<main id="main" tabIndex={-1} className="min-h-screen flex flex-col focus:outline-none">

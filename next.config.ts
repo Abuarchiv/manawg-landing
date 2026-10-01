@@ -26,7 +26,6 @@ const securityHeaders = [
 // The origin itself lives in src/lib/app-origin.ts so the redirects, the
 // sitemap and the in-page CTAs cannot drift apart.
 
-// craftsman-ignore: TS002 — Next.js config requires default export
 const nextConfig: NextConfig = {
 	distDir: process.env.NEXT_DIST_DIR ?? '.next',
 	typescript: {
