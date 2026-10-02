@@ -3,27 +3,30 @@
 		{
 			"name": "atlas_0",
 			"objekte": 1,
-			"flaeche": 239.2
+			"flaeche": 256.8
 		},
 		{
 			"name": "atlas_1",
 			"objekte": 1,
-			"flaeche": 239.2
+			"flaeche": 256.8
 		},
 		{
 			"name": "atlas_2",
 			"objekte": 1,
-			"flaeche": 239.2
+			"flaeche": 256.8
 		}
 	],
 	"live": [
 		"Blumenvase_Glas",
 		"Chrom",
+		"Eames_Lounge_Graphite_Chrome",
+		"Exterior_Backplate_Photo01",
 		"Flaschenglas",
 		"Flaschenglas.001",
 		"Glas",
 		"Hof",
-		"Messing"
+		"Messing",
+		"Regal_Chrom"
 	],
 	"alpha": {},
 	"nacht": true
