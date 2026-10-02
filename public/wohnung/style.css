@@ -570,6 +570,16 @@ body:not(.in-plan) .grain {
 }
 
 @media (max-aspect-ratio: 4 / 5) {
+	.pcopy {
+		width: calc(100vw - 2 * var(--pad));
+	}
+	.pstep {
+		width: 100%;
+	}
+	.pcopy h1,
+	.pcopy h2 {
+		font-size: clamp(34px, 10vw, 46px);
+	}
 	.copy {
 		top: 84px;
 		transform: none;

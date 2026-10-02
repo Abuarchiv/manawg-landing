@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'Datenschutzerklärung — ManaWG',
 	description:
-		'ManaWG Datenschutz: kostenlose private WG-App ohne Werbung oder Personenprofile. Transparente Speicherung, Löschung und eine cookielose, eng begrenzte Produktanalyse.',
+		'Informationen zur Verarbeitung personenbezogener Daten bei ManaWG: Speicherung, Empfänger, Produktanalyse, Löschung und deine Rechte.',
 	alternates: { canonical: '/datenschutz' },
 };
 
@@ -24,14 +24,14 @@ export default function DatenschutzPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-30</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 30. September 2026</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Verantwortlicher</h2>
 						<p>Abubakar Abditube</p>
-						<p>Kurt-Schumacher-Strasse 2</p>
+						<p>Kurt-Schumacher-Straße 2</p>
 						<p>60311 Frankfurt am Main, Deutschland</p>
 						<p>
 							E-Mail:{' '}
@@ -97,7 +97,7 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Authentifizierung und
-								Datenbankhosting) sowie Resend (E-Mail-Versand, siehe § 5)
+								Datenbankhosting) sowie Resend (E-Mail-Versand, siehe Abschnitt 5)
 							</li>
 							<li>
 								<strong>Datenspeicherregion / Drittland-Transfer:</strong> Supabase Frankfurt (EU);
@@ -186,7 +186,7 @@ export default function DatenschutzPage() {
 						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 							<li>
 								<strong>Zweck:</strong> Speicherung und Auslieferung von Fotos, die Nutzer in der
-								WG-App hochladen (z.B. Pinnwand, Belege)
+								WG-App hochladen (z. B. Pinnwand, Belege)
 							</li>
 							<li>
 								<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung)
@@ -200,9 +200,9 @@ export default function DatenschutzPage() {
 								Löschung oder Anbieter-Backups ist nicht zugesichert.
 							</li>
 							<li>
-								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datei-Speicher, siehe §
-								5). Fotos liegen in einem nicht öffentlichen Speicher und werden nur Mitgliedern der
-								WG ausgeliefert.
+								<strong>Empfänger / Auftragsverarbeiter:</strong> Supabase (Datei-Speicher, siehe
+								Abschnitt 5). Fotos liegen in einem nicht öffentlichen Speicher und werden nur
+								Mitgliedern der WG ausgeliefert.
 							</li>
 							<li>
 								<strong>Speicherort / Drittland-Transfer (Supabase-Fotos):</strong>{' '}
@@ -305,7 +305,7 @@ export default function DatenschutzPage() {
 						</h3>
 						<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 							<li>
-								<strong>Zweck:</strong> Hinweise auf neue WG-Ereignisse (z.B. Ausgaben, Aufgaben,
+								<strong>Zweck:</strong> Hinweise auf neue WG-Ereignisse (z. B. Ausgaben, Aufgaben,
 								Nachrichten), wenn du Benachrichtigungen in der App einschaltest
 							</li>
 							<li>
@@ -322,7 +322,7 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Empfänger:</strong> der Push-Dienst deines Browser- bzw.
-								Betriebssystemherstellers (z.B. Google, Apple, Mozilla), der die Nachricht an dein
+								Betriebssystemherstellers (z. B. Google, Apple, Mozilla), der die Nachricht an dein
 								Gerät zustellt
 							</li>
 							<li>
@@ -348,7 +348,7 @@ export default function DatenschutzPage() {
 							<li>
 								<strong>Resend, Inc.</strong> (USA) — E-Mail-Versand (SMTP) der von Supabase Auth
 								ausgelösten Bestätigungs- und Passwort-Reset-E-Mails im Produktivbetrieb, Absender
-								noreply@manawg.com (siehe 4a). Drittland-Transfer auf Grundlage von
+								noreply@manawg.com (siehe Abschnitt 4a). Drittland-Transfer auf Grundlage von
 								EU-Standardvertragsklauseln bzw. des EU-US Data Privacy Framework.
 							</li>
 							<li>
@@ -357,15 +357,16 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Vercel KV / Upstash, Inc.</strong> (USA) — Redis-basiertes Rate-Limiting
-								(Counter pro IP/Kennung, siehe 4e).
+								(Counter pro IP/Kennung, siehe Abschnitt 4e).
 							</li>
 							<li>
 								<strong>PostHog Inc.</strong> — Anonyme Produktanalyse über PostHog Cloud EU, Region
-								Frankfurt (siehe 4f).
+								Frankfurt (siehe Abschnitt 4f).
 							</li>
 							<li>
 								<strong>Sentry (Functional Software, Inc.)</strong> — Technische Fehlerdiagnose,
-								sofern Sentry für die jeweilige App-Bereitstellung konfiguriert ist (siehe 4c).{' '}
+								sofern Sentry für die jeweilige App-Bereitstellung konfiguriert ist (siehe Abschnitt
+								4c).{' '}
 								<a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">
 									Datenschutzhinweise von Sentry
 								</a>{' '}
@@ -377,22 +378,22 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>jsDelivr und CDN-Dienstleister</strong> — CDN für Tesseract-Worker-, Core-
-								und Sprachmodelle bei der ausdrücklich gestarteten lokalen OCR (siehe 4d).
+								und Sprachmodelle bei der ausdrücklich gestarteten lokalen OCR (siehe Abschnitt 4d).
 							</li>
 						</ul>
 					</section>
 
-					{/* 6. Keine Werbung, kein Tracking */}
+					{/* 6. Keine Werbung und keine Werbeprofile */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							6. Keine Werbung, kein Tracking, keine Personenprofile
+							6. Keine Werbung und keine Werbeprofile
 						</h2>
 						<p>
 							ManaWG enthält <strong>keine Werbung</strong>, <strong>kein Google Analytics</strong>,
 							keine Social-Media-Tracker, kein Fingerprinting und keine Weitergabe von Daten an
 							Dritte zu Werbezwecken. Es findet ausdrücklich{' '}
-							<strong>keine Werbe- oder Cross-Site-Verfolgung</strong> statt. Die einzige Ausnahme
-							ist die anonyme Produktanalyse über PostHog Cloud EU (4f): cookielos, ohne
+							<strong>keine Werbe- oder Cross-Site-Verfolgung</strong> statt. Die in Abschnitt 4f
+							beschriebene Produktanalyse über PostHog Cloud EU erfolgt ohne Analyse-Cookies, ohne
 							Personenprofile und ohne Weitergabe von Nutzungsdaten an Dritte zu Werbezwecken.
 							ManaWG wird unentgeltlich bereitgestellt und richtet sich an private WGs.
 						</p>
@@ -401,7 +402,7 @@ export default function DatenschutzPage() {
 					{/* 7. Cookies & Local Storage */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							7. Cookies &amp; Local Storage
+							7. Cookies und lokaler Browser-Speicher
 						</h2>
 						<p>
 							ManaWG verwendet Cookies für die Supabase-Authentifizierung. Zusätzlich können lokale
@@ -428,14 +429,14 @@ export default function DatenschutzPage() {
 								<strong>Art. 17 DSGVO</strong> — Löschung. Du kannst dein Konto jederzeit selbst
 								über <em>Einstellungen → Zugang → Konto löschen</em> löschen. Dabei werden deine
 								Anmeldedaten gelöscht und du verlässt alle WGs; Daten alleiniger WGs werden aus der
-								aktiven Datenbank entfernt (für zugehörige Fotos siehe 4d). In WGs mit weiteren
-								Mitgliedern bleibt dein Anzeigename an deinen bisherigen Beiträgen stehen (siehe
-								4b). Die Erstellerin oder der Ersteller einer WG kann sie über{' '}
+								aktiven Datenbank entfernt (für zugehörige Fotos siehe Abschnitt 4d). In WGs mit
+								weiteren Mitgliedern bleibt dein Anzeigename an deinen bisherigen Beiträgen stehen
+								(siehe 4b). Die Erstellerin oder der Ersteller einer WG kann sie über{' '}
 								<em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich entfernen.
 								Dabei werden alle Mitglieder, Ausgaben, Listen, Aufgaben und Pinnwand-Beiträge der
 								WG aus der aktiven Datenbank entfernt. Der Abruf zugehöriger Bilder wird sofort
-								gesperrt; ihre physische Löschung erfolgt später (siehe 4d). Zusätzlich kann eine
-								weitergehende Löschung per E-Mail an{' '}
+								gesperrt; ihre physische Löschung erfolgt später (siehe Abschnitt 4d). Zusätzlich
+								kann eine weitergehende Löschung per E-Mail an{' '}
 								<a href="mailto:info@manawg.com" className="break-all">
 									info@manawg.com
 								</a>{' '}
@@ -449,7 +450,7 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Art. 21 DSGVO</strong> — Widerspruch gegen Verarbeitungen auf Grundlage von
-								Art. 6 Abs. 1 lit. f (berechtigtes Interesse, z.B. Logs und Rate-Limiting)
+								Art. 6 Abs. 1 lit. f (berechtigtes Interesse, z. B. Logs und Rate-Limiting)
 							</li>
 							<li>
 								<strong>Art. 77 DSGVO</strong> — Beschwerde bei der zuständigen Aufsichtsbehörde:
@@ -484,9 +485,9 @@ export default function DatenschutzPage() {
 							9. Keine automatisierte Entscheidungsfindung / Profiling
 						</h2>
 						<p>
-							Wir treffen keine automatisierten Entscheidungen im Sinne von Art. 22 DSGVO und
-							erstellen kein Profiling. Deine Daten werden ausschließlich für den in dieser
-							Erklärung beschriebenen Betrieb des Dienstes verwendet.
+							Wir treffen keine automatisierten Entscheidungen im Sinne von Art. 22 DSGVO und führen
+							kein Profiling durch. Deine Daten werden ausschließlich für den in dieser Erklärung
+							beschriebenen Betrieb des Dienstes verwendet.
 						</p>
 					</section>
 

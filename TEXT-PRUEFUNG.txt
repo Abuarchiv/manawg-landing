@@ -1,0 +1,124 @@
+ManaWG: Prüfung der Landingpage-Texte
+Stand: 2. Oktober 2026
+Basis: Branch landing-wohnung, Commit caf930a. Änderungen: copy/landing-20261002.
+
+Geprüfter Umfang
+Alle zehn Textabschnitte der aktuellen Wohnungs-Landingpage; Seitentitel,
+Beschreibung und Social-Media-Metadaten; Ladeanzeige; Raumbezeichnungen;
+Demo-Anleitung, Rückmeldungen, Buttons, Alternativtexte und Screenreader-Labels;
+JavaScript-freie Fassung; Fehlerseiten; Impressum, Datenschutz und
+Nutzungsbedingungen; acht Demo-Bildschirme, Startbild, Beleg und Share-Bild.
+Die geöffnete Vercel-Vorschau zeigte noch eine ältere Fassung mit sieben
+Wohnungsszenen. Die lokale Branch-Fassung enthält fünf Wohnungsszenen und
+fünf weitere Abschnitte. Archivierte Designversuche sind nicht Teil der Seite.
+Die aktuelle Landingpage enthält keinen eigenen FAQ-Block.
+Die drei verlinkten Rechtsseiten wurden zusätzlich vollständig gelesen.
+
+Befunde und Änderungen
+1. „Vier Namen. Eine Tür.“ beschreibt kein Produkt und setzt unnötig vier
+   Bewohner voraus. Neuer Einstieg: „Organisiert eure WG.“ mit konkreten Funktionen.
+2. „Eine App für alles“ verspricht mehr als die gezeigten Haushaltsfunktionen.
+   Ausgaben, Einkäufe und Putzplan werden jetzt ausdrücklich benannt.
+3. „dreht den Putzplan“ ist unidiomatisch. Die Beschreibung benennt das Verteilen
+   von Aufgaben im Putzplan.
+4. „Einer zahlt. Alle tragen.“ bleibt ohne Objekt unklar. Der Abschnitt erklärt
+   nun, wer bezahlt hat und wie die gemeinsame Ausgabe aufgeteilt wird.
+5. „ohne dass jemand fragen muss“ suggeriert automatische Abstimmung. Entfernt.
+6. Die 48-Euro-Ausgabe wurde als zwingende Viertelung dargestellt. Die neue
+   Formulierung benennt ausdrücklich das Beispiel mit vier gleichen Anteilen.
+7. „Was allen gehört. Was nur dir.“ suggeriert eine Eigentumsverwaltung.
+   Der Abschnitt beschreibt jetzt die vorhandenen Einkaufs- und Vorratslisten.
+8. „Wer was bezahlt hat, steht fest“ ist unnötig absolut. Entfernt.
+9. „Der Kalender kennt jeden Besuch“ suggeriert automatische Erfassung.
+   Jetzt wird zum Eintragen gemeinsamer Termine aufgefordert.
+10. „Am Ende steht null“ und „Kein Streit ums Geld“ versprechen Ergebnisse,
+    die eine App nicht garantieren kann. Ersetzt durch offene Beträge und Abrechnung.
+11. „Jetzt das Licht an“ beschreibt die Inszenierung statt einen Produktnutzen.
+    Entfernt.
+12. „So sieht eure WG in ManaWG aus“ suggeriert einen echten 3D-Grundriss in
+    der App. Die Wohnung ist jetzt ausdrücklich ein Beispiel.
+13. „Das Wohnzimmer wird, wer wem was schuldet“ ist grammatisch misslungen.
+    Die Raum-Metaphern wurden durch konkrete Aufgaben und Funktionen ersetzt.
+14. „Vier Zimmer. Vier Türen.“ und die Zuordnung der Bewohner zu App-Bereichen
+    erklären eine Animation, nicht die Bedienung. Die Navigation wird jetzt direkt erklärt.
+15. „86 m² → 6,1 Zoll“ und „Die ganze WG in einer Hand“ bleiben abstrakt.
+    Der Abschnitt erklärt nun die Browser-Nutzung und den Startbildschirm.
+16. „Echte App · Demo-WG · keine Aufnahme“ widerspricht dem tatsächlichen
+    Wechsel zwischen Bildschirmaufnahmen. Jetzt: „Interaktive Demo mit Beispieldaten“.
+17. „Jetzt du“ lässt die nächste Handlung offen. Jetzt: „Probiert ManaWG aus“
+    mit vollständigen, nachvollziehbaren Handlungsanweisungen.
+18. „Hafermilch ... sehen es sofort“ behauptet eine Live-Synchronisierung,
+    obwohl die Demo nur lokal den Bildschirm wechselt. Rückmeldung korrigiert.
+19. „Nächste Woche ist automatisch Mika dran“ macht aus einem festen Beispiel
+    eine aktuelle Zusage. Die Rückmeldung bestätigt jetzt nur die Erledigung in der Demo.
+20. Die Bon-Rückmeldung behauptete Nettoschulden von jeweils 12 Euro, obwohl
+    vorhandene Salden verrechnet werden. Sie bestätigt jetzt ausschließlich
+    vier Anteile zu 12 Euro für diesen Beleg.
+21. Interne Button-Namen wie „bad“, „milch“ und „ok“ sind für Screenreader
+    unverständlich. Ersetzt durch konkrete, zum jeweiligen Bildschirm passende Aktionen.
+22. „Zimmer Lea“ usw. wurden zu „Leas Zimmer“ usw. geändert. Die Zuordnung
+    zu den 3D-Modellen bleibt erhalten.
+23. Der Bon enthielt „Di 30.09.2026“; der Tag war Mittwoch. Korrigiert.
+24. Die Bonpositionen ergaben 47,99 Euro bei angezeigten 48,00 Euro.
+    Pfand auf 2,60 Euro korrigiert; die Summe beträgt nun exakt 48,00 Euro.
+25. Fehlende Abstände vor Maßeinheiten und die unnötige Abkürzung
+    „Spülm.-Tabs“ im Bon korrigiert; „EC-Karte“ zu „Karte“ vereinfacht.
+26. Share-Bild und Metadaten trugen unterschiedliche alte Slogans.
+    Die Seite verwendet jetzt das aktualisierte dynamische Share-Bild.
+27. „DSGVO-konform“, „ohne Tracking“ und pauschales Deutschland-Hosting
+    wurden aus Werbe-Metadaten entfernt. Die Datenschutzerklärung beschreibt
+    Produktanalyse und weitere Datenübermittlungen; pauschale Werbesätze
+    ersetzen diese Angaben nicht.
+28. Fehlerseiten enthielten den Wohnungstür-Witz und unpräzise Meldungen.
+    Sie benennen jetzt die fehlende bzw. nicht darstellbare Seite und die nächste Aktion.
+29. Sprachliche Nebenfehler korrigiert: „nach bestem Aufwand“, „User-Content“,
+    „siehe § 5“ bei Abschnittsverweisen, „erstellen kein Profiling“, Schreibweise
+    „Straße“, „z. B.“ und Datumsdarstellung. Kontakttext im Impressum gestrafft.
+30. Auf schmalen Bildschirmen belegten Fototexte nur 46 Prozent der Breite.
+    Die Textspalte nutzt im Hochformat jetzt die verfügbare Breite mit Seitenabstand.
+
+31. Die Demo zeigte nach einer erledigten Aufgabe noch „Noch nichts erledigt“.
+    Der Demo-Server speichert nun die Erledigung und liefert die Monatszahl.
+    Die API-Prüfung bestätigt den Wechsel von null auf eine Erledigung.
+
+32. Der animierte Eurobetrag auf dem Ladebildschirm war nicht als Beispiel
+    gekennzeichnet und konnte als Preis missverstanden werden. Die Beschriftung
+    lautet nun „Beispielrechnung · Seite lädt“.
+
+Inhaltliche Korrekturen in den Nutzungsbedingungen
+Diese Änderungen sind ein lokaler Entwurf und noch nicht veröffentlicht.
+- Die behauptete OS-Plattform der EU ist seit dem 20. Juli 2025 geschlossen.
+  Den veralteten Verweis entfernt. Offizielle Bestätigung:
+  https://ec.europa.eu/consumers/odr/
+- AGB und Datenschutzerklärung widersprachen sich bei Foto-Löschung und
+  der behaupteten maximalen Backup-Frist von 30 Tagen. Die AGB verweisen
+  jetzt auf die detaillierten Angaben in Abschnitt 4 der Datenschutzerklärung.
+  Das ist eine inhaltliche Änderung bisheriger Zusagen, keine reine Sprachkorrektur.
+- Den pauschalen Ausschluss des Widerrufsrechts allein wegen kostenloser
+  Nutzung ersetzt durch die Wahrung gesetzlicher Verbraucherrechte. § 327
+  Abs. 3 BGB erfasst unter Voraussetzungen auch Verträge gegen personenbezogene
+  Daten: https://www.gesetze-im-internet.de/bgb/__327.html
+- Diese Textprüfung ist keine rechtliche Gesamtfreigabe der Nutzungsbedingungen.
+
+Prüfnachweise
+- Unabhängiges Textreview: sämtliche Quelltexte und acht Demo-Bildschirme gelesen.
+- pnpm typecheck: bestanden.
+- pnpm test: vorhandener Test bestanden (1/1).
+- pnpm build: Produktionsbuild mit allen acht statischen Seiten erfolgreich.
+- Biome: alle zwölf geänderten JS-/TSX-/CSS-Dateien ohne Befund.
+- git diff --check und Syntaxprüfung der drei Landing-Skripte: bestanden.
+- Chrome, 320 und 390 Pixel: kein horizontaler Überlauf; alle zehn Textblöcke
+  innerhalb der Seitenbreite. Bei 320 Pixeln endet die Demo-Anleitung oberhalb
+  des Handybildschirms.
+- Share-Bild als 1200 × 630 PNG gerendert und visuell geprüft.
+- Korrigierter Beleg visuell geprüft; Einzelpreise in Cent nachgerechnet.
+  Als WebP ausgeliefert: 163.564 Byte statt rund 1,3 MB beim alten PNG.
+- Der Prototyp unter landing-konzept/site enthält dieselben Textkorrekturen;
+  seine lokalen Imports und unabhängigen 3D-Änderungen wurden erhalten.
+- graphify update . erfolgreich (AST). Fehlende SQL-Parser-Erweiterung betrifft
+  bestehende SQL-Dateien, nicht diese Textänderungen.
+
+Status
+Lokale Fassung unter http://localhost:3118/. Keine Veröffentlichung auf Vercel,
+kein Merge. Die AGB-Änderungen sind vor einer Veröffentlichung inhaltlich zu prüfen.
+

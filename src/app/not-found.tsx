@@ -3,8 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Seite nicht gefunden — ManaWG',
-	description:
-		'Diese Seite existiert nicht. Zurück zur Startseite von ManaWG — der WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand.',
+	description: 'Diese Seite wurde nicht gefunden. Über die Startseite gelangst du zu ManaWG.',
 	robots: { index: false, follow: false },
 };
 
@@ -14,7 +13,7 @@ export default function NotFound() {
 			<p className="text-6xl mb-4">🏠</p>
 			<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Seite nicht gefunden</h1>
 			<p className="text-[var(--text-2)] mb-6 max-w-sm">
-				Die Seite existiert nicht — vielleicht hat jemand die Wohnungstür verwechselt.
+				Unter dieser Adresse ist keine Seite verfügbar. Prüfe den Link oder gehe zur Startseite.
 			</p>
 			<Link
 				href="/"

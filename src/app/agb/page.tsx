@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'Nutzungsbedingungen — ManaWG',
 	description:
-		'Nutzungsbedingungen für ManaWG: kostenlose Nutzung, Fair-Use, Haftung und Kündigung der privaten WG-App.',
+		'Nutzungsbedingungen für ManaWG: kostenlose Nutzung, Rechte und Pflichten, Haftung und Kündigung.',
 	alternates: { canonical: '/agb' },
 };
 
@@ -24,7 +24,7 @@ export default function AgbPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Nutzungsbedingungen</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-25</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2. Oktober 2026</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					<section>
@@ -45,7 +45,7 @@ export default function AgbPage() {
 						<p>
 							ManaWG stellt eine Plattform zur Organisation gemeinsamer Haushalts- und WG-Aufgaben
 							bereit (Ausgabenverwaltung, Putzplan, Einkaufsliste, Pinnwand). Die Nutzung ist
-							kostenlos. Die App wird nach bestem Aufwand betrieben; es besteht kein Anspruch auf
+							kostenlos. Die App wird nach bestem Bemühen betrieben; es besteht kein Anspruch auf
 							Verfügbarkeit, Datenwiederherstellung, Support oder bestimmte Funktionen.
 						</p>
 						<p className="mt-2">
@@ -73,15 +73,14 @@ export default function AgbPage() {
 							Du darfst nur Fotos hochladen, an denen du die nötigen Rechte hast. Persönlichkeits-
 							und Urheberrechte Dritter sind zu wahren. Fotos werden bei unserem Auftragsverarbeiter{' '}
 							<strong>Supabase</strong> (Region Frankfurt, EU) gespeichert und nur an Mitglieder der
-							WG ausgeliefert. Wir löschen Fotos auf Anfrage oder bei Beendigung der Mitgliedschaft;
-							technische Backups laufen nach max. 30 Tagen aus. Details siehe Datenschutzerklärung
-							Abschnitt 4d.
+							WG ausgeliefert. Wie lange Fotos gespeichert werden und wie ihre Löschung erfolgt,
+							beschreiben wir in Abschnitt 4d der Datenschutzerklärung.
 						</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							5. Nutzungsrechte an User-Content
+							5. Nutzungsrechte an deinen Inhalten
 						</h2>
 						<p>
 							Du behältst alle Rechte an deinen Inhalten (Pinnwand-Beiträge, Fotos, sonstige
@@ -89,19 +88,19 @@ export default function AgbPage() {
 							nicht-übertragbare Lizenz ein, deine Inhalte technisch zu speichern, zu übertragen,
 							anzuzeigen und in Backups zu sichern, soweit das für den Betrieb des Dienstes
 							erforderlich ist. Mit Löschung deiner WG oder der betroffenen Inhalte erlischt diese
-							Lizenz; technische Backups laufen nach maximal 30 Tagen aus.
+							Lizenz. Für die Löschung gespeicherter Daten und Fotos gelten die Angaben in Abschnitt
+							4 der Datenschutzerklärung.
 						</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							6. Kein Widerrufsrecht (unentgeltlicher Dienst)
+							6. Kostenlose Nutzung und gesetzliche Rechte
 						</h2>
 						<p>
-							ManaWG wird kostenlos und ohne entgeltliche Gegenleistung im Sinne der §§ 312 Abs. 1,
-							327 BGB bereitgestellt. Mangels eines entgeltlichen Verbraucher­vertrags besteht{' '}
-							<strong>kein Widerrufsrecht</strong> nach §§ 355 ff. BGB. Du kannst deine
-							Mitgliedschaft jederzeit nach Ziffer 10 beenden.
+							Für die Nutzung von ManaWG zahlst du kein Entgelt. Gesetzliche Verbraucherrechte,
+							einschließlich eines gegebenenfalls bestehenden Widerrufsrechts, bleiben unberührt. Du
+							kannst deine Mitgliedschaft jederzeit nach Ziffer 10 beenden.
 						</p>
 					</section>
 
@@ -151,10 +150,12 @@ export default function AgbPage() {
 							bleiben für die WG erhalten. Dein Konto kannst du jederzeit über{' '}
 							<em>Einstellungen → Zugang → Konto löschen</em> löschen; Details siehe
 							Datenschutzerklärung Abschnitt 8. Die WG-Erstellerin oder der WG-Ersteller kann die
-							gesamte WG inklusive aller Inhalte und Bilder über{' '}
-							<em>Einstellungen → Zugang → WG dauerhaft löschen</em> sofort und unwiderruflich
-							entfernen. Eine zusätzliche Löschung von Daten, die dir zugeordnet werden können
-							(Mitgliedskennung, von dir erstellte Inhalte, Fotos), kann auf Anfrage per E-Mail an{' '}
+							gesamte WG über <em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich
+							entfernen. Die zugehörigen Daten werden aus der aktiven Datenbank entfernt. Der Abruf
+							zugehöriger Bilder wird sofort gesperrt. Ihre anschließende physische Löschung ist in
+							Abschnitt 4d der Datenschutzerklärung beschrieben. Eine zusätzliche Löschung von
+							Daten, die dir zugeordnet werden können (Mitgliedskennung, von dir erstellte Inhalte,
+							Fotos), kann auf Anfrage per E-Mail an{' '}
 							<a href="mailto:info@manawg.com" className="break-all">
 								info@manawg.com
 							</a>{' '}
@@ -189,20 +190,6 @@ export default function AgbPage() {
 						<p>
 							Wir sind weder verpflichtet noch bereit, an einem Streitbeilegungsverfahren vor einer
 							Verbraucherschlichtungsstelle teilzunehmen (§ 36 Abs. 1 Nr. 1 VSBG).
-						</p>
-						<p className="mt-2">
-							Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS)
-							bereit:{' '}
-							<a
-								href="https://ec.europa.eu/consumers/odr/"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="break-all"
-							>
-								https://ec.europa.eu/consumers/odr/
-							</a>
-							. Da ManaWG ein kostenloser Dienst ist, ist diese Plattform für unsere Nutzer
-							regelmäßig nicht einschlägig.
 						</p>
 					</section>
 

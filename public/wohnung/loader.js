@@ -13,14 +13,14 @@ const NAMES = ['Lea', 'Mika', 'Jona', 'Sami'];
 const el = document.createElement('div');
 el.className = 'loader';
 el.innerHTML = `
-	<div class="l-top mono"><span>ManaWG</span><span>Weserstraße 12 · 3. OG links</span></div>
+	<div class="l-top mono"><span>ManaWG</span><span>Die App für eure WG</span></div>
 	<div class="l-sum"><span class="l-val">0,00</span><span class="l-cur">€</span></div>
 	<div class="l-parts">${NAMES.map((n) => `<div class="l-part"><b>25,00 €</b><span class="mono">${n}</span></div>`).join('')}</div>
 	<svg class="l-logo" viewBox="0 0 416 346" aria-hidden="true"><defs>
 		<filter id="l-goo" x="-12%" y="-12%" width="124%" height="124%"><feGaussianBlur stdDeviation="19"/><feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 26 -11"/></filter>
 		<mask id="l-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="416" height="346"><g filter="url(#l-goo)" fill="#fff">${BODIES.map(([x, y, r], i) => `<circle class="l-b" style="--i:${i}" cx="${x}" cy="${y}" r="${r}"/>`).join('')}</g><circle cx="207" cy="175" r="22" fill="#000"/></mask>
 	</defs><rect width="416" height="346" fill="currentColor" mask="url(#l-mask)"/></svg>
-	<div class="l-bot mono"><span class="l-line">// Geld, Putzplan, Einkauf</span><span class="l-pct">000</span></div>`;
+	<div class="l-bot mono"><span class="l-line">Beispielrechnung · Seite lädt</span><span class="l-pct">000</span></div>`;
 document.body.prepend(el);
 document.documentElement.classList.add('loading');
 

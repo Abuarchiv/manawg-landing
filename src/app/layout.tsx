@@ -27,7 +27,7 @@ const instrumentSerif = Instrument_Serif({
 const appUrl = getAppUrl();
 
 const metaDescription =
-	'Die WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand. In Deutschland gehostet, DSGVO-konform, ohne Tracking.';
+	'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die kostenlose App für eure WG – direkt im Browser.';
 
 const organizationSchema = {
 	'@context': 'https://schema.org',
@@ -36,7 +36,7 @@ const organizationSchema = {
 	url: appUrl,
 	logo: `${appUrl}/icon-512.png`,
 	description:
-		'Die WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand. Kostenlos, Anmeldung mit Google oder E-Mail, kein Tracking.',
+		'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die kostenlose App für eure WG – direkt im Browser.',
 };
 
 const softwareApplicationSchema = {
@@ -44,7 +44,7 @@ const softwareApplicationSchema = {
 	'@type': 'SoftwareApplication',
 	name: 'ManaWG',
 	description:
-		'Die WG-App für Ausgaben, Putzplan, Einkauf und Pinnwand. Kostenlos, Anmeldung mit Google oder E-Mail, kein Tracking.',
+		'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die kostenlose App für eure WG – direkt im Browser.',
 	url: appUrl,
 	applicationCategory: 'LifestyleApplication',
 	operatingSystem: 'Web, iOS, Android',
@@ -57,9 +57,9 @@ const softwareApplicationSchema = {
 
 export const metadata: Metadata = {
 	metadataBase: new URL(appUrl),
-	title: 'ManaWG — Deine WG-App',
+	title: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
 	description: metaDescription,
-	keywords: ['WG', 'Wohngemeinschaft', 'Ausgaben teilen', 'Putzplan', 'WG App', 'DSGVO'],
+	keywords: ['WG', 'Wohngemeinschaft', 'Ausgaben teilen', 'Putzplan', 'WG-App'],
 	authors: [{ name: 'ManaWG' }],
 	applicationName: 'ManaWG',
 	alternates: {
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
 		follow: true,
 	},
 	openGraph: {
-		title: 'ManaWG — Deine WG-App',
+		title: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
 		description: metaDescription,
 		type: 'website',
 		locale: 'de_DE',
@@ -80,14 +80,14 @@ export const metadata: Metadata = {
 				url: '/opengraph-image',
 				width: 1200,
 				height: 630,
-				alt: 'ManaWG — Die WG-App, die einfach funktioniert.',
+				alt: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
 			},
 		],
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'ManaWG — Deine WG-App',
-		description: 'Die WG-App, die einfach funktioniert.',
+		title: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
+		description: metaDescription,
 		images: ['/opengraph-image'],
 	},
 	// No manifest on purpose: manawg.com is the marketing site. The installable

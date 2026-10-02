@@ -51,7 +51,20 @@ export function start({ app, done }) {
 			const b = document.createElement('button');
 			b.type = 'button';
 			b.dataset.k = k;
-			b.setAttribute('aria-label', k);
+			b.setAttribute(
+				'aria-label',
+				{
+					start: 'Startseite anzeigen',
+					haushalt: 'Haushalt anzeigen',
+					finanzen: 'Finanzen anzeigen',
+					einkauf: 'Einkaufsliste anzeigen',
+					putzplan: 'Putzplan anzeigen',
+					milch: n === 'start' ? 'Einkaufsliste anzeigen' : 'Hafermilch als gekauft markieren',
+					bad: n === 'start' ? 'Putzplan anzeigen' : 'Bad putzen als erledigt markieren',
+					abbrechen: 'Abbrechen',
+					ok: 'Erledigung bestätigen',
+				}[k],
+			);
 			// Trefferfläche mindestens 44 px
 			const pw = Math.max(0, 44 - w) / 2;
 			const ph = Math.max(0, 44 - h) / 2;

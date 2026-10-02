@@ -6,7 +6,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'Impressum — ManaWG',
 	description:
-		'Kontaktdaten und Anbieterinformation für ManaWG. Privat und kostenlos betrieben von Abubakar Abditube, Frankfurt am Main.',
+		'Kontaktdaten und Anbieterinformationen für ManaWG. Privat und kostenlos betrieben von Abubakar Abditube, Frankfurt am Main.',
 	alternates: { canonical: '/impressum' },
 };
 
@@ -25,7 +25,7 @@ export default function ImpressumPage() {
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Impressum</h1>
 				<p className="text-sm text-[var(--text-3)] mb-8">
-					Angaben gemäß § 5 DDG / § 18 MStV — Stand: 2026-05-19
+					Angaben gemäß § 5 DDG / § 18 MStV — Stand: 19. Mai 2026
 				</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
@@ -40,7 +40,7 @@ export default function ImpressumPage() {
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">Anschrift</h2>
-						<p>Kurt-Schumacher-Strasse 2</p>
+						<p>Kurt-Schumacher-Straße 2</p>
 						<p>60311 Frankfurt am Main</p>
 						<p>Hessen</p>
 						<p>Deutschland</p>
@@ -55,9 +55,8 @@ export default function ImpressumPage() {
 							</a>
 						</p>
 						<p className="mt-2 text-[var(--text-3)]">
-							Eine schnelle elektronische Kontaktaufnahme und unmittelbare Kommunikation ist über
-							die vorstehende E-Mail-Adresse möglich. Da ManaWG privat und kostenlos betrieben wird,
-							kann eine Antwort je nach Aufwand etwas dauern.
+							Du erreichst uns unter der angegebenen E-Mail-Adresse. Da ManaWG privat betrieben
+							wird, können wir nicht immer sofort antworten.
 						</p>
 					</section>
 
@@ -78,10 +77,10 @@ export default function ImpressumPage() {
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							Verantwortlich i.S.d. § 18 Abs. 2 MStV
+							Verantwortlich gemäß § 18 Abs. 2 MStV
 						</h2>
 						<p>Abubakar Abditube</p>
-						<p>Kurt-Schumacher-Strasse 2</p>
+						<p>Kurt-Schumacher-Straße 2</p>
 						<p>60311 Frankfurt am Main</p>
 						<p>Deutschland</p>
 					</section>

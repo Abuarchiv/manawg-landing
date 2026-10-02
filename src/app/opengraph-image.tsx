@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'ManaWG — Die WG-App, die einfach funktioniert.';
+export const alt = 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -75,7 +75,7 @@ export default function OgImage() {
 					maxWidth: 700,
 				}}
 			>
-				Die WG-App, die einfach funktioniert.
+				Ausgaben, Einkauf und Putzplan für eure WG.
 			</div>
 
 			{/* Bottom tag */}
@@ -92,7 +92,7 @@ export default function OgImage() {
 					textTransform: 'uppercase',
 				}}
 			>
-				In Deutschland gehostet · Ohne Tracking · DSGVO-konform
+				Kostenlos im Browser
 			</div>
 		</div>,
 		{

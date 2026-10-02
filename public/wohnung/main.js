@@ -111,13 +111,13 @@ const M = {
 // Grundriss in Metern, Ursprung oben links
 const ROOMS = [
 	{ name: 'Küche', fn: 'Einkaufsliste', to: 'einkauf', r: [0, 0, 4, 3.6] },
-	{ name: 'Wohnzimmer', fn: 'Wer schuldet wem', to: 'geld', r: [4, 0, 5, 3.6] },
+	{ name: 'Wohnzimmer', fn: 'Offene Beträge', to: 'geld', r: [4, 0, 5, 3.6] },
 	{ name: 'Bad', fn: 'Bad putzen', to: 'bad', r: [9, 0, 3, 3.6] },
 	{ name: 'Flur', fn: 'Diese Woche', to: 'woche', r: [0, 3.6, 12, 1.4] },
-	{ name: 'Zimmer Lea', fn: 'Start', to: 'start', r: [0, 5, 3, 3.2], av: 1 },
-	{ name: 'Zimmer Mika', fn: 'Haushalt', to: 'haushalt', r: [3, 5, 3, 3.2], av: 1 },
-	{ name: 'Zimmer Jona', fn: 'Finanzen', to: 'finanzen', r: [6, 5, 3, 3.2], av: 1 },
-	{ name: 'Zimmer Sami', fn: 'Austausch', to: 'austausch', r: [9, 5, 3, 3.2], av: 1 },
+	{ name: 'Leas Zimmer', fn: 'Start', to: 'start', r: [0, 5, 3, 3.2], av: 1 },
+	{ name: 'Mikas Zimmer', fn: 'Haushalt', to: 'haushalt', r: [3, 5, 3, 3.2], av: 1 },
+	{ name: 'Jonas Zimmer', fn: 'Finanzen', to: 'finanzen', r: [6, 5, 3, 3.2], av: 1 },
+	{ name: 'Samis Zimmer', fn: 'Austausch', to: 'austausch', r: [9, 5, 3, 3.2], av: 1 },
 ];
 const OX = 6;
 const OZ = 4.1;
@@ -247,10 +247,10 @@ const BODEN = {
 	Wohnzimmer: 'Boden_Wohnzimmer',
 	Bad: 'Boden_Bad',
 	Flur: 'Boden_Flur',
-	'Zimmer Lea': 'Boden_Lea',
-	'Zimmer Mika': 'Boden_Max',
-	'Zimmer Jona': 'Boden_Jonas',
-	'Zimmer Sami': 'Boden_Hannah',
+	'Leas Zimmer': 'Boden_Lea',
+	'Mikas Zimmer': 'Boden_Max',
+	'Jonas Zimmer': 'Boden_Jonas',
+	'Samis Zimmer': 'Boden_Hannah',
 };
 let glb = null;
 try {
@@ -648,9 +648,9 @@ const done = (t) => {
 	if ($$('.tasks li.done').length === 3) document.body.classList.add('all-done');
 };
 const MELDUNG = {
-	bon: '48,00 € durch vier: Mika, Jona und Sami schulden dir je 12,00 €.',
-	milch: 'Hafermilch ist abgehakt. Mika, Jona und Sami sehen es sofort.',
-	putz: 'Bad erledigt. Nächste Woche ist automatisch Mika dran.',
+	bon: 'Beispielbeleg erfasst: 48,00 € aufgeteilt in vier Anteile zu je 12,00 €.',
+	milch: 'Hafermilch ist in dieser Demo als gekauft markiert.',
+	putz: '„Bad putzen“ ist in dieser Demo als erledigt markiert.',
 };
 const live =
 	new URLSearchParams(location.search).has('live') &&
