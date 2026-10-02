@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Seite nicht gefunden — ManaWG',
+	title: 'Seite nicht gefunden bei ManaWG',
 	description: 'Diese Seite wurde nicht gefunden. Über die Startseite gelangst du zu ManaWG.',
 	robots: { index: false, follow: false },
 };

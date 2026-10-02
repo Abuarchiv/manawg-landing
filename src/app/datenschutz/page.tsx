@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Datenschutzerklärung — ManaWG',
+	title: 'Datenschutzerklärung von ManaWG',
 	description:
 		'Welche Daten ManaWG verarbeitet, an wen sie übermittelt werden, wie lange sie gespeichert bleiben und welche Rechte du hast.',
 	alternates: { canonical: '/datenschutz' },
@@ -56,11 +56,11 @@ export default function DatenschutzPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">3. Wer wir sind</h2>
 						<p>
-							ManaWG unterstützt Wohngemeinschaften bei der gemeinsamen Organisation. Wir verkaufen
-							keine personenbezogenen Daten und schalten keine Werbung. Für die Produktanalyse
-							übermitteln wir nur die in Abschnitt 4f beschriebenen Angaben an PostHog Cloud EU. Die
-							Konten, die du zur Anmeldung und für deine WG-Mitgliedschaft anlegst, sind davon
-							getrennt; dazu steht mehr in Abschnitt 4a. Der Quellcode wird nicht veröffentlicht.
+							ManaWG ist eine App für Wohngemeinschaften. Wir verkaufen keine personenbezogenen
+							Daten und schalten keine Werbung. Für die Produktanalyse übermitteln wir nur die in
+							Abschnitt 4f beschriebenen Angaben an PostHog Cloud EU. Die Konten, die du zur
+							Anmeldung und für deine WG-Mitgliedschaft anlegst, sind davon getrennt; dazu steht
+							mehr in Abschnitt 4a. Der Quellcode wird nicht veröffentlicht.
 						</p>
 					</section>
 
@@ -352,30 +352,30 @@ export default function DatenschutzPage() {
 						</p>
 						<ul className="list-disc pl-5 space-y-2 text-sm">
 							<li>
-								<strong>Supabase</strong> — verwaltet Anmeldungen und hostet die Postgres-Datenbank
+								<strong>Supabase</strong>: verwaltet Anmeldungen und hostet die Postgres-Datenbank
 								sowie den Dateispeicher für Fotos in Frankfurt am Main (EU).
 							</li>
 							<li>
-								<strong>Resend, Inc.</strong> (USA) — versendet im Produktivbetrieb die von Supabase
+								<strong>Resend, Inc.</strong> (USA): versendet im Produktivbetrieb die von Supabase
 								Auth ausgelösten Bestätigungs-E-Mails und E-Mails zum Zurücksetzen des Passworts.
 								Absender ist noreply@manawg.com (siehe Abschnitt 4a). Die Übermittlung stützt sich
 								auf EU-Standardvertragsklauseln oder das EU-US Data Privacy Framework.
 							</li>
 							<li>
-								<strong>Vercel Inc.</strong> (USA) — hostet die Web-App und betreibt das
+								<strong>Vercel Inc.</strong> (USA): hostet die Web-App und betreibt das
 								Edge-Netzwerk; dabei entstehen Server-Logs. Ein Auftragsverarbeitungsvertrag und
 								EU-Standardvertragsklauseln liegen vor.
 							</li>
 							<li>
-								<strong>Vercel KV / Upstash, Inc.</strong> (USA) — führt die Redis-basierten Zähler
+								<strong>Vercel KV / Upstash, Inc.</strong> (USA): führt die Redis-basierten Zähler
 								für den Missbrauchsschutz (pro IP-Adresse oder Kennung, siehe Abschnitt 4e).
 							</li>
 							<li>
-								<strong>PostHog Inc.</strong> — verarbeitet die Produktanalyse über PostHog Cloud EU
+								<strong>PostHog Inc.</strong>: verarbeitet die Produktanalyse über PostHog Cloud EU
 								in Frankfurt am Main (siehe Abschnitt 4f).
 							</li>
 							<li>
-								<strong>Sentry (Functional Software, Inc.)</strong> — untersucht technische Fehler,
+								<strong>Sentry (Functional Software, Inc.)</strong>: untersucht technische Fehler,
 								wenn Sentry für die jeweilige App-Bereitstellung aktiviert ist (siehe Abschnitt 4c).{' '}
 								<a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">
 									Datenschutzhinweise von Sentry
@@ -388,7 +388,7 @@ export default function DatenschutzPage() {
 								abgeschlossen.
 							</li>
 							<li>
-								<strong>jsDelivr und CDN-Dienstleister</strong> — liefern Tesseract-Worker-, Kern-
+								<strong>jsDelivr und CDN-Dienstleister</strong>: liefern Tesseract-Worker-, Kern-
 								und Sprachdateien, wenn du die lokale OCR ausdrücklich startest (siehe Abschnitt
 								4d).
 							</li>
@@ -431,13 +431,13 @@ export default function DatenschutzPage() {
 						<p className="mb-2">Du kannst folgende Rechte uns gegenüber geltend machen:</p>
 						<ul className="list-disc pl-5 space-y-1 text-sm">
 							<li>
-								<strong>Art. 15 DSGVO</strong> — Auskunft über deine gespeicherten Daten
+								<strong>Art. 15 DSGVO</strong>: Auskunft über deine gespeicherten Daten
 							</li>
 							<li>
-								<strong>Art. 16 DSGVO</strong> — Berichtigung unrichtiger Daten
+								<strong>Art. 16 DSGVO</strong>: Berichtigung unrichtiger Daten
 							</li>
 							<li>
-								<strong>Art. 17 DSGVO</strong> — Löschung. Du kannst dein Konto jederzeit löschen.
+								<strong>Art. 17 DSGVO</strong>: Löschung. Du kannst dein Konto jederzeit löschen.
 								Wähle dazu <em>Einstellungen → Zugang → Konto löschen</em>. Dabei werden deine
 								Anmeldedaten entfernt und du verlässt alle WGs. Daten einer WG, in der du allein
 								bist, werden aus der aktiven Datenbank entfernt; zugehörige Fotos siehe Abschnitt{' '}
@@ -455,18 +455,18 @@ export default function DatenschutzPage() {
 								beantragen.
 							</li>
 							<li>
-								<strong>Art. 18 DSGVO</strong> — Einschränkung der Verarbeitung
+								<strong>Art. 18 DSGVO</strong>: Einschränkung der Verarbeitung
 							</li>
 							<li>
-								<strong>Art. 20 DSGVO</strong> — Datenübertragbarkeit
+								<strong>Art. 20 DSGVO</strong>: Datenübertragbarkeit
 							</li>
 							<li>
-								<strong>Art. 21 DSGVO</strong> — Widerspruch gegen Verarbeitungen auf Grundlage von
+								<strong>Art. 21 DSGVO</strong>: Widerspruch gegen Verarbeitungen auf Grundlage von
 								Art. 6 Abs. 1 lit. f DSGVO aus Gründen, die sich aus deiner besonderen Situation
 								ergeben, zum Beispiel bei Logs oder Rate-Limiting
 							</li>
 							<li>
-								<strong>Art. 77 DSGVO</strong> — Beschwerde bei der zuständigen Aufsichtsbehörde:
+								<strong>Art. 77 DSGVO</strong>: Beschwerde bei der zuständigen Aufsichtsbehörde:
 								<br />
 								<strong>
 									Der Hessische Beauftragte für Datenschutz und Informationsfreiheit (HBDI)

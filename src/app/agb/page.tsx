@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Nutzungsbedingungen — ManaWG',
+	title: 'Nutzungsbedingungen von ManaWG',
 	description: 'Nutzungsbedingungen für ManaWG: Nutzung, Inhalte, Haftung und Kündigung.',
 	alternates: { canonical: '/agb' },
 };
@@ -42,10 +42,10 @@ export default function AgbPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">2. Leistungen</h2>
 						<p>
-							ManaWG hilft dir, den gemeinsamen Haushalt zu organisieren, etwa mit Ausgaben,
-							Putzplan, Einkaufsliste und Pinnwand. Die Nutzung ist kostenlos. Wir bemühen uns um
-							zuverlässigen Betrieb, können aber weder eine durchgehende Verfügbarkeit noch die
-							Wiederherstellung von Daten, Support oder bestimmte Funktionen zusagen.
+							ManaWG bietet eine Ausgabenverwaltung, einen Putzplan, eine Einkaufsliste und eine
+							Pinnwand. Die Nutzung ist kostenlos. Eine durchgehende Verfügbarkeit, die
+							Wiederherstellung von Daten, Support oder bestimmte Funktionen können wir nicht
+							zusagen.
 						</p>
 						<p className="mt-2">
 							<strong>Nutzung durch Minderjährige:</strong> Wenn du unter 16 Jahre alt bist,

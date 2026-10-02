@@ -486,7 +486,7 @@ function fotos(P) {
 	const i = seq.zeichne(u);
 	if (i !== lastP) {
 		psteps.forEach((el, j) => el.classList.toggle('on', j === i));
-		chapter.textContent = `${String(i + 1).padStart(2, '0')} — ${KAPITEL[i]}`;
+		chapter.textContent = `${String(i + 1).padStart(2, '0')}: ${KAPITEL[i]}`;
 		lastP = i;
 	}
 }
@@ -510,7 +510,7 @@ function frame(t) {
 	}
 	if (lastP !== -2) {
 		for (const el of psteps) el.classList.remove('on');
-		chapter.textContent = '06 — Grundriss';
+		chapter.textContent = '06: Grundriss';
 		lastP = -2;
 	}
 

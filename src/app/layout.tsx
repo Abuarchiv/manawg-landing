@@ -27,7 +27,7 @@ const instrumentSerif = Instrument_Serif({
 const appUrl = getAppUrl();
 
 const metaDescription =
-	'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die kostenlose App für eure WG – direkt im Browser.';
+	'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die App ist kostenlos und läuft im Browser.';
 
 const organizationSchema = {
 	'@context': 'https://schema.org',
@@ -36,7 +36,7 @@ const organizationSchema = {
 	url: appUrl,
 	logo: `${appUrl}/icon-512.png`,
 	description:
-		'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die kostenlose App für eure WG – direkt im Browser.',
+		'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die App ist kostenlos und läuft im Browser.',
 };
 
 const softwareApplicationSchema = {
@@ -44,7 +44,7 @@ const softwareApplicationSchema = {
 	'@type': 'SoftwareApplication',
 	name: 'ManaWG',
 	description:
-		'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die kostenlose App für eure WG – direkt im Browser.',
+		'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die App ist kostenlos und läuft im Browser.',
 	url: appUrl,
 	applicationCategory: 'LifestyleApplication',
 	operatingSystem: 'Web, iOS, Android',
@@ -57,7 +57,7 @@ const softwareApplicationSchema = {
 
 export const metadata: Metadata = {
 	metadataBase: new URL(appUrl),
-	title: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
+	title: 'ManaWG: Ausgaben, Einkauf und Putzplan für eure WG',
 	description: metaDescription,
 	keywords: ['WG', 'Wohngemeinschaft', 'Ausgaben teilen', 'Putzplan', 'WG-App'],
 	authors: [{ name: 'ManaWG' }],
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
 		follow: true,
 	},
 	openGraph: {
-		title: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
+		title: 'ManaWG: Ausgaben, Einkauf und Putzplan für eure WG',
 		description: metaDescription,
 		type: 'website',
 		locale: 'de_DE',
@@ -80,13 +80,13 @@ export const metadata: Metadata = {
 				url: '/opengraph-image',
 				width: 1200,
 				height: 630,
-				alt: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
+				alt: 'ManaWG: Ausgaben, Einkauf und Putzplan für eure WG',
 			},
 		],
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'ManaWG – Ausgaben, Einkauf und Putzplan für eure WG',
+		title: 'ManaWG: Ausgaben, Einkauf und Putzplan für eure WG',
 		description: metaDescription,
 		images: ['/opengraph-image'],
 	},
@@ -130,7 +130,7 @@ export default function RootLayout({
 		>
 			<head>
 				<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-				{/* Organization + SoftwareApplication JSON-LD for rich results. Content is static JSON.stringify of trusted constants — no XSS surface. */}
+				{/* Organization + SoftwareApplication JSON-LD for rich results. Content is static JSON.stringify of trusted constants: no XSS surface. */}
 				<Script
 					id="manawg-org-schema"
 					type="application/ld+json"
@@ -141,7 +141,7 @@ export default function RootLayout({
 				>{`${JSON.stringify(softwareApplicationSchema)}`}</Script>
 			</head>
 			<body suppressHydrationWarning>
-				{/* WCAG 2.4.1 Bypass Blocks — keyboard-only skip link.
+				{/* WCAG 2.4.1 Bypass Blocks: keyboard-only skip link.
 				    Targets the <main id="main"> rendered by per-route layouts. */}
 				<a href="#main" className="skip-link">
 					Zum Hauptinhalt springen

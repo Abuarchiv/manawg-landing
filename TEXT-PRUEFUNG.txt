@@ -234,3 +234,18 @@ Prüfnachweise zum Nachtrag
   auf Abschnitt 4f landet sichtbar am richtigen Abschnitt. Browsergröße zurückgesetzt.
 - Screenshot legal-copy-preview.jpg zeigt die gerenderte endgültige Fristangabe.
 - Keine Veröffentlichung, keine Änderungen an Anbietereinstellungen oder App-Verhalten.
+
+Stilkorrektur auf ausdrücklichen Wunsch
+Lange Gedankenstriche aus den sichtbaren Landingtexten, Kapitelbeschriftungen,
+Seitentiteln, Metadaten und den drei Rechtsseiten entfernt. Je nach Satz wurden
+Punkte, Doppelpunkte oder eine normale Satzform verwendet. Bindestriche in
+Wörtern wie WG-App bleiben erhalten. Allgemeine Werbeformulierungen wie
+„im Blick“, „Findet, was ihr braucht“ und „unterstützt ... bei der Organisation“
+durch konkrete Funktionen ersetzt. Juristisch relevante Begriffe und Einschränkungen
+wurden nicht als vermeintliche Floskeln gestrichen.
+Prüfung dieser Stilkorrektur: finaler Build, Typprüfung und Biome bestanden.
+Die erzeugten HTML-Seiten für Impressum, Datenschutz, Nutzungsbedingungen und
+404 sowie die statische Startseite enthalten keine Em- oder En-Dashes in
+Texten, Metadaten, Alternativtexten oder Bedienlabels. Dynamische Kapiteltexte
+sind ebenfalls geprüft. Technische Quellcode-Kommentare und archivierte Entwürfe
+sind keine sichtbaren Seitentexte und wurden nicht pauschal umgeschrieben.
