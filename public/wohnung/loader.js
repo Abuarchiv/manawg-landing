@@ -33,7 +33,7 @@ const pct = el.querySelector('.l-pct');
 const finished = new Promise((r) => {
 	resolveDone = r;
 });
-const MIN_MS = 2200;
+const MIN_MS = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2200;
 function tick(now) {
 	// Anzeige folgt dem echten Ladefortschritt, aber nie schneller als MIN_MS
 	const cap = Math.min(1, (now - t0) / MIN_MS);

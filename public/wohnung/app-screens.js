@@ -28,7 +28,7 @@ export function start({ app, done }) {
 		'putzen-dialog',
 		'putzen-nach',
 	])
-		new Image().src = `${BASE + n}.jpg`;
+		new Image().src = `${BASE + n}.webp`;
 	const name = (n) =>
 		({
 			finanzen: st.bon ? 'finanzen-nach' : 'finanzen',
@@ -40,7 +40,7 @@ export function start({ app, done }) {
 		if (n === cur) return;
 		cur = n;
 		const next = imgs[1 - front];
-		next.src = `${BASE + n}.jpg`;
+		next.src = `${BASE + n}.webp`;
 		await next.decode().catch(() => {});
 		next.classList.add('on');
 		imgs[front].classList.remove('on');

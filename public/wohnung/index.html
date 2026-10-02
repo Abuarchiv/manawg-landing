@@ -26,23 +26,22 @@
 </head>
 <body>
 	<canvas id="gl"></canvas>
+	<canvas id="seq" aria-hidden="true"></canvas>
+	<div class="shade" aria-hidden="true"></div>
 	<div class="grain" aria-hidden="true"></div>
 	<div class="flash" aria-hidden="true"></div>
-	<div class="tags" aria-hidden="true"></div>
 
 	<section class="pcopy">
 		<div class="pstep" data-i="0"><p class="kicker mono">Weserstraße 12 · 3. OG links</p><h1>Vier Namen.<br>Eine Tür.</h1><p class="sub">Eine App für alles, was sich eine WG teilt.</p></div>
-		<div class="pstep" data-i="1"><p class="kicker mono">Wohnzimmer · 34 m²</p><h2>Alles hier<br>gehört allen.</h2><p class="sub">Sofa, Lampe, Teppich. Und irgendwer hat mal bezahlt.</p></div>
-		<div class="pstep" data-i="2"><p class="kicker mono">Esstisch · Dienstag</p><h2>Einer zahlt.<br>Alle tragen.</h2><p class="sub">Lea hat 48,00 € ausgelegt. ManaWG teilt durch vier, ohne dass jemand fragen muss.</p></div>
-		<div class="pstep" data-i="3"><p class="kicker mono">Regal · gemeinsam</p><h2>Was allen gehört.<br>Was nur dir.</h2><p class="sub">Vorräte, Geräte, Platten. Jedes Ding hat einen Besitzer und eine Geschichte.</p></div>
-		<div class="pstep" data-i="4"><p class="kicker mono">Küche · Kühlschranktür</p><h2>Der Zettel<br>ist raus.</h2><p class="sub">Einkaufsliste und Putzplan laufen in der App. Wer dran ist, weiß es vorher.</p></div>
-		<div class="pstep" data-i="5"><p class="kicker mono">Fenster · Hinterhof</p><h2>Wer da ist,<br>wer weg ist.</h2><p class="sub">Abwesenheiten werden beim Putzplan übersprungen. Der Kalender kennt jeden Besuch.</p></div>
-		<div class="pstep" data-i="6"><p class="kicker mono">Abend · 23:40</p><h2>Am Ende<br>steht null.</h2><p class="sub">Alle Salden bei 0,00 €. Kein Streit ums Geld. Jetzt das Licht an.</p></div>
+		<div class="pstep" data-i="1"><p class="kicker mono">Esstisch · Dienstag</p><h2>Einer zahlt.<br>Alle tragen.</h2><p class="sub">Lea hat 48,00 € ausgelegt. ManaWG teilt durch vier, ohne dass jemand fragen muss.</p></div>
+		<div class="pstep" data-i="2"><p class="kicker mono">Regal · gemeinsam</p><h2>Was allen gehört.<br>Was nur dir.</h2><p class="sub">Einkäufe, Vorräte, Anschaffungen. Wer was bezahlt hat, steht fest.</p></div>
+		<div class="pstep" data-i="3"><p class="kicker mono">Fenster · Hinterhof</p><h2>Wer da ist,<br>wer weg ist.</h2><p class="sub">Abwesenheiten werden beim Putzplan übersprungen. Der Kalender kennt jeden Besuch.</p></div>
+		<div class="pstep" data-i="4"><p class="kicker mono">Sofa · Sonntag</p><h2>Am Ende<br>steht null.</h2><p class="sub">Alle Salden bei 0,00 €. Kein Streit ums Geld. Jetzt das Licht an.</p></div>
 	</section>
 
 	<header class="hud mono">
 		<span class="word">ManaWG</span>
-		<span class="dim chapter">01 — Flur</span>
+		<span class="dim chapter">01 — Tür</span>
 		<span class="dim"><span class="pct">000</span> / 100</span>
 	</header>
 	<footer class="hint mono dim"><span>Scrollen</span><span class="bar"><i></i></span></footer>
@@ -78,5 +77,14 @@
 	<div class="scroll-length"></div>
 
 	<script type="module" src="main.js"></script>
+	<noscript>
+		<style>.loader, #gl, #seq, .hud, .pcopy, .copy, .app, .bon, .hint { display: none !important; } .scroll-length { height: auto; }</style>
+		<main class="noscript">
+			<h1>ManaWG</h1>
+			<p>Eine App für alles, was sich eine WG teilt: Ausgaben teilen, Putzplan, Einkaufsliste, Kalender.</p>
+			<p><a href="/neu">WG erstellen</a></p>
+			<p><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a> · <a href="/agb">AGB</a></p>
+		</main>
+	</noscript>
 </body>
 </html>

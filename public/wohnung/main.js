@@ -1,7 +1,7 @@
 import Lenis from 'lenis';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { FOTOS, kamera, ladeFotos, punkt } from './fotos.js';
+import { fahrt } from './fahrt.js';
 import { loader } from './loader.js';
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -36,7 +36,7 @@ const toWorld = ([x, y, w, h]) => ({
 	d: h * K,
 });
 const homeImg = new Image();
-homeImg.src = 'plan/home.jpg';
+homeImg.src = 'plan/home.webp';
 await homeImg.decode(); // Startseite der echten App, 3×
 
 // Renderer
@@ -292,7 +292,7 @@ try {
 let planA = null;
 try {
 	const tl = new THREE.TextureLoader();
-	const [ta, tb] = await Promise.all(['a', 'b'].map((x) => tl.loadAsync(`plan/oben-${x}.jpg`)));
+	const [ta, tb] = await Promise.all(['a', 'b'].map((x) => tl.loadAsync(`plan/oben-${x}.webp`)));
 	for (const t of [ta, tb]) {
 		t.colorSpace = THREE.SRGBColorSpace;
 		t.anisotropy = 8;
@@ -450,7 +450,10 @@ addEventListener('pointermove', (e) => {
 // Scroll: Fotos (Flur → … → Nacht), dann „Licht an“, dann Grundriss → App
 const FOTO_END = 0.58;
 const PLAN_START = 0.62;
-const lenis = new Lenis({ autoRaf: true, lerp: 0.085 });
+const lenis = new Lenis({
+	autoRaf: true,
+	lerp: matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 0.085,
+});
 lenis.stop();
 window.__p = {
 	lenis,
@@ -470,64 +473,22 @@ const project = (x, y, z) => {
 };
 let lastStep = -1;
 
-// Foto-Teil
-const fcam = new THREE.PerspectiveCamera(50, 1, 0.05, 50);
-const tagsEl = $('.tags');
+// Kamerafahrt durchs Wohnzimmer (Blender/Cycles)
+const seqCanvas = $('#seq');
+const seq = fahrt(seqCanvas);
 const psteps = $$('.pstep');
 const flash = $('.flash');
 const chapter = $('.chapter');
-const KAPITEL = ['Flur', 'Wohnzimmer', 'Esstisch', 'Regal', 'Küche', 'Fenster', 'Abend'];
+const KAPITEL = ['Tür', 'Esstisch', 'Regal', 'Fenster', 'Sofa'];
 let lastP = -1;
-let tagEls = [];
-function fotoTags(i) {
-	tagsEl.innerHTML = '';
-	tagEls = FOTOS[i].tags.map(([u, v, t, d], k) => {
-		const el = document.createElement('div');
-		el.className = 'tag';
-		el.innerHTML = `<span class="n">${String(i + 1).padStart(2, '0')}.${k + 1}</span>${t}<span class="d">${d}</span>`;
-		tagsEl.appendChild(el);
-		return { el, pos: punkt(FOTOS[i], u, v) };
-	});
-}
-function fotos(P, _t) {
-	const n = FOTOS.length;
-	const x = clamp(P / FOTO_END) * n;
-	const i = Math.min(n - 1, Math.floor(x));
-	const local = x - i;
-	const f = FOTOS[i];
-	const next = FOTOS[i + 1];
-	const fade = next ? seg(local, 0.72, 1) : 0;
-	kamera(fcam, f, innerWidth / innerHeight);
-	const [dx, dy, dz] = f.drift;
-	const k = smooth(clamp(local * 1.1));
-	fcam.position.set(dx * (k - 0.5) * 2 + mouse.sx * 0.12, dy * k - mouse.sy * 0.07, -dz * k);
-	fcam.lookAt(fcam.position.x * 0.4, fcam.position.y * 0.4, -6);
-	renderer.autoClear = true;
-	f.mat.uniforms.reveal.value = 1;
-	// Abend: dasselbe Wohnzimmer wie Bild 2, nur nachts – sanft einblenden statt auflösen
-	f.mat.uniforms.dim.value = 1;
-	renderer.render(f.scene, fcam);
-	if (next && fade > 0) {
-		renderer.autoClear = false;
-		renderer.clearDepth();
-		next.mat.uniforms.reveal.value = fade;
-		renderer.render(next.scene, fcam);
-		renderer.autoClear = true;
-	}
+function fotos(P) {
+	const u = clamp(P / FOTO_END);
+	const i = seq.zeichne(u);
 	if (i !== lastP) {
-		fotoTags(i);
 		psteps.forEach((el, j) => el.classList.toggle('on', j === i));
 		chapter.textContent = `${String(i + 1).padStart(2, '0')} — ${KAPITEL[i]}`;
 		lastP = i;
 	}
-	const tv = seg(local, 0.08, 0.2) * (1 - seg(local, 0.6, 0.72));
-	tagEls.forEach(({ el, pos }, k) => {
-		v3.copy(pos).project(fcam);
-		const sx = (v3.x * 0.5 + 0.5) * innerWidth;
-		const sy = (-v3.y * 0.5 + 0.5) * innerHeight;
-		el.style.transform = `translate(${sx}px, ${sy}px)`;
-		el.style.opacity = clamp(tv * 1.4 - k * 0.12);
-	});
 }
 
 function frame(t) {
@@ -541,15 +502,15 @@ function frame(t) {
 		seg(P, FOTO_END - 0.015, FOTO_END + 0.02) * (1 - seg(P, PLAN_START - 0.01, PLAN_START + 0.03));
 	const inFotos = P < (FOTO_END + PLAN_START) / 2;
 	document.body.classList.toggle('in-plan', !inFotos);
+	seqCanvas.style.visibility = inFotos ? 'visible' : 'hidden';
 	if (inFotos) {
-		fotos(P, t);
+		fotos(P);
 		requestAnimationFrame(frame);
 		return;
 	}
 	if (lastP !== -2) {
-		tagsEl.innerHTML = '';
 		for (const el of psteps) el.classList.remove('on');
-		chapter.textContent = '08 — Grundriss';
+		chapter.textContent = '06 — Grundriss';
 		lastP = -2;
 	}
 
@@ -660,7 +621,7 @@ function frame(t) {
 	requestAnimationFrame(frame);
 }
 // Start erst, wenn alles geladen ist
-await ladeFotos((x) => loader.progress(x));
+await seq.alle((x) => loader.progress(x));
 await loader.done();
 lenis.start();
 requestAnimationFrame(frame);
