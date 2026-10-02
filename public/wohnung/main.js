@@ -1,8 +1,8 @@
 import Lenis from 'lenis';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { fahrt } from './fahrt.js';
 import { loader } from './loader.js';
+import { ladeWelt } from './welt.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -465,7 +465,6 @@ const steps = $$('.step');
 const STEP_AT = [0, 0.12, 0.31, 0.5, 0.8];
 const app = $('.app');
 const bon = $('.bon');
-const pct = $('.pct');
 const v3 = new THREE.Vector3();
 const project = (x, y, z) => {
 	v3.set(x, y, z).project(camera);
@@ -473,20 +472,17 @@ const project = (x, y, z) => {
 };
 let lastStep = -1;
 
-// Kamerafahrt durchs Wohnzimmer (Blender/Cycles)
-const seqCanvas = $('#seq');
-const seq = fahrt(seqCanvas);
+// Echtzeit-Wohnung (Blender, gebackenes Licht)
+let welt = null;
 const psteps = $$('.pstep');
 const flash = $('.flash');
-const chapter = $('.chapter');
-const KAPITEL = ['Tür', 'Esstisch', 'Regal', 'Fenster', 'Sofa'];
 let lastP = -1;
 function fotos(P) {
 	const u = clamp(P / FOTO_END);
-	const i = seq.zeichne(u);
+	// letzte Strecke: es wird Abend
+	const i = welt.render(renderer, u, mouse.sx, mouse.sy, window.__nacht ?? seg(u, 0.8, 0.98));
 	if (i !== lastP) {
 		psteps.forEach((el, j) => el.classList.toggle('on', j === i));
-		chapter.textContent = `${String(i + 1).padStart(2, '0')}: ${KAPITEL[i]}`;
 		lastP = i;
 	}
 }
@@ -494,7 +490,6 @@ function fotos(P) {
 function frame(t) {
 	const P = clamp(lenis.limit ? lenis.animatedScroll / lenis.limit : 0);
 	const p = clamp((P - PLAN_START) / (1 - PLAN_START));
-	pct.textContent = String(Math.round(P * 100)).padStart(3, '0');
 	mouse.sx += (mouse.x - mouse.sx) * 0.05;
 	mouse.sy += (mouse.y - mouse.sy) * 0.05;
 	// „Licht an“: zwischen Nacht und Grundriss kurz hell
@@ -502,7 +497,6 @@ function frame(t) {
 		seg(P, FOTO_END - 0.015, FOTO_END + 0.02) * (1 - seg(P, PLAN_START - 0.01, PLAN_START + 0.03));
 	const inFotos = P < (FOTO_END + PLAN_START) / 2;
 	document.body.classList.toggle('in-plan', !inFotos);
-	seqCanvas.style.visibility = inFotos ? 'visible' : 'hidden';
 	if (inFotos) {
 		fotos(P);
 		requestAnimationFrame(frame);
@@ -510,7 +504,6 @@ function frame(t) {
 	}
 	if (lastP !== -2) {
 		for (const el of psteps) el.classList.remove('on');
-		chapter.textContent = '06: Grundriss';
 		lastP = -2;
 	}
 
@@ -621,7 +614,7 @@ function frame(t) {
 	requestAnimationFrame(frame);
 }
 // Start erst, wenn alles geladen ist
-await seq.alle((x) => loader.progress(x));
+welt = await ladeWelt((x) => loader.progress(x));
 await loader.done();
 lenis.start();
 requestAnimationFrame(frame);

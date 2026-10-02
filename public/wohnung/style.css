@@ -1,4 +1,24 @@
 @font-face {
+	font-family: "Instrument Serif";
+	src: url(fonts/instrument-serif.woff2) format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: block;
+}
+@font-face {
+	font-family: "Instrument Serif";
+	src: url(fonts/instrument-serif-italic.woff2) format("woff2");
+	font-weight: 400;
+	font-style: italic;
+	font-display: block;
+}
+@font-face {
+	font-family: "Instrument Sans";
+	src: url(fonts/instrument-sans.woff2) format("woff2");
+	font-weight: 400 700;
+	font-display: block;
+}
+@font-face {
 	font-family: "Inter Tight";
 	src: url(fonts/inter-tight-latin.woff2) format("woff2");
 	font-weight: 100 900;
@@ -39,7 +59,7 @@ html.lenis body {
 }
 body {
 	color: var(--fg);
-	font: 400 15px / 1.45 "Inter", system-ui, sans-serif;
+	font: 400 16px / 1.5 "Instrument Sans", system-ui, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	overflow-x: hidden;
 }
@@ -52,7 +72,7 @@ button {
 	text-align: left;
 }
 .mono {
-	font-family: "JetBrains Mono", monospace;
+	font-family: "Instrument Sans", system-ui, sans-serif;
 	font-size: 11px;
 	letter-spacing: 0.03em;
 }
@@ -91,7 +111,7 @@ button {
 	align-items: baseline;
 }
 .word {
-	font: 600 22px / 1 "Inter Tight", sans-serif;
+	font: 400 22px / 1 "Instrument Serif", Georgia, serif;
 	letter-spacing: -0.035em;
 }
 
@@ -124,8 +144,8 @@ button {
 	margin-bottom: 16px;
 }
 h2 {
-	font: 500 clamp(44px, 5vw, 88px) / 0.94 "Inter Tight", sans-serif;
-	letter-spacing: -0.05em;
+	font: 400 clamp(44px, 5vw, 88px) / 0.94 "Instrument Serif", Georgia, serif;
+	letter-spacing: -0.015em;
 }
 .sub {
 	margin-top: 18px;
@@ -211,7 +231,7 @@ h2 {
 	position: absolute;
 	left: 0;
 	top: 0;
-	font: 500 11px / 1.3 "JetBrains Mono", monospace;
+	font: 500 12px / 1.3 "Instrument Sans", system-ui, sans-serif;
 	letter-spacing: 0.03em;
 	white-space: nowrap;
 	text-align: center;
@@ -224,7 +244,7 @@ h2 {
 }
 .label .to {
 	display: block;
-	font: 500 17px / 1.1 "Inter Tight", sans-serif;
+	font: 400 17px / 1.1 "Instrument Serif", Georgia, serif;
 	letter-spacing: -0.02em;
 	color: var(--fg);
 	clip-path: inset(0 100% 0 0);
@@ -308,7 +328,7 @@ h2 {
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 30px;
-	font: 600 14px "Inter", sans-serif;
+	font: 600 14px "Inter", system-ui, sans-serif;
 	color: #171717;
 	background: #fff;
 	z-index: 3;
@@ -383,7 +403,7 @@ html.loading body {
 	display: flex;
 	align-items: baseline;
 	gap: 0.12em;
-	font: 500 clamp(80px, 15vw, 260px) / 0.9 "Inter Tight", sans-serif;
+	font: 400 clamp(80px, 15vw, 260px) / 0.9 "Instrument Serif", Georgia, serif;
 	letter-spacing: -0.06em;
 	font-variant-numeric: tabular-nums;
 	transition: opacity 0.5s var(--ease), transform 0.9s var(--ease), filter 0.6s;
@@ -416,7 +436,7 @@ html.loading body {
 	transition: all 0.8s var(--ease);
 }
 .l-part b {
-	font: 500 clamp(34px, 4.6vw, 72px) / 1 "Inter Tight", sans-serif;
+	font: 400 clamp(34px, 4.6vw, 72px) / 1 "Instrument Serif", Georgia, serif;
 	letter-spacing: -0.045em;
 }
 .l-part span {
@@ -492,8 +512,8 @@ html.loading body {
 }
 .pcopy h1,
 .pcopy h2 {
-	font: 500 clamp(52px, 7vw, 124px) / 0.92 "Inter Tight", sans-serif;
-	letter-spacing: -0.055em;
+	font: 400 clamp(52px, 7vw, 124px) / 0.92 "Instrument Serif", Georgia, serif;
+	letter-spacing: -0.015em;
 	text-shadow: 0 2px 50px rgba(0, 0, 0, 0.45);
 }
 .pcopy .kicker {
@@ -721,4 +741,48 @@ body:not(.in-plan) .grain {
 }
 .in-plan .shade {
 	opacity: 0;
+}
+
+/* Ruhiger: keine Körnung, kein Zähler, kein Scroll-Balken */
+.grain,
+.hint {
+	display: none !important;
+}
+.mono {
+	letter-spacing: 0;
+	font-size: 13px;
+}
+.kicker {
+	font-size: 13px;
+	letter-spacing: 0.01em;
+	opacity: 0.85;
+}
+h1 em,
+h2 em {
+	font-style: italic;
+}
+.word {
+	font-family: "Instrument Serif", Georgia, serif;
+	font-size: 28px;
+	letter-spacing: -0.01em;
+}
+.hud-cta {
+	font: 500 14px / 1 "Instrument Sans", system-ui, sans-serif;
+	color: inherit;
+	text-decoration: none;
+	padding: 10px 16px;
+	border-radius: 99px;
+	border: 1px solid currentColor;
+	opacity: 0.9;
+	transition: background 0.3s, color 0.3s;
+}
+.hud-cta:hover {
+	background: #fff;
+	color: #171717;
+	border-color: #fff;
+}
+.in-plan .hud-cta:hover {
+	background: #171717;
+	color: #fff;
+	border-color: #171717;
 }

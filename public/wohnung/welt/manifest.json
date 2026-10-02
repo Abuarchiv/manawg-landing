@@ -1,0 +1,30 @@
+{
+	"atlases": [
+		{
+			"name": "atlas_0",
+			"objekte": 1,
+			"flaeche": 239.2
+		},
+		{
+			"name": "atlas_1",
+			"objekte": 1,
+			"flaeche": 239.2
+		},
+		{
+			"name": "atlas_2",
+			"objekte": 1,
+			"flaeche": 239.2
+		}
+	],
+	"live": [
+		"Blumenvase_Glas",
+		"Chrom",
+		"Flaschenglas",
+		"Flaschenglas.001",
+		"Glas",
+		"Hof",
+		"Messing"
+	],
+	"alpha": {},
+	"nacht": true
+}

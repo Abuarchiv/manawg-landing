@@ -20,15 +20,14 @@
 	<meta name="twitter:card" content="summary_large_image" />
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-	<link rel="preload" href="fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin />
 	<link rel="stylesheet" href="style.css" />
 	<script type="importmap">{ "imports": { "three": "/wohnung/vendor/three/three.module.js", "three/addons/": "/wohnung/vendor/three/addons/", "lenis": "/wohnung/vendor/lenis/lenis.mjs" } }</script>
 </head>
 <body>
 	<canvas id="gl"></canvas>
-	<canvas id="seq" aria-hidden="true"></canvas>
 	<div class="shade" aria-hidden="true"></div>
-	<div class="grain" aria-hidden="true"></div>
 	<div class="flash" aria-hidden="true"></div>
 
 	<section class="pcopy">
@@ -41,10 +40,8 @@
 
 	<header class="hud mono">
 		<span class="word">ManaWG</span>
-		<span class="dim chapter">01: Tür</span>
-		<span class="dim"><span class="pct">000</span> / 100</span>
+		<a class="hud-cta" href="/neu">WG erstellen</a>
 	</header>
-	<footer class="hint mono dim"><span>Scrollen</span><span class="bar"><i></i></span></footer>
 
 	<div class="labels" aria-hidden="true"></div>
 
