@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
 		return [{ source: '/:path*', headers: securityHeaders }];
 	},
 	experimental: {
-		optimizePackageImports: ['lucide-react', '@react-three/drei'],
+		optimizePackageImports: ['lucide-react'],
 	},
 	async redirects() {
 		return [
@@ -50,12 +50,17 @@ const nextConfig: NextConfig = {
 		];
 	},
 	async rewrites() {
-		return [
-			// Domain-association files must be served from the apex domain the
-			// native apps claim, so these stay proxied rather than redirected —
-			// a redirect would break association.
-			{ source: '/.well-known/:path*', destination: `${APP_ORIGIN}/.well-known/:path*` },
-		];
+		return {
+			// Die Startseite ist eine statische WebGL-Seite in public/wohnung
+			// (Quelle: landing-konzept/site, kopiert mit publish.sh).
+			beforeFiles: [{ source: '/', destination: '/wohnung/index.html' }],
+			afterFiles: [
+				// Domain-association files must be served from the apex domain the
+				// native apps claim, so these stay proxied rather than redirected —
+				// a redirect would break association.
+				{ source: '/.well-known/:path*', destination: `${APP_ORIGIN}/.well-known/:path*` },
+			],
+		};
 	},
 };
 
