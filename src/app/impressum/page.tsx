@@ -5,8 +5,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Impressum — ManaWG',
-	description:
-		'Kontaktdaten und Anbieterinformationen für ManaWG. Privat und kostenlos betrieben von Abubakar Abditube, Frankfurt am Main.',
+	description: 'Anbieter, Anschrift und Kontakt von ManaWG.',
 	alternates: { canonical: '/impressum' },
 };
 
@@ -17,25 +16,22 @@ export default function ImpressumPage() {
 				<Link
 					href="/"
 					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-					aria-label="Zurück zur Startseite"
+					aria-label="Zur Startseite"
 				>
 					<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />
-					Zurück
+					Zur Startseite
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Impressum</h1>
 				<p className="text-sm text-[var(--text-3)] mb-8">
-					Angaben gemäß § 5 DDG / § 18 MStV — Stand: 19. Mai 2026
+					Angaben nach § 5 DDG und § 18 MStV — Stand: 2. Oktober 2026
 				</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">Betreiber</h2>
 						<p>Abubakar Abditube</p>
-						<p className="mt-2 text-[var(--text-3)]">
-							ManaWG wird privat und kostenlos betrieben. Es gibt keine Werbung, keine Investoren,
-							keinen Verkauf von Daten und kein kostenpflichtiges Angebot.
-						</p>
+						<p className="mt-2 text-[var(--text-3)]">ManaWG wird privat und kostenlos betrieben.</p>
 					</section>
 
 					<section>
@@ -54,25 +50,16 @@ export default function ImpressumPage() {
 								info@manawg.com
 							</a>
 						</p>
-						<p className="mt-2 text-[var(--text-3)]">
-							Du erreichst uns unter der angegebenen E-Mail-Adresse. Da ManaWG privat betrieben
-							wird, können wir nicht immer sofort antworten.
-						</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">Umsatzsteuer-ID</h2>
-						<p>
-							Nicht vorhanden. ManaWG wird kostenlos und nicht als entgeltlicher kommerzieller
-							Dienst betrieben.
-						</p>
+						<p>Eine Umsatzsteuer-Identifikationsnummer ist nicht vorhanden.</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">Aufsichtsbehörde</h2>
-						<p>
-							Nicht erlaubnispflichtig — kein Erlaubnisvorbehalt für diesen Dienst erforderlich.
-						</p>
+						<p>Für diesen Dienst ist keine behördliche Erlaubnis erforderlich.</p>
 					</section>
 
 					<section>
@@ -90,7 +77,7 @@ export default function ImpressumPage() {
 			<footer className="pb-[max(1.5rem,env(safe-area-inset-bottom))] px-4 text-center">
 				<p className="text-xs text-[var(--text-3)]">
 					<Link href="/agb" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
-						AGB
+						Nutzungsbedingungen
 					</Link>
 					{' · '}
 					<Link href="/datenschutz" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>

@@ -5,8 +5,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Nutzungsbedingungen — ManaWG',
-	description:
-		'Nutzungsbedingungen für ManaWG: kostenlose Nutzung, Rechte und Pflichten, Haftung und Kündigung.',
+	description: 'Nutzungsbedingungen für ManaWG: Nutzung, Inhalte, Haftung und Kündigung.',
 	alternates: { canonical: '/agb' },
 };
 
@@ -17,10 +16,10 @@ export default function AgbPage() {
 				<Link
 					href="/"
 					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-					aria-label="Zurück zur Startseite"
+					aria-label="Zur Startseite"
 				>
 					<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />
-					Zurück
+					Zur Startseite
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Nutzungsbedingungen</h1>
@@ -30,28 +29,28 @@ export default function AgbPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Geltungsbereich</h2>
 						<p>
-							Diese Nutzungsbedingungen regeln die Nutzung von ManaWG — einer kostenlosen Web-App
-							für Wohngemeinschaften. ManaWG wird privat und unentgeltlich betrieben und ist kein
-							kommerzielles Produkt. Betreiber: Abubakar Abditube, Frankfurt am Main (Kontakt:{' '}
+							Diese Bedingungen gelten für die Nutzung der Web-App ManaWG zur Organisation von
+							Wohngemeinschaften. Betreiber ist Abubakar Abditube in Frankfurt am Main. Du erreichst
+							ihn unter{' '}
 							<a href="mailto:info@manawg.com" className="break-all">
 								info@manawg.com
 							</a>
-							).
+							.
 						</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">2. Leistungen</h2>
 						<p>
-							ManaWG stellt eine Plattform zur Organisation gemeinsamer Haushalts- und WG-Aufgaben
-							bereit (Ausgabenverwaltung, Putzplan, Einkaufsliste, Pinnwand). Die Nutzung ist
-							kostenlos. Die App wird nach bestem Bemühen betrieben; es besteht kein Anspruch auf
-							Verfügbarkeit, Datenwiederherstellung, Support oder bestimmte Funktionen.
+							ManaWG hilft dir, den gemeinsamen Haushalt zu organisieren, etwa mit Ausgaben,
+							Putzplan, Einkaufsliste und Pinnwand. Die Nutzung ist kostenlos. Wir bemühen uns um
+							zuverlässigen Betrieb, können aber weder eine durchgehende Verfügbarkeit noch die
+							Wiederherstellung von Daten, Support oder bestimmte Funktionen zusagen.
 						</p>
 						<p className="mt-2">
-							<strong>Mindestalter:</strong> Die Nutzung von ManaWG setzt ein Mindestalter von 16
-							Jahren voraus (Art. 8 DSGVO). Personen unter 16 Jahren dürfen ManaWG nicht ohne
-							ausdrückliche Einwilligung einer erziehungsberechtigten Person nutzen.
+							<strong>Nutzung durch Minderjährige:</strong> Wenn du unter 16 Jahre alt bist,
+							benötigst du für die Nutzung die ausdrückliche Einwilligung einer
+							erziehungsberechtigten Person.
 						</p>
 					</section>
 
@@ -60,21 +59,21 @@ export default function AgbPage() {
 							3. Mitgliedschaft und Pflichten
 						</h2>
 						<p>
-							Zur Nutzung meldest du dich mit deinem Google-Konto oder mit E-Mail-Adresse und
-							Passwort an. Du bist verantwortlich für die Inhalte, die du einstellst, sowie für den
-							Schutz deines Gerätes und Browser-Speichers vor unbefugtem Zugriff. Rechtswidrige
-							Inhalte, Missbrauch und automatisierte Angriffe sind untersagt.
+							Du meldest dich mit deinem Google-Konto oder mit E-Mail-Adresse und Passwort an. Für
+							Inhalte, die du einstellst, bist du verantwortlich. Schütze dein Gerät und den darauf
+							gespeicherten Browserzugang vor unbefugtem Zugriff. Es ist untersagt, rechtswidrige
+							Inhalte einzustellen, ManaWG zu missbrauchen oder automatisierte Angriffe auszuführen.
 						</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">4. Foto-Uploads</h2>
 						<p>
-							Du darfst nur Fotos hochladen, an denen du die nötigen Rechte hast. Persönlichkeits-
-							und Urheberrechte Dritter sind zu wahren. Fotos werden bei unserem Auftragsverarbeiter{' '}
-							<strong>Supabase</strong> (Region Frankfurt, EU) gespeichert und nur an Mitglieder der
-							WG ausgeliefert. Wie lange Fotos gespeichert werden und wie ihre Löschung erfolgt,
-							beschreiben wir in Abschnitt 4d der Datenschutzerklärung.
+							Lade nur Fotos hoch, an denen du die erforderlichen Rechte hast. Achte dabei auf die
+							Urheber- und Persönlichkeitsrechte anderer. Fotos speichern wir bei{' '}
+							<strong>Supabase</strong> in Frankfurt am Main und stellen sie nur Mitgliedern deiner
+							WG bereit. Wie lange das geschieht und wie die Löschung abläuft, steht in Abschnitt{' '}
+							<Link href="/datenschutz#4d">4d der Datenschutzerklärung</Link>.
 						</p>
 					</section>
 
@@ -83,13 +82,16 @@ export default function AgbPage() {
 							5. Nutzungsrechte an deinen Inhalten
 						</h2>
 						<p>
-							Du behältst alle Rechte an deinen Inhalten (Pinnwand-Beiträge, Fotos, sonstige
-							Uploads). Du räumst uns für die Dauer deiner Mitgliedschaft eine einfache,
-							nicht-übertragbare Lizenz ein, deine Inhalte technisch zu speichern, zu übertragen,
-							anzuzeigen und in Backups zu sichern, soweit das für den Betrieb des Dienstes
-							erforderlich ist. Mit Löschung deiner WG oder der betroffenen Inhalte erlischt diese
-							Lizenz. Für die Löschung gespeicherter Daten und Fotos gelten die Angaben in Abschnitt
-							4 der Datenschutzerklärung.
+							Du behältst alle Rechte an deinen Inhalten, zum Beispiel an Pinnwand-Beiträgen und
+							Fotos. Für den Betrieb der WG räumst du uns eine einfache, nicht übertragbare
+							Erlaubnis ein, diese Inhalte zu speichern, zu übertragen, anzuzeigen und technisch zu
+							sichern, soweit das für die gemeinsamen Funktionen erforderlich ist. Verlässt du die
+							WG, bleibt diese Erlaubnis nur für Inhalte bestehen, die nach Ziffer 10 dieser
+							Bedingungen und den Abschnitten <Link href="/datenschutz#4b">4b</Link> und{' '}
+							<Link href="/datenschutz#4d">4d der Datenschutzerklärung</Link> für die WG erhalten
+							bleiben. Sie endet, sobald der jeweilige Inhalt gelöscht wird. Für die Löschung
+							gespeicherter Daten und Fotos gelten die Angaben in den Abschnitten 4b und 4d der
+							Datenschutzerklärung.
 						</p>
 					</section>
 
@@ -98,8 +100,8 @@ export default function AgbPage() {
 							6. Kostenlose Nutzung und gesetzliche Rechte
 						</h2>
 						<p>
-							Für die Nutzung von ManaWG zahlst du kein Entgelt. Gesetzliche Verbraucherrechte,
-							einschließlich eines gegebenenfalls bestehenden Widerrufsrechts, bleiben unberührt. Du
+							Die Nutzung von ManaWG ist kostenlos. Deine gesetzlichen Verbraucherrechte,
+							einschließlich eines gegebenenfalls bestehenden Widerrufsrechts, bleiben bestehen. Du
 							kannst deine Mitgliedschaft jederzeit nach Ziffer 10 beenden.
 						</p>
 					</section>
@@ -107,14 +109,13 @@ export default function AgbPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">7. Haftung</h2>
 						<p>
-							Wir haften unbeschränkt bei Vorsatz und grober Fahrlässigkeit, bei Verletzung von
-							Leben, Körper oder Gesundheit sowie nach den Vorschriften des Produkthaftungsgesetzes.
-							Bei einfacher Fahrlässigkeit haften wir nur für die Verletzung wesentlicher
-							Vertragspflichten (Kardinalpflichten); die Haftung ist hierbei der Höhe nach auf den
-							vertragstypischen, vorhersehbaren Schaden begrenzt. Eine weitergehende Haftung ist
-							ausgeschlossen, soweit gesetzlich zulässig. ManaWG wird unentgeltlich bereitgestellt;
-							nutze die App daher nicht als alleinige Grundlage für kritische finanzielle,
-							rechtliche oder organisatorische Entscheidungen.
+							Bei Vorsatz und grober Fahrlässigkeit, bei Schäden an Leben, Körper oder Gesundheit
+							sowie nach dem Produkthaftungsgesetz haften wir unbeschränkt. Bei einfacher
+							Fahrlässigkeit haften wir nur, wenn wir eine wesentliche Vertragspflicht verletzen;
+							die Haftung ist dann auf den vorhersehbaren, für den Vertrag typischen Schaden
+							begrenzt. Soweit das Gesetz es erlaubt, ist eine weitergehende Haftung ausgeschlossen.
+							Verlasse dich bei wichtigen finanziellen, rechtlichen oder organisatorischen
+							Entscheidungen nicht allein auf die App.
 						</p>
 					</section>
 
@@ -123,9 +124,9 @@ export default function AgbPage() {
 							8. Lizenz / Quellcode
 						</h2>
 						<p>
-							Der Quellcode von ManaWG ist nicht öffentlich einsehbar. Die Nutzung der App erlaubt
-							keine Einsichtnahme, Vervielfältigung, Weitergabe oder kommerzielle Verwertung des
-							Quellcodes.
+							Der Quellcode von ManaWG wird nicht als Open-Source-Software angeboten. Die Nutzung
+							der App überträgt dir keine Rechte zur Weitergabe oder kommerziellen Verwertung des
+							Quellcodes. Gesetzlich erlaubte Nutzungen bleiben unberührt.
 						</p>
 					</section>
 
@@ -134,7 +135,7 @@ export default function AgbPage() {
 							9. Meldung rechtswidriger Inhalte (DSA Art. 16)
 						</h2>
 						<p>
-							Meldungen rechtswidriger Inhalte bitte an:{' '}
+							Melde rechtswidrige Inhalte bitte an{' '}
 							<a href="mailto:info@manawg.com" className="break-all">
 								info@manawg.com
 							</a>
@@ -145,41 +146,64 @@ export default function AgbPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">10. Kündigung</h2>
 						<p>
-							Du kannst deine Mitgliedschaft auf diesem Gerät jederzeit über{' '}
-							<em>Einstellungen → Zugang → WG verlassen</em> beenden — deine bisherigen Beiträge
-							bleiben für die WG erhalten. Dein Konto kannst du jederzeit über{' '}
-							<em>Einstellungen → Zugang → Konto löschen</em> löschen; Details siehe
-							Datenschutzerklärung Abschnitt 8. Die WG-Erstellerin oder der WG-Ersteller kann die
-							gesamte WG über <em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich
-							entfernen. Die zugehörigen Daten werden aus der aktiven Datenbank entfernt. Der Abruf
-							zugehöriger Bilder wird sofort gesperrt. Ihre anschließende physische Löschung ist in
-							Abschnitt 4d der Datenschutzerklärung beschrieben. Eine zusätzliche Löschung von
-							Daten, die dir zugeordnet werden können (Mitgliedskennung, von dir erstellte Inhalte,
-							Fotos), kann auf Anfrage per E-Mail an{' '}
+							Du kannst deine Mitgliedschaft jederzeit über{' '}
+							<em>Einstellungen → Zugang → WG verlassen</em> beenden. Deine bisherigen Beiträge
+							bleiben für die WG erhalten; dazu findest du mehr in den Abschnitten{' '}
+							<Link href="/datenschutz#4b">4b</Link> und{' '}
+							<Link href="/datenschutz#4d">4d der Datenschutzerklärung</Link>.
+						</p>
+						<p className="mt-2">
+							Du kannst dein Konto jederzeit über <em>Einstellungen → Zugang → Konto löschen</em>{' '}
+							löschen. Was dabei mit deinen Daten geschieht, steht in Abschnitt{' '}
+							<Link href="/datenschutz#rechte">8 der Datenschutzerklärung</Link>.
+						</p>
+						<p className="mt-2">
+							Die Erstellerin oder der Ersteller einer WG kann sie über{' '}
+							<em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich entfernen. Die
+							WG-Daten werden aus der aktiven Datenbank entfernt. Bilder sind sofort nicht mehr
+							abrufbar; zur anschließenden physischen Löschung siehe{' '}
+							<Link href="/datenschutz#4d">Abschnitt 4d der Datenschutzerklärung</Link>.
+						</p>
+						<p className="mt-2">
+							Du kannst außerdem per E-Mail an{' '}
 							<a href="mailto:info@manawg.com" className="break-all">
 								info@manawg.com
 							</a>{' '}
-							angefordert werden und wird binnen 30 Tagen gemäß Art. 12 Abs. 3 DSGVO bearbeitet. Wir
-							behalten uns vor, Mitgliedschaften oder WGs bei Verstößen gegen diese Bedingungen zu
-							sperren oder zu löschen.
+							die Löschung von Daten beantragen, die dir zugeordnet werden können, etwa deiner
+							Mitgliedskennung, deiner Inhalte oder Fotos. Wir beantworten den Antrag ohne
+							unangemessene Verzögerung und spätestens innerhalb eines Monats. Bei komplexen
+							Anträgen oder einer großen Zahl von Anfragen können wir die Frist um bis zu zwei
+							weitere Monate verlängern; die Gründe dafür teilen wir dir innerhalb des ersten Monats
+							mit (Art. 12 Abs. 3 DSGVO; siehe auch Abschnitt{' '}
+							<Link href="/datenschutz#rechte">8 der Datenschutzerklärung</Link>). Diese
+							Antwortfrist garantiert keine physische Löschung von Fotos innerhalb eines Monats;
+							dazu Abschnitt <Link href="/datenschutz#4d">4d</Link>. Gesetzliche Löschpflichten
+							bleiben unberührt.
+						</p>
+						<p className="mt-2">
+							Bei Verstößen gegen diese Bedingungen können wir Mitgliedschaften oder WGs sperren
+							oder löschen.
 						</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">11. Änderungen</h2>
 						<p>
-							Diese Bedingungen können angepasst werden, wenn sich Funktionen, Hosting oder
-							rechtliche Anforderungen ändern. Wesentliche Änderungen werden in der App oder auf der
-							Webseite kenntlich gemacht. Wenn du die Bedingungen nicht akzeptierst, kannst du die
-							App nicht weiter nutzen und deine WG bzw. deine Daten löschen lassen.
+							Wir können diese Bedingungen aus einem sachlichen Grund ändern, etwa wenn sich
+							Funktionen, Hosting oder rechtliche Vorgaben ändern, und nur im gesetzlich zulässigen
+							Rahmen. Über wesentliche Änderungen informieren wir in der App oder auf der Website.
+							Wenn eine Änderung deine Zustimmung erfordert, bitten wir dich ausdrücklich darum;
+							allein durch die weitere Nutzung gilt sie nicht als erteilt. Wenn du einer Änderung
+							nicht zustimmst, kannst du die Nutzung beenden und nach Ziffer 10 deine Mitgliedschaft
+							oder WG löschen lassen. Deine gesetzlichen Rechte bleiben unberührt.
 						</p>
 					</section>
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">12. Geltendes Recht</h2>
 						<p>
-							Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts. Gerichtsstand ist
-							Frankfurt am Main, soweit gesetzlich zulässig.
+							Es gilt deutsches Recht; das UN-Kaufrecht ist ausgeschlossen. Soweit gesetzlich
+							zulässig, ist Frankfurt am Main Gerichtsstand.
 						</p>
 					</section>
 
@@ -198,9 +222,8 @@ export default function AgbPage() {
 							14. Salvatorische Klausel
 						</h2>
 						<p>
-							Sollte eine Bestimmung dieser Bedingungen unwirksam sein, bleibt die Wirksamkeit der
-							übrigen Bestimmungen unberührt. An die Stelle der unwirksamen Bestimmung tritt die
-							gesetzliche Regelung.
+							Ist eine Bestimmung dieser Bedingungen unwirksam, bleiben die übrigen Bestimmungen
+							unberührt. An die Stelle der unwirksamen Bestimmung tritt die gesetzliche Regelung.
 						</p>
 					</section>
 				</div>

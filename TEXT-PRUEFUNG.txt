@@ -163,3 +163,74 @@ assert.equal(after.monthCompletions[memberId], 1);
 assert.ok(after.chores.find(({ id }) => id === chore.id).lastCompletedAt);
 console.log('PASS: eine Erledigung im laufenden Monat');
 NODE
+
+Nachtrag: Impressum, Datenschutzerklärung und Nutzungsbedingungen
+Auftrag vom 2. Oktober 2026: alle drei Rechtsseiten vollständig sprachlich überarbeiten.
+Basis dieses Nachtrags: Commit f38e207.
+
+Redaktionelle Überarbeitung
+- Alle Absätze der drei Seiten einzeln geprüft und sprachlich überarbeitet.
+  Kürzere Sätze, eindeutige Bezüge, erklärte Fachbegriffe und weniger Wiederholungen.
+- Betreibername, Kontakt und Anschrift aus dem vorhandenen Impressum übernommen;
+  diese Angaben wurden nicht neu ermittelt oder als behördlich verifiziert behandelt.
+- Werbeaussagen und die frühere Quellcode-Geschichte aus rechtlichen Angaben entfernt.
+- Datum einheitlich 2. Oktober 2026; Navigation „Zur Startseite“ und
+  „Nutzungsbedingungen“. AGB-Verweise führen direkt zu den Datenschutzabschnitten.
+- Angaben zu Empfängern, IP-Adressen, lokalen Daten, aufbewahrten WG-Beiträgen,
+  nachgelagerter Fotolöschung und möglichen Drittlandübermittlungen beibehalten.
+
+Sachliche Korrekturen
+- Art. 12 Abs. 3 DSGVO: Auskunft über ergriffene Maßnahmen unverzüglich, spätestens
+  innerhalb eines Monats. Verlängerung um zwei weitere Monate nur nach den
+  gesetzlichen Voraussetzungen; Information mit Begründung innerhalb des ersten Monats.
+  Die Antwortfrist ist keine pauschale Garantie zur physischen Löschung aller Backups.
+- Widerruf von Einwilligungen gemäß Art. 7 Abs. 3 DSGVO ergänzt, einschließlich
+  Fortbestand der Rechtmäßigkeit bereits erfolgter Verarbeitung.
+- Art. 8 DSGVO nicht mehr als pauschales gesetzliches Mindestalter für jede App-Nutzung
+  dargestellt. Die bestehende Regel zur Zustimmung für unter 16-Jährige bleibt erhalten.
+- Zweckgebundene Nutzungsrechte für geteilte Inhalte mit dem ausdrücklich beschriebenen
+  Fortbestand dieser Inhalte nach einem WG-Austritt abgestimmt. Das ist eine
+  inhaltliche Klarstellung des Vertragsentwurfs, keine reine Rechtschreibkorrektur.
+- Gesetzlich erlaubte Nutzungen von Computerprogrammen nicht pauschal ausgeschlossen.
+- Änderungen der Nutzungsbedingungen an die gesetzlichen Anforderungen gebunden.
+- Produktanalyse nicht pauschal als „anonym“ bezeichnet. Technische Verbindungsdaten
+  und mögliche täglich wechselnde Kennungen erklärt; keine unbelegte Zusage
+  „kein Fingerprinting“. Kontodaten und Analyseprofile klar unterschieden.
+
+Belege
+- BfDI / DSGVO: Art. 7 Abs. 3, Art. 8, Art. 12 Abs. 3; EUR-Lex:
+  https://eur-lex.europa.eu/eli/reg/2016/679/2016-05-04/deu
+- Gesetzlich erlaubte Programmnutzungen:
+  https://www.gesetze-im-internet.de/urhg/__69d.html
+  https://www.gesetze-im-internet.de/urhg/__69g.html
+- PostHog beschreibt täglich wechselnde Server-Kennungen für den Modus ohne Cookies:
+  https://posthog.com/tutorials/cookieless-tracking
+  Die tatsächliche Aktivierung der dazugehörigen Projekteinstellung wurde nicht geprüft.
+- Lokaler Anwendungscode: manawg-app/apps/web/src/instrumentation-client.ts und
+  src/core/db/delete-account.ts. Gelesen, nicht geändert. Der Anwendungscode beschränkt
+  die Analyse auf drei Ereignistypen, überträgt aber auch technische Felder; die
+  zugehörige Beschreibung berücksichtigt das.
+
+Aktuell verifizierte PostHog-Aufbewahrung
+Der bestehende Chrome-Zugang öffnete Organisation ManaWG, Default project 264692,
+Region EU Cloud. Die Abrechnungsübersicht zeigt den kostenlosen Tarif mit dessen
+Nutzungsgrenzen und die Aufforderung, für bezahlte Funktionen eine Kreditkarte zu
+hinterlegen. Der geöffnete Tarifvergleich nennt unter „Events data retention“:
+Free: 1 year; Pay-as-you-go: 7 years.
+Der öffentliche Projektschlüssel stimmt mit NEXT_PUBLIC_POSTHOG_KEY der lokalen
+App-Konfiguration überein (nur Gleichheit geprüft, Schlüssel nicht dokumentiert).
+Abschnitt 4f nennt deshalb jetzt ein Jahr im aktuell genutzten kostenlosen Tarif.
+Das Konto wurde ausschließlich gelesen; keine Einstellungen, Tarife oder Zahlungen
+wurden verändert. Beleg: https://eu.posthog.com/organization/billing/overview
+Die vertraglichen Änderungen bleiben lokal als Entwurf gespeichert. Die Textprüfung
+und die Prüfung einzelner Quellen sind keine rechtliche Gesamtfreigabe.
+
+Prüfnachweise zum Nachtrag
+- Unabhängiges Review aller drei vollständigen Texte und des Diffs gegen f38e207.
+- Biome für die drei Dateien: bestanden; Typprüfung und finaler Produktionsbuild bestanden.
+- Alle drei Seiten liefern HTTP 200; alle internen Abschnittslinks treffen vorhandene IDs.
+- Verbundenes Chrome: Impressum, Nutzungsbedingungen und Datenschutz bei 320 Pixeln
+  ohne horizontalen Überlauf. Datenschutz zusätzlich bei 390 Pixeln geprüft; der Link
+  auf Abschnitt 4f landet sichtbar am richtigen Abschnitt. Browsergröße zurückgesetzt.
+- Screenshot legal-copy-preview.jpg zeigt die gerenderte endgültige Fristangabe.
+- Keine Veröffentlichung, keine Änderungen an Anbietereinstellungen oder App-Verhalten.
