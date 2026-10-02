@@ -85,6 +85,10 @@ Befunde und Änderungen
     gekennzeichnet und konnte als Preis missverstanden werden. Die Beschriftung
     lautet nun „Beispielrechnung · Seite lädt“.
 
+33. Beim ersten Animationsframe konnte die Ladeanzeige kurz „−0,01 €“ zeigen.
+    Der Zeitfortschritt wird nun auf 0 bis 1 begrenzt; reduzierte Bewegung
+    behandelt die Ladezeit von null Millisekunden ausdrücklich.
+
 Inhaltliche Korrekturen in den Nutzungsbedingungen
 Diese Änderungen sind ein lokaler Entwurf und noch nicht veröffentlicht.
 - Die behauptete OS-Plattform der EU ist seit dem 20. Juli 2025 geschlossen.
@@ -104,8 +108,10 @@ Prüfnachweise
 - Unabhängiges Textreview: sämtliche Quelltexte und acht Demo-Bildschirme gelesen.
 - pnpm typecheck: bestanden.
 - pnpm test: vorhandener Test bestanden (1/1).
-- pnpm build: Produktionsbuild mit allen acht statischen Seiten erfolgreich.
-- Biome: alle zwölf geänderten JS-/TSX-/CSS-Dateien ohne Befund.
+- pnpm build: Produktionsbuild erfolgreich; alle acht Schritte der statischen
+  Seitengenerierung abgeschlossen.
+- Biome: alle geänderten JS-/TSX-/CSS-Dateien und der zusätzliche Loader-Check
+  ohne Befund.
 - git diff --check und Syntaxprüfung der drei Landing-Skripte: bestanden.
 - Chrome, 320 und 390 Pixel: kein horizontaler Überlauf; alle zehn Textblöcke
   innerhalb der Seitenbreite. Bei 320 Pixeln endet die Demo-Anleitung oberhalb
@@ -113,6 +119,13 @@ Prüfnachweise
 - Share-Bild als 1200 × 630 PNG gerendert und visuell geprüft.
 - Korrigierter Beleg visuell geprüft; Einzelpreise in Cent nachgerechnet.
   Als WebP ausgeliefert: 163.564 Byte statt rund 1,3 MB beim alten PNG.
+- Chrome-Demo: alle drei Aktionen ausgeführt; korrekte Rückmeldungen und
+  anschließend vollständig sichtbarer Link „WG erstellen“ nach /neu.
+- Demo-Bild nach Erledigung aus der echten App neu aufgenommen: helle Darstellung,
+  Einkäufe 4, Monatsanzeige „Du: 100 % (1)“. Bestehende Klickflächen stimmen exakt.
+- node scripts/check-landing-loader.mjs: früher Animationszeitstempel erzeugt
+  weder bei normaler noch reduzierter Bewegung einen negativen Eurobetrag.
+  Nach Neuladen im Browser ebenfalls „0,00 €“ bestätigt.
 - Der Prototyp unter landing-konzept/site enthält dieselben Textkorrekturen;
   seine lokalen Imports und unabhängigen 3D-Änderungen wurden erhalten.
 - graphify update . erfolgreich (AST). Fehlende SQL-Parser-Erweiterung betrifft
@@ -122,3 +135,31 @@ Status
 Lokale Fassung unter http://localhost:3118/. Keine Veröffentlichung auf Vercel,
 kein Merge. Die AGB-Änderungen sind vor einer Veröffentlichung inhaltlich zu prüfen.
 
+Demo-Datenprüfung
+Die zugehörige Korrektur an landing-konzept/demo/app/server.mjs ist zusätzlich
+in demo-completions.patch gesichert (Zero-Context-Patch; bei Bedarf aus Company
+mit git apply --unidiff-zero anwenden). Getestet wurde eine isolierte Kopie auf
+Port 4180; der bestehende Demo-Server auf 4177 wurde nicht angehalten oder verändert.
+Der folgende Check kann gegen diese isolierte Kopie wiederholt werden.
+Er setzt nur deren Beispieldaten zurück und bestätigt eine Bad-Erledigung:
+
+node --input-type=module <<'NODE'
+import assert from 'node:assert/strict';
+const base = 'http://127.0.0.1:4180';
+const path = '/api/wg/MTE8PZAT/chores';
+const memberId = '7d898f9e-5ad7-4f5d-abed-8c3e99a76973';
+await fetch(`${base}/demo-reset`);
+const before = await (await fetch(`${base}${path}`)).json();
+assert.deepEqual(before.monthCompletions, {});
+const chore = before.chores.find(({ title }) => title === 'Bad putzen');
+assert.ok(chore);
+const done = await fetch(`${base}${path}/${chore.id}/complete`, {
+  method: 'POST',
+  headers: { 'x-manawg-member-id': memberId },
+});
+assert.equal(done.status, 200);
+const after = await (await fetch(`${base}${path}`)).json();
+assert.equal(after.monthCompletions[memberId], 1);
+assert.ok(after.chores.find(({ id }) => id === chore.id).lastCompletedAt);
+console.log('PASS: eine Erledigung im laufenden Monat');
+NODE

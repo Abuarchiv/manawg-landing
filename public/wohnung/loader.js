@@ -36,7 +36,7 @@ const finished = new Promise((r) => {
 const MIN_MS = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 2200;
 function tick(now) {
 	// Anzeige folgt dem echten Ladefortschritt, aber nie schneller als MIN_MS
-	const cap = Math.min(1, (now - t0) / MIN_MS);
+	const cap = MIN_MS === 0 ? 1 : Math.max(0, Math.min(1, (now - t0) / MIN_MS));
 	shown += (Math.min(target, cap) - shown) * 0.12;
 	if (target >= 1 && cap >= 1 && 1 - shown < 0.002) shown = 1;
 	val.textContent = (shown * 100).toFixed(2).replace('.', ',');
