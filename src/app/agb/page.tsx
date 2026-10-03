@@ -22,8 +22,7 @@ export default function AgbPage() {
 					Zur Startseite
 				</Link>
 
-				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Nutzungsbedingungen</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2. Oktober 2026</p>
+				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-8">Nutzungsbedingungen</h1>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					<section>
