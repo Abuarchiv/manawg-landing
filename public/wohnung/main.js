@@ -499,6 +499,10 @@ function frame(t) {
 	document.body.classList.toggle('in-plan', !inFotos);
 	if (inFotos) {
 		fotos(P);
+		// Zurückgescrollt: Demo-Handy und Kassenbon aus der Grundriss-Phase wieder ausblenden
+		app.style.opacity = 0;
+		app.classList.remove('live');
+		bon.classList.remove('on');
 		requestAnimationFrame(frame);
 		return;
 	}
