@@ -1,0 +1,54 @@
+/* Tokens, Typo-Stufen, Grundlayout. Mobil zuerst, eine Stufe ab 900 px. Szenen-CSS liegt in css/. */
+@font-face{font-family:'Inter';src:url('fonts/inter-latin.woff2') format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Inter Tight';src:url('fonts/inter-tight-latin.woff2') format('woff2');font-weight:100 900;font-display:block}
+@font-face{font-family:'JetBrains Mono';src:url('fonts/jetbrains-mono-latin.woff2') format('woff2');font-weight:100 900;font-display:block}
+:root{
+  --ink:#0A0A0A;--paper:#FAFAFA;--line:rgba(250,250,250,.18);--dim:rgba(250,250,250,.72);--ink-dim:#525252;--ink-line:#E5E5E5;
+  --s1:96px;--s2:40px;--t:17px;--m:12px;           /* drei Stufen plus Mono */
+  --pad:20px;--btn:48px;--ease:cubic-bezier(.2,.8,.2,1);
+  --f-text:Inter,system-ui,sans-serif;--f-tight:'Inter Tight',Inter,sans-serif;--f-mono:'JetBrains Mono',ui-monospace,monospace;
+}
+@media (min-width:900px){:root{--s1:200px;--s2:64px;--pad:40px}}
+*{box-sizing:border-box}
+html{background:var(--ink);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--f-text);font-size:var(--t);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,p{margin:0}
+h2,.s1,.s2{font-family:var(--f-tight);font-weight:600;line-height:.95;letter-spacing:-.04em}
+.s1{font-size:var(--s1);line-height:.88;letter-spacing:-.06em}
+.s2{font-size:var(--s2)}
+.mono{font-family:var(--f-mono);font-size:var(--m);font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.dim{opacity:.72}
+.lede{font-size:var(--t);line-height:1.5;max-width:380px;text-wrap:pretty}
+canvas{display:block;width:100%;height:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.skip{position:fixed;left:8px;top:-60px;z-index:60;background:var(--paper);color:var(--ink);padding:12px 16px;border-radius:10px;text-decoration:none}
+.skip:focus{top:8px}
+#loader{position:fixed;inset:0;z-index:50;background:var(--ink);pointer-events:none;transition:opacity .4s var(--ease);animation:lfade .01s 5s forwards}
+.ready #loader{opacity:0}
+@keyframes lfade{to{opacity:0}}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:var(--btn);padding:0 24px;border-radius:10px;font-family:var(--f-text);font-size:var(--t);font-weight:500;line-height:1;text-decoration:none;white-space:nowrap;border:1px solid transparent;cursor:pointer;background:none;color:inherit}
+.btn-line{border-color:rgba(250,250,250,.6);color:var(--paper)}
+.btn-light{background:var(--paper);color:var(--ink)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn:hover{text-decoration:underline;text-underline-offset:3px}
+/* Kopf: weiß auf Schwarz, Tinte über den Papier-Kapiteln (Klasse .ink aus main.js) */
+.top{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);color:var(--paper);pointer-events:none}
+.top.ink{color:var(--ink)}
+.top>*{pointer-events:auto}
+.top .btn{min-height:44px;color:inherit;border-color:currentColor}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-tight);font-weight:600;font-size:var(--t);letter-spacing:-.03em}
+.brand img{height:22px;width:auto;filter:invert(1)}
+.top.ink .brand img{filter:none}
+/* Bogen: eine lange Sektion mit klebender Bühne. Länge = 9 x Bildschirmhöhe, P = Scroll / (8 x Höhe). */
+.bogen{position:relative;height:900vh;height:900svh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.layer{position:absolute;inset:0;pointer-events:none}
+.layer canvas{position:absolute;inset:0}
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 32px;padding:24px var(--pad);border-top:1px dashed var(--line)}
+.foot .brand{font-size:var(--t)}
+.foot nav{display:flex;gap:24px}
+.foot nav a{display:inline-flex;align-items:center;min-height:44px;opacity:.72;text-decoration:none}
+.foot nav a:hover{text-decoration:underline}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}

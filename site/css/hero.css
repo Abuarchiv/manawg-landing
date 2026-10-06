@@ -1,0 +1,5 @@
+/* Marker #hero: Berg, Sonne = Zeichen, Organ, Zerfall, Tauchgang. */
+.hero{background:var(--ink)}
+.hero canvas{opacity:var(--g,1)}
+.wm{position:absolute;left:var(--pad);top:76px;opacity:calc(1 - var(--p,0) * 14);pointer-events:none}
+.hint{position:absolute;right:var(--pad);bottom:28px;opacity:calc(.72 - var(--p,0) * 10);pointer-events:none}

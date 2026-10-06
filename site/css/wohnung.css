@@ -1,0 +1,14 @@
+/* Marker #raeume: isometrische Wohnung, Raum-Texte 01-04. Mobil: Isometrie oben, Text darunter. */
+.wohn{opacity:var(--f,0)}
+.rooms{position:absolute;left:var(--pad);right:var(--pad);top:58%;bottom:var(--pad)}
+.room{position:absolute;inset:0;display:flex;flex-direction:column;gap:12px;opacity:var(--c,0);transform:translateY(calc((1 - var(--c,0)) * 40px))}
+.room:nth-child(1){--c:var(--c0,0)}.room:nth-child(2){--c:var(--c1,0)}.room:nth-child(3){--c:var(--c2,0)}.room:nth-child(4){--c:var(--c3,0)}
+.room>.mono{display:flex;gap:16px;align-items:baseline}
+.room .row{display:flex;align-items:center;justify-content:space-between;gap:16px;border-block:1px solid var(--line);padding:12px 0;margin-top:4px}
+.row div{display:flex;flex-direction:column;gap:2px}
+.row strong{font-weight:500}
+.row div span{font-size:var(--m);color:var(--dim)}
+@media (min-width:900px){
+  .rooms{top:150px;bottom:auto;right:auto;width:440px;height:520px}
+  .room{gap:20px}
+}

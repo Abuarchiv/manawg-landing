@@ -88,3 +88,6 @@ graphify-out/
 
 # Graphy index data
 .graphy/
+
+# Landing site: Screenshot-Ausgabe von tools/shots.mjs
+site/tools/out/
