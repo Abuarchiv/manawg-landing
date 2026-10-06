@@ -40,3 +40,5 @@
 .ph-tabs{margin:8px 12px 12px;border:1px solid var(--ink-line);border-radius:20px;padding:4px;display:flex;gap:2px;flex-shrink:0}
 .ph-tabs button{flex:1;min-height:44px;border-radius:16px;border:1px solid transparent;background:none;font-family:var(--f-text);font-size:var(--m);font-weight:600;color:var(--ink-dim);cursor:pointer;padding:0}
 .ph-tabs button[aria-pressed="true"]{background:#F5F5F5;border-color:var(--ink-line);color:var(--ink)}
+.drin{mix-blend-mode:difference;color:var(--paper);z-index:2}
+@media (max-width:899px){.drin{clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}}
