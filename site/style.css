@@ -35,7 +35,7 @@ a{color:inherit}
 .btn:hover{text-decoration:underline;text-underline-offset:3px}
 /* Kopf: weiß auf Schwarz, Tinte über den Papier-Kapiteln (Klasse .ink aus main.js) */
 .top{position:fixed;z-index:20;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:16px var(--pad);color:var(--paper);pointer-events:none}
-.top.ink{color:var(--ink)}
+.top.ink{color:var(--ink);background:var(--paper)}
 .top>*{pointer-events:auto}
 .top .btn{min-height:44px;color:inherit;border-color:currentColor}
 .brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--f-tight);font-weight:600;font-size:var(--t);letter-spacing:-.03em}
