@@ -11,10 +11,12 @@ ${mobile ? '#define MOBILE' : '#define DESKTOP'}
 #define MARCH_N 80
 #define NRM_OC 6
 #define SHA_N 12
+#define PITCH0 .09
 #else
 #define MARCH_N 140
 #define NRM_OC 10
 #define SHA_N 22
+#define PITCH0 -.06
 #endif
 out vec4 o;
 uniform vec2 uR; uniform float T; uniform vec2 uM; uniform vec4 uB[8];
@@ -43,31 +45,32 @@ float sunD(vec2 uv, vec2 sp, float s){ return org((uv - sp) / s) * s; }
 `;
 
 export const sceneSrc = (mobile) => HEAD(mobile) + `
-uniform float uMix, uLook, uK; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
+uniform float uMix, uLook, uK; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH; uniform vec3 uSP; uniform float uFlat;
 float mountain(vec2 uv){
-  float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
-  vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); sp.x *= min(1., uR.x / uR.y); float sc = mix(.15, .52, uLook * uLook);
+  float pitch = mix(PITCH0, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
+  vec2 sp = uSP.xy; float sc = uSP.z;
   vec3 L = normalize(RT * (sp.x * 1.5 + .9) + UP * .42 - FW * .2);
-  float e = rd.y + .06; float sky = mix(.36, .2, clamp(e * 2.2 + .05, 0., 1.)); float st = fbm(vec2(rd.x * 1.2 + T * .008, e * 15.)); sky += (st - .5) * .18 * smoothstep(-.05, .35, e);
+  float e = rd.y + .06; float sky = mix(.36, .2, clamp(e * 2.2 + .05, 0., 1.)); float st = fbm(vec2(rd.x * 1.2 + T * .008, e * 15.)); sky += (st - .5) * .18 * smoothstep(-.05, .35, e); sky *= 1. - uLook * uLook;
   float v = sky; float t = 45.; if(uLook < .97) t = march(ro, rd); vec3 p = ro + rd * t;
   if(t < 45.){ vec3 n = tn(p.xz, t); float dif = max(dot(n, L), 0.) * sha(p + n * .01, L); float sn = snowM(p, n, .1);
     float alb = mix(rockA(p) * .5, .95, sn); float amb = .5 + .5 * n.y; v = alb * (dif * 1.25 + amb * .07); v = v / (v + .55) * 1.5; v = mix(v, .34, 1. - exp(-t * .035)); }
-  else { float d = sunD(uv, sp, sc); v = mix(v, .88, smoothstep(.002, -.002, d)); v += exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .08 * (1. + uLook * 3.); }
+  else { float d = sunD(uv, sp, sc); v = mix(v, .88, smoothstep(.002, -.002, d)); }
   return v; }
 float omap(vec3 p){ float d = 1e5; for(int i = 0; i < 8; i++) d = smin(d, length(p - uO[i].xyz) - uO[i].w, uK); return max(d, -(length(p.xy - uH.xy) - uH.z)); }
 vec3 onrm(vec3 p){ const vec2 e = vec2(.002, -.002); return normalize(e.xyy * omap(p + e.xyy) + e.yyx * omap(p + e.yyx) + e.yxy * omap(p + e.yxy) + e.xxx * omap(p + e.xxx)); }
 float organ(vec2 uv){ vec3 ro = uC, rd = normalize(vec3(uv, -1.6)); float t = 0., md = 1e5;
   for(int i = 0; i < 90; i++){ vec3 p = ro + rd * t; float d = omap(p); md = min(md, d);
     if(d < .0015){ vec3 n = onrm(p); vec3 l = normalize(vec3(uM.x * 2.4, uM.y * 2.4 + .5, 1.3)); float df = max(dot(n, l), 0.), ao = clamp(omap(p + n * .2) / .2, 0., 1.), rim = pow(1. - max(dot(n, -rd), 0.), 3.);
-      return clamp(df * .9 * (.45 + .55 * ao) + .05 + rim * .22, 0., 1.); }
+      return mix(clamp(df * .9 * (.45 + .55 * ao) + .05 + rim * .22, 0., 1.), .88, uFlat); }
     t += d * .9; if(t > 40.) break; }
-  return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)); }
-void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv), uMix); o = vec4(v, v, v, 1.); }`;
+  return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)) * (1. - uFlat); }
+void main(){ vec2 uv = UV(); float v = uMix > .5 ? organ(uv) : mountain(uv); o = vec4(v, v, v, 1.); }`;
 
-// Post: Halbton-Punkte (Zellen 6 px bei 800 px Hoehe) mit weichem Uebergang aus dem Berg-Ton, direkt in den sichtbaren Canvas.
+// Post: Halbton-Punkte (Zellen 6 px bei 800 px Hoehe). Wischfront von der Sonnenmitte (uC) nach aussen: innerhalb des Radius uRd Halbton, ausserhalb der weiche Berg-Ton.
 export const POST = `#version 300 es
-precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD;
+precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS, uC; uniform float uRd;
 void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
   float cs = 6. * uR.y / 800.; vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r;
   float r = cs * .5 * sqrt(clamp(L, 0., 1.)) * 1.15; float vd = smoothstep(r + .7, r - .7, length(fc - c));
+  float uD = 1. - smoothstep(uRd - .08, uRd + .08, length((fc - .5 * uR) / uR.y - uC));
   float v = mix(vr, vd, uD); v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
