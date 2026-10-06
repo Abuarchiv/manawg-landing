@@ -369,9 +369,7 @@ export function Bereiche({ v }: { v: Vals }) {
 						style={css(
 							"font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:0.08em;opacity:0.72",
 						)}
-					>
-						{v.plNo} · {v.plName}
-					</span>
+					>{`${v.plNo} · ${v.plName}`}</span>
 					<span
 						style={css(
 							"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:32px;line-height:1.1;letter-spacing:-0.03em",

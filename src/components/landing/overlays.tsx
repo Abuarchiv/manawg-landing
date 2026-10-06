@@ -488,9 +488,7 @@ export function Ende({ v, st }: { v: Vals; st: St }) {
 											style={css(
 												"font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#737373;padding:4px 2px",
 											)}
-										>
-											EINKAUF · {v.openCount} OFFEN
-										</span>
+										>{`EINKAUF · ${v.openCount} OFFEN`}</span>
 										<div
 											style={css(
 												'border:1px solid #E5E5E5;border-radius:14px;padding:0 14px;display:flex;flex-direction:column',
