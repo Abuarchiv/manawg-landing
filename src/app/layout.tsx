@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 		siteName: 'ManaWG',
 		locale: 'de_DE',
 		type: 'website',
-		images: [{ url: '/og-zeichen.png', alt: 'Das ManaWG-Zeichen als 3D-Körper' }],
+		images: [{ url: '/og.png', width: 1200, height: 630, alt: 'Das ManaWG-Zeichen als 3D-Körper' }],
 	},
-	twitter: { card: 'summary_large_image', images: ['/og-zeichen.png'] },
+	twitter: { card: 'summary_large_image', images: ['/og.png'] },
 	icons: {
 		icon: [
 			{ url: '/favicon.svg', type: 'image/svg+xml' },

@@ -40,6 +40,7 @@ const nextConfig: NextConfig = {
 	},
 	experimental: {
 		optimizePackageImports: ['lucide-react', '@react-three/drei'],
+		inlineCss: true,
 	},
 	async redirects() {
 		return [

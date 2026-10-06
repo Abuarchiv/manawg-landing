@@ -90,6 +90,22 @@ export function Landing() {
 				110;
 			sc.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' });
 		};
+		// Touch: Körper greifen, Raster malen und Planet ziehen sollen nicht scrollen. Die Engine hat bei
+		// pointerdown (kommt vor touchstart) schon entschieden, ob die Geste ihr gehört.
+		const onTouch = (e: TouchEvent) => {
+			const host = (e.target as Element).closest?.(':has(> canvas[data-art])');
+			// biome-ignore lint/suspicious/noExplicitAny: Szene hängt als __s am Canvas (Engine)
+			const s = (host?.querySelector(':scope > canvas[data-art]') as any)?.__s;
+			if (!s) return;
+			if (
+				s.grab >= 0 ||
+				s.paint >= 0 ||
+				(s.type === 'planet' && Math.hypot(s.m.x - 820, s.m.y - 430) < 300)
+			)
+				e.preventDefault();
+		};
+		// Bricht der Browser eine Touch-Geste ab, kommt kein pointerup: Engine bekommt eins.
+		const onCancel = () => window.dispatchEvent(new PointerEvent('pointerup'));
 		const st0 = sc.scrollTop;
 		history.scrollRestoration = 'manual';
 		fit();
@@ -99,6 +115,8 @@ export function Landing() {
 		window.addEventListener('scroll', onWin, { passive: true });
 		sc.addEventListener('scroll', onSc, { passive: true });
 		root.addEventListener('click', onGo, true);
+		root.addEventListener('touchstart', onTouch, { passive: false });
+		root.addEventListener('pointercancel', onCancel);
 
 		const i = inst.current;
 		const loop = (hero as unknown as (this: unknown) => () => void).call(i);
@@ -110,6 +128,8 @@ export function Landing() {
 			window.removeEventListener('scroll', onWin);
 			sc.removeEventListener('scroll', onSc);
 			root.removeEventListener('click', onGo, true);
+			root.removeEventListener('touchstart', onTouch);
+			root.removeEventListener('pointercancel', onCancel);
 			i.componentWillUnmount();
 		};
 	}, []);
