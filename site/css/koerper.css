@@ -5,3 +5,4 @@
 .tiefe{position:relative;height:450vh;height:450svh;background:var(--ink)}
 .tiefe canvas{position:absolute;inset:0}
 .depth{position:absolute;right:var(--pad);bottom:28px;opacity:.72;pointer-events:none}
+.koerper canvas{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
