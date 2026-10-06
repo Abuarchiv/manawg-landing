@@ -3,3 +3,4 @@
 .finale canvas{position:absolute;inset:0}
 .fin-in{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:32px;padding:0 var(--pad);pointer-events:none}
 .fin-cta{display:flex;flex-wrap:wrap;gap:8px;pointer-events:auto}
+@media (max-width:899px){.fin-in{justify-content:space-between;padding:88px var(--pad) 28px}.fin-cta{flex-direction:column;align-items:flex-start}}
