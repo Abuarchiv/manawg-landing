@@ -91,3 +91,6 @@ graphify-out/
 
 # Landing site: Screenshot-Ausgabe von tools/shots.mjs
 site/tools/out/
+
+# Pixelvergleich: Ausgabe von tools/pixel.mjs
+tools/out/
