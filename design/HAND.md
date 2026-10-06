@@ -41,7 +41,7 @@ Außerhalb der Silhouette sind `lum`, `nx`, `ny`, `z` 12 Bühnen-px weit nach au
 
 Linke Hand (Blender-Rechtshand, Spiegelkamera), natürlicher Griff. Gemessen im Bühnenraum:
 
-- Daumenspitze ragt 21 px über den linken Handyrand (Design: 28 px), Spitze bei y ≈ 323.
+- Daumenspitze ragt 21 px über den linken Handyrand (Design: 28 px), Spitze bei y ≈ 323 (Design: 412; ein tieferer Daumen war nur mit stark gebeugtem Daumengelenk möglich und sah schlechter aus).
 - Fingerspitzen ragen über den rechten Rand: Zeige 100 px, Mittel 81 px, Ring 47 px, klein 4 px (Design: 28 px; echte Finger sind dicker als die Kapseln, der Halbton lässt die App dazwischen durchscheinen). Nägel sichtbar.
 - Unterarm-Achse 9,6° aus der Senkrechten nach links (Design 12,5°), Arm endet bei `bottomY = 1400` (Bühnen-px, 690 px unter der Handy-Unterkante). Ab etwa y 1310 ausblenden, wenn der Ausschnitt höher ist (Referenz-Shader macht das).
 - Holdout ist 2 % schmaler als das Handy-DOM: Haut darf bis zu 3 px darunterliegen, das DOM-Handy deckt sie.
@@ -157,7 +157,7 @@ Basismodell: „Hand – Realistic“ aus dem Blender-Studio-Paket **Human Base 
 
 ## 10. Bekannte Grenzen
 
-- Die Finger der Handy-Hand überdecken mehr vom Bildschirm als im Design (Zeigefinger 100 px statt 28 px), weil echte Finger dicker sind. Weniger Überlappung ging nur auf Kosten der Natürlichkeit (Fingerspitzen zeigen dann nach oben, Nägel verschwinden).
+- Die Finger der Handy-Hand überdecken mehr vom Bildschirm als im Design (Zeigefinger 100 px statt 28 px), weil echte Finger dicker sind. Eine Variante mit 79/51 px Überlappung (Zeigefinger stärker eingeklappt) wirkte verkrampft, deshalb ist die natürliche Haltung gewählt.
 - Beide Hände sind Linkshände (Spiegelkamera, wie im Design: Daumen links bzw. oben). Für eine Rechtshand beim Zeigen: `b = −b` (Abschnitt 5).
 - Die Zeigehand kann bei Zeigerposition rechts der Handymitte mit dem Daumen auf den kleinen Finger der Handy-Hand fallen (zwei Halbton-Flächen laufen ineinander). Idle-Pfad der Zeigehand daher bei etwa `x 780–860, y 330–470` halten.
 - Zwischen Daumen und Zeigefinger der Zeigehand sitzt ein kleiner Haut-Zipfel (Gewichtsübergang am Daumengrundgelenk). Bei `PS ≤ 0,7` nur ein Punktpaar groß.
