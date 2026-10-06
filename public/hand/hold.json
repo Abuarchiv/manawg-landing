@@ -2,52 +2,75 @@
  "name": "hold",
  "scale": 1.5,
  "atlas": [
-  2240,
+  1888,
   2724
  ],
  "tile": [
-  1120,
+  944,
   1816
  ],
  "origin": [
-  320.0,
+  437.333,
   189.333
  ],
  "tiles": {
   "lum": {
    "x": 0,
    "y": 0,
-   "w": 1120,
+   "w": 944,
    "h": 1816,
    "div": 1
   },
   "a": {
-   "x": 1120,
+   "x": 944,
    "y": 0,
-   "w": 1120,
+   "w": 944,
    "h": 1816,
    "div": 1
   },
   "nx": {
    "x": 0,
    "y": 1816,
-   "w": 560,
+   "w": 472,
    "h": 908,
    "div": 2
   },
   "ny": {
-   "x": 560,
+   "x": 472,
    "y": 1816,
-   "w": 560,
+   "w": 472,
    "h": 908,
    "div": 2
   },
   "z": {
-   "x": 1120,
+   "x": 944,
    "y": 1816,
-   "w": 560,
+   "w": 472,
    "h": 908,
    "div": 2
   }
- }
+ },
+ "encoding": {
+  "lum": "0..255 -> 0..1, sRGB-Anzeigewert (Studiolicht, Hautstreuung, Tintenkanten eingebacken)",
+  "a": "0..255 -> Alpha der Hand (Holdout/Handy: 0)",
+  "nx": "0..255 -> -1..1, Normale im Bildraum, x nach rechts (halbe Aufloesung)",
+  "ny": "0..255 -> -1..1, Normale im Bildraum, y nach oben (halbe Aufloesung)",
+  "z": "0..255 -> -100..+100 mm relativ zur Referenzebene (Handy-Vorderseite bzw. Fingerspitzen-Ebene), plus = weiter weg (halbe Aufloesung)"
+ },
+ "space": "Buehnen-px (1280x800, 4,19 px/mm in der Handy-Ebene), Ursprung oben links; origin = obere linke Ecke der Kachel lum/a; Kachel-px = (x - origin.x) * scale / div",
+ "phone": {
+  "x": 650.0,
+  "y": 90.0,
+  "w": 300.0,
+  "h": 620.0,
+  "r": 48.0
+ },
+ "screen": {
+  "x": 661.0,
+  "y": 101.0,
+  "w": 278.0,
+  "h": 598.0,
+  "r": 37.0
+ },
+ "bottomY": 1400.0
 }

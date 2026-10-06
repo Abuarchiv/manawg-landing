@@ -1,0 +1,61 @@
+{
+ "name": "point",
+ "scale": 1.0,
+ "atlas": [
+  3328,
+  894
+ ],
+ "tile": [
+  1664,
+  596
+ ],
+ "origin": [
+  -28.0,
+  -206.0
+ ],
+ "tiles": {
+  "lum": {
+   "x": 0,
+   "y": 0,
+   "w": 1664,
+   "h": 596,
+   "div": 1
+  },
+  "a": {
+   "x": 1664,
+   "y": 0,
+   "w": 1664,
+   "h": 596,
+   "div": 1
+  },
+  "nx": {
+   "x": 0,
+   "y": 596,
+   "w": 832,
+   "h": 298,
+   "div": 2
+  },
+  "ny": {
+   "x": 832,
+   "y": 596,
+   "w": 832,
+   "h": 298,
+   "div": 2
+  },
+  "z": {
+   "x": 1664,
+   "y": 596,
+   "w": 832,
+   "h": 298,
+   "div": 2
+  }
+ },
+ "encoding": {
+  "lum": "0..255 -> 0..1, sRGB-Anzeigewert (Studiolicht, Hautstreuung, Tintenkanten eingebacken)",
+  "a": "0..255 -> Alpha der Hand (Holdout/Handy: 0)",
+  "nx": "0..255 -> -1..1, Normale im Bildraum, x nach rechts (halbe Aufloesung)",
+  "ny": "0..255 -> -1..1, Normale im Bildraum, y nach oben (halbe Aufloesung)",
+  "z": "0..255 -> -100..+100 mm relativ zur Referenzebene (Handy-Vorderseite bzw. Fingerspitzen-Ebene), plus = weiter weg (halbe Aufloesung)"
+ },
+ "space": "Sprite-Raum in Buehnen-px bei Massstab 1 (4,19 px/mm), Ursprung = Fingerspitze, x = Richtung Arm, y nach unten (Seite der gekrummten Finger); origin = obere linke Ecke der Kachel lum/a"
+}
