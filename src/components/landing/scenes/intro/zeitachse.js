@@ -4,11 +4,14 @@
 // wird der Fortschritt P der Choreografie: P = warp(s). Alle Marken der Szenen (look, mx, split,
 // zoom, dive, fpA, endA, Flut-Deckung, Kartenkurve) bleiben in P definiert.
 
-export const INTRO_SCREENS = 8;
+export const INTRO_SCREENS = 10;
 
 // Stückweise lineare Abbildung s -> P, Knoten (s, P).
 export const KNOTS = [
 	[0, 0],
+	[0.496, 0.62],
+	[0.856, 0.9],
+	[0.896, 0.95],
 	[1, 1],
 ];
 

@@ -1,8 +1,8 @@
 // Die Tiefe: Fahrt durch eine Punktwolke, in der die Wörter GELD, HAUSHALT und ABSPRACHEN als Inseln
 // liegen. Die Kamera hängt am Scroll-Fortschritt des Abschnitts. Szenenraum: Bezugsbox 1280 x 800.
 
-import { loop, register, takt } from '../../core/loop';
-import { cl, hsh } from '../../core/math';
+import { loop, register } from '../../core/loop';
+import { cl, hsh, lag } from '../../core/math';
 
 const lerp = (a, b, t) => a + (b - a) * t;
 const ss = (x) => {
@@ -35,7 +35,6 @@ const sampleT = (lines, px, step) => {
 /** Meldet die Tiefe-Szene an. sec: Abschnitt mit Sticky-Bühne. Gibt die Abmeldung zurück. */
 export function registerTiefe(cv, sec) {
 	return register({
-		slot: 4,
 		name: 'tiefe',
 		el: cv,
 		host: cv.parentElement,
@@ -49,8 +48,7 @@ export function registerTiefe(cv, sec) {
 			s.caps = [...cv.parentElement.querySelectorAll('[data-dcap]')];
 			s.dep = cv.parentElement.querySelector('[data-depth]');
 		},
-		frame(s, t) {
-			if (!takt(4)) return; // Entwurfstakt: jedes zweite Bild
+		frame(s, _t, dt) {
 			const ctx = s.ctx;
 			if (!s.P || s.built !== loop.fv) {
 				s.built = loop.fv;
@@ -84,15 +82,16 @@ export function registerTiefe(cv, sec) {
 			}
 			const r = sec.getBoundingClientRect();
 			const sp = cl(-r.top / Math.max(1, r.height - s.H));
-			s.dp += (sp - s.dp) * 0.1;
+			s.dp += (sp - s.dp) * lag(0.1, dt);
 			const p = s.dp;
 			const camZ = -14 + p * 57;
 			const seg = cl((camZ + 14) / 26, 0, 1.999);
 			const si = Math.floor(seg);
 			const sf = ss(seg - si);
 			if (s.m.in) {
-				s.sm.x += (s.m.x - s.sm.x) * 0.06;
-				s.sm.y += (s.m.y - s.sm.y) * 0.06;
+				const k = lag(0.06, dt);
+				s.sm.x += (s.m.x - s.sm.x) * k;
+				s.sm.y += (s.m.y - s.sm.y) * k;
 			}
 			const camX = lerp(s.isl[si].x, s.isl[si + 1].x, sf) * 0.85 + ((s.sm.x - 640) / 640) * 1.2;
 			const camY = lerp(s.isl[si].y, s.isl[si + 1].y, sf) * 0.85 + ((s.sm.y - 400) / 400) * 0.8;
@@ -131,7 +130,10 @@ export function registerTiefe(cv, sec) {
 						sy += (dy / (d + 0.1)) * g;
 					}
 				}
-				const a = cl(dz / 1.2) * (q[4] < 0 ? cl((110 - dz) / 50) * 0.55 : cl((34 - dz) / 12));
+				// Wörter bleiben bis dz 34 mindestens zu 0,45 sichtbar (T-10), danach blenden sie aus
+				const a =
+					cl(dz / 1.2) *
+					(q[4] < 0 ? cl((110 - dz) / 50) * 0.55 : Math.max(cl((34 - dz) / 12), 0.45 * cl((40 - dz) / 6)));
 				const sz = cl(0.07 * fz, 0.8, 64);
 				if (a <= 0.01) continue;
 				if (sz < 6) {
@@ -157,10 +159,13 @@ export function registerTiefe(cv, sec) {
 			for (const el of s.caps) {
 				const i = +el.getAttribute('data-dcap');
 				const dz = s.isl[i].z - camZ;
-				el.style.opacity = cl(1 - Math.abs(dz - 9) / 5).toFixed(3);
+				// Plateau voller Deckkraft (T-10). Die letzte Zeile steht früher und bleibt bis zum Ende der Fahrt stehen,
+				// sonst bliebe ihr nur ein Zehntel der Strecke.
+				const last = i === s.isl.length - 1;
+				const dd = last ? Math.max(dz, 12) - 12 : dz - 9;
+				el.style.opacity = cl((5 - Math.abs(dd)) / 1.5).toFixed(3);
 			}
 			if (s.dep) s.dep.textContent = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');
-			void t;
 		},
 	});
 }

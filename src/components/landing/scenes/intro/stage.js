@@ -6,7 +6,7 @@
 // Bild gesetzt, auch wenn nichts gezeichnet wird, damit nach Sprüngen nichts stehen bleibt.
 
 import { dprFor, fitBox, observe, sizeBacking } from '../../core/canvas';
-import { loop, onFrame, takt } from '../../core/loop';
+import { loop, onFrame } from '../../core/loop';
 import { cl, ss } from '../../core/math';
 import * as hand from '../ende/hand';
 import { kamera } from '../ende/kamera';
@@ -52,6 +52,7 @@ export function createStage({ sec, buehne }) {
 		a0: null, // Beginn des Aufbaus des Zeichens
 		sm: [0.3, 0.1], // geglätteter Zeiger (-1..1)
 		ad: 1, // adaptive Auflösung des Szenenpuffers
+		rb: [], // letzte 15 Bilddauern
 		bereit: false,
 		endOn: false,
 		handsLoaded: false,
@@ -196,10 +197,15 @@ export function createStage({ sec, buehne }) {
 		for (const el of nurIntro) if (el.inert !== hinweisAus) el.inert = hinweisAus;
 		st.endOn = endA > 0.6 && rb.bottom > 0.625 * H;
 
-		// Auflösung des Szenenpuffers: bei Rucklern absenken, bei ruhigem Lauf erholen
-		if (raw > 0.2) st.ad = 0.25;
-		else if (raw > 0.05) st.ad = Math.max(0.25, st.ad * 0.9);
-		else if (raw < 0.022) st.ad = Math.min(1, st.ad * 1.02);
+		// Auflösung des Szenenpuffers (F-07): Ausreißer über 0,25 s (Tab-Wechsel, Pause) zählen nicht.
+		// Abgesenkt wird nur, wenn das gleitende Mittel über 15 Bilder über 0,05 s liegt, erholt bei ruhigem Lauf.
+		if (raw <= 0.25) {
+			st.rb.push(raw);
+			if (st.rb.length > 15) st.rb.shift();
+			const mean = st.rb.reduce((a, b) => a + b, 0) / st.rb.length;
+			if (st.rb.length >= 15 && mean > 0.05) st.ad = Math.max(0.25, st.ad * 0.9);
+			else if (raw < 0.022) st.ad = Math.min(1, st.ad * 1.06);
+		}
 
 		if (st.a0 === null) st.a0 = now;
 		let heroDrawn = false;
@@ -217,8 +223,10 @@ export function createStage({ sec, buehne }) {
 			const tm = m.in
 				? [(m.x - W / 2) / (W / 2), (H / 2 - m.y) / (H / 2)]
 				: [0.5 * Math.cos(t * 0.12), 0.4 * Math.sin(t * 0.16)];
-			st.sm[0] += (tm[0] - st.sm[0]) * 0.06;
-			st.sm[1] += (tm[1] - st.sm[1]) * 0.06;
+			// Konstante des Entwurfs 0,06 je Bild bei 120 Hz, auf dt umgerechnet
+			const ks = 1 - Math.exp(-7.43 * dt);
+			st.sm[0] += (tm[0] - st.sm[0]) * ks;
+			st.sm[1] += (tm[1] - st.sm[1]) * ks;
 
 			if (fpA < 0.999) {
 				hm.look = look;
@@ -230,7 +238,7 @@ export function createStage({ sec, buehne }) {
 				hm.ad = st.ad;
 				heroDrawn = hero.frame(c, hm);
 			}
-			if (cvStars && P < 0.075 && takt(7)) zeichneSterne(cvStars, W, safeH, dpr, t);
+			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);
 			flut.draw(cvFl, c, loecher);
 			if (P > 0.75 && !st.handsLoaded) {

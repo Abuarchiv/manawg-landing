@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import './landing.css';
-import { loop, modeOf, setMode, start } from './core/loop';
+import { loop, modeOf, qa, setMode, start } from './core/loop';
 import { initScroll, sectionBox } from './core/scroll';
 import { Bereiche } from './scenes/bereiche/Bereiche';
 import { Finale } from './scenes/finale/Finale';
@@ -37,6 +37,7 @@ function qaHaken(root: HTMLElement) {
 		phase: () => root.dataset.phase ?? '',
 		yForP: (P: number) => live.stage?.yForP(P) ?? 0,
 		section: (id: string) => sectionBox(id),
+		dbg: qa,
 		get bereit() {
 			return live.stage?.state.bereit ?? false;
 		},

@@ -1,7 +1,7 @@
 // Der Planet: eine Kugel aus Punkten mit dem Zeichen als Land, acht Orte als Marken. Ziehen dreht ihn,
 // Antippen eines Orts wählt ihn aus. Szenenraum: Bezugsbox 1280 x 800, Planet bei (820, 430), R 300.
 
-import { loop, register, takt } from '../../core/loop';
+import { loop, qa, register } from '../../core/loop';
 import { AB, aMark, cl, hsh } from '../../core/math';
 import { PL } from './orte';
 
@@ -18,7 +18,6 @@ const ss = (x) => {
  */
 export function registerPlanet(cv, { getSel, onSelect }) {
 	return register({
-		slot: 5,
 		name: 'planet',
 		el: cv,
 		host: cv.parentElement,
@@ -55,6 +54,7 @@ export function registerPlanet(cv, { getSel, onSelect }) {
 			s.hov = -1;
 			s.mv = 99;
 			s.walk = [0, 1, 2, 3].map((k) => ({ a: k * 2, b: (k * 2 + 3) % 8, t: hsh(k, 3), tr: [] }));
+			qa.planet = () => s.yaw;
 			s.stars = [];
 			for (let q = 0; q < 260; q++) s.stars.push([hsh(q, 11), hsh(q, 12), hsh(q, 13)]);
 		},
@@ -80,8 +80,7 @@ export function registerPlanet(cv, { getSel, onSelect }) {
 			s.mv = 99;
 		},
 		ownsTouch: (s) => Math.hypot(s.m.x - s.cx, s.m.y - s.cy) < s.R,
-		frame(s) {
-			if (!takt(5)) return; // Entwurfstakt: jedes zweite Bild
+		frame(s, _t, dt) {
 			const ctx = s.ctx;
 			const t = loop.t;
 			const CX = s.cx;
@@ -95,10 +94,30 @@ export function registerPlanet(cv, { getSel, onSelect }) {
 				const l = Math.hypot(v[0], v[1], v[2]) || 1;
 				return [v[0] / l, v[1] / l, v[2] / l];
 			};
-			if (!s.m.down) {
-				s.vy *= 0.95;
-				s.yaw += s.vy + 0.0025;
-			}
+			// Trägheit und Eigendrehung im festen 60-Hz-Schritt: 0,0025 rad je Schritt = 0,15 rad/s
+			s.step(dt, 1 / 60, () => {
+				if (!s.m.down) {
+					s.vy *= 0.95;
+					s.yaw += s.vy + 0.0025;
+				}
+				for (const w of s.walk) {
+					w.t += 0.004;
+					if (w.t >= 1) {
+						w.a = w.b;
+						let nb;
+						do nb = Math.floor(Math.random() * 8);
+						while (nb === w.a);
+						w.b = nb;
+						w.t = 0;
+					}
+					const A = s.LM[w.a];
+					const B2 = s.LM[w.b];
+					const e = ss(w.t);
+					w.u = nrm([lerp(A[0], B2[0], e), lerp(A[1], B2[1], e), lerp(A[2], B2[2], e)]);
+					w.tr.push(w.u);
+					if (w.tr.length > 60) w.tr.shift();
+				}
+			});
 			const ca = Math.cos(s.yaw);
 			const sa = Math.sin(s.yaw);
 			const cb = Math.cos(s.pitch);
@@ -150,21 +169,7 @@ export function registerPlanet(cv, { getSel, onSelect }) {
 			ctx.stroke();
 			ctx.globalAlpha = 1;
 			for (const w of s.walk) {
-				w.t += 0.004;
-				if (w.t >= 1) {
-					w.a = w.b;
-					let nb;
-					do nb = Math.floor(Math.random() * 8);
-					while (nb === w.a);
-					w.b = nb;
-					w.t = 0;
-				}
-				const A = s.LM[w.a];
-				const B2 = s.LM[w.b];
-				const e = ss(w.t);
-				const u = nrm([lerp(A[0], B2[0], e), lerp(A[1], B2[1], e), lerp(A[2], B2[2], e)]);
-				w.tr.push(u);
-				if (w.tr.length > 60) w.tr.shift();
+				const u = w.u ?? s.LM[w.a];
 				w.tr.forEach((pt, i) => {
 					const v = rot(pt);
 					if (v[2] <= 0) return;

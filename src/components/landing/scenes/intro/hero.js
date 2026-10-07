@@ -176,8 +176,9 @@ export function createHero(cv) {
 			fb.y = tg[1];
 			fb.ok = true;
 		}
-		fb.x += (tg[0] - fb.x) * 0.08;
-		fb.y += (tg[1] - fb.y) * 0.08;
+		const kf = 1 - Math.exp(-10 * c.dt); // 0,08 je Bild bei 120 Hz
+		fb.x += (tg[0] - fb.x) * kf;
+		fb.y += (tg[1] - fb.y) * kf;
 		sizeTo(c.W, c.H, dpr);
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		ctx.fillStyle = '#0A0A0A';

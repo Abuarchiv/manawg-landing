@@ -7,6 +7,8 @@ export const ss = (x) => {
 	return x * x * (3 - 2 * x);
 };
 export const lerp = (a, b, t) => a + (b - a) * t;
+/** Glättungsfaktor k je 60-Hz-Schritt auf die Bilddauer dt umgerechnet: gleiches Tempo bei jeder Bildrate. */
+export const lag = (k, dt) => 1 - (1 - k) ** (dt * 60);
 export const ease = (x) => 1 - Math.pow(1 - cl(x), 4);
 
 // 4x4-Bayer-Matrix für das Dithering der Halbton-Flächen.

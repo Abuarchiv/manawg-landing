@@ -18,14 +18,10 @@ export const loop = {
 	reduced: false,
 	mode: 'quer', // 'hoch' | 'quer'
 	flach: false, // Handy quer
-	art: false, // Entwurfstakt der Art-Szenen (Schritt 1 bis 3, entfällt mit F-06): jedes zweite 16-ms-Bild
-	allow: new Set(), // Szenen-Plätze, die in diesem Takt zeichnen dürfen (Budget 4, rotierender Start)
 };
 
-/** Darf die Szene mit diesem Platz (0..7) in diesem Takt zeichnen? Nachbildung des Entwurfstakts für das Regressions-Gate. */
-export function takt(slot) {
-	return loop.art && loop.allow.has(slot);
-}
+/** Messhaken der Szenen für tools/qa (nur lesend), hängt an window.__landing.dbg. */
+export const qa = {};
 
 const scenes = new Set();
 const subs = new Set();
@@ -66,22 +62,18 @@ function measure(r, W, H) {
 	def.resize?.(s);
 }
 
-function seen(r) {
-	const rc = r.s.el.getBoundingClientRect();
-	return !(
+function frameScene(r, t, dt) {
+	const { s, def } = r;
+	if (s.cv && s.dpr !== dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2))
+		measure(r, s.el.clientWidth, s.el.clientHeight);
+	const rc = s.el.getBoundingClientRect();
+	s.visible = !(
 		rc.bottom < 0 ||
 		rc.top > innerHeight ||
 		rc.right < 0 ||
 		rc.left > innerWidth ||
 		rc.width < 2
 	);
-}
-
-function frameScene(r, t, dt) {
-	const { s, def } = r;
-	if (s.cv && s.dpr !== dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2))
-		measure(r, s.el.clientWidth, s.el.clientHeight);
-	s.visible = seen(r);
 	if (!s.visible) return;
 	s.reduced = loop.reduced;
 	if (!r.inited) {
@@ -104,25 +96,6 @@ function tick() {
 	loop.raw = raw;
 	loop.dt = Math.min(0.05, raw);
 	loop.now = now;
-	// Entwurfstakt: gerade Bildnummer (gezählt in 16-ms-Schritten ab dem ersten Bild des Entwurfs), höchstens
-	// vier sichtbare Szenen je Takt, der Start im Platz-Ring rotiert. Platz 7 ist das Sternenfeld der Intro.
-	const fa = Math.round((now * 1000) / 16) - 63;
-	loop.art = fa > 0 && fa % 2 === 0;
-	loop.allow.clear();
-	if (loop.art) {
-		const vis = new Array(8).fill(false);
-		vis[7] = true;
-		for (const r of scenes) if (r.def.slot !== undefined) vis[r.def.slot] = seen(r);
-		let bud = 4;
-		const st0 = (fa * 3) % 8;
-		for (let k = 0; k < 8 && bud > 0; k++) {
-			const j = (st0 + k) % 8;
-			if (vis[j]) {
-				loop.allow.add(j);
-				bud--;
-			}
-		}
-	}
 	loop.t = now - t0;
 	if (window.devicePixelRatio !== lastDpr) {
 		lastDpr = window.devicePixelRatio;

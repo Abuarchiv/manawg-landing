@@ -2,7 +2,7 @@
 // ziehen die Körper zurück in das Zeichen. Szenenraum: Bezugsbox 1280 x 760, die Wände sind die Ränder
 // der ganzen Fläche.
 
-import { loop, register, takt } from '../../core/loop';
+import { qa, register } from '../../core/loop';
 import { AB } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
@@ -13,7 +13,6 @@ const HY = 380 - 173 * S + 20;
 /** Meldet die Körper-Szene an. Gibt die Abmeldung zurück. */
 export function registerKoerper(cv) {
 	return register({
-		slot: 3,
 		name: 'koerper',
 		el: cv,
 		host: cv.parentElement,
@@ -31,8 +30,9 @@ export function registerKoerper(cv) {
 				hy: HY + c[1] * S,
 				n: PL[i][0].toUpperCase(),
 			}));
-			s.idle = 0;
+			s.idle = 99;
 			s.grab = -1;
+			qa.koerper = () => ({ idle: s.idle, ring: !!s.ring });
 			s.onDownBody = () => {
 				let best = -1;
 				let bd = 1e9;
@@ -45,6 +45,7 @@ export function registerKoerper(cv) {
 				});
 				s.grab = best;
 				s.idle = 0;
+				s.ring = false;
 				if (best < 0)
 					for (const b of s.B) {
 						const dx = b.x - s.m.x;
@@ -63,63 +64,85 @@ export function registerKoerper(cv) {
 			s.idle = 0;
 		},
 		ownsTouch: (s) => s.grab >= 0,
-		frame(s) {
-			if (!takt(3)) return; // Entwurfstakt: jedes zweite Bild
+		frame(s, _t, dt) {
 			const ctx = s.ctx;
 			// Flächenränder im Szenenraum: Wände links und rechts, Decke und Boden
 			const x0 = -s.ox / s.f;
 			const x1 = (s.W - s.ox) / s.f;
 			const y0 = -s.oy / s.f;
 			const y1 = (s.H - s.oy) / s.f;
-			s.idle += 1 / 60;
-			const loose = s.idle < 3.5;
-			const G = loose ? 0.45 : 0;
-			for (const b of s.B) {
-				const vx = (b.x - b.px) * 0.985;
-				const vy = (b.y - b.py) * 0.985;
-				b.px = b.x;
-				b.py = b.y;
-				b.x += vx;
-				b.y += vy + G;
-				if (!loose) {
-					b.x += (b.hx - b.x) * 0.06;
-					b.y += (b.hy - b.y) * 0.06;
+			// T-12: Die Körper ruhen als Ring. Der Einfall des Entwurfs beginnt erst, wenn der Abschnitt
+			// zu mindestens 70 % im Bild ist, und setzt zurück, wenn er (fast) ganz verlassen ist.
+			const r = s.host.getBoundingClientRect();
+			const sicht = (Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)) / Math.min(r.height, innerHeight);
+			if (s.ring === undefined) {
+				s.ring = sicht < 0.7;
+				s.idle = s.ring ? 99 : 0;
+			}
+			if (s.ring && sicht >= 0.7 && !s.m.down) {
+				s.ring = false;
+				s.idle = 0;
+			} else if (!s.ring && sicht < 0.1) {
+				s.ring = true;
+				s.idle = 99;
+				for (const b of s.B) {
+					b.x = b.px = b.hx;
+					b.y = b.py = b.hy;
 				}
 			}
-			if (s.grab >= 0 && s.m.in) {
-				const b = s.B[s.grab];
-				b.x += (s.m.x - b.x) * 0.5;
-				b.y += (s.m.y - b.y) * 0.5;
-			}
-			for (let it = 0; it < 4; it++) {
-				for (let i = 0; i < 8; i++)
-					for (let j = i + 1; j < 8; j++) {
-						const a = s.B[i];
-						const c = s.B[j];
-						const dx = c.x - a.x;
-						const dy = c.y - a.y;
-						const d = Math.hypot(dx, dy) || 1;
-						const m = a.r + c.r;
-						if (d < m) {
-							const o = ((m - d) / 2) * (loose ? 1 : 0.3);
-							const ox = (dx / d) * o;
-							const oy = (dy / d) * o;
-							a.x -= ox;
-							a.y -= oy;
-							c.x += ox;
-							c.y += oy;
+			// Physik im festen 60-Hz-Schritt (Verlet), unabhängig von der Bildrate
+			s.step(dt, 1 / 60, () => {
+				s.idle += 1 / 60;
+				const loose = s.idle < 3.5;
+				const G = loose ? 0.45 : 0;
+				for (const b of s.B) {
+					const vx = (b.x - b.px) * 0.985;
+					const vy = (b.y - b.py) * 0.985;
+					b.px = b.x;
+					b.py = b.y;
+					b.x += vx;
+					b.y += vy + G;
+					if (!loose) {
+						b.x += (b.hx - b.x) * 0.06;
+						b.y += (b.hy - b.y) * 0.06;
+					}
+				}
+				if (s.grab >= 0 && s.m.in) {
+					const b = s.B[s.grab];
+					b.x += (s.m.x - b.x) * 0.5;
+					b.y += (s.m.y - b.y) * 0.5;
+				}
+				for (let it = 0; it < 4; it++) {
+					for (let i = 0; i < 8; i++)
+						for (let j = i + 1; j < 8; j++) {
+							const a = s.B[i];
+							const c = s.B[j];
+							const dx = c.x - a.x;
+							const dy = c.y - a.y;
+							const d = Math.hypot(dx, dy) || 1;
+							const m = a.r + c.r;
+							if (d < m) {
+								const o = ((m - d) / 2) * (loose ? 1 : 0.3);
+								const ox = (dx / d) * o;
+								const oy = (dy / d) * o;
+								a.x -= ox;
+								a.y -= oy;
+								c.x += ox;
+								c.y += oy;
+							}
+						}
+					for (const b of s.B) {
+						if (b.x < x0 + b.r) b.x = x0 + b.r;
+						if (b.x > x1 - b.r) b.x = x1 - b.r;
+						if (b.y < y0 + b.r) b.y = y0 + b.r;
+						if (b.y > y1 - b.r) {
+							b.y = y1 - b.r;
+							b.py = b.y + (b.y - b.py) * 0.4;
 						}
 					}
-				for (const b of s.B) {
-					if (b.x < x0 + b.r) b.x = x0 + b.r;
-					if (b.x > x1 - b.r) b.x = x1 - b.r;
-					if (b.y < y0 + b.r) b.y = y0 + b.r;
-					if (b.y > y1 - b.r) {
-						b.y = y1 - b.r;
-						b.py = b.y + (b.y - b.py) * 0.4;
-					}
 				}
-			}
+			});
+			const loose = s.idle < 3.5;
 			s.full();
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
