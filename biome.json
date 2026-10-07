@@ -30,8 +30,9 @@
 			"test-results",
 			"playwright-report",
 			"graphify-out",
-			"src/components/landing/engine/**",
+			"src/components/landing/**/*.js",
 			"tools/out",
+			"public",
 			"site",
 			"site-1zu1",
 			"design"

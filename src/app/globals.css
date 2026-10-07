@@ -38,9 +38,6 @@ a {
 a:hover {
 	text-decoration: none;
 }
-html.js [data-scroller] {
-	overflow: hidden !important;
-}
 :root {
 	--text-1: #fafafa;
 	--text-2: rgba(250, 250, 250, 0.72);

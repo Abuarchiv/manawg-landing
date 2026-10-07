@@ -36,7 +36,12 @@ const nextConfig: NextConfig = {
 		ignoreDuringBuilds: false,
 	},
 	async headers() {
-		return [{ source: '/:path*', headers: securityHeaders }];
+		// Die letzte Regel mit gleichem Schlüssel gewinnt: das Demo-Dokument der App darf im eigenen
+		// Ursprung eingebettet werden (Handy der Ende-Szene), alles andere bleibt DENY.
+		return [
+			{ source: '/:path*', headers: securityHeaders },
+			{ source: '/app-demo/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
+		];
 	},
 	experimental: {
 		optimizePackageImports: ['lucide-react', '@react-three/drei'],

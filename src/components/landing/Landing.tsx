@@ -1,168 +1,88 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { css } from './dc';
-import { art } from './engine/art';
-import { hero } from './engine/hero';
-import { install } from './engine/install';
-import { Logic } from './engine/logic';
-import { Ende, HeroTitel, Hinweise, Kopf, Lader, Raeume } from './overlays';
-import {
-	Bereiche,
-	Finale,
-	Flut,
-	Fragen,
-	Fusszeile,
-	Installieren,
-	Intro,
-	Koerper,
-	SoGehts,
-	Tiefe,
-} from './sections';
+import { useEffect } from 'react';
+import './landing.css';
+import { loop, modeOf, setMode, start } from './core/loop';
+import { initScroll, sectionBox } from './core/scroll';
+import { Bereiche } from './scenes/bereiche/Bereiche';
+import { Finale } from './scenes/finale/Finale';
+import { FlutBand } from './scenes/flutband/FlutBand';
+import { Fragen } from './scenes/fragen/Fragen';
+import { Fusszeile } from './scenes/fusszeile/Fusszeile';
+import { Installieren } from './scenes/installieren/Installieren';
+import { Intro } from './scenes/intro/Intro';
+import { live } from './scenes/intro/stage';
+import { Koerper } from './scenes/koerper/Koerper';
+import { SoGehts } from './scenes/sogehts/SoGehts';
+import { Tiefe } from './scenes/tiefe/Tiefe';
+import { Hinweise } from './shell/Hinweise';
+import { Kopf } from './shell/Kopf';
+import { Lader } from './shell/Lader';
 
-const ROOT =
-	'position:fixed;left:0;top:0;width:1280px;height:800px;overflow:hidden;background:#0A0A0A;color:#FAFAFA;font-family:Inter,system-ui,sans-serif;transform-origin:0 0;transform:translate(var(--x,0px),var(--y,0px)) scale(var(--k,1))';
-const SCROLLER = 'position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none';
+// Wurzel der Landing: Kopf und Hinweise fest am Fenster, danach der Inhalt im normalen Dokumentfluss,
+// zuletzt der Lader. Dokument-Scroll, keine skalierte Bühne. Szenen melden sich selbst bei der
+// Schleife an (core/loop.js), die Intro-Bühne hängt an der Zeitachse (scenes/intro).
+
+declare global {
+	interface Window {
+		__landing?: Record<string, unknown> | undefined;
+	}
+}
+
+// Nur lesender Haken für die Prüfwerkzeuge (?qa=1), ohne Einfluss auf das Verhalten.
+function qaHaken(root: HTMLElement) {
+	window.__landing = {
+		P: () => live.stage?.state.P ?? 0,
+		s: () => live.stage?.state.s ?? 0,
+		phase: () => root.dataset.phase ?? '',
+		yForP: (P: number) => live.stage?.yForP(P) ?? 0,
+		section: (id: string) => sectionBox(id),
+		get bereit() {
+			return live.stage?.state.bereit ?? false;
+		},
+	};
+}
 
 export function Landing() {
-	// inst ist `any`: die Engine ist untypisiertes JS, Felder (raf, sc, fa, …) entstehen zur Laufzeit
-	// biome-ignore lint/suspicious/noExplicitAny: siehe oben
-	const inst = useRef<any>(null);
-	if (!inst.current) {
-		inst.current = new Logic();
-		inst.current.props = { tour: false };
-	}
-	const [, rerender] = useState(inst.current.state);
-	// biome-ignore lint/suspicious/noExplicitAny: Semantik 1:1 aus support.js DCLogic.setState
-	inst.current.setState = (p: any) => {
-		const i = inst.current;
-		const n = typeof p === 'function' ? p(i.state) : p;
-		i.state = { ...i.state, ...n };
-		rerender(i.state);
-	};
-	const v = inst.current.renderVals();
-	const st = inst.current.state;
-
-	const rootRef = useRef<HTMLDivElement>(null);
-	const scRef = useRef<HTMLElement>(null);
-	const sizerRef = useRef<HTMLDivElement>(null);
-	const fitRef = useRef<() => void>(() => {});
-	const kRef = useRef(1);
-
-	// Dokument-Scroll treibt scrollTop des Rahmens (Zeitachse der Vorlage), Zwei-Wege-Abgleich.
 	useEffect(() => {
-		const root = rootRef.current as HTMLDivElement;
-		const sc = scRef.current as HTMLElement;
-		const sizer = sizerRef.current as HTMLDivElement;
-		const d = document.documentElement;
-		const reduce = matchMedia('(prefers-reduced-motion: reduce)');
-		const fit = () => {
-			const vw = d.clientWidth;
-			const vh = window.innerHeight;
-			const k = Math.min(vw / 1280, vh / 800);
-			kRef.current = k;
-			d.style.setProperty('--k', String(k));
-			d.style.setProperty('--x', `${(vw - 1280 * k) / 2}px`);
-			d.style.setProperty('--y', `${(vh - 800 * k) / 2}px`);
-			sizer.style.height = `${(sc.scrollHeight - 800) * k + vh}px`;
-			sc.scrollTop = window.scrollY / k;
+		const root = document.getElementById('final') as HTMLElement;
+		const applyMode = () => {
+			const { mode, flach } = modeOf(window.innerWidth, window.innerHeight);
+			root.dataset.mode = mode;
+			if (flach) root.dataset.flach = '';
+			else delete root.dataset.flach;
+			setMode(mode, flach);
 		};
-		fitRef.current = fit;
-		const onWin = () => {
-			const t = window.scrollY / kRef.current;
-			if (Math.abs(sc.scrollTop - t) > 1) sc.scrollTop = t;
-		};
-		const onSc = () => {
-			if (Math.abs(sc.scrollTop - window.scrollY / kRef.current) > 1)
-				window.scrollTo(0, sc.scrollTop * kRef.current);
-		};
-		// Sprunglinks: go() der Vorlage rechnet mit ungeskalierten Rects, hier um k korrigiert.
-		const onGo = (e: MouseEvent) => {
-			const a = (e.target as Element).closest?.('a[data-go]');
-			if (!a) return;
-			e.preventDefault();
-			e.stopPropagation();
-			const tg = sc.querySelector(`[data-sec="${a.getAttribute('data-go')}"]`);
-			if (!tg) return;
-			const y =
-				(tg.getBoundingClientRect().top - sc.getBoundingClientRect().top) / kRef.current +
-				sc.scrollTop -
-				110;
-			sc.scrollTo({ top: y, behavior: reduce.matches ? 'auto' : 'smooth' });
-		};
-		// Touch: Körper greifen, Raster malen und Planet ziehen sollen nicht scrollen. Die Engine hat bei
-		// pointerdown (kommt vor touchstart) schon entschieden, ob die Geste ihr gehört.
-		const onTouch = (e: TouchEvent) => {
-			const host = (e.target as Element).closest?.(':has(> canvas[data-art])');
-			// biome-ignore lint/suspicious/noExplicitAny: Szene hängt als __s am Canvas (Engine)
-			const s = (host?.querySelector(':scope > canvas[data-art]') as any)?.__s;
-			if (!s) return;
-			if (
-				s.grab >= 0 ||
-				s.paint >= 0 ||
-				(s.type === 'planet' && Math.hypot(s.m.x - 820, s.m.y - 430) < 300)
-			)
-				e.preventDefault();
-		};
-		// Bricht der Browser eine Touch-Geste ab, kommt kein pointerup: Engine bekommt eins.
-		const onCancel = () => window.dispatchEvent(new PointerEvent('pointerup'));
-		const st0 = sc.scrollTop;
-		history.scrollRestoration = 'manual';
-		fit();
-		sc.scrollTop = st0;
-		window.scrollTo(0, st0 * kRef.current);
-		window.addEventListener('resize', fit);
-		window.addEventListener('scroll', onWin, { passive: true });
-		sc.addEventListener('scroll', onSc, { passive: true });
-		root.addEventListener('click', onGo, true);
-		root.addEventListener('touchstart', onTouch, { passive: false });
-		root.addEventListener('pointercancel', onCancel);
-
-		const i = inst.current;
-		const loop = (hero as unknown as (this: unknown) => () => void).call(i);
-		art.call(i);
-		install.call(i);
-		loop();
+		applyMode();
+		window.addEventListener('resize', applyMode);
+		const stopScroll = initScroll(root);
+		const stop = start();
+		if (new URLSearchParams(location.search).get('qa') === '1') qaHaken(root);
 		return () => {
-			window.removeEventListener('resize', fit);
-			window.removeEventListener('scroll', onWin);
-			sc.removeEventListener('scroll', onSc);
-			root.removeEventListener('click', onGo, true);
-			root.removeEventListener('touchstart', onTouch);
-			root.removeEventListener('pointercancel', onCancel);
-			i.componentWillUnmount();
+			window.removeEventListener('resize', applyMode);
+			stopScroll();
+			stop();
+			window.__landing = undefined;
 		};
 	}, []);
 
-	const open = v.faqs.findIndex((q: { open: boolean }) => q.open);
-	// biome-ignore lint/correctness/useExhaustiveDependencies: nach jedem FAQ-Wechsel Höhe neu messen
-	useEffect(() => {
-		fitRef.current();
-	}, [open]);
-
 	return (
-		<div id="final">
-			<div data-sizer ref={sizerRef} aria-hidden="true" />
-			<div data-root ref={rootRef} style={css(ROOT)}>
-				<main id="inhalt" data-scroller ref={scRef} style={css(SCROLLER)}>
-					<Intro />
-					<Flut />
-					<SoGehts />
-					<Koerper />
-					<Tiefe />
-					<Bereiche v={v} />
-					<Installieren v={v} st={st} />
-					<Fragen v={v} />
-					<Finale />
-					<Fusszeile />
-				</main>
-				<HeroTitel />
-				<Kopf />
-				<Raeume />
-				<Hinweise />
-				<Lader />
-				<Ende v={v} st={st} />
-			</div>
+		<div id="final" data-mode={loop.mode} data-phase="intro" suppressHydrationWarning>
+			<Kopf />
+			<Hinweise />
+			<main id="inhalt">
+				<Intro />
+				<FlutBand />
+				<SoGehts />
+				<Koerper />
+				<Tiefe />
+				<Bereiche />
+				<Installieren />
+				<Fragen />
+				<Finale />
+				<Fusszeile />
+			</main>
+			<Lader />
 		</div>
 	);
 }

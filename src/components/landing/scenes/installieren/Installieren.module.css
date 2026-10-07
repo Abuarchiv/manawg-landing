@@ -1,0 +1,94 @@
+.sektion {
+	position: relative;
+	min-height: 100lvh;
+	background: #0a0a0a;
+	color: #fafafa;
+	overflow: hidden;
+	display: grid;
+	grid-template-columns: calc(var(--rand) + var(--w-520)) minmax(0, 1fr);
+	column-gap: var(--sp-60);
+	padding: 0;
+}
+.text {
+	padding: var(--sp-96) 0 var(--sp-32) var(--rand);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-24);
+	min-width: 0;
+}
+.titel {
+	margin: 0;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--t-72);
+	line-height: 0.95;
+	letter-spacing: -0.045em;
+	overflow-wrap: break-word;
+}
+.lead {
+	margin: 0;
+	font-size: var(--t-18);
+	line-height: 1.5;
+	opacity: 0.72;
+	max-width: var(--w-420);
+}
+.tabs {
+	display: flex;
+	gap: 4px;
+	border: 1px solid var(--haar);
+	border-radius: 12px;
+	padding: 4px;
+	align-self: flex-start;
+	max-width: 100%;
+}
+.schritte {
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid var(--haar);
+	max-width: var(--w-520);
+}
+.schritt {
+	display: grid;
+	grid-template-columns: 48px minmax(0, 1fr);
+	align-items: baseline;
+	border-bottom: 1px solid var(--haar);
+	padding: var(--sp-16) 0;
+	opacity: 0.35;
+	transition: opacity 0.3s;
+}
+.nr {
+	font-family: "JetBrains Mono", monospace;
+	font-size: var(--t-13);
+}
+.zeile {
+	font-size: var(--t-19);
+	font-weight: 500;
+}
+.buehne {
+	min-width: 0;
+	align-self: center;
+	justify-self: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Hochformat: Text über dem Handy */
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px),
+	(orientation: landscape) and (max-height: 499px) {
+	.sektion {
+		grid-template-columns: minmax(0, 1fr);
+		column-gap: 0;
+	}
+	.text {
+		padding: var(--abschnitt-oben) var(--rand) var(--sp-32);
+	}
+	.schritte {
+		max-width: none;
+	}
+	.buehne {
+		grid-row: 2;
+		padding: var(--sp-32) var(--rand) var(--abschnitt-unten);
+		max-width: 100%;
+	}
+}

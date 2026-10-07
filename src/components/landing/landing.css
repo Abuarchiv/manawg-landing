@@ -1,0 +1,169 @@
+/* Tokens, Modi und Klassen der Landing (PLAN-V2 2.2, 2.6, 2.7).
+   Regel für einen Entwurfswert d: clamp(MIN, min(d/12,8 vw, d/8 svh), MAX). Bei 1280 x 800 ergibt das genau d. */
+:root {
+	/* Schrift */
+	--t-label: 12px;
+	--t-13: 13px;
+	--t-14: 14px;
+	--t-15: 15px;
+	--t-body: clamp(15px, min(1.25vw, 2svh), 17.5px);
+	--t-17: clamp(15px, min(1.328125vw, 2.125svh), 18.5px);
+	--t-18: clamp(16px, min(1.40625vw, 2.25svh), 19.5px);
+	--t-19: clamp(16px, min(1.484375vw, 2.375svh), 20.5px);
+	--t-20: clamp(17px, min(1.5625vw, 2.5svh), 21px);
+	--t-26: clamp(20px, min(2.03125vw, 3.25svh), 28px);
+	--t-30: clamp(24px, min(2.34375vw, 3.75svh), 33px);
+	--t-32: clamp(24px, min(2.5vw, 4svh), 35px);
+	--t-40: clamp(28px, min(3.125vw, 5svh), 44px);
+	--t-44: clamp(28px, min(3.4375vw, 5.5svh), 48px);
+	--t-64: clamp(38px, min(5vw, 8svh), 72px);
+	--t-72: clamp(40px, min(5.625vw, 9svh), 80px);
+	--t-80: clamp(46px, min(6.25vw, 10svh), 88px);
+	--t-96: clamp(54px, min(7.5vw, 12svh), 104px);
+	--t-176: clamp(96px, min(13.75vw, 22svh), 176px);
+	--t-200: clamp(80px, min(15.625vw, 25svh), 216px);
+
+	/* Ränder und Abschnittsabstände */
+	--rand: clamp(20px, min(3.125vw, 5svh), 48px);
+	--rand-kopf: clamp(16px, min(2.1875vw, 3.5svh), 32px);
+	--abschnitt-oben: clamp(56px, min(7.5vw, 12svh), 105.6px);
+	--abschnitt-unten: clamp(64px, min(9.375vw, 15svh), 132px);
+	--anker: 110px;
+
+	/* Abstände und Breiten */
+	--sp-10: clamp(5px, min(0.78125vw, 1.25svh), 11px);
+	--sp-12: clamp(6px, min(0.9375vw, 1.5svh), 13.2px);
+	--sp-14: clamp(7px, min(1.09375vw, 1.75svh), 15.4px);
+	--sp-16: clamp(8px, min(1.25vw, 2svh), 17.6px);
+	--sp-18: clamp(9px, min(1.40625vw, 2.25svh), 19.8px);
+	--sp-20: clamp(10px, min(1.5625vw, 2.5svh), 22px);
+	--sp-22: clamp(11px, min(1.71875vw, 2.75svh), 24.2px);
+	--sp-24: clamp(12px, min(1.875vw, 3svh), 26.4px);
+	--sp-26: clamp(13px, min(2.03125vw, 3.25svh), 28.6px);
+	--sp-28: clamp(14px, min(2.1875vw, 3.5svh), 30.8px);
+	--sp-32: clamp(16px, min(2.5vw, 4svh), 35.2px);
+	--sp-36: clamp(18px, min(2.8125vw, 4.5svh), 39.6px);
+	--sp-40: clamp(20px, min(3.125vw, 5svh), 44px);
+	--sp-44: clamp(22px, min(3.4375vw, 5.5svh), 48.4px);
+	--sp-48: clamp(24px, min(3.75vw, 6svh), 52.8px);
+	--sp-56: clamp(28px, min(4.375vw, 7svh), 61.6px);
+	--sp-60: clamp(30px, min(4.6875vw, 7.5svh), 66px);
+	--sp-64: clamp(32px, min(5vw, 8svh), 70.4px);
+	--sp-72: clamp(36px, min(5.625vw, 9svh), 79.2px);
+	--sp-96: clamp(48px, min(7.5vw, 12svh), 105.6px);
+	--sp-120: clamp(60px, min(9.375vw, 15svh), 132px);
+	--sp-150: clamp(75px, min(11.71875vw, 18.75svh), 165px);
+	--w-340: clamp(170px, min(26.5625vw, 42.5svh), 374px);
+	--w-380: clamp(190px, min(29.6875vw, 47.5svh), 418px);
+	--w-420: clamp(210px, min(32.8125vw, 52.5svh), 462px);
+	--w-440: clamp(220px, min(34.375vw, 55svh), 484px);
+	--w-520: clamp(260px, min(40.625vw, 65svh), 572px);
+	--w-640: clamp(320px, min(50vw, 80svh), 704px);
+	--h-150: clamp(75px, min(11.71875vw, 18.75svh), 165px);
+	--h-520: clamp(260px, min(40.625vw, 65svh), 572px);
+
+	/* Bedienelemente */
+	--cta-h: 40px;
+	--cta-fs: 14px;
+	--cta-px: 16px;
+	--cta-r: 10px;
+	--cta-gross-h: 48px;
+	--cta-gross-fs: 16px;
+	--cta-gross-px: 24px;
+	--haar: rgba(250, 250, 250, 0.18);
+}
+
+/* Grundstile des früheren Rahmens */
+#final {
+	position: relative;
+	background: #0a0a0a;
+	color: #fafafa;
+	font-family: Inter, system-ui, sans-serif;
+	overflow-x: clip;
+}
+#final [data-sec]:focus {
+	outline: none;
+}
+#final [data-sec] {
+	scroll-margin-top: var(--anker);
+}
+
+/* Klassen-Vertrag (PLAN-V2 2.7). Hover, Fokus und Aktiv gestaltet SHELL hier zentral. */
+.cta {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: var(--cta-h);
+	padding: 0 var(--cta-px);
+	border-radius: var(--cta-r);
+	font-size: var(--cta-fs);
+	font-weight: 500;
+	white-space: nowrap;
+	flex-shrink: 0;
+	cursor: pointer;
+	text-decoration: none;
+	color: #fafafa;
+}
+.cta::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50%;
+	height: max(100%, 44px);
+	transform: translateY(-50%);
+}
+.cta--voll {
+	background: #fafafa;
+	color: #0a0a0a;
+}
+.cta--rand {
+	border: 1px solid rgba(250, 250, 250, 0.6);
+	color: #fafafa;
+}
+.cta--dunkel {
+	border: 1px solid rgba(250, 250, 250, 0.3);
+	background: #0a0a0a;
+	color: #fafafa;
+}
+.cta--gross {
+	height: var(--cta-gross-h);
+	padding: 0 var(--cta-gross-px);
+	font-size: var(--cta-gross-fs);
+}
+.label {
+	font-family: "JetBrains Mono", monospace;
+	font-size: var(--t-label);
+	font-weight: 500;
+	letter-spacing: 0.08em;
+	opacity: 0.72;
+}
+.haar {
+	height: 1px;
+	background: var(--haar);
+}
+.tab {
+	height: 40px;
+	padding: 0 16px;
+	display: flex;
+	align-items: center;
+	border-radius: 8px;
+	font-size: var(--t-14);
+	font-weight: 500;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.faq-zeile {
+	border-top: 1px solid var(--haar);
+	padding: var(--sp-26) 0;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-14);
+	cursor: pointer;
+}
+.fuss-link {
+	font-size: var(--t-14);
+	opacity: 0.72;
+	cursor: pointer;
+	text-decoration: none;
+}

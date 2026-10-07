@@ -1,14 +1,5 @@
 import { type CSSProperties, type ElementType, type KeyboardEvent, useState } from 'react';
 
-// Engine und Vorlage sind untypisiertes JS: Render-Werte und Zustand entstehen zur Laufzeit.
-// biome-ignore lint/suspicious/noExplicitAny: Render-Werte der Engine
-export type Vals = Record<string, any>;
-// biome-ignore lint/suspicious/noExplicitAny: Zustand der Engine
-export type St = Record<string, any>;
-
-/** Eine Zeile einer Liste aus renderVals(). */
-export type Row = Vals;
-
 const cache = new Map<string, CSSProperties>();
 
 /** Inline-Style-String der Vorlage 1:1 als React-Style (Werte bleiben Strings, keine px-Umrechnung). */

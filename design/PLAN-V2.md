@@ -215,14 +215,16 @@ Das Fundament vergibt beim Dateischnitt diese Klassen. Pakete behalten sie, SHEL
 | `scenes/ende/Phone.tsx` (+ `Phone.module.css`) | Gerät mit Statusleiste und App-Bildschirm | APP |
 | `scenes/flutband/FlutBand.tsx` | Flut-Band nach der Intro | TEXT |
 | `scenes/sogehts/SoGehts.tsx`, `scenes/sogehts/ziffern.js` | So geht’s mit `ptext`-Ziffern | TEXT |
-| `scenes/koerper/Koerper.tsx`, `scenes/koerper/koerper.js` | acht Körper (`physics`) | SZENEN |
-| `scenes/tiefe/Tiefe.tsx`, `scenes/tiefe/tiefe.js` | Tiefe (`depth`) | SZENEN |
+| `scenes/koerper/Koerper.tsx`, `scenes/koerper/physik.js` | acht Körper (`physics`) | SZENEN |
+| `scenes/tiefe/Tiefe.tsx`, `scenes/tiefe/tunnel.js` | Tiefe (`depth`) | SZENEN |
 | `scenes/bereiche/Bereiche.tsx`, `scenes/bereiche/planet.js`, `scenes/bereiche/orte.js` | Planet, acht Orte (bisher `Logic.PL`) | SZENEN |
 | `scenes/installieren/Installieren.tsx`, `scenes/installieren/ablauf.js` | Installieren | INSTALL |
 | `scenes/fragen/Fragen.tsx` | Fragen | SHELL |
 | `scenes/finale/Finale.tsx`, `scenes/finale/ascii.js` | Finale mit ASCII-Sonne | TEXT |
 | `scenes/fusszeile/Fusszeile.tsx` | Fußzeile | SHELL |
 | `shell/Kopf.tsx`, `shell/Hinweise.tsx`, `shell/Lader.tsx` | feste Ebenen | SHELL |
+
+Abweichung: `koerper.js` und `tiefe.js` heißen `physik.js` und `tunnel.js`, weil `Koerper.tsx` und `koerper.js` auf macOS (Groß-/Kleinschreibung egal) kollidieren und TypeScript den Import auf die eigene Datei auflöst.
 
 Gelöscht werden `sections.tsx`, `overlays.tsx`, `dc.tsx`, `engine/*`. Der Zustand von `engine/logic.js` wandert in die Komponenten (FAQ, Install-Tab, Planet-Auswahl, Handy-Zustand). Pro Szene ist ein `*.module.css` erlaubt, es gehört dem Besitzer der Szene.
 
