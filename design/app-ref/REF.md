@@ -403,3 +403,25 @@ Koordinaten sind CSS-Pixel im 390 × 844-Viewport, jeweils Mitte des Ziels und G
 - **Konsole:** keine Fehler außer `GET /api/wg/mine` → 401 (Fixture-Artefakt).
 
 Grenzen: Der Zustand liegt nur im Speicher des Demo-Servers; die Standalone-HTML sind statische Abzüge (kein JavaScript). Weitere Zustände entstehen mit `tools/capture.mjs` (neue `step`-Blöcke). Die Install-Animation des Betriebssystems selbst (Safari-Teilen-Menü, Home-Bildschirm) ist **nicht** Teil der App und steht in `design/install-ref/`.
+
+## 13. Demo-Dokument für das Handy der Landing (`public/app-demo/`)
+
+Das Handy der Ende-Szene lädt `public/app-demo/index.html` in ein gleich-originiges `iframe` (390 × 839 CSS-px, `scale(278/390)`). Das Dokument enthält keine Nachbauten: Jede Seite und jedes Overlay ist ein Abzug des echten DOM aus der Aufnahme (`<template>`), `app.css` ist das Build-CSS (nur `env(safe-area-inset-*)` in Werten ist durch `--sai-top/-bottom` ersetzt, weil `env()` im iframe immer 0 ist), `demo.js` tauscht die Abzüge aus und animiert sie mit den eigenen Klassen der App (`data-open`, `data-ending-style`, `animate-in`).
+
+**Aufnahme** (Skripte in `tools/`, nur über die Oberfläche der echten App, Betrachter Jona, Uhr von App und Demo-Server fest auf Di, 06.10.2026 17:43 Europe/Berlin):
+
+| Skript | Ergebnis |
+|---|---|
+| `demo-crawl.mjs` | klickt jedes Bedienelement jeder Route an (Tiefe 2), speichert Overlays, Seitenvarianten, Navigation, erkennt Änderungen der Daten (POST/PATCH) |
+| `demo-worlds.mjs` | derselbe Crawl in den Welten nach einem Ablauf (E Hafermilch, A Kinoabend, P ausgeglichen, B Bad putzen, C Antwort, V Vorrat), nur für Elemente, die sich dort unterscheiden |
+| `demo-typing.mjs` | Abläufe mit Eingaben (Ausgabeformular, Chat-Antwort, Artikelfeld) und die Zustände direkt nach dem Speichern (Meldung, Hinweis) |
+| `demo-pages.mjs` | jede Route in jeder Welt, die sie verändert (`REL` in `demo-flags.mjs`) |
+| `build-demo.mjs` | baut daraus `index.html` (Vorlagen, Graph, Wörterbuch für lange `class`-Werte und Icons) und `app.css` |
+
+**Graph:** Knoten = Route + Klickfolge (`/ausgaben|button|Ausgabe hinzufügen@0`), Kanten = Bedienelement (`tag|Beschriftung@n`, Ziffern als `#`) → Zielknoten. Welten = gesetzte Abläufe (`E+A+P`); fehlt ein Knoten in einer Welt, gilt die Seite der Welt mit dem Overlay und den Kanten der Ausgangswelt. Eingabefelder tippen beim Antippen den aufgenommenen Text mit 60 ms je Zeichen (Reihenfolge der Aufnahme, vorgezogene Felder holen die fehlenden nach).
+
+**Datum und Uhrzeit** stehen als Tokens in den Vorlagen (`{{D:2:kurz}}` Tag + 2, `{{F:kurz}}` nächster Freitag, `{{A:25}}` „vor 25 Min“, `{{CT:n}}` Chat-Uhrzeit = Laden − 62/41/14 Min., `{{MO:n}}` Monat) und werden in `demo.js` mit `Intl` (de-DE, Europe/Berlin) im Format der App berechnet. Das Monatsraster wird je Zelle auf den heutigen Monat umgerechnet. `?ref=1&state=NN` setzt die Uhr auf den Aufnahmezeitpunkt (17:43, wie die Originale) und die Insets auf 0 (Pixelvergleich).
+
+**Prüfung** (`tools/qa/app/`): `pixel.mjs` (alle angebotenen Zustände gegen `shots/final`, höchstens 0,326 % Pixel mit Δ > 24), `flows.mjs` (Abläufe A–D, Tabbar, SubNav, Kopf-Icons, Start-Zeilen, Ausgleichen per Mausklick, je Schritt Pixel und Text), `motion.mjs` (Dauern und Kurven nach §7), `daten.mjs` (anderer Tag, nur Mika/Lina/Jona/Lea), `landing.mjs` (Handy in der Landing).
+
+**Grenzen:** Die Demo bildet die Abläufe A–D samt Folgezuständen ab. Bedienelemente, die direkt Daten ändern, ohne Overlay oder Seite zu öffnen (weitere Artikel abhaken, Vorrat ±, Reaktionen, „Ich übernehme“, Entfernen), haben keinen aufgenommenen Folgezustand und zeigen nur den Druckzustand (80 ms). Am Freitag ist „nächster Freitag“ +7 Tage, die Reihenfolge der Agenda bleibt die der Aufnahme.

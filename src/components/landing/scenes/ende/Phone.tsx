@@ -1,41 +1,124 @@
 'use client';
 
-import { Fragment, useState } from 'react';
-import { Dc, css, press } from '../../core/dc';
+import { useEffect, useRef, useState } from 'react';
+import { css } from '../../core/dc';
+import s from './Phone.module.css';
 
-// Erstfassung des Fundaments: das Handy des Entwurfs mit eigenem Zustand. Das Paket APP ersetzt den
-// Bildschirm durch die echte App. Die Hülle liegt im Ende-Raum bei 650/90, 300 x 620.
+// Das Handy der Ende-Szene mit der echten ManaWG-App: ein gleich-originiges iframe auf
+// /app-demo/index.html (Standalone-DOM und CSS der App, Zustandsautomat in demo.js). Hülle und Geometrie
+// wie im Entwurf (650/90, 300 x 620, Radius 48, Bildschirm Inset 11, Radius 37). Der Bildschirm ist 278 x 598,
+// die App läuft in 390 x 839 CSS-Pixeln und wird per scale(278/390) eingepasst. Die Statusleiste (iOS 27)
+// liegt als SVG darüber, die App rechnet ihre Safe-Area aus --sai-t / --sai-b (siehe app-demo/demo.js).
 
-const TABS = ['Start', 'Haushalt', 'Finanzen', 'Austausch'];
-const TITEL = ['WG Lindenstraße', 'Haushalt', 'Finanzen', 'Austausch'];
-const ARTIKEL: [string, string][] = [
-	['Hafermilch', '2 Packungen · von Mika'],
-	['Bananen', '6 Stück · von Lea'],
-	['Spülmittel', '1 Flasche · von Jona'],
-	['Toilettenpapier', '2 Packungen · Vorrat 1'],
-];
-const MONO = "font-family:'JetBrains Mono',monospace";
+const SRC = '/app-demo/index.html';
+const BILD = '/app-demo/start.webp';
+const AB_P = 0.75; // erst ab hier wird das iframe geladen (davor nur das Standbild)
+
+// Zwei Zeilen des Standbilds hängen vom heutigen Tag ab ("Do., 8. Okt."): das Bild trägt sie nicht, sie werden hier
+// im App-Format (Intl de-DE, Berlin) darüber gesetzt, an den Stellen der Aufnahme (tools/qa/app/still.mjs).
+const KURZ = new Intl.DateTimeFormat('de-DE', {
+	timeZone: 'UTC',
+	weekday: 'short',
+	day: 'numeric',
+	month: 'short',
+});
+function datumsZeilen(): [string, string] {
+	const p: Record<string, string> = Object.fromEntries(
+		new Intl.DateTimeFormat('en-CA', {
+			timeZone: 'Europe/Berlin',
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+		})
+			.formatToParts(new Date())
+			.map((x) => [x.type, x.value]),
+	);
+	const tag = (k: number) => Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day) + k, 12);
+	const dow = new Date(tag(0)).getUTCDay();
+	const freitag = (5 - dow + 7) % 7 || 7;
+	return [`${KURZ.format(tag(2))} · Lina`, `${KURZ.format(tag(freitag))} · 18:00`];
+}
+
+/** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
+function Statusleiste() {
+	return (
+		<div className={s.status} aria-hidden="true">
+			<span className={s.zeit}>09:41</span>
+			<span className={s.insel} />
+			<svg
+				aria-hidden="true"
+				className={s.signal}
+				viewBox="0 0 20 12"
+				width="20"
+				height="12"
+				fill="#0A0A0A"
+			>
+				<rect x="0" y="8" width="3.6" height="4" rx="1.2" />
+				<rect x="5.4" y="5.5" width="3.6" height="6.5" rx="1.2" />
+				<rect x="10.8" y="2.8" width="3.6" height="9.2" rx="1.2" />
+				<rect x="16.2" y="0" width="3.6" height="12" rx="1.2" />
+			</svg>
+			<svg
+				aria-hidden="true"
+				className={s.wlan}
+				viewBox="0 0 19 14"
+				width="19"
+				height="14"
+				fill="#0A0A0A"
+			>
+				<path d="M9.5 2.6c2.7 0 5.2 1 7.1 2.8.1.1.3.1.4 0l1.1-1.1c.1-.1.1-.3 0-.4C15.7 1.6 12.7.4 9.5.4S3.3 1.6.9 3.9c-.1.1-.1.3 0 .4L2 5.4c.1.1.3.1.4 0 1.9-1.8 4.4-2.8 7.1-2.8Z" />
+				<path d="M9.5 6.9c1.6 0 3.1.6 4.3 1.6.1.1.3.1.4 0l1.1-1.1c.1-.1.1-.3 0-.4a9 9 0 0 0-11.6 0c-.1.1-.1.3 0 .4l1.1 1.1c.1.1.3.1.4 0 1.2-1 2.7-1.6 4.3-1.6Z" />
+				<path d="M9.5 11.1c.9 0 1.7.3 2.3.9.1.1.1.3 0 .4l-1.9 1.9c-.2.2-.4.2-.6 0l-1.9-1.9c-.1-.1-.1-.3 0-.4.6-.6 1.4-.9 2.1-.9Z" />
+			</svg>
+			<svg aria-hidden="true" className={s.akku} viewBox="0 0 28 14" width="28" height="14">
+				<rect
+					x="0.5"
+					y="0.5"
+					width="24"
+					height="13"
+					rx="4"
+					fill="none"
+					stroke="#0A0A0A"
+					strokeOpacity="0.4"
+				/>
+				<rect x="2" y="2" width="21" height="10" rx="2.8" fill="#0A0A0A" />
+				<path
+					d="M26 4.6v4.8c.9-.4 1.5-1.4 1.5-2.4S26.9 5 26 4.6Z"
+					fill="#0A0A0A"
+					fillOpacity="0.45"
+				/>
+			</svg>
+		</div>
+	);
+}
 
 export function Phone() {
-	const [tab, setTab] = useState(0);
-	const [done, setDone] = useState<Record<string, boolean>>({ Spülmittel: true });
-	const [added, setAdded] = useState(false);
-	const [replied, setReplied] = useState(false);
+	const wurzel = useRef<HTMLDivElement>(null);
+	const [src, setSrc] = useState<string | undefined>(undefined);
+	const [bereit, setBereit] = useState(false);
+	const [zeilen, setZeilen] = useState<[string, string] | null>(null);
+	useEffect(() => setZeilen(datumsZeilen()), []);
 
-	const offen = ARTIKEL.filter((x) => !done[x[0] as string]).length;
-	const ausgaben: [string, string, string][] = [
-		['Pizzaabend', 'Mika bezahlt · durch 4', '28,40 €'],
-		['Internet', 'Fixkosten · monatlich', '29,99 €'],
-		['Wocheneinkauf', 'Lina bezahlt · durch 4', '18,90 €'],
-	];
-	if (added) ausgaben.unshift(['Kinoabend', 'Jona bezahlt · Jona und Lea', '24,00 €']);
-	const saldo = added ? '12,00 €' : '0,00 €';
-	const saldoText = added ? 'Lea gibt Jona 12,00 €.' : 'Diesen Monat ist alles ausgeglichen.';
-	const letzte = added ? 'Jona hat 24,00 € ausgelegt.' : 'Lina hat 18,90 € ausgelegt.';
-	const offenText = offen ? `${offen} Dinge stehen auf der Liste.` : 'Die Liste ist leer.';
+	// iframe-src erst ab P > 0,75 setzen (Fortschritt steht als --p am #final)
+	useEffect(() => {
+		const el = wurzel.current as HTMLDivElement;
+		const root = el.closest('#final') as HTMLElement | null;
+		if (!root) return;
+		const pruefe = () => {
+			if (Number.parseFloat(root.style.getPropertyValue('--p') || '0') > AB_P) {
+				setSrc(SRC);
+				mo.disconnect();
+			}
+		};
+		const mo = new MutationObserver(pruefe);
+		mo.observe(root, { attributes: true, attributeFilter: ['style'] });
+		pruefe();
+		return () => mo.disconnect();
+	}, []);
 
 	return (
 		<div
+			ref={wurzel}
 			data-cta="1"
 			// biome-ignore lint/a11y/useSemanticElements: div bleibt div (gleiche Box, kein fieldset)
 			role="group"
@@ -71,232 +154,41 @@ export function Phone() {
 				/>
 				<div
 					style={css(
-						'position:relative;width:100%;height:100%;background:#FFFFFF;border-radius:37px;overflow:hidden;display:flex;flex-direction:column;color:#0A0A0A;font-family:Inter,sans-serif;text-align:left;box-shadow:0 0 0 1px #000',
+						'position:relative;width:100%;height:100%;background:#FFFFFF;border-radius:37px;overflow:hidden;box-shadow:0 0 0 1px #000',
 					)}
 				>
+					{/* Standbild: derselbe Zustand und dieselben Insets wie das iframe, liegt darunter und bleibt bis zum Laden stehen */}
+					<div className={s.flaeche} style={{ opacity: bereit ? 0 : 1 }} aria-hidden="true">
+						<img src={BILD} alt="" width={390} height={839} decoding="async" className={s.bild} />
+						{zeilen && (
+							<>
+								<span className={s.datum} style={{ top: 422.875 }}>
+									{zeilen[0]}
+								</span>
+								<span className={s.datum} style={{ top: 473.125 }}>
+									{zeilen[1]}
+								</span>
+							</>
+						)}
+					</div>
+					{src && (
+						<iframe
+							className={s.flaeche}
+							title="ManaWG-App"
+							src={src}
+							loading="eager"
+							onLoad={() =>
+								requestAnimationFrame(() => requestAnimationFrame(() => setBereit(true)))
+							}
+							style={{ border: 0, background: '#FFFFFF' }}
+						/>
+					)}
+					<Statusleiste />
 					<span
 						style={css(
 							'position:absolute;inset:0;border-radius:37px;background:linear-gradient(118deg,rgba(255,255,255,0.22) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,0.08) 100%);pointer-events:none;z-index:5',
 						)}
 					/>
-					<div
-						style={css(
-							'height:40px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:600',
-						)}
-					>
-						<span>9:41</span>
-						<span
-							style={css(
-								'width:92px;height:26px;border-radius:999px;background:#0A0A0A;box-shadow:inset 0 0 0 1px #171717',
-							)}
-						/>
-						<span style={css(`${MONO};font-size:11px;font-weight:500`)}>100 %</span>
-					</div>
-					<div
-						style={css(
-							'padding:4px 16px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0',
-						)}
-					>
-						<img src="/manawg-mark.svg" alt="" style={css('height:15px')} />
-						<span
-							style={css(
-								"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:18px;letter-spacing:-0.02em",
-							)}
-						>
-							{TITEL[tab]}
-						</span>
-					</div>
-					<div
-						style={css(
-							'flex:1;min-height:0;overflow:hidden;padding:0 14px;display:flex;flex-direction:column;gap:8px',
-						)}
-					>
-						{tab === 0 && (
-							<>
-								<div
-									style={css(
-										'border:1px solid #E5E5E5;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px',
-									)}
-								>
-									<span
-										style={css(
-											`${MONO};font-size:11px;font-weight:500;letter-spacing:0.08em;color:#737373`,
-										)}
-									>
-										MÄRZ · 4 PERSONEN
-									</span>
-									<span style={css(`${MONO};font-size:28px;font-weight:500`)}>{saldo}</span>
-									<span style={css('font-size:13px;color:#525252')}>{saldoText}</span>
-								</div>
-								<div
-									style={css(
-										'border:1px solid #E5E5E5;border-radius:14px;padding:0 14px;display:flex;flex-direction:column',
-									)}
-								>
-									<div
-										style={css(
-											'min-height:56px;display:flex;flex-direction:column;justify-content:center;gap:2px',
-										)}
-									>
-										<span style={css('font-size:14px;font-weight:500')}>Bad ist heute dran.</span>
-										<span style={css('font-size:12px;color:#737373')}>Lea · heute</span>
-									</div>
-									<div
-										style={css(
-											'min-height:56px;display:flex;flex-direction:column;justify-content:center;gap:2px;border-top:1px solid #E5E5E5',
-										)}
-									>
-										<span style={css('font-size:14px;font-weight:500')}>{letzte}</span>
-										<span style={css('font-size:12px;color:#737373')}>gerade eben</span>
-									</div>
-									<div
-										style={css(
-											'min-height:56px;display:flex;flex-direction:column;justify-content:center;gap:2px;border-top:1px solid #E5E5E5',
-										)}
-									>
-										<span style={css('font-size:14px;font-weight:500')}>{offenText}</span>
-										<span style={css('font-size:12px;color:#737373')}>Einkauf</span>
-									</div>
-								</div>
-							</>
-						)}
-						{tab === 1 && (
-							<>
-								<span
-									style={css(
-										`${MONO};font-size:11px;font-weight:500;letter-spacing:0.08em;color:#737373;padding:4px 2px`,
-									)}
-								>{`EINKAUF · ${offen} OFFEN`}</span>
-								<div
-									style={css(
-										'border:1px solid #E5E5E5;border-radius:14px;padding:0 14px;display:flex;flex-direction:column',
-									)}
-								>
-									{ARTIKEL.map((it, i) => {
-										const d = !!done[it[0]];
-										return (
-											<Fragment key={it[0]}>
-												<Dc
-													as="div"
-													style={`min-height:56px;display:flex;align-items:center;gap:12px;border-top:${i ? '1px solid #E5E5E5' : '0'};cursor:pointer`}
-													active="transform:scale(0.97)"
-													{...press(() => setDone((s) => ({ ...s, [it[0]]: !s[it[0]] })))}
-													aria-pressed={d}
-												>
-													<span
-														style={css(
-															`width:20px;height:20px;box-sizing:border-box;border-radius:6px;border:1px solid ${d ? '#0A0A0A' : '#D4D4D4'};background:${d ? '#0A0A0A' : 'transparent'};color:#FFFFFF;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0`,
-														)}
-													>
-														{d ? '✓' : ''}
-													</span>
-													<div style={css('display:flex;flex-direction:column;gap:2px')}>
-														<span
-															style={css(
-																`font-size:14px;font-weight:500;text-decoration:${d ? 'line-through' : 'none'};color:${d ? '#737373' : '#0A0A0A'}`,
-															)}
-														>
-															{it[0]}
-														</span>
-														<span style={css('font-size:12px;color:#737373')}>{it[1]}</span>
-													</div>
-												</Dc>
-											</Fragment>
-										);
-									})}
-								</div>
-							</>
-						)}
-						{tab === 2 && (
-							<>
-								<Dc
-									as="div"
-									style="height:44px;border:1px solid #0A0A0A;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;cursor:pointer"
-									active="transform:scale(0.97)"
-									{...press(() => setAdded((a) => !a))}
-								>
-									{added ? 'Kinoabend entfernen' : 'Ausgabe erfassen'}
-								</Dc>
-								<div
-									style={css(
-										'border:1px solid #E5E5E5;border-radius:14px;padding:0 14px;display:flex;flex-direction:column',
-									)}
-								>
-									{ausgaben.map((x, i) => (
-										<Fragment key={x[0]}>
-											<div
-												style={css(
-													`min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:${i ? '1px solid #E5E5E5' : '0'}`,
-												)}
-											>
-												<div style={css('display:flex;flex-direction:column;gap:2px')}>
-													<span style={css('font-size:14px;font-weight:500')}>{x[0]}</span>
-													<span style={css('font-size:12px;color:#737373')}>{x[1]}</span>
-												</div>
-												<span style={css(`${MONO};font-size:13px;font-weight:500`)}>{x[2]}</span>
-											</div>
-										</Fragment>
-									))}
-								</div>
-							</>
-						)}
-						{tab === 3 && (
-							<>
-								<div
-									style={css(
-										'border:1px solid #E5E5E5;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:4px',
-									)}
-								>
-									<span
-										style={css(
-											`${MONO};font-size:11px;font-weight:500;letter-spacing:0.08em;color:#737373`,
-										)}
-									>
-										PINNWAND · JONA
-									</span>
-									<span style={css('font-size:15px;font-weight:600')}>Übergabe am Freitag</span>
-									<span style={css('font-size:13px;color:#525252')}>
-										Schlüssel liegen im Flur bereit.
-									</span>
-								</div>
-								<div
-									style={css(
-										'align-self:flex-start;max-width:80%;background:#F5F5F5;border-radius:14px;padding:10px 12px;font-size:13px',
-									)}
-								>
-									Bin um acht wieder da.
-									<div style={css('font-size:11px;color:#737373;margin-top:2px')}>Lea</div>
-								</div>
-								<Dc
-									as="div"
-									style="align-self:flex-end;max-width:80%;border:1px solid #E5E5E5;border-radius:14px;padding:10px 12px;font-size:13px;cursor:pointer"
-									active="transform:scale(0.97)"
-									{...press(() => setReplied((r) => !r))}
-								>
-									{replied ? 'Passt, ich bin auch da.' : 'Antworten …'}
-								</Dc>
-							</>
-						)}
-					</div>
-					<div
-						style={css(
-							'margin:8px 12px 12px;border:1px solid #E5E5E5;border-radius:20px;padding:4px;display:flex;gap:2px;flex-shrink:0',
-						)}
-					>
-						{TABS.map((label, i) => (
-							<Fragment key={label}>
-								<Dc
-									as="div"
-									style={`flex:1;height:44px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;background:${i === tab ? '#F5F5F5' : 'transparent'};border:${i === tab ? '1px solid #E5E5E5' : '1px solid transparent'};color:${i === tab ? '#0A0A0A' : '#525252'};cursor:pointer`}
-									active="transform:scale(0.97)"
-									{...press(() => setTab(i))}
-									aria-pressed={tab === i}
-								>
-									{label}
-								</Dc>
-							</Fragment>
-						))}
-					</div>
 				</div>
 			</div>
 		</div>

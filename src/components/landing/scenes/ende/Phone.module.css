@@ -1,0 +1,74 @@
+/* Handy-Bildschirm 278 x 598: die App läuft in 390 x 839 CSS-Pixeln und wird um die linke obere Ecke skaliert. */
+.flaeche,
+.status {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 390px;
+	height: 839px;
+	transform: scale(calc(278 / 390));
+	transform-origin: 0 0;
+	display: block;
+}
+
+.status {
+	height: 47px;
+	pointer-events: none;
+	z-index: 4;
+	font-family: Inter, sans-serif;
+	color: #0a0a0a;
+}
+
+.zeit {
+	position: absolute;
+	left: 41px;
+	top: 14px;
+	font-size: 17px;
+	line-height: 24px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	font-feature-settings: "tnum";
+}
+
+.insel {
+	position: absolute;
+	left: 132px;
+	top: 11px;
+	width: 126px;
+	height: 37px;
+	border-radius: 999px;
+	background: #000;
+}
+
+.signal {
+	position: absolute;
+	left: 285px;
+	top: 20px;
+}
+
+.wlan {
+	position: absolute;
+	left: 310px;
+	top: 19px;
+}
+
+.akku {
+	position: absolute;
+	left: 336px;
+	top: 19px;
+}
+
+.bild {
+	display: block;
+	width: 390px;
+	height: 839px;
+}
+
+.datum {
+	position: absolute;
+	left: 65.6px;
+	font: 400 12px / 18px Inter, sans-serif;
+	color: #737373;
+	white-space: nowrap;
+	font-feature-settings: "cv11", "kern", "ss01";
+}
