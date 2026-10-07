@@ -9,7 +9,7 @@ import { loop, qa } from '../../core/loop';
 import { ss, vnz } from '../../core/math';
 import { hochOben } from './wohnung';
 
-export const CELL = 12;
+export const CELL = 8;
 const RAND_TEXT = 64; // Abstand der Raumtext-Lücke zum Text
 const KANTE = 24; // weiche Kante der Lücken (1,5 Zellen)
 const SKALA = 0.006; // Rauschfrequenz je Pixel bei 900 px kurzer Seite: kleinere Inseln als im Entwurf
@@ -153,7 +153,7 @@ function atlas(st, dpr) {
 	cv.width = z * 9;
 	cv.height = z;
 	const g = cv.getContext('2d');
-	g.font = `500 ${10 * dpr}px "JetBrains Mono", monospace`;
+	g.font = `500 ${7 * dpr}px "JetBrains Mono", monospace`;
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
 	g.fillStyle = 'rgba(250,250,250,0.66)';

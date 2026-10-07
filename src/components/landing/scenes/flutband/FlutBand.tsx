@@ -10,8 +10,8 @@ import { vnz } from '../../core/math';
 // Schwelle und blendet aus, sobald es unter den Kopf läuft (Sprunglink: kein Rest über dem Logo). Zelle 12 px und Ziffer 10 px wie die Flut der Intro, das Muster kommt aus
 // derselben Rauschfunktion und ist fest (scharf, keine Bewegung).
 
-const CELL = 12;
-const ZEILEN = 4;
+const CELL = 8;
+const ZEILEN = 6;
 const SKALA = 0.13 / 32;
 
 function zeichne(cv: HTMLCanvasElement, W: number) {
@@ -29,7 +29,7 @@ function zeichne(cv: HTMLCanvasElement, W: number) {
 		for (let a = 0; a < cols; a++) {
 			const n = vnz((a + 0.5) * CELL * SKALA + 7.3, (b + 0.5) * CELL * SKALA + 2.1);
 			// licht: oben noch dicht, nach unten und nach rechts lichtet sich die Flut aus
-			const dichte = 0.64 - (b / (ZEILEN - 1)) * 0.5 - (a / cols) * 0.12;
+			const dichte = 0.4 - (b / (ZEILEN - 1)) * 0.5 - (a / cols) * 0.12;
 			on[b * cols + a] = n + dichte * 0.8 - 0.4 > 0.5 ? 1 : 0;
 		}
 	g.fillStyle = '#FAFAFA';
@@ -37,7 +37,7 @@ function zeichne(cv: HTMLCanvasElement, W: number) {
 	for (let b = 0; b < ZEILEN; b++)
 		for (let a = 0; a < cols; a++) if (on[b * cols + a]) g.rect(a * CELL, b * CELL, CELL, CELL);
 	g.fill();
-	g.font = '500 10px "JetBrains Mono", monospace';
+	g.font = '500 7px "JetBrains Mono", monospace';
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
 	g.fillStyle = 'rgba(250,250,250,0.66)';
