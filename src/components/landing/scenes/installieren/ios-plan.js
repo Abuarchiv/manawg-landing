@@ -52,11 +52,13 @@ export const plan = {
 			t: tf(0, (1 - sIn) * 420),
 		});
 		put(E['ios-share-x'], { o: cl((e - 0.3) / 0.7) });
-		const wechsel = seg(t, T3 + 0.05, 0.18);
-		put(E['ios-mehr-t'], { o: 1 - wechsel });
-		put(E['ios-weniger-t'], { o: wechsel });
-		put(E['ios-mehr-pfeil'], { o: 1 - wechsel });
-		put(E['ios-weniger-pfeil'], { o: wechsel });
+		// Beschriftung nacheinander tauschen: erst „Mehr anzeigen“ aus, dann „Weniger anzeigen“ ein (nie beide sichtbar)
+		const mehrAus = seg(t, T3 + 0.05, 0.07);
+		const wenigerEin = seg(t, T3 + 0.13, 0.1);
+		put(E['ios-mehr-t'], { o: 1 - mehrAus });
+		put(E['ios-weniger-t'], { o: wenigerEin });
+		put(E['ios-mehr-pfeil'], { o: 1 - mehrAus });
+		put(E['ios-weniger-pfeil'], { o: wenigerEin });
 		put(E['ios-scrim1'], { o: 0.18 * e });
 
 		// ---------- Dialog „Zum Home-Bildschirm“ ----------
@@ -99,8 +101,12 @@ export const plan = {
 			f: fl(14 * (1 - he) + 14 * lz, mix(0.7, 1, he) * (1 - 0.35 * lz)),
 			t: tf(0, 0, 1.08 - 0.08 * he - 0.05 * lz),
 		});
-		// kein Pop: das Icon ist von Anfang an in der Zelle
-		put(E['ios-icon'], { o: 1 });
+		// das Symbol kommt mit dem Entblurren des Home-Bildschirms in die Zelle, mit weicher Feder 0,7 -> 1
+		const ip = feder(t - (T5 + 0.3), 0.6, 20);
+		put(E['ios-icon'], {
+			o: seg(t, T5 + 0.28, 0.12),
+			t: tf(0, 0, mix(0.7, 1, Math.min(ip, 1.15))),
+		});
 
 		// ---------- Start der App: Karte wächst aus dem Icon, schwarzes Startbild, Überblendung ----------
 		const aF = seg(t, T6 + 0.8, 0.3);
@@ -113,11 +119,11 @@ export const plan = {
 			height: `${60 + 784 * lz}px`,
 			borderRadius: `${14 + 28 * lz}px`,
 		});
-		put(E['ios-launch-logo'], { o: 0.1 * seg(t, T6 + 0.3, 0.25) * (1 - aF) });
+		put(E['ios-launch-logo'], { o: seg(t, T6 + 0.25, 0.25) * (1 - aF) });
 		put(E['ios-app'], { d: t > T6 + 0.8 ? 'block' : '', o: aF });
 
 		// ---------- Statusleiste ----------
-		const hell = t < T5 + 0.18 ? 0 : t < T6 + 0.8 ? 1 : 1 - aF;
+		const hell = t < T5 + 0.18 ? 0 : t < T6 + 0.2 ? 1 : 0;
 		put(E['ios-st-dunkel'], { o: 1 - hell });
 		put(E['ios-st-hell'], { o: hell });
 	},

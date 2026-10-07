@@ -27,7 +27,7 @@ function layout(s) {
 		const top = t ? t.offsetTop + t.offsetHeight : 0;
 		const bot = k ? k.offsetTop : s.H;
 		const band = Math.max(160, bot - top - 8);
-		s.R = Math.max(70, Math.min(0.42 * s.W, 0.3 * s.H, band / 2.4));
+		s.R = Math.max(70, Math.min(0.42 * s.W, 0.34 * s.H, band / 2.4));
 		s.cx = s.W / 2;
 		s.cy = top + 4 + band / 2;
 	} else {
@@ -283,8 +283,12 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				}
 			}
 			// Marken und Beschriftungen. Marker 10, Beschriftung 11 (mindestens 10 CSS-px auf dem Bildschirm).
-			const ms = Math.max(10, 9 / s.f);
-			const fs = Math.max(11, 10.5 / s.f);
+			// Kleine Schirme (Hochformat, bis 768 px): Marke 7,5 px als Kontur, Beschriftung 10 px mit enger Laufweite
+			const klein = s.mode === 'hoch' || s.W <= 768;
+			const ms = klein ? 7.5 / s.f : Math.max(10, 9 / s.f);
+			const fs = klein ? 10 / s.f : Math.max(11, 10.5 / s.f);
+			const rand = (klein ? 16 : 4) / s.f;
+			if ('letterSpacing' in ctx) ctx.letterSpacing = klein ? `${0.07 * fs}px` : '0px';
 			const minHit = HIT / s.f;
 			const pad = 4 / s.f;
 			ctx.font = `500 ${fs}px ${MONO}`;
@@ -307,10 +311,10 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				const tw = ctx.measureText(label).width;
 				const gap = ms / 2 + 7 / s.f;
 				let right = v[0] >= 0;
-				if (right && tx + gap + tw + pad > x1 - 4 / s.f) right = false;
-				else if (!right && tx - gap - tw - pad < x0 + 4 / s.f) right = true;
+				if (right && tx + gap + tw + pad > x1 - rand) right = false;
+				else if (!right && tx - gap - tw - pad < x0 + rand) right = true;
 				let lx = right ? tx + gap : tx - gap - tw;
-				lx = cl(lx, x0 + 4 / s.f + pad, x1 - 4 / s.f - pad - tw);
+				lx = cl(lx, x0 + rand + pad, x1 - rand - pad - tw);
 				// Trefferfläche: Marker und Beschriftung, mindestens 44 x 44 CSS-px
 				let hx0 = tx - ms / 2;
 				let hx1 = tx + ms / 2;
@@ -350,14 +354,17 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				ctx.moveTo(bx, by);
 				ctx.lineTo(tx, ty);
 				ctx.stroke();
-				ctx.fillStyle = on ? '#FAFAFA' : '#0A0A0A';
-				ctx.fillRect(tx - ms / 2, ty - ms / 2, ms, ms);
+				// Marke: Kontur, gefüllt nur beim aktiven Ort
+				if (on || !klein) {
+					ctx.fillStyle = on ? '#FAFAFA' : '#0A0A0A';
+					ctx.fillRect(tx - ms / 2, ty - ms / 2, ms, ms);
+				}
 				ctx.strokeRect(tx - ms / 2 - 0.5, ty - ms / 2 - 0.5, ms + 1, ms + 1);
 				if (on) {
 					const pr = s.reduced ? 0.3 : (t * 0.8) % 1;
 					ctx.globalAlpha = 1 - pr;
 					ctx.beginPath();
-					ctx.arc(tx, ty, 8 + pr * 26, 0, 6.2832);
+					ctx.arc(tx, ty, klein ? 8 + pr * 6 : 8 + pr * 26, 0, 6.2832);
 					ctx.stroke();
 				}
 				if (show) {
@@ -370,6 +377,7 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				}
 			});
 			ctx.globalAlpha = 1;
+			if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
 			s.hits = hits;
 			// Zeigerposition (Maus): Auswahl-Hervorhebung aus der Trefferfläche, ohne Zeiger keine
 			s.hov = s.m.in && s.m.type === 'mouse' ? pick(s, s.m.x, s.m.y) : -1;

@@ -53,7 +53,8 @@ export function karten(P) {
 	const fpA = ss((P - 0.58) / 0.05);
 	const endA = ss((P - 0.9) / 0.05);
 	const fs = cl((P - 0.62) / 0.28) * 5;
-	const idx = fs >= 0.5 && fs < 4.5 ? Math.floor(fs - 0.5) : -1;
+	// die letzte Karte (Pinnwand & Chat) bleibt, bis die Wohnung wegzoomt (endA)
+	const idx = fs >= 0.5 ? Math.min(3, Math.floor(fs - 0.5)) : -1;
 	return [0, 1, 2, 3].map((j) => (j === idx ? fpA * (1 - endA) : 0));
 }
 

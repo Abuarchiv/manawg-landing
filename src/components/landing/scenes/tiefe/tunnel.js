@@ -58,10 +58,13 @@ const plateauOf = (dz, last) => {
 };
 // Die Vorblende des nächsten Satzes erst, wenn der vorige nicht mehr steht (kein Überlappen).
 // Dichte des Worts aus seiner Tiefe (dieselbe Kurve wie die Wortpartikel): zerfällt das Wort, geht der Satz mit.
-const wortDichte = (dz) => Math.max(cl((34 - dz) / 12), 0.6 * cl(68 - dz)) * (dz < 4.5 ? cl((dz - 0.4) / 4.1) : 1);
+const wortDichte = (dz) => Math.max(cl((46 - dz) / 12), 0.6 * cl(68 - dz)) * (dz < 4.5 ? cl((dz - 0.4) / 4.1) : 1);
+// Das alte Wort wird beim Durchflug auf höchstens 35 % gesenkt, damit es das neue Wort und die Zeile nicht überdeckt
+const altFaktor = (dz) => (dz < 9 ? 0.35 + 0.65 * cl((dz - 5) / 4) : 1);
+// Die Unterzeile erscheint erst, wenn ihr Wort zu mindestens 80 % steht
 const capOpacity = (dz, last, vorher, fremd = 1) => {
 	const pre = dz > 9 ? 0.5 * cl((30 - dz) / 2) * (1 - vorher) : 0;
-	return Math.max(plateauOf(dz, last), pre) * cl((wortDichte(dz) * fremd - 0.05) / 0.25);
+	return Math.max(plateauOf(dz, last), pre) * cl((wortDichte(dz) * fremd - 0.6) / 0.3);
 };
 
 // Flächenfaktor: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900),
@@ -135,6 +138,7 @@ export function registerTiefe(cv, sec) {
 			s.caps = [...cv.parentElement.querySelectorAll('[data-dcap]')];
 			s.dep = cv.parentElement.querySelector('[data-depth]');
 			s.hint = cv.parentElement.querySelector('[data-hint]');
+			s.verlauf = cv.parentElement.querySelector('[data-verlauf]');
 		},
 		frame(s, _t, dt) {
 			const ctx = s.ctx;
@@ -194,6 +198,23 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 			const rep = pv.a > 0.01 ? pv.a : 0;
 			const plat = Math.max(...s.isl.map((I, i) => plateauOf(I.z - camZ, i === s.isl.length - 1)));
 			const rad = 120 * (1 - 0.5 * plat);
+			// Unterzeilen: Deckkraft und Rechteck (Ausschlusszone der Partikel)
+			const zonen = (s.zonen ||= s.caps.map(() => ({ x0: 0, y0: 0, x1: 0, y1: 0, w: 0 })));
+			let capMax = 0;
+			s.caps.forEach((el, i) => {
+				const dz = s.isl[i].z - camZ;
+				const w = capOpacity(dz, i === s.isl.length - 1, i > 0 ? fok[i - 1] : 0, fremd(i));
+				const z = zonen[i];
+				z.w = w;
+				capMax = Math.max(capMax, w);
+				if (w >= 0.02) {
+					const b = el.offsetParent;
+					z.x0 = el.offsetLeft - 28;
+					z.x1 = el.offsetLeft + el.offsetWidth + 28;
+					z.y0 = el.offsetTop - 28;
+					z.y1 = (b ? b.clientHeight : s.H) + 28;
+				}
+			});
 			for (const q of s.P) {
 				let x = q[0];
 				let y = q[1];
@@ -226,13 +247,21 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 				// Wörter stehen ab dz 68 sofort mit 0,6 da (Kontrast über 4,5:1 schon beim ersten Erscheinen)
 				// und werden ab dz 34 voll (T-10). Staub blendet in der Ferne aus.
 				if (qa.nurWort != null && q[4] !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
-				const a = word
-					? Math.max(cl((34 - dz) / 12), 0.6 * cl(68 - dz)) * fremd(q[4]) * (dz < 4.5 ? cl((dz - 0.4) / 4.1) : 1)
+				let a = word
+					? wortDichte(dz) * altFaktor(dz) * fremd(q[4])
 					: cl(dz / 1.2) *
 						cl((110 - dz) / 30) *
 						cl((s.dX - Math.abs(q[0])) / 7) *
 						cl((s.dY - Math.abs(q[1])) / 7) *
 						0.6;
+				if (a <= 0.01) continue;
+				// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
+				for (const z of zonen) {
+					if (z.w < 0.02) continue;
+					const ddx = Math.max(z.x0 - X, X - z.x1, 0);
+					const ddy = Math.max(z.y0 - Y, Y - z.y1, 0);
+					a *= 1 - z.w * (1 - cl(Math.hypot(ddx, ddy) / 28));
+				}
 				if (a <= 0.01) continue;
 				const szc = cl(0.07 * fz, 0.8, 64) * f; // Zeichengröße in CSS-px
 				// Schriftstufe: 1,33 x Größe, gerundet auf die Stufen 10, 14, 20, 28 px
@@ -262,12 +291,10 @@ if (dust) tier = 1;
 				}
 			}
 			ctx.globalAlpha = 1;
-			for (const el of s.caps) {
-				const i = +el.getAttribute('data-dcap');
-				const dz = s.isl[i].z - camZ;
-				const vorher = i > 0 ? fok[i - 1] : 0;
-el.style.opacity = capOpacity(dz, i === s.isl.length - 1, vorher, fremd(i)).toFixed(3);
-			}
+			s.caps.forEach((el, i) => {
+				el.style.opacity = zonen[i].w.toFixed(3);
+			});
+			if (s.verlauf) s.verlauf.style.opacity = capMax.toFixed(3);
 			// Hinweis „weiter scrollen“ nur am Anfang der Fahrt, danach ganz weg
 			if (s.hint) s.hint.style.opacity = (1 - ss(p / 0.06)).toFixed(3);
 			if (s.dep) s.dep.textContent = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');

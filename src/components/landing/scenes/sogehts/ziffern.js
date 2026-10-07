@@ -1,4 +1,4 @@
-// Die Ziffern 01 bis 03 von "So geht's": Schrift als Punktraster aus Mono-Zeichen (Zelle 6 px, Glyph 8 px).
+// Die Ziffern 01 bis 03 von "So geht's": Schrift als Punktraster aus Mono-Zeichen (Zelle 4 px, Glyph 7 px).
 // Die Ziffer folgt der Breite der Spalte, die Zellen liegen in festen CSS-Pixeln. Der Zeiger stößt die
 // Zellen weg, Federn holen sie zurück. Die Zeichen sind eine feste 3-Ton-Rampe nach der Lage der Zelle
 // in der Ziffer (innen @, dann #, am Rand +), ohne Zufallsflackern.
@@ -7,12 +7,12 @@ import { loop, qa, register } from '../../core/loop';
 import { hsh } from '../../core/math';
 
 const RAMPE = '@#+';
-qa.masse = { ...(qa.masse ?? {}), zifferZelle: 6, zifferGlyph: 8 };
+qa.masse = { ...(qa.masse ?? {}), zifferZelle: 4, zifferGlyph: 7 };
 
 function baue(s, txt, cs) {
 	const W = Math.max(1, Math.round(s.W));
 	const H = Math.max(1, Math.round(s.H));
-	const fs = H;
+	const fs = H * 1.28; // Ziffernhöhe (0,73 em) füllt rund 94 % der Fläche
 	const cols = Math.ceil(W / cs);
 	const rows = Math.ceil(H / cs);
 	const oc = document.createElement('canvas');
@@ -20,9 +20,10 @@ function baue(s, txt, cs) {
 	oc.height = rows;
 	const o = oc.getContext('2d');
 	o.fillStyle = '#000';
-	o.font = `500 ${fs / cs}px "JetBrains Mono", monospace`;
+	// Die Form kommt aus Inter Tight (ohne den Punkt in der Null der Mono-Schrift), gefüllt wird mit Mono-Zeichen
+	o.font = `600 ${fs / cs}px "Inter Tight", sans-serif`;
 	o.textBaseline = 'alphabetic';
-	txt.split('|').forEach((ln, i) => o.fillText(ln, 0, (fs * 0.8 + i * fs * 0.9) / cs));
+	txt.split('|').forEach((ln, i) => o.fillText(ln, 0, (H * 0.97 + i * fs * 0.9) / cs));
 	const d = o.getImageData(0, 0, cols, rows).data;
 	const on = new Uint8Array(cols * rows);
 	for (let q = 0; q < on.length; q++) on[q] = d[q * 4 + 3] > 110 ? 1 : 0;
@@ -73,7 +74,7 @@ function blatt(s, cs, gl) {
 }
 
 /** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
-export function registerZiffer(cv, { text, cs: cs0 = 6, gl: gl0 = 8 }) {
+export function registerZiffer(cv, { text, cs: cs0 = 4, gl: gl0 = 7 }) {
 	return register({
 		name: `ziffer ${text}`,
 		el: cv,
@@ -81,9 +82,9 @@ export function registerZiffer(cv, { text, cs: cs0 = 6, gl: gl0 = 8 }) {
 		box: (W, H) => ({ bw: Math.max(1, W), bh: Math.max(1, H), max: 1 }),
 		dprCap: 2,
 		frame(s, _t, dt) {
-			// Hochformat: feineres Raster (Zelle 4, Glyph 6), die Kontur bleibt sauber
-			const cs = s.mode === 'hoch' ? 4 : cs0;
-			const gl = s.mode === 'hoch' ? 6 : gl0;
+			// Hochformat: noch feineres Raster (Zelle 3, Glyph 5), die Ziffer bleibt eine Form
+			const cs = s.mode === 'hoch' ? 3 : cs0;
+			const gl = s.mode === 'hoch' ? 5 : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
 			if (s.key !== key) {
 				s.key = key;

@@ -27,7 +27,7 @@ import s from './Android.module.css';
 import { AppDatum } from './AppDatum';
 
 const ICON = '/icon-512.png';
-const SEITE = '/install/seite-android.webp';
+const SEITE = '/install/seite-android-gast.webp';
 const APPSEITE = '/install/app-start.webp';
 const F = 411 / 390;
 
@@ -86,10 +86,46 @@ const EINTRAEGE: Eintrag[] = [
 	{ ic: <Download size={22} strokeWidth={1.7} />, t: 'Installieren und Verknüpfung erstellen' },
 ];
 
-const ZEICHEN = (c: string) => (
+const CHROME = (
 	<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 		<circle cx="30" cy="30" r="30" fill="#fff" />
-		<circle cx="30" cy="30" r="19" fill={c} />
+		<path
+			d="M30 8a22 22 0 0 1 19 11H30a11 11 0 0 0-9.500 5.500L11 19A22 22 0 0 1 30 8Z"
+			fill="#ea4335"
+		/>
+		<path d="M49 19a22 22 0 0 1-8 30L30.500 31a11 11 0 0 0-1-8Z" fill="#fbbc04" />
+		<path d="M41 49a22 22 0 0 1-30-30l9.500 5.500a11 11 0 0 0 10 17Z" fill="#34a853" />
+		<circle cx="30" cy="30" r="8.500" fill="#4285f4" stroke="#fff" strokeWidth="3" />
+	</svg>
+);
+const TELEFON = (
+	<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
+		<circle cx="30" cy="30" r="30" fill="#fff" />
+		<path
+			d="M22.500 17.500c1-1 2.600-.9 3.300.3l2.400 4c.5.900.3 2-.5 2.700l-1.900 1.700c1.500 3.300 4 5.900 7.200 7.600l1.900-1.800c.7-.7 1.800-.8 2.700-.3l4 2.400c1.200.7 1.300 2.300.3 3.300l-1.700 1.800c-1.300 1.300-3.200 1.800-5 1.300C26.800 38.800 20.300 32.300 17.200 24.100c-.5-1.800 0-3.700 1.300-5Z"
+			fill="#1a73e8"
+		/>
+	</svg>
+);
+const NACHRICHTEN = (
+	<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
+		<circle cx="30" cy="30" r="30" fill="#fff" />
+		<path
+			d="M19 17h22a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4H30l-8 6.500V39h-3a4 4 0 0 1-4-4V21a4 4 0 0 1 4-4Z"
+			fill="#1a73e8"
+		/>
+		<rect x="22" y="25" width="16" height="2.600" rx="1.300" fill="#fff" />
+		<rect x="22" y="30" width="10" height="2.600" rx="1.300" fill="#fff" />
+	</svg>
+);
+const PLAY = (
+	<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
+		<circle cx="30" cy="30" r="30" fill="#f0d88a" />
+		<circle cx="30" cy="30" r="25" fill="#fff" />
+		<path d="M23 17.500v25l21.500-12.500Z" fill="#34a853" />
+		<path d="M23 17.500 35 30 23 42.500Z" fill="#4285f4" />
+		<path d="M35 30l4-4 5.500 4-5.500 4Z" fill="#fbbc04" />
+		<path d="M23 17.500 35 30l4-4Z" fill="#ea4335" />
 	</svg>
 );
 
@@ -105,32 +141,17 @@ export function Android() {
 			<div className={s.and_home} data-k="and-home">
 				<div className={s.and_wall} />
 				<div className={s.and_hicon} style={{ left: 34, top: 74 }}>
-					<img src={ICON} alt="ManaWG" width="60" height="60" />
+					<i className={s.and_hrund}>
+						<img src={ICON} alt="ManaWG" width="36" height="36" />
+					</i>
+					<span className={s.and_badge}>{CHROME}</span>
 					<em>ManaWG</em>
 				</div>
 				<div className={s.and_dock}>
-					<span style={{ left: 34 }}>{ZEICHEN('#1a73e8')}</span>
-					<span style={{ left: 128 }}>{ZEICHEN('#4285f4')}</span>
-					<span style={{ left: 222 }}>
-						<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
-							<circle cx="30" cy="30" r="30" fill="#fff" />
-							<path
-								d="M30 8a22 22 0 0 1 19 11H30a11 11 0 0 0-9.500 5.500L11 19A22 22 0 0 1 30 8Z"
-								fill="#ea4335"
-							/>
-							<path d="M49 19a22 22 0 0 1-8 30L30.500 31a11 11 0 0 0-1-8Z" fill="#fbbc04" />
-							<path d="M41 49a22 22 0 0 1-30-30l9.500 5.500a11 11 0 0 0 10 17Z" fill="#34a853" />
-							<circle cx="30" cy="30" r="8.500" fill="#4285f4" stroke="#fff" strokeWidth="3" />
-						</svg>
-					</span>
-					<span style={{ left: 316 }}>
-						<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
-							<circle cx="30" cy="30" r="30" fill="#fff" />
-							<path d="M20 17v26l22-13Z" fill="#34a853" />
-							<path d="M20 17 33 30 20 43Z" fill="#4285f4" opacity=".9" />
-							<path d="M33 30l9 0-9-9Z" fill="#fbbc04" />
-						</svg>
-					</span>
+					<span style={{ left: 34 }}>{TELEFON}</span>
+					<span style={{ left: 128 }}>{NACHRICHTEN}</span>
+					<span style={{ left: 222 }}>{CHROME}</span>
+					<span style={{ left: 316 }}>{PLAY}</span>
 				</div>
 				<div className={s.and_suche}>
 					<b>G</b>
@@ -141,7 +162,7 @@ export function Android() {
 			<div className={s.and_stack} data-k="and-stack">
 				<div style={abs({ left: 0, top: 108, width: 411, height: 692, background: '#fff' })} />
 				<div style={scheibe(0, 481, 108)} />
-				<AppDatum left={0} top={108} k={F} />
+
 				<div style={scheibe(676, 844, 623)} />
 				<div className={s.and_oben}>
 					<div className={s.and_pille}>

@@ -60,10 +60,34 @@
 	width: 60px;
 	color: #fff;
 }
-.and_hicon img {
+.and_hrund {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 60px;
 	height: 60px;
 	border-radius: 50%;
+	background: #fff;
+}
+.and_hicon img {
+	width: 36px;
+	height: 36px;
+	border-radius: 7px;
+}
+/* Chrome-Abzeichen der Verknüpfung (Fallback laut INSTALL-FLOWS 3.4) */
+.and_badge {
+	position: absolute;
+	right: -5px;
+	bottom: 22px;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 2px #fff;
+}
+.and_badge svg {
+	width: 24px;
+	height: 24px;
+	display: block;
 }
 .and_hicon em {
 	display: block;

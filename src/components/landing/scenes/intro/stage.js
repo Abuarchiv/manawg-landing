@@ -191,12 +191,22 @@ export function createStage({ sec, buehne }) {
 		// Ende-Szene löst sich erst im letzten Drittel des Wegscrollens auf (kein angeschnittener Arm, aber auch
 		// kein leerer Bildschirm vor dem Flutband)
 		setVar('--ab', cl((0.8 * H - rb.bottom) / (0.65 * H)).toFixed(3));
-		// Raumkarten: der Wechsel läuft in 180 ms (Zeitkonstante 70 ms), alte und neue Karte kreuzen kurz
-		const kk = !visible || loop.reduced ? 1 : 1 - Math.exp(-Math.min(dt, 0.1) / 0.07);
+		// Raumkarten nacheinander: die alte Karte geht in rund 120 ms nach oben weg, erst dann steigt die neue von
+		// unten ein. Nie liegen zwei Titel übereinander.
+		let cur = 0;
+		for (let j = 1; j < 4; j++) if (karten[j] > karten[cur]) cur = j;
+		const frei = st.kv.every((v, j) => j === cur || v < 0.03);
+		const kUp = !visible || loop.reduced;
+		const dt1 = Math.min(dt, 0.1);
 		for (let j = 0; j < 4; j++) {
-			st.kv[j] += (karten[j] - st.kv[j]) * kk;
-			if (Math.abs(karten[j] - st.kv[j]) < 0.003) st.kv[j] = karten[j];
+			const ziel = kUp ? karten[j] : j === cur ? (frei ? karten[j] : 0) : 0;
+			if (kUp) st.kv[j] = ziel;
+			else {
+				st.kv[j] += (ziel - st.kv[j]) * (1 - Math.exp(-dt1 / (ziel < st.kv[j] ? 0.03 : 0.06)));
+				if (Math.abs(ziel - st.kv[j]) < 0.003) st.kv[j] = ziel;
+			}
 			setVar(`--c${j}`, st.kv[j].toFixed(3));
+			setVar(`--d${j}`, j < cur ? '-1' : '1');
 		}
 		const kopfUnten = kopf ? kopf.getBoundingClientRect().bottom : 0;
 		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein

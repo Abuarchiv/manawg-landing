@@ -82,3 +82,12 @@
 	outline: 2px solid #fafafa;
 	outline-offset: 1px;
 }
+
+/* Hinweis unter der Überschrift: auf kleinen Schirmen 10 px, 50 % Weiß, enge Laufweite */
+@media (max-aspect-ratio: 1 / 1), (max-width: 899px) {
+	.hinweis {
+		font-size: 10px;
+		letter-spacing: 0.07em;
+		color: rgba(250, 250, 250, 0.5);
+	}
+}

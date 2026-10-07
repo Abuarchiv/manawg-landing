@@ -88,7 +88,7 @@ export function Bereiche() {
 			<div
 				data-titel="1"
 				style={css(
-					'position:absolute;top:var(--sp-72);left:var(--rand);right:var(--rand);display:flex;flex-direction:column;gap:var(--sp-14);pointer-events:none;opacity:var(--bo,1)',
+					'position:absolute;top:max(var(--sp-72),calc(var(--kopf-unten) + var(--sp-14)));left:var(--rand);right:var(--rand);display:flex;flex-direction:column;gap:var(--sp-14);pointer-events:none;opacity:var(--bo,1)',
 				)}
 			>
 				<span className="label">[ 06 ] BEREICHE</span>
@@ -102,7 +102,7 @@ export function Bereiche() {
 					<br />
 					Eine WG.
 				</h2>
-				<span className="label">ZIEHEN ZUM DREHEN · ORT ANKLICKEN</span>
+				<span className={`label ${m.hinweis}`}>ZIEHEN ZUM DREHEN · ORT ANKLICKEN</span>
 			</div>
 			<div data-karte="1" className={m.karte}>
 				<span className="label">{`${String(sel + 1).padStart(2, '0')} · ${(pl[0] as string).toUpperCase()}`}</span>

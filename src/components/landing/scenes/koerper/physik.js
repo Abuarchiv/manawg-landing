@@ -19,7 +19,10 @@ function homes(s) {
 		const t = s.host.querySelector('[data-titel]');
 		const tb = t ? t.offsetTop + t.offsetHeight : 0;
 		cx = s.bw / 2;
-		cy = (tb + (s.H - tb) / 2 - s.oy) / s.f;
+		// Unterkante des Titels samt Abstand in Szenen-Einheiten: Ring und Decke bleiben darunter
+		s.tbU = (tb + 14 - s.oy) / s.f;
+		const oben = Math.min(...AB.map((c) => (c[1] - 173) * S - c[2] * S * 0.98));
+		cy = Math.max((tb + (s.H - tb) / 2 - s.oy) / s.f, s.tbU - oben);
 	}
 	s.cx = cx;
 	s.cy = cy;
@@ -132,7 +135,8 @@ export function registerKoerper(cv) {
 			// Flächenränder im Szenenraum: Wände links und rechts, Decke und Boden
 			const x0 = -s.ox / s.f;
 			const x1 = (s.W - s.ox) / s.f;
-			const y0 = -s.oy / s.f;
+			// Hochformat: die Decke ist die Unterkante des Titels, nicht der Abschnittsrand
+			const y0 = s.mode === 'hoch' && s.tbU !== undefined ? s.tbU : -s.oy / s.f;
 			const y1 = (s.H - s.oy) / s.f;
 			// T-12: Die Körper ruhen als Ring. Der Einfall des Entwurfs beginnt erst, wenn der Abschnitt
 			// zu mindestens 70 % im Bild ist, und setzt zurück, wenn er (fast) ganz verlassen ist.

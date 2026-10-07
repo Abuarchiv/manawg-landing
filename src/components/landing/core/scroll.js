@@ -50,12 +50,13 @@ export function initScroll(root) {
 	const list = [...root.querySelectorAll(SEC)];
 	let m = measureAll(list);
 	let anchor = anchorOf(m, window.scrollY);
-	let sig = `${innerWidth}x${innerHeight}`;
+	let w0 = innerWidth;
+	let h0 = innerHeight;
 	let pending = false;
 	let settleRaf = 0;
 
 	const onScroll = () => {
-		if (!pending && sig === `${innerWidth}x${innerHeight}`) anchor = anchorOf(m, window.scrollY);
+		if (!pending) anchor = anchorOf(m, window.scrollY);
 	};
 
 	// Nach dem Layout: haben sich die Abschnittsmaße geändert, dieselbe Stelle wieder setzen.
@@ -68,12 +69,15 @@ export function initScroll(root) {
 		if (changed && anchor && a)
 			window.scrollTo({ top: Math.round(a.top + anchor.p * a.h), behavior: 'instant' });
 		m = changed ? measureAll(list) : nm;
-		sig = `${innerWidth}x${innerHeight}`;
+		w0 = innerWidth;
+		h0 = innerHeight;
 		pending = false;
 		anchor = anchorOf(m, window.scrollY);
 	};
 
 	const onResize = () => {
+		// URL-Leiste auf dem Handy (kleine Höhenänderung, gleiche Breite): nichts anfassen, kein Anker-Rücksprung
+		if (innerWidth === w0 && Math.abs(innerHeight - h0) < 150) return;
 		pending = true;
 		cancelAnimationFrame(settleRaf);
 		settleRaf = requestAnimationFrame(() => {

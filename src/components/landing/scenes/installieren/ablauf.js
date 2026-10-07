@@ -34,6 +34,7 @@ export function registerAblauf(fr, sec, getTab) {
 			for (const el of fr.querySelectorAll('[data-k]')) s.E[el.getAttribute('data-k')] = el;
 			s.tap = fr.querySelector('[data-ins="tap"]');
 			s.steps = [...sec.querySelectorAll('[data-istep]')];
+			s.kurz = sec.querySelector('[data-kurz]');
 			s.tab = -1;
 			s.clk = 0;
 			s.n = 0;
@@ -77,12 +78,15 @@ export function registerAblauf(fr, sec, getTab) {
 			if (t > 0.3) s.frisch = false;
 			// Kein Schleier: beim Tabwechsel steht sofort das Startbild des neuen Plans (pl.render(0)), nie ein leerer Schirm
 put(s.E.veil, { o: 0 });
-			// Tipp-Anzeige
+			// Tipp-Anzeige: am Handy ein halbtransparenter Ring, am Rechner der macOS-Zeiger (Spitze auf dem Ziel)
 			if (s.tap) {
+				const maus = tab === 2;
 				const k = s.reduced ? { o: 0, x: 0, y: 0, s: 1 } : tipp(pl.taps, t);
+				const off = maus ? 0 : 18;
+				if (s.tap.dataset.z !== (maus ? 'maus' : 'touch')) s.tap.dataset.z = maus ? 'maus' : 'touch';
 				put(s.tap, {
-					o: k.o * 0.9,
-					t: `translate(${(k.x * ks - 17).toFixed(1)}px,${(k.y * ks - 17).toFixed(1)}px) scale(${k.s.toFixed(3)})`,
+					o: maus ? k.o : k.o * 0.95,
+					t: `translate(${(k.x * ks - off).toFixed(1)}px,${(k.y * ks - off).toFixed(1)}px) scale(${(maus ? 1 - (1 - k.s) * 0.67 : k.s).toFixed(3)})`,
 				});
 			}
 			// aktiver Schritt (die Liste wechselt mit dem Tab)
@@ -100,6 +104,9 @@ put(s.E.veil, { o: 0 });
 			if (mz > zeit.max) zeit.max = mz;
 			if (a !== s.aktiv) {
 				s.aktiv = a;
+				// Bildunterschrift im Hochformat: der aktive Schritt als eine Zeile unter dem Gerät
+				const z = s.steps[a]?.querySelector('[data-zeile]');
+				if (s.kurz && z) s.kurz.replaceChildren(...[...z.cloneNode(true).childNodes]);
 				for (const el of s.steps) {
 					const an = +el.getAttribute('data-istep') === a;
 					el.toggleAttribute('data-aktiv', an);

@@ -200,14 +200,27 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 34px;
-	height: 34px;
+	width: 36px;
+	height: 36px;
+	box-sizing: border-box;
 	border-radius: 50%;
-	background: #fafafa;
-	mix-blend-mode: difference;
+	background: rgba(0, 0, 0, 0.16);
+	border: 1.5px solid rgba(0, 0, 0, 0.42);
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
 	opacity: 0;
 	pointer-events: none;
 	z-index: 21;
+}
+/* Rechner: macOS-Pfeil, die Spitze liegt auf dem Ziel */
+.tipp[data-z="maus"] {
+	width: 17px;
+	height: 25px;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='25' viewBox='0 0 17 25'%3E%3Cpath d='M1.500 1.500v18l4.600-4.300 3.200 7.400 3.100-1.300-3.200-7.300H16Z' fill='%23000' stroke='%23fff' stroke-width='1.400' stroke-linejoin='round'/%3E%3C/svg%3E")
+		no-repeat;
+	transform-origin: 0 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -220,31 +233,65 @@
 	}
 }
 
-/* Hochformat: Label, Titel, Absatz, Tabs, Gerät, Schritte, CTA untereinander */
+/* Hochformat: Label, Titel, Absatz, Tabs, Gerät mit Bildunterschrift (alles in einem Bild), CTA. Die volle
+   Schrittliste bleibt für Screenreader und erscheint bei Fokus. */
+.kurz {
+	display: none;
+	margin: 0;
+	min-height: 2.6em;
+	text-align: center;
+	font-size: var(--t-17);
+	font-weight: 500;
+	line-height: 1.3;
+	text-wrap: balance;
+}
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px),
 	(orientation: landscape) and (max-height: 499px) {
 	.sektion {
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		gap: var(--sp-24);
+		gap: var(--sp-16);
+		min-height: 0;
 		padding: var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);
 		box-sizing: border-box;
 	}
 	.text {
 		display: contents;
 	}
+	.lead {
+		max-width: none;
+	}
 	.panel {
-		order: 2;
+		order: 3;
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.panel:focus-within {
+		position: static;
+		width: auto;
+		height: auto;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
 		max-width: none;
 	}
 	.cta {
-		order: 3;
+		order: 4;
 	}
 	.buehne {
 		order: 1;
-		padding: var(--sp-16) 0;
+		height: max(340px, calc(100svh - 340px));
+		padding: var(--sp-8, 8px) 0;
 		box-sizing: border-box;
+	}
+	.kurz {
+		order: 2;
+		display: block;
 	}
 }
 @media (max-width: 420px) {

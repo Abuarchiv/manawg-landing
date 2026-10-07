@@ -350,20 +350,10 @@
 	visibility: hidden;
 }
 
-/* Kopf: kein Schleier. Die Kunst läuft randlos bis zum oberen Rand; Logo und Knopf halten die Flut über
-   die Lücken logo/cta frei. Nur der Knopf bekommt einen eigenen Grund, damit er über hellen Flächen lesbar bleibt. */
+/* Kopf: kein Schleier über der Kunst, sie läuft randlos bis zum oberen Rand. Läuft Inhalt (Text) unter dem Kopf
+   durch, blendet KopfMaske das Band aus. Das Logo hat keinen eigenen Grund mehr. */
 
 [data-kopf] .cta--rand:not(:hover) {
-	background: rgba(10, 10, 10, 0.55);
-	-webkit-backdrop-filter: blur(8px);
-	backdrop-filter: blur(8px);
-}
-
-/* Logo: eigener Grund wie der Knopf, damit Inhalt, der unter dem Kopf durchläuft, es nicht überlagert */
-[data-kopf] [data-loch="logo"] {
-	margin-left: -10px;
-	padding: 4px 10px;
-	border-radius: 10px;
 	background: rgba(10, 10, 10, 0.55);
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);

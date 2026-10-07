@@ -45,6 +45,12 @@ export function Tiefe() {
 					>
 						[ TIEFE ] WEITER SCROLLEN
 					</div>
+					<div
+						data-verlauf="1"
+						style={css(
+							'position:absolute;left:0;right:0;bottom:0;height:42%;opacity:0;background:linear-gradient(to top,rgba(10,10,10,0.8) 0,rgba(10,10,10,0.55) 55%,rgba(10,10,10,0) 100%)',
+						)}
+					/>
 					{WOERTER.map((w, i) => (
 						<div
 							key={w.nr}

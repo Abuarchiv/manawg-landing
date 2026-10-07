@@ -1,7 +1,7 @@
 'use client';
 
 import { appUrl } from '@/lib/app-origin';
-import { Ellipsis, EllipsisVertical } from 'lucide-react';
+import { EllipsisVertical, Menu } from 'lucide-react';
 import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Android } from './Android';
 import s from './Installieren.module.css';
@@ -12,16 +12,10 @@ import { registerAblauf } from './ablauf';
 // Szene [07] INSTALLIEREN: je Plattform der echte Installationsablauf (INSTALL-FLOWS), zeitgesteuerte Schleife
 // im Gerät, Schrittliste synchron und klickbar, Tabs als Tablist mit Pfeiltasten.
 
-// Die Symbole der Schritte sind dieselben Zeichnungen wie im Gerät (Safari: Menü unten rechts, Chrome: drei Punkte)
+// Die Symbole der Schritte sind dieselben Zeichnungen wie im Gerät (Safari iOS 27: Seitenmenü ≡ links in der Adresspille, Chrome: drei Punkte)
 const ICON: Record<string, ReactNode> = {
 	'≡': (
-		<Ellipsis
-			size="1.1em"
-			strokeWidth={2.4}
-			aria-label="Drei Punkte"
-			role="img"
-			className={s.ikone}
-		/>
+		<Menu size="1.1em" strokeWidth={2.4} aria-label="Seitenmenü" role="img" className={s.ikone} />
 	),
 	'⋮': (
 		<EllipsisVertical
@@ -116,10 +110,13 @@ export function Installieren() {
 			const w =
 				bu.clientWidth - Number.parseFloat(cs.paddingLeft) - Number.parseFloat(cs.paddingRight);
 			// Auf großen Bildschirmen darf das Gerät über seine Entwurfsgröße wachsen (bis 78 % der Fensterhöhe)
+			// Hochformat: die Bühne hat feste Höhe (100svh minus Kopf, Tabs, Zeile), das Gerät passt ganz hinein
+			const hh =
+				bu.clientHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom);
 			const z = Math.min(
 				inst === 2 ? 1.2 : 1.4,
-				(w * (hoch && inst !== 2 ? 0.78 : 1)) / (fw as number),
-				(innerHeight * (hoch ? 0.88 : 0.78)) / (fh as number),
+				w / (fw as number),
+				(hoch ? hh : innerHeight * 0.78) / (fh as number),
 			);
 			sk.style.setProperty('--z', z.toFixed(4));
 			sk.style.width = `${(fw as number) * z}px`;
@@ -203,7 +200,9 @@ export function Installieren() {
 									onClick={() => api.current?.sprung(i)}
 								>
 									<span className={s.nr}>{`0${i + 1}`}</span>
-									<span className={s.zeile}>{umbruch(t)}</span>
+									<span className={s.zeile} data-zeile="">
+										{umbruch(t)}
+									</span>
 								</button>
 							</li>
 						))}
@@ -238,6 +237,7 @@ export function Installieren() {
 					</div>
 				</div>
 			</div>
+			<p className={s.kurz} data-kurz="" aria-hidden="true" />
 		</section>
 	);
 }

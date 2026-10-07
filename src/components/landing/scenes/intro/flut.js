@@ -21,13 +21,16 @@ export function deckung(P) {
 	// Phase 1 deckt den Wechsel vom Organ zur Wohnung und ist bei P 0,63 weg, bevor die erste Raumkarte
 	// (ab P 0,65) steht. Phase 2 ist kurz und schwach und endet bei P 0,895, bevor die Ende-Ebene einblendet (kein grauer
 	// Schleier aus Flut und Handy): Pinnwand & Chat und das Handy bleiben lesbar.
-	return Math.max(
-		ss((P - 0.48) / 0.06) * (1 - ss((P - 0.56) / 0.07)),
-		0.65 * ss((P - 0.83) / 0.03) * (1 - ss((P - 0.865) / 0.03)),
-	);
+	return ss((P - 0.48) / 0.06) * (1 - ss((P - 0.56) / 0.07));
+}
+
+/** Phase 2: eine geschlossene Front, die vom unteren Rand aufsteigt und wieder zurückweicht (0..1). */
+export function front(P) {
+	return ss((P - 0.83) / 0.03) * (1 - ss((P - 0.865) / 0.03));
 }
 
 qa.deckung = deckung;
+qa.front = front;
 qa.masse = { ...(qa.masse ?? {}), flutZelle: CELL, flutZiffer: 10 };
 
 /** Stärke einer Lücke (0..1) an der Stelle (x, y) für ein Rechteck mit Rand. */
@@ -77,7 +80,7 @@ export function lueckenVon(loecher, c) {
  * Rechnet das Raster: on[q] = 1 für weiße Zellen. Rein, für draw und QA (qa.flutGitter).
  * W, H in CSS-Pixeln, t in Sekunden (bei reduzierter Bewegung 0), cover 0..1.
  */
-export function gitter(W, H, t, cover, luecken, tr, cols, rows, on) {
+export function gitter(W, H, t, cover, luecken, tr, cols, rows, on, fr = 0) {
 	// Strukturgröße an die kurze Seite koppeln: auf kleinen Bildschirmen entstehen Blobs statt einer Fläche
 	const sk = SKALA * Math.min(3, Math.max(0.6, 900 / Math.min(W, H)));
 	for (let b = 0; b < rows; b++) {
@@ -88,7 +91,55 @@ export function gitter(W, H, t, cover, luecken, tr, cols, rows, on) {
 			const n = vnz(x * sk + t * 0.03, y * sk - t * 0.02);
 			let pk = 0;
 			for (const l of luecken) pk = Math.max(pk, l.w0 * loch(x, y, l, l.rand));
-			on[q] = n + cover * STAERKE - 0.45 + (y / H) * 0.2 - 2 * pk > 0.5 && (!tr || tr[q] < 0.3) ? 1 : 0;
+			const insel = cover > 0.001 && n + cover * STAERKE - 0.45 + (y / H) * 0.2 - 2 * pk > 0.5;
+			// Front: Fläche unterhalb einer unruhigen Kante, die mit fr (0..1) bis 40 % der Höhe steigt
+			const welle = fr > 0 && pk < 0.5 && y / H > 1 - fr * 0.4 + (n - 0.5) * 0.3;
+			on[q] = (insel || welle) && (!tr || tr[q] < 0.3) ? 1 : 0;
+		}
+	}
+}
+
+// Restinseln unter MIN_INSEL zusammenhängenden Zellen fallen weg: sie sähen am Ende einer Phase wie Renderreste aus.
+const MIN_INSEL = 8;
+let flag = new Uint8Array(0);
+let stack = new Int32Array(0);
+function entInseln(on, cols, rows) {
+	const n = cols * rows;
+	if (flag.length !== n) {
+		flag = new Uint8Array(n);
+		stack = new Int32Array(n);
+	} else flag.fill(0);
+	for (let q0 = 0; q0 < n; q0++) {
+		if (!on[q0] || flag[q0]) continue;
+		let sp = 0;
+		let cnt = 0;
+		stack[sp++] = q0;
+		flag[q0] = 1;
+		while (sp) {
+			const q = stack[--sp];
+			cnt++;
+			const a = q % cols;
+			const b = (q - a) / cols;
+			if (a > 0 && on[q - 1] && !flag[q - 1]) (flag[q - 1] = 1), (stack[sp++] = q - 1);
+			if (a < cols - 1 && on[q + 1] && !flag[q + 1]) (flag[q + 1] = 1), (stack[sp++] = q + 1);
+			if (b > 0 && on[q - cols] && !flag[q - cols]) (flag[q - cols] = 1), (stack[sp++] = q - cols);
+			if (b < rows - 1 && on[q + cols] && !flag[q + cols]) (flag[q + cols] = 1), (stack[sp++] = q + cols);
+		}
+		if (cnt < MIN_INSEL) {
+			// Zellen der Insel wieder einsammeln: zweiter Durchlauf über flag==1 in der Nachbarschaft ist teuer,
+			// deshalb beim Zählen merken
+			sp = 0;
+			stack[sp++] = q0;
+			on[q0] = 0;
+			while (sp) {
+				const q = stack[--sp];
+				const a = q % cols;
+				const b = (q - a) / cols;
+				if (a > 0 && on[q - 1]) (on[q - 1] = 0), (stack[sp++] = q - 1);
+				if (a < cols - 1 && on[q + 1]) (on[q + 1] = 0), (stack[sp++] = q + 1);
+				if (b > 0 && on[q - cols]) (on[q - cols] = 0), (stack[sp++] = q - cols);
+				if (b < rows - 1 && on[q + cols]) (on[q + cols] = 0), (stack[sp++] = q + cols);
+			}
 		}
 	}
 }
@@ -141,7 +192,8 @@ export function draw(cv, c, loecher = []) {
 	// Hochformat: die zweite Flutphase (Pinnwand & Chat) deckt höchstens 0,35, die Wohnung bleibt lesbar
 	if (c.W <= c.H && c.P > 0.75) cover = Math.min(cover, 0.35);
 	const t = c.reduced ? 0 : c.t;
-	if (!(cover > 0.001)) {
+	const fr = c.reduced ? Math.min(front(c.P), 0.5) : front(c.P);
+	if (!(cover > 0.001) && !(fr > 0.001)) {
 		if (!st.clean) {
 			fx.clearRect(0, 0, W, H);
 			st.clean = true;
@@ -177,7 +229,8 @@ export function draw(cv, c, loecher = []) {
 	}
 	if (!st.on || st.on.length !== cols * rows) st.on = new Uint8Array(cols * rows);
 	const on = st.on;
-	gitter(W, H, t, cover, lueckenVon(loecher, c), tr, cols, rows, on);
+	gitter(W, H, t, cover, lueckenVon(loecher, c), tr, cols, rows, on, fr);
+	if (cover < 0.25) entInseln(on, cols, rows);
 	fx.fillStyle = '#FAFAFA';
 	fx.beginPath();
 	for (let b = 0; b < rows; b++) {

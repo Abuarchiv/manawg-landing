@@ -17,6 +17,7 @@ import { SoGehts } from './scenes/sogehts/SoGehts';
 import { Tiefe } from './scenes/tiefe/Tiefe';
 import { Hinweise } from './shell/Hinweise';
 import { Kopf } from './shell/Kopf';
+import { KopfMaske } from './shell/KopfMaske';
 import { Lader } from './shell/Lader';
 
 // Wurzel der Landing: Kopf und Hinweise fest am Fenster, danach der Inhalt im normalen Dokumentfluss,
@@ -75,6 +76,7 @@ export function Landing() {
 
 	return (
 		<div id="final" data-mode={loop.mode} data-phase="intro" suppressHydrationWarning>
+			<KopfMaske />
 			<Kopf />
 			<Hinweise />
 			<main id="inhalt">

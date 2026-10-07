@@ -13,10 +13,10 @@ import {
 	ChevronUp,
 	Compass,
 	Copy,
-	Ellipsis,
 	EyeOff,
 	FileSearch,
 	Glasses,
+	Menu,
 	Mic,
 	PenLine,
 	Printer,
@@ -34,7 +34,7 @@ import s from './Iphone.module.css';
 
 const SF = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif';
 const ICON = '/apple-touch-icon.png';
-const SEITE = '/install/seite-ios.webp';
+const SEITE = '/install/seite-ios-gast.webp';
 const APPSEITE = '/install/app-start.webp';
 
 const abs = (o: CSSProperties): CSSProperties => ({ position: 'absolute', ...o });
@@ -252,14 +252,20 @@ export function Iphone() {
 			<div className={s.ios_stack} data-k="ios-stack">
 				<div style={abs({ inset: 0, background: '#fff' })} />
 				<div style={scheibe(0, 490, 54)} />
-				<AppDatum left={0} top={54} />
+
 				<div style={scheibe(676, 844, 580)} />
 				<div className={s.ios_bar} data-k="ios-bar">
 					<span className={s.ios_rund} style={{ left: 33 }}>
 						<ChevronLeft size={24} strokeWidth={1.8} color="#a3a3a8" aria-hidden="true" />
 					</span>
 					<div className={s.ios_pille}>
-						<Ellipsis size={22} strokeWidth={2} aria-hidden="true" data-k="ios-menubtn" />
+						<Menu
+							size={22}
+							strokeWidth={2}
+							aria-label="Seitenmenü"
+							role="img"
+							data-k="ios-menubtn"
+						/>
 						<span>app.manawg.com</span>
 						<RotateCw size={19} strokeWidth={2} aria-hidden="true" />
 					</div>
@@ -295,7 +301,7 @@ export function Iphone() {
 							<img src={ICON} alt="" width="60" height="60" />
 						</span>
 						<div className={s.ios_kopf_t}>
-							<b>ManaWG</b>
+							<b>Deine WG-App</b>
 							<span>app.manawg.com</span>
 							<em>
 								Optionen <ChevronRight size={14} strokeWidth={2.6} aria-hidden="true" />
