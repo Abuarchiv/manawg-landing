@@ -58,12 +58,17 @@ const capOpacity = (dz, last) => {
 	return Math.max(plateau, pre);
 };
 
+// Flächenfaktor: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900),
+// damit der Anteil heller Pixel auf großen Schirmen nicht sinkt. Gerastert, damit nicht jede Größenänderung neu baut.
+const flaeche = (s) => Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4;
+const bauKey = (s) => `${s.mode}${flaeche(s)}`;
+
 function build(s) {
 	const hoch = s.mode === 'hoch';
 	const k = hoch ? 0.5 : 1; // Streuung der Inseln und des Zeigerversatzes an die Boxbreite anpassen
 	const target = ((hoch ? 0.5 : 0.4) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9
 	s.isl = s.raw.map((r, i) => {
-		const sc = cl(target / (r.width / 85), 0.45, 1.5);
+		const sc = cl(target / (r.width / 85), 0.25, 1.5);
 		const n = Math.max(1, Math.round((SPACING * 85) / (sc * 2)));
 		const pts = [];
 		for (const p of r.pts)
@@ -86,17 +91,21 @@ function build(s) {
 		});
 	});
 	// Staub: dichter als im Entwurf, damit zwischen den Wörtern nie Leere entsteht (F-13)
-	const nd = hoch ? 9000 : 14000;
-	const sx = hoch ? 34 : 60;
+	// Hochformat: schmaler und höher, die Kanten des Staubkastens blenden weich aus (siehe frame)
+	const fl = flaeche(s);
+	s.fl = Math.sqrt(fl);
+	const nd = Math.round((hoch ? 11000 : 22000) * fl);
+	s.dX = hoch ? 24 : 30;
+	s.dY = hoch ? 40 : 18;
 	for (let q = 0; q < nd; q++)
 		s.P.push([
-			(hsh(q, 1) - 0.5) * sx,
-			(hsh(q, 2) - 0.5) * 36,
+			(hsh(q, 1) - 0.5) * 2 * s.dX,
+			(hsh(q, 2) - 0.5) * 2 * s.dY,
 			hsh(q, 3) * 90 - 14,
 			'.:+'[Math.floor(hsh(q, 4) * 3)],
 			-1,
 		]);
-	s.bm = s.mode;
+	s.bm = bauKey(s);
 }
 
 /** Meldet die Tiefe-Szene an. sec: Abschnitt mit Sticky-Bühne. Gibt die Abmeldung zurück. */
@@ -127,7 +136,7 @@ export function registerTiefe(cv, sec) {
 				s.raw = WORDS.map((w) => sampleT(w, 200));
 				s.bm = null;
 			}
-			if (s.bm !== s.mode) build(s);
+			if (s.bm !== bauKey(s)) build(s);
 			const { f, ox, oy, cx, cy, dpr } = s;
 			const r = sec.getBoundingClientRect();
 			const sp = cl(-r.top / Math.max(1, r.height - s.H));
@@ -140,7 +149,7 @@ export function registerTiefe(cv, sec) {
 			const si = Math.floor(seg);
 			const sf = ss(seg - si);
 			if (s.m.in) {
-				const k = lag(0.06, dt);
+				const k = s.reduced ? 1 : lag(0.06, dt);
 				s.sm.x += (s.m.x - s.sm.x) * k;
 				s.sm.y += (s.m.y - s.sm.y) * k;
 			}
@@ -190,13 +199,17 @@ export function registerTiefe(cv, sec) {
 				if (qa.nurWort != null && q[4] !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
 				const a = word
 					? Math.max(cl((34 - dz) / 12), 0.6 * cl(68 - dz))
-					: cl(dz / 1.2) * cl((110 - dz) / 30) * 0.55;
+					: cl(dz / 1.2) *
+						cl((110 - dz) / 30) *
+						cl((s.dX - Math.abs(q[0])) / 7) *
+						cl((s.dY - Math.abs(q[1])) / 7) *
+						0.6;
 				if (a <= 0.01) continue;
 				const szc = cl(0.07 * fz, 0.8, 64) * f; // Zeichengröße in CSS-px
 				// Schriftstufe: 1,33 x Größe, gerundet auf die Stufen 10, 14, 20, 28 px
 				const tier = Math.round(Math.log2((1.33 * szc) / FONTS[0]) * 2);
 				if (tier < 0) {
-					const side = Math.max(word ? 1 : 2, snap(szc * 0.8));
+					const side = snap(Math.max(word ? 1 : (s.mode === 'hoch' ? 1.5 : 2) * s.fl, szc * 0.8));
 					ctx.globalAlpha = a;
 					ctx.fillRect(snap(X), snap(Y), side, side);
 				} else if (tier > 3) {
