@@ -1,5 +1,5 @@
-import { Fragment } from 'react';
 import { css } from '../../core/dc';
+import st from './Raeume.module.css';
 
 // Die vier Raumkarten der Wohnung. Jede Karte blendet über --c0..3 ein und aus (wohnung.karten).
 
@@ -44,63 +44,30 @@ const KARTEN = [
 
 export function Raeume() {
 	return (
-		<section
-			data-loch="text"
-			aria-label="Die Wohnung"
-			style={css(
-				'position:absolute;left:var(--rand);top:var(--sp-150);width:var(--w-440);height:var(--h-520);pointer-events:none;color:#FAFAFA',
-			)}
-		>
+		<section data-loch="text" aria-label="Die Wohnung" className={st.spalte}>
 			{KARTEN.map((k, j) => (
-				<Fragment key={k.nr}>
-					<div
-						style={css(
-							`position:absolute;inset:0;display:flex;flex-direction:column;gap:var(--sp-20);opacity:var(--c${j},0);transform:translateY(calc((1 - var(--c${j},0)) * 40px));filter:blur(calc((1 - var(--c${j},0)) * 6px))`,
-						)}
-					>
-						<div
-							className="label"
-							style={css('display:flex;align-items:baseline;gap:var(--sp-16);opacity:1')}
-						>
-							<span>{k.nr}</span>
-							<span style={css('opacity:0.72')}>{k.raum}</span>
-						</div>
-						<div className="haar" />
-						<h2
-							style={css(
-								"margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-64);line-height:0.94;letter-spacing:-0.045em",
-							)}
-						>
-							{k.titel}
-						</h2>
-						<p
-							style={css(
-								'margin:0;font-size:var(--t-17);line-height:1.5;color:rgba(250,250,250,0.72);max-width:var(--w-380);text-wrap:pretty',
-							)}
-						>
-							{k.text}
-						</p>
-						<div
-							style={css(
-								'display:flex;align-items:center;justify-content:space-between;gap:var(--sp-16);border-top:1px solid var(--haar);border-bottom:1px solid var(--haar);padding:var(--sp-14) 0;margin-top:8px',
-							)}
-						>
-							<div style={css('display:flex;flex-direction:column;gap:4px')}>
-								<span style={css('font-size:var(--t-15);font-weight:500')}>{k.zeile}</span>
-								<span style={css('font-size:var(--t-13);color:rgba(250,250,250,0.72)')}>
-									{k.detail}
-								</span>
-							</div>
-							<span
-								style={css(
-									"font-family:'JetBrains Mono',monospace;font-size:var(--t-15);font-weight:500",
-								)}
-							>
-								{k.betrag}
-							</span>
-						</div>
+				<div
+					key={k.nr}
+					className={st.karte}
+					style={css(
+						`opacity:var(--c${j},0);transform:translateY(calc((1 - var(--c${j},0)) * 16px));filter:blur(calc((1 - var(--c${j},0)) * 3px))`,
+					)}
+				>
+					<div className={`label ${st.kopf}`} style={css('opacity:1')}>
+						<span>{k.nr}</span>
+						<span style={css('opacity:0.72')}>{k.raum}</span>
 					</div>
-				</Fragment>
+					<div className="haar" />
+					<h2 className={st.titel}>{k.titel}</h2>
+					<p className={st.text}>{k.text}</p>
+					<div className={st.zeile}>
+						<div style={css('display:flex;flex-direction:column;gap:4px')}>
+							<span className={st.name}>{k.zeile}</span>
+							<span className={st.detail}>{k.detail}</span>
+						</div>
+						<span className={st.betrag}>{k.betrag}</span>
+					</div>
+				</div>
 			))}
 		</section>
 	);
