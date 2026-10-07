@@ -273,6 +273,7 @@ Eingefrorene Dateien ändert nach dem Fundament kein Paket. Braucht ein Paket do
 
 ```js
 c = { P, s, t, dt, now, W, H, safeH, dpr, mode, reduced,
+      fit: { f, ox, oy },                    // Standard-Einpassung der Box 1280×800 (contain, f ≤ 1,25, im sicheren Kasten zentriert)
       m: { x, y, in, down, type, clickT },   // Zeiger in Bühnen-CSS-px
       fpA, endA, endOn, cover, stageTop, visible }
 wohnung.karten(P)            -> [c0, c1, c2, c3]          // TEXT
@@ -285,7 +286,7 @@ hand.laden()                 -> Promise                     // HAND; stage ruft 
 hand.draw(back, front, c, cam)                              // HAND; back/front sind die Canvas-Elemente
 ```
 
-Teilrenderer bekommen Canvas-Elemente, keine Kontexte. Jeder Besitzer wählt selbst 2D oder WebGL2. Das Fundament liefert lauffähige Erstfassungen: die heutigen Funktionen, an den Szenenraum angepasst, bei 1280×800 identisch.
+Teilrenderer bekommen Canvas-Elemente, keine Kontexte. Jeder Besitzer wählt selbst 2D oder WebGL2. Das Backing hält stage.js auf CSS × `c.dpr`. `c.fit` ist nur der Vorschlag, jeder Teilrenderer darf für Hochformat eine eigene Box rechnen. Das Fundament liefert lauffähige Erstfassungen: die heutigen Funktionen, an den Szenenraum angepasst, bei 1280×800 identisch.
 
 ### 4.2 CSS-Variablen und Attribute an `#final`
 
@@ -529,7 +530,7 @@ Marken sind szenenbezogen und gelten bei jedem Viewport. `intro:P` = Zeitachse P
 | 6000 | `intro:0.9375` | Hände blenden ein |
 | 6400 | `intro:1` | Ende voll |
 | 6900 | `intro-aus:0.625` (Bühne zu 62,5 % weggescrollt) | Ende scrollt weg |
-| 7186 | `so-gehts:0` (Ankerziel) | So geht’s |
+| 7186 | `so-gehts:-0.2` (≈ Ankerziel „Intro überspringen“) | So geht’s |
 | 7600 | `so-gehts:0.55` | Ziffern |
 | 8000 | `koerper:0.2` | acht Körper |
 | 8853 / 10130 / 11407 | `funktionen:0.088` / `0.544` / `1` | Tiefe 01 / 02 / 03 |
