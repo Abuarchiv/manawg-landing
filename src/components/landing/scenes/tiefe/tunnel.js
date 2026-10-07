@@ -140,6 +140,7 @@ export function registerTiefe(cv, sec) {
 			s.dep = cv.parentElement.querySelector('[data-depth]');
 			s.hint = cv.parentElement.querySelector('[data-hint]');
 			s.verlauf = cv.parentElement.querySelector('[data-verlauf]');
+			s.kopf = document.querySelector('[data-kopf]');
 		},
 		frame(s, _t, dt) {
 			const ctx = s.ctx;
@@ -150,6 +151,10 @@ export function registerTiefe(cv, sec) {
 			}
 			if (s.bm !== bauKey(s)) build(s);
 			const { f, ox, oy, cx, cy, dpr } = s;
+			// Beim Hinausscrollen läuft die Szene unter den fixen Kopf: Wortbild und Zeile blenden über den obersten
+			// 28 px unter dem Kopfband aus (Kopfunterkante in Canvas-Koordinaten)
+			const kopfUnten = s.kopf ? s.kopf.getBoundingClientRect().bottom : 0;
+			const kopfY = kopfUnten - s.el.getBoundingClientRect().top;
 			const r = sec.getBoundingClientRect();
 			const sp = cl(-r.top / Math.max(1, r.height - s.H));
 			// Mit reduzierter Bewegung folgt die Kamera dem Scroll ohne Nachlauf
@@ -255,6 +260,7 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 						cl((s.dX - Math.abs(q[0])) / 7) *
 						cl((s.dY - Math.abs(q[1])) / 7) *
 						0.6;
+				a *= cl((Y - kopfY) / 28);
 				if (a <= 0.01) continue;
 				// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
 				for (const z of zonen) {
@@ -293,7 +299,8 @@ if (dust) tier = 1;
 			}
 			ctx.globalAlpha = 1;
 			s.caps.forEach((el, i) => {
-				el.style.opacity = zonen[i].w.toFixed(3);
+				const ky = el.getBoundingClientRect().top - kopfUnten;
+				el.style.opacity = (zonen[i].w * cl(ky / 28)).toFixed(3);
 			});
 			if (s.verlauf) s.verlauf.style.opacity = capMax.toFixed(3);
 			// Hinweis „weiter scrollen“ nur am Anfang der Fahrt, danach ganz weg

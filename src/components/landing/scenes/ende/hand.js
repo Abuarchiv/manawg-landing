@@ -9,6 +9,7 @@
 // auf den Bildschirm ragen, sowie die Zeigehand.
 
 import { BAYER as HB, cl, hsh, ss } from '../../core/math';
+import { dprFor, glSichtbar } from '../../core/canvas';
 import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
@@ -340,6 +341,10 @@ function glTaugt(metaH, metaP) {
 				console.warn('hand: Shader nicht verwendbar', gl.getShaderInfoLog(fs));
 			}
 		}
+	}
+	if (ok && !glSichtbar(gl, cv)) {
+		ok = false;
+		console.warn('hand: WebGL-Ausgabe bleibt leer, 2D-Hand');
 	}
 	gl.getExtension('WEBGL_lose_context')?.loseContext();
 	return ok;
@@ -966,7 +971,7 @@ function drawIn(back, front, c, cam) {
 	}
 	st.clean = false;
 	const { W, H, t, now, dt } = c;
-	const dpr = Math.min(window.devicePixelRatio || 1, 2);
+	const dpr = dprFor(2);
 
 	chooseMode(st, back, front);
 	for (const cv of [back, front]) sizeBackingOf(cv, W, H, dpr);

@@ -3,14 +3,15 @@
 	min-height: 100lvh;
 	background: #0a0a0a;
 	color: #fafafa;
-	overflow: hidden;
+	overflow: clip; /* kein Scroll-Container: das Handy im Querformat bleibt sticky */
 	display: grid;
 	grid-template-columns: calc(var(--rand) + var(--w-520)) minmax(0, 1fr);
 	column-gap: var(--sp-60);
 	padding: 0;
 }
 .text {
-	padding: var(--sp-96) 0 var(--sp-32) var(--rand);
+	/* Oberkante unter dem Kopfband (Kopf + 28 px Verlauf der KopfMaske), sonst verdeckt es Label und Handy */
+	padding: max(var(--sp-96), calc(var(--kopf-unten) + 24px)) 0 var(--sp-32) var(--rand);
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-24);
@@ -128,8 +129,10 @@
 	text-transform: none;
 }
 .buehne {
-	/* Mitte des Textblocks: dessen Polster oben ist um (96 - 32) größer als unten */
-	padding-bottom: calc(var(--sp-96) - var(--sp-32));
+	/* oben und unten mindestens das Kopfband, damit das Handy im Ruhezustand ganz unter dem Kopf steht */
+	--luft: calc(var(--kopf-unten) + 28px);
+	padding-top: var(--luft);
+	padding-bottom: max(calc(var(--sp-96) - var(--sp-32)), var(--luft));
 	min-width: 0;
 	align-self: center;
 	justify-self: center;
@@ -253,7 +256,8 @@
 		align-items: stretch;
 		gap: var(--sp-16);
 		min-height: 0;
-		padding: var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);
+		padding: max(var(--abschnitt-oben), calc(var(--kopf-unten) + 24px)) var(--rand)
+			var(--abschnitt-unten);
 		box-sizing: border-box;
 	}
 	.text {
@@ -285,13 +289,58 @@
 	}
 	.buehne {
 		order: 1;
-		height: max(340px, calc(100svh - 340px));
+		height: max(
+			340px,
+			calc(100svh - 340px - max(0px, var(--kopf-unten) + 24px - var(--abschnitt-oben)))
+		);
 		padding: var(--sp-8, 8px) 0;
 		box-sizing: border-box;
 	}
 	.kurz {
 		order: 2;
 		display: block;
+	}
+}
+/* Handy quer: zwei Spalten. Links Titel, Tabs und Schritte (scrollen), rechts das Handy fest unter dem Kopf. */
+@media (orientation: landscape) and (max-height: 499px) {
+	.sektion {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		column-gap: var(--sp-32);
+		align-items: start;
+		row-gap: 0;
+		padding: calc(var(--kopf-unten) + 16px) var(--rand) var(--sp-48);
+	}
+	.text {
+		display: flex;
+		padding: 0;
+	}
+	.lead {
+		display: none;
+	}
+	.panel,
+	.panel:focus-within {
+		position: static;
+		width: auto;
+		height: auto;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
+		max-width: none;
+	}
+	.schritt {
+		padding: var(--sp-10) 0;
+	}
+	.buehne {
+		order: 0;
+		position: sticky;
+		align-self: start;
+		top: calc(var(--kopf-unten) + 8px);
+		height: calc(100svh - var(--kopf-unten) - 24px);
+		padding: 0;
+	}
+	.kurz {
+		display: none;
 	}
 }
 @media (max-width: 420px) {

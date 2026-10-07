@@ -6,6 +6,7 @@
 // der CSS-Größe des Canvas (nicht mehr fest 1280 x 800), im Hochformat wird der Bildausschnitt
 // gerahmt (uZ), die Ausgabe läuft über einen Offscreen-Canvas in das sichtbare 2D-Canvas.
 
+import { glSichtbar } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 
 const VS = `#version 300 es
@@ -77,12 +78,18 @@ const O = new Float32Array(32);
  */
 export function createHero(cv) {
 	const ctx = cv.getContext('2d');
-	const G = { cv: null, gl: null, lostAt: 0, noGL: false, fails: 0, tx: null, fb: null, tw: 0, th: 0 };
+	const G = { cv: null, gl: null, lostAt: 0, noGL: false, fails: 0, chk: 0, leer: 0, tx: null, fb: null, tw: 0, th: 0 };
 	const fb = { x: 0, y: 0, ok: false }; // Fallback: nachlaufendes Licht
 
 	const initGL = () => {
 		const gl = G.cv.getContext('webgl2', { antialias: false, preserveDrawingBuffer: false });
 		if (!gl) return false;
+		// Treiber, deren Ausgabe leer bleibt, gelten wie fehlendes WebGL2 (Halbton-Fallback)
+		if (!glSichtbar(gl, G.cv)) {
+			console.warn('hero: WebGL-Ausgabe bleibt leer, 2D-Fallback');
+			G.gl = null;
+			return false;
+		}
 		G.gl = gl;
 		const sh = (t, src, k) => {
 			const s = gl.createShader(t);
@@ -239,7 +246,8 @@ export function createHero(cv) {
 		}
 		G.lostAt = 0;
 		const gl = G.gl;
-		const { t, now, W, H, dpr } = c;
+		const { t, now, W, H } = c;
+		const dpr = c.dprHero ?? c.dpr;
 		const { split, dive, zoom, look, mx } = h;
 		const br = 1 + 0.03 * Math.sin((t * Math.PI) / 3);
 		for (let i = 0; i < 8; i++) {
@@ -313,6 +321,13 @@ export function createHero(cv) {
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.drawImage(G.cv, 0, G.cv.height - hh, w, hh, 0, 0, w, hh);
+		// Die ersten Bilder prüfen: bleibt ein Streifen der Fläche leer (Deckkraft 0), zeichnet der Fallback.
+		// Gelesen wird aus einem kleinen Hilfs-Canvas, damit das sichtbare nicht auf Software-Zeichnen kippt.
+		if (G.chk < 4 && ++G.chk > 1) {
+			G.pr ||= document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+			G.pr.drawImage(cv, 0, Math.floor(hh / 2), w, 2, 0, 0, 1, 1);
+			if (G.pr.getImageData(0, 0, 1, 1).data[3] === 0 && ++G.leer >= 2) G.noGL = true;
+		}
 		return true;
 	};
 

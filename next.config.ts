@@ -1,8 +1,13 @@
 import type { NextConfig } from 'next';
 import { APP_ORIGIN } from './src/lib/app-origin';
 
+// HSTS und upgrade-insecure-requests nur auf Vercel (https). Ein lokaler Prod-Start über http bliebe sonst
+// für WebKit/Chrome auf Geräten unerreichbar (Subressourcen werden auf https hochgestuft).
+const hsts = process.env.VERCEL
+	? [{ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' }]
+	: [];
 const securityHeaders = [
-	{ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+	...hsts,
 	{ key: 'X-Content-Type-Options', value: 'nosniff' },
 	{ key: 'X-Frame-Options', value: 'DENY' },
 	{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },

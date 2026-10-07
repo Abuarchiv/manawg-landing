@@ -105,7 +105,10 @@ export function Installieren() {
 		const sk = skRef.current as HTMLDivElement;
 		const fit = () => {
 			const [fw, fh] = RAHMEN[inst] as number[];
-			const hoch = matchMedia('(max-aspect-ratio: 1/1), (max-width: 699px)').matches;
+			// Hochformat und Handy quer: die Bühne hat feste Höhe, das Gerät passt ganz hinein
+			const hoch = matchMedia(
+				'(max-aspect-ratio: 1/1), (max-width: 699px), (orientation: landscape) and (max-height: 499px)',
+			).matches;
 			const cs = getComputedStyle(bu);
 			const w =
 				bu.clientWidth - Number.parseFloat(cs.paddingLeft) - Number.parseFloat(cs.paddingRight);
@@ -113,10 +116,13 @@ export function Installieren() {
 			// Hochformat: die Bühne hat feste Höhe (100svh minus Kopf, Tabs, Zeile), das Gerät passt ganz hinein
 			const hh =
 				bu.clientHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom);
+			// Breitformat: Fensterhöhe minus Polster der Bühne (Kopfband oben und unten)
+			const frei =
+				innerHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom) - 8;
 			const z = Math.min(
 				inst === 2 ? 1.2 : 1.4,
 				w / (fw as number),
-				(hoch ? hh : innerHeight * 0.78) / (fh as number),
+				(hoch ? hh : frei) / (fh as number),
 			);
 			sk.style.setProperty('--z', z.toFixed(4));
 			sk.style.width = `${(fw as number) * z}px`;

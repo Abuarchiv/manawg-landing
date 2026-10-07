@@ -6,7 +6,7 @@
 // - Jede sichtbare Szene bekommt jedes Bild (frame). Simulationen laufen über s.step mit festem Schritt.
 // - Zeiger kommen in Szenenkoordinaten an. Die Listener hängen an der ganzen Szenenfläche.
 
-import { dprFor, fitBox, full, observe, pointerIn, scene, sizeBacking } from './canvas';
+import { dprFor, fitBox, full, observe, pointerIn, qual, scene, sizeBacking } from './canvas';
 
 export const loop = {
 	n: 0, // Bildzähler seit dem Start, beginnt bei 1
@@ -82,6 +82,26 @@ function frameScene(r, t, dt) {
 	def.frame?.(s, t, dt);
 }
 
+// Auflösungsstufe nach Bildzeit: Liegt der Median zweier Fenster zu je 45 Bildern über 22 ms (unter 45 Bilder/s),
+// sinkt der Pixelfaktor aller Canvas um eine Stufe (dprFor). Erholt wird nicht, sonst pendelte die Schärfe.
+const STUFEN = [1, 0.8, 0.65, 0.5];
+const qb = [];
+let qi = 0;
+let qSchlecht = 0;
+function qualitaet(raw) {
+	if (raw > 0.25 || loop.n < 90) return;
+	qb.push(raw);
+	if (qb.length < 45) return;
+	qb.sort((a, b) => a - b);
+	qSchlecht = qb[22] > 0.022 ? qSchlecht + 1 : 0;
+	qb.length = 0;
+	if (qSchlecht >= 2 && qi < STUFEN.length - 1) {
+		qual.f = STUFEN[++qi];
+		qSchlecht = 0;
+		refresh();
+	}
+}
+
 function tick() {
 	raf = requestAnimationFrame(tick);
 	if (document.hidden) {
@@ -96,6 +116,7 @@ function tick() {
 	loop.dt = Math.min(0.05, raw);
 	loop.now = now;
 	loop.t = now - t0;
+	if (!loop.reduced) qualitaet(raw);
 	if (window.devicePixelRatio !== lastDpr) {
 		lastDpr = window.devicePixelRatio;
 		refresh();

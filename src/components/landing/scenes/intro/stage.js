@@ -5,7 +5,7 @@
 // CSS-Variablen und data-phase an #final und ruft die Teilrenderer auf. Die Variablen werden JEDES
 // Bild gesetzt, auch wenn nichts gezeichnet wird, damit nach Sprüngen nichts stehen bleibt.
 
-import { dprFor, fitBox, observe, sizeBacking } from '../../core/canvas';
+import { dprFor, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
 import { cl, ss } from '../../core/math';
 import * as hand from '../ende/hand';
@@ -156,6 +156,7 @@ export function createStage({ sec, buehne }) {
 
 	const frame = (t0, dt, now, raw) => {
 		const t = loop.reduced ? 0 : t0; // reduce: Hero-Zeit und Autopilot stehen still
+		if (dprFor(2, 1.5) !== dpr) resize(); // Auflösungsstufe (loop.js) hat sich geändert
 		const rb = buehne.getBoundingClientRect();
 		const rs = sec.getBoundingClientRect();
 		const visible = rb.bottom > 0 && rb.top < innerHeight;
@@ -236,7 +237,7 @@ export function createStage({ sec, buehne }) {
 			st.rb.push(raw);
 			if (st.rb.length > 15) st.rb.shift();
 			const mean = st.rb.reduce((a, b) => a + b, 0) / st.rb.length;
-			if (st.rb.length >= 15 && mean > 0.05) st.ad = Math.max(0.25, st.ad * 0.9);
+			if (st.rb.length >= 15 && mean > 0.03) st.ad = Math.max(0.25, st.ad * 0.94);
 			else if (raw < 0.022) st.ad = Math.min(1, st.ad * 1.06);
 		}
 
@@ -269,7 +270,8 @@ export function createStage({ sec, buehne }) {
 				hm.dive = dive;
 				hm.a0 = st.a0;
 				hm.ad = st.ad;
-				heroDrawn = hero.frame(c, hm);
+				c.dprHero = isTouch() ? Math.min(dpr, 1.25) : dpr;
+					heroDrawn = hero.frame(c, hm);
 			}
 			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);

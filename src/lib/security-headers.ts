@@ -40,6 +40,6 @@ export function contentSecurityPolicy(): string {
 		"base-uri 'self'",
 		"form-action 'self'",
 		"object-src 'none'",
-		'upgrade-insecure-requests',
+		...(process.env.VERCEL ? ['upgrade-insecure-requests'] : []),
 	].join('; ');
 }

@@ -29,9 +29,31 @@ export function isTouch() {
 	return !!mq && mq.matches;
 }
 
-/** Pixelfaktor eines Canvas: min(DPR, Deckel), auf Touch für große Felder der Touch-Deckel. */
+/** Auflösungsstufe aus der Bildzeit (loop.js senkt sie bei dauerhaft langsamen Bildern, 1 = voll). */
+export const qual = { f: 1 };
+
+/** Pixelfaktor eines Canvas: min(DPR, Deckel) mal Auflösungsstufe, nie unter 1. */
 export function dprFor(cap = 2, touchCap = cap) {
-	return Math.min(window.devicePixelRatio || 1, isTouch() ? touchCap : cap);
+	return Math.max(1, Math.min(window.devicePixelRatio || 1, isTouch() ? touchCap : cap) * qual.f);
+}
+
+/**
+ * Prüft, ob ein WebGL-Canvas Bildpunkte bis in ein 2D-Canvas bringt (Treiber mit kaputter Ausgabe, z. B. Emulator,
+ * liefern leere Flächen): rot löschen, in 1 x 1 Pixel kopieren, Deckkraft lesen.
+ */
+export function glSichtbar(gl, cv) {
+	try {
+		gl.clearColor(1, 0, 0, 1);
+		gl.clear(gl.COLOR_BUFFER_BIT);
+		const t = document.createElement('canvas');
+		t.width = t.height = 1;
+		const g = t.getContext('2d', { willReadFrequently: true });
+		if (!g) return true;
+		g.drawImage(cv, 0, 0, 1, 1);
+		return g.getImageData(0, 0, 1, 1).data[3] > 0;
+	} catch {
+		return true;
+	}
 }
 
 /** Backing auf CSS-Größe x dpr setzen. Gibt true zurück, wenn sich die Größe geändert hat. */
