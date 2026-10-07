@@ -1,0 +1,13 @@
+/* Abschnittshöhe: 95lvh, mindestens 520 px. Handy quer (flach): genau ein Bildschirm, damit alles im Bild ist. */
+.sektion {
+	position: relative;
+	height: max(520px, 95lvh);
+	background: #0a0a0a;
+	color: #fafafa;
+	overflow: hidden;
+}
+@media (orientation: landscape) and (max-height: 499px) {
+	.sektion {
+		height: 100lvh;
+	}
+}

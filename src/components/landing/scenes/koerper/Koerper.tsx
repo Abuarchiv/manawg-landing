@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
+import m from './Koerper.module.css';
 import { registerKoerper } from './physik';
 
 export function Koerper() {
@@ -13,9 +14,7 @@ export function Koerper() {
 			data-sec="koerper"
 			tabIndex={-1}
 			aria-labelledby="koerper-titel"
-			style={css(
-				'position:relative;height:max(520px,95lvh);background:#0A0A0A;color:#FAFAFA;overflow:hidden',
-			)}
+			className={m.sektion}
 		>
 			<canvas
 				ref={ref}
@@ -23,6 +22,7 @@ export function Koerper() {
 				style={css('position:absolute;inset:0;width:100%;height:100%;display:block')}
 			/>
 			<div
+				data-titel="1"
 				style={css(
 					'position:absolute;left:var(--rand);top:var(--sp-48);display:flex;flex-direction:column;gap:var(--sp-10);pointer-events:none',
 				)}
