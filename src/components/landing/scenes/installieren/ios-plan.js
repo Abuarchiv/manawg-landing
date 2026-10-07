@@ -1,5 +1,5 @@
 // iPhone: iOS 27, Safari im Layout „Kompakt“. Zeiten nach INSTALL-FLOWS 2.2, 2.6 und 8.3 (gemessen am Simulator),
-// Schleife ≈ 12,5 s. Alle Werte sind reine Funktionen der Zeit t.
+// Schleife ≈ 13,5 s. Alle Werte sind reine Funktionen der Zeit t.
 
 import { aus, cl, feder, io, mix, seg } from './zeit';
 import { fl, put, tf } from './stil';
@@ -11,7 +11,7 @@ const T3 = 4.5;
 const T4 = 6.1;
 const T5 = 8.1;
 const T6 = 10.35;
-export const LOOP = 12.45;
+export const LOOP = 13.45; // die laufende App bleibt 2,3 s stehen, bevor die Schleife neu beginnt
 
 export const plan = {
 	loop: LOOP,
@@ -79,16 +79,14 @@ export const plan = {
 			t: tf(0, (1 - kIn) * 329 + kOut * 329),
 		});
 
-		// ---------- Hinzufügen: Seite zieht ins Safari-Symbol, Home entblurrt, Icon steht schon ----------
-		const sp = io(seg(t, T5 + 0.1, 0.32));
-		const sc = 1 - 0.85 * sp;
-		const cx = mix(195, 149, sp);
-		const cy = mix(422, 783, sp);
-		const stackAn = t < T5 + 0.47;
+		// ---------- Hinzufügen: Safari zieht sich aus der Mitte zusammen und blendet aus, Home entblurrt ----------
+		const sp = io(seg(t, T5 + 0.1, 0.25));
+		const sc = 1 - 0.4 * sp;
+		const stackAn = t < T5 + 0.37;
 		put(E['ios-stack'], {
 			d: stackAn ? 'block' : '',
-			t: tf(cx - sc * 195, cy - sc * 422, sc),
-			o: 1 - seg(t, T5 + 0.33, 0.12),
+			t: tf(195 - sc * 195, 422 - sc * 422, sc),
+			o: 1 - sp,
 			borderRadius: `${46 * sp}px`,
 		});
 		const he = aus(seg(t, T5 + 0.12, 0.5));
@@ -100,10 +98,10 @@ export const plan = {
 			f: fl(14 * (1 - he) + 14 * lz, mix(0.7, 1, he) * (1 - 0.35 * lz)),
 			t: tf(0, 0, 1.08 - 0.08 * he - 0.05 * lz),
 		});
-		// das Symbol kommt mit dem Entblurren des Home-Bildschirms in die Zelle, mit weicher Feder 0,7 -> 1
-		const ip = feder(t - (T5 + 0.3), 0.6, 20);
+		// das Symbol kommt erst in die Zelle, wenn der Home-Bildschirm scharf ist, mit weicher Feder 0,7 -> 1
+		const ip = feder(t - (T5 + 0.55), 0.6, 20);
 		put(E['ios-icon'], {
-			o: seg(t, T5 + 0.28, 0.12),
+			o: seg(t, T5 + 0.53, 0.12),
 			t: tf(0, 0, mix(0.7, 1, Math.min(ip, 1.15))),
 		});
 

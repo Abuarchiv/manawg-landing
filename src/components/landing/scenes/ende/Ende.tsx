@@ -66,7 +66,7 @@ export function Ende() {
 				data-safe-ende="1"
 				style={css('position:absolute;left:0;right:0;top:0;height:100svh;pointer-events:none')}
 			>
-				<div className={s.titel}>
+				<div className={s.titel} data-ende-titel="1">
 					<h2 data-quiet="1" className={s.h}>
 						Alltag <br />
 						teilen.

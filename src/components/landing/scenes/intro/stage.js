@@ -35,6 +35,7 @@ export function createStage({ sec, buehne }) {
 	const ctas = [...buehne.querySelectorAll('[data-cta]')];
 	const kopf = root.querySelector('[data-kopf]');
 	const kopfCta = kopf?.querySelector('[data-loch="cta"]');
+	const endeTitel = buehne.querySelector('[data-ende-titel]');
 	const nurIntro = [...root.querySelectorAll('[data-nur-intro]')];
 	const hero = createHero(cvHero);
 
@@ -64,7 +65,7 @@ export function createStage({ sec, buehne }) {
 		s: 0,
 		phase: 'intro',
 	};
-	const m = { x: W / 2, y: H / 2, in: false, down: false, type: 'mouse', clickT: -9, moveT: -9, x0: 0, y0: 0, sy0: 0 };
+	const m = { x: W / 2, y: H / 2, in: false, down: false, type: 'mouse', clickT: -9, moveT: -9, x0: 0, y0: 0, sy0: 0, direkt: false };
 	const hm = { look: 0, mx: 0, split: 0, zoom: 0, dive: 0, sm: st.sm, a0: 0, ad: 1 };
 	const c = {
 		P: 0,
@@ -131,6 +132,8 @@ export function createStage({ sec, buehne }) {
 	const onDown = (e) => {
 		place(e);
 		m.down = true;
+		// direkt: der Klick kam aus der App im Handy (Phone.tsx) und ist dort schon angekommen, die Hand drückt nur mit
+		m.direkt = !!e.direkt;
 		const tt = performance.now() / 1000;
 		// Maus und Stift: der Klick gilt sofort. Touch: erst beim Loslassen und nur ohne Wisch (siehe onUp).
 		if (m.type !== 'touch') m.clickT = tt;
@@ -232,8 +235,15 @@ export function createStage({ sec, buehne }) {
 		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein
 		const kopfAus = loop.mode === 'hoch' ? 0 : endA * (rb.bottom > kopfUnten ? 1 : 0);
 		setVar('--kopf-aus', kopfAus.toFixed(3));
+		// Hochformat: Titel und Knopf der Ende-Ebene blenden aus, sobald sie beim Hinausscrollen das Kopfband
+		// erreichen (kein Text über dem Logo); in demselben Maß kommt der Kopf-Knopf zurück
+		let titelAus = 0;
+		if (loop.mode === 'hoch' && endeTitel && endA > 0) {
+			titelAus = 1 - cl((endeTitel.getBoundingClientRect().top - kopfUnten) / 16);
+		}
+		setVar('--ende-titel-aus', titelAus.toFixed(3));
 		// Hochformat: der Kopf bleibt, aber sein Knopf geht, solange der Knopf der Ende-Ebene im Bild steht (kein Doppel)
-		const ktAus = loop.mode === 'hoch' ? endA * (rb.bottom > kopfUnten ? 1 : 0) : 0;
+		const ktAus = loop.mode === 'hoch' ? endA * (rb.bottom > kopfUnten ? 1 : 0) * (1 - titelAus) : 0;
 		setVar('--kopf-cta-aus', ktAus.toFixed(3));
 		if (kopfCta && kopfCta.inert !== ktAus >= 0.6) kopfCta.inert = ktAus >= 0.6;
 		if (kopf && kopf.inert !== kopfAus >= 0.6) kopf.inert = kopfAus >= 0.6;

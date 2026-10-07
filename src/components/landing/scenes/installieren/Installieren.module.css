@@ -304,6 +304,10 @@
 		padding: var(--sp-8, 8px) 0;
 		box-sizing: border-box;
 	}
+	/* Rechner: das Fenster ist flach, die Bühne nur so hoch wie das Fenster (kein Loch zwischen Tabs und Fenster) */
+	.buehne:has(.rahmen[data-tab="2"]) {
+		height: auto;
+	}
 	.kurz {
 		order: 2;
 		display: block;

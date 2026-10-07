@@ -50,7 +50,8 @@ function homes(s) {
 }
 
 /** Meldet die Körper-Szene an. Gibt die Abmeldung zurück. */
-export function registerKoerper(cv) {
+/** api.wurf() (Tastatur): alle Körper bekommen einen Stoß nach oben, wie ein Antippen (Koerper.tsx). */
+export function registerKoerper(cv, api = {}) {
 	return register({
 		name: 'koerper',
 		el: cv,
@@ -62,6 +63,15 @@ export function registerKoerper(cv) {
 		minSicht: 0.1,
 		resize: homes,
 		init(s) {
+			api.wurf = () => {
+				s.auto = false;
+				s.ring = false;
+				s.idle = 0;
+				s.B.forEach((b, i) => {
+					b.px = b.x + (hsh(i, 7) - 0.5) * 12;
+					b.py = b.y + 16;
+				});
+			};
 			s.B = AB.map((c, i) => ({
 				x: 0,
 				y: 0,

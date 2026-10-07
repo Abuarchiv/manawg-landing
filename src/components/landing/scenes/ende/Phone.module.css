@@ -84,16 +84,3 @@
 	white-space: nowrap;
 	font-feature-settings: "cv11", "kern", "ss01";
 }
-
-/* Fangschicht über dem Glas (nur Maus und Stift, siehe Phone.tsx): der Zeiger wird zur Fingerspitze */
-.fang {
-	position: absolute;
-	inset: 0;
-	z-index: 6;
-	pointer-events: none;
-}
-@media (hover: hover) and (pointer: fine) {
-	.fang {
-		pointer-events: auto;
-	}
-}

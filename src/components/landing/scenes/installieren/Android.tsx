@@ -27,6 +27,7 @@ import s from './Android.module.css';
 import { AppDatum } from './AppDatum';
 
 const ICON = '/icon-512.png';
+const MARKE = '/manawg-mark-weiss.png';
 const SEITE = 'var(--b-and)';
 const APPSEITE = 'var(--b-app)';
 const F = 411 / 390;
@@ -141,10 +142,10 @@ export function Android() {
 			<div className={s.and_home} data-k="and-home">
 				<div className={s.and_wall} />
 				<div className={s.and_hicon} style={{ left: 34, top: 74 }}>
+					{/* WebAPK nach „Installieren“: eigenes Symbol ohne Chrome-Abzeichen (INSTALL-FLOWS 3.4) */}
 					<i className={s.and_hrund}>
 						<img loading="lazy" src={ICON} alt="ManaWG" width="36" height="36" />
 					</i>
-					<span className={s.and_badge}>{CHROME}</span>
 					<em>ManaWG</em>
 				</div>
 				<div className={s.and_dock}>
@@ -268,7 +269,7 @@ export function Android() {
 
 			{/* Start der installierten App */}
 			<div className={s.and_launch} data-k="and-launch">
-				<img loading="lazy" src={ICON} alt="" width="72" height="72" data-k="and-launch-logo" />
+				<img loading="lazy" src={MARKE} alt="" width="72" height="60" data-k="and-launch-logo" />
 			</div>
 			<div className={s.and_app} data-k="and-app">
 				<div style={abs({ left: 0, top: 0, width: 411, height: 48, background: '#0a0a0a' })} />

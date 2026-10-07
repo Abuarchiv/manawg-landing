@@ -78,9 +78,9 @@ export function Phone() {
 	const [benutzt, setBenutzt] = useState(false);
 	useEffect(() => setZeilen(datumsZeilen()), []);
 
-	// Klick mit Maus oder Stift: die Fangschicht über dem Glas hält den Druck zurück, die Zeigehand fährt zum Ziel
-	// und meldet die Berührung (hand:kontakt). Erst dann geht der Klick in die gleich-originige App. Touch läuft
-	// ohne Fangschicht direkt in die App (der echte Finger tippt).
+	// Vorführung der Zeigehand (hand.js, demo): die Hand fährt zum Ziel und meldet die Berührung (hand:kontakt),
+	// erst dann geht ein synthetischer Klick in die gleich-originige App. Eigene Klicks, Tastatur und Fokus gehen
+	// direkt in die App (keine Fangschicht), die Zeigehand folgt dem Zeiger über das Glas (siehe onLoad).
 	useEffect(() => {
 		const el = wurzel.current as HTMLDivElement;
 		const host = el.closest('[data-buehne]');
@@ -204,18 +204,41 @@ export function Phone() {
 							src={src}
 							loading="eager"
 							onLoad={(e) => {
-								// Antippen mit Touch geht direkt in die App: auch das beendet den Hinweis
-								e.currentTarget.contentDocument?.addEventListener(
-									'pointerdown',
-									() => setBenutzt(true),
-									{ once: true },
-								);
+								const fr = e.currentTarget;
+								const doc = fr.contentDocument;
+								if (doc) {
+									// Der erste eigene Tipp beendet den Hinweis
+									doc.addEventListener('pointerdown', () => setBenutzt(true), { once: true });
+									// Zeigerereignisse steigen nicht aus dem iframe auf: Maus und Stift werden mit Fensterkoordinaten
+									// an die Bühne gemeldet (als direkt markiert), damit die Zeigehand folgt und beim Klick drückt,
+									// ohne den Klick ein zweites Mal auszulösen (stage.js, hand.js)
+									const weiter = (ev: Event) => {
+										const pe = ev as PointerEvent;
+										if (pe.pointerType === 'touch') return;
+										const r = fr.getBoundingClientRect();
+										const k = r.width / fr.clientWidth;
+										const w = new PointerEvent(pe.type, {
+											bubbles: true,
+											clientX: r.left + pe.clientX * k,
+											clientY: r.top + pe.clientY * k,
+											pointerType: pe.pointerType,
+											button: pe.button,
+										}) as PointerEvent & { direkt?: boolean };
+										w.direkt = true;
+										fr.dispatchEvent(w);
+									};
+									for (const t of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel'])
+										doc.addEventListener(t, weiter);
+									// Über dem Glas ersetzt die gezeichnete Fingerspitze den Zeiger (hand.js setzt data-hand)
+									const st = doc.createElement('style');
+									st.textContent = 'html[data-hand] *{cursor:none!important}';
+									doc.head.appendChild(st);
+								}
 								requestAnimationFrame(() => requestAnimationFrame(() => setBereit(true)));
 							}}
 							style={{ border: 0, background: '#FFFFFF' }}
 						/>
 					)}
-					<span className={s.fang} data-fang="1" aria-hidden="true" />
 					<Statusleiste />
 					<span
 						style={css(

@@ -30,7 +30,8 @@ export function Koerper() {
 			window.removeEventListener('resize', on);
 		};
 	}, []);
-	useEffect(() => registerKoerper(ref.current as HTMLCanvasElement), []);
+	const api = useRef<{ wurf?: () => void }>({});
+	useEffect(() => registerKoerper(ref.current as HTMLCanvasElement, api.current), []);
 	return (
 		<section
 			ref={sek}
@@ -67,6 +68,10 @@ export function Koerper() {
 					<span className={m.touch}>[ ANTIPPEN UND WERFEN ]</span>
 				</span>
 			</div>
+			{/* Tastatur: ein Wurf für alle Körper (sichtbar nur bei Fokus) */}
+			<button type="button" className={`label ${m.wurf}`} onClick={() => api.current.wurf?.()}>
+				Körper werfen
+			</button>
 		</section>
 	);
 }

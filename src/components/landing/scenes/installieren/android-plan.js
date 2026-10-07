@@ -1,4 +1,4 @@
-// Android: Chrome ab 150 (Menü nach Chromium 157), Schleife ≈ 13,3 s. Zeiten nach INSTALL-FLOWS 3.2, 3.3, 3.4:
+// Android: Chrome ab 150 (Menü nach Chromium 157), Schleife ≈ 14,3 s. Zeiten nach INSTALL-FLOWS 3.2, 3.3, 3.4:
 // Menü 0,45–0,65 s gestaffelt, Dialog 0,2 s, Meldungen „wird installiert…“ ≈ 2 s. Alles reine Funktionen von t.
 
 import { aus, cl, io, mat, mix, seg } from './zeit';
@@ -10,7 +10,7 @@ const T3 = 4.6; // im Sheet „Installieren“
 const T4 = 6.2; // im Dialog „Installieren“
 const TH = 9.1; // Wechsel auf den Startbildschirm
 const T5 = 11.0; // Icon antippen
-export const LOOP = 13.3;
+export const LOOP = 14.3; // die laufende App bleibt 2,3 s stehen, bevor die Schleife neu beginnt
 const ZEILEN = 17;
 
 export const plan = {

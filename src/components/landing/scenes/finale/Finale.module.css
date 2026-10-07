@@ -66,21 +66,31 @@
 }
 
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	/* Im Endbild müssen Titel, Knöpfe und Fußzeile zusammen in den Viewport passen (Safari mit Leisten ist
+	   niedriger als 100svh am Rechner): der Titel schrumpft bis 64 px, die Knöpfe stehen nebeneinander. */
 	.sektion {
-		--titel-fs: clamp(80px, 27vw, 150px);
-		--knoepfe-h: 96px;
+		--luecke: var(--sp-24);
+		--frei: calc(
+			100svh -
+			var(--fuss, 0px) -
+			var(--pad-oben) -
+			var(--luecke) -
+			var(--knoepfe-h) -
+			var(--sp-32)
+		);
+		--titel-fs: clamp(64px, min(27vw, var(--frei) / 1.76), 150px);
 	}
 	.titel {
 		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
 	}
 	.knoepfe {
-		flex-direction: column;
-		align-items: stretch;
 		max-width: 520px;
 	}
 	.knoepfe .knopf {
+		flex: 1 1 auto;
 		justify-content: center;
 		min-height: 44px;
+		padding: 0 12px;
 	}
 }
 

@@ -61,10 +61,14 @@ const plateauOf = (dz, last) => {
 const wortDichte = (dz) => Math.max(cl((46 - dz) / 12), 0.6 * cl(68 - dz)) * (dz < 4.5 ? cl((dz - 0.4) / 4.1) : 1);
 // Das alte Wort wird beim Durchflug auf höchstens 35 % gesenkt, damit es das neue Wort und die Zeile nicht überdeckt
 const altFaktor = (dz) => (dz < 9 ? 0.35 + 0.65 * cl((dz - 5) / 4) : 1);
-// Die Unterzeile erscheint erst, wenn ihr Wort zu mindestens 80 % steht
+// Die Unterzeile erscheint, sobald ihr Wort zu 60 % steht, und ist dann sofort gut lesbar (mindestens 0,85);
+// die Vorblende (0,5) gilt nur davor. Zerfällt das Wort, geht die Zeile mit ihm.
 const capOpacity = (dz, last, vorher, fremd = 1) => {
+	const d = wortDichte(dz) * fremd;
 	const pre = dz > 9 ? 0.5 * cl((30 - dz) / 2) * (1 - vorher) : 0;
-	return Math.max(plateauOf(dz, last), pre) * cl((wortDichte(dz) * fremd - 0.6) / 0.3);
+	// Wort voll (d >= 1 ab Tiefe 34): Zeile mindestens 0,85, solange die vorige nicht mehr steht
+	const voll = 0.85 * cl((d - 0.85) / 0.15) * (1 - vorher);
+	return Math.max(plateauOf(dz, last), pre, voll) * cl((d - 0.6) / 0.3);
 };
 
 // Flächenfaktor: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900),
@@ -282,6 +286,9 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 						cl((s.dY - Math.abs(q[1])) / 7) *
 						0.6;
 				a *= cl((Y - kopfY) / 28);
+				// Nahe Wörter (dz < 5) ziehen beim Durchflug nach außen: am Bildrand weich ausblenden, statt sie
+				// hart anzuschneiden (im Hochformat sonst wie ein Layoutfehler)
+				if (word && dz < 5) a *= cl(Math.min(X, s.W - X) / 48) * cl(Math.min(Y, s.H - Y) / 48);
 				if (a <= 0.01) continue;
 				// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
 				for (const z of zonen) {

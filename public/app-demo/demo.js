@@ -352,6 +352,8 @@
 		// Eingabefeld vor seiner Reihe angetippt: fehlende Felder der Reihe nach tippen
 		if (/^(input|textarea)\|/.test(k)) {
 			const path = pathTo(st.w, st.id, k);
+			// Feld ohne aufgenommene Eingabe: kurzer Hinweis statt totem Feld (die Demo tippt nur Aufgenommenes)
+			if (!path) toast('Eingeben geht in der echten App.');
 			if (path) {
 				st.busy = true;
 				try {

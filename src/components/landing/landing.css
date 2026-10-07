@@ -81,11 +81,6 @@
 	--lwn: 360;
 }
 
-/* Über dem Glas ersetzt die gezeichnete Fingerspitze den Zeiger (Maus und Stift, siehe hand.js) */
-[data-hand-folgt] [data-fang] {
-	cursor: none;
-}
-
 /* Grundstile des früheren Rahmens */
 #final {
 	position: relative;
@@ -99,6 +94,10 @@
 }
 #final [data-sec] {
 	scroll-margin-top: var(--anker);
+}
+/* Tastaturfokus: Bedienelemente landen unter dem Kopfband, nicht darunter verdeckt */
+#final :is(a, button, input, [tabindex="0"]):not([data-sec]) {
+	scroll-margin-top: calc(var(--kopf-unten) + 16px);
 }
 
 /* Klassen-Vertrag (PLAN-V2 2.7). Hover, Fokus und Aktiv gestaltet SHELL hier zentral. */

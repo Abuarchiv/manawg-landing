@@ -1040,7 +1040,9 @@ function drawIn(back, front, c, cam) {
 		st.lastClick = c.m.clickT;
 		if (c.endOn && aufGlas(mx, my)) {
 			dm.off = true; // eigener Tipp: die Vorführung ist überflüssig
-			if (touch) {
+			// Touch: es tippt der echte Finger. direkt: der Klick ist schon in der App angekommen (Phone.tsx), die
+			// Zeigehand drückt nur noch mit und der Ring markiert die Stelle.
+			if (touch || c.m.direkt) {
 				st.tap = [mx, my];
 				st.contactT = now;
 			} else {
@@ -1109,8 +1111,11 @@ function drawIn(back, front, c, cam) {
 	const kl = 1 - Math.exp(-10 * Math.min(dt, 0.05));
 	lt.x += (lg[0] - lt.x) * kl;
 	lt.y += (lg[1] - lt.y) * kl;
-	// Cursor: über dem Glas ersetzt die Fingerspitze den Zeiger
-	if (st.host) st.host.toggleAttribute('data-hand-folgt', !!(folgt || pend));
+	// Cursor: über dem Glas ersetzt die Fingerspitze den Zeiger (auch im Dokument der App, Phone.tsx)
+	const folgen = !!(folgt || pend);
+	if (st.host) st.host.toggleAttribute('data-hand-folgt', folgen);
+	if (!st.appDoc?.isConnected) st.appDoc = st.space?.querySelector('iframe')?.contentDocument?.documentElement ?? null;
+	if (st.appDoc && st.appDoc.hasAttribute('data-hand') !== folgen) st.appDoc.toggleAttribute('data-hand', folgen);
 	st.dbg = { m: { x: c.m.x, y: c.m.y, in: c.m.in, down: c.m.down, type: c.m.type }, tg, endOn: c.endOn, tap: st.tap };
 
 	const pr = now - (st.contactT ?? -9);

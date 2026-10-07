@@ -27,6 +27,11 @@ export function KopfMaske() {
 				const d = Math.min(r.bottom, band) - Math.max(r.top, 0);
 				v = Math.max(v, Math.min(1, Math.max(0, d / band)));
 			}
+			// Hochformat, Ende-Ebene der Intro: läuft die Bühne nach oben weg, schiebt sich das Handy unter das Band
+			if (hoch && document.getElementById('final')?.dataset.phase === 'ende') {
+				const b = document.querySelector('[data-buehne]');
+				if (b) v = Math.max(v, Math.min(1, Math.max(0, -b.getBoundingClientRect().top / 24)));
+			}
 			el.style.height = `${band + 28}px`;
 			el.style.opacity = v.toFixed(3);
 		};
