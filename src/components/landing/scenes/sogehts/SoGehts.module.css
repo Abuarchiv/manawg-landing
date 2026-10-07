@@ -30,8 +30,7 @@
 	border-right: 0;
 }
 .ziffer {
-	width: var(--w-340);
-	max-width: 100%;
+	width: 100%;
 	height: var(--h-150);
 	display: block;
 }
@@ -64,5 +63,8 @@
 	}
 	.spalte:last-child {
 		border-bottom: 0;
+	}
+	.ziffer {
+		height: 112px;
 	}
 }

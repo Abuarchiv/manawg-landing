@@ -4,6 +4,8 @@
 import { hsh } from '../../core/math';
 
 export const STERNE_ANZAHL = 220;
+// Dichte des Entwurfs (220 Punkte auf 1280 x 360 px) bleibt auf jeder Fläche gleich.
+const DICHTE = STERNE_ANZAHL / (1280 * 360);
 
 /** Zeichnet die Sterne. canvas: sichtbares 2D-Canvas, c: Kontext der Bühne (W, H, dpr, t). */
 export function zeichneSterne(cv, W, H, dpr, t) {
@@ -21,7 +23,8 @@ export function zeichneSterne(cv, W, H, dpr, t) {
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	ctx.clearRect(0, 0, W, H);
 	ctx.fillStyle = '#FAFAFA';
-	for (let q = 0; q < STERNE_ANZAHL; q++) {
+	const n = Math.max(90, Math.round(DICHTE * W * H * 0.45));
+	for (let q = 0; q < n; q++) {
 		const x = hsh(q, 21) * W;
 		const y = hsh(q, 22) * H * 0.45;
 		const a = hsh(q, 23);

@@ -1,0 +1,76 @@
+.sektion {
+	position: relative;
+	height: max(560px, 95lvh);
+	background: #0a0a0a;
+	color: #fafafa;
+	overflow: hidden;
+}
+.feld {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+/* Der Inhalt liegt in dem Teil des Finales, der im Endbild der Seite über der Fußzeile zu sehen ist
+   (--fuss = Höhe der Fußzeile, von Finale.tsx gesetzt), mit dem Kopf als Oberkante. So steht der
+   Titel am Ende der Seite ganz unter dem Kopf (T-06). */
+.inhalt {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: max(0px, calc(max(560px, 95lvh) + var(--fuss, 0px) - 100lvh));
+	display: flex;
+	flex-direction: column;
+	padding: calc(max(var(--rand-kopf), env(safe-area-inset-top, 0px) + 8px) + var(--cta-h) + 24px)
+		var(--rand) var(--sp-32);
+	pointer-events: none;
+}
+.block {
+	margin-block: auto;
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-32);
+}
+.titel {
+	margin: 0;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--t-200);
+	line-height: 0.88;
+	letter-spacing: -0.06em;
+	overflow-wrap: break-word;
+}
+.knoepfe {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	pointer-events: auto;
+}
+
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	.titel {
+		font-size: clamp(80px, 27vw, 150px);
+		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
+	}
+	.knoepfe {
+		flex-direction: column;
+		align-items: stretch;
+		max-width: 520px;
+	}
+	.knoepfe .knopf {
+		justify-content: center;
+		min-height: 44px;
+	}
+}
+
+/* Handy quer: wenig Höhe, Titel kleiner, damit er über der Fußzeile ganz Platz hat */
+@media (orientation: landscape) and (max-height: 499px) {
+	.titel {
+		font-size: clamp(48px, 15svh, 64px);
+	}
+	.block {
+		gap: 12px;
+	}
+}
