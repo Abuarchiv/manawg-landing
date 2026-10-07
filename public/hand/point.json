@@ -2,56 +2,56 @@
  "name": "point",
  "scale": 1.0,
  "atlas": [
-  3328,
-  894
+  3800,
+  648
  ],
  "tile": [
-  1664,
-  596
+  1900,
+  432
  ],
  "origin": [
-  -28.0,
-  -206.0
+  -8.0,
+  -160.0
  ],
  "tiles": {
   "lum": {
    "x": 0,
    "y": 0,
-   "w": 1664,
-   "h": 596,
+   "w": 1900,
+   "h": 432,
    "div": 1
   },
   "a": {
-   "x": 1664,
+   "x": 1900,
    "y": 0,
-   "w": 1664,
-   "h": 596,
+   "w": 1900,
+   "h": 432,
    "div": 1
   },
   "nx": {
    "x": 0,
-   "y": 596,
-   "w": 832,
-   "h": 298,
+   "y": 432,
+   "w": 950,
+   "h": 216,
    "div": 2
   },
   "ny": {
-   "x": 832,
-   "y": 596,
-   "w": 832,
-   "h": 298,
+   "x": 950,
+   "y": 432,
+   "w": 950,
+   "h": 216,
    "div": 2
   },
   "z": {
-   "x": 1664,
-   "y": 596,
-   "w": 832,
-   "h": 298,
+   "x": 1900,
+   "y": 432,
+   "w": 950,
+   "h": 216,
    "div": 2
   }
  },
  "encoding": {
-  "lum": "0..255 -> 0..1, sRGB-Anzeigewert (Studiolicht, Hautstreuung, Tintenkanten eingebacken)",
+  "lum": "0..255 -> 0..1, sRGB-Anzeigewert (Studiolicht, Hautstreuung, keine eingebackenen Konturen)",
   "a": "0..255 -> Alpha der Hand (Holdout/Handy: 0)",
   "nx": "0..255 -> -1..1, Normale im Bildraum, x nach rechts (halbe Aufloesung)",
   "ny": "0..255 -> -1..1, Normale im Bildraum, y nach oben (halbe Aufloesung)",

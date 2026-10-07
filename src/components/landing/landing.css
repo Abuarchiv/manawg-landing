@@ -359,6 +359,16 @@
 	backdrop-filter: blur(8px);
 }
 
+/* Logo: eigener Grund wie der Knopf, damit Inhalt, der unter dem Kopf durchläuft, es nicht überlagert */
+[data-kopf] [data-loch="logo"] {
+	margin-left: -10px;
+	padding: 4px 10px;
+	border-radius: 10px;
+	background: rgba(10, 10, 10, 0.55);
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+}
+
 [data-kopf][inert] {
 	visibility: hidden;
 }
