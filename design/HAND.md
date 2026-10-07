@@ -1,6 +1,6 @@
 # HAND: realistische Hände aus Blender
 
-Stand 2026-10-06. Die beiden Kapsel-Hände der Engine (Handy-Hand `holdBack`/`holdFront`, Zeigehand `point`) werden durch ein in Blender gerendertes, anatomisch echtes Handmodell ersetzt. Struktur, Pose, Position und Bildsprache bleiben wie im Design: Daumen links am Handyrand, vier Finger um den rechten Rand, Handballen und Unterarm hinter dem Handy, Unterarm nach links unten; die Zeigehand folgt dem Zeiger und der Arm zeigt nach 1460/1020. Gezeichnet wird weiter in Halbton-Punkten (`dot()`, Bayer, `mix-blend-mode: difference` auf der vorderen Ebene). Die Engine bekommt keine Fotos, sondern **Daten-Pässe** (Leuchtdichte, Alpha, Normale, Tiefe) und shadet daraus selbst. Dadurch bleibt die Lichtreaktion auf den Zeiger erhalten.
+Stand 2026-10-07. Die beiden Kapsel-Hände der Engine (Handy-Hand `holdBack`/`holdFront`, Zeigehand `point`) sind durch ein in Blender gerendertes, anatomisch echtes Handmodell ersetzt (umgesetzt in `src/components/landing/scenes/ende/hand.js`, Abschnitt 11). Struktur, Pose, Position und Bildsprache bleiben wie im Design: Daumen links am Handyrand, vier Finger um den rechten Rand, Handballen und Unterarm hinter dem Handy, Unterarm nach links unten; die Zeigehand folgt dem Zeiger und der Arm zeigt nach 1460/1020. Gezeichnet wird weiter in Halbton-Punkten (`dot()`, Bayer, `mix-blend-mode: difference` auf der vorderen Ebene). Die Engine bekommt keine Fotos, sondern **Daten-Pässe** (Leuchtdichte, Alpha, Normale, Tiefe) und shadet daraus selbst. Dadurch bleibt die Lichtreaktion auf den Zeiger erhalten.
 
 Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft): `/Users/abu/Company/archiv/hand/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/scripts/preview.html` mit `?b=../final/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `ascii=1`, `mx/my/px/py`), eingeklebt im Abschnitt 6.
 
@@ -8,9 +8,9 @@ Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft)
 
 | Datei | Inhalt | Größe |
 |---|---|---|
-| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 1888 × 2724, Maßstab 1,5) | 90 kB |
+| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 2072 × 2754, Maßstab 1,5, Kachel ab Bühnen-x 424, y 176) | 88 kB |
 | `public/hand/point.webp` + `point.json` | Zeigehand als Sprite (Atlas 3328 × 894, Maßstab 1,0) | 66 kB |
-| Summe | | 158 kB (Grenze 600 kB) |
+| Summe | | 154 kB (Grenze 600 kB) |
 
 Die JSON-Dateien beschreiben sich selbst (`tiles`, `origin`, `scale`, `encoding`, `space`; `hold.json` zusätzlich `phone`, `screen`, `bottomY`).
 
@@ -41,9 +41,11 @@ Außerhalb der Silhouette sind `lum`, `nx`, `ny`, `z` 12 Bühnen-px weit nach au
 
 Linke Hand (Blender-Rechtshand, Spiegelkamera), natürlicher Griff. Gemessen im Bühnenraum:
 
-- Daumenspitze ragt 21 px über den linken Handyrand (Design: 28 px), Spitze bei y ≈ 323 (Design: 412; ein tieferer Daumen war nur mit stark gebeugtem Daumengelenk möglich und sah schlechter aus).
-- Fingerspitzen ragen über den rechten Rand: Zeige 100 px, Mittel 81 px, Ring 47 px, klein 4 px (Design: 28 px; echte Finger sind dicker als die Kapseln, der Halbton lässt die App dazwischen durchscheinen). Nägel sichtbar.
-- Unterarm-Achse 9,6° aus der Senkrechten nach links (Design 12,5°), Arm endet bei `bottomY = 1400` (Bühnen-px, 690 px unter der Handy-Unterkante). Ab etwa y 1310 ausblenden, wenn der Ausschnitt höher ist (Referenz-Shader macht das).
+- Daumenspitze ragt 8 px über den linken Handyrand (Design: 28 px). Der Daumen liegt am Rand, die Nagelkante bleibt sichtbar.
+- Fingerkuppen ragen über den rechten Rand (Maskenmessung am Bild, ab Außenkante x 950): Zeige 45 px, Mittel 38 px, Ring 20 px, klein 0 px (Kuppe sitzt am Rand, Nagel daneben sichtbar). Design: 28 px. Die erste Fassung (Zeige 100, Mittel 81, Ring 47, klein 4) verdeckte Beträge und Chevrons der echten App und ist ersetzt (PLAN-V2 Entscheidung 8).
+- Unterarm-Achse 13,0° aus der Senkrechten nach links (Mittellinie zwischen y 900 und 1300 gemessen, Design 12,5°, erste Fassung 9,6°), Arm endet bei `bottomY = 1400` (Bühnen-px, 690 px unter der Handy-Unterkante). Ab etwa y 1310 ausblenden, wenn der Ausschnitt höher ist (der Shader macht das über `bottomY`).
+- Die rechte App-Spalte (Bühnen-x 880 bis 939, y 101 bis 699) ist in Ruhe zu 11 % verdeckt (Blöcke à 6 px, `tools/qa/hand/mask.mjs`), die Grenze liegt bei 15 %.
+- Pose: `scripts/q_hold2.json`, gelöst mit `scripts/solve_hold2.py` aus `q_hold.json` (Spitzenziel x ≥ 921 px für den Zeigefinger, Unterarmneigung 0,15 bis 0,23, Daumenziele wie zuvor). Gleiche Kamera, gleiches Licht, gleiche Befehle wie Abschnitt 8.
 - Holdout ist 2 % schmaler als das Handy-DOM: Haut darf bis zu 3 px darunterliegen, das DOM-Handy deckt sie.
 
 **Vorn/hinten** wird im Shader aus `z` und der Handy-Silhouette bestimmt, nicht eingebacken: `vorne = sdf(Handy außen) < 4 && z < 1,5 mm`. Vorne = Zeichenfläche über dem Handy (`mix-blend-mode: difference`, wie bisher `data-hand="front"`), alles andere = Fläche unter dem Handy (`data-hand="back"`). Vorne sind der Daumen und alle Fingerspitzen, die über den Rand auf den Bildschirm ragen.
@@ -55,7 +57,7 @@ Linke Hand von hinten, Zeigefinger gestreckt, Daumen oben, drei Finger eingeroll
 - Sprite-Raum: Ursprung = Fingerspitze, `x` = Richtung Arm, `y` nach unten = Seite der eingerollten Finger (im Design `b > 0`). `point.json: origin` ist die Kachel-Ecke in diesem Raum (Bühnen-px bei Maßstab 1).
 - Platzierung wie in der Engine: `u = normalize(1460 − ht.x, 1020 − ht.y)`, `n = (−u.y, u.x)`, Spitze `(tx, ty) = ht + u · (6 + push · 4)`, Maßstab `sc = PS · (1 − push · 0,06)`.
   Zelle `(x, y)` → Sprite `a = ((x − tx) · u.x + (y − ty) · u.y) / sc`, `b = ((x − tx) · n.x + (y − ty) · n.y) / sc`, dort mit `samp()` lesen.
-- **`PS = 0,55`** trifft die Fingerbreite des alten Designs (≈ 37 px). Echte Größe wäre `PS = 1` (Finger 67 px).
+- **`PS = 0,62`**: Zeigefinger 52 Bühnen-px breit (Sprite 84 px). Die Finger der Haltehand sind real 16 bis 17 mm breit (67 bis 71 px), das Verhältnis liegt bei 0,75 (Vorgabe: mindestens 0,6). Das alte Design hatte ≈ 37 px. Echte Größe wäre `PS = 1`.
 - Verblassen wie bisher: `fade = clamp(1 − (dist − 300) / 420)` mit `dist` = Abstand zur Spitze. Das Sprite reicht 1636 Sprite-px weit (900 Bühnen-px bei `PS 0,55`), also über das Verblassen (720 px) hinaus; kein sichtbarer Schnitt.
 - Normalen ins Bühnenraum-System, falls die Zeigehand auch vom Zeigerlicht beleuchtet werden soll: `n_bühne = nx_s · (u.x, −u.y) + ny_s · (u.y, u.x)` (x rechts, y oben). Die Referenz nutzt für die Zeigehand nur das eingebackene Licht.
 - Soll die Hand rechts statt links sein: `b = −b` im Sampler (dann sitzt der Daumen unten, wie bei der natürlichen Rechtshand von hinten).
@@ -123,13 +125,18 @@ function pointCell(P, screen, x, y, i, j, tx, ty, ux, uy, PS, cf) {   // P = loa
 }
 ```
 
-Einbau in `hero.js`: `holdBack`, `holdFront`, `point`, `S`, `KS`, `FR`, `uc`, `smn`, `cap`, `nail`, `phoneBox` entfallen. In `drawHands` bleiben `tg`/`s.ht`-Glättung, `push`, `u/n`-Rahmen, `ink`, die Zellschleife, `dot`, der Klick-Ring und `endA`. Die Schleife läuft über die belegten Zellen (12er-Raster aus `a`, im Referenz-Shader `occ`) statt über SDF-Masken.
+Einbau: umgesetzt in `scenes/ende/hand.js` (Abschnitt 11). `holdBack`, `holdFront`, `point`, `S`, `KS`, `FR`, `uc`, `smn`, `cap`, `nail`, `phoneBox` sind entfernt, Glättung, `push`, `u/n`-Rahmen, Klick-Ring und `endA` bleiben.
 
-Aufwand: Referenz-Shader braucht in Chromium (M3, ohne Optimierung) 25–40 ms je Bild für beide Hände. Billiger: Alpha, `lum`, Normale, `front`, `edge`, `onScreen`, `cov` der Handy-Hand je Zelle einmal beim Laden vorberechnen (die Zellen sind fest); je Bild bleibt nur die Zeigerlicht-Rechnung. Die Zeigehand muss je Bild neu gesampelt werden, sie bewegt sich.
+Aufwand: Der Referenz-Shader auf der CPU brauchte 25 bis 40 ms je Bild. Die Umsetzung rechnet auf der GPU in zwei Durchgängen (Abschnitt 11) und braucht im Hauptthread 0,1 bis 0,3 ms je Bild.
 
 ## 7. Hochformat / Mobil
 
-Dieselben Pässe, keine zweite Fassung. Die Komposition (Handy, Daumen, Finger, Arm) ist im Pass-Raum fest; für Hochformat wählt man nur einen anderen Bühnenausschnitt. Geprüft mit Ausschnitt `x 560, y 40, w 540, h 1170` auf 390 × 844 (Maßstab 0,72, Handy 217 × 447 px): Handy mittig, Daumen links, Fingerspitzen rechts, Unterarm läuft unten aus dem Bild, die Zeigehand liegt vor dem Bildschirm. Höhere Ausschnitte (bis y 1400) funktionieren, darunter blendet der Arm aus. Schriftzug und Button gehören dort unter oder neben die Arme, sie sind nicht Teil der Pässe.
+Dieselben Pässe, keine zweite Fassung. Die Komposition (Handy, Daumen, Finger, Arm) ist im Pass-Raum fest, für Hochformat wählt man nur einen anderen Bühnenausschnitt. Festgelegt in `scenes/ende/kamera.js`:
+
+- Ausschnitt `x 562, w 566` (Daumen bei x ≈ 585, Fingerkuppen bis x ≈ 1105), Maßstab `f = min(Breite / 566, (Höhe − Platz oben − 100) / 620, 1,25)`, mittig.
+- Oben bleibt Platz für Titel und Knopf (`titelPlatz`: Rand, Titel zwei Zeilen, Abstand, Knopf 48, Abstand 24, bei 390 × 844 rund 209 px). Das Handy beginnt darunter, der Unterarm läuft unten aus der Bühne (die Pässe tragen ihn bis y 1400).
+- Die Zeigehand zielt im Hochformat auf die untere rechte Fensterecke statt auf 1460/1020.
+- Titel und Knopf liegen quer unten links wie im Design, hoch oben links. Sie berühren weder Handy noch Hand.
 
 ## 8. Kamera, Rig, Licht (zum Neu-Rendern)
 
@@ -143,7 +150,7 @@ Quelle: `/Users/abu/Company/archiv/hand/hand.blend` (Blender 5.2) mit allen Skri
 - Befehle (aus `archiv/hand/scripts/`, Python mit numpy, scipy, Pillow, OpenEXR):
 
 ```
-blender -b ../hand.blend --python render_passes.py -- q_hold.json out/hold 192 1920 2100 lt_hold.json
+blender -b ../hand.blend --python render_passes.py -- q_hold2.json out/hold 192 1920 2100 lt_hold.json
 python3 pack3.py out/hold out/pk hold --scale 1.5 --q 88 --pct 80 --gain 0.78 --phone 650,90,300,620,48
 blender -b ../hand.blend --python qpoint.py -- point_q.json out/point passes 1700 1000 192
 python3 pack3.py out/point out/pk point --scale 1.0 --q 88 --pct 80 --gain 0.78 --anchor 64,450
@@ -157,8 +164,19 @@ Basismodell: „Hand – Realistic“ aus dem Blender-Studio-Paket **Human Base 
 
 ## 10. Bekannte Grenzen
 
-- Die Finger der Handy-Hand überdecken mehr vom Bildschirm als im Design (Zeigefinger 100 px statt 28 px), weil echte Finger dicker sind. Eine Variante mit 79/51 px Überlappung (Zeigefinger stärker eingeklappt) wirkte verkrampft, deshalb ist die natürliche Haltung gewählt.
-- Beide Hände sind Linkshände (Spiegelkamera, wie im Design: Daumen links bzw. oben). Für eine Rechtshand beim Zeigen: `b = −b` (Abschnitt 5).
-- Die Zeigehand kann bei Zeigerposition rechts der Handymitte mit dem Daumen auf den kleinen Finger der Handy-Hand fallen (zwei Halbton-Flächen laufen ineinander). Idle-Pfad der Zeigehand daher bei etwa `x 780–860, y 330–470` halten.
-- Zwischen Daumen und Zeigefinger der Zeigehand sitzt ein kleiner Haut-Zipfel (Gewichtsübergang am Daumengrundgelenk). Bei `PS ≤ 0,7` nur ein Punktpaar groß.
+- Die Kuppe des kleinen Fingers sitzt am rechten Handyrand (0 px Überstand), nur Zeige-, Mittel- und Ringfinger ragen über den Rand. Die Pose mit allen vier über dem Rand hätte den kleinen Finger verdreht (Kollision mit dem Ring).
+- Beide Hände sind Linkshände (Spiegelkamera, wie im Design). Für eine Rechtshand beim Zeigen: `b = −b` (Abschnitt 5).
+- Die Zeigehand kann bei Zeigerposition rechts der Handymitte auf die Finger der Haltehand fallen. Der Shader nimmt die Haltehand dort heraus (Verdeckung, Abschnitt 11), der Autopilot bleibt bei `x 780–860, y 330–470`.
+- Zwischen Daumen und Zeigefinger der Zeigehand sitzt ein kleiner Haut-Zipfel (Gewichtsübergang am Daumengrundgelenk), bei `PS 0,62` nur ein Punktpaar groß.
 - `lum` ist für ein Licht von oben links gebacken. Das Zeigerlicht verschiebt nur Glanz und Helligkeit, keine Schlagschatten.
+- Ohne WebGL2 (Fallback) fehlen Zeigerlicht und die Verdeckung der Haltehand durch die Zeigehand.
+
+## 11. Umsetzung in der Landing (`scenes/ende/`)
+
+- `hand.laden()` lädt beide Pässe auf Abruf (stage.js ab P > 0,75). Texturen als R8, Zeichnen als zwei WebGL2-Ebenen (`back` unter, `front` über dem Handy mit `mix-blend-mode: difference`).
+- Je Ebene zwei Durchgänge: (1) ein Texel je Zelle des 2,5-px-Rasters mit dem Ton aus `lum`, `a`, `nx`, `ny`, `z` (GAM 0,6, CON 1,25, RIM 0,45, EDW 3,4, EDV 1,0), Zeigerlicht an der Fingerspitze, Verdeckung durch die Zeigehand und Ruhe unter Titel und Knopf; (2) Punkte je Zelle (Bayer 4 × 4, Hash-Zufall 0,15, Größe 0,9 bis 2,4 Bühnen-px) mit analytischer Kante auf Gerätepixel. Gezeichnet wird nur bei geänderten Eingaben.
+- Ruhe (T-17): Unter Titel und Knopf (`data-quiet`) fällt der Ton über 56 px auf 0, so liegen dort nie Punkte hinter der Schrift (Kontrast 18,9:1 und besser an allen 240 Zeigerpunkten, `tools/qa/hand/sweep.mjs`).
+- Autopilot (T-17): x 820 ± 40, y 400 ± 70 als Dreieckswelle mit Periode 8 s (35 px/s), nie länger als 0,5 s über einer Textzeile. Touch: nur Tipps ziehen die Hand an (ein Wisch zum Scrollen nicht), nach 1,5 s zurück in den Autopiloten. `reduce`: kein Autopilot, nur der echte Zeiger bewegt die Hand.
+- Zeiger (F-18.3): `pointer` über Handy und Knopf, sonst `none`, solange die Hand den Zeiger ersetzt, danach normal.
+- QA-Haken: `window.__landing.dbg.hand()` (Modus, Spitze, Zeit), `dbg.gpuT = true` misst die GPU-Zeit, `dbg.noPoint = true` blendet die Zeigehand aus (Maskenmessung).
+- Prüfwerkzeuge: `tools/qa/hand/` (`shoot`, `sweep`, `perf`, `mask`, `kontakt`, `video`, `cursor`, `zustand`, `log`).

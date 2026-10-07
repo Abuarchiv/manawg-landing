@@ -4,6 +4,7 @@ import { appUrl } from '@/lib/app-origin';
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
 import { modeOf } from '../../core/loop';
+import s from './Ende.module.css';
 import { Phone } from './Phone';
 import { kamera } from './kamera';
 
@@ -65,25 +66,17 @@ export function Ende() {
 				data-safe-ende="1"
 				style={css('position:absolute;left:0;right:0;top:0;height:100svh;pointer-events:none')}
 			>
-				<div
-					style={css(
-						'position:absolute;left:var(--rand);bottom:var(--sp-48);display:flex;flex-direction:column;gap:var(--sp-24);color:#FAFAFA',
-					)}
-				>
-					<h2
-						style={css(
-							"margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-96);line-height:0.9;letter-spacing:-0.05em",
-						)}
-					>
+				<div className={s.titel}>
+					<h2 data-quiet="1" className={s.h}>
 						Alltag
 						<br />
 						teilen.
 					</h2>
 					<a
 						data-cta="1"
-						className="cta cta--rand cta--gross"
+						data-quiet="1"
+						className={`cta cta--rand cta--gross ${s.knopf}`}
 						href={appUrl('/neu?action=create')}
-						style={css('align-self:flex-start')}
 					>
 						WG erstellen
 					</a>
