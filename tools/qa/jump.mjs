@@ -31,7 +31,10 @@ function reste() {
 	o.e = v('--e');
 	o.c = [0, 1, 2, 3].map((j) => v(`--c${j}`));
 	o.phase = document.getElementById('final').dataset.phase;
-	if (o.phase !== 'nach') o.probs.push(`data-phase ${o.phase}`);
+	// Ankerziel "Intro überspringen": 14 px der Bühne bleiben im Bild (wie im Entwurf), die Phase bleibt dann "ende"
+	const restPx = document.querySelector('[data-buehne="intro"]').getBoundingClientRect().bottom;
+	if (o.phase !== 'nach' && !(o.phase === 'ende' && restPx <= 20))
+		o.probs.push(`data-phase ${o.phase}`);
 	if (o.e !== 1) o.probs.push(`--e ${o.e}`);
 	if (o.c.some((x) => x !== 0)) o.probs.push(`--c ${o.c}`);
 	const ende = document.querySelector('[data-ende]');
