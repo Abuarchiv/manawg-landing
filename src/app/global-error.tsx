@@ -24,8 +24,8 @@ export default function GlobalError({
 					justifyContent: 'center',
 				}}
 			>
-				<h2 style={{ fontSize: 24, fontWeight: 600 }}>Etwas ist schiefgelaufen</h2>
-				<p style={{ marginTop: 8, opacity: 0.7 }}>Bitte lade die Seite neu.</p>
+				<h2 style={{ fontSize: 24, fontWeight: 600 }}>Die Seite konnte nicht angezeigt werden.</h2>
+				<p style={{ marginTop: 8, opacity: 0.7 }}>Bitte versuche es erneut.</p>
 				<button
 					type="button"
 					onClick={() => reset()}
