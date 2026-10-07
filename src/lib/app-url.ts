@@ -28,5 +28,6 @@ export function getAppUrl(): string {
 		return withHttps(rawVercelUrl).replace(/\/$/, '');
 	}
 
-	return 'http://localhost:3100';
+	// Ein Produktions-Build ohne Variablen (lokal, vercel build --prebuilt) bäckt sonst localhost in Canonical und OG ein
+	return process.env.NODE_ENV === 'production' ? 'https://manawg.com' : 'http://localhost:3100';
 }

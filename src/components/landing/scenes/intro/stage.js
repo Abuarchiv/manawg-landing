@@ -42,7 +42,7 @@ export function createStage({ sec, buehne }) {
 	// Scroll-Strecke der Bühne: Abschnittshöhe minus Bühne (bei reduzierter Bewegung kürzer, landing.css)
 	const strecke = () => Math.max(1, sec.offsetHeight - H);
 	let safeH = safe.clientHeight;
-	let dpr = dprFor(2, 1.5);
+	let dpr = dprFor(2, 1.5, W, H);
 	let fit = fitBox(W, safeH, 1280, 800, 1.25);
 	let cam = kamera(W, H, safeH, loop.mode);
 	let loecher = [];
@@ -106,7 +106,7 @@ export function createStage({ sec, buehne }) {
 		W = buehne.clientWidth;
 		H = buehne.clientHeight;
 		safeH = safe.clientHeight;
-		dpr = dprFor(2, 1.5);
+		dpr = dprFor(2, 1.5, W, H);
 		fit = fitBox(W, safeH, 1280, 800, 1.25);
 		cam = kamera(W, H, safeH, loop.mode);
 		sizeBacking(cvWo, W, H, dpr);
@@ -158,7 +158,7 @@ export function createStage({ sec, buehne }) {
 
 	const frame = (t0, dt, now, raw) => {
 		const t = loop.reduced ? 0 : t0; // reduce: Hero-Zeit und Autopilot stehen still
-		if (dprFor(2, 1.5) !== dpr) resize(); // Auflösungsstufe (loop.js) hat sich geändert
+		if (dprFor(2, 1.5, W, H) !== dpr) resize(); // Auflösungsstufe (loop.js) hat sich geändert
 		const rb = buehne.getBoundingClientRect();
 		const rs = sec.getBoundingClientRect();
 		const visible = rb.bottom > 0 && rb.top < innerHeight;
@@ -173,6 +173,22 @@ export function createStage({ sec, buehne }) {
 			if (Math.abs(Pz - st.sp) < 1e-4) st.sp = Pz;
 		}
 		const P = st.sp;
+		// Seit 2 s ganz aus dem Bild: Pufferspeicher der Ebenen freigeben (5K-Fläche: 59 MB je Canvas), beim
+		// Wiedereintritt neu messen. Die Ebenen passen ihre Größe beim Zeichnen selbst an.
+		if (!visible) {
+			st.weg ??= now;
+			if (!st.frei && now - st.weg > 2) {
+				st.frei = true;
+				for (const cv of buehne.querySelectorAll('canvas')) cv.width = cv.height = 1;
+				hero.frei();
+			}
+		} else {
+			st.weg = null;
+			if (st.frei) {
+				st.frei = false;
+				resize();
+			}
+		}
 		const look = ss((P - 0.06) / 0.14);
 		const mx = ss((P - 0.18) / 0.06);
 		const split = ss((P - 0.24) / 0.1) * (1 - ss((P - 0.36) / 0.1));

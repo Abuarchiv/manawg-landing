@@ -333,6 +333,10 @@ export function createHero(cv) {
 
 	return {
 		frame,
+		/** GL-Puffer freigeben (wächst beim nächsten Bild wieder auf die nötige Größe). */
+		frei() {
+			if (G.cv && !G.noGL) G.cv.width = G.cv.height = 1;
+		},
 		get noGL() {
 			return G.noGL;
 		},

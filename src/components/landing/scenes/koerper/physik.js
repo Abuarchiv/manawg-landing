@@ -2,7 +2,7 @@
 // ziehen die Körper zurück in das Zeichen. Szenenraum: Bezugsbox 1280 x 760, die Wände sind die Ränder
 // der ganzen Fläche.
 
-import { qa, register } from '../../core/loop';
+import { loop, qa, register } from '../../core/loop';
 import { AB, hsh } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
@@ -257,12 +257,22 @@ export function registerKoerper(cv) {
 				}
 			});
 			const loose = s.idle < 3.5;
+			s.cv.style.cursor = s.grab >= 0 ? 'grabbing' : 'grab';
+			// Lose Phase oder gegriffen: volle Bildrate (loop.js drosselt im Stand auf 60 Hz)
+			if (loose || s.grab >= 0) loop.act = loop.now;
+			const lx = s.m.in ? s.m.x : s.cx - 256;
+			const ly = s.m.in ? s.m.y : s.cy - 248;
+			// Ruhen die Körper (Ring gezogen, Zeiger still), bleibt das letzte Bild stehen: kein Neuzeichnen
+			let sig = s.W * 7 + s.H + s.f * 1000 + s.dpr * 100 + loop.fv + (loose ? 0.5 : 0) + (s.grab + 2) * 3e4;
+			sig = (sig + Math.round(lx) * 131 + Math.round(ly) * 17) % 1e9;
+			for (const b of s.B) sig = (sig * 31 + Math.round(b.x * 50) * 7 + Math.round(b.y * 50)) % 1e9;
+			if (sig === s.sig && !s.stale) return;
+			s.sig = sig;
+			s.stale = false;
 			s.full();
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			s.scene();
-			const lx = s.m.in ? s.m.x : s.cx - 256;
-			const ly = s.m.in ? s.m.y : s.cy - 248;
 			// Halbton je Körper einmal in ein Sprite gebacken (Zellen 3 px), je Lichtrichtung in 32 Winkeln und
 			// 4 Abständen. Je Bild nur noch drawImage statt tausender Rechtecke.
 			ctx.imageSmoothingEnabled = true;
@@ -327,7 +337,6 @@ export function registerKoerper(cv) {
 					ctx.fillStyle = '#FAFAFA';
 					ctx.fillText(b.n, b.x, b.y);
 				}
-			s.cv.style.cursor = s.grab >= 0 ? 'grabbing' : 'grab';
 		},
 	});
 }

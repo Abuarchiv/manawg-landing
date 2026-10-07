@@ -27,8 +27,8 @@ import s from './Android.module.css';
 import { AppDatum } from './AppDatum';
 
 const ICON = '/icon-512.png';
-const SEITE = '/install/seite-android-gast.webp';
-const APPSEITE = '/install/app-start.webp';
+const SEITE = 'var(--b-and)';
+const APPSEITE = 'var(--b-app)';
 const F = 411 / 390;
 
 const abs = (o: CSSProperties): CSSProperties => ({ position: 'absolute', ...o });
@@ -38,7 +38,7 @@ const scheibe = (y0: number, y1: number, top: number, src = SEITE): CSSPropertie
 		top,
 		width: 411,
 		height: (y1 - y0) * F,
-		backgroundImage: `url(${src})`,
+		backgroundImage: src,
 		backgroundSize: `411px ${844 * F}px`,
 		backgroundPosition: `0 ${-y0 * F}px`,
 		backgroundRepeat: 'no-repeat',
@@ -142,7 +142,7 @@ export function Android() {
 				<div className={s.and_wall} />
 				<div className={s.and_hicon} style={{ left: 34, top: 74 }}>
 					<i className={s.and_hrund}>
-						<img src={ICON} alt="ManaWG" width="36" height="36" />
+						<img loading="lazy" src={ICON} alt="ManaWG" width="36" height="36" />
 					</i>
 					<span className={s.and_badge}>{CHROME}</span>
 					<em>ManaWG</em>
@@ -220,7 +220,7 @@ export function Android() {
 					</h4>
 					<div className={s.and_srow} style={{ top: 84, height: 64 }}>
 						<span className={s.and_sicon}>
-							<img src={ICON} alt="" width="40" height="40" />
+							<img loading="lazy" src={ICON} alt="" width="40" height="40" />
 							<Download size={14} strokeWidth={2.6} color="#fff" aria-hidden="true" />
 						</span>
 						<b>Installieren</b>
@@ -228,7 +228,7 @@ export function Android() {
 					</div>
 					<div className={s.and_srow} style={{ top: 156, height: 76 }}>
 						<span className={s.and_sicon}>
-							<img src={ICON} alt="" width="40" height="40" />
+							<img loading="lazy" src={ICON} alt="" width="40" height="40" />
 							<i className={s.and_chrome} />
 						</span>
 						<b>
@@ -243,7 +243,7 @@ export function Android() {
 				<div className={s.and_dlg} data-k="and-dlg">
 					<h4>App installieren</h4>
 					<div className={s.and_dzeile}>
-						<img src={ICON} alt="" width="48" height="48" />
+						<img loading="lazy" src={ICON} alt="" width="48" height="48" />
 						<div>
 							<div className={s.and_feld}>
 								ManaWG
@@ -268,7 +268,7 @@ export function Android() {
 
 			{/* Start der installierten App */}
 			<div className={s.and_launch} data-k="and-launch">
-				<img src={ICON} alt="" width="72" height="72" data-k="and-launch-logo" />
+				<img loading="lazy" src={ICON} alt="" width="72" height="72" data-k="and-launch-logo" />
 			</div>
 			<div className={s.and_app} data-k="and-app">
 				<div style={abs({ left: 0, top: 0, width: 411, height: 48, background: '#0a0a0a' })} />

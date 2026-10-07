@@ -34,8 +34,9 @@ import s from './Iphone.module.css';
 
 const SF = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif';
 const ICON = '/apple-touch-icon.png';
-const SEITE = '/install/seite-ios-gast.webp';
-const APPSEITE = '/install/app-start.webp';
+// Bilder laden erst, wenn der Abschnitt nahe kommt (Variablen setzt Installieren.tsx)
+const SEITE = 'var(--b-ios)';
+const APPSEITE = 'var(--b-app)';
 
 const abs = (o: CSSProperties): CSSProperties => ({ position: 'absolute', ...o });
 const scheibe = (y0: number, y1: number, top: number, src = SEITE): CSSProperties =>
@@ -44,7 +45,7 @@ const scheibe = (y0: number, y1: number, top: number, src = SEITE): CSSPropertie
 		top,
 		width: 390,
 		height: y1 - y0,
-		backgroundImage: `url(${src})`,
+		backgroundImage: src,
 		backgroundSize: '390px 844px',
 		backgroundPosition: `0 ${-y0}px`,
 		backgroundRepeat: 'no-repeat',
@@ -208,7 +209,14 @@ export function Iphone() {
 					</div>
 					<div className={s.ios_cell} data-k="ios-icon" style={{ left: 301, top: 165 }}>
 						<Kachel>
-							<img src={ICON} alt="ManaWG" width="60" height="60" data-k="ios-icon-img" />
+							<img
+								loading="lazy"
+								src={ICON}
+								alt="ManaWG"
+								width="60"
+								height="60"
+								data-k="ios-icon-img"
+							/>
 						</Kachel>
 						<em>ManaWG</em>
 					</div>
@@ -298,7 +306,7 @@ export function Iphone() {
 				<div className={s.ios_share} data-k="ios-share">
 					<div className={s.ios_kopf}>
 						<span className={s.ios_tile}>
-							<img src={ICON} alt="" width="60" height="60" />
+							<img loading="lazy" src={ICON} alt="" width="60" height="60" />
 						</span>
 						<div className={s.ios_kopf_t}>
 							<b>Deine WG-App</b>
@@ -454,7 +462,14 @@ export function Iphone() {
 					</div>
 					<div data-k="ios-dlg-in" style={abs({ inset: 0 })}>
 						<div className={s.ios_karte}>
-							<img src={ICON} alt="" width="60" height="60" className={s.ios_dlg_icon} />
+							<img
+								loading="lazy"
+								src={ICON}
+								alt=""
+								width="60"
+								height="60"
+								className={s.ios_dlg_icon}
+							/>
 							<div className={s.ios_feld}>
 								<span>
 									ManaWG
@@ -536,6 +551,7 @@ export function Iphone() {
 			{/* Start der installierten App */}
 			<div className={s.ios_launch} data-k="ios-launch">
 				<img
+					loading="lazy"
 					src={ICON}
 					alt=""
 					width="120"

@@ -70,6 +70,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="de" suppressHydrationWarning>
 			<head>
+				{/* Schriften des ersten Bildes (H1, Lader-Ziffern) sofort anfordern, nicht erst nach dem CSS-Parse */}
+				<link
+					rel="preload"
+					as="font"
+					type="font/woff2"
+					href="/fonts/inter-tight-latin.woff2"
+					crossOrigin="anonymous"
+				/>
+				<link
+					rel="preload"
+					as="font"
+					type="font/woff2"
+					href="/fonts/jetbrains-mono-latin.woff2"
+					crossOrigin="anonymous"
+				/>
 				<script
 					type="application/ld+json"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt

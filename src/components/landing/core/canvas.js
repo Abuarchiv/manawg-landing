@@ -29,12 +29,20 @@ export function isTouch() {
 	return !!mq && mq.matches;
 }
 
+/** Haken der Schleife: wird bei jeder Größenänderung gerufen (weckt ruhende Szenen). */
+export const regung = { fn() {} };
+
 /** Auflösungsstufe aus der Bildzeit (loop.js senkt sie bei dauerhaft langsamen Bildern, 1 = voll). */
 export const qual = { f: 1 };
 
-/** Pixelfaktor eines Canvas: min(DPR, Deckel) mal Auflösungsstufe, nie unter 1. */
-export function dprFor(cap = 2, touchCap = cap) {
-	return Math.max(1, Math.min(window.devicePixelRatio || 1, isTouch() ? touchCap : cap) * qual.f);
+/** Höchstfläche eines Backings in Pixeln (8 MP = 32 MB): große Vollflächen auf 4K/5K bekommen einen kleineren Faktor. */
+const MAX_PX = 8e6;
+
+/** Pixelfaktor eines Canvas: min(DPR, Deckel) mal Auflösungsstufe, nie unter 1. Mit W, H zusätzlich auf MAX_PX begrenzt. */
+export function dprFor(cap = 2, touchCap = cap, W = 0, H = 0) {
+	let d = Math.min(window.devicePixelRatio || 1, isTouch() ? touchCap : cap);
+	if (W * H > 0) d = Math.min(d, Math.sqrt(MAX_PX / (W * H)));
+	return Math.max(1, d * qual.f);
 }
 
 /**
@@ -90,7 +98,10 @@ export function pointerIn(e, rect, fit) {
 export function observe(el, fn) {
 	fn(el.clientWidth, el.clientHeight);
 	if (typeof ResizeObserver === 'undefined') return () => {};
-	const ro = new ResizeObserver(() => fn(el.clientWidth, el.clientHeight));
+	const ro = new ResizeObserver(() => {
+		regung.fn();
+		fn(el.clientWidth, el.clientHeight);
+	});
 	ro.observe(el);
 	return () => ro.disconnect();
 }

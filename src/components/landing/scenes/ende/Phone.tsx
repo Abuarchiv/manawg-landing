@@ -13,7 +13,7 @@ import { datumsZeilen } from './datum';
 
 const SRC = '/app-demo/index.html';
 const BILD = '/app-demo/start.webp';
-const AB_P = 0.8; // ab hier lädt das iframe im Leerlauf (davor nur das Standbild), kurz vor der Szene
+const AB_P = 0.8; // ab hier laden Standbild und (im Leerlauf) das iframe, kurz vor der Szene
 
 /** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
 function Statusleiste() {
@@ -72,6 +72,7 @@ export function Phone() {
 	const wurzel = useRef<HTMLDivElement>(null);
 	const rahmen = useRef<HTMLIFrameElement>(null);
 	const [src, setSrc] = useState<string | undefined>(undefined);
+	const [bild, setBild] = useState<string | undefined>(undefined);
 	const [bereit, setBereit] = useState(false);
 	const [zeilen, setZeilen] = useState<[string, string] | null>(null);
 	useEffect(() => setZeilen(datumsZeilen()), []);
@@ -109,7 +110,7 @@ export function Phone() {
 		return () => host.removeEventListener('hand:kontakt', an);
 	}, []);
 
-	// iframe-src erst ab P > 0,75 setzen (Fortschritt steht als --p am #final)
+	// Standbild und iframe-src erst ab P > AB_P setzen (Fortschritt steht als --p am #final)
 	useEffect(() => {
 		const el = wurzel.current as HTMLDivElement;
 		const root = el.closest('#final') as HTMLElement | null;
@@ -117,6 +118,7 @@ export function Phone() {
 		const pruefe = () => {
 			if (Number.parseFloat(root.style.getPropertyValue('--p') || '0') > AB_P) {
 				mo.disconnect();
+				setBild(BILD); // Standbild gleichzeitig mit dem Zählen ab AB_P, nicht schon beim Erstladen
 				// Das iframe läuft im selben Hauptthread wie die Landing: Laden und Aufbau in einer Leerlaufpause
 				const los = () => setSrc(SRC);
 				if ('requestIdleCallback' in window) window.requestIdleCallback(los, { timeout: 2000 });
@@ -172,7 +174,15 @@ export function Phone() {
 				>
 					{/* Standbild: derselbe Zustand und dieselben Insets wie das iframe, liegt darunter und bleibt bis zum Laden stehen */}
 					<div className={s.flaeche} style={{ opacity: bereit ? 0 : 1 }} aria-hidden="true">
-						<img src={BILD} alt="" width={390} height={839} decoding="async" className={s.bild} />
+						<img
+							src={bild}
+							alt=""
+							width={390}
+							height={839}
+							loading="lazy"
+							decoding="async"
+							className={s.bild}
+						/>
 						{zeilen && (
 							<>
 								<span className={s.datum} style={{ top: 422.875 }}>

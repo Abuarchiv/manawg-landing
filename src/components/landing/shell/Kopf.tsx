@@ -13,7 +13,13 @@ export function Kopf() {
 			)}
 		>
 			<div data-loch="logo" style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
-				<img src="/manawg-mark-weiss.png" alt="" style={css('height:22px')} />
+				<img
+					src="/manawg-mark-weiss.png"
+					alt=""
+					width={416}
+					height={346}
+					style={css('height:22px;width:auto')}
+				/>
 				<span
 					style={css(
 						"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-20);letter-spacing:-0.03em",

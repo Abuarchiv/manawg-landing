@@ -17,7 +17,7 @@ import { AppDatum } from './AppDatum';
 import s from './Rechner.module.css';
 
 const ICON = '/icon-512.png';
-const APPSEITE = '/install/app-start.webp';
+const APPSEITE = 'var(--b-app)';
 
 const scheibe = (y0: number, y1: number, top: number, left: number): CSSProperties => ({
 	position: 'absolute',
@@ -25,7 +25,7 @@ const scheibe = (y0: number, y1: number, top: number, left: number): CSSProperti
 	top,
 	width: 390,
 	height: y1 - y0,
-	backgroundImage: `url(${APPSEITE})`,
+	backgroundImage: APPSEITE,
 	backgroundSize: '390px 844px',
 	backgroundPosition: `0 ${-y0}px`,
 	backgroundRepeat: 'no-repeat',
@@ -53,7 +53,7 @@ export function Rechner() {
 				<div className={s.dk_leiste}>
 					<Ampel />
 					<div className={s.dk_tab}>
-						<img src={ICON} alt="" width="16" height="16" />
+						<img loading="lazy" src={ICON} alt="" width="16" height="16" />
 						<span>ManaWG</span>
 						<X size={14} strokeWidth={2} aria-hidden="true" />
 					</div>
@@ -92,7 +92,7 @@ export function Rechner() {
 				<div className={s.dk_dlg} data-k="dk-dlg">
 					<h4>App installieren</h4>
 					<div className={s.dk_zeile}>
-						<img src={ICON} alt="" width="40" height="40" />
+						<img loading="lazy" src={ICON} alt="" width="40" height="40" />
 						<div>
 							<b>ManaWG</b>
 							<span>app.manawg.com</span>

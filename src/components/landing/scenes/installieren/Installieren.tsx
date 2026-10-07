@@ -54,6 +54,11 @@ const WEGE: { name: string; schritte: string[] }[] = [
 		],
 	},
 ];
+const BILDER = {
+	'--b-ios': '/install/seite-ios-gast.webp',
+	'--b-and': '/install/seite-android-gast.webp',
+	'--b-app': '/install/app-start.webp',
+};
 // Rahmen des Designs: Handy 300 x 620, Rechner 600 x 400
 const RAHMEN = [
 	[300, 620],
@@ -88,6 +93,21 @@ export function Installieren() {
 	const buRef = useRef<HTMLDivElement>(null);
 	const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 	const api = useRef<ReturnType<typeof registerAblauf> | null>(null);
+
+	// Gerätbilder erst laden, wenn der Abschnitt höchstens zwei Bildschirmhöhen entfernt ist (Erstladen bleibt schlank)
+	useEffect(() => {
+		const el = secRef.current as HTMLElement;
+		const io = new IntersectionObserver(
+			(e) => {
+				if (!e.some((x) => x.isIntersecting)) return;
+				for (const [k, v] of Object.entries(BILDER)) el.style.setProperty(k, `url(${v})`);
+				io.disconnect();
+			},
+			{ rootMargin: '200% 0px' },
+		);
+		io.observe(el);
+		return () => io.disconnect();
+	}, []);
 
 	useEffect(() => {
 		const a = registerAblauf(

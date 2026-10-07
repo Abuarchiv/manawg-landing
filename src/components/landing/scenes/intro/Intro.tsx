@@ -38,6 +38,7 @@ export function Intro() {
 			{/* Sprungziel der App-Vorschau (Fokusanker): Beginn der Ende-Ebene, P 0,985 */}
 			<div
 				id="app-demo"
+				role="region"
 				tabIndex={-1}
 				aria-label="App-Vorschau"
 				style={css(

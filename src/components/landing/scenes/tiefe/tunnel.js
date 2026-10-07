@@ -149,7 +149,10 @@ export function registerTiefe(cv, sec) {
 				s.raw = WORDS.map((w) => sampleT(w, 200));
 				s.bm = null;
 			}
-			if (s.bm !== bauKey(s)) build(s);
+			if (s.bm !== bauKey(s)) {
+				build(s);
+				s.stale = true;
+			}
 			const { f, ox, oy, cx, cy, dpr } = s;
 			// Beim Hinausscrollen läuft die Szene unter den fixen Kopf: Wortbild und Zeile blenden über den obersten
 			// 28 px unter dem Kopfband aus (Kopfunterkante in Canvas-Koordinaten)
@@ -159,7 +162,7 @@ export function registerTiefe(cv, sec) {
 			const sp = cl(-r.top / Math.max(1, r.height - s.H));
 			// Mit reduzierter Bewegung folgt die Kamera dem Scroll ohne Nachlauf
 			if (s.reduced) s.dp = sp;
-			else s.dp += (sp - s.dp) * lag(0.1, dt);
+			else s.dp = Math.abs(sp - s.dp) < 1e-5 ? sp : s.dp + (sp - s.dp) * lag(0.1, dt);
 			const p = s.dp;
 			const camZ = -14 + p * (2 * SP + 5);
 			const seg = cl((camZ + 14) / SP, 0, 1.999);
@@ -169,7 +172,25 @@ export function registerTiefe(cv, sec) {
 				const k = s.reduced ? 1 : lag(0.06, dt);
 				s.sm.x += (s.m.x - s.sm.x) * k;
 				s.sm.y += (s.m.y - s.sm.y) * k;
+				if (Math.hypot(s.m.x - s.sm.x, s.m.y - s.sm.y) < 0.01) {
+					s.sm.x = s.m.x;
+					s.sm.y = s.m.y;
+				}
 			}
+			// Im Stand (gleicher Scroll, ruhender Zeiger, gleiche Größe und Schrift) bleibt das letzte Bild stehen
+			const kk = (s.kk ||= []);
+			const gleich =
+				!s.stale && !(s.pv && s.pv.a > 0.01) && kk[0] === p && kk[1] === s.sm.x && kk[2] === s.sm.y &&
+				kk[3] === kopfY && kk[4] === s.m.x && kk[5] === s.m.y && kk[6] === s.m.in;
+			kk[0] = p;
+			kk[1] = s.sm.x;
+			kk[2] = s.sm.y;
+			kk[3] = kopfY;
+			kk[4] = s.m.x;
+			kk[5] = s.m.y;
+			kk[6] = s.m.in;
+			if (gleich) return;
+			s.stale = false;
 			const camX =
 				lerp(s.isl[si].x, s.isl[si + 1].x, sf) * 0.85 + ((s.sm.x - cx) / cx) * 1.2 * s.k;
 			const camY =

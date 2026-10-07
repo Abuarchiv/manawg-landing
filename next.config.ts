@@ -56,6 +56,8 @@ const nextConfig: NextConfig = {
 				'/apple-touch-icon.png',
 				'/hand/:path*',
 				'/app-demo/:path*',
+				'/install/:path*',
+				'/fonts/:path*',
 			].map((source) => ({ source, headers: [{ key: 'Cache-Control', value: publicCache }] })),
 		];
 	},

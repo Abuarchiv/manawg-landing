@@ -6,7 +6,7 @@
 // - Jede sichtbare Szene bekommt jedes Bild (frame). Simulationen laufen über s.step mit festem Schritt.
 // - Zeiger kommen in Szenenkoordinaten an. Die Listener hängen an der ganzen Szenenfläche.
 
-import { dprFor, fitBox, full, observe, pointerIn, qual, scene, sizeBacking } from './canvas';
+import { dprFor, fitBox, full, observe, pointerIn, qual, regung, scene, sizeBacking } from './canvas';
 
 export const loop = {
 	n: 0, // Bildzähler seit dem Start, beginnt bei 1
@@ -18,6 +18,7 @@ export const loop = {
 	reduced: false,
 	mode: 'quer', // 'hoch' | 'quer'
 	flach: false, // Handy quer
+	act: 0, // letzte Eingabe oder Bewegung (Sekunden, performance.now()): Scroll, Zeiger, Taste, Größenänderung
 };
 
 /** Messhaken der Szenen für tools/qa (nur lesend), hängt an window.__landing.dbg. */
@@ -31,6 +32,19 @@ let t0 = 0;
 let started = false;
 let hooked = false;
 let lastDpr = 1;
+let lastSy = 0;
+let visHook = null;
+
+// Ruhephasen (Szenen ohne Eingabe und ohne Scrollbewegung): Bildrate auf 60 Hz begrenzt, bei reduzierter
+// Bewegung nach einer Sekunde ganz still, bis wieder etwas passiert.
+const RUHE = 0.3;
+const RUHE_REDUZIERT = 1;
+const MIN_ABSTAND = 0.0105; // unter 10,5 ms (Anzeigen über 95 Hz) wird im Stand jedes zweite Bild ausgelassen
+const FREI_NACH = 2; // Sekunden außer Sicht, bis der Pufferspeicher einer Szene freigegeben wird
+const wach = () => {
+	loop.act = performance.now() / 1000;
+};
+regung.fn = wach;
 
 /** Modus aus der Fenstergröße (gleiche Regel wie die Medienabfragen in landing.css). */
 export function modeOf(W, H) {
@@ -50,7 +64,10 @@ function measure(r, W, H) {
 	s.H = H;
 	s.safeH = H;
 	s.mode = loop.mode;
-	s.dpr = dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2);
+	s.dpr = dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2, W, H);
+	wach();
+	s.stale = true; // Backing neu gesetzt: Szenen, die im Stand nicht zeichnen, müssen einmal neu zeichnen
+	s.frei = false;
 	const b = def.box ? def.box(W, H, s.safeH, s.mode) : { bw: 1280, bh: 800 };
 	const fit = fitBox(W, s.safeH, b.bw, b.bh, b.max);
 	s.bw = b.bw;
@@ -64,9 +81,20 @@ function measure(r, W, H) {
 
 function frameScene(r, t, dt) {
 	const { s, def } = r;
-	if (s.cv && s.dpr !== dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2))
+	if (s.cv && !s.frei && s.dpr !== dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2, s.W, s.H))
 		measure(r, s.el.clientWidth, s.el.clientHeight);
 	const rc = s.el.getBoundingClientRect();
+	// Weit weg (mehr als eine Fensterhöhe): nach FREI_NACH Sekunden Pufferspeicher freigeben, bei Annäherung neu messen
+	if (s.cv) {
+		const fern = rc.bottom < -innerHeight || rc.top > 2 * innerHeight;
+		if (!fern) {
+			r.fern = 0;
+			if (s.frei) measure(r, s.el.clientWidth, s.el.clientHeight);
+		} else if (!s.frei && (r.fern ||= loop.now) && loop.now - r.fern > FREI_NACH) {
+			s.frei = true;
+			sizeBacking(s.cv, 1, 1, 1);
+		}
+	}
 	// minSicht: Anteil der Fensterhöhe, ab dem eine große Fläche überhaupt gezeichnet wird (ein 50-px-Streifen
 	// einer 4-MP-Fläche kostet sonst das ganze Bild)
 	const sicht = Math.min(rc.bottom, innerHeight) - Math.max(rc.top, 0);
@@ -109,7 +137,19 @@ function tick() {
 		return;
 	}
 	const now = performance.now() / 1000;
+	const sy = window.scrollY;
+	if (sy !== lastSy) {
+		lastSy = sy;
+		loop.act = now;
+	}
+	const ruhe = now - loop.act;
+	// Reduzierte Bewegung: im Stand nicht zeichnen (die ersten 2 s nach dem Start laufen immer)
+	if (loop.reduced && ruhe > RUHE_REDUZIERT && loop.n > 120) {
+		last = 0;
+		return;
+	}
 	const raw = last ? now - last : 0.016;
+	if (ruhe > RUHE && raw < MIN_ABSTAND) return;
 	last = now;
 	loop.n++;
 	loop.raw = raw;
@@ -164,6 +204,8 @@ function hook() {
 	window.addEventListener('pointerup', onUp);
 	window.addEventListener('pointercancel', onUp);
 	document.addEventListener('touchstart', onTouchStart, { passive: false, capture: true });
+	for (const ev of ['pointermove', 'pointerdown', 'pointerup', 'keydown', 'wheel', 'resize', 'touchmove'])
+		window.addEventListener(ev, wach, { passive: true });
 }
 
 /** Alle Szenen neu messen (Modus- oder Pixelfaktor-Wechsel). */
@@ -288,20 +330,33 @@ export function start() {
 	lastDpr = window.devicePixelRatio;
 	const onFonts = () => {
 		loop.fv++;
+		wach();
 	};
 	document.fonts?.ready.then(onFonts);
 	document.fonts?.addEventListener?.('loadingdone', onFonts);
 	stop.fonts = () => document.fonts?.removeEventListener?.('loadingdone', onFonts);
 	t0 = performance.now() / 1000;
+	loop.act = t0 + 2.5; // die ersten Sekunden (Aufbau des Zeichens) laufen mit voller Bildrate
 	last = 0;
 	loop.n = 0;
 	raf = requestAnimationFrame(tick);
+	// Im Hintergrund ganz anhalten (kein Wecken je Bild), beim Zurückkehren neu starten
+	visHook = () => {
+		cancelAnimationFrame(raf);
+		if (!document.hidden && started) {
+			last = 0;
+			wach();
+			raf = requestAnimationFrame(tick);
+		}
+	};
+	document.addEventListener('visibilitychange', visHook);
 	stop.mq = () => mqR.removeEventListener('change', onReduced);
 	return stop;
 }
 
 export function stop() {
 	cancelAnimationFrame(raf);
+	if (visHook) document.removeEventListener('visibilitychange', visHook);
 	started = false;
 	stop.mq?.();
 	stop.fonts?.();

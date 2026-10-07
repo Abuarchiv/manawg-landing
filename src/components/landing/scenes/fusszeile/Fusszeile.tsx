@@ -8,7 +8,13 @@ export function Fusszeile() {
 			<div className={s.raster}>
 				<div className={s.marke}>
 					<div style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
-						<img src="/manawg-mark-weiss.png" alt="" style={css('height:20px')} />
+						<img
+							src="/manawg-mark-weiss.png"
+							alt=""
+							width={416}
+							height={346}
+							style={css('height:20px;width:auto')}
+						/>
 						<span
 							style={css(
 								"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-19);letter-spacing:-0.03em",
