@@ -1,0 +1,4 @@
+Contact: mailto:info@manawg.com
+Expires: 2027-09-30T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://manawg.com/.well-known/security.txt

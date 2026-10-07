@@ -13,6 +13,8 @@ import { dprFor, glSichtbar } from '../../core/canvas';
 import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
+// Bei jedem neuen Render erhöhen: json und webp gehören zusammen und werden gemeinsam gecacht.
+const HAND_V = 1;
 const STEP = 1.25; // Zellgröße in Bühnen-px (fein: Halbton liest als Haut, nicht als Raster)
 const GAM = 0.85;
 const CON = 1.05;
@@ -37,8 +39,8 @@ const A = { ready: false, hold: null, point: null, p: null, err: false };
 
 async function ladeAtlas(name) {
 	const [meta, blob] = await Promise.all([
-		fetch(`/hand/${name}.json`).then((r) => r.json()),
-		fetch(`/hand/${name}.webp`).then((r) => r.blob()),
+		fetch(`/hand/${name}.json?v=${HAND_V}`).then((r) => r.json()),
+		fetch(`/hand/${name}.webp?v=${HAND_V}`).then((r) => r.blob()),
 	]);
 	const bmp = await createImageBitmap(blob, { colorSpaceConversion: 'none', premultiplyAlpha: 'none' });
 	return { meta, bmp };

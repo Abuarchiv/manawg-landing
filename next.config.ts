@@ -19,6 +19,18 @@ const securityHeaders = [
 	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
 ];
 
+const demoCsp = [
+	"default-src 'self'",
+	"script-src 'self' 'unsafe-inline'",
+	"style-src 'self' 'unsafe-inline'",
+	"img-src 'self' data: blob:",
+	"font-src 'self' data:",
+	"connect-src 'self'",
+	"frame-ancestors 'self'",
+	"base-uri 'self'",
+	"form-action 'none'",
+	"object-src 'none'",
+].join('; ');
 const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
 
 // manawg.com is the marketing site only. The app lives on its own origin
@@ -48,6 +60,11 @@ const nextConfig: NextConfig = {
 		return [
 			{ source: '/:path*', headers: securityHeaders },
 			{ source: '/app-demo/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
+			// Das Demo-Dokument liegt außerhalb der Middleware (Punkt im Pfad), daher hier eine eigene CSP.
+			{
+				source: '/app-demo/index.html',
+				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
+			},
 			// Dateien aus public ohne Hash im Namen: einen Tag frisch, danach im Hintergrund erneuern (F-18.8).
 			...[
 				'/manawg-mark.svg',
@@ -55,10 +72,14 @@ const nextConfig: NextConfig = {
 				'/og.png',
 				'/apple-touch-icon.png',
 				'/hand/:path*',
-				'/app-demo/:path*',
 				'/install/:path*',
 				'/fonts/:path*',
 			].map((source) => ({ source, headers: [{ key: 'Cache-Control', value: publicCache }] })),
+			// Demo-Dateien ohne Hash im Namen: immer per ETag prüfen, damit index.html, demo.js und app.css zusammenpassen.
+			{
+				source: '/app-demo/:path*',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
+			},
 		];
 	},
 	experimental: {
