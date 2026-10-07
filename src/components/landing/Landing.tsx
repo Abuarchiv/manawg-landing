@@ -54,12 +54,18 @@ export function Landing() {
 			else delete root.dataset.flach;
 			setMode(mode, flach);
 		};
-		applyMode();
-		window.addEventListener('resize', applyMode);
-		const stopScroll = initScroll(root);
-		const stop = start();
-		if (new URLSearchParams(location.search).get('qa') === '1') qaHaken(root);
+		let stopScroll = () => {};
+		let stop = () => {};
+		// Erst nach dem ersten Bild starten: der Titel steht dann sofort, die Engine blockiert LCP nicht.
+		const id = requestAnimationFrame(() => {
+			applyMode();
+			window.addEventListener('resize', applyMode);
+			stopScroll = initScroll(root);
+			stop = start();
+			if (new URLSearchParams(location.search).get('qa') === '1') qaHaken(root);
+		});
 		return () => {
+			cancelAnimationFrame(id);
 			window.removeEventListener('resize', applyMode);
 			stopScroll();
 			stop();
