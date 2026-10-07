@@ -254,7 +254,7 @@ async function runInteract(browser) {
 	await click('Finanzen', 600, 'tab-finanzen');
 	await click('Ausgabe erfassen', 600, 'ausgabe');
 	await Promise.all([r, p].map((h) => h.page.waitForTimeout(800)));
-	if (!(await shotPair(r, p, 'i-handy'))) fails++;
+	if (!(await shotPair(r, p, 'i-handy', true))) fails++;
 	await Promise.all([goTo(r, 13007), goTo(p, 13007)]);
 	await Promise.all([settle(r), settle(p)]);
 	await click('Android', 3000, 'install-android');
