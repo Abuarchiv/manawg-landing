@@ -4,6 +4,8 @@ Stand 2026-10-07, achter Durchgang (Branch `hand-v2`). Die beiden Hände der Eng
 
 ## 0. Was sich im achten Durchgang geändert hat
 
+**Übernommener Stand (31f6074):** `hold.*` aus dem achten Durchgang (7ad67d0), `point.*` aus dem siebten (e7a1818). Die Zeigehand des achten Durchgangs war im Halbton eine weiße Umrisszeichnung mit Tuschelinien (Jury 5/10); die Fassung des siebten hat echte Volumenschattierung. Die Tintenkurve aus Abschnitt 6 gilt deshalb nur als Vorschlag; die Engine entscheidet die Halbton-Abbildung selbst.
+
 Die Jury hat den siebten Stand (e7a1818) mit 6/10 bewertet. Offen waren die Kuppen, der Halbton der Zeigehand, die Faust, Reste am Daumen, die Hautfahne unter dem Handy und die Engine-Werte. Modell (MPFB-Mann), Pass-Format und Bühnenkoordinaten bleiben gleich. Vergleich und Ausschnitte liegen in `archiv/hand/v3/doc8/` (jeweils Referenz | vorher e7a1818 | neu Halbton | neu Luminanz).
 
 - **Kuppen aus einer eigenen Finger-Hand.** Die Handy-Hand wird jetzt in zwei Teilen gerendert (`v3/scripts/render8.py`, `cut`):
