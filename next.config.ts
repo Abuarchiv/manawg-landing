@@ -14,6 +14,8 @@ const securityHeaders = [
 	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
 ];
 
+const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
+
 // manawg.com is the marketing site only. The app lives on its own origin
 // (app.manawg.com) so that installing the PWA opens the app rather than this
 // page — the multi-zone proxy that used to serve /wg and /neu from here made
@@ -41,6 +43,15 @@ const nextConfig: NextConfig = {
 		return [
 			{ source: '/:path*', headers: securityHeaders },
 			{ source: '/app-demo/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
+			// Dateien aus public ohne Hash im Namen: einen Tag frisch, danach im Hintergrund erneuern (F-18.8).
+			...[
+				'/manawg-mark.svg',
+				'/icon-512.png',
+				'/og.png',
+				'/apple-touch-icon.png',
+				'/hand/:path*',
+				'/app-demo/:path*',
+			].map((source) => ({ source, headers: [{ key: 'Cache-Control', value: publicCache }] })),
 		];
 	},
 	experimental: {
