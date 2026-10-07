@@ -38,7 +38,8 @@ for (const vp of vpList(a.vp ?? '1440x900@2')) {
 							x < width && data[(y * width + x) * 4 + 3] > 200 && data[(y * width + x) * 4] > 235;
 						if (hell) run++;
 						else if (run) {
-							if (x - run > 2 && x < width - 2) res.push(run / S);
+							// Läufe unter 8 px sind der Zeigerrahmen, keine Zelle
+							if (x - run > 2 && x < width - 2 && run / S > 8) res.push(run / S);
 							run = 0;
 						}
 					}
