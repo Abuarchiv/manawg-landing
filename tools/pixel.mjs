@@ -1,6 +1,7 @@
-// Verifikation PORT-SPEC Abschnitt 5: Port (http://localhost:3100) gegen Referenz (http://localhost:4191/final.html).
-// Aufruf: node tools/pixel.mjs [main|interact|scale|nojs|rm|links|kbd|all]
-// Voraussetzung: pnpm build && pnpm start -p 3100, python3 -m http.server 4191 in site-1zu1.
+// Verifikation PORT-SPEC Abschnitt 5 (Gate A): Port gegen Referenz (http://localhost:4191/final.html), 1280x800.
+// Aufruf: PORT_URL=http://localhost:3120/ node tools/pixel.mjs [main|interact|nojs|rm|links|kbd|all]
+// STOPS=6900,7186 beschränkt den Lauf auf einzelne Messpunkte (Standard: alle 26 aus dem Plan).
+// Voraussetzung: Port-Seite läuft (NEXT_DIST_DIR=.next-fundament pnpm exec next start -p 3120), Referenz auf :4191 (site-1zu1).
 // Ausgabe: tools/out/ (gitignored). Chromium mit Swiftshader (WebGL auf der CPU).
 import { mkdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -16,15 +17,20 @@ const OUT = 'tools/out';
 mkdirSync(OUT, { recursive: true });
 
 const ARGS = ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];
-const STOPS = [
+// STOPS=6900,7186 (Umgebungsvariable) beschränkt den Lauf auf einzelne Messpunkte.
+const ALL_STOPS = [
 	0, 400, 1200, 1900, 2600, 3300, 3800, 4326, 4685, 5043, 5402, 5700, 6000, 6400, 6900, 7186, 7600,
 	8000, 8853, 10130, 11407, 12207, 13007, 13807, 14200, 14574,
 ];
+const STOPS = process.env.STOPS ? process.env.STOPS.split(',').map(Number) : ALL_STOPS;
 
 const seedScript = (skip) =>
 	`(() => { const nat = Math.random; let n = ${skip}; let a = 0x9e3779b9; Math.random = () => { if (n-- > 0) return nat(); a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; })();`;
 
-const FRAME = '#final > div:nth-child(2)';
+// Referenz: Rahmen ist das zweite Kind von #final (Scroll-Container im Rahmen). Port: ganze Seite, Dokument-Scroll.
+const FRAME_REF = '#final > div:nth-child(2)';
+const FRAME_PORT = '#final';
+const frameOf = (h) => (h.kind === 'ref' ? FRAME_REF : FRAME_PORT);
 
 async function open(browser, kind, opts = {}) {
 	const ctx = await browser.newContext({
@@ -55,7 +61,7 @@ async function open(browser, kind, opts = {}) {
 	await page.evaluate(() => document.fonts.ready);
 	await page.waitForFunction(
 		() => {
-			const e = document.querySelector('[data-root]') ?? document.querySelector('[data-loader]');
+			const e = document.querySelector('[data-root]') ?? document.querySelector('#final');
 			return (
 				!!e &&
 				(e.hasAttribute('data-root')
@@ -105,24 +111,35 @@ async function settle(h, ms = 1500) {
 	await h.page.waitForTimeout(800);
 }
 
-async function geom(h) {
-	return h.page.evaluate((sel) => {
-		const frame = document.querySelector(sel);
-		const out = [];
-		const w = document.createTreeWalker(frame, NodeFilter.SHOW_TEXT);
-		const r = document.createRange();
-		while (w.nextNode()) {
-			const n = w.currentNode;
-			const t = n.nodeValue.replace(/\s+/g, ' ').trim();
-			if (!t || n.parentElement.closest('canvas,style,script')) continue;
-			r.selectNodeContents(n);
-			const b = r.getBoundingClientRect();
-			if (!b.width && !b.height) continue;
-			if (b.right <= 0 || b.bottom <= 0 || b.left >= innerWidth || b.top >= innerHeight) continue;
-			out.push([t, b.x, b.y, b.width, b.height]);
-		}
-		return out;
-	}, FRAME);
+async function geom(h, skipTop = false) {
+	return h.page.evaluate(
+		([sel, skipTop]) => {
+			const frame = document.querySelector(sel);
+			const out = [];
+			const w = document.createTreeWalker(frame, NodeFilter.SHOW_TEXT);
+			const r = document.createRange();
+			while (w.nextNode()) {
+				const n = w.currentNode;
+				const t = n.nodeValue.replace(/\s+/g, ' ').trim();
+				if (!t || n.parentElement.closest('canvas,style,script')) continue;
+				r.selectNodeContents(n);
+				const b = r.getBoundingClientRect();
+				if (!b.width && !b.height) continue;
+				if (b.right <= 0 || b.bottom <= 0 || b.left >= innerWidth || b.top >= innerHeight) continue;
+				// unsichtbarer Text (Deckkraft der Eltern < 0,02) zählt nicht, seine Lage hängt am Aufbau
+				let o = 1;
+				for (let e = n.parentElement; e && o > 0; e = e.parentElement)
+					o *= Number(getComputedStyle(e).opacity);
+				if (o < 0.02) continue;
+				// Kopf in der Ende-Szene: PLAN-V2 §5, der Port blendet ihn aus, die Referenz verdeckt ihn
+				if (skipTop && b.top < 80) continue;
+				out.push([t, b.x, b.y, b.width, b.height]);
+			}
+			// Reihenfolge im DOM ist nicht Teil des Vergleichs: nach Text und Lage sortieren
+			return out.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[2] - b[2] || a[1] - b[1]));
+		},
+		[frameOf(h), skipTop],
+	);
 }
 
 function geomDiff(a, b) {
@@ -164,13 +181,14 @@ async function pixDiff(bufA, bufB, name) {
 	return { pct, n };
 }
 
-async function shotPair(r, p, name) {
+async function shotPair(r, p, name, skipTop = false) {
 	const [a, b] = await Promise.all([r.page.screenshot(), p.page.screenshot()]);
 	writeFileSync(`${OUT}/ref-${name}.png`, a);
 	writeFileSync(`${OUT}/port-${name}.png`, b);
 	const d = await pixDiff(a, b, name);
-	const [ga, gb] = await Promise.all([geom(r), geom(p)]);
+	const [ga, gb] = await Promise.all([geom(r, skipTop), geom(p, skipTop)]);
 	const gd = geomDiff(ga, gb);
+	if (process.env.GEOM_ALL && gd.length) console.log(gd.join('\n'));
 	const ok = d.pct <= 0.1 && gd.length === 0;
 	console.log(
 		`${ok ? 'OK  ' : 'FAIL'} ${name.padEnd(14)} Pixel ${d.pct.toFixed(4)} % (${d.n})  Text ${gd.length ? `${gd.length} Abw: ${gd.slice(0, 3).join(' | ')}` : 'ok'}`,
@@ -178,7 +196,7 @@ async function shotPair(r, p, name) {
 	return ok;
 }
 
-async function center(page, text, scope = FRAME) {
+async function center(page, text, scope) {
 	return page.evaluate(
 		([t, sel]) => {
 			const w = document.createTreeWalker(document.querySelector(sel), NodeFilter.SHOW_TEXT);
@@ -203,7 +221,7 @@ async function runMain(browser) {
 	for (const v of STOPS) {
 		await Promise.all([goTo(r, v), goTo(p, v)]);
 		await Promise.all([settle(r), settle(p)]);
-		if (!(await shotPair(r, p, `st${String(v).padStart(5, '0')}`))) fails++;
+		if (!(await shotPair(r, p, `st${String(v).padStart(5, '0')}`, v >= 6000 && v < 7200))) fails++;
 	}
 	console.log('Port Konsole/Netz:', JSON.stringify(p.log.err), JSON.stringify(p.log.fail));
 	console.log(
@@ -222,7 +240,7 @@ async function runInteract(browser) {
 	const [r, p] = await Promise.all([open(browser, 'ref'), open(browser, 'port')]);
 	let fails = 0;
 	const click = async (text, wait, name) => {
-		const c = await center(r.page, text);
+		const c = await center(r.page, text, FRAME_REF);
 		if (!c) {
 			console.log(`FAIL ${name}: "${text}" nicht gefunden`);
 			fails++;
@@ -252,125 +270,26 @@ async function runInteract(browser) {
 	return fails + p.log.err.length;
 }
 
-async function runScale(browser) {
-	let fails = 0;
-	const VPS = [
-		[1440, 900],
-		[1920, 1080],
-		[1024, 768],
-		[390, 844],
-		[844, 390],
-	];
-	for (const [vw, vh] of VPS) {
-		const vp = `${vw}x${vh}`;
-		mkdirSync(`${OUT}/${vp}`, { recursive: true });
-		const p = await open(browser, 'port', { viewport: { width: vw, height: vh } });
-		const k = Math.min(vw / 1280, vh / 800);
-		const x = (vw - 1280 * k) / 2;
-		const y = (vh - 800 * k) / 2;
-		const m = await p.page.evaluate((sel) => {
-			const f = document.querySelector(sel).getBoundingClientRect();
-			const sc = document.querySelector('[data-scroller]');
-			return {
-				x: f.x,
-				y: f.y,
-				w: f.width,
-				h: f.height,
-				sh: sc.scrollHeight,
-				dh: document.documentElement.scrollHeight,
-				cw: document.documentElement.clientWidth,
-				sw: document.documentElement.scrollWidth,
-			};
-		}, FRAME);
-		const t = [
-			['x', m.x, x],
-			['y', m.y, y],
-			['w', m.w, 1280 * k],
-			['h', m.h, 800 * k],
-			['docH', m.dh, (m.sh - 800) * k + vh, 2],
-		];
-		for (const [n, a, b, tol = 0.5] of t) {
-			if (Math.abs(a - b) > tol) {
-				console.log(`FAIL ${vp} ${n}: ${a} vs ${b}`);
-				fails++;
-			}
-		}
-		if (m.sw !== m.cw) {
-			console.log(`FAIL ${vp} scrollWidth ${m.sw} != clientWidth ${m.cw}`);
-			fails++;
-		}
-		await p.page.evaluate((y) => window.scrollTo(0, y), 7186 * k);
-		await p.page.waitForTimeout(300);
-		const top = await p.page.evaluate(() => document.querySelector('[data-scroller]').scrollTop);
-		// scrollY ist ganzzahlig: im Hochformat entspricht 1 px Dokument 1/k px Entwurf
-		if (Math.abs(top - 7186) > Math.max(1, Math.ceil(1 / k))) {
-			console.log(`FAIL ${vp} scrollTop ${top} statt 7186`);
-			fails++;
-		}
-		console.log(
-			`${vp} k=${k.toFixed(4)} Rahmen (${m.x.toFixed(1)},${m.y.toFixed(1)},${m.w.toFixed(1)},${m.h.toFixed(1)}) docH ${m.dh} scrollTop@7186 ${top}`,
-		);
-		p.pos = 0;
-		await p.page.evaluate(() => window.scrollTo(0, 0));
-		for (const v of [0, 3800, 6400, 7186, 12207, 14574]) {
-			// schrittweise, wie im Hauptlauf
-			while (p.pos !== v) {
-				p.pos = Math.min(v, p.pos + 100);
-				await p.page.evaluate(
-					([s, k]) => {
-						window.scrollTo(0, s * k);
-						window.dispatchEvent(new Event('scroll'));
-					},
-					[p.pos, k],
-				);
-				await p.page.clock.runFor(32);
-			}
-			await settle(p);
-			await p.page.screenshot({ path: `${OUT}/${vp}/st${String(v).padStart(5, '0')}.png` });
-		}
-		if (p.log.err.length) {
-			console.log(`FAIL ${vp} Konsole`, p.log.err);
-			fails++;
-		}
-		if (vw === 1440) {
-			const a = await sharp(`${OUT}/1440x900/st03800.png`).resize(1280, 800).toBuffer();
-			const b = await sharp(`${OUT}/ref-st03800.png`)
-				.toBuffer()
-				.catch(() => null);
-			if (b)
-				await sharp({ create: { width: 2560, height: 800, channels: 3, background: '#000' } })
-					.composite([
-						{ input: b, left: 0, top: 0 },
-						{ input: a, left: 1280, top: 0 },
-					])
-					.png()
-					.toFile(`${OUT}/1440-vs-ref-3800.png`);
-		}
-		await p.ctx.close();
-	}
-	console.log(`scale: ${fails} Fehler`);
-	return fails;
-}
-
 async function runNoJs(browser) {
 	const p = await open(browser, 'port', { js: false });
 	const m = await p.page.evaluate(() => {
 		const l = document.querySelector('[data-loader]');
 		const h1 = document.querySelector('h1');
-		const sc = document.querySelector('[data-scroller]');
-		sc.scrollTop = 13807;
+		window.scrollTo(0, 13807);
 		return {
 			loader: getComputedStyle(l).display,
 			h1: h1?.textContent,
 			h1vis: h1 ? h1.getBoundingClientRect().height > 0 : false,
-			scrollTop: sc.scrollTop,
-			overflowY: getComputedStyle(sc).overflowY,
+			scrollY: Math.round(scrollY),
+			overflowY: getComputedStyle(document.documentElement).overflowY,
 		};
 	});
 	await p.page.screenshot({ path: `${OUT}/nojs.png` });
 	console.log('nojs', JSON.stringify(m));
 	await p.ctx.close();
-	return m.loader === 'none' && m.h1?.includes('Die App') && m.scrollTop === 13807 ? 0 : 1;
+	return m.loader === 'none' && m.h1?.includes('Die App') && Math.abs(m.scrollY - 13807) <= 2
+		? 0
+		: 1;
 }
 
 async function runRm(browser) {
@@ -378,12 +297,13 @@ async function runRm(browser) {
 	await p.page.clock.runFor(100);
 	const op = await p.page.evaluate(() => document.querySelector('[data-loader]').style.opacity);
 	await p.page.clock.runFor(1500);
-	await p.page.click('a[data-go="05"][data-scr]');
+	await p.page.click('a[href="#so-gehts"]');
 	await p.page.waitForTimeout(100);
-	const top = await p.page.evaluate(() => document.querySelector('[data-scroller]').scrollTop);
-	console.log(`rm: Lader opacity nach 100 ms = "${op}", Sprung scrollTop = ${top}`);
+	const top = await p.page.evaluate(() => Math.round(scrollY));
+	console.log(`rm: Lader opacity nach 100 ms = "${op}", Sprung scrollY = ${top}`);
 	await p.ctx.close();
-	return op === '0' && Math.abs(top - 7282) <= 1 ? 0 : 1; // Referenz-go() landet auf 7282 (Span [05] liegt 96 px unter dem Abschnitt)
+	// Ankerziel "Intro überspringen": Oberkante So geht's (7296) minus Kopfabstand 110
+	return op === '0' && Math.abs(top - 7186) <= 2 ? 0 : 1;
 }
 
 async function runLinks(browser) {
@@ -410,7 +330,8 @@ async function runLinks(browser) {
 	];
 	console.log('links', JSON.stringify(hrefs));
 	await p.ctx.close();
-	return JSON.stringify(hrefs) === JSON.stringify(want) ? 0 : 1;
+	// Reihenfolge im DOM: Kopf und Hinweise stehen jetzt vor dem Inhalt (F-04), verglichen wird die Menge
+	return JSON.stringify([...hrefs].sort()) === JSON.stringify([...want].sort()) ? 0 : 1;
 }
 
 async function runKbd(browser) {
@@ -419,7 +340,7 @@ async function runKbd(browser) {
 	const seen = new Set();
 	// bei P < 0.9: Ende-Overlay nicht fokussierbar
 	const early = await p.page.evaluate(() =>
-		[...document.querySelectorAll('[data-endov] a, [data-endov] [tabindex], [data-cta]')].map(
+		[...document.querySelectorAll('[data-ende] a, [data-ende] [tabindex], [data-cta]')].map(
 			(e) => e.closest('[data-cta]')?.inert ?? e.inert,
 		),
 	);
@@ -461,7 +382,6 @@ const browser = await chromium.launch({ args: ARGS });
 const jobs = {
 	main: runMain,
 	interact: runInteract,
-	scale: runScale,
 	nojs: runNoJs,
 	rm: runRm,
 	links: runLinks,

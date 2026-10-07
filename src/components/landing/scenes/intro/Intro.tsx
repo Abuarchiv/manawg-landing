@@ -33,12 +33,12 @@ export function Intro() {
 			tabIndex={-1}
 			ref={secRef}
 			aria-label="Intro"
-			style={css(`position:relative;height:calc(${1 + INTRO_SCREENS} * 100lvh)`)}
+			style={css(`position:relative;z-index:1;height:calc(${1 + INTRO_SCREENS} * 100lvh)`)}
 		>
 			<div
 				data-buehne="intro"
 				ref={buehneRef}
-				style={css('position:sticky;top:0;height:100lvh;overflow:hidden')}
+				style={css('position:sticky;top:0;height:100lvh;overflow-x:clip;overflow-y:visible')}
 			>
 				<canvas data-intro="hero" aria-hidden="true" style={css(`${FLAECHE};opacity:var(--g,1)`)} />
 				<canvas
