@@ -329,6 +329,10 @@ Jede Szene registriert sich im `useEffect` ihrer Komponente und meldet sich beim
 
 Mit `?qa=1`: `window.__landing = { P(), s(), phase(), yForP(P), section(id) → { top, height }, bereit }`. Nur lesend, ohne Einfluss auf das Verhalten.
 
+Ergänzung des Fundaments: `dbg` (Objekt `qa` aus `core/loop.js`) trägt lesende Messhaken der Szenen, aktuell `dbg.planet() → yaw` und `dbg.koerper() → { idle, ring }`. `tools/qa/hz.mjs` und `tools/qa/szenen.mjs` lesen sie. Pakete dürfen eigene Haken in `qa` eintragen.
+
+Ergänzung: `tools/pixel.mjs` (Gate A) wertet unsichtbaren Text (Deckkraft der Eltern < 0,02) nicht und überspringt bei den Messpunkten 6000 bis 7199 sowie beim Zustand `i-handy` die obersten 80 px der Textgeometrie (Kopf: der Port blendet ihn aus, die Referenz verdeckt ihn, PLAN-V2 §5).
+
 ---
 
 ## 5. Fundament (seriell, zuerst)
