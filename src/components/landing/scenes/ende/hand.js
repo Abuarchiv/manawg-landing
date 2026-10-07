@@ -9,21 +9,21 @@
 // auf den Bildschirm ragen, sowie die Zeigehand.
 
 import { BAYER as HB, cl, hsh, ss } from '../../core/math';
-import { dprFor, glSichtbar } from '../../core/canvas';
+import { dprFor, glSichtbar, isTouch } from '../../core/canvas';
 import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
 // Bei jedem neuen Render erhöhen: json und webp gehören zusammen und werden gemeinsam gecacht.
-const HAND_V = 1;
+const HAND_V = 2;
 const STEP = 1.25; // Zellgröße in Bühnen-px (fein: Halbton liest als Haut, nicht als Raster)
 const GAM = 0.85;
 const CON = 1.05;
-const RIM = 0.22;
+const RIM = 0.14;
 const EDW = 2.0;
 const EDV = 0.9;
 const JIT = 0.08;
 const RAND_IN = 7; // Haltehand: höchstens so viele px ragen über den Bildschirmrand (Tab-Leiste bleibt frei)
-const PS = 0.62; // Maßstab der Zeigehand (Finger ~ 41 Bühnen-px, Haltefinger ~ 55)
+const PS = 0.54; // Maßstab der Zeigehand (Finger ~ 41 Bühnen-px, Haltefinger ~ 55)
 const ARM = [1460, 1020]; // Ziel des Zeigearms im Ende-Raum (quer)
 const INK = 0.98; // #FAFAFA
 const INK_DARK = 0.04; // über dem weißen Bildschirm: dunkle Punkte
@@ -173,7 +173,7 @@ vec2 pointTone(vec2 C, bool full){
   if (uPS.y <= 0.) return vec2(0.);
   vec2 d = C - uTipU.xy;
   float dist = length(d);
-  float gk = ss(-sdfRR(C, uScreen, uPR.y) / 10.);
+  float gk = ss(-sdfRR(C, uScreen, uPR.y) / 24.);
   // auf dem Glas bleibt die Hand bis zum Handgelenk deckend, der Arm läuft danach schneller aus
   float fade = mix(cl(1. - (dist - 300.) / 420.), cl(1. - (dist - 300.) / 140.), gk);
   if (fade <= 0.) return vec2(0.);
@@ -232,7 +232,7 @@ vec2 pSprite(vec2 S){
 float pointSil(vec2 S){
   if (uPS.y <= 0.) return 0.;
   float dist = length(S - uTipU.xy);
-  float gk = ss(-sdfRR(S, uScreen, uPR.y) / 10.);
+  float gk = ss(-sdfRR(S, uScreen, uPR.y) / 24.);
   float fade = mix(cl(1. - (dist - 300.) / 420.), cl(1. - (dist - 300.) / 140.), gk);
   if (fade <= 0.) return 0.;
   vec2 ab = pSprite(S);
@@ -265,7 +265,7 @@ void main(){
   ivec2 tc = cell - uCell0;
   float tone = 0.;
   if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) tone = texelFetch(uTone, tc, 0).r;
-  float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 10.) : 0.;
+  float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 24.) : 0.;
   float ink = mix(${INK}, ${INK_DARK}, gk);
   bool pt = uFront == 1 && uPS.y > 0.;
   if (tone <= 0. && uRing.z <= 0. && !pt) { o = vec4(0.); return; }
@@ -274,10 +274,15 @@ void main(){
   int by = cell.y & 3;
   float thr = float((by & 1) * 12 + (by >> 1) * 3 + (1 - 2 * (by & 1)) * 8 * (bx & 1) + (1 - 2 * (by >> 1)) * 2 * (bx >> 1)) / 16. + .035;
   float c = 0.;
-  if (tone > thr) {
-    float z = ${STEP.toFixed(2)} * (.5 + .5 * min(1., tone));
+  if (tone > thr || tone > .8) {
+    // Punkte berühren sich nie (Kante höchstens 0,92 Zellen); im Glanzlicht (ab .8) kippt das Raster zu dunklen Löchern in heller Fläche
+    float z = min(${STEP.toFixed(2)} * (.5 + .5 * min(1., tone)), ${STEP.toFixed(2)} * .92);
     vec2 dd = abs(S - C);
     c = clamp((z * .5 - max(dd.x, dd.y)) / px + .5, 0., 1.);
+    if (tone > .8) {
+      float hh = ${STEP.toFixed(2)} * .436 * (1. - clamp((tone - .8) / .2, 0., 1.));
+      c = 1. - clamp((hh - max(dd.x, dd.y)) / px + .5, 0., 1.) * step(.001, hh);
+    }
     float a = pixA(S);
     float w = max(fwidth(a), .02);
     c *= clamp((a - .5) / w + .5, 0., 1.);
@@ -941,6 +946,35 @@ function chooseMode(st, back, front) {
 	if (st.mode === 'cpu') st.layers = null;
 }
 
+/** Vorführung schon gesehen (einmal je Sitzung)? Mit setzen = merken. */
+function demoGetan(setzen) {
+	try {
+		if (setzen) sessionStorage.setItem('mwg-demo', '1');
+		return sessionStorage.getItem('mwg-demo') === '1';
+	} catch {
+		return false;
+	}
+}
+
+/** Mitte der Tab-Taste (Name) in der App-Vorschau als Ziel der Zeigehand: Objektraum plus Fensterkoordinaten. */
+function demoZiel(st, name, obj) {
+	const fr = st.back.parentElement?.querySelector('iframe');
+	const doc = fr?.contentDocument;
+	if (!fr || !doc?.body) return null;
+	const r = fr.getBoundingClientRect();
+	const k = r.width / fr.clientWidth;
+	const el = [...doc.querySelectorAll(`a[data-k^="a|${name}"]`)].find(
+		(e) => e.getBoundingClientRect().top > fr.clientHeight * 0.7,
+	);
+	if (!el || !k) return null;
+	const q = el.getBoundingClientRect();
+	const cx = r.left + (q.left + q.width / 2) * k;
+	const cy = r.top + (q.top + q.height / 2) * k;
+	const r0 = st.back.getBoundingClientRect();
+	const [x, y] = obj(cx - r0.left, cy - r0.top);
+	return { x, y, cx, cy };
+}
+
 function drawIn(back, front, c, cam) {
 	let st = states.get(back);
 	if (!st) {
@@ -998,19 +1032,43 @@ function drawIn(back, front, c, cam) {
 	const sc = A.hold.meta.screen;
 	const aufGlas = (x, y) => x > sc.x - 4 && x < sc.x + sc.w + 4 && y > sc.y - 4 && y < sc.y + sc.h + 4;
 	const touch = c.m.type === 'touch';
+	const dm = (st.demo ||= { n: 0, seit: null, next: 0, off: demoGetan() });
 	// Ein Tipp auf den Bildschirm. Maus und Stift: die Zeigehand steht schon am Zeiger (oder fährt hin), erst bei
 	// Berührung läuft der Druck, der Ring und der Klick in die App. Touch: es tippt der echte Finger, nur der Ring
 	// markiert die Kontaktstelle (die App reagiert sofort, nichts wird verzögert).
 	if (c.m.clickT !== st.lastClick) {
 		st.lastClick = c.m.clickT;
 		if (c.endOn && aufGlas(mx, my)) {
+			dm.off = true; // eigener Tipp: die Vorführung ist überflüssig
 			if (touch) {
 				st.tap = [mx, my];
 				st.contactT = now;
 			} else {
 				const r0 = st.back.getBoundingClientRect();
+				// Läuft noch ein Tipp, geht er sofort in die App: Tipps werden nie verworfen
+				if (st.pending && !st.pending.demo) {
+				const q = st.pending;
+					st.tap = [q.x, q.y];
+					st.contactT = now;
+					st.host?.dispatchEvent(new CustomEvent('hand:kontakt', { detail: { x: q.cx, y: q.cy } }));
+				}
 				st.pending = { x: mx, y: my, t0: now, cx: r0.left + c.m.x, cy: r0.top + c.m.y };
 			}
+		}
+	}
+	// Vorführung: bleibt der Besucher nach dem Eintritt 2,5 s untätig, tippt die Zeigehand einmal pro Sitzung auf „Haushalt“
+	// und drei Sekunden später auf „Start“ (über denselben Kontakt-Pfad wie ein echter Tipp). Hover über dem Glas, ein Tipp
+	// oder Touch beenden sie. Bei reduzierter Bewegung läuft sie nicht (nur der Hinweis unter dem Handy).
+	if (c.endOn && !touch && c.m.in && aufGlas(mx, my) && now - (c.m.moveT ?? -9) < 1.4) dm.off = true;
+	if (dm.off || c.reduced || touch || isTouch() || !c.endOn || dm.n >= 2) {
+		if (!c.endOn) dm.seit = null;
+		if (dm.off && st.pending?.demo) st.pending = null;
+	} else {
+		dm.seit ??= now;
+		if (!st.pending && now - dm.seit > 2.5 && now >= dm.next) {
+			const z = demoZiel(st, dm.n ? 'Start' : 'Haushalt', obj);
+			if (z) st.pending = { ...z, t0: now, demo: true, slow: true };
+			else dm.next = now + 0.8;
 		}
 	}
 	const pend = st.pending;
@@ -1021,7 +1079,7 @@ function drawIn(back, front, c, cam) {
 	let k = 7;
 	if (pend) {
 		tg = [pend.x, pend.y];
-		k = 16;
+		k = pend.slow ? 4 : 16;
 	} else if (folgt) {
 		tg = [mx, my];
 		k = 16;
@@ -1036,11 +1094,16 @@ function drawIn(back, front, c, cam) {
 	ht.x += (tg[0] - ht.x) * kk;
 	ht.y += (tg[1] - ht.y) * kk;
 	// Berührung: die Spitze ist angekommen (oder 0,3 s sind um), jetzt Druck, Ring und Klick
-	if (pend && (Math.hypot(ht.x - pend.x, ht.y - pend.y) < 8 || now - pend.t0 > 0.3)) {
-		st.pending = null;
+	if (pend && (Math.hypot(ht.x - pend.x, ht.y - pend.y) < 8 || now - pend.t0 > (pend.slow ? 2.2 : 0.3))) {
+	st.pending = null;
+	if (pend.demo) {
+		dm.n++;
+		dm.next = now + 3;
+		if (dm.n >= 2) demoGetan(true);
+	}
 		st.tap = [pend.x, pend.y];
 		st.contactT = now;
-		st.host?.dispatchEvent(new CustomEvent('hand:kontakt', { detail: { x: pend.cx, y: pend.cy } }));
+		st.host?.dispatchEvent(		new CustomEvent('hand:kontakt', { detail: { x: pend.cx, y: pend.cy, demo: !!pend.demo } }));
 	}
 	const lt = st.lt;
 	const kl = 1 - Math.exp(-10 * Math.min(dt, 0.05));

@@ -337,6 +337,25 @@ export function registerKoerper(cv) {
 					ctx.fillStyle = '#FAFAFA';
 					ctx.fillText(b.n, b.x, b.y);
 				}
+			// Überschrift freihalten: hinter jeder Textzeile bleibt die Fläche dunkel (Rand 6 px, weich auslaufend),
+			// die Kugeln laufen dahinter durch, ohne die Schrift zu überstrahlen
+			const h2 = s.host.querySelector('h2');
+			if (h2) {
+				const rc = s.cv.getBoundingClientRect();
+				const rg = document.createRange();
+				rg.selectNodeContents(h2);
+				ctx.fillStyle = '#0A0A0A';
+				ctx.shadowColor = '#0A0A0A';
+				ctx.shadowBlur = 26 * s.dpr; // weiche Kante: außen läuft die Aussparung über etwa 13 px aus
+				for (const l of rg.getClientRects()) {
+					if (l.width < 2) continue;
+					const p = 4 / s.f;
+					ctx.fillRect((l.left - rc.left - s.ox) / s.f - p, (l.top - rc.top - s.oy) / s.f - p, l.width / s.f + 2 * p, l.height / s.f + 2 * p);
+				}
+				ctx.shadowBlur = 0;
+				ctx.shadowColor = 'transparent';
+				ctx.globalAlpha = 1;
+			}
 		},
 	});
 }

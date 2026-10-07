@@ -20,8 +20,9 @@ const KEY = 'manawg-lader';
 // bei Zurück, Neuladen und Wiederkehr. Deckkraft 0 (nicht display:none), damit Prüfwerkzeuge das Ende sehen.
 const VORAB = `(function(){try{var l=document.querySelector('[data-loader]');var n=performance.getEntriesByType('navigation')[0];var t=n&&n.type;if(t==='reload'||t==='back_forward'||sessionStorage.getItem('${KEY}')||matchMedia('(prefers-reduced-motion: reduce)').matches){l.style.cssText+=';opacity:0;visibility:hidden;pointer-events:none;transition:none'}}catch(e){}})()`;
 
+// Vor der Hydration läuft die Punktleiste per CSS (40 Schritte), damit sich auf langsamem Netz sofort etwas bewegt; JS übernimmt (data-js).
 const NOTAUS =
-	'[data-loader]{animation:lader-weg 0s linear 6s forwards}@keyframes lader-weg{to{opacity:0;visibility:hidden;pointer-events:none}}';
+	'[data-loader]{animation:lader-weg 0s linear 6s forwards}@keyframes lader-weg{to{opacity:0;visibility:hidden;pointer-events:none}}[data-bar]{position:relative}[data-bar]:not([data-js])::after{content:"########################################";position:absolute;left:0;top:0;clip-path:inset(0 100% 0 0);animation:lader-leiste 5s steps(40) forwards}@keyframes lader-leiste{to{clip-path:inset(0 0 0 0)}}';
 
 function aus(el: HTMLElement, sofort = false) {
 	if (sofort) el.style.transition = 'none';
@@ -77,6 +78,7 @@ export function Lader() {
 			aus(el);
 		};
 		const tick = () => {
+			bar.setAttribute('data-js', '1');
 			const jetzt = performance.now();
 			const ms = jetzt - l0;
 			const dt = jetzt - letzt;

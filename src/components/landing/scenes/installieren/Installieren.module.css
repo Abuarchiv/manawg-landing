@@ -141,6 +141,14 @@
 	justify-content: center;
 	width: 100%;
 }
+/* Rechner im Querformat: das Fenster endet auf dem Seitenrand (rechts wie der Titel links), nicht mittig in der Spalte */
+@media (min-aspect-ratio: 1 / 1) and (min-width: 900px) {
+	.buehne:has(.rahmen[data-tab="2"]) {
+		justify-content: flex-end;
+		box-sizing: border-box;
+		padding-right: var(--rand);
+	}
+}
 .skala {
 	position: relative;
 	width: 300px;

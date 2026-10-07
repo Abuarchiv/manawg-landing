@@ -32,7 +32,7 @@ export function Kopf() {
 				data-loch="cta"
 				href={appUrl('/neu?action=create')}
 				className="cta cta--rand"
-				style={css('pointer-events:auto')}
+				style={css('pointer-events:auto;opacity:calc(1 - var(--kopf-cta-aus,0))')}
 			>
 				WG erstellen
 			</a>

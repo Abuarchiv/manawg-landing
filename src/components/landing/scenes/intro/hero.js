@@ -62,14 +62,16 @@ t += d * .9; if(t > 40.) break; }
   return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)); }
 void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv), uMix); o = vec4(v, v, v, 1.); }`;
 const POST = `#version 300 es
-precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt;
+precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad;
 void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
   float cs = 6. * uR.y / 800.; vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r; if(uL > .5) L = mix(clamp((L - .36) / .64, 0., 1.), L, uMx);
   float r = cs * .5 * sqrt(clamp(L, 0., 1.)) * 1.15; float vd = smoothstep(r + .7, r - .7, length(fc - c));
-  float v = mix(vr, vd, uD); if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } if(uL > .5) v = 1. - v * .96; else v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
+  float v = mix(vr, vd, uD); if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
+  if(uL > .5) v = 1. - v * .96; else v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
 
 const B = new Float32Array(32);
 const O = new Float32Array(32);
+const HO = new Float32Array(16);
 
 /**
  * Hero an ein sichtbares 2D-Canvas hängen.
@@ -117,7 +119,7 @@ export function createHero(cv) {
 			['uR', 'T', 'uM', 'uB', 'uMix', 'uLook', 'uK', 'uO', 'uC', 'uH', 'uSt', 'uZ'],
 			'scene',
 		);
-		G.Pp = prog(POST, ['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt'], 'post');
+		G.Pp = prog(POST, ['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad'], 'post');
 		gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 		gl.enableVertexAttribArray(0);
@@ -278,7 +280,9 @@ export function createHero(cv) {
 		const hh = Math.max(1, Math.round(H * dpr));
 		sizeTo(W, H, dpr);
 		const cs = (6 * hh) / 800;
-		const fw = allDots ? Math.ceil(w / cs) : Math.round(cl(0.42 * W * h.ad, 160, 900));
+		// Berg-Phase (ruhiges Bild): feinerer Szenenpuffer, die Grate zeigen sonst Treppenstufen; die adaptive Stufe (ad) fängt Last ab
+		const fk = mx < 0.05 ? 0.78 : 0.42;
+		const fw = allDots ? Math.ceil(w / cs) : Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
 		const fh = allDots ? Math.ceil(hh / cs) : Math.round((fw * H) / W);
 		const tw = Math.min(1920, Math.max(960, w));
 		const th = Math.max(fh, Math.round((tw * hh) / w));
@@ -318,6 +322,19 @@ export function createHero(cv) {
 		gl.uniform1f(Q.uL, 0);
 		gl.uniform1f(Q.uMx, mx);
 		gl.uniform1f(Q.uSt, 1);
+		// Löcher: Logo, Knopf und Hinweis bleiben im Halbton dunkel (Zellen im Rechteck plus 8 px), damit ihre Schrift lesbar ist
+		HO.fill(0);
+		let ho = 0;
+		for (const l of c.loecher ?? []) {
+			if (ho >= 4 || !(l.art === 'logo' || l.art === 'cta' || l.art === 'hinweis')) continue;
+			HO[ho * 4] = (l.x - 8) * dpr;
+			HO[ho * 4 + 1] = hh - (l.y + l.h + 8) * dpr;
+			HO[ho * 4 + 2] = (l.x + l.w + 8) * dpr;
+			HO[ho * 4 + 3] = hh - (l.y - 8) * dpr;
+			ho++;
+		}
+		gl.uniform4fv(Q.uHo, HO);
+		gl.uniform1f(Q.uPad, 8 * dpr);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.drawImage(G.cv, 0, G.cv.height - hh, w, hh, 0, 0, w, hh);

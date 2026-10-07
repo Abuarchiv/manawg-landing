@@ -34,6 +34,7 @@ export function createStage({ sec, buehne }) {
 	const hf = buehne.querySelector('[data-hand="front"]');
 	const ctas = [...buehne.querySelectorAll('[data-cta]')];
 	const kopf = root.querySelector('[data-kopf]');
+	const kopfCta = kopf?.querySelector('[data-loch="cta"]');
 	const nurIntro = [...root.querySelectorAll('[data-nur-intro]')];
 	const hero = createHero(cvHero);
 
@@ -231,6 +232,10 @@ export function createStage({ sec, buehne }) {
 		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein
 		const kopfAus = loop.mode === 'hoch' ? 0 : endA * (rb.bottom > kopfUnten ? 1 : 0);
 		setVar('--kopf-aus', kopfAus.toFixed(3));
+		// Hochformat: der Kopf bleibt, aber sein Knopf geht, solange der Knopf der Ende-Ebene im Bild steht (kein Doppel)
+		const ktAus = loop.mode === 'hoch' ? endA * (rb.bottom > kopfUnten ? 1 : 0) : 0;
+		setVar('--kopf-cta-aus', ktAus.toFixed(3));
+		if (kopfCta && kopfCta.inert !== ktAus >= 0.6) kopfCta.inert = ktAus >= 0.6;
 		if (kopf && kopf.inert !== kopfAus >= 0.6) kopf.inert = kopfAus >= 0.6;
 		const phase = rb.bottom <= 0 ? 'nach' : P >= 0.9 ? 'ende' : 'intro';
 		if (st.phase !== phase || root.dataset.phase !== phase) {
@@ -269,6 +274,7 @@ export function createStage({ sec, buehne }) {
 			c.cover = cover;
 			c.stageTop = rb.top;
 			c.visible = true;
+			c.loecher = loecher;
 			if (loop.n % 30 === 1) measureLoecher();
 
 			// Zeiger (-1..1) für Berg und Organ, ohne Zeiger läuft ein Autopilot

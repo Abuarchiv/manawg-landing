@@ -6,6 +6,8 @@ import { useEffect, useRef } from 'react';
 // Abschnitts das Band (Kopfunterkante plus 28 px weicher Auslauf). Er wirkt nur, solange das Band im Inhalt
 // liegt (So geht's, Körper, Installieren, Fragen, Finale), nie über den Szenen aus Flut, Wohnung und Tiefe.
 const IDS = ['so-gehts', 'koerper', 'installieren', 'fragen', 'finale'];
+// Hochformat: auch Tiefe und Bereiche, dort läuft sonst Text und Wortbild unter dem festen Kopf durch
+const IDS_HOCH = [...IDS, 'funktionen', 'bereiche'];
 
 export function KopfMaske() {
 	const ref = useRef<HTMLDivElement>(null);
@@ -17,7 +19,8 @@ export function KopfMaske() {
 			raf = 0;
 			const band = (kopf?.getBoundingClientRect().bottom ?? 64) + 10;
 			let v = 0;
-			for (const id of IDS) {
+			const hoch = document.getElementById('final')?.dataset.mode === 'hoch';
+			for (const id of hoch ? IDS_HOCH : IDS) {
 				const s = document.getElementById(id);
 				if (!s) continue;
 				const r = s.getBoundingClientRect();

@@ -9,6 +9,7 @@ import { cl, hsh, lag, vnz } from '../../core/math';
 export const CW = 7;
 export const CH = 11;
 const RAMP = ' .:-=+*#%@';
+const ALPHA = [0.25, 0.4, 0.55, 0.65]; // Strahlen, Fläche, Kern, Kontur und Zeigerspur
 qa.masse = { ...(qa.masse ?? {}), finaleZelle: [CW, CH] };
 
 // Zeichenblatt: ein Streifen mit den neun sichtbaren Zeichen, je Pixelfaktor und Schriftstand neu
@@ -130,6 +131,8 @@ export function registerAscii(cv) {
 					BY: new Float32Array(rows),
 					FK: new Float32Array(rows),
 					codes: new Uint16Array(cols),
+					cls: new Uint8Array(cols),
+					TR: new Float32Array(cols * rows),
 				};
 				for (let i = 0; i < cols; i++) C.BX[i] = (CW / 2 + i * CW - s.ox) * inv;
 				for (let j = 0; j < rows; j++) {
@@ -160,7 +163,9 @@ export function registerAscii(cv) {
 				}
 				s.cache = C;
 			}
-			const { cols, rows, R, CS, SN, BQ, BX, BY, FK, codes } = C;
+			const { cols, rows, R, CS, SN, BQ, BX, BY, FK, codes, cls, TR } = C;
+			const band = 1.7 * CW * inv; // Kontur der Sonne: eine dichte Reihe aus @ und #
+			const abfall = Math.exp(-dt / 0.2); // Spur des Zeigers: ca. 600 ms
 			const cr = Math.cos(ray0);
 			const sn0 = Math.sin(ray0);
 			const smx = s.sm.x;
@@ -169,7 +174,6 @@ export function registerAscii(cv) {
 			const my = s.m.y;
 			// Eine Textzeile je Rasterzeile (Laufweite füllt die Zelle), sonst Zeichenblatt je Zelle
 			const zeile = 'letterSpacing' in ctx;
-			ctx.globalAlpha = 0.35;
 			if (zeile) {
 				ctx.font = '500 9px "JetBrains Mono", monospace';
 				ctx.letterSpacing = `${CW - 5.4}px`;
@@ -185,39 +189,68 @@ export function registerAscii(cv) {
 					const q = j * cols + i;
 					const r = R[q];
 					let v = 0;
-					if (r < sr) v = 0.35 + 0.6 * (1 - r / sr) + (vnz(BX[i] * 0.02, by * 0.03 - t * 0.5) - 0.5) * 0.3;
-					else if (r < fern) {
+					let k = 1;
+					if (r < sr) {
+						v = 0.35 + 0.6 * (1 - r / sr) + (vnz(BX[i] * 0.02, by * 0.03 - t * 0.5) - 0.5) * 0.3;
+						if (r < sr * 0.72) k = 2; // Kern kräftiger
+					} else if (r < fern) {
 						const ray = 0.5 + 0.5 * (CS[q] * cr - SN[q] * sn0);
 						v = ray > 0.82 ? 0.5 * Math.exp(-(r - sr) / 160) : 0;
+						k = 0; // Strahlen leise
 					}
+					const kontur = Math.abs(r - sr + band * 0.2) < band * 0.5;
+					if (kontur) {
+						v = Math.max(v, 0.95);
+						k = 3;
+					}
+					const tr = TR[q] * abfall;
+					TR[q] = tr < 0.02 ? 0 : tr;
 					if (wirk) {
 						const md = Math.hypot(BX[i] - smx, by - smy);
 						if (md < 120) v *= 1 - wirk + (wirk * md) / 120;
+						const mdd0 = Math.hypot(BX[i] - mx, by - my);
+						if (mdd0 < 70) TR[q] = Math.max(TR[q], wirk * (1 - mdd0 / 70));
 					}
 					if (funk > 0 && hsh(i, j + Math.floor(t * 4 + i * 0.37) * 7) < funk) v = Math.max(v, 0.2);
 					v *= BQ[q];
-					if (v > 0.06) {
+					const spur = TR[q];
+					if (v > 0.06 || spur > 0.15) {
 						let ci = Math.min(9, 1 + Math.floor(cl(v) * 8.99));
-						if (wirk) {
-							const mdd = Math.hypot(BX[i] - mx, by - my);
-							if (mdd < 70 && hsh(i + t12, j) < 0.6 * wirk * (1 - mdd / 70)) ci = 1 + Math.floor(hsh(i, j + t12) * 9);
+						if (kontur && BQ[q] > 0.6) ci = (i + j) & 1 ? 9 : 8;
+						if (spur > 0.15 && hsh(i + t12, j) < 0.9 * spur) {
+							ci = 1 + Math.floor(hsh(i, j + t12) * 9);
+							k = 3;
 						}
 						codes[i] = ci;
+						cls[i] = k;
 						leer = false;
 					} else codes[i] = 0;
 				}
 				if (leer) continue;
 				if (zeile) {
-					let str = '';
-					for (let i = 0; i < cols; i++) str += RAMP[codes[i]];
-					ctx.fillText(str, CW / 2 - 2.7, CH / 2 + j * CH);
+					for (let k = 0; k < 4; k++) {
+						let str = '';
+						let n = 0;
+						for (let i = 0; i < cols; i++) {
+							const an = codes[i] && cls[i] === k;
+							str += an ? RAMP[codes[i]] : ' ';
+							if (an) n++;
+						}
+						if (!n) continue;
+						ctx.globalAlpha = ALPHA[k];
+						ctx.fillText(str, CW / 2 - 2.7, CH / 2 + j * CH);
+					}
 				} else {
 					const py = Math.round((CH / 2 + j * CH) * dpr - zh / 2);
 					for (let i = 0; i < cols; i++)
-						if (codes[i]) ctx.drawImage(sheet, zw * codes[i], 0, zw, zh, Math.round((CW / 2 + i * CW) * dpr - zw / 2), py, zw, zh);
+						if (codes[i]) {
+							ctx.globalAlpha = ALPHA[cls[i]];
+							ctx.drawImage(sheet, zw * codes[i], 0, zw, zh, Math.round((CW / 2 + i * CW) * dpr - zw / 2), py, zw, zh);
+						}
 				}
 			}
-			if (zeile) ctx.letterSpacing = '0px';
+			ctx.globalAlpha = 1;
+		if (zeile) ctx.letterSpacing = '0px';
 		},
 	});
 }

@@ -102,7 +102,7 @@ export const plan = {
 			height: `${60 + 824 * lz}px`,
 			borderRadius: `${30 * (1 - lz)}px`,
 		});
-		put(E['and-launch-logo'], { o: seg(t, T5 + 0.25, 0.2) });
+		put(E['and-launch-logo'], { o: seg(t, T5 + 0.25, 0.2) * (1 - seg(t, T5 + 0.75, 0.2)) });
 		put(E['and-app'], { d: t > T5 + 1.0 ? 'block' : '', o: aF });
 		put(E['and-nav'], { o: cl((t - (T5 + 0.3)) / 0.1) });
 

@@ -52,13 +52,12 @@ export const plan = {
 			t: tf(0, (1 - sIn) * 420),
 		});
 		put(E['ios-share-x'], { o: cl((e - 0.3) / 0.7) });
-		// Beschriftung nacheinander tauschen: erst „Mehr anzeigen“ aus, dann „Weniger anzeigen“ ein (nie beide sichtbar)
-		const mehrAus = seg(t, T3 + 0.05, 0.07);
-		const wenigerEin = seg(t, T3 + 0.13, 0.1);
-		put(E['ios-mehr-t'], { o: 1 - mehrAus });
-		put(E['ios-weniger-t'], { o: wenigerEin });
-		put(E['ios-mehr-pfeil'], { o: 1 - mehrAus });
-		put(E['ios-weniger-pfeil'], { o: wenigerEin });
+		// „Mehr anzeigen“: der Pfeil dreht sich über 350 ms, die Beschriftung blendet über
+		const mr = seg(t, T3 + 0.065, 0.35);
+		put(E['ios-mehr-t'], { o: 1 - mr });
+		put(E['ios-weniger-t'], { o: mr });
+		put(E['ios-mehr-pfeil'], { o: 1, transform: `rotate(${Math.round(180 * io(mr))}deg)` });
+		put(E['ios-weniger-pfeil'], { o: 0 });
 		put(E['ios-scrim1'], { o: 0.18 * e });
 
 		// ---------- Dialog „Zum Home-Bildschirm“ ----------
@@ -119,7 +118,8 @@ export const plan = {
 			height: `${60 + 784 * lz}px`,
 			borderRadius: `${14 + 28 * lz}px`,
 		});
-		put(E['ios-launch-logo'], { o: seg(t, T6 + 0.25, 0.25) * (1 - aF) });
+		// das Zeichen steht auf dem schwarzen Startbild und ist weg, bevor die App einblendet
+		put(E['ios-launch-logo'], { o: seg(t, T6 + 0.25, 0.25) * (1 - seg(t, T6 + 0.6, 0.2)) });
 		put(E['ios-app'], { d: t > T6 + 0.8 ? 'block' : '', o: aF });
 
 		// ---------- Statusleiste ----------

@@ -628,7 +628,7 @@
 	width: 60px;
 	height: 60px;
 	border-radius: 14px;
-	background: #fff;
+	background: #0a0a0a;
 	opacity: 0;
 	overflow: hidden;
 	display: flex;
@@ -638,6 +638,8 @@
 }
 .ios_launch_logo {
 	opacity: 0;
+	width: 46px;
+	height: auto;
 }
 .ios_app_ebene {
 	background: #fff;

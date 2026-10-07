@@ -445,3 +445,10 @@
 		transform: none;
 	}
 }
+
+/* Hinweis über dem Handy der Ende-Szene: im Hochformat sitzt das Handy dicht unter dem Knopf */
+#final[data-mode="hoch"] [data-ende-hinweis] {
+	top: -17px !important;
+	font-size: 10px;
+	letter-spacing: 0.07em;
+}

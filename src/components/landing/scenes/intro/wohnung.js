@@ -167,7 +167,7 @@ function messeDom(st, cv) {
 export function draw(cv, c) {
 	let st = states.get(cv);
 	if (!st) {
-		st = { ctx: cv.getContext('2d'), sm: { x: 640, y: 400 }, pp: null, labels: [], dom: null, domN: -99 };
+		st = { ctx: cv.getContext('2d'), sm: { x: 640, y: 400 }, pp: null, labels: [], dom: null, domN: -99, fade: {} };
 		states.set(cv, st);
 		qa.wohnungLabels = () => ({
 			labels: st.labels.map((l) => ({ text: l.text, size: l.size, ...l.rect, cx: l.x, cy: l.y })),
@@ -181,6 +181,17 @@ export function draw(cv, c) {
 	st.W = W;
 	st.H = H;
 	const dom = messeDom(st, cv);
+	// Avatare und Beschriftungen blenden in ca. 120 ms aus, solange sie die Raumtext-Spalte (samt Rand links) schneiden
+	const zone = dom.spalte && Math.max(...karten(c.P)) > 0.01
+		? { x0: 0, x1: dom.spalte.x1 + 8, y0: dom.spalte.y0 - 8, y1: dom.spalte.y1 + 8 }
+		: null;
+	const blende = (key, r) => {
+		const hit = zone && r.x1 > zone.x0 && r.x0 < zone.x1 && r.y1 > zone.y0 && r.y0 < zone.y1;
+		const z = hit ? 0 : 1;
+		const v = st.fade[key] ?? z;
+		st.fade[key] = Math.abs(z - v) < 0.01 ? z : v + (z - v) * (1 - Math.exp(-Math.min(c.dt ?? 0.016, 0.1) / 0.04));
+		return st.fade[key];
+	};
 	const hoch = c.mode === 'hoch';
 	// Abbildung Szenenraum -> Canvas-CSS-Pixel: X = tx + x * f, Y = ty + y * f
 	let f;
@@ -313,6 +324,10 @@ export function draw(cv, c) {
 	const scheiben = st.pp.map((pp, k) => {
 		const pt = P(pp.x, pp.y, 0.45);
 		const r = PEOC[k][1] * u * 0.5;
+		const sx = tx + pt[0] * f;
+		const sy = ty + pt[1] * f;
+		const ba = blende(`a${k}`, { x0: sx - r * f, x1: sx + r * f, y0: sy - r * f, y1: sy + r * f });
+		ctx.globalAlpha = ba;
 		ctx.fillStyle = '#FAFAFA';
 		ctx.beginPath();
 		ctx.arc(pt[0], pt[1], r, 0, 6.2832);
@@ -321,6 +336,7 @@ export function draw(cv, c) {
 		ctx.beginPath();
 		ctx.arc(pt[0] + r * 0.12, pt[1] - r * 0.28, r * 0.22, 0, 6.2832);
 		ctx.fill();
+		ctx.globalAlpha = 1;
 		return { pt, r };
 	});
 	// Alles Weitere in CSS-Pixeln: Hochformat deckt oberhalb der Box ab, dann die Beschriftungen
@@ -380,6 +396,8 @@ export function draw(cv, c) {
 	ctx.lineWidth = 3;
 	for (const it of items) {
 		if (it.aus) continue;
+		it.a *= blende(`l${it.text}`, it.rect);
+		if (it.a < 0.01) continue;
 		ctx.font = mono(it.size);
 		ctx.globalAlpha = it.a;
 		ctx.strokeStyle = 'rgba(10,10,10,0.9)';

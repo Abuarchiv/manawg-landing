@@ -75,6 +75,7 @@ export function Phone() {
 	const [bild, setBild] = useState<string | undefined>(undefined);
 	const [bereit, setBereit] = useState(false);
 	const [zeilen, setZeilen] = useState<[string, string] | null>(null);
+	const [benutzt, setBenutzt] = useState(false);
 	useEffect(() => setZeilen(datumsZeilen()), []);
 
 	// Klick mit Maus oder Stift: die Fangschicht über dem Glas hält den Druck zurück, die Zeigehand fährt zum Ziel
@@ -85,7 +86,8 @@ export function Phone() {
 		const host = el.closest('[data-buehne]');
 		if (!host) return;
 		const an = (e: Event) => {
-			const { x, y } = (e as CustomEvent<{ x: number; y: number }>).detail;
+			const { x, y, demo } = (e as CustomEvent<{ x: number; y: number; demo?: boolean }>).detail;
+			if (!demo) setBenutzt(true);
 			const fr = rahmen.current;
 			const doc = fr?.contentDocument;
 			if (!fr || !doc?.defaultView) return;
@@ -201,9 +203,15 @@ export function Phone() {
 							title="ManaWG-App"
 							src={src}
 							loading="eager"
-							onLoad={() =>
-								requestAnimationFrame(() => requestAnimationFrame(() => setBereit(true)))
-							}
+							onLoad={(e) => {
+								// Antippen mit Touch geht direkt in die App: auch das beendet den Hinweis
+								e.currentTarget.contentDocument?.addEventListener(
+									'pointerdown',
+									() => setBenutzt(true),
+									{ once: true },
+								);
+								requestAnimationFrame(() => requestAnimationFrame(() => setBereit(true)));
+							}}
 							style={{ border: 0, background: '#FFFFFF' }}
 						/>
 					)}
@@ -215,6 +223,17 @@ export function Phone() {
 						)}
 					/>
 				</div>
+				{/* Hinweis unter dem Handy: bis zum ersten eigenen Tipp */}
+				<span
+					className="label"
+					data-ende-hinweis="1"
+					aria-hidden="true"
+					style={css(
+						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:${benutzt ? 0 : 1}`,
+					)}
+				>
+					TIPP INS HANDY · DAS IST DIE ECHTE APP
+				</span>
 			</div>
 		</div>
 	);
