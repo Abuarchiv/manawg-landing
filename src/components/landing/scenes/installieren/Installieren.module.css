@@ -25,6 +25,9 @@
 	letter-spacing: -0.045em;
 	overflow-wrap: break-word;
 }
+.nowrap {
+	white-space: nowrap;
+}
 .lead {
 	margin: 0;
 	font-size: var(--t-18);
@@ -41,28 +44,88 @@
 	align-self: flex-start;
 	max-width: 100%;
 }
+.tab {
+	position: relative;
+	border: 0;
+	background: transparent;
+	color: #fafafa;
+	font-family: inherit;
+	transition: background 0.2s, color 0.2s;
+}
+.tab::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -2px;
+	bottom: -2px;
+}
+.tab[aria-selected="true"] {
+	background: #fafafa;
+	color: #0a0a0a;
+}
+.tab:not([aria-selected="true"]):hover {
+	background: rgba(250, 250, 250, 0.1);
+}
+.tab:focus-visible,
+.schritt:focus-visible {
+	outline: 2px solid #fafafa;
+	outline-offset: 2px;
+}
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	max-width: var(--w-520);
+}
 .schritte {
 	display: flex;
 	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 	border-top: 1px solid var(--haar);
-	max-width: var(--w-520);
+}
+.schritte li {
+	display: block;
 }
 .schritt {
 	display: grid;
 	grid-template-columns: 48px minmax(0, 1fr);
 	align-items: baseline;
+	width: 100%;
+	min-height: 44px;
+	border: 0;
 	border-bottom: 1px solid var(--haar);
+	background: transparent;
+	color: #fafafa;
+	font: inherit;
+	text-align: left;
 	padding: var(--sp-16) 0;
-	opacity: 0.35;
+	cursor: pointer;
+	opacity: 0.55;
 	transition: opacity 0.3s;
+}
+.schritt[data-aktiv],
+.schritt:hover {
+	opacity: 1;
 }
 .nr {
 	font-family: "JetBrains Mono", monospace;
-	font-size: var(--t-13);
+	font-size: 13px;
 }
 .zeile {
 	font-size: var(--t-19);
 	font-weight: 500;
+	line-height: 1.3;
+}
+.cta {
+	align-self: flex-start;
+}
+.weitere {
+	margin: 0;
+	line-height: 1.6;
+	text-transform: none;
 }
 .buehne {
 	min-width: 0;
@@ -71,24 +134,119 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
+}
+.skala {
+	position: relative;
+	width: 300px;
+	height: 620px;
+	transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.45s
+		cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.rahmen {
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	width: 300px;
+	height: 620px;
+	padding: 10px;
+	background: #0a0a0a;
+	border: 1px solid rgba(250, 250, 250, 0.3);
+	border-radius: 46px;
+	box-shadow: 0 0 120px rgba(250, 250, 250, 0.08);
+	transform-origin: 0 0;
+	transform: scale(var(--z, 1));
+	transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.45s
+		cubic-bezier(0.2, 0.8, 0.2, 1), border-radius 0.45s, padding 0.45s;
+}
+.rahmen[data-tab="2"] {
+	width: 600px;
+	height: 400px;
+	padding: 8px;
+	border-radius: 14px;
+}
+.schirm {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 36px;
+	background: #0a0a0a;
+	isolation: isolate;
+	transition: border-radius 0.45s;
+}
+.rahmen[data-tab="2"] .schirm {
+	border-radius: 8px;
+}
+.geraet {
+	position: absolute;
+	inset: 0;
+}
+.geraet[hidden] {
+	display: none;
+}
+.schleier {
+	position: absolute;
+	inset: 0;
+	background: #0a0a0a;
+	opacity: 1;
+	pointer-events: none;
+	z-index: 20;
+}
+.tipp {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	background: #fafafa;
+	mix-blend-mode: difference;
+	opacity: 0;
+	pointer-events: none;
+	z-index: 21;
 }
 
-/* Hochformat: Text über dem Handy */
+@media (prefers-reduced-motion: reduce) {
+	.skala,
+	.rahmen,
+	.schirm,
+	.tab,
+	.schritt {
+		transition: none;
+	}
+}
+
+/* Hochformat: Label, Titel, Absatz, Tabs, Gerät, Schritte, CTA untereinander */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px),
 	(orientation: landscape) and (max-height: 499px) {
 	.sektion {
-		grid-template-columns: minmax(0, 1fr);
-		column-gap: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--sp-24);
+		padding: var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);
+		box-sizing: border-box;
 	}
 	.text {
-		padding: var(--abschnitt-oben) var(--rand) var(--sp-32);
+		display: contents;
 	}
-	.schritte {
+	.panel {
+		order: 2;
 		max-width: none;
 	}
+	.cta {
+		order: 3;
+	}
 	.buehne {
-		grid-row: 2;
-		padding: var(--sp-32) var(--rand) var(--abschnitt-unten);
-		max-width: 100%;
+		order: 1;
+		padding: var(--sp-16) 0;
+		box-sizing: border-box;
+	}
+}
+@media (max-width: 420px) {
+	.titel {
+		font-size: 38px;
 	}
 }

@@ -1,0 +1,280 @@
+/* Rechner: Chrome auf macOS, Bühne 820 x 538 px, per Transform in den Rahmen skaliert. */
+
+.dk {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 820px;
+	height: 538px;
+	transform-origin: 0 0;
+	transform: scale(0.7098);
+	overflow: hidden;
+	background: #f5f5f5;
+	color: #1f1f1f;
+	font-size: 14px;
+	line-height: 1.25;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: geometricPrecision;
+	user-select: none;
+}
+.dk img {
+	display: block;
+}
+.dk_fenster,
+.dk_app {
+	position: absolute;
+	inset: 0;
+	transform-origin: 50% 50%;
+	overflow: hidden;
+}
+.dk_app {
+	background: #f5f5f5;
+	opacity: 0;
+	display: none;
+}
+.dk_ampel {
+	position: absolute;
+	left: 14px;
+	top: 14px;
+	display: flex;
+	gap: 8px;
+}
+.dk_ampel i {
+	display: block;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+}
+.dk_leiste {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 820px;
+	height: 40px;
+	background: #dee1e6;
+}
+.dk_tab {
+	position: absolute;
+	left: 90px;
+	top: 6px;
+	width: 220px;
+	height: 34px;
+	box-sizing: border-box;
+	padding: 0 12px;
+	border-radius: 10px 10px 0 0;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 12.5px;
+}
+.dk_tab img {
+	border-radius: 4px;
+}
+.dk_tab span {
+	flex: 1;
+}
+.dk_tab svg {
+	color: #5f6368;
+}
+.dk_werkzeug {
+	position: absolute;
+	left: 0;
+	top: 40px;
+	width: 820px;
+	height: 44px;
+	background: #fff;
+	border-bottom: 1px solid #dadce0;
+	box-sizing: border-box;
+	color: #444746;
+}
+.dk_werkzeug > svg {
+	position: absolute;
+	top: 13px;
+}
+.dk_omni {
+	position: absolute;
+	left: 126px;
+	top: 6px;
+	width: 568px;
+	height: 32px;
+	border-radius: 16px;
+	background: #edf2fa;
+}
+.dk_tune {
+	position: absolute;
+	left: 3px;
+	top: 3px;
+	width: 26px;
+	height: 26px;
+	border-radius: 13px;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.dk_url {
+	position: absolute;
+	left: 40px;
+	top: 7px;
+	font-size: 14px;
+	line-height: 18px;
+	color: #1f1f1f;
+}
+.dk_stern {
+	position: absolute;
+	right: 12px;
+	top: 8px;
+}
+.dk_chip {
+	position: absolute;
+	right: 40px;
+	top: 3px;
+	height: 26px;
+	box-sizing: border-box;
+	padding: 0 6px;
+	border-radius: 13px;
+	background: transparent;
+	color: #0b57d0;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.dk_chip svg {
+	flex-shrink: 0;
+}
+.dk_chip b {
+	display: block;
+	max-width: 0;
+	overflow: hidden;
+	padding-left: 0;
+	font-size: 13px;
+	font-weight: 500;
+	opacity: 0;
+}
+.dk_profil {
+	position: absolute;
+	left: 738px;
+	top: 11px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: #c2e7ff;
+	box-shadow: inset 0 0 0 5px #c2e7ff, inset 0 -8px 0 0 #6e9fd1;
+}
+.dk_seite {
+	position: absolute;
+	left: 0;
+	top: 84px;
+	width: 820px;
+	height: 454px;
+	overflow: hidden;
+	background: #f5f5f5;
+}
+.dk_tip {
+	position: absolute;
+	left: 520px;
+	top: 90px;
+	padding: 6px 10px;
+	border-radius: 6px;
+	background: #3c4043;
+	color: #fff;
+	font-size: 12px;
+	line-height: 16px;
+	white-space: nowrap;
+	opacity: 0;
+	pointer-events: none;
+	z-index: 3;
+}
+.dk_dlg {
+	position: absolute;
+	left: 240px;
+	top: 82px;
+	width: 340px;
+	box-sizing: border-box;
+	padding: 20px 20px 18px;
+	border-radius: 12px;
+	background: #fff;
+	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08);
+	display: none;
+	z-index: 4;
+}
+.dk_dlg h4 {
+	margin: 0 0 16px;
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: 500;
+	color: #1f1f1f;
+}
+.dk_zeile {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+.dk_zeile img {
+	width: 40px;
+	height: 40px;
+	border-radius: 9px;
+}
+.dk_zeile b {
+	display: block;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+}
+.dk_zeile span {
+	display: block;
+	font-size: 12.5px;
+	line-height: 18px;
+	color: #5f6368;
+}
+.dk_knoepfe {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 22px;
+}
+.dk_knopf {
+	height: 32px;
+	padding: 0 16px;
+	border-radius: 16px;
+	box-sizing: border-box;
+	border: 1px solid #c4c7c5;
+	color: #0b57d0;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 30px;
+}
+.dk_voll {
+	background: #0b57d0;
+	border-color: #0b57d0;
+	color: #fff;
+}
+
+.dk_titel {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 820px;
+	height: 28px;
+	background: #0a0a0a;
+	color: #fafafa;
+	font-size: 13px;
+	text-align: center;
+	line-height: 28px;
+}
+.dk_titel .dk_ampel {
+	top: 8px;
+	left: 12px;
+}
+.dk_titel .dk_ampel i {
+	width: 12px;
+	height: 12px;
+}
+.dk_titel svg {
+	position: absolute;
+	right: 12px;
+	top: 6px;
+	color: #d4d4d4;
+}
