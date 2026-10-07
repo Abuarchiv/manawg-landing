@@ -20,6 +20,9 @@ const KEY = 'manawg-lader';
 // bei Zurück, Neuladen und Wiederkehr. Deckkraft 0 (nicht display:none), damit Prüfwerkzeuge das Ende sehen.
 const VORAB = `(function(){try{var l=document.querySelector('[data-loader]');var n=performance.getEntriesByType('navigation')[0];var t=n&&n.type;if(t==='reload'||t==='back_forward'||sessionStorage.getItem('${KEY}')||matchMedia('(prefers-reduced-motion: reduce)').matches){l.style.cssText+=';opacity:0;visibility:hidden;pointer-events:none;transition:none'}}catch(e){}})()`;
 
+const NOTAUS =
+	'[data-loader]{animation:lader-weg 0s linear 6s forwards}@keyframes lader-weg{to{opacity:0;visibility:hidden;pointer-events:none}}';
+
 function aus(el: HTMLElement, sofort = false) {
 	if (sofort) el.style.transition = 'none';
 	el.style.opacity = '0';
@@ -134,6 +137,10 @@ export function Lader() {
 					<span className="label">MANAWG · LÄDT DIE WG</span>
 				</div>
 			</div>
+			{/* Ausfallsicherung ohne JS und ohne Stylesheet: blendet der Lader nicht selbst aus (Chunks blockiert,
+			    Netz weg), räumt er nach 6 s per CSS-Animation das Feld. Die JS-Steuerung ist früher fertig. */}
+			{/* biome-ignore lint/security/noDangerouslySetInnerHtml: statische Zeichenkette, kein Nutzerinhalt */}
+			<style dangerouslySetInnerHTML={{ __html: NOTAUS }} />
 			{/* biome-ignore lint/security/noDangerouslySetInnerHtml: statische Zeichenkette, kein Nutzerinhalt */}
 			<script dangerouslySetInnerHTML={{ __html: VORAB }} />
 		</>

@@ -44,7 +44,7 @@ export function Koerper() {
 				ref={ref}
 				aria-hidden="true"
 				style={css(
-					'position:absolute;inset:0;width:100%;height:100%;display:block;opacity:var(--kb,1)',
+					'position:absolute;inset:0;width:100%;height:100%;display:block;opacity:var(--kb,1);touch-action:pan-y',
 				)}
 			/>
 			<div
@@ -62,6 +62,10 @@ export function Koerper() {
 				>
 					Wirf sie. Sie finden zurück.
 				</h2>
+				<span className="label" aria-hidden="true">
+					<span className={m.maus}>[ ZIEHEN ZUM WERFEN ]</span>
+					<span className={m.touch}>[ ANTIPPEN UND WERFEN ]</span>
+				</span>
 			</div>
 		</section>
 	);

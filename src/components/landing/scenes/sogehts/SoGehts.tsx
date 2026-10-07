@@ -26,7 +26,7 @@ export function SoGehts() {
 			className={s.sektion}
 		>
 			<h2 id="so-gehts-titel" className={`label ${s.titel}`}>
-				[ 05 ] SO GEHT’S
+				<span aria-hidden="true">[ 05 ] </span>SO GEHT’S
 			</h2>
 			<div className={s.raster}>
 				{SCHRITTE.map((x) => (

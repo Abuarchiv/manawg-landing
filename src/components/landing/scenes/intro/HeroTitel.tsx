@@ -24,6 +24,7 @@ export function HeroTitel() {
 					<br />
 					für eure WG.
 				</h1>
+				<p className={s.unter}>Ausgaben, Einkauf und Putzplan. Kostenlos, im Browser.</p>
 			</div>
 		</div>
 	);

@@ -11,3 +11,16 @@
 		height: 100lvh;
 	}
 }
+
+/* Hinweis unter der Überschrift: Maus zieht, Touch tippt */
+.touch {
+	display: none;
+}
+@media (pointer: coarse) {
+	.maus {
+		display: none;
+	}
+	.touch {
+		display: inline;
+	}
+}

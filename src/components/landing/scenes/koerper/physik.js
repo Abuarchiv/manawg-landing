@@ -94,6 +94,14 @@ export function registerKoerper(cv) {
 					})),
 				};
 			};
+			// Körper greifen (Maus sofort, Touch nach waagerechter Bewegung)
+			s.start = (best) => {
+				s.pend = null;
+				s.auto = false;
+				s.grab = best;
+				s.idle = 0;
+				s.ring = false;
+			};
 			s.onDownBody = () => {
 				const touch = s.m.type !== 'mouse';
 				const reach = Math.max(10, REACH / s.f);
@@ -106,13 +114,16 @@ export function registerKoerper(cv) {
 						best = i;
 					}
 				});
-				// Ein Wisch daneben ist Scrollen und stört die Körper nicht. Im automatischen Einfall liegt der
-				// Haufen am unteren Rand: Touch greift dort nicht, sonst finge er das Scrollen ab.
-				if (touch && (best < 0 || (s.auto && s.idle < 3.5))) return;
-				s.auto = false;
-				s.grab = best;
-				s.idle = 0;
-				s.ring = false;
+				// Ein Wisch daneben ist Scrollen und stört die Körper nicht.
+				if (touch && best < 0) return;
+				// Touch (Canvas hat touch-action: pan-y): Die Seite scrollt immer, wenn die Geste senkrecht
+				// beginnt (der Browser meldet dann pointercancel). Gegriffen wird erst bei einer überwiegend
+				// waagerechten Bewegung (onMove), ein Antippen gibt dem Körper einen Stoß (onUp).
+				if (touch) {
+					s.pend = { i: best, x: s.m.x, y: s.m.y };
+					return;
+				}
+				s.start(best);
 				if (best < 0)
 					for (const b of s.B) {
 						const dx = b.x - s.m.x;
@@ -126,12 +137,30 @@ export function registerKoerper(cv) {
 		onDown(s) {
 			s.onDownBody?.();
 		},
-		onUp(s) {
+		onMove(s) {
+			const p = s.pend;
+			if (!p || !s.m.down) return;
+			const dx = s.m.x - p.x;
+			const dy = s.m.y - p.y;
+			const min = 8 / s.f;
+			if (Math.abs(dx) > min && Math.abs(dx) > Math.abs(dy)) s.start(p.i);
+		},
+		onUp(s, e) {
+			// Antippen (kein Abbruch durch Scrollen): der Körper bekommt einen Stoß nach oben
+			const p = s.pend;
+			s.pend = null;
+			if (p && e?.type === 'pointerup') {
+				const b = s.B[p.i];
+				s.auto = false;
+				s.ring = false;
+				s.idle = 0;
+				b.px = b.x + (hsh(p.i, 7) - 0.5) * 12;
+				b.py = b.y + 16;
+			}
 			// Loslassen verlängert die lose Phase nur, wenn ein Körper gegriffen war
 			if (s.grab >= 0) s.idle = 0;
 			s.grab = -1;
 		},
-		ownsTouch: (s) => s.grab >= 0,
 		frame(s, _t, dt) {
 			const ctx = s.ctx;
 			// Flächenränder im Szenenraum: Wände links und rechts, Decke und Boden

@@ -27,6 +27,7 @@ export function Tiefe() {
 			aria-label="Funktionen"
 			style={css('position:relative;height:calc(3.8 * 100lvh);background:#0A0A0A;color:#FAFAFA')}
 		>
+			<h2 className="sr-only">Funktionen</h2>
 			<div style={css('position:sticky;top:0;height:100lvh;overflow:hidden')}>
 				<canvas
 					ref={cvRef}
@@ -59,18 +60,21 @@ export function Tiefe() {
 								'position:absolute;left:var(--rand);right:var(--rand);bottom:var(--sp-72);display:flex;flex-direction:column;gap:var(--sp-10);opacity:0',
 							)}
 						>
-							<span className="label">{w.nr}</span>
-							<span
+							<span className="label" aria-hidden="true">
+								{w.nr}
+							</span>
+							<h3
 								style={css(
-									"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-44);letter-spacing:-0.03em;overflow-wrap:break-word",
+									"margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-44);line-height:inherit;letter-spacing:-0.03em;overflow-wrap:break-word",
 								)}
 							>
 								{w.text}
-							</span>
+							</h3>
 						</div>
 					))}
 					<div
 						className="label"
+						aria-hidden="true"
 						style={css('position:absolute;right:var(--rand);bottom:var(--sp-28)')}
 					>
 						{'TIEFE '}

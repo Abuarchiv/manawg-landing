@@ -14,7 +14,7 @@ import * as flut from './flut';
 import { createHero } from './hero';
 import { zeichneSterne } from './sterne';
 import * as wohnung from './wohnung';
-import { INTRO_SCREENS, unwarp, warp } from './zeitachse';
+import { unwarp, warp } from './zeitachse';
 
 /**
  * Die laufende Bühne (für QA-Haken und Landing).
@@ -39,6 +39,8 @@ export function createStage({ sec, buehne }) {
 
 	let W = buehne.clientWidth;
 	let H = buehne.clientHeight;
+	// Scroll-Strecke der Bühne: Abschnittshöhe minus Bühne (bei reduzierter Bewegung kürzer, landing.css)
+	const strecke = () => Math.max(1, sec.offsetHeight - H);
 	let safeH = safe.clientHeight;
 	let dpr = dprFor(2, 1.5);
 	let fit = fitBox(W, safeH, 1280, 800, 1.25);
@@ -160,7 +162,7 @@ export function createStage({ sec, buehne }) {
 		const rb = buehne.getBoundingClientRect();
 		const rs = sec.getBoundingClientRect();
 		const visible = rb.bottom > 0 && rb.top < innerHeight;
-		const s = cl(-rs.top / (INTRO_SCREENS * H));
+		const s = cl(-rs.top / strecke());
 		const Pz = warp(s);
 		// Glättung. Sofort übernehmen beim ersten Bild und solange die Bühne nicht zu sehen ist.
 		if (!st.init || !visible) {
@@ -294,7 +296,7 @@ export function createStage({ sec, buehne }) {
 		/** y-Position im Dokument für den Fortschritt P (QA). */
 		yForP(P) {
 			const r = sec.getBoundingClientRect();
-			return r.top + window.scrollY + unwarp(P) * INTRO_SCREENS * H;
+			return r.top + window.scrollY + unwarp(P) * strecke();
 		},
 		destroy() {
 			off();

@@ -41,7 +41,7 @@ export function Intro() {
 				tabIndex={-1}
 				aria-label="App-Vorschau"
 				style={css(
-					`position:absolute;left:0;width:1px;height:1px;top:calc(${(INTRO_SCREENS * (unwarp(0.985) ?? 0) * 100).toFixed(2)}lvh)`,
+					`position:absolute;left:0;width:1px;height:1px;top:calc((100% - 100lvh) * ${(unwarp(0.985) ?? 0).toFixed(4)})`,
 				)}
 			/>
 			<div

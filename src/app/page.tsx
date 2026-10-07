@@ -11,7 +11,10 @@ export default function Page() {
 			<script dangerouslySetInnerHTML={{ __html: MODUS }} />
 			<noscript
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: statische Zeichenkette, kein Nutzerinhalt
-				dangerouslySetInnerHTML={{ __html: '<style>[data-loader]{display:none!important}</style>' }}
+				dangerouslySetInnerHTML={{
+					__html:
+						'<style>[data-loader]{display:none!important}#intro,[data-buehne]{height:100svh!important}</style>',
+				}}
 			/>
 			<Landing />
 		</>

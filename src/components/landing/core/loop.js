@@ -148,12 +148,12 @@ function onTouchStart(e) {
 	}
 }
 
-function onUp() {
+function onUp(e) {
 	for (const r of scenes) {
 		const { s, def } = r;
 		if (s.m.down) {
 			s.m.down = false;
-			def.onUp?.(s);
+			def.onUp?.(s, e);
 		}
 	}
 }

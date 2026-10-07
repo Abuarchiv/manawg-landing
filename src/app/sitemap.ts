@@ -1,7 +1,8 @@
 import { getAppUrl } from '@/lib/app-url';
 import type { MetadataRoute } from 'next';
 
-const LAST_MODIFIED = '2026-05-18';
+// Zeitpunkt des Builds (die Route wird statisch erzeugt)
+const LAST_MODIFIED = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const appUrl = getAppUrl();

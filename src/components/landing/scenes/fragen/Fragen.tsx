@@ -12,6 +12,7 @@ const FRAGEN: [string, string][] = [
 		'Brauche ich eine App aus dem Store?',
 		'Nein. ManaWG läuft im Browser unter app.manawg.com und lässt sich auf den Home-Bildschirm installieren.',
 	],
+	['Was kostet ManaWG?', 'Nichts. ManaWG ist kostenlos.'],
 	[
 		'Wie wird abgerechnet?',
 		'Jede Ausgabe wird auf die Personen verteilt, die beteiligt waren. ManaWG zeigt, wer wem wie viel schuldet.',
@@ -33,7 +34,7 @@ export function Fragen() {
 			)}
 		>
 			<h2 id="fragen-titel" className="label" style={css('margin:0')}>
-				[ 08 ] FRAGEN
+				<span aria-hidden="true">[ 08 ] </span>FRAGEN
 			</h2>
 			<div style={css('display:flex;flex-direction:column;border-bottom:1px solid var(--haar)')}>
 				{FRAGEN.map((q, i) => (
