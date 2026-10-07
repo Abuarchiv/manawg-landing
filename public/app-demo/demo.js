@@ -77,6 +77,8 @@
 					const b = berlin(T0 - +a[1] * 60000);
 					return `${String(b.d).padStart(2, '0')}.${String(b.m).padStart(2, '0')}.${b.y}, ${b.hh}:${b.mm}`;
 				}
+				case 'MO':
+					return FMT.my.format(Date.UTC(berlin(clock()).y, berlin(clock()).m - 1 + +a[1], 1, 12));
 				case 'M':
 					return FMT[a[2]].format(nextMonth3(+a[1]));
 				case 'A':
@@ -133,10 +135,66 @@
 		for (const a of rootEl.querySelectorAll('a[href]')) a.setAttribute('href', '#');
 	};
 
-	const setPage = (n) => {
+	/** Monatsraster auf den heutigen Monat umrechnen (Zahlen, Beschriftung, heute, Termin-Punkte). */
+	const gridFix = (rootEl) => {
+		for (const tb of rootEl.querySelectorAll('table[role=grid]')) {
+			let g;
+			try {
+				g = JSON.parse(tb.getAttribute('data-g') || '');
+			} catch {
+				continue;
+			}
+			const b0 = berlin(clock());
+			const first = Date.UTC(b0.y, b0.m - 1 + g.m, 1, 12);
+			const lead = (new Date(first).getUTCDay() + 6) % 7;
+			const today = day(0);
+			const ev = new Map(Object.entries(g.ev).map(([k, suf]) => [k === 'F' ? nextFriday() : +k, suf]));
+			const P = M.grid;
+			tb.querySelectorAll('td button[data-day-cell]').forEach((btn, i) => {
+				const u = first + (i - lead) * 86400000;
+				const k = Math.round((u - today) / 86400000);
+				const inMonth = new Date(u).getUTCMonth() === new Date(first).getUTCMonth();
+				const suf = ev.get(k);
+				const kind = k === 0 ? 'today' : suf !== undefined ? 'ev' : inMonth ? 'in' : 'out';
+				if (P && [P.out, P.in, P.today, P.ev].includes(btn.className)) btn.className = P[kind];
+				if (kind === 'today') btn.setAttribute('aria-current', 'date');
+				else btn.removeAttribute('aria-current');
+				btn.setAttribute('tabindex', kind === 'today' ? '0' : '-1');
+				btn.setAttribute('aria-label', FMT.voll.format(u) + (suf ?? ''));
+				btn.setAttribute('data-day-date', new Date(u - 14 * 3600000).toISOString());
+				const num = btn.querySelector('span');
+				if (num) {
+					num.textContent = String(new Date(u).getUTCDate());
+					if (P?.sp && Object.values(P.sp).includes(num.className)) num.className = P.sp[kind];
+				}
+				const dot = btn.querySelector('span[aria-hidden]');
+				if (suf !== undefined && !dot && P) btn.insertAdjacentHTML('beforeend', P.dot);
+				if (suf === undefined && dot) dot.remove();
+				if (g.keys[i]) btn.setAttribute('data-k', g.keys[i]);
+			});
+		}
+	};
+
+	const setPage = (n, morph) => {
+		// Tabbar und SubNav bleiben in der App stehen, nur der aktive Eintrag wechselt (120 ms bzw. 150 ms Hintergrund).
+		// Beim Austausch der Seite starten die neuen Einträge im alten Zustand und gleiten in den neuen.
+		const old = morph ? [...app.querySelectorAll('nav')].map((nv) => [...nv.querySelectorAll('a')].map((a) => [a.className, a.getAttribute('aria-current')])) : [];
 		app.innerHTML = tpl(`p-${n.p}`);
 		prep(app);
+		gridFix(app);
 		document.body.setAttribute('style', n.b || '');
+		const next = [];
+		[...app.querySelectorAll('nav')].forEach((nv, i) => {
+			const links = [...nv.querySelectorAll('a')];
+			const o = old.find((x, j) => x.length === links.length && !next.includes(j) && next.push(j));
+			if (!o) return;
+			links.forEach((a, k) => {
+				const to = [a.className, a.getAttribute('aria-current')];
+				if (to[0] === o[k][0]) return;
+				a.className = o[k][0];
+				requestAnimationFrame(() => requestAnimationFrame(() => { a.className = to[0]; }));
+			});
+		});
 	};
 
 	/** Overlay einsetzen und mit dem CSS der App animieren (Beginn über data-starting-style). */
@@ -195,7 +253,7 @@
 		st.w = w;
 		st.id = id;
 		const pageChanged = !prev || prev.p !== n.p || opts.force;
-		if (pageChanged) setPage(n);
+		if (pageChanged) setPage(n, !!prev && !opts.instant && !opts.force);
 		else document.body.setAttribute('style', n.b || '');
 		const wasOver = !!st.over;
 		if (prev && prev.o && prev.o !== n.o && !n.o) hideOver(opts.instant);
@@ -345,6 +403,33 @@
 		root.addEventListener('mouseleave', (e) => send('pointerleave', e));
 		// Rad: der Bildschirm der App scrollt nicht, die Seite der Landing schon
 		addEventListener('wheel', (e) => { e.preventDefault(); window.parent.scrollBy({ left: e.deltaX, top: e.deltaY, behavior: 'instant' }); }, { passive: false });
+		// Wisch: der Bildschirm der App scrollt nicht, also scrollt der senkrechte Wisch die Seite der Landing (mit Auslauf)
+		let ty = 0;
+		let v = 0;
+		let raf = 0;
+		const fscale = () => (fe ? fe.getBoundingClientRect().width / 390 : 1);
+		addEventListener('touchstart', (e) => {
+			cancelAnimationFrame(raf);
+			ty = e.touches[0].clientY;
+			v = 0;
+		}, { passive: true });
+		addEventListener('touchmove', (e) => {
+			const y = e.touches[0].clientY;
+			const dy = (ty - y) * fscale();
+			ty = y;
+			v = dy;
+			window.parent.scrollBy({ top: dy, behavior: 'instant' });
+			if (e.cancelable) e.preventDefault();
+		}, { passive: false });
+		addEventListener('touchend', () => {
+			const step = () => {
+				v *= 0.95;
+				if (Math.abs(v) < 0.4) return;
+				window.parent.scrollBy({ top: v, behavior: 'instant' });
+				raf = window.parent.requestAnimationFrame(step);
+			};
+			raf = window.parent.requestAnimationFrame(step);
+		}, { passive: true });
 		root.classList.add('framed');
 	}
 

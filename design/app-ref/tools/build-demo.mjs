@@ -259,6 +259,39 @@ for (const [w, nodes] of Object.entries(OWN)) {
 	}
 }
 
+// ------------------------------------------------------------------ Monatsraster
+// Das Raster der Aufnahme (Okt 2026) wird zur Laufzeit auf den heutigen Monat umgerechnet: Zahlen, Beschriftungen,
+// heute und Termin-Punkte. Die vier Zellenarten (außerhalb, Monat, heute, Termin) stammen aus der Aufnahme.
+const cellsOf = (html) => [...html.matchAll(/<td[^>]*>(<button[\s\S]*?<\/button>)<\/td>/g)].map((m) => m[1]);
+const clsOf = (x) => /class="([^"]*)"/.exec(x)?.[1]?.replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+const gridProtos = (() => {
+	const root = Object.values(OWN['-'] ?? {}).find((n) => /^\/kalender\|button\|Monat@0$/.test(n.id));
+	if (!root) return null;
+	const cells = cellsOf(root.page);
+	const sp = (x) => /<span class="([^"]*)"/.exec(x)?.[1]?.replace(/&amp;/g, '&');
+	return { out: clsOf(cells[0]), in: clsOf(cells[3]), today: clsOf(cells[8]), ev: clsOf(cells[9]), sp: { out: sp(cells[0]), in: sp(cells[3]), today: sp(cells[8]), ev: sp(cells[9]) }, dot: cells[9].match(/<span aria-hidden="true"[^>]*><\/span>/)[0] };
+})();
+const gridSpec = (html) => {
+	const cells = cellsOf(html);
+	const t = cells.findIndex((x) => /aria-current="date"/.test(x));
+	const title = /Kalender \{\{MO:(-?\d)\}\}/.exec(html);
+	const ev = {};
+	cells.forEach((x, i) => {
+		if (!/absolute bottom-1/.test(x) || t < 0) return;
+		const k = i - t;
+		const suf = /aria-label="[^"]*?(?:\}\}|\d{4})(,[^"]*)"/.exec(x)?.[1] ?? '';
+		ev[k === 3 ? 'F' : k] = suf;
+	});
+	return { t, m: title ? +title[1] : 0, ev, keys: cells.map((x) => /data-k="([^"]*)"/.exec(x)?.[1] ?? '') };
+};
+const withGrid = (h) => {
+	const html = T[`p-${h}`];
+	if (!html || !/<table role="grid"/.test(html)) return h;
+	return tpl('p', html.replace(/<table role="grid"/, `<table data-g="${esc(JSON.stringify(gridSpec(html)))}" role="grid"`));
+};
+for (const nodes of Object.values(W)) for (const n of Object.values(nodes)) n.p = withGrid(n.p);
+for (const k of Object.keys(PG)) PG[k] = withGrid(PG[k]);
+
 // ------------------------------------------------------------------ Referenzindex (Nummern der Aufnahmen)
 const ref = {};
 const pick = (nn, w, rx) => {
@@ -303,7 +336,7 @@ pick('63', '-', /^\/abos\|button\|JODetails/);
 pick('64', 'A+P', /#A\+P$/);
 
 // ------------------------------------------------------------------ Ausgabe
-const model = { flags: FLAGS, rel: REL, start: '/|', nodes: W, pg: PG, parent, ref };
+const model = { flags: FLAGS, rel: REL, start: '/|', nodes: W, pg: PG, parent, ref, grid: gridProtos };
 const used = Object.values(W).flatMap((nodes) => Object.values(nodes)).flatMap((n) => [`p-${n.p}`, n.o ? `o-${n.o}` : null]);
 for (const k of Object.keys(PG)) used.push(`p-${PG[k]}`);
 const usedSet = new Set(used.filter(Boolean));
@@ -337,9 +370,9 @@ const html = `<!doctype html>
 <link rel="stylesheet" href="app.css">
 <style>
 :root{--sai-top:47px;--sai-bottom:34px;--sai-left:0px;--sai-right:0px}
-html,body{overflow:hidden;overscroll-behavior:none}
+html,body{overflow:hidden}
 html.framed,html.framed *{cursor:none!important;-webkit-user-select:none;user-select:none}
-html.framed{-webkit-tap-highlight-color:transparent;touch-action:pan-y}
+html.framed{-webkit-tap-highlight-color:transparent;touch-action:none}
 .demo-over{position:fixed;inset:0;z-index:60}
 .demo-still *{animation:none!important;transition:none!important}
 </style>

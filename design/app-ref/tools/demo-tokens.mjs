@@ -73,7 +73,7 @@ export function tokenize(html, route) {
 	h = h.replace(/(?<![\d.])(03\.11\.|03\.12\.|03\.01\.)(?!\d)/g, (m) => month3.get(m));
 	// Datumsformate (längere zuerst, damit "10.10.2026" nicht als "10.10." gilt)
 	for (const fmt of ['voll', 'dm', 'dmy', 'lang', 'wdlm', 'kurz', 'tm']) h = h.replace(RX[fmt], (m) => T[fmt].get(m));
-	h = h.replace(/(?<![\w])Oktober 2026/g, '{{D:0:my}}');
+	h = h.replace(/(?<![\w])(September|Oktober|November) 2026/g, (m, mo) => `{{MO:${{ September: -1, Oktober: 0, November: 1 }[mo]}}}`);
 	void route;
 	void WD;
 	return h;
