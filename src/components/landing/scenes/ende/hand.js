@@ -796,6 +796,7 @@ function drawIn(back, front, c, cam) {
 			quiet: st.quiet.slice(),
 			rects: st.rects,
 			ms: st.ms,
+			dbg: st.dbg,
 			gpu: st.layers?.map((L) => L.gpuMs ?? []),
 		});
 	}
@@ -830,6 +831,7 @@ function drawIn(back, front, c, cam) {
 		if (c.m.type === 'touch') {
 			st.tap = [mx, my];
 			st.tapT = now;
+			st.tapTop = window.scrollY;
 		}
 	}
 	let tg = null;
@@ -837,14 +839,18 @@ function drawIn(back, front, c, cam) {
 	if (c.endOn) {
 		if (c.m.type === 'touch') {
 			k = 8;
-			if (c.m.down) {
-				tg = [mx, my];
-				st.tap = tg;
-				st.tapT = now;
-			} else if (st.tap && now - st.tapT < 1.5) tg = st.tap;
+			// nur Tipps zählen, ein Wisch zum Scrollen (die Seite bewegt sich) lässt die Hand in Ruhe
+			if (st.tap && Math.abs(window.scrollY - st.tapTop) < 8) {
+				if (c.m.down) {
+					tg = [mx, my];
+					st.tap = tg;
+					st.tapT = now;
+				} else if (now - st.tapT < 1.5) tg = st.tap;
+			}
 		} else if (c.m.in) tg = [mx, my];
 	}
 	if (!tg) tg = c.reduced ? [820, 400] : autopilot(t);
+	st.dbg = { m: { x: c.m.x, y: c.m.y, in: c.m.in, down: c.m.down, type: c.m.type }, tg, endOn: c.endOn, tap: st.tap };
 	const ht = st.ht;
 	const kk = 1 - Math.exp(-k * Math.min(dt, 0.05));
 	ht.x += (tg[0] - ht.x) * kk;
@@ -865,7 +871,7 @@ function drawIn(back, front, c, cam) {
 		tip: { x: ht.x + ux * (6 + push * 4), y: ht.y + uy * (6 + push * 4) },
 		u: { x: ux, y: uy },
 		sc: PS * (1 - push * 0.06),
-		pa: 1,
+		pa: qa.noPoint ? 0 : 1,
 		ring: pr >= 0 && pr < RING_T ? 1 - pr / RING_T : 0,
 		ringR: 10 + Math.max(0, pr) * 150,
 		q: st.quiet,

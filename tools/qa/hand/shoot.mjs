@@ -11,7 +11,7 @@ const o = args();
 const vps = vpList(o.vp ?? '1440x900@2');
 const mark = o.mark ?? 'intro:0.97';
 const ats = String(o.at ?? 'rest').split(',');
-const browser = await launch();
+const browser = await launch({ gl: o.nogl ? false : undefined });
 for (const vp of vps) {
 	const h = await open(browser, { vp, url: o.url, reducedMotion: o.reduce ? 'reduce' : undefined });
 	if (!h.vp.touch) await h.page.mouse.move(2, 2);
