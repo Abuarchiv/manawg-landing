@@ -1,30 +1,32 @@
 # HAND: realistische Hände aus Blender
 
-Stand 2026-10-07, sechster Durchgang (Branch `hand-v2`). Die beiden Hände der Engine (Handy-Hand `holdBack`/`holdFront`, Zeigehand `point`) kommen aus gerenderten Daten-Pässen (Leuchtdichte, Alpha, Normale, Tiefe); die Engine zeichnet daraus weiter Halbton-Punkte mit Zeigerlicht. Struktur wie in der Design-Referenz: linke Hand hält das Handy von hinten, Daumen schräg über der linken Rahmenkante, breiter Daumenballen links bis zur Handyunterkante, gestaffelte Fingerkuppen am rechten Rand, Handgelenk und Unterarm laufen unter dem Handy fast senkrecht nach unten; rechte Zeigehand von unten rechts, Zeigefinger steil zur Spitze bei (794, 301), übrige Finger eingerollt, Daumen angelegt, Faust vor dem Bildschirm, Unterarm in etwa 45° zur unteren rechten Ecke.
+Stand 2026-10-07, siebter Durchgang (Branch `hand-v2`). Die beiden Hände der Engine (Handy-Hand `holdBack`/`holdFront`, Zeigehand `point`) kommen aus gerenderten Daten-Pässen (Leuchtdichte, Alpha, Normale, Tiefe); die Engine zeichnet daraus weiter Halbton-Punkte mit Zeigerlicht. Struktur wie in der Design-Referenz: linke Hand hält das Handy von hinten, Daumen schräg über der linken Rahmenkante, breiter Daumenballen links bis zur Handyunterkante, gestaffelte Fingerkuppen am rechten Rand, Handgelenk und Unterarm laufen unter dem Handy fast senkrecht nach unten; rechte Zeigehand von unten rechts, Zeigefinger steil zur Spitze bei (794, 301), übrige Finger eingerollt, Daumen angelegt, Faust vor dem Bildschirm, Unterarm in etwa 45° zur unteren rechten Ecke.
 
-## 0. Was sich im sechsten Durchgang geändert hat
+## 0. Was sich im siebten Durchgang geändert hat
 
-Die Jury hat den fünften Stand (c961d10) mit 5/10 bewertet. Modell (MPFB-Mann), Rig, Pass-Format und Shader bleiben; geändert sind Netz-Korrekturen, Gewichte, Posen, Haut und Messung. Vergleich vorher/nachher: `archiv/hand/v3/doc4/vorher_nachher.png`.
+Die Jury hat den sechsten Stand (8381b42) mit 5/10 bewertet und elf Punkte genannt. Modell (MPFB-Mann), Rig, Pass-Format und Shader bleiben; neu sind die Pose der Handy-Hand (Finger per FK statt IK), die Handgröße, Netzkorrekturen am Daumenballen und Handgelenk, die Zeigehand-Drehung, das Licht der Zeigehand und die Hautfalten. Vergleich und Ausschnitte (Referenz | vorher | neu Halbton | neu Luminanz, 2-fach): `archiv/hand/v3/doc7/`.
 
-- **Hautkeil über dem Daumen:** stammte vom Zeigefinger-Mittelhandknochen hinter dem Handy, der links vom Rahmen über der Daumenkuppe hervorschaute. Die Pose hält ihn jetzt rechts vom Rahmen (Strafterm `wedge`, 20 je Punkt), und `render4.py` maskiert zusätzlich alle Nicht-Daumen-Punkte hinter der Handy-Vorderseite links von x 656 oberhalb der Daumenkuppe als Holdout (Attribut `hold`). Links vom Rahmen ragt oberhalb der Kuppe nichts mehr heraus.
-- **Einschnürung unter dem Daumenballen:** Ursache war das Daumengrundglied, das als Wurst vor dem Handy bis y 680 hing, während das Handgelenk dahinter weiter rechts lag. Neu: Ziel für das Daumen-Grundgelenk (MCP) links unten am Rahmen, Hand um die Längsachse auf −27° gerollt, Handgelenk-Ziel x 640, Konturterm je 20-px-Band (x 560–590, ab y 660 höchstens 570) mit Glattheitsterm (Sprung ≤ 6 px). Gemessen aus `a` (`v3/scripts/leftrows.py`): linke Kontur von y 560 bis 790 zwischen x 559 und 573, Zeile zu Zeile höchstens 4 px Änderung, kein Hals, keine waagerechte Unterkante.
-- **Daumen und Ballen schlanker** (`v3/scripts/sculpt4.py`, im Ruhenetz): Daumen-Grund-/Endglied radial auf 0,72/0,86 um die Knochenachse, Ballen um den Daumen-Mittelhandknochen auf 0,6 eingezogen (zur Handwurzel hin auslaufend 1,25–1,45, damit kein Absatz entsteht). Daumen-Endgelenk per Taubin-Glättung (ohne Volumenverlust) entknotet, IP-Beugung auf höchstens 40° begrenzt (die 72° des fünften Stands quetschten die Haut hinter dem Nagel zu einem Knoten). Keine Venen am Daumen.
-- **Kuppen rechts:** Zeige-, Mittel-, Ring- und kleiner Finger per IK mit vier Knochen (Mittelhand + drei Glieder; Mittelhandknochen ±25°/±12° begrenzt), damit auch Zeige- und kleiner Finger um die Kante reichen; Strafterm für sichtbare Punkte rechts vom Rahmen außerhalb ±28 px um die Ziele (Lücken, kein Schwanz). Optimiert auf dem unterteilten Netz (29 305 Punkte), Zählterme durch die Dichte (16) geteilt.
-- **Gelenkfalten:** Hülle 1,9 mm statt 4,5 mm, Abstand 1,5 mm, also 2–3 flache Querfalten an PIP/DIP/IP statt vieler paralleler Riefen; Daumen-MCP schwächer.
-- **Zeigehand:** Daumen per eigener Optimierung (`opt_pthumb.py`, Raster + Nelder-Mead, Durchdringung per BVH) angelegt, Spitze am Mittelglied des Mittelfingers. Hand um die Zeigefingerachse auf −80° gerollt: Sicht auf Handrücken mit Knöchel-Plateaus, eingerollte Finger liegen hinter der Hand, Faust in der Soll-Box. Größe 0,44 statt 0,42. Unterarm weniger gestreckt (1,5/1,3 statt 1,9/1,4), dafür 1,2–1,3-fach dicker; Strecksehnen und MCP-Knöchel zusätzlich modelliert (`sculpt4.py`, `tendons`), Brachioradialis-Masse proximal +22 %.
-- **Haut** (`v3/scripts/skin4.py`): zusätzlich großflächige Tonvariation (Noise 22/m, Overlay 0,3), Rauigkeit 0,44–0,58 mit Noise statt konstant 0,6, Specular 0,42 statt 0,28 (feuchter Hautglanz statt Gips), Bump 0,42; Nägel 0,36 Rauigkeit mit weicher Glanzlinie. Poren (Voronoi 0,45 mm) und Falten bleiben unter der Halbtonzelle (2,5 px ≈ 0,6 mm).
+- **Kuppen als liegende Fingerglieder:** Die Finger 2–5 werden nicht mehr per IK an Punkte neben der Kante gezogen (das ergab von vorn gesehene Halbkuppeln), sondern je Finger per FK gelöst (`v3/scripts/fing7.py`: Raster + Nelder-Mead über MCP-Beugung, Abspreizung, PIP, DIP; Kosten: Spitze vor dem Rahmen, Durchdringung des Handys, Überstand, Höhe, Bildschirm frei). Die Handlage selbst kommt aus einem Raster über Handgelenk, Richtung, Neigung, Rollen und Handgelenk-Abweichung mit Strafterm für den Handteller im Handy. Die Fingerglieder liegen jetzt schräg um die Kante, die Kuppen greifen auf den Rahmen (bis x ≈ 905–935) und zeigen nach links unten; Mittel- und Endglied sind seitlich zu sehen. Grundglieder 1,04-fach lang, Finger 0,9-fach schlanker (`fsc`, damit die Lücken bleiben).
+- **Handgröße 0,88** statt 1,0 des MPFB-Mannes: Nur so passen Daumenkuppe (y ≈ 390–410), Kuppenreihe (y 220–480) und Handgelenk (y ≈ 770) gleichzeitig in die Referenz-Komposition; bei 1,0 stand der Daumen 13 mm zu hoch oder musste im MCP 78° geknickt werden.
+- **Daumen über das CMC-Gelenk:** MCP-Beugung von 78° auf 41° begrenzt (`mcp_max`), die Neigung kommt aus dem Daumen-Mittelhandknochen; Grund- und Endglied jetzt **69°/69°** (vorher 85°/71°). Ziele für Spitze und IP-Gelenk in `fing7.py` (`thumb.tip`, `thumb.ip`).
+- **Daumenballen als eine Form, Handgelenk-Taille, Hypothenar** (`v3/scripts/sculpt7.py`, Ruhenetz): Ballen um den Daumen-Mittelhandknochen 0,9 statt 0,6 (keine Kerbe unter dem Daumen-MCP), Handgelenk um die Falte radial-ulnar auf 0,84 eingezogen, Hypothenar-Rundung 3,5 mm am ulnaren Handballen. Dazu posenbezogene Korrektur (`v3/scripts/fix7.py`): Verschiebungen im Bildraum der fertigen Pose über die Skinning-Matrizen ins Ruhenetz zurückgerechnet (Wulst am Daumen-MCP 2 mm flacher, Übergang Ballen–Handgelenk per Taubin geglättet). Ergebnis `hands_sc7h.blend`.
+- **Holdout-Kante unten:** Im Haltehand-Pass gibt es keinen Holdout der Zeigehand; die Haltehand ist dort vollständig gerendert. Die gerade Diagonale von der Handy-Ecke war die ulnare Handkante selbst; sie verläuft jetzt als S (Hypothenar-Rundung, Taille, Unterarm). Die waagerechte Kante bei y ≈ 707 ist die Handy-Unterkante (Handy-Holdout 1 % kürzer als das DOM) und liegt unter dem gezeichneten Rahmen.
+- **Zeigehand:** um die Zeigefingerachse von −80° auf −140° gedreht (Sicht schräg auf die Handfläche): Daumen als eigene Form oben auf der Faust, darunter zwei weitere gestufte eingerollte Finger mit dunklen Fugen; das Loch bei (838, 487) ist geschlossen (Alpha dort 1,0). Unterarm 4° flacher (`aang −4`) und schlanker (Unterarmknochen 0,98/1,02 dick statt 1,2/1,3): 42,6° zur Ecke, Tab „Austausch“ zu 39 % frei.
+- **Zeigehand-Licht:** Fülllicht 4,0 statt 0,9, Welt 0,03 (`lights/LP7.json`), Packen mit `--gain 0.88 --lgamma 0.68`: Leuchtdichte über dem Bildschirm im Mittel **165** (vorher 135), Maximum 249, Anteil ≥ 250 = 0; im Halbton-Bild (1280 × 800) Mittel der Zeigehand über dem Bildschirm **154** (vorher 138).
+- **Haut** (`v3/scripts/skin7.py`): Gelenkfalten als 2–3 Bögen (Phase um 0,035 · seitlicher Abstand² gebogen, Rauschen in der Phase, Rille `max(0, cos)^4` mit weicher Schulter, Tiefe je Falte per Rauschen 0,45–1,0, neues Attribut `jl`); großflächige Tonvariation halbiert und gröber (Noise 12/m, Overlay 0,15, Flecken 0,2 statt 0,34); Wolkenrauschen im Relief durch feine Rauigkeit ersetzt (Noise 1600/m, 0,18).
+- **Engine:** Die Verblassen-Werte in `drawHands` (`hero.js`, Zeile 221: `300`/`420`) müssen weiter auf `520`/`560` gesetzt werden; die Engine war nicht Teil dieses Durchgangs (nur Pässe und diese Datei).
 
-Grundlage aus dem fünften Durchgang (weiter gültig): MPFB-Mann, Rig `default` mit detailed helpers, Herauslösen der Unterarme (`extract.py`), Unterteilung 2 (`bake_sub.py`), `sculpt3.py` (Beugesehnen, Brachioradialis, Elle-Kopf, Strecksehnen, Knöchel, Fingerbeeren, eigene Nagelmaske), Corrective Smooth + Unterteilung 1 beim Render, Licht ohne Rim, Tonkurve mit weicher Schulter (`pack5.py`).
+Grundlage aus dem fünften und sechsten Durchgang (weiter gültig): MPFB-Mann, Rig `default` mit detailed helpers, Herauslösen der Unterarme (`extract.py`), Unterteilung 2 (`bake_sub.py`), `sculpt3.py` (Beugesehnen, Brachioradialis, Elle-Kopf, Strecksehnen, Knöchel, Fingerbeeren, eigene Nagelmaske), Corrective Smooth + Unterteilung 1 beim Render, Licht ohne Rim, Tonkurve mit weicher Schulter (`pack5.py`).
 
 ## 1. Dateien
 
 | Datei | Inhalt | Größe |
 |---|---|---|
-| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 1960 × 2658, Kachel 980 × 1772, Maßstab 1,5, `origin [341,3, 218,7]`, `bottomY 1400`) | 61 kB |
-| `public/hand/point.webp` + `point.json` | Zeigehand als Sprite (Atlas 4304 × 774, Kachel 2152 × 516, Maßstab 1,0, `origin [−12, −36]`) | 58 kB |
-| Summe | | 119 kB (Grenze 600 kB) |
+| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 1792 × 2676, Kachel 896 × 1784, Maßstab 1,5, `origin [410,7, 210,7]`, `bottomY 1400`) | 61 kB |
+| `public/hand/point.webp` + `point.json` | Zeigehand als Sprite (Atlas 4272 × 672, Kachel 2136 × 448, Maßstab 1,0, `origin [−8, −96]`) | 51 kB |
+| Summe | | 112 kB (Grenze 600 kB) |
 
-Schlüssel, Kachelnamen, Kodierung, `space`, `phone`, `screen`, `bottomY` und die Bühnenkoordinaten sind unverändert; geändert haben sich nur Kachelmaße, `origin` und Inhalt. Nichts ist abgeschnitten: die Handy-Hand endet unten an `bottomY 1400`, der Unterarm der Zeigehand reicht 1180 Bühnen-px weit (Sprite 2139 px × 0,55) und damit über das Verblassen (520 + 560) hinaus.
+Schlüssel, Kachelnamen, Kodierung, `space`, `phone`, `screen`, `bottomY` und die Bühnenkoordinaten sind unverändert; geändert haben sich nur Kachelmaße, `origin` und Inhalt. Nichts ist abgeschnitten: die Handy-Hand endet unten an `bottomY 1400`, der Unterarm der Zeigehand reicht 1170 Bühnen-px weit (Sprite 2128 px × 0,55) und damit über das Verblassen (520 + 560) hinaus.
 
 ## 2. Koordinaten
 
@@ -49,30 +51,30 @@ Lage in der Bühne: `origin` (Bühnen-px der oberen linken Ecke von `lum`/`a`) u
 
 ## 4. Handy-Hand (`hold`)
 
-Linke Hand im Bild (MPFB-Rechtshand hinter der Spiegelkamera), Handgröße 1,0 des MPFB-Mannes (fünfter Stand 1,06). Gemessen im Bühnenraum aus `a`/`origin` (`leftrows.py`, `measure4.py`, `hold3.py`; Soll aus der Referenz in Klammern):
+Linke Hand im Bild (MPFB-Rechtshand hinter der Spiegelkamera), Handgröße 0,88 des MPFB-Mannes. Gemessen im Bühnenraum aus `a`/`origin` (`v3/scripts/measure7.py`, `leftrows.py`, `thprobe7.py`; Soll aus der Referenz in Klammern):
 
-- **Daumen:** äußerster Punkt vor dem Handy bei y 450, **21 px** über dem Rahmen (Soll 15–25 px, y 400–460); obere Kontur der Kuppe ab y 420. Endglied 71°, Grundglied 85° zur Waagerechten, IP 40° gebeugt, Nagel zur Kamera.
-- **Linke Kontur (Daumenballen bis Handgelenk):** x 629 (y 420, Kuppe) → 590 (y 480) → 573 (y 550) → **559 (y 610)** → 569 (y 660) → 572 (y 700) → 559 (y 790). Durchgehend leicht konvex, ohne Absatz bis unter die Handyunterkante (Soll ≈ 570, ≥ 560).
-- **Kuppen rechts:** vier Fingerenden mit Lücken; y-Bereiche rechts von x 953: 229–279 / 294–347 / 372–423 / 439–500, Lücken **15 / 25 / 16 px**, Überstand über x 950: **29 / 33 / 33 / 29 px** (Soll 28–48), kleiner Finger am kürzesten. IK-Ziele der Fingerspitzen (972, 246), (974, 326), (968, 402), (966, 476).
-- **Handgelenk und Unterarm:** Handgelenk-Knochen bei (659, 797), Unterarm 10° aus der Senkrechten nach links unten, bei y 800 von x 556 bis 767 (211 px = 50 mm), konisch zum Ellbogen hin, Sehnen und Beugefalten am Handgelenk.
-- Die Handfläche liegt hinter dem Handy (Holdout). Links vom Rahmen oberhalb der Daumenkuppe ist nichts mehr sichtbar (Pose + Maske `hold`).
+- **Daumen:** Grundglied **69°**, Endglied **69°** zur Waagerechten (Soll 60–70°), MCP 41°, IP 47° gebeugt, Nagel zur Kamera. Äußerster Punkt vor dem Handy **18 px** über dem Rahmen bei y 406, obere Kontur der Kuppe ab y 382 (Soll 15–25 px, y 400–460).
+- **Linke Kontur (Daumen, Ballen, Handgelenk):** x 571 (y 500) → 557 (y 530–540, Daumen-MCP) → 563 (y 600) → 571 (y 640) → 585 (y 690–730, Taille) → 577 (y 770) → 570 (y 790). Ab der Taille läuft der Unterarm wieder nach links aus; kein Wert unter 557.
+- **Kuppen rechts** (Zeilen mit Alpha rechts von x 950): y **220–283 / 290–345 / 355–411 / 422–479**, Höhe 63/55/56/57 px, Überstand über x 950 **45/47/45/47 px**, Länge einschließlich Teil auf dem Rahmen 49/62/56/50 px, Lücken **7/10/11 px** (Soll 6–12).
+- **Unter dem Handy** (Breite der Hand je Zeile): y 710 x 585–815 (230 px), y 740 583–781 (198), y 760 580–751 (171), y 790 570–724 (154): Handgelenk 0,67 der Breite an der Handy-Unterkante (Soll ≈ 0,6). Rechte (ulnare) Kontur 815 → 806 → 796 → 781 → 766 → 751 → 738 → 729 → 724: erst flach (Hypothenar), dann steiler, dann wieder flach (Taille) als leichtes S.
+- **Unterarm:** Handgelenk-Knochen bei (654, 766), Unterarm 6° aus der Senkrechten nach links unten.
+- Die Handfläche liegt hinter dem Handy (Holdout). Links vom Rahmen oberhalb der Daumenkuppe ist nichts sichtbar (Pose + Maske `hold`).
 
-**Vorn/hinten** wie bisher im Shader aus `z` und Handy-Silhouette (`vorne = sdf < 4 && z < 1,5 mm`); vorne liegt nur die Daumenkuppe.
+**Vorn/hinten** wie bisher im Shader aus `z` und Handy-Silhouette (`vorne = sdf < 4 && z < 1,5 mm`); vorne liegen die Daumenkuppe und die Fingerkuppen auf dem rechten Rahmen.
 
 ## 5. Zeigehand (`point`)
 
-Rechte Hand im Bild (MPFB-Linkshand hinter der Spiegelkamera), Handgröße 0,44 des MPFB-Mannes (die Referenz zeigt die Zeigehand deutlich kleiner als die haltende Hand). Pose: Zeigefinger fast gestreckt (MCP −2°, PIP 10°, DIP 6°), Mittel-/Ring-/kleiner Finger eingerollt (78/100/50, 82/100/50, 86/95/48), **Daumen angelegt** (`finger1-1 [28,6, 26,3, 32,9]`, `finger1-2 [53,5, 0, −15,2]`, `finger1-3 [40, 0, 0]`, Spitze am Mittelglied des Mittelfingers, kollisionsfrei), Hand auf −80° um die Zeigefingerachse gerollt (Sicht auf Handrücken, Knöchel oben, eingerollte Finger hinter der Hand), Zeigefinger 12° in die Bildschirmebene geneigt, Unterarm 25° zur Kamera ansteigend, Unterarmknochen 1,5/1,3-fach lang und 1,2/1,3-fach dick.
+Rechte Hand im Bild (MPFB-Linkshand hinter der Spiegelkamera), Handgröße 0,44 des MPFB-Mannes. Pose: Zeigefinger fast gestreckt (MCP −2°, PIP 10°, DIP 6°), Mittel-/Ring-/kleiner Finger eingerollt (78/100/50, 82/100/50, 86/95/48), Daumen angelegt (`finger1-1 [28,6, 26,3, 32,9]`, `finger1-2 [53,5, 0, −15,2]`, `finger1-3 [40, 0, 0]`), Hand auf **−140°** um die Zeigefingerachse gerollt (schräge Sicht auf die Handfläche: Daumen und zwei eingerollte Finger gestuft unter dem Zeigefinger), Zeigefinger 12° in die Bildschirmebene geneigt, Unterarm 25° zur Kamera ansteigend und 4° flacher als die Engine-Richtung (`aang −4`), Unterarmknochen 1,5/1,3-fach lang, 0,98/1,02-fach dick. Spec: `v3/q7_pa-4.json`.
 
-- Sprite-Raum unverändert: Ursprung = Fingerspitze, `x` = Richtung Arm, `y` nach unten = Seite der eingerollten Finger; `origin [−12, −36]`, Kachel 2152 × 516 bei Maßstab 1,0 (7,62 Sprite-px/mm, mit `PS 0,55` = 4,19 Bühnen-px/mm wie die Handy-Ebene).
+- Sprite-Raum unverändert: Ursprung = Fingerspitze, `x` = Richtung Arm, `y` nach unten = Seite der eingerollten Finger; `origin [−8, −96]`, Kachel 2136 × 448 bei Maßstab 1,0 (7,62 Sprite-px/mm, mit `PS 0,55` = 4,19 Bühnen-px/mm wie die Handy-Ebene).
 - Platzierung wie in der Engine (`u = normalize(1460 − ht.x, 1020 − ht.y)` usw., Abschnitt 6).
-- **Messwerte bei Spitze (794, 301)** (`v3/scripts/fistbox.py`, `measure4.py`): Zeigefinger **52°** über der Waagerechten (Soll 50–55°); Faust einschließlich Zeigefingerwurzel und Handgelenk **x 798–926**, y 336–550 (Soll Faust x 800–930, y 360–510; fünfter Stand x 754–930); Unterarm **45°** zur Ecke, 118 px breit. Breite quer zum Arm (Sprite-px): Handgelenk 147, +150 px 175, +300 px 211 (1,43-fach, Brachioradialis-Bauch), +600 px 295. Handgelenk zu Hand (inkl. eingerollter Finger) 0,59; zur Mittelhand allein ≈ 0,65.
-- Die Textanfänge der Liste („Küche wischen“, „Mikas Bruder …“) bleiben frei; die Faust beginnt bei x 798.
+- **Messwerte bei Spitze (794, 301)** (`v3/scripts/fistbox.py`, `fistbox7.py`): Zeigefinger **52,4°** über der Waagerechten (Soll 50–55°); Faust **x 777–895, y 336–550** (Soll x 800–930, y 360–510; Referenz-Faust beginnt bei x ≈ 785); Unterarm **42,6°** zur Ecke, 105 px breit; Tab „Austausch“ (x 875–935, y 668–692) zu **61 %** bedeckt, also teilweise frei (vorher 83 %); Loch bei (838, 487) geschlossen (Alpha-Minimum im 20-px-Fenster 1,0, vorher 0).
+- **Helligkeit:** Leuchtdichte über dem Bildschirm im Mittel 165, 5-%-Perzentil 98, Maximum 249, Anteil ≥ 250 = 0. Im Halbton-Bild Mittel 154.
 - **Verblassen:** wie im vierten Durchgang muss die Engine `300`/`420` in `drawHands` auf **`520`/`560`** setzen (der Referenz-Shader `v2/scripts/preview.html` macht das über `fs`/`fl`).
-- Helligkeit: Perzentil 99,5 → 0,8 mit weicher Schulter, keine Rampe mehr.
 
 ## 6. Halbton-Shader (Referenz, aus `preview.html`)
 
-Lauffähige Referenz: `/Users/abu/Company/archiv/hand/v2/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/v2/scripts/preview.html?b=../out/<ordner>/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `fs`/`fl` (Verblassen der Zeigehand), `ascii=1`, `mx/my/px/py`). Geprüft bei 1440 × 900 und 390 × 844 (Ausschnitt `view=560,40,540,1170`). Vergleichsbild (Design / Halbton / Luminanz): `archiv/hand/v3/doc4/vergleich.png`.
+Lauffähige Referenz: `/Users/abu/Company/archiv/hand/v2/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/v2/scripts/preview.html?b=../out/<ordner>/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `fs`/`fl` (Verblassen der Zeigehand), `ascii=1`, `mx/my/px/py`). Geprüft bei 1440 × 900 und 390 × 844 (Ausschnitt `view=560,40,540,1170`). Vergleichsbild (Design / Halbton / Luminanz): `archiv/hand/v3/doc7/vergleich.png`, Ausschnitte `doc7/crop_{kuppen,faust,daumen,handgelenk}.png`.
 
 `dot()`, `HB`, `hsh`, `cl`, `ss`, `lightF`, `ink`, `step 2,5` bleiben aus der Engine. Neu ist nur die Herkunft von `v` (Ton 0..1) je Zelle. Abgestimmte Konstanten: `GAM 0,6`, `CON 1,25`, `RIM 0,45`, `EDW 3,4`, `EDV 1,0`, `JIT 0,15` (Engine: 0,4; weniger Zufall = lesbare Finger).
 
@@ -149,23 +151,26 @@ Arbeitsordner `/Users/abu/Company/archiv/hand/v3/` (Blender 5.2 mit MPFB 2.0.17,
 
 - Modell: `mk_mpfb.py` (Mensch, Makros eingebacken, Rig `default` mit **detailed helpers**, sonst passt MPFB das Rig nicht an die Makros an) → `extract.py` → `bake_sub.py` → `sculpt3.py` → `hands_sc.blend` → `sculpt4.py` (`blender -b hands_sc.blend --python scripts/sculpt4.py -- hands_sc4.blend 190`; grobes Netz für Schnelltests: `hands_male.blend` → `hands_male4.blend` mit 12) → `hands_sc4.blend` (Objekte `ArmL`, `ArmR`, Rig `Human.rig`).
 - Bone-Achsen im MPFB-Rig: Finger `X` = Beugung (+), `Z` = Abspreizung; Daumen `finger1-*`: `X` quer über die Handfläche, `−Z` zur Handfläche; `wrist`: `X` radial (+), `Z` Beugung (+). `finger1` = Daumen, `finger2..5` = Zeige- bis kleiner Finger, `metacarpal1..4` = Mittelhand Zeige- bis kleiner Finger.
-- Posen: `q4_hold_final.json` (Handgelenk, Richtung, Skala 1,0, FK für Handgelenk und Daumen, IK-Ziele der Kuppen mit Kette 4), `q4_point_final.json`. Licht: `lights/L2.json` (Handy-Hand), `lights/LP1.json` (Zeigehand). Cycles 192 Samples, Entrauschen, transparenter Film, Pixelfilter 1,0. Render mit `render4.py` (Haut `skin4.py`, Keil-Maske).
+- Netz siebter Durchgang: `blender -b hands_sc.blend --python scripts/sculpt7.py -- hands_sc7b.blend 190 0.9 0.84 3.5 4.5 0.038` (Ballen, Taille, Hypothenar), dann zweimal `fix7.py` (posenbezogen) → `hands_sc7f.blend` → `hands_sc7h.blend`.
+- Posen: `q/q7_h23.json` (Handy-Hand: Handgelenk, Richtung, Skala 0,88, `fsc [1,04, 0,9]`, FK für Handgelenk, Daumen und alle Finger), `q7_pa-4.json` (Zeigehand). Licht: `lights/L2.json` (Handy-Hand), `lights/LP7.json` (Zeigehand). Cycles 192 Samples, Entrauschen, transparenter Film, Pixelfilter 1,0. Render mit `render7.py` (Haut `skin7.py`, Keil-Maske).
 
 ```
 cd /Users/abu/Company/archiv/hand/v3
-blender -b hands_sc4.blend --python scripts/opt_hold4.py -- q4_h19.json q/q4_h19_o.json 400   # Hand + Finger (dens 16)
-BL=hands_sc4.blend IT=600 ./qr.sh q4_h26        # Daumen (opt_thumb4.py, MCP-Ziel, IP <= 40°) + Schnellansicht
-blender -b hands_sc4.blend --python scripts/opt_pthumb.py -- qp4_2.json q/qp4_2.json 200   # Daumen Zeigehand
-BL=hands_sc4.blend ./rh4.sh F4h q4_hold_final.json 192 100 lights/L2.json     # Render + Pack Handy-Hand
-BL=hands_sc4.blend ./rp4.sh F4p q4_point_final.json 192 100 lights/LP1.json   # Render + Pack Zeigehand
-./comp.sh F4h F4p fin4                         # Packs zusammenlegen, Faust-Messung, Luminanz im Bühnenraum
-../v2/venv/bin/python scripts/leftrows.py out/fin4/pk    # linke Kontur je 10 px
-../v2/venv/bin/python scripts/measure4.py out/fin4/pk    # Kuppen, Lücken, Handgelenk/Unterarm
-../v2/venv/bin/python scripts/edgecheck.py out/fin4/pk hold   # Saum-Prüfung
-./ht.sh fin4                                   # Halbton 1280x800, 1440x900, 390x844
+blender -b hands_male4.blend --python scripts/fing7.py -- q7_h23.json q/q7_h23.json   # Handlage-Raster (hands), Finger je FK, Daumen
+./v7.sh q/q7_h23.json h23                      # Schnellansicht (Workbench, Netz wie im Render) vorne | Röntgen | Seite
+blender -b hands_sc7b.blend --python scripts/fix7.py -- q/q7_h17.json hands_sc7f.blend '[[584,600,12,3.5,-1,0]]'
+blender -b hands_sc7f.blend --python scripts/fix7.py -- q/q7_h23.json hands_sc7h.blend '[[552,556,12,-2.0,-1,0],{"smooth":[590,596,14,40]}]'
+BL=hands_sc7h.blend ./rh7.sh F7h q/q7_h23.json 192 100 lights/L2.json              # Render + Pack Handy-Hand
+LG=0.68 GAIN=0.88 BL=hands_sc7f.blend ./rp7.sh F7p q7_pa-4.json 192 100 lights/LP7.json   # Render + Pack Zeigehand
+./comp7.sh F7h F7p fin7                        # Packs zusammenlegen, Faust-Messung, Luminanz im Bühnenraum
+../v2/venv/bin/python scripts/measure7.py out/fin7/pk    # Kuppen, Lücken, Daumen, Breiten unter dem Handy
+../v2/venv/bin/python scripts/fistbox7.py out/fin7/pk    # Faust, Tab-Abdeckung, Loch, Helligkeit über dem Bildschirm
+../v2/venv/bin/python scripts/leftrows.py out/fin7/pk    # linke Kontur je 10 px
+./ht7.sh fin7                                  # Halbton 1280x800, 1440x900, 390x844
+../v2/venv/bin/python scripts/vergleich7.py    # Vergleich + Ausschnitte
 ```
 
-Halbton-Vorschau: Dateien nach `archiv/hand/v2/out/c_<tag>/` kopieren, Server `python3 -m http.server 4290` in `archiv/hand`, dann `v2/scripts/shot.mjs "b=../out/c_<tag>/&px=794&py=301&mx=794&my=301" out.png 1280 800 794 301` (`PAGE=v2/scripts/preview.html`). Geprüft bei 1280 × 800, 1440 × 900 und 390 × 844 (`view=560,40,540,1170`); Bilder in `archiv/hand/v3/doc4/` (`ht.sh` erledigt Kopie, Server und alle drei Größen).
+Halbton-Vorschau: Dateien nach `archiv/hand/v2/out/c_<tag>/` kopieren, Server `python3 -m http.server 4290` in `archiv/hand`, dann `v2/scripts/shot.mjs "b=../out/c_<tag>/&px=794&py=301&mx=794&my=301" out.png 1280 800 794 301` (`PAGE=v2/scripts/preview.html`). Geprüft bei 1280 × 800, 1440 × 900 und 390 × 844 (`view=560,40,540,1170`); Bilder in `archiv/hand/v3/doc7/` (`ht7.sh` erledigt Kopie, Server und alle drei Größen).
 
 Nicht mehrere Blender-Läufe mit GPU parallel starten (Metal: „Insufficient Memory“).
 
@@ -177,9 +182,12 @@ Basismodell: **MPFB 2.0.17** (MakeHuman Plugin for Blender), Ausgabe der Basis-A
 
 ## 10. Bekannte Grenzen
 
-- Die Zeigehand ist wie in der Referenz deutlich kleiner als die Handy-Hand (0,44 zu 1,0). In echter Perspektive wäre die vordere Hand eher größer; die Faust-Box der Referenz lässt kaum mehr zu.
-- Das Daumengrundglied steht steiler als in der Referenz (85° statt etwa 60–70°); ein schrägerer Daumen schiebt den Ballen wieder links über x 560 hinaus. Die Unterkante des Grundglieds liegt vor dem Ballen und zeichnet sich als weiche Falte ab (anatomisch richtig, aber sichtbar).
-- Lücken zwischen den Kuppen 15–25 px statt 6–12 px; die Kuppen sind von vorn gesehene Fingerenden ohne sichtbaren Nagel.
-- Die ulnare Kontur der Handy-Hand unter dem Handy läuft weiterhin als Gerade von der Handy-Ecke nach links unten; der Knick zur Unterarmkante liegt erst bei y ≈ 820, also unter der Bühnenkante, und wird im Bild größtenteils vom Unterarm der Zeigehand verdeckt.
+- Die Zeigehand ist wie in der Referenz deutlich kleiner als die Handy-Hand (0,44 zu 0,88). In echter Perspektive wäre die vordere Hand eher größer; die Faust-Box der Referenz lässt kaum mehr zu.
+- Kuppen: Die Fingerglieder liegen schräg um die Kante, aber die Hand steht 2–4 cm hinter dem Handy; die Spitzen erreichen den Rahmen nur am Rand (x ≈ 905–935), nicht flach auf dem Glas. Die Höhe je Kuppe ist 55–63 px statt der in der Referenz gezeichneten ≈ 30–45 px: Ein echter Finger ist 14–16 mm breit, schmaler geht es nur mit unrealistisch dünnen Fingern. Länge (49–62 px) und Höhe sind daher etwa gleich, nicht deutlich länger als hoch.
+- Daumen: Der Daumen-MCP zeichnet sich links weiter als flacher Wulst ab, weil das Daumengrundglied vor dem Ballen liegt (Verdeckungskante, keine Netzfalte); der Ballen darunter ist durchgehend, die Kerbe ist weg.
+- Die Faust beginnt bei x 777 (Soll ≥ 800, Referenz ≈ 785): Der angelegte Daumen liegt in der neuen Drehung links oben auf der Faust.
+- Unterarm der Zeigehand 42,6° statt 45°, damit der Tab „Austausch“ teilweise frei bleibt.
+- Der Halbton der Zeigehand über dem Bildschirm ist im Referenz-Shader ein gleichmäßiges Punktraster; heller als Mittel 154 wird er auch bei hellerem `lum` kaum, weil `tn`/`vd` im Shader die Tinte begrenzen.
 - `lum` ist für ein festes Licht gebacken; das Zeigerlicht verschiebt nur Glanz und Helligkeit. Der Halbton (Zelle 2,5 px) löst Poren und Gelenkfalten nicht auf; sie wirken nur in `lum`.
 - Haut ohne Haare und ohne echte Albedo-Texturen (MPFB-Hauttexturen sind nicht im Paket); Tonvariation und Poren sind prozedural.
+- `fix7.py` gilt für genau diese Pose; bei einer neuen Pose der Handy-Hand muss es mit den neuen Bildkoordinaten neu laufen.
