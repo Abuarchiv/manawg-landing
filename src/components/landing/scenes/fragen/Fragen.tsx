@@ -1,11 +1,11 @@
 'use client';
 
-import { Fragment, useState } from 'react';
-import { css, press } from '../../core/dc';
+import { useState } from 'react';
+import { css } from '../../core/dc';
 
 const FRAGEN: [string, string][] = [
 	[
-		'Wie kommen meine Mitbewohner dazu?',
+		'Wie kommen meine Mitbewohner in die WG?',
 		'Du erstellst die WG und teilst den Einladungslink. Wer ihn öffnet, kann beitreten.',
 	],
 	[
@@ -18,6 +18,8 @@ const FRAGEN: [string, string][] = [
 	],
 ];
 
+// Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
+// Die Höhe läuft über grid-template-rows (landing.css .faq-antwort), nur eine Antwort ist offen.
 export function Fragen() {
 	const [offen, setOffen] = useState(0);
 	return (
@@ -35,43 +37,33 @@ export function Fragen() {
 			</h2>
 			<div style={css('display:flex;flex-direction:column;border-bottom:1px solid var(--haar)')}>
 				{FRAGEN.map((q, i) => (
-					<Fragment key={q[0]}>
-						<div
-							{...press(() => setOffen((o) => (o === i ? -1 : i)))}
-							className="faq-zeile"
-							aria-expanded={offen === i}
-						>
-							<div
-								style={css(
-									'display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-24)',
-								)}
+					<div key={q[0]} className="faq-zeile">
+						<h3 style={css('margin:0;font-size:inherit;font-weight:inherit')}>
+							<button
+								type="button"
+								id={`faq-frage-${i}`}
+								className="faq-frage"
+								aria-expanded={offen === i}
+								aria-controls={`faq-antwort-${i}`}
+								onClick={() => setOffen((o) => (o === i ? -1 : i))}
 							>
-								<span
-									style={css(
-										"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-32);letter-spacing:-0.03em;overflow-wrap:break-word;min-width:0",
-									)}
-								>
-									{q[0]}
-								</span>
-								<span
-									style={css(
-										"font-family:'JetBrains Mono',monospace;font-size:var(--t-26);font-weight:500",
-									)}
-								>
+								<span>{q[0]}</span>
+								<span className="faq-marke" aria-hidden="true">
 									{offen === i ? '−' : '+'}
 								</span>
+							</button>
+						</h3>
+						<section
+							id={`faq-antwort-${i}`}
+							aria-labelledby={`faq-frage-${i}`}
+							className="faq-antwort"
+							data-offen={offen === i}
+						>
+							<div className="faq-innen">
+								<p>{q[1]}</p>
 							</div>
-							{offen === i && (
-								<p
-									style={css(
-										'margin:0;font-size:var(--t-17);line-height:1.5;opacity:0.72;max-width:var(--w-640)',
-									)}
-								>
-									{q[1]}
-								</p>
-							)}
-						</div>
-					</Fragment>
+						</section>
+					</div>
 				))}
 			</div>
 		</section>

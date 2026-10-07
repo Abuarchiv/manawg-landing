@@ -24,7 +24,7 @@ export function Fusszeile() {
 				</div>
 				<div className={s.spalte}>
 					<span className={s.kopf}>Produkt</span>
-					<a href="#bereiche" className="fuss-link">
+					<a href="#funktionen" className="fuss-link">
 						Funktionen
 					</a>
 					<a href="#so-gehts" className="fuss-link">
@@ -53,6 +53,9 @@ export function Fusszeile() {
 					</a>
 					<a href="/datenschutz" className="fuss-link">
 						Datenschutz
+					</a>
+					<a href="/agb" className="fuss-link">
+						AGB
 					</a>
 				</div>
 			</div>

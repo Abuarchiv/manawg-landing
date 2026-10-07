@@ -20,7 +20,7 @@
 	--t-72: clamp(40px, min(5.625vw, 9svh), 80px);
 	--t-80: clamp(46px, min(6.25vw, 10svh), 88px);
 	--t-96: clamp(54px, min(7.5vw, 12svh), 104px);
-	--t-176: clamp(96px, min(13.75vw, 22svh), 176px);
+	--t-176: clamp(88px, min(10.9vw, 17.5svh), 140px); /* Lader-Ziffer, höchstens 140 px */
 	--t-200: clamp(80px, min(15.625vw, 25svh), 216px);
 
 	/* Ränder und Abschnittsabstände */
@@ -67,9 +67,11 @@
 	--cta-fs: 14px;
 	--cta-px: 16px;
 	--cta-r: 10px;
-	--cta-gross-h: 48px;
-	--cta-gross-fs: 16px;
-	--cta-gross-px: 24px;
+	--cta-gross-h: 44px;
+	--cta-gross-fs: 15px;
+	--cta-gross-px: 22px;
+	--faq-marke: clamp(20px, 1.7vw, 22px);
+	--zeit: 140ms; /* Übergänge der Bedienzustände, 120 bis 160 ms */
 	--haar: rgba(250, 250, 250, 0.18);
 }
 
@@ -90,6 +92,7 @@
 
 /* Klassen-Vertrag (PLAN-V2 2.7). Hover, Fokus und Aktiv gestaltet SHELL hier zentral. */
 .cta {
+	box-sizing: border-box;
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -103,7 +106,10 @@
 	cursor: pointer;
 	text-decoration: none;
 	color: #fafafa;
+	transition: background-color var(--zeit) ease, border-color var(--zeit) ease, transform
+		var(--zeit) ease;
 }
+/* Trefferfläche mindestens 44 px hoch, ohne die sichtbare Höhe zu ändern */
 .cta::after {
 	content: "";
 	position: absolute;
@@ -143,6 +149,8 @@
 	background: var(--haar);
 }
 .tab {
+	box-sizing: border-box;
+	position: relative;
 	height: 40px;
 	padding: 0 16px;
 	display: flex;
@@ -152,18 +160,214 @@
 	font-weight: 500;
 	cursor: pointer;
 	white-space: nowrap;
+	transition: background-color var(--zeit) ease;
 }
+.tab::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50%;
+	height: max(100%, 44px);
+	transform: translateY(-50%);
+}
+
+/* Fragen: Akkordeon mit Höhenanimation über grid-template-rows */
 .faq-zeile {
 	border-top: 1px solid var(--haar);
-	padding: var(--sp-26) 0;
-	display: flex;
-	flex-direction: column;
-	gap: var(--sp-14);
-	cursor: pointer;
+	padding-bottom: var(--sp-26);
 }
+.faq-frage {
+	all: unset;
+	box-sizing: border-box;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: var(--sp-24);
+	padding: var(--sp-26) 0 0;
+	min-height: 44px;
+	cursor: pointer;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--t-32);
+	letter-spacing: -0.03em;
+	line-height: 1.2;
+	overflow-wrap: break-word;
+	opacity: 0.72;
+	transition: opacity var(--zeit) ease;
+}
+.faq-frage > span:first-child {
+	min-width: 0;
+}
+.faq-frage:focus-visible {
+	outline: 2px solid #fafafa;
+	outline-offset: 3px;
+}
+.faq-frage[aria-expanded="true"] {
+	opacity: 1;
+}
+.faq-marke {
+	flex-shrink: 0;
+	font-family: "JetBrains Mono", monospace;
+	font-size: var(--faq-marke);
+	font-weight: 500;
+	line-height: 1;
+	transition: transform var(--zeit) ease;
+}
+.faq-antwort {
+	display: grid;
+	grid-template-rows: 0fr;
+	visibility: hidden;
+	transition: grid-template-rows 0.3s ease, visibility 0s linear 0.3s;
+}
+.faq-antwort[data-offen="true"] {
+	grid-template-rows: 1fr;
+	visibility: visible;
+	transition-delay: 0s;
+}
+.faq-innen {
+	min-height: 0;
+	overflow: hidden;
+}
+.faq-innen p {
+	margin: 0;
+	padding-top: var(--sp-14);
+	font-size: var(--t-17);
+	line-height: 1.5;
+	opacity: 0.72;
+	max-width: var(--w-640);
+}
+
+/* Fußzeilen-Links: Trefferhöhe 44 px */
 .fuss-link {
+	display: flex;
+	align-items: center;
+	min-height: 44px;
 	font-size: var(--t-14);
 	opacity: 0.72;
 	cursor: pointer;
 	text-decoration: none;
+	transition: opacity var(--zeit) ease;
+}
+
+/* Hinweis „Intro überspringen“: kleine Fläche statt nacktem Text (T-07) */
+.hinweis {
+	position: fixed;
+	left: calc(var(--rand) + env(safe-area-inset-left));
+	bottom: max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px));
+	z-index: 20;
+	padding: 8px 12px;
+	border: 1px solid rgba(250, 250, 250, 0.18);
+	border-radius: 8px;
+	background: rgba(10, 10, 10, 0.72);
+	color: #fafafa;
+	text-decoration: none;
+	cursor: pointer;
+	opacity: calc(1 - var(--e, 0) * 1.38);
+	transition: background-color var(--zeit) ease, border-color var(--zeit) ease;
+}
+.hinweis::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50%;
+	height: max(100%, 44px);
+	transform: translateY(-50%);
+}
+[data-phase="nach"] .hinweis,
+.hinweis[inert] {
+	visibility: hidden;
+}
+
+/* Kopf: Schleier hinter Logo und Knopf (T-06). Vollständig deckend bis knapp unter den Kopf, dann
+   36 px Verlauf. Er hängt am Kopf und blendet mit ihm aus. In der Intro folgt er --f (Wohnung und
+   Flut, wo helle Zellen unter dem Kopf laufen), in Ende-Szene und danach steht er voll. */
+[data-kopf] {
+	--kopf-oben: max(var(--rand-kopf), calc(env(safe-area-inset-top) + 8px));
+	--kopf-unten: calc(var(--kopf-oben) + 40px + 8px);
+}
+[data-kopf]::before {
+	content: "";
+	position: fixed;
+	z-index: -1;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: calc(var(--kopf-unten) + 36px);
+	background: linear-gradient(#0a0a0a 0, #0a0a0a var(--kopf-unten), rgba(10, 10, 10, 0) 100%);
+	pointer-events: none;
+	opacity: min(1, calc(var(--f, 0) * 8));
+}
+[data-phase="ende"] [data-kopf]::before,
+[data-phase="nach"] [data-kopf]::before {
+	opacity: 1;
+	transition: opacity 0.24s ease;
+}
+[data-kopf][inert] {
+	visibility: hidden;
+}
+
+/* Fokus auf hellen Flächen */
+[data-hell]:focus-visible,
+[data-hell] :focus-visible {
+	outline-color: #0a0a0a;
+}
+
+/* Hover nur mit Zeiger, Aktiv überall */
+@media (hover: hover) {
+	.cta--voll:hover {
+		background: #e5e5e5;
+	}
+	.cta--rand:hover {
+		border-color: #fafafa;
+		background: rgba(250, 250, 250, 0.08);
+	}
+	.cta--dunkel:hover {
+		border-color: #fafafa;
+		background: #1d1d1d; /* #0a0a0a mit 8 % Weiß, deckend, damit die Szene nicht durchscheint */
+	}
+	.tab:not([aria-selected="true"]):not([aria-pressed="true"]):hover {
+		background: rgba(250, 250, 250, 0.08) !important;
+	}
+	.faq-frage:hover {
+		opacity: 1;
+	}
+	.faq-frage[aria-expanded="false"]:hover .faq-marke {
+		transform: rotate(90deg);
+	}
+	.fuss-link:hover {
+		opacity: 1;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.hinweis:hover {
+		background: rgba(10, 10, 10, 0.92);
+		border-color: rgba(250, 250, 250, 0.4);
+	}
+}
+.cta:active {
+	transform: scale(0.98);
+}
+
+/* Reduzierte Bewegung: keine Übergangsanimation außer Deckkraft */
+@media (prefers-reduced-motion: reduce) {
+	.cta,
+	.tab,
+	.faq-marke,
+	.faq-antwort,
+	.hinweis,
+	[data-kopf]::before {
+		transition-property: opacity;
+	}
+	.faq-antwort {
+		transition-duration: 0s;
+	}
+	.cta:active {
+		transform: none;
+	}
+	.faq-frage[aria-expanded="false"]:hover .faq-marke {
+		transform: none;
+	}
 }
