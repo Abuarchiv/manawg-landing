@@ -1,18 +1,27 @@
 # HAND: realistische Hände aus Blender
 
-Stand 2026-10-06. Die beiden Kapsel-Hände der Engine (Handy-Hand `holdBack`/`holdFront`, Zeigehand `point`) werden durch ein in Blender gerendertes, anatomisch echtes Handmodell ersetzt. Struktur, Pose, Position und Bildsprache bleiben wie im Design: Daumen links am Handyrand, vier Finger um den rechten Rand, Handballen und Unterarm hinter dem Handy, Unterarm nach links unten; die Zeigehand folgt dem Zeiger und der Arm zeigt nach 1460/1020. Gezeichnet wird weiter in Halbton-Punkten (`dot()`, Bayer, `mix-blend-mode: difference` auf der vorderen Ebene). Die Engine bekommt keine Fotos, sondern **Daten-Pässe** (Leuchtdichte, Alpha, Normale, Tiefe) und shadet daraus selbst. Dadurch bleibt die Lichtreaktion auf den Zeiger erhalten.
+Stand 2026-10-07, zweiter Durchgang (Branch `hand-v2`). Die beiden Hände der Engine (Handy-Hand `holdBack`/`holdFront`, Zeigehand `point`) kommen aus einem in Blender gerenderten, anatomisch echten Handmodell. Struktur, Pose, Position und Bildsprache bleiben wie im Design: Daumen links am Handyrand, Finger am rechten Rand, Handballen und Unterarm hinter dem Handy, Unterarm nach links unten; die Zeigehand folgt dem Zeiger und der Arm zeigt nach 1460/1020. Gezeichnet wird weiter in Halbton-Punkten (`dot()`, Bayer, `mix-blend-mode: difference` auf der vorderen Ebene). Die Engine bekommt keine Fotos, sondern **Daten-Pässe** (Leuchtdichte, Alpha, Normale, Tiefe) und shadet daraus selbst. Dadurch bleibt die Lichtreaktion auf den Zeiger erhalten.
 
-Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft): `/Users/abu/Company/archiv/hand/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/scripts/preview.html` mit `?b=../final/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `ascii=1`, `mx/my/px/py`), eingeklebt im Abschnitt 6.
+Was sich gegenüber dem ersten Durchgang geändert hat (Mängel: überdehnter Daumenstiel, überstrahlte Nägel, gleich lange lose Finger, Röhren-Unterarm, Pistolenhaltung der Zeigehand, flaches Licht):
+
+- Neues Rig auf demselben CC0-Basisnetz (siehe 9): Gelenkmitten aus der Anatomie des Netzes, je Finger eigene Krümmung, Daumen mit Grundgelenk und Ballen, Hautfalten und Sehnenzüge als Verschiebung, Unterarm konisch.
+- Griffpose per Inverskinematik gelöst: Fingerspitzen liegen am Rand, kein Durchdringen des Handys, Daumen liegt auf dem Rahmen.
+- Zeigehand: natürliche Zeigehaltung (Zeigefinger leicht gebeugt, drei Finger eingerollt, Daumen angelegt), Kamera-Neigung 30 Grad zum Bildschirm.
+- Haut mit Subsurface (Random Walk Skin), Farbvariation, Poren-Bump; Nägel matt, ohne weißen Rand.
+- Licht: kleines Key-Licht oben links (Handy-Hand) bzw. von der Fingerspitzen-Seite (Zeigehand, siehe 5), schwache Füllung, Gegenlicht. Dadurch viele Grauwerte statt flacher Fläche. Kein Kantenpass mit Halo: Alpha kommt direkt aus dem Render, die 12-px-Fortsetzung der Kacheln ist nur Farbe.
+- Die Zeigehand ist jetzt in Echtgröße zur Handy-Hand modelliert (siehe 5), nicht mehr kleiner als die Finger der Handy-Hand.
+
+Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft): `/Users/abu/Company/archiv/hand/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/scripts/preview.html` mit `?b=../v2/out/<lauf>/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `ascii=1`, `mx/my/px/py`), eingeklebt im Abschnitt 6. Vergleichsbild (Design / Halbton / Luminanz): `scratchpad/hand-v2/vergleich.png` der Sitzung.
 
 ## 1. Dateien
 
 | Datei | Inhalt | Größe |
 |---|---|---|
-| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 1888 × 2724, Maßstab 1,5) | 90 kB |
-| `public/hand/point.webp` + `point.json` | Zeigehand als Sprite (Atlas 3328 × 894, Maßstab 1,0) | 66 kB |
-| Summe | | 158 kB (Grenze 600 kB) |
+| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 2040 × 2568, Maßstab 1,5) | 89 kB |
+| `public/hand/point.webp` + `point.json` | Zeigehand als Sprite (Atlas 3276 × 1032, Maßstab 1,0) | 104 kB |
+| Summe | | 193 kB (Grenze 600 kB) |
 
-Die JSON-Dateien beschreiben sich selbst (`tiles`, `origin`, `scale`, `encoding`, `space`; `hold.json` zusätzlich `phone`, `screen`, `bottomY`).
+Die JSON-Dateien beschreiben sich selbst (`tiles`, `origin`, `scale`, `encoding`, `space`; `hold.json` zusätzlich `phone`, `screen`, `bottomY`). Schlüssel, Kachelnamen, Kodierung und Bühnenkoordinaten sind identisch zum ersten Durchgang; geändert haben sich nur Kachelmaße und `origin`.
 
 ## 2. Koordinaten
 
@@ -39,25 +48,27 @@ Außerhalb der Silhouette sind `lum`, `nx`, `ny`, `z` 12 Bühnen-px weit nach au
 
 ## 4. Handy-Hand (`hold`)
 
-Linke Hand (Blender-Rechtshand, Spiegelkamera), natürlicher Griff. Gemessen im Bühnenraum:
+Linke Hand (Blender-Rechtshand, Spiegelkamera), natürlicher Griff, Handgröße 18,8 cm (93 % des Basisnetzes). Gemessen im Bühnenraum (aus `a` und `origin`):
 
-- Daumenspitze ragt 21 px über den linken Handyrand (Design: 28 px), Spitze bei y ≈ 323 (Design: 412; ein tieferer Daumen war nur mit stark gebeugtem Daumengelenk möglich und sah schlechter aus).
-- Fingerspitzen ragen über den rechten Rand: Zeige 100 px, Mittel 81 px, Ring 47 px, klein 4 px (Design: 28 px; echte Finger sind dicker als die Kapseln, der Halbton lässt die App dazwischen durchscheinen). Nägel sichtbar.
-- Unterarm-Achse 9,6° aus der Senkrechten nach links (Design 12,5°), Arm endet bei `bottomY = 1400` (Bühnen-px, 690 px unter der Handy-Unterkante). Ab etwa y 1310 ausblenden, wenn der Ausschnitt höher ist (Referenz-Shader macht das).
+- Daumen: Spitze bei etwa x 618 / y 340, die Kuppe liegt mit dem Nagel auf dem Rahmen und reicht bis x ≈ 668 (18 px über den Handyrand, Design: 28 px). Der Daumenballen läuft links vom Handy diagonal zum Handgelenk.
+- Finger: Zeige- und Mittelfinger reichen bis x ≈ 1061 (111 px über den rechten Rand, Nägel zeigen zum Betrachter), Ring- und kleiner Finger bis x ≈ 995 (45 px). Je Finger andere Krümmung, Nägel matt sichtbar. Design: 28 px; echte Finger sind dicker, der Halbton lässt die App dazwischen durchscheinen.
+- Unterarm-Achse 13,9° aus der Senkrechten nach links (Design 12,5°), konisch, endet bei `bottomY = 1400`. Ab etwa y 1310 ausblenden, wenn der Ausschnitt höher ist (Referenz-Shader macht das).
 - Holdout ist 2 % schmaler als das Handy-DOM: Haut darf bis zu 3 px darunterliegen, das DOM-Handy deckt sie.
 
-**Vorn/hinten** wird im Shader aus `z` und der Handy-Silhouette bestimmt, nicht eingebacken: `vorne = sdf(Handy außen) < 4 && z < 1,5 mm`. Vorne = Zeichenfläche über dem Handy (`mix-blend-mode: difference`, wie bisher `data-hand="front"`), alles andere = Fläche unter dem Handy (`data-hand="back"`). Vorne sind der Daumen und alle Fingerspitzen, die über den Rand auf den Bildschirm ragen.
+**Vorn/hinten** wird im Shader aus `z` und der Handy-Silhouette bestimmt, nicht eingebacken: `vorne = sdf(Handy außen) < 4 && z < 1,5 mm`. Vorne sind der Daumen und die Fingerspitzen, die über den Rand auf den Bildschirm ragen.
+
+Helligkeit: 99. Perzentil der Hand = 0,85 (sRGB-Anzeigewert), Median 0,6, dunkelste 2 % unter 0,18. Die Zeigehand ist mit Faktor 1,16 heller normiert (99. Perzentil nach Gain), damit sie vor der Handy-Hand steht.
 
 ## 5. Zeigehand (`point`)
 
-Linke Hand von hinten, Zeigefinger gestreckt, Daumen oben, drei Finger eingerollt, Zeigefinger und Unterarm fast in einer Linie (wie im Design). Das Sprite ist ein starrer Körper in demselben Rahmen wie bisher `P(a, b)` in `drawHands`:
+Linke Hand von hinten, Zeigefinger gestreckt (Grundgelenk −6°, Mittelgelenk −8°, Endgelenk −4°), Daumen angelegt, drei Finger eingerollt, Zeigefinger und Unterarm fast in einer Linie, Fingerneigung 30° zur Bildschirmebene (`params: beta 30, gamma 0`). Das Sprite ist ein starrer Körper in demselben Rahmen wie bisher `P(a, b)` in `drawHands`:
 
-- Sprite-Raum: Ursprung = Fingerspitze, `x` = Richtung Arm, `y` nach unten = Seite der eingerollten Finger (im Design `b > 0`). `point.json: origin` ist die Kachel-Ecke in diesem Raum (Bühnen-px bei Maßstab 1).
+- Sprite-Raum: Ursprung = Fingerspitze, `x` = Richtung Arm, `y` nach unten = Seite der eingerollten Finger (im Design `b > 0`). `point.json: origin` ist die Kachel-Ecke in diesem Raum (`[-28, -84]`, Kachel 1638 × 688 bei Maßstab 1,0, Spitze bei Kachel-px 28/84 plus Rand 8).
 - Platzierung wie in der Engine: `u = normalize(1460 − ht.x, 1020 − ht.y)`, `n = (−u.y, u.x)`, Spitze `(tx, ty) = ht + u · (6 + push · 4)`, Maßstab `sc = PS · (1 − push · 0,06)`.
   Zelle `(x, y)` → Sprite `a = ((x − tx) · u.x + (y − ty) · u.y) / sc`, `b = ((x − tx) · n.x + (y − ty) · n.y) / sc`, dort mit `samp()` lesen.
-- **`PS = 0,55`** trifft die Fingerbreite des alten Designs (≈ 37 px). Echte Größe wäre `PS = 1` (Finger 67 px).
-- Verblassen wie bisher: `fade = clamp(1 − (dist − 300) / 420)` mit `dist` = Abstand zur Spitze. Das Sprite reicht 1636 Sprite-px weit (900 Bühnen-px bei `PS 0,55`), also über das Verblassen (720 px) hinaus; kein sichtbarer Schnitt.
-- Normalen ins Bühnenraum-System, falls die Zeigehand auch vom Zeigerlicht beleuchtet werden soll: `n_bühne = nx_s · (u.x, −u.y) + ny_s · (u.y, u.x)` (x rechts, y oben). Die Referenz nutzt für die Zeigehand nur das eingebackene Licht.
+- **`PS = 0,55` bleibt.** Das Sprite ist dafür 1,6/0,55 fach größer als im ersten Durchgang gerendert: ein Sprite-px entspricht 1/(4,19 · 1,6) = 0,149 mm. Bei `PS 0,55` ergibt das 0,88 der Echtgröße (Zeigefinger 59 px breit, Handy-Hand-Finger 67 px). Mit `PS = 0,625` wäre es 1:1 zur Handy-Hand.
+- Verblassen wie bisher: `fade = clamp(1 − (dist − 300) / 420)` mit `dist` = Abstand zur Spitze. Das Sprite reicht 1638 Sprite-px weit (900 Bühnen-px bei `PS 0,55`), also über das Verblassen (720 px) hinaus; kein sichtbarer Schnitt. Wegen der Echtgröße liegt das Handgelenk bei etwa 640 px und verblasst; der Unterarm ist nur noch im Auslauf sichtbar (Design: Arm sichtbar bis zur Ecke). Wer den Arm länger sehen will, setzt den Verblass-Beginn von 300 auf 520 und die Länge von 420 auf 520 (Engine-Konstante, nicht Teil der Pässe).
+- Licht der Zeigehand ist von der Fingerspitzen-Seite gebacken (nach der Drehung in die Bühne kommt es von oben links). Normalen ins Bühnenraum-System, falls die Zeigehand auch vom Zeigerlicht beleuchtet werden soll: `n_bühne = nx_s · (u.x, −u.y) + ny_s · (u.y, u.x)` (x rechts, y oben). Die Referenz nutzt für die Zeigehand nur das eingebackene Licht.
 - Soll die Hand rechts statt links sein: `b = −b` im Sampler (dann sitzt der Daumen unten, wie bei der natürlichen Rechtshand von hinten).
 
 ## 6. Halbton-Shader (Referenz, aus `preview.html`)
@@ -133,32 +144,42 @@ Dieselben Pässe, keine zweite Fassung. Die Komposition (Handy, Daumen, Finger, 
 
 ## 8. Kamera, Rig, Licht (zum Neu-Rendern)
 
-Quelle: `/Users/abu/Company/archiv/hand/hand.blend` (Blender 5.2) mit allen Skripten in `archiv/hand/scripts/`.
+Arbeitsordner: `/Users/abu/Company/archiv/hand/v2/` (Blender 5.2, Python mit numpy, scipy, Pillow, OpenEXR in `v2/venv`). Alte Dateien in `archiv/hand/` bleiben unverändert.
 
-- Kamera `CamMaster` (Handy-Hand): Linse 85 mm, Sensor 36 mm (horizontal), Position (0; −0,7252; 0) m, Drehung (90°, 0, 0), **Skalierung x = −1** (Spiegelkamera: macht aus der Blender-Rechtshand die Linkshand im Bild), Shift (−0,125; −0,234375), Auflösung 1920 × 2100 (= 1,5 × 1280 × 1400), Clip 0,05–5 m. Handy-Vorderseite liegt 0,7213 m vor der Kamera.
-- Handy: 71,6 × 147,6 × 7,8 mm, Eckenradius 11,5 mm, Mitte im Ursprung, im Pass als Holdout (Skalierung 0,98/1/0,99).
-- Licht: Key (Fläche 0,6 m, 18 W) bei (0,6; −0,55; 0,75), Rim (9 W) bei (0,55; 0,5; 0,2), Fill (3,4 W, 1,0 m) bei (−0,6; −0,65; 0,2), Welt weiß 0,05. Cycles, 192 Samples, Entrauschen, Standard-Farbverwaltung, transparenter Film.
-- Aux-Pass (Emission): R = `Nx_Welt · 0,5 + 0,5`, G = `Nz_Welt · 0,5 + 0,5`, B = `(Tiefe − 0,7213) · 5 + 0,5`, A = Alpha. `pack3.py` macht daraus Bildraum-Normalen (x gespiegelt) und `z` in mm.
-- Rig: 3 Knochen je Finger, 3 Daumen, Hand, Arm; Pose als 31-Parameter-Vektor (`q_hold.json`, Vorwärtskinematik in `handlib.py`). Zeigehand: `point_q.json` (Pose + Kamera `CamPoint`: Linse 85 mm, Abstand 0,7213 m, Sensor `36 · W / 1280` mm, damit die Dichte bei 4,19 px/mm bleibt und nur das Sichtfeld mit der Breite wächst; Spitze bei Pixel 64/450, Spin 8° macht den Unterarm waagerecht).
-- Befehle (aus `archiv/hand/scripts/`, Python mit numpy, scipy, Pillow, OpenEXR):
+- Szene `hand_v2_hi.blend`: Basisnetz `HandBase` (3300 Punkte), Rig `HandRig` (Knochen je Finger 3, Daumen 3 plus Mittelhand, Hand, Unterarm in 6 Segmenten), `HandHi` = Basisnetz 3 × unterteilt (238 k Punkte) mit interpolierten Gewichten. Pose als Winkelsatz in `poses/*.json` (`angles`, `T`), Vorwärtskinematik `scripts/fk.py`.
+- Kamera Handy-Hand `CamMaster`: Linse 85 mm, Sensor 36 mm, Position (0; −0,7252; 0) m, Drehung (90°, 0, 0), **Skalierung x = −1** (Spiegelkamera: macht aus der Blender-Rechtshand die Linkshand im Bild), Shift (−0,125; −0,234375), Auflösung 1920 × 2100 (= 1,5 × 1280 × 1400). Handy-Vorderseite liegt 0,7213 m vor der Kamera, Handy als Holdout (Skalierung 0,98/1/0,99).
+- Kamera Zeigehand `CamPoint` (`make_point_cam` in `scripts/build_common.py`): Linse 85 mm, Sensor `36 · W / (1280 · k)` mm mit `k = 1,6 · Maßstab`, Abstand 0,7213 m; 1650 × 1000 Sprite-px bei Maßstab 1,0, Spitze bei (40, 300). Neu gegenüber dem ersten Durchgang ist `k` (Zoom); früher war `k = 1` und der Maßstab im JSON stimmte bei Teilauflösung nicht mit der Dichte überein.
+- Licht Handy-Hand (`lights/F.json`): Key (Fläche 0,32 m, 30 W) bei (0,72; −0,40; 0,78), Rim (0,4 m, 9 W) bei (−0,55; 0,45; 0,35), Fill (1,4 m, 1,1 W) bei (−0,7; −0,5; −0,1), Welt 0,015. Zeigehand (`lights/FP.json`): Key (0,35 m, 11 W) bei (0,9; −0,3; 0,15), Fill 1,0 W, Rim 6 W. Cycles, 192 Samples, Entrauschen, Standard-Farbverwaltung, transparenter Film.
+- Aux-Pass (Emission): R = `Nx_Welt · 0,5 + 0,5`, G = `Nz_Welt · 0,5 + 0,5`, B = `(Tiefe − 0,7213) · 5 + 0,5`, A = Alpha. `pack4.py` macht daraus Bildraum-Normalen (x gespiegelt) und `z` in mm, normiert die Helligkeit (99. Perzentil), hebt lokalen Kontrast an (`--detail 0,8`) und backt Tinte an Tiefen- und Normalensprüngen (`--ink 0,22`).
+- Befehle (aus `archiv/hand/v2`; rendert beide Pässe, packt sie und schreibt `out/<lauf>/pk/`):
 
 ```
-blender -b ../hand.blend --python render_passes.py -- q_hold.json out/hold 192 1920 2100 lt_hold.json
-python3 pack3.py out/hold out/pk hold --scale 1.5 --q 88 --pct 80 --gain 0.78 --phone 650,90,300,620,48
-blender -b ../hand.blend --python qpoint.py -- point_q.json out/point passes 1700 1000 192
-python3 pack3.py out/point out/pk point --scale 1.0 --q 88 --pct 80 --gain 0.78 --anchor 64,450
+scripts/run_all.sh r8 poses/hold_v2.json poses/pw_b.json lights/F.json 100 100 192 0.85 0.85 99 lights/FP.json
+scripts/pack_only.sh r8 r8 0.85 0.85 99 0.22 0.8 100 100      # nur neu packen (Ink/Detail/Gain)
+scripts/preview_combo.sh r8 r8 out.png 1280 800                 # Halbton-Vorschau
+venv/bin/python scripts/compose_lum.py out/r8/pk lum.png 2      # Graustufen-Luminanz im Bühnenraum
 ```
 
-Nicht mehrere Blender-Läufe mit GPU parallel starten (Metal: „Insufficient Memory“).
+Ein Lauf braucht rund 1 Minute (Apple GPU). Nicht mehrere Blender-Läufe mit GPU parallel starten (Metal: „Insufficient Memory“).
 
-## 9. Lizenz / Credits
+## 9. Lizenz / Credits und Modellwahl
 
-Basismodell: „Hand – Realistic“ aus dem Blender-Studio-Paket **Human Base Meshes v1.4.1**, Autor Dan Ulrich, Lizenz **CC0** (kein Nachweis nötig, wird hier trotzdem genannt). Quelle: https://mirror.blender.org/demo/asset-bundles/human-base-meshes/human-base-meshes-bundle-v1.4.1.zip. Alles Weitere (verlängerter und aufgeweiteter Unterarm, Rig, Gewichte, Pose, Nägel, Hautfalten, Material, Licht, Render, Pässe) ist eigene Arbeit. Es wurde kein generiertes Modell und keine fremde Fotografie benutzt.
+Basismodell: „Hand – Realistic“ aus dem Blender-Studio-Paket **Human Base Meshes v1.4.1**, Autor Dan Ulrich, Lizenz **CC0** (kein Nachweis nötig, wird hier trotzdem genannt). Quelle: https://mirror.blender.org/demo/asset-bundles/human-base-meshes/human-base-meshes-bundle-v1.4.1.zip. Alles Weitere (Rig, Gewichte, Unterteilung, Hautfalten und Sehnen, Nägel, Material, Pose, Licht, Render, Pässe) ist eigene Arbeit. Es wurde kein generiertes Modell und keine fremde Fotografie benutzt; Fotos von Händen am Handy dienten nur als Vorlage für Proportion und Haltung.
+
+Vergleich der Kandidaten (Probe-Renderings in `v2/out`, Sitzungsordner `hand-v2`):
+
+1. **Hand – Realistic** (Human Base Meshes, CC0, 3300 Punkte, sauberer Quad-Fluss, anatomisch gute Daumenballen und Fingerproportionen). Gewählt: nach 3-facher Unterteilung plus Falten und Sehnen als Verschiebung in der Nahaufnahme von einer Fotografie kaum zu unterscheiden (siehe Kontaktbogen der Zeigehand-Varianten).
+2. Hand der **Realistic-Körper männlich/weiblich** (selbes Paket, CC0): gleiche Herkunft, aber gröber (Körper insgesamt 10 k Punkte, Finger ohne Fingerlücken-Topologie), keine Verbesserung.
+3. Stilisierte Hand desselben Pakets: zu grob.
+
+Nicht geprüft werden konnten Fotogrammetrie-Scans von Sketchfab (z. B. „Male Hand“ von Lassi Kaukonen, CC-BY, 7,9 k Flächen; „Female Hand“ von yanix, CC-BY, 193 k Flächen) und die Blender-Erweiterung MPFB: Der Download aus Sketchfab verlangt einen API-Schlüssel, und ein Download aus unbekannter Quelle braucht eine ausdrückliche Freigabe des Nutzers, die in dieser Sitzung nicht vorlag. Ein Scan wäre bei Hautdetail im Vorteil, würde aber ein neues Rig und eine neue Pose-Lösung brauchen. Poly Haven enthält keine menschliche Hand. `generate_3d` wurde nicht benutzt.
 
 ## 10. Bekannte Grenzen
 
-- Die Finger der Handy-Hand überdecken mehr vom Bildschirm als im Design (Zeigefinger 100 px statt 28 px), weil echte Finger dicker sind. Eine Variante mit 79/51 px Überlappung (Zeigefinger stärker eingeklappt) wirkte verkrampft, deshalb ist die natürliche Haltung gewählt.
+- Die Finger der Handy-Hand überdecken mehr vom Bildschirm als im Design (Zeigefinger 111 px statt 28 px), weil echte Finger dicker sind. Verschieben der Hand nach links versteckt den Daumenballen-Knick besser, drückt aber die Fingerspitzen weiter auf den Bildschirm (getestet, verworfen).
+- Zwischen Daumen und Unterarm der Handy-Hand sitzt am unteren linken Handyeck eine Taille (der Handballen liegt hinter dem Handy). Im Halbton fällt sie wenig auf, in der Luminanz sieht man sie.
 - Beide Hände sind Linkshände (Spiegelkamera, wie im Design: Daumen links bzw. oben). Für eine Rechtshand beim Zeigen: `b = −b` (Abschnitt 5).
-- Die Zeigehand kann bei Zeigerposition rechts der Handymitte mit dem Daumen auf den kleinen Finger der Handy-Hand fallen (zwei Halbton-Flächen laufen ineinander). Idle-Pfad der Zeigehand daher bei etwa `x 780–860, y 330–470` halten.
-- Zwischen Daumen und Zeigefinger der Zeigehand sitzt ein kleiner Haut-Zipfel (Gewichtsübergang am Daumengrundgelenk). Bei `PS ≤ 0,7` nur ein Punktpaar groß.
-- `lum` ist für ein Licht von oben links gebacken. Das Zeigerlicht verschiebt nur Glanz und Helligkeit, keine Schlagschatten.
+- Die Zeigehand verblasst am Handgelenk, weil sie in Echtgröße modelliert ist und die Engine bei 720 px ausblendet (siehe 5). Das Design zeigt den Arm bis in die Ecke.
+- Die Zeigehand kann bei Zeigerposition rechts der Handymitte auf den kleinen Finger der Handy-Hand fallen (zwei Halbton-Flächen laufen ineinander). Idle-Pfad der Zeigehand bei etwa `x 780–860, y 330–470` halten.
+- Der Halbton (Zellgröße 2,5 px) löst Fingernägel, Knöchelfalten und Poren nicht auf; die Echtheit kommt von Silhouette und Verlauf. Nägel und Daumen erscheinen als kleine, glatte Flächen.
+- `lum` ist für ein festes Licht gebacken. Das Zeigerlicht verschiebt nur Glanz und Helligkeit, keine Schlagschatten.
