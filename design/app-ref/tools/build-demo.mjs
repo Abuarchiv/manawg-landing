@@ -363,7 +363,7 @@ const html = `<!doctype html>
 <html lang="de" class="__variable_a918ff __variable_2d7d99 __variable_ae46ea" style="--app-header-height: 40px; --app-nav-height: 57.1875px;">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0a">
 <meta name="robots" content="noindex">
 <title>ManaWG</title>
