@@ -218,7 +218,7 @@ void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
           if (v > 0.02) dot(cb, x, y, v, i, j); } }
         let v2 = 0;
         if (m & 2) { const d = holdFront(x, y); if (d < 0) { v2 = shN(holdFront, x, y, d, 30) * (0.55 + 0.55 * lf); if (d > -2.2) v2 = Math.max(v2, 0.9 * lf + 0.1); const nq = nail(x, y, 616, 466, 652, 412, 0.72, 14, 11); if (nq < 1) v2 = nq > 0.72 ? v2 * 0.45 : Math.min(1, v2 * 0.6 + 0.4); } else if (d < 8) v2 = 0.16 * Math.exp(-d / 3); }
-        if (m & 4) { const d = point(x, y); const fade = cl(1 - (Math.hypot(x - tx, y - ty) - 300) / 420); let v = 0;
+        if (m & 4) { const d = point(x, y); const fade = cl(1 - (Math.hypot(x - tx, y - ty) - 520) / 560); let v = 0;
           if (d < 0) { v = shN(point, x, y, d, 44) * (0.6 + 0.45 * lf + push * 0.25) * fade; if (d > -2.4) v = Math.max(v, 0.92 * fade); const n0 = P(4, 0), n1 = P(30, 0), nq = nail(x, y, n0[0], n0[1], n1[0], n1[1], 0.5, 12, 10); if (nq < 1) v = nq > 0.7 ? v * 0.45 : Math.min(1, v * 0.6 + 0.38); } else if (d < 14) v = 0.16 * Math.exp(-d / 4) * fade * (hsh(i, j + 3) < 0.45 ? 1 : 0); v2 = Math.max(v2, v); }
         if (v2 > 0.02) dot(cf, x, y, v2, i, j);
       }
