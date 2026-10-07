@@ -143,7 +143,8 @@ export function createStage({ sec, buehne }) {
 		document.dispatchEvent(new CustomEvent('landing:bereit'));
 	};
 
-	const frame = (t, dt, now, raw) => {
+	const frame = (t0, dt, now, raw) => {
+		const t = loop.reduced ? 0 : t0; // reduce: Hero-Zeit und Autopilot stehen still
 		const rb = buehne.getBoundingClientRect();
 		const rs = sec.getBoundingClientRect();
 		const visible = rb.bottom > 0 && rb.top < innerHeight;
