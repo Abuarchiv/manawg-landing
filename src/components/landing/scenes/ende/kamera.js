@@ -13,7 +13,8 @@ export const istHoch = (W, H) => W / H <= 1 || W < 700;
 // Finger rechts laufen aus dem Bild (natürlicher Anschnitt), der Unterarm wird unten angeschnitten.
 const PHONE_X = 650;
 const PHONE_W = 300;
-const DAUMEN = 66; // Daumen ragt so weit links über das Handy
+const SPAN0 = 584; // linke Kante des Daumens im Ende-Raum
+const SPAN1 = 998; // rechte Kante der Fingerkuppen
 const PHONE_TOP = 90;
 const PHONE_H = 620;
 
@@ -44,9 +45,12 @@ export function titelPlatz(W, _safeH) {
 export function kamera(W, H, safeH, _mode) {
 	if (!istHoch(W, H)) return fitBox(W, safeH, 1280, 800, 1.25);
 	const top = titelPlatz(W, safeH);
-	const f = Math.max(0.2, Math.min((0.78 * W) / PHONE_W, (H - top - 12) / PHONE_H, 1.25));
-	// Handy links so weit eingerückt, dass der Daumen ganz im Bild bleibt (nie mehr als mittig minus 8)
-	const links = Math.max(DAUMEN * f + 4, (W - PHONE_W * f) / 2 - 8);
+	// Daumen links (x 584) und Fingerkuppen rechts (x 998) bleiben mit mindestens 8 px Rand im Bild
+	const f = Math.max(
+		0.2,
+		Math.min((0.78 * W) / PHONE_W, (H - top - 12) / PHONE_H, 1.25, (W - 16) / (SPAN1 - SPAN0)),
+	);
+	const links = Math.max(8, (W - (SPAN1 - SPAN0) * f) / 2) + (PHONE_X - SPAN0) * f;
 	return {
 		f,
 		ox: links - PHONE_X * f,

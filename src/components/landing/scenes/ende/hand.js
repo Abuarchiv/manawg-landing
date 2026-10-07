@@ -122,7 +122,9 @@ vec2 holdTone(vec2 C){
   if (al < .04) return vec2(0.);
   float zmm = SH(4, C) * 200. - 100.;
   float sdf = sdfRR(C, uPhone, uPR.x);
-  bool front = sdf < 4. && zmm < 1.5;
+  // Finger rechts legen sich 4 bis 8 px über die Gehäusekante: vorn, mit weichem Kontaktschatten am Gehäuse
+  bool fing = C.x > 800. && sdf < 4.;
+  bool front = (sdf < 4. && zmm < 1.5) || fing;
   float L = SH(0, C);
   L = cl(.5 + (pow(L, ${GAM.toFixed(2)}) - .5) * ${CON.toFixed(2)});
   float nx = SH(2, C) * 2. - 1.;
@@ -130,6 +132,7 @@ vec2 holdTone(vec2 C){
   float nz = sqrt(max(0., 1. - nx * nx - ny * ny));
   float lf = lightF(C);
   float v = L * (.62 + .5 * lf);
+  if (fing) v *= .5 + .5 * ss((sdf + 9.) / 11.);
   v += ${RIM.toFixed(2)} * max(0., nx * .85 + ny * .05 + nz * .15) * (.5 + .5 * L);
   if (uPR.w > 0.) {
     vec3 l = vec3(uLight.x - C.x, -(uLight.y - C.y), 170. + zmm * (300. / 71.6));
@@ -141,11 +144,13 @@ vec2 holdTone(vec2 C){
   }
   float e = ${EDW.toFixed(1)};
   float eA = min(min(SH(1, C - vec2(e, 0.)), SH(1, C + vec2(e, 0.))), min(SH(1, C - vec2(0., e)), SH(1, C + vec2(0., e))));
-  bool edge = eA < .5 && abs(sdf) >= 7.;
-  float cov = ss((al - .02) / .25) * ss((uPR.z - C.y) / 90.);
+  bool edge = eA < .5 && abs(sdf) >= 7. && !fing;
+  float cov = ss((al - .02) / .25) * ss((uPR.z - C.y) / 140.);
   float sdS = sdfRR(C, uScreen, uPR.y);
+  // Finger bleiben auf Gehäuse und Rand, nie auf dem Glas
+  if (fing && sdS < -1.) return vec2(0.);
   // weicher Übergang statt harter Kante am Glasrand: Ton und Tinte gehen über 18 px ineinander über
-  float gk = front ? ss(-sdS / 18.) : 0.;
+  float gk = front ? ss(-sdS / 10.) : 0.;
   float vo = v;
   if (edge) vo = max(vo, ${EDV.toFixed(1)} * lf * al);
   float tone = vo * cov;
@@ -165,7 +170,7 @@ vec2 pointTone(vec2 C, bool full){
   if (uPS.y <= 0.) return vec2(0.);
   vec2 d = C - uTipU.xy;
   float dist = length(d);
-  float gk = ss(-sdfRR(C, uScreen, uPR.y) / 18.);
+  float gk = ss(-sdfRR(C, uScreen, uPR.y) / 10.);
   // auf dem Glas bleibt die Hand bis zum Handgelenk deckend, der Arm läuft danach schneller aus
   float fade = mix(cl(1. - (dist - 300.) / 420.), cl(1. - (dist - 300.) / 140.), gk);
   if (fade <= 0.) return vec2(0.);
@@ -181,12 +186,10 @@ vec2 pointTone(vec2 C, bool full){
   float v = L * (.62 + .5 * lf);
   float e = ${EDW.toFixed(1)} / uPS.x;
   float eA = min(min(SP(1, ab - vec2(e, 0.)), SP(1, ab + vec2(e, 0.))), min(SP(1, ab - vec2(0., e)), SP(1, ab + vec2(0., e))));
-  bool edge = eA < .5;
+  // keine Kontur: die Hand ist reine Fläche aus Ton, am Rand nur die weiche Silhouette
   float vo = v;
-  if (edge) vo = max(vo, ${EDV.toFixed(1)} * lf * al);
   float tn = .04 + .86 * pow(cl(v), 1.35);
-  float vd = pow(1. - tn, .45);
-  if (edge) vd = max(vd, .95);
+  float vd = pow(1. - tn, .7);
   return vec2(mix(vo, vd, gk) * cov, cov);
 }
 
@@ -226,7 +229,7 @@ vec2 pSprite(vec2 S){
 float pointSil(vec2 S){
   if (uPS.y <= 0.) return 0.;
   float dist = length(S - uTipU.xy);
-  float gk = ss(-sdfRR(S, uScreen, uPR.y) / 18.);
+  float gk = ss(-sdfRR(S, uScreen, uPR.y) / 10.);
   float fade = mix(cl(1. - (dist - 300.) / 420.), cl(1. - (dist - 300.) / 140.), gk);
   if (fade <= 0.) return 0.;
   vec2 ab = pSprite(S);
@@ -259,7 +262,7 @@ void main(){
   ivec2 tc = cell - uCell0;
   float tone = 0.;
   if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) tone = texelFetch(uTone, tc, 0).r;
-  float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 18.) : 0.;
+  float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 10.) : 0.;
   float ink = mix(${INK}, ${INK_DARK}, gk);
   bool pt = uFront == 1 && uPS.y > 0.;
   if (tone <= 0. && uRing.z <= 0. && !pt) { o = vec4(0.); return; }
@@ -294,7 +297,7 @@ void main(){
     sh = s0 / 5. * gk * (.15 + .1 * uRing.w);
   }
   float aOut = c + base * (1. - c);
-  vec3 col = vec3(ink * c + .84 * base * (1. - c));
+  vec3 col = vec3(ink * c + .76 * base * (1. - c));
   float sa = sh * (1. - aOut);
   o = vec4(col, aOut + sa);
 }
@@ -1004,7 +1007,9 @@ function drawIn(back, front, c, cam) {
 		}
 	}
 	const pend = st.pending;
-	const folgt = c.endOn && !touch && c.m.in && aufGlas(mx, my) && now - (c.m.moveT ?? -9) < 1.4;
+	// Nach dem Kontakt zieht sich die Hand nach 0,35 s zurück, damit das Ergebnis des Tipps zu sehen ist
+	const zurueck = !pend && st.contactT > 0 && now - st.contactT > 0.35 && now - st.contactT < 1.6;
+	const folgt = !zurueck && c.endOn && !touch && c.m.in && aufGlas(mx, my) && now - (c.m.moveT ?? -9) < 1.4;
 	let tg = st.park;
 	let k = 7;
 	if (pend) {
@@ -1057,7 +1062,7 @@ function drawIn(back, front, c, cam) {
 		// Die Spitze steht exakt am Ziel, beim Druck geht sie leicht in Armrichtung
 		tip: { x: Math.round((ht.x + ux * push * 4) * 2) / 2, y: Math.round((ht.y + uy * push * 4) * 2) / 2 },
 		u: { x: ux, y: uy },
-		sc: PS * (1 - push * 0.06),
+		sc: PS * (W <= 768 ? 0.75 : 1) * (1 - push * 0.06),
 		// Touch: keine gezeichnete Zeigehand, dort tippt der echte Finger
 		pa: qa.noPoint || touch ? 0 : 1,
 		push: Math.round(push * 20) / 20,
