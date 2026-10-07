@@ -67,13 +67,12 @@ function frameScene(r, t, dt) {
 	if (s.cv && s.dpr !== dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2))
 		measure(r, s.el.clientWidth, s.el.clientHeight);
 	const rc = s.el.getBoundingClientRect();
-	s.visible = !(
-		rc.bottom < 0 ||
-		rc.top > innerHeight ||
-		rc.right < 0 ||
-		rc.left > innerWidth ||
-		rc.width < 2
-	);
+	// minSicht: Anteil der Fensterhöhe, ab dem eine große Fläche überhaupt gezeichnet wird (ein 50-px-Streifen
+	// einer 4-MP-Fläche kostet sonst das ganze Bild)
+	const sicht = Math.min(rc.bottom, innerHeight) - Math.max(rc.top, 0);
+	s.visible =
+		!(rc.bottom < 0 || rc.top > innerHeight || rc.right < 0 || rc.left > innerWidth || rc.width < 2) &&
+		sicht >= (def.minSicht ?? 0) * innerHeight;
 	if (!s.visible) return;
 	s.reduced = loop.reduced;
 	if (!r.inited) {

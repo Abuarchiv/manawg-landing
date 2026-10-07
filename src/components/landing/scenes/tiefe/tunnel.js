@@ -127,6 +127,7 @@ export function registerTiefe(cv, sec) {
 			mode === 'hoch' ? { bw: 640, bh: 1, align: 'top' } : { bw: 1280, bh: 800 },
 		dprCap: 2,
 		touchCap: 1.5,
+		minSicht: 0.1,
 		resize(s) {
 			s.cx = s.bw / 2;
 			s.cy = s.mode === 'hoch' ? (0.44 * s.H) / s.f : s.bh / 2;

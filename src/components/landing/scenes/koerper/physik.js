@@ -7,6 +7,7 @@ import { AB, hsh } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
 const S = 1.15;
+const st = 3; // feiner Halbton (Zellen 3 statt 6 px)
 const NAME = 11; // Namen auf den Kugeln: Mono 11 px (hoch 10 px), Versalien mit Laufweite, ohne Platte
 const REACH = 22; // Trefferrand um jeden Körper in CSS-px (Touch)
 
@@ -56,8 +57,9 @@ export function registerKoerper(cv) {
 		host: cv.parentElement,
 		box: (_W, _H, _safeH, mode) =>
 			mode === 'hoch' ? { bw: 600, bh: 1, align: 'top' } : { bw: 1280, bh: 760 },
-		dprCap: 2,
+		dprCap: 1.5,
 		touchCap: 1.5,
+		minSicht: 0.1,
 		resize: homes,
 		init(s) {
 			s.B = AB.map((c, i) => ({
@@ -230,31 +232,58 @@ export function registerKoerper(cv) {
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			s.scene();
-			ctx.fillStyle = '#FAFAFA';
 			const lx = s.m.in ? s.m.x : s.cx - 256;
 			const ly = s.m.in ? s.m.y : s.cy - 248;
-			const st = 3; // feiner Halbton (Zellen 3 statt 6 px)
-			ctx.beginPath();
+			// Halbton je Körper einmal in ein Sprite gebacken (Zellen 3 px), je Lichtrichtung in 32 Winkeln und
+			// 4 Abständen. Je Bild nur noch drawImage statt tausender Rechtecke.
+			ctx.imageSmoothingEnabled = true;
+			const skey = `${s.f.toFixed(3)}|${s.dpr}`;
 			for (const b of s.B) {
-			const bx0 = Math.floor((b.x - b.r) / st) * st;
-				const by0 = Math.floor((b.y - b.r) / st) * st;
-				for (let y = by0; y < b.y + b.r; y += st)
-					for (let x = bx0; x < b.x + b.r; x += st) {
-						const nx = (x - b.x) / b.r;
-						const ny = (y - b.y) / b.r;
-						const q = nx * nx + ny * ny;
-						if (q > 1) continue;
-						const nz = Math.sqrt(1 - q);
-						const Lx = lx - b.x;
-						const Ly = ly - b.y;
-						const LL = Math.hypot(Lx, Ly, 200);
-						const lam = Math.max(0, (nx * Lx + ny * Ly + nz * 200) / LL);
-						const v = 0.08 + 0.92 * lam * lam;
-						const r = st * 0.5 * Math.sqrt(v);
-						ctx.rect(x - r, y - r, r * 2, r * 2);
+				const Lx = lx - b.x;
+				const Ly = ly - b.y;
+				const dd = Math.hypot(Lx, Ly);
+				const ai = Math.round(((Math.atan2(Ly, Lx) + Math.PI) / (2 * Math.PI)) * 32) % 32;
+				const di = dd < 150 ? 0 : dd < 350 ? 1 : dd < 800 ? 2 : 3;
+				const k = `${skey}|${ai}|${di}`;
+				const cache = (b.sp ||= new Map());
+				let e = cache.get(k);
+				if (!e) {
+					const pw = Math.ceil((2 * b.r + 4) * s.f * s.dpr);
+					const cv = document.createElement('canvas');
+					cv.width = pw;
+					cv.height = pw;
+					const g = cv.getContext('2d');
+					const u = pw / (2 * b.r + 4);
+					g.setTransform(u, 0, 0, u, 0, 0);
+					g.fillStyle = '#FAFAFA';
+					const ang = (ai / 32) * 2 * Math.PI - Math.PI;
+					const dist = [90, 240, 550, 1400][di];
+					const qLx = Math.cos(ang) * dist;
+					const qLy = Math.sin(ang) * dist;
+					const LL = Math.hypot(qLx, qLy, 200);
+					const c0 = b.r + 2;
+					const n = Math.ceil(b.r / st);
+					g.beginPath();
+					for (let j = -n; j <= n; j++)
+						for (let i = -n; i <= n; i++) {
+							const nx = (i * st) / b.r;
+							const ny = (j * st) / b.r;
+							const q = nx * nx + ny * ny;
+							if (q > 1) continue;
+							const nz = Math.sqrt(1 - q);
+							const lam = Math.max(0, (nx * qLx + ny * qLy + nz * 200) / LL);
+							const v = 0.08 + 0.92 * lam * lam;
+							const rr = st * 0.5 * Math.sqrt(v);
+							g.rect(c0 + i * st - rr, c0 + j * st - rr, rr * 2, rr * 2);
 						}
-						}
-						ctx.fill();
+					g.fill();
+					e = cv;
+					cache.set(k, e);
+					if (cache.size > 90) cache.delete(cache.keys().next().value);
+				}
+				const sz = 2 * b.r + 4;
+				ctx.drawImage(e, b.x - b.r - 2, b.y - b.r - 2, sz, sz);
+			}
 			// Namen: Mono 11 px (hoch 10 px) mit Laufweite, ohne Platte, dunkler Saum statt Kasten, nur in der losen Phase
 			ctx.font = `500 ${(s.mode === 'hoch' ? NAME - 1 : NAME) / s.f}px "JetBrains Mono", monospace`;
 			if ('letterSpacing' in ctx) ctx.letterSpacing = `${(0.08 * NAME) / s.f}px`;
