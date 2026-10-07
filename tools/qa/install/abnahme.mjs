@@ -119,7 +119,7 @@ for (const tab of [0, 1, 2]) {
 	const alt = ALT.filter((e) => txt.includes(e));
 	pruef(`I-2 Gerät ${tab}: keine alten erfundenen Texte`, alt.length === 0, alt.join(' | '));
 	const steps = await page.evaluate(() =>
-		[...document.querySelectorAll('[data-istep] span:last-child')].map((e) => e.textContent),
+		[...document.querySelectorAll('[data-istep] > span:last-child')].map((e) => e.textContent),
 	);
 	pruef(
 		`I-2 Schritte Tab ${tab} wörtlich`,
@@ -198,7 +198,7 @@ for (const tab of [0, 1, 2]) {
 	let halbAusserhalb = 0;
 	for (let t = 0; t < pl.loop; t += 0.1) {
 		await page.evaluate((t) => window.__landing.dbg.install.setze(t), t);
-		await sleep(60);
+		await sleep(130);
 		const buf = await screen.screenshot({ scale: 'css' });
 		const { data, info } = await sharp(buf).resize(160).raw().toBuffer({ resolveWithObject: true });
 		// „leer“: Anteil der Pixel in der häufigsten Farbe (quantisiert)

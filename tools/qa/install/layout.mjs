@@ -50,7 +50,7 @@ for (const v of VPS) {
 				kleinTreffer: [
 					...document.querySelectorAll('#installieren [role=tab], #installieren .cta'),
 				].map((e) => Math.round(e.getBoundingClientRect().height)),
-				schritt: [...document.querySelectorAll('#installieren [data-istep] span:last-child')].map(
+				schritt: [...document.querySelectorAll('#installieren [data-istep] > span:last-child')].map(
 					(e) => Math.round(Number.parseFloat(getComputedStyle(e).fontSize)),
 				),
 				nr: Math.round(
