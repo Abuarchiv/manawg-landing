@@ -55,7 +55,7 @@ function baue(s, txt, cs) {
 
 // Zeichenblatt: die drei Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
 function blatt(s, cs, gl) {
-	const key = `${s.dpr}|${loop.fv}`;
+	const key = `${s.dpr}|${loop.fv}|${gl}`;
 	if (s.blattKey === key) return s.blatt;
 	const z = Math.ceil((gl + 4) * s.dpr);
 	const cv = document.createElement('canvas');
@@ -73,7 +73,7 @@ function blatt(s, cs, gl) {
 }
 
 /** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
-export function registerZiffer(cv, { text, cs = 6, gl = 8 }) {
+export function registerZiffer(cv, { text, cs: cs0 = 6, gl: gl0 = 8 }) {
 	return register({
 		name: `ziffer ${text}`,
 		el: cv,
@@ -81,7 +81,10 @@ export function registerZiffer(cv, { text, cs = 6, gl = 8 }) {
 		box: (W, H) => ({ bw: Math.max(1, W), bh: Math.max(1, H), max: 1 }),
 		dprCap: 2,
 		frame(s, _t, dt) {
-			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}`;
+			// Hochformat: feineres Raster (Zelle 4, Glyph 6), die Kontur bleibt sauber
+			const cs = s.mode === 'hoch' ? 4 : cs0;
+			const gl = s.mode === 'hoch' ? 6 : gl0;
+			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
 			if (s.key !== key) {
 				s.key = key;
 				baue(s, text, cs);
@@ -124,7 +127,9 @@ export function registerZiffer(cv, { text, cs = 6, gl = 8 }) {
 			for (const c of s.cells) {
 				const dx = Math.round((c.x + c.ox + cs / 2) * dpr - z / 2);
 				const dy = Math.round((c.y + c.oy + cs / 2) * dpr - z / 2);
-				ctx.drawImage(sheet, z * c.ton, 0, z, z, dx, dy, z, z);
+				// Ruhezustand nur „#“ und „@“, die Randzeichen „+“ gibt es nur, solange die Zelle unterwegs ist
+				const ton = c.ton === 2 && Math.abs(c.ox) + Math.abs(c.oy) < 3 ? 1 : c.ton;
+				ctx.drawImage(sheet, z * ton, 0, z, z, dx, dy, z, z);
 			}
 		},
 	});

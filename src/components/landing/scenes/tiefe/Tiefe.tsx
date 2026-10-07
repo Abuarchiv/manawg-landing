@@ -36,7 +36,13 @@ export function Tiefe() {
 				<div
 					style={css('position:absolute;left:0;right:0;top:0;height:100svh;pointer-events:none')}
 				>
-					<div className="label" style={css('position:absolute;top:var(--sp-72);left:var(--rand)')}>
+					<div
+						data-hint="1"
+						className="label"
+						style={css(
+							'position:absolute;top:calc(var(--kopf-unten) + var(--sp-24));left:var(--rand)',
+						)}
+					>
 						[ TIEFE ] WEITER SCROLLEN
 					</div>
 					{WOERTER.map((w, i) => (

@@ -50,7 +50,7 @@ export function Ende() {
 				ref={spaceRef}
 				data-ende-space="1"
 				style={css(
-					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--ende-x,0px),var(--ende-y,0px)) scale(var(--ende-f,1))',
+					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--ende-x,0px),var(--ende-y,0px)) scale(var(--ende-f,1)) translate(var(--ax,0px),var(--ay,0px)) translate(800px,400px) rotate(var(--ar,0deg)) translate(-800px,-400px)',
 				)}
 			>
 				<Phone />
@@ -68,8 +68,7 @@ export function Ende() {
 			>
 				<div className={s.titel}>
 					<h2 data-quiet="1" className={s.h}>
-						Alltag
-						<br />
+						Alltag <br />
 						teilen.
 					</h2>
 					<a

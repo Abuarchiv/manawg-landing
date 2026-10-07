@@ -56,11 +56,12 @@ export function createStage({ sec, buehne }) {
 		bereit: false,
 		endOn: false,
 		handsLoaded: false,
+		kv: [0, 0, 0, 0], // zeitgeglättete Deckkraft der Raumkarten
 		P: 0,
 		s: 0,
 		phase: 'intro',
 	};
-	const m = { x: W / 2, y: H / 2, in: false, down: false, type: 'mouse', clickT: -9 };
+	const m = { x: W / 2, y: H / 2, in: false, down: false, type: 'mouse', clickT: -9, moveT: -9, x0: 0, y0: 0, sy0: 0 };
 	const hm = { look: 0, mx: 0, split: 0, zoom: 0, dive: 0, sm: st.sm, a0: 0, ad: 1 };
 	const c = {
 		P: 0,
@@ -119,6 +120,7 @@ export function createStage({ sec, buehne }) {
 		m.y = e.clientY - r.top;
 		m.in = true;
 		m.type = e.pointerType || 'mouse';
+		m.moveT = performance.now() / 1000;
 	};
 	const onLeave = () => {
 		m.in = false;
@@ -126,10 +128,19 @@ export function createStage({ sec, buehne }) {
 	const onDown = (e) => {
 		place(e);
 		m.down = true;
-		m.clickT = performance.now() / 1000;
-		if (!st.endOn) st.a0 = m.clickT;
+		const tt = performance.now() / 1000;
+		// Maus und Stift: der Klick gilt sofort. Touch: erst beim Loslassen und nur ohne Wisch (siehe onUp).
+		if (m.type !== 'touch') m.clickT = tt;
+		m.x0 = m.x;
+		m.y0 = m.y;
+		m.sy0 = window.scrollY;
+		if (!st.endOn) st.a0 = tt;
 	};
-	const onUp = () => {
+	const onUp = (e) => {
+		if (m.down && m.type === 'touch' && e.type === 'pointerup') {
+			const bewegt = Math.hypot(m.x - m.x0, m.y - m.y0) >= 8 || Math.abs(window.scrollY - m.sy0) >= 8;
+			if (!bewegt) m.clickT = performance.now() / 1000;
+		}
 		m.down = false;
 	};
 	root.addEventListener('pointermove', place);
@@ -177,11 +188,19 @@ export function createStage({ sec, buehne }) {
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
 		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));
 		setVar('--e', endA.toFixed(3));
-		// Ende-Szene löst sich auf, während die Bühne nach oben wegläuft (kein angeschnittener Arm)
-		setVar('--ab', cl((H - rb.bottom) / (0.55 * H)).toFixed(3));
-		for (let j = 0; j < 4; j++) setVar(`--c${j}`, karten[j].toFixed(3));
+		// Ende-Szene löst sich erst im letzten Drittel des Wegscrollens auf (kein angeschnittener Arm, aber auch
+		// kein leerer Bildschirm vor dem Flutband)
+		setVar('--ab', cl((0.8 * H - rb.bottom) / (0.65 * H)).toFixed(3));
+		// Raumkarten: der Wechsel läuft in 180 ms (Zeitkonstante 70 ms), alte und neue Karte kreuzen kurz
+		const kk = !visible || loop.reduced ? 1 : 1 - Math.exp(-Math.min(dt, 0.1) / 0.07);
+		for (let j = 0; j < 4; j++) {
+			st.kv[j] += (karten[j] - st.kv[j]) * kk;
+			if (Math.abs(karten[j] - st.kv[j]) < 0.003) st.kv[j] = karten[j];
+			setVar(`--c${j}`, st.kv[j].toFixed(3));
+		}
 		const kopfUnten = kopf ? kopf.getBoundingClientRect().bottom : 0;
-		const kopfAus = endA * (rb.bottom > kopfUnten ? 1 : 0);
+		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein
+		const kopfAus = loop.mode === 'hoch' ? 0 : endA * (rb.bottom > kopfUnten ? 1 : 0);
 		setVar('--kopf-aus', kopfAus.toFixed(3));
 		if (kopf && kopf.inert !== kopfAus >= 0.6) kopf.inert = kopfAus >= 0.6;
 		const phase = rb.bottom <= 0 ? 'nach' : P >= 0.9 ? 'ende' : 'intro';

@@ -128,6 +128,8 @@
 	text-transform: none;
 }
 .buehne {
+	/* Mitte des Textblocks: dessen Polster oben ist um (96 - 32) größer als unten */
+	padding-bottom: calc(var(--sp-96) - var(--sp-32));
 	min-width: 0;
 	align-self: center;
 	justify-self: center;

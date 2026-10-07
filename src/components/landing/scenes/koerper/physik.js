@@ -28,8 +28,9 @@ function homes(s) {
 		const t = s.host.querySelector('[data-titel]');
 		if (t) {
 			const oben = Math.min(...AB.map((c) => cy + (c[1] - 173) * S - c[2] * S * 0.98));
-			const px = Math.max(24, s.oy + oben * s.f - t.offsetHeight - 40);
-			t.style.top = `${Math.round(px)}px`;
+			const px = s.oy + oben * s.f - t.offsetHeight - 40;
+			// nie näher als eine Stufe unter dem Kopf
+			t.style.top = `max(calc(var(--kopf-unten) + var(--sp-14)), ${Math.round(px)}px)`;
 		}
 	}
 	if (!s.B) return;
@@ -166,7 +167,8 @@ export function registerKoerper(cv) {
 			// damit nichts außerhalb des Bildes liegen bleibt
 			const loose0 = s.idle < 3.5;
 			const visB = (innerHeight - r.top - s.oy) / s.f;
-			const floor = loose0 ? Math.min(y1, Math.max(visB, y0 + (y1 - y0) * 0.5)) : y1;
+			// Boden bei etwa 80 % der sichtbaren Höhe: Titel und Körper bleiben ein Bild
+			const floor = loose0 ? Math.min(y1, Math.max(y0 + (visB - y0) * 0.8, y0 + (y1 - y0) * 0.5)) : y1;
 			// Physik im festen 60-Hz-Schritt (Verlet), unabhängig von der Bildrate
 			s.step(dt, 1 / 60, () => {
 				s.idle += 1 / 60;

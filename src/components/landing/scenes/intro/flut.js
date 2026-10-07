@@ -1,18 +1,19 @@
 // Die Flut: weiße Zellen mit Minensucher-Ziffern fluten die Bühne.
 //
-// Zelle 16 CSS-Pixel fest, Ziffer 10,5 px, das Rauschen läuft im Pixelraum (die Form bleibt bei jeder
+// Zelle 12 CSS-Pixel fest, Ziffer 10 px (fein, wie die übrigen ASCII-Elemente), das Rauschen läuft im Pixelraum (die Form bleibt bei jeder
 // Zellgröße gleich). Freigehalten werden echte DOM-Rechtecke (loecher): Logo und Knopf immer, der
 // Sprunglink solange er sichtbar ist, die Spalte der Raumkarten solange eine Karte stehen kann.
 // Der Zeiger wischt eine Spur frei.
 
 import { loop, qa } from '../../core/loop';
 import { ss, vnz } from '../../core/math';
+import { hochOben } from './wohnung';
 
-export const CELL = 16;
+export const CELL = 12;
 const RAND_TEXT = 64; // Abstand der Raumtext-Lücke zum Text
 const KANTE = 24; // weiche Kante der Lücken (1,5 Zellen)
-const SKALA = 0.13 / 32; // Rauschfrequenz je Pixel (Entwurf: 0,13 je Zelle bei Zelle 32), gilt bei 900 px kurzer Seite
-const STAERKE = 0.26; // Beitrag der Deckung zum Schwellwert: Spitze deckt etwa 40 % der Fläche
+const SKALA = 0.006; // Rauschfrequenz je Pixel bei 900 px kurzer Seite: kleinere Inseln als im Entwurf
+const STAERKE = 0.14; // Beitrag der Deckung zum Schwellwert: die Spitze deckt höchstens etwa 15 % der Fläche
 const states = new WeakMap();
 
 /** Anteil der Fläche, den die Flut deckt (0..1), in den zwei Flutphasen der Intro. */
@@ -27,7 +28,7 @@ export function deckung(P) {
 }
 
 qa.deckung = deckung;
-qa.masse = { ...(qa.masse ?? {}), flutZelle: CELL, flutZiffer: 10.5 };
+qa.masse = { ...(qa.masse ?? {}), flutZelle: CELL, flutZiffer: 10 };
 
 /** Stärke einer Lücke (0..1) an der Stelle (x, y) für ein Rechteck mit Rand. */
 function loch(x, y, r, rand) {
@@ -46,8 +47,23 @@ export function lueckenVon(loecher, c) {
 		if (l.art === 'logo' || l.art === 'cta') aus.push({ ...l, rand: 14, w0: 1 });
 		else if (l.art === 'hinweis') {
 			if ((c.endA ?? 0) < 0.72) aus.push({ ...l, rand: 6, kante: 14, w0: 1 });
-		} else if (l.art === 'text' && textGewicht > 0)
-			aus.push({ ...l, rand: RAND_TEXT, kante: 48, w0: Math.min(1, textGewicht * 2) });
+		} else if (l.art === 'text' && textGewicht > 0) {
+			// Querformat: die ganze Textspalte bleibt über die volle Höhe frei, nicht nur die Karte selbst
+			const quer = c.W > c.H;
+			aus.push({
+				...l,
+				y: quer ? -400 : l.y,
+				h: quer ? c.H + 800 : l.h,
+				rand: RAND_TEXT,
+				kante: 48,
+				w0: Math.min(1, textGewicht * 2),
+			});
+			// Hochformat: die Wohnung unter dem Text bleibt frei
+			if (!quer) {
+				const b = hochOben(l.y + l.h, c.safeH ?? c.H);
+				aus.push({ x: 0, y: b.top, w: c.W, h: b.bot - b.top, rand: 0, kante: 140, w0: textGewicht });
+			}
+		}
 	}
 	// Wohnungsmodell (Querformat): die Mitte der Bühne bleibt frei, solange die Wohnung steht
 	if (textGewicht > 0 && c.fit && c.W > c.H) {
@@ -86,7 +102,7 @@ function atlas(st, dpr) {
 	cv.width = z * 9;
 	cv.height = z;
 	const g = cv.getContext('2d');
-	g.font = `500 ${10.5 * dpr}px "JetBrains Mono", monospace`;
+	g.font = `500 ${10 * dpr}px "JetBrains Mono", monospace`;
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
 	g.fillStyle = 'rgba(250,250,250,0.66)';
@@ -111,7 +127,7 @@ export function draw(cv, c, loecher = []) {
 			const cols = Math.ceil(W / CELL);
 			const rows = Math.ceil(H / CELL);
 			const on = new Uint8Array(cols * rows);
-			gitter(W, H, t, cover, lueckenVon(lo ?? st.loecher ?? [], { fpA, endA }), null, cols, rows, on);
+			gitter(W, H, t, cover, lueckenVon(lo ?? st.loecher ?? [], { fpA, endA, W, H, safeH: H }), null, cols, rows, on);
 			return { cols, rows, cell: CELL, on: Array.from(on) };
 		};
 		qa.flutZustand = () => ({ cols: st.cols, rows: st.rows, cell: CELL, on: st.on ? Array.from(st.on) : [] });
@@ -121,7 +137,9 @@ export function draw(cv, c, loecher = []) {
 	st.loecher = loecher;
 	fx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	// Bei reduzierter Bewegung: Deckung höchstens 0,6, das Rauschen läuft nicht mit der Zeit
-	const cover = c.reduced ? Math.min(c.cover, 0.4) : c.cover;
+	let cover = c.reduced ? Math.min(c.cover, 0.4) : c.cover;
+	// Hochformat: die zweite Flutphase (Pinnwand & Chat) deckt höchstens 0,35, die Wohnung bleibt lesbar
+	if (c.W <= c.H && c.P > 0.75) cover = Math.min(cover, 0.35);
 	const t = c.reduced ? 0 : c.t;
 	if (!(cover > 0.001)) {
 		if (!st.clean) {

@@ -9,36 +9,47 @@ import { fitBox } from '../../core/canvas';
 /** Hochformat, wie in core/loop.js modeOf: Breite/Höhe <= 1 oder Breite < 700. */
 export const istHoch = (W, H) => W / H <= 1 || W < 700;
 
-// Hochformat: Ausschnitt im Ende-Raum (Daumen links bei x ~585, Fingerkuppen rechts bis x ~1105)
-const HX = 562;
-const HW = 566;
+// Hochformat: Ausschnitt im Ende-Raum (Daumen links bei x ~585). Das Handy füllt etwa 78 % der Breite, die
+// Finger rechts laufen aus dem Bild (natürlicher Anschnitt), der Unterarm wird unten angeschnitten.
+const PHONE_X = 650;
+const PHONE_W = 300;
+const DAUMEN = 66; // Daumen ragt so weit links über das Handy
 const PHONE_TOP = 90;
 const PHONE_H = 620;
 
-/**
- * Platz oben im Hochformat für Titel und Knopf (CSS-px). Muss zu Ende.module.css passen:
- * Rand oben, Titel (--t-96, zwei Zeilen à 0,9), Abstand 24, Knopf 48, Abstand zum Handy 24.
- */
-export function titelPlatz(W, safeH) {
-	const rand = Math.max(20, Math.min(0.03125 * W, 0.05 * safeH));
-	const fs = Math.max(54, Math.min(0.075 * W, 0.12 * safeH, 104));
-	const gap = Math.max(12, Math.min(0.01875 * W, 0.03 * safeH, 26.4));
-	return rand + 1.8 * fs + gap + 48 + 24;
+let safeTopPx = -1;
+/** safe-area-inset-top in CSS-px (einmal gemessen). */
+function safeTop() {
+	if (safeTopPx >= 0) return safeTopPx;
+	if (typeof document === 'undefined') return 0;
+	const p = document.createElement('div');
+	p.style.cssText = 'position:fixed;visibility:hidden;padding-top:env(safe-area-inset-top,0px)';
+	document.body.appendChild(p);
+	safeTopPx = Number.parseFloat(getComputedStyle(p).paddingTop) || 0;
+	p.remove();
+	return safeTopPx;
 }
 
 /**
- * Einpassung des Ende-Raums in die Bühne.
- * quer: contain-fit von 1280 x 800 (f <= 1,25), zentriert im sicheren Kasten.
- * hoch: Handy mittig unter Titel und Knopf, Daumen und Finger im Bild, der Unterarm läuft unten aus der
- * Bühne (die Pässe tragen den Arm bis y 1400).
+ * Platz oben im Hochformat für Titel und Knopf (CSS-px). Muss zu Ende.module.css passen:
+ * Abstand oben max(72, safe-top + 56), Titel (Schrift 40 bis 60, eine Zeile), Abstand 16, Knopf 40,
+ * Abstand zum Handy 20.
  */
+export function titelPlatz(W, _safeH) {
+	const oben = Math.max(72, 56 + safeTop());
+	const fs = Math.max(40, Math.min(0.08 * W, 60));
+	return oben + fs + 16 + 40 + 20;
+}
+
 export function kamera(W, H, safeH, _mode) {
 	if (!istHoch(W, H)) return fitBox(W, safeH, 1280, 800, 1.25);
 	const top = titelPlatz(W, safeH);
-	const f = Math.max(0.2, Math.min(W / HW, (H - top - 100) / PHONE_H, 1.25));
+	const f = Math.max(0.2, Math.min((0.78 * W) / PHONE_W, (H - top - 12) / PHONE_H, 1.25));
+	// Handy links so weit eingerückt, dass der Daumen ganz im Bild bleibt (nie mehr als mittig minus 8)
+	const links = Math.max(DAUMEN * f + 4, (W - PHONE_W * f) / 2 - 8);
 	return {
 		f,
-		ox: W / 2 - (HX + HW / 2) * f,
+		ox: links - PHONE_X * f,
 		oy: top - PHONE_TOP * f,
 	};
 }

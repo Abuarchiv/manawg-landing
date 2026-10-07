@@ -50,7 +50,7 @@ export function Koerper() {
 			<div
 				data-titel="1"
 				style={css(
-					'position:absolute;left:var(--rand);top:var(--sp-48);display:flex;flex-direction:column;gap:var(--sp-10);pointer-events:none',
+					'position:absolute;left:var(--rand);top:calc(var(--kopf-unten) + var(--sp-14));display:flex;flex-direction:column;gap:var(--sp-10);pointer-events:none',
 				)}
 			>
 				<span className="label">[ ACHT KÖRPER ]</span>

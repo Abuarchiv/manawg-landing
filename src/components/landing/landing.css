@@ -29,6 +29,8 @@
 	--abschnitt-oben: clamp(56px, min(7.5vw, 12svh), 105.6px);
 	--abschnitt-unten: clamp(64px, min(9.375vw, 15svh), 132px);
 	--anker: 110px;
+	--kopf-oben: max(var(--rand-kopf), calc(env(safe-area-inset-top) + 8px));
+	--kopf-unten: calc(var(--kopf-oben) + 40px + 8px);
 
 	/* Abstände und Breiten */
 	--sp-10: clamp(5px, min(0.78125vw, 1.25svh), 11px);
@@ -73,6 +75,15 @@
 	--faq-marke: clamp(20px, 1.7vw, 22px);
 	--zeit: 140ms; /* Übergänge der Bedienzustände, 120 bis 160 ms */
 	--haar: rgba(250, 250, 250, 0.18);
+}
+
+#final[data-mode="hoch"] {
+	--lwn: 360;
+}
+
+/* Über dem Glas ersetzt die gezeichnete Fingerspitze den Zeiger (Maus und Stift, siehe hand.js) */
+[data-hand-folgt] [data-fang] {
+	cursor: none;
 }
 
 /* Grundstile des früheren Rahmens */
@@ -209,11 +220,33 @@
 }
 .faq-marke {
 	flex-shrink: 0;
-	font-family: "JetBrains Mono", monospace;
-	font-size: var(--faq-marke);
-	font-weight: 500;
-	line-height: 1;
+	position: relative;
+	width: var(--faq-marke);
+	height: var(--faq-marke);
+	align-self: flex-start;
+	margin-top: calc(0.6 * var(--t-32) - var(--faq-marke) / 2);
 	transition: transform var(--zeit) ease;
+}
+/* Plus aus zwei 1-px-Strichen; offen skaliert der senkrechte auf 0 (200 ms): Plus und Minus haben dieselbe Metrik */
+.faq-marke i {
+	position: absolute;
+	background: currentColor;
+}
+.faq-marke i:first-child {
+	left: 15%;
+	right: 15%;
+	top: calc(50% - 0.5px);
+	height: 1px;
+}
+.faq-marke i:last-child {
+	top: 15%;
+	bottom: 15%;
+	left: calc(50% - 0.5px);
+	width: 1px;
+	transition: transform 0.2s ease;
+}
+.faq-frage[aria-expanded="true"] .faq-marke i:last-child {
+	transform: scaleY(0);
 }
 .faq-antwort {
 	display: grid;
@@ -317,30 +350,15 @@
 	visibility: hidden;
 }
 
-/* Kopf: Schleier hinter Logo und Knopf (T-06). Vollständig deckend bis knapp unter den Kopf, dann
-   36 px Verlauf. Er hängt am Kopf und blendet mit ihm aus. In der Intro folgt er --f (Wohnung und
-   Flut, wo helle Zellen unter dem Kopf laufen), in Ende-Szene und danach steht er voll. */
-[data-kopf] {
-	--kopf-oben: max(var(--rand-kopf), calc(env(safe-area-inset-top) + 8px));
-	--kopf-unten: calc(var(--kopf-oben) + 40px + 8px);
+/* Kopf: kein Schleier. Die Kunst läuft randlos bis zum oberen Rand; Logo und Knopf halten die Flut über
+   die Lücken logo/cta frei. Nur der Knopf bekommt einen eigenen Grund, damit er über hellen Flächen lesbar bleibt. */
+
+[data-kopf] .cta--rand:not(:hover) {
+	background: rgba(10, 10, 10, 0.55);
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
 }
-[data-kopf]::before {
-	content: "";
-	position: fixed;
-	z-index: -1;
-	left: 0;
-	right: 0;
-	top: 0;
-	height: calc(var(--kopf-unten) + 36px);
-	background: linear-gradient(#0a0a0a 0, #0a0a0a var(--kopf-unten), rgba(10, 10, 10, 0) 100%);
-	pointer-events: none;
-	opacity: min(1, calc(var(--f, 0) * 8));
-}
-[data-phase="ende"] [data-kopf]::before,
-[data-phase="nach"] [data-kopf]::before {
-	opacity: 1;
-	transition: opacity 0.24s ease;
-}
+
 [data-kopf][inert] {
 	visibility: hidden;
 }
@@ -394,8 +412,7 @@
 	.tab,
 	.faq-marke,
 	.faq-antwort,
-	.hinweis,
-	[data-kopf]::before {
+	.hinweis {
 		transition-property: opacity;
 	}
 	.faq-antwort {

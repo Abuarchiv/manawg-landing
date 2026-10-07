@@ -1,5 +1,5 @@
 // ManaWG-Demo: Zustandsautomat ohne Framework über den aufgenommenen Zuständen der echten App.
-// Alle Zustände (Seiten und Overlays) liegen als <template> in index.html, der Graph (Klickfolgen, Welten) im
+// Alle Zustände (Seiten und Overlays) liegen als <script type="text/plain"> in index.html (Rohtext, kein DOM-Aufbau beim Laden), der Graph (Klickfolgen, Welten) im
 // <script id="model">. Jedes Element stammt aus einer Aufnahme der App (design/app-ref). Gebaut von
 // design/app-ref/tools/build-demo.mjs. Nichts hier erfindet Inhalt: demo.js tauscht Aufnahmen aus und animiert
 // die Übergänge mit den Dauern und Kurven der App (REF §7) über deren eigenes CSS (data-open, data-ending-style).
@@ -101,7 +101,7 @@
 	const tpl = (id) => {
 		const t = document.getElementById(`t-${id}`);
 		if (!t) return '';
-		return TOK(t.innerHTML.replace(/<x-s i="(\d+)"><\/x-s>/g, (_, i) => M.s[i]).replace(/ class="~(\d+)"/g, (_, i) => ` class="${M.c[i]}"`));
+		return TOK(t.textContent.replace(/<x-s i="(\d+)"><\/x-s>/g, (_, i) => M.s[i]).replace(/ class="~(\d+)"/g, (_, i) => ` class="${M.c[i]}"`));
 	};
 
 	// ---------------------------------------------------------------- Zustand
@@ -485,7 +485,7 @@
 		const send = (type, e) => {
 			if (!fe) return;
 			const r = fe.getBoundingClientRect();
-			const s = r.width / 390;
+			const s = r.width / fe.clientWidth;
 			const o = { bubbles: true, cancelable: false, composed: true, clientX: r.left + e.clientX * s, clientY: r.top + e.clientY * s, pointerType: e.pointerType || 'mouse', pointerId: e.pointerId || 1, isPrimary: true, buttons: e.buttons, button: e.button };
 			fe.dispatchEvent(new (window.parent.PointerEvent || PointerEvent)(type, o));
 		};
@@ -498,7 +498,7 @@
 		let ty = 0;
 		let v = 0;
 		let raf = 0;
-		const fscale = () => (fe ? fe.getBoundingClientRect().width / 390 : 1);
+		const fscale = () => (fe ? fe.getBoundingClientRect().width / fe.clientWidth : 1);
 		addEventListener('touchstart', (e) => {
 			cancelAnimationFrame(raf);
 			ty = e.touches[0].clientY;

@@ -1,7 +1,7 @@
 'use client';
 
 import { appUrl } from '@/lib/app-origin';
-import { EllipsisVertical, Menu } from 'lucide-react';
+import { Ellipsis, EllipsisVertical } from 'lucide-react';
 import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Android } from './Android';
 import s from './Installieren.module.css';
@@ -14,7 +14,15 @@ import { registerAblauf } from './ablauf';
 
 // Die Symbole der Schritte sind dieselben Zeichnungen wie im Gerät (Safari: Menü unten rechts, Chrome: drei Punkte)
 const ICON: Record<string, ReactNode> = {
-	'≡': <Menu size="1.1em" strokeWidth={2} aria-label="Menü" role="img" className={s.ikone} />,
+	'≡': (
+		<Ellipsis
+			size="1.1em"
+			strokeWidth={2.4}
+			aria-label="Drei Punkte"
+			role="img"
+			className={s.ikone}
+		/>
+	),
 	'⋮': (
 		<EllipsisVertical
 			size="1.1em"
@@ -97,7 +105,7 @@ export function Installieren() {
 		return () => a.stop();
 	}, []);
 
-	// Gerät in die Spalte einpassen: im Hochformat 72–80 % der Breite, nie größer als 1 und nie höher als das Bild
+	// Gerät in die Spalte einpassen: im Hochformat 78 % der Breite, quer bis 78 % der Höhe, höchstens 1,4-fach
 	useEffect(() => {
 		const bu = buRef.current as HTMLDivElement;
 		const sk = skRef.current as HTMLDivElement;
@@ -107,10 +115,11 @@ export function Installieren() {
 			const cs = getComputedStyle(bu);
 			const w =
 				bu.clientWidth - Number.parseFloat(cs.paddingLeft) - Number.parseFloat(cs.paddingRight);
+			// Auf großen Bildschirmen darf das Gerät über seine Entwurfsgröße wachsen (bis 78 % der Fensterhöhe)
 			const z = Math.min(
-				1,
+				inst === 2 ? 1.2 : 1.4,
 				(w * (hoch && inst !== 2 ? 0.78 : 1)) / (fw as number),
-				(innerHeight * 0.88) / (fh as number),
+				(innerHeight * (hoch ? 0.88 : 0.78)) / (fh as number),
 			);
 			sk.style.setProperty('--z', z.toFixed(4));
 			sk.style.width = `${(fw as number) * z}px`;

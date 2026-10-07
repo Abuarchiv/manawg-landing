@@ -26,8 +26,24 @@
 }
 
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	/* Hoch: unter dem Kopf (der bleibt sichtbar), Titel eine Zeile, Knopf in der Höhe des Kopf-Knopfs.
+	   Muss zu kamera.js titelPlatz passen. */
 	.titel {
 		bottom: auto;
-		top: max(var(--rand), calc(env(safe-area-inset-top, 0px) + 8px));
+		top: max(72px, calc(env(safe-area-inset-top, 0px) + 56px));
+		gap: 16px;
+	}
+	.h {
+		font-size: clamp(40px, 8vw, 60px);
+		line-height: 1;
+		white-space: nowrap;
+	}
+	.h br {
+		display: none;
+	}
+	.titel .knopf {
+		height: var(--cta-h);
+		font-size: var(--cta-fs);
+		padding: 0 var(--cta-px);
 	}
 }

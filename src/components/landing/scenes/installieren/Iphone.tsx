@@ -13,10 +13,10 @@ import {
 	ChevronUp,
 	Compass,
 	Copy,
+	Ellipsis,
 	EyeOff,
 	FileSearch,
 	Glasses,
-	Menu,
 	Mic,
 	PenLine,
 	Printer,
@@ -29,6 +29,7 @@ import {
 	ZoomIn,
 } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
+import { AppDatum } from './AppDatum';
 import s from './Iphone.module.css';
 
 const SF = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif';
@@ -251,13 +252,14 @@ export function Iphone() {
 			<div className={s.ios_stack} data-k="ios-stack">
 				<div style={abs({ inset: 0, background: '#fff' })} />
 				<div style={scheibe(0, 490, 54)} />
+				<AppDatum left={0} top={54} />
 				<div style={scheibe(676, 844, 580)} />
 				<div className={s.ios_bar} data-k="ios-bar">
 					<span className={s.ios_rund} style={{ left: 33 }}>
 						<ChevronLeft size={24} strokeWidth={1.8} color="#a3a3a8" aria-hidden="true" />
 					</span>
 					<div className={s.ios_pille}>
-						<Menu size={22} strokeWidth={2} aria-hidden="true" data-k="ios-menubtn" />
+						<Ellipsis size={22} strokeWidth={2} aria-hidden="true" data-k="ios-menubtn" />
 						<span>app.manawg.com</span>
 						<RotateCw size={19} strokeWidth={2} aria-hidden="true" />
 					</div>
@@ -293,7 +295,7 @@ export function Iphone() {
 							<img src={ICON} alt="" width="60" height="60" />
 						</span>
 						<div className={s.ios_kopf_t}>
-							<b>Deine WG-App</b>
+							<b>ManaWG</b>
 							<span>app.manawg.com</span>
 							<em>
 								Optionen <ChevronRight size={14} strokeWidth={2.6} aria-hidden="true" />
@@ -538,7 +540,8 @@ export function Iphone() {
 			</div>
 			<div className={s.ios_app_ebene} data-k="ios-app">
 				<div style={scheibe(0, 446, 54, APPSEITE)} />
-				<div style={scheibe(779, 844, 779, APPSEITE)} />
+				<AppDatum left={0} top={54} />
+				<div style={scheibe(779, 844, 753, APPSEITE)} />
 				<div className={s.ios_indikator} />
 			</div>
 

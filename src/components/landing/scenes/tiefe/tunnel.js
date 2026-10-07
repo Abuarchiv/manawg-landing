@@ -57,9 +57,11 @@ const plateauOf = (dz, last) => {
 	return cl((5 - Math.abs(dd)) / 1.5);
 };
 // Die Vorblende des nächsten Satzes erst, wenn der vorige nicht mehr steht (kein Überlappen).
-const capOpacity = (dz, last, vorher) => {
+// Dichte des Worts aus seiner Tiefe (dieselbe Kurve wie die Wortpartikel): zerfällt das Wort, geht der Satz mit.
+const wortDichte = (dz) => Math.max(cl((34 - dz) / 12), 0.6 * cl(68 - dz)) * (dz < 4.5 ? cl((dz - 0.4) / 4.1) : 1);
+const capOpacity = (dz, last, vorher, fremd = 1) => {
 	const pre = dz > 9 ? 0.5 * cl((30 - dz) / 2) * (1 - vorher) : 0;
-	return Math.max(plateauOf(dz, last), pre);
+	return Math.max(plateauOf(dz, last), pre) * cl((wortDichte(dz) * fremd - 0.05) / 0.25);
 };
 
 // Flächenfaktor: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900),
@@ -132,6 +134,7 @@ export function registerTiefe(cv, sec) {
 			s.dp = 0;
 			s.caps = [...cv.parentElement.querySelectorAll('[data-dcap]')];
 			s.dep = cv.parentElement.querySelector('[data-depth]');
+			s.hint = cv.parentElement.querySelector('[data-hint]');
 		},
 		frame(s, _t, dt) {
 			const ctx = s.ctx;
@@ -166,15 +169,31 @@ export function registerTiefe(cv, sec) {
 			ctx.fillRect(0, 0, s.W, s.H);
 			ctx.fillStyle = '#FAFAFA';
 			const snap = (v) => Math.round(v * dpr) / dpr;
-			const near = [];
+			// Nahzeichen je Schriftstufe in wiederverwendeten Eimern (keine neuen Arrays, kein sort)
+			const nb = (s.nb ||= [[], [], [], []]);
+			for (const e of nb) e.length = 0;
 			// Fokus je Wort: solange ein Wort steht, bleiben die anderen (Fernwörter) unsichtbar
 			const fok = s.isl.map((I, i) => plateauOf(I.z - camZ, i === s.isl.length - 1));
 			// Ein nahes, großes Wort (Tiefe 2 bis 34) blendet die fernen aus: kein kleines Wort auf der Ecke des großen
 const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2) / 2));
-const fremd = (k) => 1 - Math.max(0, ...gross.filter((_, i) => i !== k));
+// Nur ein NÄHERES großes Wort blendet ein fernes aus (nie das nähere Wort durch ein fernes)
+			const fremd = (k) =>
+				1 - Math.max(0, ...gross.filter((_, i) => i !== k && s.isl[i].z < s.isl[k].z));
 			const m = s.m;
 			const mx = m.in ? m.x : 0;
 			const my = m.in ? m.y : 0;
+			// Abstoßung des Zeigers nur bei Bewegung: Stärke aus der Geschwindigkeit, ruhend in ca. 300 ms weg.
+			// Solange ein Satz steht, halber Radius; Wörter in voller Größe (dz < 34) bleiben unberührt.
+			const pv = (s.pv ||= { x: m.x, y: m.y, a: 0 });
+			if (m.in) {
+				const v = (Math.hypot(m.x - pv.x, m.y - pv.y) * f) / Math.max(dt, 0.001);
+				pv.a = Math.max(pv.a * Math.exp(-dt * 10), cl(v / 600));
+			} else pv.a = 0;
+			pv.x = m.x;
+			pv.y = m.y;
+			const rep = pv.a > 0.01 ? pv.a : 0;
+			const plat = Math.max(...s.isl.map((I, i) => plateauOf(I.z - camZ, i === s.isl.length - 1)));
+			const rad = 120 * (1 - 0.5 * plat);
 			for (const q of s.P) {
 				let x = q[0];
 				let y = q[1];
@@ -193,12 +212,13 @@ const fremd = (k) => 1 - Math.max(0, ...gross.filter((_, i) => i !== k));
 				let X = ox + sx * f;
 				let Y = oy + sy * f;
 				if (X < -40 || Y < -40 || X > s.W + 40 || Y > s.H + 40) continue;
-				if (m.in) {
+				if (rep && !(word && dz < 34)) {
 					const dx = sx - mx;
 					const dy = sy - my;
 					const d = Math.hypot(dx, dy);
-					if (d < 120) {
-						const g = (1 - d / 120) * 46 * f;
+					const R = word ? 48 : rad;
+					if (d < R) {
+						const g = (1 - d / R) * 46 * f * rep * (word ? 0.2 : 1);
 						X += (dx / (d + 0.1)) * g;
 						Y += (dy / (d + 0.1)) * g;
 					}
@@ -228,27 +248,28 @@ if (dust) tier = 1;
 					// über 32 px keine Zeichen mehr, nur noch ein Punkt
 					ctx.globalAlpha = a;
 					ctx.fillRect(snap(X) - 1, snap(Y) - 1, 3, 3);
-				} else near.push([tier, X, Y, q[3], dust ? a * 0.7 : a]);
+				} else nb[tier].push(X, Y, q[3], dust ? a * 0.7 : a);
 			}
-			near.sort((a, b) => a[0] - b[0]);
-			let fb = -1;
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
-			for (const n of near) {
-				if (n[0] !== fb) {
-					fb = n[0];
-					ctx.font = `500 ${FONTS[fb]}px ${MONO}`;
+			for (let tr = 0; tr < 4; tr++) {
+				const e = nb[tr];
+				if (!e.length) continue;
+				ctx.font = `500 ${FONTS[tr]}px ${MONO}`;
+				for (let i = 0; i < e.length; i += 4) {
+					ctx.globalAlpha = e[i + 3];
+					ctx.fillText(e[i + 2], e[i], e[i + 1]);
 				}
-				ctx.globalAlpha = n[4];
-				ctx.fillText(n[3], n[1], n[2]);
 			}
 			ctx.globalAlpha = 1;
 			for (const el of s.caps) {
 				const i = +el.getAttribute('data-dcap');
 				const dz = s.isl[i].z - camZ;
 				const vorher = i > 0 ? fok[i - 1] : 0;
-el.style.opacity = capOpacity(dz, i === s.isl.length - 1, vorher).toFixed(3);
+el.style.opacity = capOpacity(dz, i === s.isl.length - 1, vorher, fremd(i)).toFixed(3);
 			}
+			// Hinweis „weiter scrollen“ nur am Anfang der Fahrt, danach ganz weg
+			if (s.hint) s.hint.style.opacity = (1 - ss(p / 0.06)).toFixed(3);
 			if (s.dep) s.dep.textContent = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');
 		},
 	});

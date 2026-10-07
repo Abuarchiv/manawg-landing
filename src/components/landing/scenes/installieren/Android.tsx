@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import s from './Android.module.css';
+import { AppDatum } from './AppDatum';
 
 const ICON = '/icon-512.png';
 const SEITE = '/install/seite-android.webp';
@@ -140,6 +141,7 @@ export function Android() {
 			<div className={s.and_stack} data-k="and-stack">
 				<div style={abs({ left: 0, top: 108, width: 411, height: 692, background: '#fff' })} />
 				<div style={scheibe(0, 481, 108)} />
+				<AppDatum left={0} top={108} k={F} />
 				<div style={scheibe(676, 844, 623)} />
 				<div className={s.and_oben}>
 					<div className={s.and_pille}>
@@ -250,6 +252,7 @@ export function Android() {
 			<div className={s.and_app} data-k="and-app">
 				<div style={abs({ left: 0, top: 0, width: 411, height: 48, background: '#0a0a0a' })} />
 				<div style={scheibe(0, 446, 48, APPSEITE)} />
+				<AppDatum left={0} top={48} k={F} />
 				<div style={scheibe(779, 844, 788, APPSEITE)} />
 				<div style={abs({ left: 0, top: 856, width: 411, height: 28, background: '#000' })} />
 			</div>

@@ -357,7 +357,7 @@ const pack = (h) =>
 	h
 		.replace(/<svg\b[\s\S]*?<\/svg>/g, (m) => (svgIdx.has(m) ? `<x-s i="${svgIdx.get(m)}"></x-s>` : m))
 		.replace(/ class="([^"]*)"/g, (m, v) => (clsIdx.has(v) ? ` class="~${clsIdx.get(v)}"` : m));
-const tmpl = used2.map(([k, h]) => `<template id="t-${k}">${pack(h)}</template>`).join('\n');
+const tmpl = used2.map(([k, h]) => `<script type="text/plain" id="t-${k}">${pack(h)}</script>`).join('\n');
 const slim = JSON.stringify(model, (k, v) => (k === 'route' ? undefined : v));
 const html = `<!doctype html>
 <html lang="de" class="__variable_a918ff __variable_2d7d99 __variable_ae46ea" style="--app-header-height: 40px; --app-nav-height: 57.1875px;">

@@ -7,11 +7,11 @@ import { vnz } from '../../core/math';
 
 // Flut-Band zwischen Intro und "So geht's": drei Zeilen aus weißen Zellen und Ziffern über die ganze
 // Breite, dekorativ. Es liegt erst unter der Ende-Bühne (die Hand-Szene überlappt es nie), ist licht wie eine
-// Schwelle und blendet aus, sobald es unter den Kopf läuft (Sprunglink: kein Rest über dem Logo). Zelle 16 px und Ziffer 10,5 px wie die Flut der Intro, das Muster kommt aus
+// Schwelle und blendet aus, sobald es unter den Kopf läuft (Sprunglink: kein Rest über dem Logo). Zelle 12 px und Ziffer 10 px wie die Flut der Intro, das Muster kommt aus
 // derselben Rauschfunktion und ist fest (scharf, keine Bewegung).
 
-const CELL = 16;
-const ZEILEN = 3;
+const CELL = 12;
+const ZEILEN = 4;
 const SKALA = 0.13 / 32;
 
 function zeichne(cv: HTMLCanvasElement, W: number) {
@@ -37,7 +37,7 @@ function zeichne(cv: HTMLCanvasElement, W: number) {
 	for (let b = 0; b < ZEILEN; b++)
 		for (let a = 0; a < cols; a++) if (on[b * cols + a]) g.rect(a * CELL, b * CELL, CELL, CELL);
 	g.fill();
-	g.font = '500 10.5px "JetBrains Mono", monospace';
+	g.font = '500 10px "JetBrains Mono", monospace';
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
 	g.fillStyle = 'rgba(250,250,250,0.66)';

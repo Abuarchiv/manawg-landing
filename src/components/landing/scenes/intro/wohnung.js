@@ -44,19 +44,17 @@ const PEOC = [
 	['LEA', 0.34],
 ];
 
-// Breite der Überblendung zwischen zwei Karten in fs-Einheiten (T-02). Nachbarkarten sind nie
-// gleichzeitig sichtbar, das Plateau ist so lang wie die Zeitachse es hergibt.
-const KARTE_KANTE = 0.16;
-
-/** Deckkraft der vier Raumkarten bei Fortschritt P: Plateau mit kurzer Überblendung, ohne Überlapp. */
+/**
+ * Welche Raumkarte steht, bei Fortschritt P: genau eine (Grenzen bei fs 1,5 / 2,5 / 3,5), Höhe der Deckkraft aus
+ * Ein- und Ausblendung der Wohnung. Der Wechsel selbst läuft in der Bühne zeitgesteuert (stage.js, 180 ms):
+ * so steht beim Scrollen nie ein Moment ohne lesbaren Text und im Stillstand nie ein Doppelbild.
+ */
 export function karten(P) {
 	const fpA = ss((P - 0.58) / 0.05);
 	const endA = ss((P - 0.9) / 0.05);
 	const fs = cl((P - 0.62) / 0.28) * 5;
-	const out = [];
-	for (let j = 0; j < 4; j++)
-		out.push(fpA * (1 - endA) * ss((0.5 - Math.abs(fs - (j + 1))) / KARTE_KANTE));
-	return out;
+	const idx = fs >= 0.5 && fs < 4.5 ? Math.floor(fs - 0.5) : -1;
+	return [0, 1, 2, 3].map((j) => (j === idx ? fpA * (1 - endA) : 0));
 }
 
 qa.karten = karten;
@@ -135,6 +133,11 @@ function setzeLabels(ctx, items, grenzen, meiden) {
 // 190..1090 x 120..680), jeder Blickpunkt sitzt in der Mitte der Box.
 const HOCH_BOX = { bw: 900, bh: 560, x0: 190, y0: 120, ox: 640, oy: 410 };
 
+/** Hochformat: Oberkante und Unterkante der Wohnungsbox unter der Kartenspalte (CSS-px). Auch die Flut spart sie aus. */
+export function hochOben(textUnten, safeH) {
+	return { top: Math.min(textUnten + 10, safeH * 0.62), bot: safeH - 56 };
+}
+
 /** Rechtecke der DOM-Elemente mit data-loch relativ zum Canvas (alle 20 Bilder neu gemessen). */
 function messeDom(st, cv) {
 	if (st.dom && loop.n - st.domN < 20) return st.dom;
@@ -185,7 +188,7 @@ export function draw(cv, c) {
 	let boxTop = 0;
 	if (hoch) {
 		const sp = dom.spalte;
-		boxTop = sp ? Math.min(sp.y1 + 10, c.safeH * 0.62) : c.safeH * 0.45;
+		boxTop = sp ? hochOben(sp.y1, c.safeH).top : c.safeH * 0.45;
 		const boxBot = c.safeH - 56;
 		const bh = Math.max(120, boxBot - boxTop);
 		f = Math.min(W / HOCH_BOX.bw, bh / HOCH_BOX.bh, 1.25);
@@ -197,7 +200,7 @@ export function draw(cv, c) {
 		ty = c.fit.oy;
 	}
 	const x0 = -tx / f;
-	const y0 = (boxTop - ty) / f;
+	const y0 = (0 - ty) / f; // die Wohnung läuft auch im Hochformat bis zum oberen Rand
 	const x1 = (W - tx) / f;
 	const y1 = (H - ty) / f;
 	const sp = cl((c.P - 0.62) / 0.28);
@@ -321,14 +324,20 @@ export function draw(cv, c) {
 	});
 	// Alles Weitere in CSS-Pixeln: Hochformat deckt oberhalb der Box ab, dann die Beschriftungen
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-	if (hoch) {
-		ctx.fillStyle = '#0A0A0A';
-		ctx.fillRect(0, 0, W, boxTop);
-		const g = ctx.createLinearGradient(0, boxTop, 0, boxTop + 40);
-		g.addColorStop(0, 'rgba(10,10,10,1)');
-		g.addColorStop(1, 'rgba(10,10,10,0)');
-		ctx.fillStyle = g;
-		ctx.fillRect(0, boxTop, W, 40);
+	// Hochformat: nur hinter dem Textblock abdunkeln, weich auslaufend (keine Schnittkante bei boxTop)
+	if (hoch && dom.spalte) {
+		const sichtH = Math.max(...karten(c.P));
+		if (sichtH > 0.01) {
+			const unten = dom.spalte.y1 + 12;
+			const g = ctx.createLinearGradient(0, 0, 0, unten + 90);
+			const a = 0.9 * sichtH;
+			const stop = unten / (unten + 90);
+			g.addColorStop(0, `rgba(10,10,10,${a})`);
+			g.addColorStop(stop, `rgba(10,10,10,${a})`);
+			g.addColorStop(1, 'rgba(10,10,10,0)');
+			ctx.fillStyle = g;
+			ctx.fillRect(0, 0, W, unten + 90);
+		}
 	}
 	// Quer: links neben der Kartenspalte dunkelt die Wohnung weich ab, damit keine Wand und kein Punkt
 	// durch den Kartentext läuft (T-02, T-15)

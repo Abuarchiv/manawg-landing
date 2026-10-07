@@ -13,6 +13,7 @@ import {
 	X,
 } from 'lucide-react';
 import type { CSSProperties } from 'react';
+import { AppDatum } from './AppDatum';
 import s from './Rechner.module.css';
 
 const ICON = '/icon-512.png';
@@ -83,6 +84,7 @@ export function Rechner() {
 				</div>
 				<div className={s.dk_seite}>
 					<div style={scheibe(0, 454, 0, 215)} />
+					<AppDatum left={215} top={0} />
 				</div>
 				<div className={s.dk_tip} data-k="dk-tip">
 					ManaWG installieren
@@ -111,6 +113,7 @@ export function Rechner() {
 					<EllipsisVertical size={16} strokeWidth={2.2} aria-hidden="true" />
 				</div>
 				<div style={scheibe(0, 446, 28, 215)} />
+				<AppDatum left={215} top={28} />
 				<div style={scheibe(779, 844, 473, 215)} />
 			</div>
 		</div>

@@ -27,7 +27,6 @@ const INK_DARK = 0.04; // über dem weißen Bildschirm: dunkle Punkte
 const TILES = ['lum', 'a', 'nx', 'ny', 'z'];
 const RING_T = 0.8;
 const RING_N = 72;
-const TIPP_HALTEN = 1.1; // so lange bleibt die Zeigehand nach einem Tipp am Ziel (s)
 
 // ----------------------------------------------------------------------------------------------------
 // Pässe laden
@@ -81,7 +80,8 @@ uniform vec4 uPR;      // Radius Handy, Radius Bildschirm, bottomY, Zeigerlicht 
 uniform vec4 uLight;   // Zeigerlicht (Ende-Raum) x, y
 uniform vec4 uTipU;    // Spitze x, y, Armrichtung x, y
 uniform vec4 uPS;      // Maßstab der Zeigehand, Deckkraft, 0, 0
-uniform vec4 uRing;    // Radius, Deckkraft, aktiv, 0
+uniform vec4 uRing;    // Radius, Deckkraft, aktiv, Druck der Zeigehand 0..1
+uniform vec4 uBr;      // Atmen: x, y (Bühnen-px), Winkel (rad), 0
 uniform vec4 uQ[2];    // ruhige Rechtecke (Titel, Knopf) im Ende-Raum
 uniform vec3 uCam;     // f, ox, oy
 uniform vec3 uBack;    // Backing je CSS-px x, y, Backing-Höhe
@@ -143,17 +143,19 @@ vec2 holdTone(vec2 C){
   float eA = min(min(SH(1, C - vec2(e, 0.)), SH(1, C + vec2(e, 0.))), min(SH(1, C - vec2(0., e)), SH(1, C + vec2(0., e))));
   bool edge = eA < .5 && abs(sdf) >= 7.;
   float cov = ss((al - .02) / .25) * ss((uPR.z - C.y) / 90.);
-  float tone;
   float sdS = sdfRR(C, uScreen, uPR.y);
-  if (front && sdS < -1.) {
+  // weicher Übergang statt harter Kante am Glasrand: Ton und Tinte gehen über 18 px ineinander über
+  float gk = front ? ss(-sdS / 18.) : 0.;
+  float vo = v;
+  if (edge) vo = max(vo, ${EDV.toFixed(1)} * lf * al);
+  float tone = vo * cov;
+  if (gk > 0.) {
     float tn = .04 + .86 * pow(cl(v), 1.35);
     float vd = pow(1. - tn, .45);
     if (edge) vd = max(vd, .95);
     // auf dem Glas nur ein schmaler Streifen am Rand: Tab-Leiste und Inhalt bleiben frei
-    tone = vd * cov * (1. - ss((-sdS - ${(RAND_IN - 4).toFixed(1)}) / 7.));
-  } else {
-    if (edge) v = max(v, ${EDV.toFixed(1)} * lf * al);
-    tone = v * cov;
+    float ti = vd * cov * (1. - ss((-sdS - ${(RAND_IN - 4).toFixed(1)}) / 7.));
+    tone = mix(tone, ti, gk);
   }
   return vec2(tone, front ? 2. : 1.);
 }
@@ -163,9 +165,9 @@ vec2 pointTone(vec2 C, bool full){
   if (uPS.y <= 0.) return vec2(0.);
   vec2 d = C - uTipU.xy;
   float dist = length(d);
-  bool onGlass = sdfRR(C, uScreen, uPR.y) < -1.;
-  // auf dem Glas läuft die Hand schneller aus: Fingerspitze und Knöchel, der Arm bleibt weg vom Bildschirm
-  float fade = onGlass ? cl(1. - (dist - 150.) / 230.) : cl(1. - (dist - 300.) / 420.);
+  float gk = ss(-sdfRR(C, uScreen, uPR.y) / 18.);
+  // auf dem Glas bleibt die Hand bis zum Handgelenk deckend, der Arm läuft danach schneller aus
+  float fade = mix(cl(1. - (dist - 300.) / 420.), cl(1. - (dist - 300.) / 140.), gk);
   if (fade <= 0.) return vec2(0.);
   vec2 u = uTipU.zw;
   vec2 ab = vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x;
@@ -180,17 +182,12 @@ vec2 pointTone(vec2 C, bool full){
   float e = ${EDW.toFixed(1)} / uPS.x;
   float eA = min(min(SP(1, ab - vec2(e, 0.)), SP(1, ab + vec2(e, 0.))), min(SP(1, ab - vec2(0., e)), SP(1, ab + vec2(0., e))));
   bool edge = eA < .5;
-  float tone;
-  if (onGlass) {
-    float tn = .04 + .86 * pow(cl(v), 1.35);
-    float vd = pow(1. - tn, .45);
-    if (edge) vd = max(vd, .95);
-    tone = vd;
-  } else {
-    if (edge) v = max(v, ${EDV.toFixed(1)} * lf * al);
-    tone = v;
-  }
-  return vec2(tone * cov, cov);
+  float vo = v;
+  if (edge) vo = max(vo, ${EDV.toFixed(1)} * lf * al);
+  float tn = .04 + .86 * pow(cl(v), 1.35);
+  float vd = pow(1. - tn, .45);
+  if (edge) vd = max(vd, .95);
+  return vec2(mix(vo, vd, gk) * cov, cov);
 }
 
 float quiet(vec2 C){
@@ -220,29 +217,52 @@ void main(){
   o = vec4(clamp(tone * quiet(C), 0., 1.), 0., 0., 1.);
 }
 #else
+// Zeigehand: weich geglättete Silhouette (5 Abtastungen), mit Ausblenden zum Arm hin und Deckkraft
+vec2 pSprite(vec2 S){
+  vec2 d = S - uTipU.xy;
+  vec2 u = uTipU.zw;
+  return vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x;
+}
+float pointSil(vec2 S){
+  if (uPS.y <= 0.) return 0.;
+  float dist = length(S - uTipU.xy);
+  float gk = ss(-sdfRR(S, uScreen, uPR.y) / 18.);
+  float fade = mix(cl(1. - (dist - 300.) / 420.), cl(1. - (dist - 300.) / 140.), gk);
+  if (fade <= 0.) return 0.;
+  vec2 ab = pSprite(S);
+  float r = 1.1 / uPS.x;
+  float a = (2. * SP(1, ab) + SP(1, ab + vec2(r, 0.)) + SP(1, ab - vec2(r, 0.)) + SP(1, ab + vec2(0., r)) + SP(1, ab - vec2(0., r))) / 6.;
+  return clamp((a - .5) / .18 + .5, 0., 1.) * fade * uPS.y;
+}
 // Pixel-Alpha der Hände (Haltehand und, vorn, Zeigehand) für die weiche Silhouette
 float pixA(vec2 S){
   float a = SH(1, S);
-  if (uFront == 1 && uPS.y > 0.) {
-    vec2 d = S - uTipU.xy;
-    vec2 u = uTipU.zw;
-    a = max(a, SP(1, vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x));
-  }
+  if (uFront == 1 && uPS.y > 0.) a = max(a, SP(1, pSprite(S)));
   return a;
 }
-// Pass 2: Punkte je Zelle (Bayer, Hash-Zufall), scharf auf Gerätepixel, Silhouette per Pixel-Alpha geglättet
+// Pass 2: Punkte je Zelle (Bayer, Hash-Zufall), scharf auf Gerätepixel, Silhouette per Pixel-Alpha geglättet.
+// Vorn (Zeigehand) zusätzlich: deckende Grundfläche in der Silhouette und ein weicher Schatten aufs Glas.
 void main(){
   vec2 css = vec2(gl_FragCoord.x / uBack.x, (uBack.z - gl_FragCoord.y) / uBack.y);
   vec2 S = (css - uCam.yz) / uCam.x;
+  // Atmen: Handy und Hände bewegen sich gemeinsam, hier die Umkehrung in den Objektraum
+  {
+    vec2 pv = vec2(800., 400.);
+    vec2 q = S - uBr.xy - pv;
+    float cs = cos(uBr.z);
+    float sn = sin(uBr.z);
+    S = pv + vec2(cs * q.x + sn * q.y, -sn * q.x + cs * q.y);
+  }
   ivec2 cell = ivec2(floor(S / ${STEP.toFixed(2)}));
   vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(2)};
   float px = 1. / (uCam.x * uBack.x);
   ivec2 tc = cell - uCell0;
   float tone = 0.;
   if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) tone = texelFetch(uTone, tc, 0).r;
-  bool glass = uFront == 1 && sdfRR(S, uScreen, uPR.y) < -.5;
-  vec3 ink = vec3(glass ? ${INK_DARK} : ${INK});
-  if (tone <= 0. && uRing.z <= 0.) { o = vec4(0.); return; }
+  float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 18.) : 0.;
+  float ink = mix(${INK}, ${INK_DARK}, gk);
+  bool pt = uFront == 1 && uPS.y > 0.;
+  if (tone <= 0. && uRing.z <= 0. && !pt) { o = vec4(0.); return; }
   tone *= (1. - ${(JIT / 2).toFixed(3)}) + ${JIT.toFixed(2)} * hsh(cell);
   int bx = cell.x & 3;
   int by = cell.y & 3;
@@ -264,7 +284,19 @@ void main(){
     vec2 d2 = abs(S - pp);
     c = max(c, clamp((.7 - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S));
   }
-  o = vec4(ink * c, c);
+  float base = 0.;
+  float sh = 0.;
+  if (pt && gk > 0.) {
+    base = pointSil(S) * gk;
+    // weicher Schatten der Zeigehand aufs Glas: je näher der Finger (Druck), desto enger und dunkler
+    vec2 off = vec2(7., 11.) * (1. - .55 * uRing.w);
+    float s0 = pointSil(S - off) + pointSil(S - off + vec2(7., 0.)) + pointSil(S - off - vec2(7., 0.)) + pointSil(S - off + vec2(0., 7.)) + pointSil(S - off - vec2(0., 7.));
+    sh = s0 / 5. * gk * (.15 + .1 * uRing.w);
+  }
+  float aOut = c + base * (1. - c);
+  vec3 col = vec3(ink * c + .84 * base * (1. - c));
+  float sa = sh * (1. - aOut);
+  o = vec4(col, aOut + sa);
 }
 #endif
 `;
@@ -373,7 +405,7 @@ function uploadTex(gl, unit, bmp) {
 }
 
 const UNIFORMS = [
-	'uTH', 'uTP', 'uHT', 'uPT', 'uDiv', 'uHO', 'uPO', 'uPhone', 'uScreen', 'uPR', 'uLight', 'uTipU', 'uPS', 'uRing',
+	'uTH', 'uTP', 'uHT', 'uPT', 'uDiv', 'uHO', 'uPO', 'uPhone', 'uScreen', 'uPR', 'uLight', 'uTipU', 'uPS', 'uRing', 'uBr',
 	'uQ', 'uCam', 'uBack', 'uFront', 'uTone', 'uCell0', 'uCellN',
 ];
 
@@ -385,7 +417,8 @@ function setUniforms(L, u, S, cam, W, w, h, cells) {
 	gl.uniform4f(u.uLight, S.light.x, S.light.y, S.ringAt.x, S.ringAt.y);
 	gl.uniform4f(u.uTipU, S.tip.x, S.tip.y, S.u.x, S.u.y);
 	gl.uniform4f(u.uPS, S.sc, S.pa, 0, 0);
-	gl.uniform4f(u.uRing, S.ring > 0 ? S.ringR : 0, S.ring, S.ring > 0 ? 1 : 0, 0);
+	gl.uniform4f(u.uRing, S.ring > 0 ? S.ringR : 0, S.ring, S.ring > 0 ? 1 : 0, S.push);
+	gl.uniform4f(u.uBr, S.br.x, S.br.y, S.br.r, 0);
 	gl.uniform4fv(u.uQ, S.q);
 	gl.uniform3f(u.uCam, cam.f, cam.ox, cam.oy);
 	gl.uniform3f(u.uBack, w / W, h / (cells.H ?? 1), h);
@@ -483,10 +516,15 @@ function glFrame(L, S, cam, W, H) {
 	const h = cv.height;
 	const key = [
 		w, h, cam.f, cam.ox, cam.oy, S.light.x, S.light.y, S.ringAt.x, S.ringAt.y, S.lightPow, S.bottomY, S.tip.x, S.tip.y, S.u.x, S.u.y, S.sc, S.ring,
-		S.q[0], S.q[1], S.q[2], S.q[3], S.q[4], S.q[5], S.q[6], S.q[7], S.pa,
+		S.q[0], S.q[1], S.q[2], S.q[3], S.q[4], S.q[5], S.q[6], S.q[7], S.pa, S.push,
 	];
-	if (L.last && L.last.length === key.length && L.last.every((v, i) => v === key[i])) return true;
+	const bkey = [S.br.x, S.br.y, S.br.r];
+	const same = L.last && L.last.length === key.length && L.last.every((v, i) => v === key[i]);
+	// Atmen ändert nur Durchgang 2 (Punkte), der Ton je Zelle bleibt
+	const nur2 = same && L.lastB && !L.lastB.every((v, i) => v === bkey[i]);
+	if (same && L.lastB && !nur2) return true;
 	L.last = key;
+	L.lastB = bkey;
 
 	// sichtbares Raster im Ende-Raum
 	const i0 = Math.floor(-cam.ox / cam.f / STEP);
@@ -519,11 +557,13 @@ function glFrame(L, S, cam, W, H) {
 		gl.beginQuery(T.TIME_ELAPSED_EXT, q);
 	}
 	// Durchgang 1: Ton je Zelle in die Textur
-	gl.bindFramebuffer(gl.FRAMEBUFFER, C.fbo);
-	gl.viewport(0, 0, cw, ch);
-	gl.useProgram(L.prs[0]);
-	setUniforms(L, L.u[0], S, cam, W, w, h, cells);
-	gl.drawArrays(gl.TRIANGLES, 0, 3);
+	if (!nur2) {
+		gl.bindFramebuffer(gl.FRAMEBUFFER, C.fbo);
+		gl.viewport(0, 0, cw, ch);
+		gl.useProgram(L.prs[0]);
+		setUniforms(L, L.u[0], S, cam, W, w, h, cells);
+		gl.drawArrays(gl.TRIANGLES, 0, 3);
+	}
 	// Durchgang 2: Punkte auf die Leinwand
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 	gl.viewport(0, 0, w, h);
@@ -791,6 +831,15 @@ function cpuFrame(st, S, cam, W, H, dpr) {
 
 const states = new WeakMap();
 
+/** Leises Atmen (Sinus plus langsames Rauschen): x, y in Bühnen-px, r in rad. Perioden 4 bis 6 s. */
+function atem(t) {
+	const w = 1.2; // 5,2 s
+	const x = 0.65 * Math.sin(t * w) + 0.35 * Math.sin(t * 1.55 + 1.3);
+	const y = 0.65 * Math.sin(t * 1.05 + 2) + 0.35 * Math.sin(t * 1.4 + 0.4);
+	const r = 0.65 * Math.sin(t * 1.15 + 0.5) + 0.35 * Math.sin(t * 1.5 + 2.2);
+	return { x: 1.5 * x, y: 1.5 * y, r: ((0.4 * Math.PI) / 180) * r };
+}
+
 /** Autopilot im Fenster x 780-860, y 330-470: Dreieckswelle senkrecht, nie lange über derselben Textzeile. */
 function autopilot(t) {
 	const p = (t / 8) % 1;
@@ -808,8 +857,9 @@ function newState(back, front) {
 		park: [940, 1000],
 		lastClick: -9,
 		tap: null,
-		tapT: -9,
-		tapTop: 0,
+		contactT: -9,
+		pending: null,
+		space: null,
 		clean: false,
 		mode: null, // 'gl' | 'cpu'
 		layers: null,
@@ -918,29 +968,54 @@ function drawIn(back, front, c, cam) {
 	chooseMode(st, back, front);
 	for (const cv of [back, front]) sizeBackingOf(cv, W, H, dpr);
 
-	// Zeiger im Ende-Raum
-	const mx = (c.m.x - cam.ox) / cam.f;
-	const my = (c.m.y - cam.oy) / cam.f;
+	// Atmen: Handy und Hände bewegen sich gemeinsam um ±1,5 px und ±0,4° (Periode 4 bis 6 s), nur Transform
+	const br = c.reduced || st.mode !== 'gl' ? { x: 0, y: 0, r: 0 } : atem(t);
+	if (!st.space) st.space = st.back.parentElement.querySelector('[data-ende-space]');
+	if (st.space) {
+		st.space.style.setProperty('--ax', `${br.x.toFixed(3)}px`);
+		st.space.style.setProperty('--ay', `${br.y.toFixed(3)}px`);
+		st.space.style.setProperty('--ar', `${((br.r * 180) / Math.PI).toFixed(4)}deg`);
+	}
+	// Zeiger im Ende-Raum (Objektraum der Hände, ohne das Atmen)
+	const obj = (x, y) => {
+		const qx = (x - cam.ox) / cam.f - br.x - 800;
+		const qy = (y - cam.oy) / cam.f - br.y - 400;
+		const cs = Math.cos(br.r);
+		const sn = Math.sin(br.r);
+		return [800 + cs * qx + sn * qy, 400 - sn * qx + cs * qy];
+	};
+	const [mx, my] = obj(c.m.x, c.m.y);
 	const sc = A.hold.meta.screen;
 	const aufGlas = (x, y) => x > sc.x - 4 && x < sc.x + sc.w + 4 && y > sc.y - 4 && y < sc.y + sc.h + 4;
-	// Ein Tipp auf den Bildschirm: die Zeigehand fährt von unten zum Ziel, tippt und zieht sich zurück.
+	const touch = c.m.type === 'touch';
+	// Ein Tipp auf den Bildschirm. Maus und Stift: die Zeigehand steht schon am Zeiger (oder fährt hin), erst bei
+	// Berührung läuft der Druck, der Ring und der Klick in die App. Touch: es tippt der echte Finger, nur der Ring
+	// markiert die Kontaktstelle (die App reagiert sofort, nichts wird verzögert).
 	if (c.m.clickT !== st.lastClick) {
 		st.lastClick = c.m.clickT;
 		if (c.endOn && aufGlas(mx, my)) {
-			st.tap = [mx, my];
-			st.tapT = now;
-			st.tapTop = window.scrollY;
+			if (touch) {
+				st.tap = [mx, my];
+				st.contactT = now;
+			} else {
+				const r0 = st.back.getBoundingClientRect();
+				st.pending = { x: mx, y: my, t0: now, cx: r0.left + c.m.x, cy: r0.top + c.m.y };
+			}
 		}
 	}
+	const pend = st.pending;
+	const folgt = c.endOn && !touch && c.m.in && aufGlas(mx, my) && now - (c.m.moveT ?? -9) < 1.4;
 	let tg = st.park;
 	let k = 7;
-	const swipe = c.m.type === 'touch' && Math.abs(window.scrollY - st.tapTop) > 8;
-	if (st.tap && c.endOn && !swipe && now - st.tapT < TIPP_HALTEN) {
-		tg = st.tap;
+	if (pend) {
+		tg = [pend.x, pend.y];
+		k = 16;
+	} else if (folgt) {
+		tg = [mx, my];
 		k = 16;
 	}
 	// Zeigerlicht: folgt der Maus, sonst ein ruhiger Autopilot
-	const lg = c.endOn && c.m.in && c.m.type !== 'touch' ? [mx, my] : c.reduced ? [820, 400] : autopilot(t);
+	const lg = c.endOn && c.m.in && !touch ? [mx, my] : c.reduced ? [820, 400] : autopilot(t);
 	const parkY = Math.max(1000, (H - cam.oy) / cam.f + 340);
 	st.park = [940, parkY];
 	if (!st.ht) st.ht = { x: st.park[0], y: st.park[1] };
@@ -948,14 +1023,23 @@ function drawIn(back, front, c, cam) {
 	const kk = 1 - Math.exp(-k * Math.min(dt, 0.05));
 	ht.x += (tg[0] - ht.x) * kk;
 	ht.y += (tg[1] - ht.y) * kk;
+	// Berührung: die Spitze ist angekommen (oder 0,3 s sind um), jetzt Druck, Ring und Klick
+	if (pend && (Math.hypot(ht.x - pend.x, ht.y - pend.y) < 8 || now - pend.t0 > 0.3)) {
+		st.pending = null;
+		st.tap = [pend.x, pend.y];
+		st.contactT = now;
+		st.host?.dispatchEvent(new CustomEvent('hand:kontakt', { detail: { x: pend.cx, y: pend.cy } }));
+	}
 	const lt = st.lt;
 	const kl = 1 - Math.exp(-10 * Math.min(dt, 0.05));
 	lt.x += (lg[0] - lt.x) * kl;
 	lt.y += (lg[1] - lt.y) * kl;
+	// Cursor: über dem Glas ersetzt die Fingerspitze den Zeiger
+	if (st.host) st.host.toggleAttribute('data-hand-folgt', !!(folgt || pend));
 	st.dbg = { m: { x: c.m.x, y: c.m.y, in: c.m.in, down: c.m.down, type: c.m.type }, tg, endOn: c.endOn, tap: st.tap };
 
-	const pr = now - c.m.clickT;
-	const push = pr >= 0 && pr < 0.4 && st.tap && now - st.tapT < TIPP_HALTEN ? Math.sin((pr / 0.4) * Math.PI) : 0;
+	const pr = now - (st.contactT ?? -9);
+	const push = st.tap && pr >= 0 && pr < 0.4 && !touch ? Math.sin((pr / 0.4) * Math.PI) : 0;
 	const hoch = istHoch(W, H);
 	const ax = (hoch ? (W - cam.ox) / cam.f : ARM[0]) - ht.x;
 	const ay = (hoch ? (H - cam.oy) / cam.f : ARM[1]) - ht.y;
@@ -970,11 +1054,15 @@ function drawIn(back, front, c, cam) {
 		lightPow: st.mode === 'gl' ? 1 : 0,
 		// Unterarm löst sich am unteren Bildrand auf (Verlauf statt harter Kante)
 		bottomY: Math.min(A.hold.meta.bottomY, (H - cam.oy) / cam.f + 10),
-		tip: { x: Math.round((ht.x + ux * (6 + push * 4)) * 2) / 2, y: Math.round((ht.y + uy * (6 + push * 4)) * 2) / 2 },
+		// Die Spitze steht exakt am Ziel, beim Druck geht sie leicht in Armrichtung
+		tip: { x: Math.round((ht.x + ux * push * 4) * 2) / 2, y: Math.round((ht.y + uy * push * 4) * 2) / 2 },
 		u: { x: ux, y: uy },
 		sc: PS * (1 - push * 0.06),
-		pa: qa.noPoint ? 0 : 1,
-		ring: pr >= 0 && pr < RING_T && st.tap && pr < now - st.tapT + 0.05 ? 1 - pr / RING_T : 0,
+		// Touch: keine gezeichnete Zeigehand, dort tippt der echte Finger
+		pa: qa.noPoint || touch ? 0 : 1,
+		push: Math.round(push * 20) / 20,
+		br,
+		ring: st.tap && pr >= 0 && pr < RING_T ? 1 - pr / RING_T : 0,
 		ringR: 10 + Math.max(0, pr) * 150,
 		q: st.quiet,
 	};

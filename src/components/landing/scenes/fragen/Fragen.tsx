@@ -49,7 +49,8 @@ export function Fragen() {
 							>
 								<span>{q[0]}</span>
 								<span className="faq-marke" aria-hidden="true">
-									{offen === i ? '−' : '+'}
+									<i />
+									<i />
 								</span>
 							</button>
 						</h3>

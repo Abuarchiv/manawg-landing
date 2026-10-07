@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
 import s from './Phone.module.css';
+import { datumsZeilen } from './datum';
 
 // Das Handy der Ende-Szene mit der echten ManaWG-App: ein gleich-originiges iframe auf
 // /app-demo/index.html (Standalone-DOM und CSS der App, Zustandsautomat in demo.js). Hülle und Geometrie
@@ -12,32 +13,7 @@ import s from './Phone.module.css';
 
 const SRC = '/app-demo/index.html';
 const BILD = '/app-demo/start.webp';
-const AB_P = 0.3; // ab hier lädt das iframe im Leerlauf (davor nur das Standbild), lange vor der Szene
-
-// Zwei Zeilen des Standbilds hängen vom heutigen Tag ab ("Do., 8. Okt."): das Bild trägt sie nicht, sie werden hier
-// im App-Format (Intl de-DE, Berlin) darüber gesetzt, an den Stellen der Aufnahme (tools/qa/app/still.mjs).
-const KURZ = new Intl.DateTimeFormat('de-DE', {
-	timeZone: 'UTC',
-	weekday: 'short',
-	day: 'numeric',
-	month: 'short',
-});
-function datumsZeilen(): [string, string] {
-	const p: Record<string, string> = Object.fromEntries(
-		new Intl.DateTimeFormat('en-CA', {
-			timeZone: 'Europe/Berlin',
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-		})
-			.formatToParts(new Date())
-			.map((x) => [x.type, x.value]),
-	);
-	const tag = (k: number) => Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day) + k, 12);
-	const dow = new Date(tag(0)).getUTCDay();
-	const freitag = (5 - dow + 7) % 7 || 7;
-	return [`${KURZ.format(tag(2))} · Lina`, `${KURZ.format(tag(freitag))} · 18:00`];
-}
+const AB_P = 0.8; // ab hier lädt das iframe im Leerlauf (davor nur das Standbild), kurz vor der Szene
 
 /** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
 function Statusleiste() {
@@ -94,10 +70,44 @@ function Statusleiste() {
 
 export function Phone() {
 	const wurzel = useRef<HTMLDivElement>(null);
+	const rahmen = useRef<HTMLIFrameElement>(null);
 	const [src, setSrc] = useState<string | undefined>(undefined);
 	const [bereit, setBereit] = useState(false);
 	const [zeilen, setZeilen] = useState<[string, string] | null>(null);
 	useEffect(() => setZeilen(datumsZeilen()), []);
+
+	// Klick mit Maus oder Stift: die Fangschicht über dem Glas hält den Druck zurück, die Zeigehand fährt zum Ziel
+	// und meldet die Berührung (hand:kontakt). Erst dann geht der Klick in die gleich-originige App. Touch läuft
+	// ohne Fangschicht direkt in die App (der echte Finger tippt).
+	useEffect(() => {
+		const el = wurzel.current as HTMLDivElement;
+		const host = el.closest('[data-buehne]');
+		if (!host) return;
+		const an = (e: Event) => {
+			const { x, y } = (e as CustomEvent<{ x: number; y: number }>).detail;
+			const fr = rahmen.current;
+			const doc = fr?.contentDocument;
+			if (!fr || !doc?.defaultView) return;
+			const r = fr.getBoundingClientRect();
+			const k = r.width / fr.clientWidth;
+			const lx = (x - r.left) / k;
+			const ly = (y - r.top) / k;
+			const ziel = doc.elementFromPoint(lx, ly);
+			const Maus = (doc.defaultView as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent;
+			ziel?.dispatchEvent(
+				new Maus('click', {
+					bubbles: true,
+					cancelable: true,
+					composed: true,
+					clientX: lx,
+					clientY: ly,
+					button: 0,
+				}),
+			);
+		};
+		host.addEventListener('hand:kontakt', an);
+		return () => host.removeEventListener('hand:kontakt', an);
+	}, []);
 
 	// iframe-src erst ab P > 0,75 setzen (Fortschritt steht als --p am #final)
 	useEffect(() => {
@@ -109,7 +119,7 @@ export function Phone() {
 				mo.disconnect();
 				// Das iframe läuft im selben Hauptthread wie die Landing: Laden und Aufbau in einer Leerlaufpause
 				const los = () => setSrc(SRC);
-				if ('requestIdleCallback' in window) window.requestIdleCallback(los, { timeout: 2500 });
+				if ('requestIdleCallback' in window) window.requestIdleCallback(los, { timeout: 2000 });
 				else setTimeout(los, 300);
 			}
 		};
@@ -176,7 +186,8 @@ export function Phone() {
 					</div>
 					{src && (
 						<iframe
-							className={s.flaeche}
+							ref={rahmen}
+							className={s.app}
 							title="ManaWG-App"
 							src={src}
 							loading="eager"
@@ -186,6 +197,7 @@ export function Phone() {
 							style={{ border: 0, background: '#FFFFFF' }}
 						/>
 					)}
+					<span className={s.fang} data-fang="1" aria-hidden="true" />
 					<Statusleiste />
 					<span
 						style={css(
