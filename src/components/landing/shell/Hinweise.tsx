@@ -1,10 +1,11 @@
 'use client';
 
 import { useRef } from 'react';
-import { Dc } from '../core/dc';
+import { css } from '../core/dc';
 
 // Hinweise am unteren Rand: Sprunglink aus der Intro und das Wort SCROLLEN. Beim Überfahren des
-// Sprunglinks läuft die Zeichen-Verwürfelung des Entwurfs.
+// Sprunglinks läuft die Zeichen-Verwürfelung des Entwurfs. Der Link steht auf einer kleinen Fläche
+// (landing.css .hinweis), damit er auf Himmel, Flut und Skulptur lesbar bleibt.
 
 const CH = '@%#*+=-:';
 
@@ -34,29 +35,22 @@ export function Hinweise() {
 	};
 	return (
 		<>
-			<Dc
-				as="a"
-				className="label"
-				style="position:fixed;left:calc(var(--rand) + env(safe-area-inset-left));bottom:max(var(--sp-28),calc(env(safe-area-inset-bottom) + 8px));cursor:pointer;opacity:calc(0.72 - var(--e,0));z-index:20;text-decoration:none"
-				hover="opacity:1"
+			<a
+				className="label hinweis"
+				aria-label="Intro überspringen"
 				data-nur-intro="1"
 				data-loch="hinweis"
 				href="#so-gehts"
 				onPointerOver={scramble}
 			>
 				INTRO ÜBERSPRINGEN ↓
-			</Dc>
+			</a>
 			<div
 				aria-hidden="true"
 				className="label"
-				style={{
-					position: 'fixed',
-					right: 'calc(var(--rand) + env(safe-area-inset-right))',
-					bottom: 'max(var(--sp-28),calc(env(safe-area-inset-bottom) + 8px))',
-					opacity: 'calc(0.72 - var(--p,0) * 10)',
-					pointerEvents: 'none',
-					zIndex: 20,
-				}}
+				style={css(
+					'position:fixed;right:calc(var(--rand) + env(safe-area-inset-right));bottom:max(var(--sp-28),calc(env(safe-area-inset-bottom) + 8px));opacity:calc(0.72 - var(--p,0) * 10);pointer-events:none;z-index:20',
+				)}
 			>
 				SCROLLEN
 			</div>

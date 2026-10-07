@@ -9,7 +9,7 @@ export function Kopf() {
 		<header
 			data-kopf="1"
 			style={css(
-				'position:fixed;z-index:20;top:max(var(--rand-kopf),calc(env(safe-area-inset-top) + 8px));left:calc(var(--rand) + env(safe-area-inset-left));right:calc(var(--rand) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;pointer-events:none;opacity:calc(1 - var(--kopf-aus,0))',
+				'position:fixed;z-index:20;top:var(--kopf-oben);left:calc(var(--rand) + env(safe-area-inset-left));right:calc(var(--rand) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;pointer-events:none;opacity:calc(1 - var(--kopf-aus,0))',
 			)}
 		>
 			<div data-loch="logo" style={css('display:flex;align-items:center;gap:var(--sp-10)')}>

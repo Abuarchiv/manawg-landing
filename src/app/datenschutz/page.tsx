@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function DatenschutzPage() {
 	return (
 		<main id="main" tabIndex={-1} className="min-h-screen flex flex-col focus:outline-none">
-			<div className="flex-1 max-w-2xl mx-auto w-full px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
+			<div className="box-border flex-1 max-w-2xl mx-auto w-full px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
 				<Link
 					href="/"
 					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
@@ -24,14 +24,14 @@ export default function DatenschutzPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2026-09-30</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 30.09.2026</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Verantwortlicher</h2>
 						<p>Abubakar Abditube</p>
-						<p>Kurt-Schumacher-Strasse 2</p>
+						<p>Kurt-Schumacher-Straße 2</p>
 						<p>60311 Frankfurt am Main, Deutschland</p>
 						<p>
 							E-Mail:{' '}

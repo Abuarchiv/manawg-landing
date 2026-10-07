@@ -25,10 +25,24 @@ body {
 	-webkit-font-smoothing: antialiased;
 }
 html {
-	scrollbar-width: none;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(250, 250, 250, 0.28) transparent;
 }
-html::-webkit-scrollbar {
-	display: none;
+::selection {
+	background: #fafafa;
+	color: #0a0a0a;
+}
+:focus-visible {
+	outline: 2px solid #fafafa;
+	outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-property: opacity !important;
+		scroll-behavior: auto !important;
+	}
 }
 a {
 	color: inherit;
