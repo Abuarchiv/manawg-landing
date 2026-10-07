@@ -4,6 +4,10 @@ Stand 2026-10-07. Die beiden Kapsel-Hände der Engine (Handy-Hand `holdBack`/`ho
 
 Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft): `/Users/abu/Company/archiv/hand/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/scripts/preview.html` mit `?b=../final/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `ascii=1`, `mx/my/px/py`), eingeklebt im Abschnitt 6.
 
+### Stand 2026-10-08 (HAND_V 3)
+
+Kuppen gestaffelt statt in einer senkrechten Reihe: Finger-Hand neu gelöst und gerendert (`archiv/hand/v3/q8/fp12.json` → `fp12_s.json` mit `scripts/fing8.py`, Ziele Zeige 927, Mittel 929, Ring 933, klein 940 Bühnen-px, Ring und kleiner Finger schlanker: `fs8` 0,72 und 0,8), über den Haupt-Pass `out/HM` gepackt (`pack8.py --over`, Lauf `out/R4`). Messung `measure7`: Kuppen y 238–275, 285–320, 325–357, 367–394; Überstand über x 950: 11, 11, 10 px; App-Spalte x 880–939 in Ruhe 0 % verdeckt (Finger nie auf dem Glas, Shader-Regel `RAND_IN`). Daumen und Unterarm unverändert (Haupt-Pass `q8/main0.json`: die linke Kontur ist dort über `left`/`left_lo` auf x 560–590 gebunden; eine gekrümmte Handkante braucht ein neues Lösen des Haupt-Passes mit gelockertem `left_lo` unterhalb y 660).
+
 ## 1. Dateien
 
 | Datei | Inhalt | Größe |
