@@ -76,6 +76,7 @@ ok(
 // Labels vorderer Orte: Kontrast Text gegen Hintergrund (95. gegen 50. Perzentil der Helligkeit in der Platte)
 await sleep(300);
 const buf = await page.screenshot();
+const hs2 = await hits(); // direkt nach dem Bild, der Planet dreht sich weiter
 const lin = (v) => {
 	const c = v / 255;
 	return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
@@ -83,7 +84,7 @@ const lin = (v) => {
 const dpr = vp.dpr;
 let minRatio = 99;
 let nLab = 0;
-for (const r of hs.filter((q) => q.front && q.plate && visible(q))) {
+for (const r of hs2.filter((q) => q.front && q.plate && visible(q))) {
 	const p = r.plate;
 	const x = Math.max(0, Math.round(p.x * dpr));
 	const y = Math.max(0, Math.round(p.y * dpr));
@@ -98,7 +99,12 @@ for (const r of hs.filter((q) => q.front && q.plate && visible(q))) {
 	const v = [...data].sort((m, n) => m - n);
 	const lt = lin(v[Math.floor(v.length * 0.97)]);
 	const lb = lin(v[Math.floor(v.length * 0.5)]);
-	minRatio = Math.min(minRatio, (lt + 0.05) / (lb + 0.05));
+	const rr = (lt + 0.05) / (lb + 0.05);
+	if (a.v)
+		console.log(
+			`     Label ${r.i + 1}: ${rr.toFixed(1)}:1 Platte ${p.x.toFixed(0)},${p.y.toFixed(0)} ${p.w.toFixed(0)}x${p.h.toFixed(0)} p50 ${v[Math.floor(v.length * 0.5)]} p97 ${v[Math.floor(v.length * 0.97)]}`,
+		);
+	minRatio = Math.min(minRatio, rr);
 	nLab++;
 }
 ok(

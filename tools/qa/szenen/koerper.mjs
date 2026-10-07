@@ -23,7 +23,11 @@ const bbox = (bs) => ({
 {
 	const h = await open(browser, { vp, url: a.url });
 	const mo = { mx: vp.w - 3, my: vp.h - 3 };
-	await toMark(h, 'so-gehts:0.5', mo);
+	// Start knapp unter dem Eintritt: der Abschnitt ist noch nicht sichtbar (Aufbau, kein Sprungtest)
+	const ys = await yOf(h.page, 'koerper:0');
+	await h.page.evaluate((y) => scrollTo(0, y), ys - vp.h - 40);
+	await sleep(800);
+	await h.page.mouse.move(mo.mx, mo.my);
 	const y0 = await yOf(h.page, 'koerper:0.3');
 	let y = await h.page.evaluate(() => scrollY);
 	let eintritt = null;
@@ -38,6 +42,7 @@ const bbox = (bs) => ({
 			return { y: scrollY, sicht, k: window.__landing.dbg.koerper() };
 		});
 		y = r.y;
+		if (a.v) console.log(`     y ${r.y} Sicht ${r.sicht.toFixed(2)} ring ${r.k?.ring}`);
 		if (r.sicht > 0.05 && r.sicht < 0.7 && r.k.ring && !eintritt) {
 			eintritt = r;
 			await shot(h, `koerper-ring-eintritt-${vp.name}`, { out: a.out });
