@@ -27,7 +27,7 @@ for (const tab of tabs) {
 	const files = [];
 	const labels = [];
 	for (let i = 0; i < n; i++) {
-		const t = (pl.loop * i) / n;
+		const t = a.von !== undefined ? Number(a.von) + i * Number(a.dt ?? 0.2) : (pl.loop * i) / n;
 		await h.page.evaluate((t) => window.__landing.dbg.install.setze(t), t);
 		await sleep(120);
 		const f = join(out, `${names[tab]}-${String(i).padStart(2, '0')}.png`);

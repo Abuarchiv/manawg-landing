@@ -44,6 +44,20 @@ const RAHMEN = [
 	[600, 400],
 ];
 
+/** „Home-Bildschirm“ nie am Bindestrich trennen (kein einzelnes „Home-“ am Zeilenende). */
+function umbruch(t: string) {
+	return t.split('Home-Bildschirm').flatMap((p, i) =>
+		i === 0
+			? [p]
+			: [
+					<span key={i} className={s.nowrap}>
+						Home-Bildschirm
+					</span>,
+					p,
+				],
+	);
+}
+
 export function Installieren() {
 	const [inst, setInst] = useState(0);
 	const instRef = useRef(0);
@@ -162,7 +176,7 @@ export function Installieren() {
 									onClick={() => api.current?.sprung(i)}
 								>
 									<span className={s.nr}>{`0${i + 1}`}</span>
-									<span className={s.zeile}>{t}</span>
+									<span className={s.zeile}>{umbruch(t)}</span>
 								</button>
 							</li>
 						))}
