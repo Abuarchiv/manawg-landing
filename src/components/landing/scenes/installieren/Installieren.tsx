@@ -1,7 +1,8 @@
 'use client';
 
 import { appUrl } from '@/lib/app-origin';
-import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { EllipsisVertical, Menu } from 'lucide-react';
+import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react';
 import { Android } from './Android';
 import s from './Installieren.module.css';
 import { Iphone } from './Iphone';
@@ -10,6 +11,20 @@ import { registerAblauf } from './ablauf';
 
 // Szene [07] INSTALLIEREN: je Plattform der echte Installationsablauf (INSTALL-FLOWS), zeitgesteuerte Schleife
 // im Gerät, Schrittliste synchron und klickbar, Tabs als Tablist mit Pfeiltasten.
+
+// Die Symbole der Schritte sind dieselben Zeichnungen wie im Gerät (Safari: Menü unten rechts, Chrome: drei Punkte)
+const ICON: Record<string, ReactNode> = {
+	'≡': <Menu size="1.1em" strokeWidth={2} aria-label="Menü" role="img" className={s.ikone} />,
+	'⋮': (
+		<EllipsisVertical
+			size="1.1em"
+			strokeWidth={2.4}
+			aria-label="Drei Punkte"
+			role="img"
+			className={s.ikone}
+		/>
+	),
+};
 
 const WEGE: { name: string; schritte: string[] }[] = [
 	{
@@ -44,18 +59,21 @@ const RAHMEN = [
 	[600, 400],
 ];
 
-/** „Home-Bildschirm“ nie am Bindestrich trennen (kein einzelnes „Home-“ am Zeilenende). */
+/** „Home-Bildschirm“ nie am Bindestrich trennen, Symbolzeichen durch die echte Zeichnung ersetzen. */
 function umbruch(t: string) {
-	return t.split('Home-Bildschirm').flatMap((p, i) =>
-		i === 0
-			? [p]
-			: [
-					<span key={i} className={s.nowrap}>
-						Home-Bildschirm
-					</span>,
-					p,
-				],
-	);
+	return t.split(/([≡⋮])/).flatMap((q, k) => {
+		if (ICON[q]) return [<span key={`i${k}`}>{ICON[q]}</span>];
+		return q.split('Home-Bildschirm').flatMap((p, i) =>
+			i === 0
+				? [p]
+				: [
+						<span key={`${k}-${i}`} className={s.nowrap}>
+							Home-Bildschirm
+						</span>,
+						p,
+					],
+		);
+	});
 }
 
 export function Installieren() {

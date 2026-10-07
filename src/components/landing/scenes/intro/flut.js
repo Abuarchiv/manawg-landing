@@ -11,14 +11,18 @@ import { ss, vnz } from '../../core/math';
 export const CELL = 16;
 const RAND_TEXT = 64; // Abstand der Raumtext-Lücke zum Text
 const KANTE = 24; // weiche Kante der Lücken (1,5 Zellen)
-const SKALA = 0.13 / 32; // Rauschfrequenz je Pixel (Entwurf: 0,13 je Zelle bei Zelle 32)
+const SKALA = 0.13 / 32; // Rauschfrequenz je Pixel (Entwurf: 0,13 je Zelle bei Zelle 32), gilt bei 900 px kurzer Seite
+const STAERKE = 0.26; // Beitrag der Deckung zum Schwellwert: Spitze deckt etwa 40 % der Fläche
 const states = new WeakMap();
 
 /** Anteil der Fläche, den die Flut deckt (0..1), in den zwei Flutphasen der Intro. */
 export function deckung(P) {
+	// Phase 1 deckt den Wechsel vom Organ zur Wohnung und ist bei P 0,63 weg, bevor die erste Raumkarte
+	// (ab P 0,65) steht. Phase 2 ist kurz und schwach und endet bei P 0,895, bevor die Ende-Ebene einblendet (kein grauer
+	// Schleier aus Flut und Handy): Pinnwand & Chat und das Handy bleiben lesbar.
 	return Math.max(
-		ss((P - 0.5) / 0.07) * (1 - ss((P - 0.66) / 0.12)),
-		ss((P - 0.84) / 0.05) * (1 - ss((P - 0.94) / 0.05)),
+		ss((P - 0.48) / 0.06) * (1 - ss((P - 0.56) / 0.07)),
+		0.65 * ss((P - 0.83) / 0.03) * (1 - ss((P - 0.865) / 0.03)),
 	);
 }
 
@@ -29,7 +33,9 @@ qa.masse = { ...(qa.masse ?? {}), flutZelle: CELL, flutZiffer: 10.5 };
 function loch(x, y, r, rand) {
 	const dx = Math.max(r.x - rand - x, x - (r.x + r.w + rand), 0);
 	const dy = Math.max(r.y - rand - y, y - (r.y + r.h + rand), 0);
-	return 1 - Math.min(1, Math.hypot(dx, dy) / KANTE);
+	const k = r.kante ?? KANTE;
+	const q = Math.min(1, Math.hypot(dx, dy) / k);
+	return 1 - q * q * (3 - 2 * q);
 }
 
 /** Welche Lücken gelten, in Bühnen-Pixeln: [{ x, y, w, h, rand, w0 }] mit Gewicht w0 (0..1). */
@@ -39,9 +45,14 @@ export function lueckenVon(loecher, c) {
 	for (const l of loecher) {
 		if (l.art === 'logo' || l.art === 'cta') aus.push({ ...l, rand: 14, w0: 1 });
 		else if (l.art === 'hinweis') {
-			if ((c.endA ?? 0) < 0.72) aus.push({ ...l, rand: 12, w0: 1 });
+			if ((c.endA ?? 0) < 0.72) aus.push({ ...l, rand: 6, kante: 14, w0: 1 });
 		} else if (l.art === 'text' && textGewicht > 0)
-			aus.push({ ...l, rand: RAND_TEXT, w0: Math.min(1, textGewicht * 2) });
+			aus.push({ ...l, rand: RAND_TEXT, kante: 48, w0: Math.min(1, textGewicht * 2) });
+	}
+	// Wohnungsmodell (Querformat): die Mitte der Bühne bleibt frei, solange die Wohnung steht
+	if (textGewicht > 0 && c.fit && c.W > c.H) {
+		const { f, ox, oy } = c.fit;
+		aus.push({ x: ox + 460 * f, y: oy + 150 * f, w: 700 * f, h: 500 * f, rand: 0, kante: 120, w0: textGewicht });
 	}
 	return aus;
 }
@@ -51,15 +62,17 @@ export function lueckenVon(loecher, c) {
  * W, H in CSS-Pixeln, t in Sekunden (bei reduzierter Bewegung 0), cover 0..1.
  */
 export function gitter(W, H, t, cover, luecken, tr, cols, rows, on) {
+	// Strukturgröße an die kurze Seite koppeln: auf kleinen Bildschirmen entstehen Blobs statt einer Fläche
+	const sk = SKALA * Math.min(3, Math.max(0.6, 900 / Math.min(W, H)));
 	for (let b = 0; b < rows; b++) {
 		const y = b * CELL + CELL / 2;
 		for (let a = 0; a < cols; a++) {
 			const x = a * CELL + CELL / 2;
 			const q = b * cols + a;
-			const n = vnz(x * SKALA + t * 0.03, y * SKALA - t * 0.02);
+			const n = vnz(x * sk + t * 0.03, y * sk - t * 0.02);
 			let pk = 0;
 			for (const l of luecken) pk = Math.max(pk, l.w0 * loch(x, y, l, l.rand));
-			on[q] = n + cover * 0.55 - 0.45 + (y / H) * 0.2 - 2 * pk > 0.5 && (!tr || tr[q] < 0.3) ? 1 : 0;
+			on[q] = n + cover * STAERKE - 0.45 + (y / H) * 0.2 - 2 * pk > 0.5 && (!tr || tr[q] < 0.3) ? 1 : 0;
 		}
 	}
 }
@@ -108,7 +121,7 @@ export function draw(cv, c, loecher = []) {
 	st.loecher = loecher;
 	fx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	// Bei reduzierter Bewegung: Deckung höchstens 0,6, das Rauschen läuft nicht mit der Zeit
-	const cover = c.reduced ? Math.min(c.cover, 0.6) : c.cover;
+	const cover = c.reduced ? Math.min(c.cover, 0.4) : c.cover;
 	const t = c.reduced ? 0 : c.t;
 	if (!(cover > 0.001)) {
 		if (!st.clean) {

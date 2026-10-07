@@ -25,7 +25,7 @@ export function Tiefe() {
 			tabIndex={-1}
 			ref={secRef}
 			aria-label="Funktionen"
-			style={css('position:relative;height:calc(4.5 * 100lvh);background:#0A0A0A;color:#FAFAFA')}
+			style={css('position:relative;height:calc(3.8 * 100lvh);background:#0A0A0A;color:#FAFAFA')}
 		>
 			<div style={css('position:sticky;top:0;height:100lvh;overflow:hidden')}>
 				<canvas

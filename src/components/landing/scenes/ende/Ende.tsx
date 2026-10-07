@@ -38,7 +38,7 @@ export function Ende() {
 			data-ende="1"
 			aria-label="App-Vorschau"
 			style={css(
-				'position:absolute;inset:0;opacity:var(--e,0);pointer-events:none;background:#0A0A0A',
+				'position:absolute;inset:0;opacity:calc(clamp(0, (var(--e,0) - 0.35) * 1.54, 1) * (1 - var(--ab,0)));pointer-events:none;background:#0A0A0A',
 			)}
 		>
 			<canvas
@@ -59,7 +59,7 @@ export function Ende() {
 				data-hand="front"
 				aria-hidden="true"
 				style={css(
-					'position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;mix-blend-mode:difference',
+					'position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none',
 				)}
 			/>
 			<div

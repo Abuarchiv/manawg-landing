@@ -10,6 +10,7 @@ export function Bereiche() {
 	const [sel, setSel] = useState(0);
 	const selRef = useRef(0);
 	selRef.current = sel;
+	const secRef = useRef<HTMLElement>(null);
 	const cvRef = useRef<HTMLCanvasElement>(null);
 	const api = useRef<{ face?: (i: number) => void }>({});
 	const knoepfe = useRef<(HTMLButtonElement | null)[]>([]);
@@ -22,6 +23,28 @@ export function Bereiche() {
 			}),
 		[],
 	);
+	// Karte und Titel gehören zum Planeten: sie blenden aus, sobald der Abschnitt nach oben aus dem Bild läuft
+	useEffect(() => {
+		const el = secRef.current as HTMLElement;
+		let raf = 0;
+		const f = () => {
+			raf = 0;
+			const r = el.getBoundingClientRect();
+			const o = Math.min(1, Math.max(0, (r.bottom - 0.3 * innerHeight) / (0.35 * innerHeight)));
+			el.style.setProperty('--bo', o.toFixed(2));
+		};
+		const on = () => {
+			if (!raf) raf = requestAnimationFrame(f);
+		};
+		f();
+		window.addEventListener('scroll', on, { passive: true });
+		window.addEventListener('resize', on);
+		return () => {
+			cancelAnimationFrame(raf);
+			window.removeEventListener('scroll', on);
+			window.removeEventListener('resize', on);
+		};
+	}, []);
 	// Ortsliste: dieselbe Auswahl wie auf dem Planeten, der Ort dreht nach vorn
 	const wahl = (i: number) => {
 		setSel(i);
@@ -48,6 +71,7 @@ export function Bereiche() {
 	const pl = PL[sel] as string[];
 	return (
 		<section
+			ref={secRef}
 			id="bereiche"
 			data-sec="bereiche"
 			tabIndex={-1}
@@ -64,7 +88,7 @@ export function Bereiche() {
 			<div
 				data-titel="1"
 				style={css(
-					'position:absolute;top:var(--sp-72);left:var(--rand);right:var(--rand);display:flex;flex-direction:column;gap:var(--sp-14);pointer-events:none',
+					'position:absolute;top:var(--sp-72);left:var(--rand);right:var(--rand);display:flex;flex-direction:column;gap:var(--sp-14);pointer-events:none;opacity:var(--bo,1)',
 				)}
 			>
 				<span className="label">[ 06 ] BEREICHE</span>

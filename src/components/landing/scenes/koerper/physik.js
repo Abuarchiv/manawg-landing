@@ -7,7 +7,7 @@ import { AB, hsh } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
 const S = 1.15;
-const NAME = 10; // Namensplatten: 10 CSS-px
+const NAME = 11; // Namen auf den Kugeln: Mono 11 px (hoch 10 px), Versalien mit Laufweite, ohne Platte
 const REACH = 22; // Trefferrand um jeden Körper in CSS-px (Touch)
 
 // Ruhelage des Rings. Quer: Mitte der Bezugsbox 1280 x 760. Hoch: eigene Bezugsbox von 600 Einheiten Breite,
@@ -23,6 +23,15 @@ function homes(s) {
 	}
 	s.cx = cx;
 	s.cy = cy;
+	// Quer: die Überschrift sitzt knapp über der Kugelwolke (höchstens etwa 40 px Luft), nicht am Abschnittsrand
+	if (s.mode !== 'hoch' && s.B) {
+		const t = s.host.querySelector('[data-titel]');
+		if (t) {
+			const oben = Math.min(...AB.map((c) => cy + (c[1] - 173) * S - c[2] * S * 0.98));
+			const px = Math.max(24, s.oy + oben * s.f - t.offsetHeight - 40);
+			t.style.top = `${Math.round(px)}px`;
+		}
+	}
 	if (!s.B) return;
 	AB.forEach((c, i) => {
 		const b = s.B[i];
@@ -218,9 +227,10 @@ export function registerKoerper(cv) {
 			ctx.fillStyle = '#FAFAFA';
 			const lx = s.m.in ? s.m.x : s.cx - 256;
 			const ly = s.m.in ? s.m.y : s.cy - 248;
-			const st = 6;
+			const st = 3; // feiner Halbton (Zellen 3 statt 6 px)
+			ctx.beginPath();
 			for (const b of s.B) {
-				const bx0 = Math.floor((b.x - b.r) / st) * st;
+			const bx0 = Math.floor((b.x - b.r) / st) * st;
 				const by0 = Math.floor((b.y - b.r) / st) * st;
 				for (let y = by0; y < b.y + b.r; y += st)
 					for (let x = bx0; x < b.x + b.r; x += st) {
@@ -235,18 +245,21 @@ export function registerKoerper(cv) {
 						const lam = Math.max(0, (nx * Lx + ny * Ly + nz * 200) / LL);
 						const v = 0.08 + 0.92 * lam * lam;
 						const r = st * 0.5 * Math.sqrt(v);
-						ctx.fillRect(x - r, y - r, r * 2, r * 2);
-					}
-			}
-			// Namensplatten: 10 CSS-px, Platte mit Alpha 0,7, nur in der losen Phase
-			ctx.font = `500 ${NAME / s.f}px "JetBrains Mono", monospace`;
+						ctx.rect(x - r, y - r, r * 2, r * 2);
+						}
+						}
+						ctx.fill();
+			// Namen: Mono 11 px (hoch 10 px) mit Laufweite, ohne Platte, dunkler Saum statt Kasten, nur in der losen Phase
+			ctx.font = `500 ${(s.mode === 'hoch' ? NAME - 1 : NAME) / s.f}px "JetBrains Mono", monospace`;
+			if ('letterSpacing' in ctx) ctx.letterSpacing = `${(0.08 * NAME) / s.f}px`;
+			ctx.lineJoin = 'round';
+			ctx.lineWidth = 4 / s.f;
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
 			if (loose)
 				for (const b of s.B) {
-					const w = ctx.measureText(b.n).width + 8 / s.f;
-					ctx.fillStyle = 'rgba(10,10,10,0.7)';
-					ctx.fillRect(b.x - w / 2, b.y - 8 / s.f, w, 16 / s.f);
+					ctx.strokeStyle = 'rgba(10,10,10,0.85)';
+					ctx.strokeText(b.n, b.x, b.y);
 					ctx.fillStyle = '#FAFAFA';
 					ctx.fillText(b.n, b.x, b.y);
 				}

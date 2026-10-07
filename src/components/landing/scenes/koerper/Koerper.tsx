@@ -7,9 +7,33 @@ import { registerKoerper } from './physik';
 
 export function Koerper() {
 	const ref = useRef<HTMLCanvasElement>(null);
+	const sek = useRef<HTMLElement>(null);
+	// Beim Verlassen nach oben blendet der Abschnitt aus (keine abgeschnittenen Kugelkuppen unter dem Kopf)
+	useEffect(() => {
+		const el = sek.current as HTMLElement;
+		let raf = 0;
+		const f = () => {
+			raf = 0;
+			const o = Math.min(1, Math.max(0, el.getBoundingClientRect().bottom / (0.55 * innerHeight)));
+			const v = o.toFixed(2);
+			if (el.style.getPropertyValue('--kb') !== v) el.style.setProperty('--kb', v);
+		};
+		const on = () => {
+			if (!raf) raf = requestAnimationFrame(f);
+		};
+		f();
+		window.addEventListener('scroll', on, { passive: true });
+		window.addEventListener('resize', on);
+		return () => {
+			cancelAnimationFrame(raf);
+			window.removeEventListener('scroll', on);
+			window.removeEventListener('resize', on);
+		};
+	}, []);
 	useEffect(() => registerKoerper(ref.current as HTMLCanvasElement), []);
 	return (
 		<section
+			ref={sek}
 			id="koerper"
 			data-sec="koerper"
 			tabIndex={-1}
@@ -19,7 +43,9 @@ export function Koerper() {
 			<canvas
 				ref={ref}
 				aria-hidden="true"
-				style={css('position:absolute;inset:0;width:100%;height:100%;display:block')}
+				style={css(
+					'position:absolute;inset:0;width:100%;height:100%;display:block;opacity:var(--kb,1)',
+				)}
 			/>
 			<div
 				data-titel="1"

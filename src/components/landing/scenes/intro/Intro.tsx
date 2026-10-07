@@ -6,7 +6,7 @@ import { Ende } from '../ende/Ende';
 import { HeroTitel } from './HeroTitel';
 import { Raeume } from './Raeume';
 import { createStage } from './stage';
-import { INTRO_SCREENS } from './zeitachse';
+import { INTRO_SCREENS, unwarp } from './zeitachse';
 
 // Intro: eine Sticky-Bühne in voller Fenstergröße (100lvh) über (1 + INTRO_SCREENS) Bildschirmhöhen.
 // Ebenen von unten nach oben: Berg und Zeichen (Hero), Wohnung, Flut, sicherer Kasten mit Titel und
@@ -35,6 +35,15 @@ export function Intro() {
 			aria-label="Intro"
 			style={css(`position:relative;z-index:1;height:calc(${1 + INTRO_SCREENS} * 100lvh)`)}
 		>
+			{/* Sprungziel der App-Vorschau (Fokusanker): Beginn der Ende-Ebene, P 0,985 */}
+			<div
+				id="app-demo"
+				tabIndex={-1}
+				aria-label="App-Vorschau"
+				style={css(
+					`position:absolute;left:0;width:1px;height:1px;top:calc(${(INTRO_SCREENS * (unwarp(0.985) ?? 0) * 100).toFixed(2)}lvh)`,
+				)}
+			/>
 			<div
 				data-buehne="intro"
 				ref={buehneRef}

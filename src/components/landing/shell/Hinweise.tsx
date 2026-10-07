@@ -45,6 +45,10 @@ export function Hinweise() {
 			>
 				INTRO ÜBERSPRINGEN ↓
 			</a>
+			{/* Fokusanker für Tastatur und Screenreader: springt zur App-Vorschau am Ende der Intro (sichtbar nur bei Fokus) */}
+			<a className="label fokus-anker" data-nur-intro="1" href="#app-demo">
+				App ausprobieren
+			</a>
 			<div
 				aria-hidden="true"
 				className="label"

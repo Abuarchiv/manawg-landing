@@ -1,10 +1,10 @@
-// Die Hände der Ende-Szene: eine Hand hält das Handy, die andere folgt dem Zeiger. Beide kommen aus
-// gerenderten Daten-Pässen (public/hand/, design/HAND.md): Leuchtdichte, Alpha, Normale und Tiefe. Gezeichnet
-// wird als Halbton aus weißen Quadraten (Zellraster 2,5 Bühnen-px, Bayer 4 x 4 mit etwas Hash-Zufall),
-// im WebGL2-Fragment-Shader. Ohne WebGL2 wird der Halbton einmal je Größenänderung auf 2D vorberechnet
+// Die Hände der Ende-Szene: eine Hand hält das Handy, die andere wartet unten außerhalb des Bildschirms und
+// fährt nur zum Tippen über das Ziel. Beide kommen aus gerenderten Daten-Pässen (public/hand/, design/HAND.md):
+// Leuchtdichte, Alpha, Normale und Tiefe. Gezeichnet wird als feiner Halbton (Zellraster 1,25 Bühnen-px,
+// Bayer 4 x 4), die Silhouette per Pixel-Alpha geglättet, im WebGL2-Fragment-Shader. Ohne WebGL2 wird der Halbton einmal je Größenänderung auf 2D vorberechnet
 // (ohne Zeigerlicht, die Zeigehand als Sprite).
 //
-// back liegt unter dem Handy, front darüber (mix-blend-mode: difference, in Ende.tsx). Vorn und hinten
+// back liegt unter dem Handy, front darüber (normaler Blend, über dem Glas dunkle Punkte). Vorn und hinten
 // folgt aus der Tiefe z und der Handy-Silhouette: vorne sind Daumen und Fingerkuppen, die über den Rand
 // auf den Bildschirm ragen, sowie die Zeigehand.
 
@@ -12,19 +12,22 @@ import { BAYER as HB, cl, hsh, ss } from '../../core/math';
 import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
-const STEP = 2.5; // Zellgröße in Bühnen-px
-const GAM = 0.6;
-const CON = 1.25;
-const RIM = 0.45;
-const EDW = 3.4;
-const EDV = 1.0;
-const JIT = 0.15;
+const STEP = 1.25; // Zellgröße in Bühnen-px (fein: Halbton liest als Haut, nicht als Raster)
+const GAM = 0.85;
+const CON = 1.05;
+const RIM = 0.22;
+const EDW = 2.0;
+const EDV = 0.9;
+const JIT = 0.08;
+const RAND_IN = 7; // Haltehand: höchstens so viele px ragen über den Bildschirmrand (Tab-Leiste bleibt frei)
 const PS = 0.62; // Maßstab der Zeigehand (Finger ~ 41 Bühnen-px, Haltefinger ~ 55)
 const ARM = [1460, 1020]; // Ziel des Zeigearms im Ende-Raum (quer)
 const INK = 0.98; // #FAFAFA
+const INK_DARK = 0.04; // über dem weißen Bildschirm: dunkle Punkte
 const TILES = ['lum', 'a', 'nx', 'ny', 'z'];
 const RING_T = 0.8;
 const RING_N = 72;
+const TIPP_HALTEN = 1.1; // so lange bleibt die Zeigehand nach einem Tipp am Ziel (s)
 
 // ----------------------------------------------------------------------------------------------------
 // Pässe laden
@@ -110,9 +113,13 @@ float lightF(vec2 p){ return .45 + .55 * cl(1. - ((p.x - 450.) + (p.y - 120.)) /
 #define SP(i, X) samp(uTP, uPT[i], uDiv[i], uPO, X)
 
 // Haltehand: x = Ton, y = Ebene (0 keine, 1 hinten, 2 vorn)
+float dil(sampler2D tx, vec4 T, float dv, vec3 O, vec2 C, float e){
+  return max(max(samp(tx, T, dv, O, C), samp(tx, T, dv, O, C + vec2(e, 0.))), max(max(samp(tx, T, dv, O, C - vec2(e, 0.)), samp(tx, T, dv, O, C + vec2(0., e))), samp(tx, T, dv, O, C - vec2(0., e))));
+}
 vec2 holdTone(vec2 C){
-  float al = SH(1, C);
-  if (al < .15) return vec2(0.);
+  // Alpha leicht gedehnt: die Zelle liefert Ton bis über die Kante, die exakte Silhouette schneidet Pass 2 je Pixel
+  float al = dil(uTH, uHT[1], uDiv[1], uHO, C, 1.5);
+  if (al < .04) return vec2(0.);
   float zmm = SH(4, C) * 200. - 100.;
   float sdf = sdfRR(C, uPhone, uPR.x);
   bool front = sdf < 4. && zmm < 1.5;
@@ -135,13 +142,15 @@ vec2 holdTone(vec2 C){
   float e = ${EDW.toFixed(1)};
   float eA = min(min(SH(1, C - vec2(e, 0.)), SH(1, C + vec2(e, 0.))), min(SH(1, C - vec2(0., e)), SH(1, C + vec2(0., e))));
   bool edge = eA < .5 && abs(sdf) >= 7.;
-  float cov = ss((al - .2) / .5) * ss((uPR.z - C.y) / 90.);
+  float cov = ss((al - .02) / .25) * ss((uPR.z - C.y) / 90.);
   float tone;
-  if (front && sdfRR(C, uScreen, uPR.y) < -1.) {
+  float sdS = sdfRR(C, uScreen, uPR.y);
+  if (front && sdS < -1.) {
     float tn = .04 + .86 * pow(cl(v), 1.35);
     float vd = pow(1. - tn, .45);
     if (edge) vd = max(vd, .95);
-    tone = vd * cov;
+    // auf dem Glas nur ein schmaler Streifen am Rand: Tab-Leiste und Inhalt bleiben frei
+    tone = vd * cov * (1. - ss((-sdS - ${(RAND_IN - 4).toFixed(1)}) / 7.));
   } else {
     if (edge) v = max(v, ${EDV.toFixed(1)} * lf * al);
     tone = v * cov;
@@ -154,13 +163,15 @@ vec2 pointTone(vec2 C, bool full){
   if (uPS.y <= 0.) return vec2(0.);
   vec2 d = C - uTipU.xy;
   float dist = length(d);
-  float fade = cl(1. - (dist - 300.) / 420.);
+  bool onGlass = sdfRR(C, uScreen, uPR.y) < -1.;
+  // auf dem Glas läuft die Hand schneller aus: Fingerspitze und Knöchel, der Arm bleibt weg vom Bildschirm
+  float fade = onGlass ? cl(1. - (dist - 150.) / 230.) : cl(1. - (dist - 300.) / 420.);
   if (fade <= 0.) return vec2(0.);
   vec2 u = uTipU.zw;
   vec2 ab = vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x;
-  float al = SP(1, ab);
-  if (al < .15) return vec2(0.);
-  float cov = ss((al - .2) / .5) * fade * uPS.y;
+  float al = dil(uTP, uPT[1], uDiv[1], uPO, ab, 1.5 / uPS.x);
+  if (al < .04) return vec2(0.);
+  float cov = ss((al - .02) / .25) * fade * uPS.y;
   if (!full) return vec2(0., cov);
   float L = SP(0, ab);
   L = cl(.5 + (pow(L, ${GAM.toFixed(2)}) - .5) * ${CON.toFixed(2)});
@@ -170,7 +181,7 @@ vec2 pointTone(vec2 C, bool full){
   float eA = min(min(SP(1, ab - vec2(e, 0.)), SP(1, ab + vec2(e, 0.))), min(SP(1, ab - vec2(0., e)), SP(1, ab + vec2(0., e))));
   bool edge = eA < .5;
   float tone;
-  if (sdfRR(C, uScreen, uPR.y) < -1.) {
+  if (onGlass) {
     float tn = .04 + .86 * pow(cl(v), 1.35);
     float vd = pow(1. - tn, .45);
     if (edge) vd = max(vd, .95);
@@ -199,7 +210,7 @@ float quiet(vec2 C){
 // Pass 1: ein Texel je Zelle des Rasters (Ton nach Zeigerlicht, Verdeckung und Ruhe)
 void main(){
   ivec2 cell = uCell0 + ivec2(gl_FragCoord.xy);
-  vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(1)};
+  vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(2)};
   float tone = 0.;
   vec2 h = holdTone(C);
   vec2 pt = pointTone(C, uFront == 1);
@@ -209,16 +220,28 @@ void main(){
   o = vec4(clamp(tone * quiet(C), 0., 1.), 0., 0., 1.);
 }
 #else
-// Pass 2: Punkte je Zelle (Bayer, Hash-Zufall), scharf auf Gerätepixel
+// Pixel-Alpha der Hände (Haltehand und, vorn, Zeigehand) für die weiche Silhouette
+float pixA(vec2 S){
+  float a = SH(1, S);
+  if (uFront == 1 && uPS.y > 0.) {
+    vec2 d = S - uTipU.xy;
+    vec2 u = uTipU.zw;
+    a = max(a, SP(1, vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x));
+  }
+  return a;
+}
+// Pass 2: Punkte je Zelle (Bayer, Hash-Zufall), scharf auf Gerätepixel, Silhouette per Pixel-Alpha geglättet
 void main(){
   vec2 css = vec2(gl_FragCoord.x / uBack.x, (uBack.z - gl_FragCoord.y) / uBack.y);
   vec2 S = (css - uCam.yz) / uCam.x;
-  ivec2 cell = ivec2(floor(S / ${STEP.toFixed(1)}));
-  vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(1)};
+  ivec2 cell = ivec2(floor(S / ${STEP.toFixed(2)}));
+  vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(2)};
   float px = 1. / (uCam.x * uBack.x);
   ivec2 tc = cell - uCell0;
   float tone = 0.;
   if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) tone = texelFetch(uTone, tc, 0).r;
+  bool glass = uFront == 1 && sdfRR(S, uScreen, uPR.y) < -.5;
+  vec3 ink = vec3(glass ? ${INK_DARK} : ${INK});
   if (tone <= 0. && uRing.z <= 0.) { o = vec4(0.); return; }
   tone *= (1. - ${(JIT / 2).toFixed(3)}) + ${JIT.toFixed(2)} * hsh(cell);
   int bx = cell.x & 3;
@@ -226,19 +249,22 @@ void main(){
   float thr = float((by & 1) * 12 + (by >> 1) * 3 + (1 - 2 * (by & 1)) * 8 * (bx & 1) + (1 - 2 * (by >> 1)) * 2 * (bx >> 1)) / 16. + .035;
   float c = 0.;
   if (tone > thr) {
-    float z = ${STEP.toFixed(1)} * (.36 + .6 * min(1., tone));
+    float z = ${STEP.toFixed(2)} * (.5 + .5 * min(1., tone));
     vec2 dd = abs(S - C);
     c = clamp((z * .5 - max(dd.x, dd.y)) / px + .5, 0., 1.);
+    float a = pixA(S);
+    float w = max(fwidth(a), .02);
+    c *= clamp((a - .5) / w + .5, 0., 1.);
   }
   if (uFront == 1 && uRing.z > 0.) {
-    vec2 dr = S - uLight.xy;
+    vec2 dr = S - uLight.zw;
     float step_ = 6.2831853 / ${RING_N}.;
     float a2 = floor(atan(dr.y, dr.x) / step_ + .5) * step_;
-    vec2 pp = uLight.xy + uRing.x * vec2(cos(a2), sin(a2));
+    vec2 pp = uLight.zw + uRing.x * vec2(cos(a2), sin(a2));
     vec2 d2 = abs(S - pp);
-    c = max(c, clamp((1. - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S));
+    c = max(c, clamp((.7 - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S));
   }
-  o = vec4(vec3(${INK}) * c, c);
+  o = vec4(ink * c, c);
 }
 #endif
 `;
@@ -355,8 +381,8 @@ const UNIFORMS = [
 function setUniforms(L, u, S, cam, W, w, h, cells) {
 	const { gl } = L;
 	const mh = A.hold.meta;
-	gl.uniform4f(u.uPR, mh.phone.r, mh.screen.r, mh.bottomY, S.lightPow);
-	gl.uniform4f(u.uLight, S.light.x, S.light.y, 0, 0);
+	gl.uniform4f(u.uPR, mh.phone.r, mh.screen.r, S.bottomY, S.lightPow);
+	gl.uniform4f(u.uLight, S.light.x, S.light.y, S.ringAt.x, S.ringAt.y);
 	gl.uniform4f(u.uTipU, S.tip.x, S.tip.y, S.u.x, S.u.y);
 	gl.uniform4f(u.uPS, S.sc, S.pa, 0, 0);
 	gl.uniform4f(u.uRing, S.ring > 0 ? S.ringR : 0, S.ring, S.ring > 0 ? 1 : 0, 0);
@@ -412,9 +438,9 @@ function handBox(S) {
 	return [Math.min(hb[0], bx0), Math.min(hb[1], by0), Math.max(hb[2], bx1), Math.max(hb[3], by1)];
 }
 
-/** Zeichnet eine Ebene in zwei Durchgängen (Ton je Zelle, dann Punkte). false, solange sie nicht bereit ist. */
-function glFrame(L, S, cam, W, H) {
-	const { gl, cv } = L;
+/** Ein Schritt je Bild bis die Ebene bereit ist (Shader gelinkt, Texturen hochgeladen). true, wenn bereit. */
+function readyStep(L) {
+	const { gl } = L;
 	if (L.dead || gl.isContextLost()) return false;
 	if (!L.ready) {
 		if (L.ext && L.prs.some((p) => !gl.getProgramParameter(p, L.ext.COMPLETION_STATUS_KHR))) return false;
@@ -446,10 +472,17 @@ function glFrame(L, S, cam, W, H) {
 		gl.disable(gl.BLEND);
 		L.ready = true;
 	}
+	return true;
+}
+
+/** Zeichnet eine Ebene in zwei Durchgängen (Ton je Zelle, dann Punkte). false, solange sie nicht bereit ist. */
+function glFrame(L, S, cam, W, H) {
+	const { gl, cv } = L;
+	if (!readyStep(L)) return false;
 	const w = cv.width;
 	const h = cv.height;
 	const key = [
-		w, h, cam.f, cam.ox, cam.oy, S.light.x, S.light.y, S.lightPow, S.tip.x, S.tip.y, S.u.x, S.u.y, S.sc, S.ring,
+		w, h, cam.f, cam.ox, cam.oy, S.light.x, S.light.y, S.ringAt.x, S.ringAt.y, S.lightPow, S.bottomY, S.tip.x, S.tip.y, S.u.x, S.u.y, S.sc, S.ring,
 		S.q[0], S.q[1], S.q[2], S.q[3], S.q[4], S.q[5], S.q[6], S.q[7], S.pa,
 	];
 	if (L.last && L.last.length === key.length && L.last.every((v, i) => v === key[i])) return true;
@@ -568,11 +601,12 @@ function cpuAtlas(at) {
 const gradeL = (L) => cl(0.5 + (L ** GAM - 0.5) * CON);
 
 /** Haltehand an der Stelle (x, y) ohne Zeigerlicht: [Ton, Ebene] (Ebene 1 hinten, 2 vorn) oder null. */
+let cpuBottom = 1400;
 function holdCpu(x, y) {
 	const { T, samp } = cpuAtlas(A.hold);
 	const m = A.hold.meta;
 	const al = samp(T.a, x, y);
-	if (al < 0.15) return null;
+	if (al < 0.5) return null;
 	const zmm = samp(T.z, x, y) * 200 - 100;
 	const sdf = sdfRR(x, y, m.phone, m.phone.r);
 	const front = sdf < 4 && zmm < 1.5;
@@ -585,12 +619,13 @@ function holdCpu(x, y) {
 	v += RIM * Math.max(0, nx * 0.85 + ny * 0.05 + nz * 0.15) * (0.5 + 0.5 * L);
 	const eA = Math.min(samp(T.a, x - EDW, y), samp(T.a, x + EDW, y), samp(T.a, x, y - EDW), samp(T.a, x, y + EDW));
 	const edge = eA < 0.5 && Math.abs(sdf) >= 7;
-	const cov = ss((al - 0.2) / 0.5) * ss((m.bottomY - y) / 90);
-	if (front && sdfRR(x, y, m.screen, m.screen.r) < -1) {
+	const cov = ss((al - 0.02) / 0.25) * ss((cpuBottom - y) / 90);
+	const sdS = sdfRR(x, y, m.screen, m.screen.r);
+	if (front && sdS < -1) {
 		const tn = 0.04 + 0.86 * cl(v) ** 1.35;
 		let vd = (1 - tn) ** 0.45;
 		if (edge) vd = Math.max(vd, 0.95);
-		return [vd * cov, 2];
+		return [vd * cov * (1 - ss((-sdS - (RAND_IN - 4)) / 7)), 2];
 	}
 	if (edge) v = Math.max(v, EDV * lf * al);
 	return [v * cov, front ? 2 : 1];
@@ -600,24 +635,26 @@ function holdCpu(x, y) {
 function pointCpu(a, b, ps, lf) {
 	const { T, samp } = cpuAtlas(A.point);
 	const al = samp(T.a, a, b);
-	if (al < 0.15) return null;
-	const fade = cl(1 - (Math.hypot(a, b) * ps - 300) / 420);
+	if (al < 0.5) return null;
+	const dist = Math.hypot(a, b) * ps;
+	const fade = cl(1 - (dist - 300) / 420);
+	const fadeIn = cl(1 - (dist - 150) / 230);
 	if (fade <= 0) return null;
 	const L = gradeL(samp(T.lum, a, b));
 	const v = L * (0.62 + 0.5 * lf);
 	const e = EDW / ps;
 	const edge = Math.min(samp(T.a, a - e, b), samp(T.a, a + e, b), samp(T.a, a, b - e), samp(T.a, a, b + e)) < 0.5;
-	const cov = ss((al - 0.2) / 0.5) * fade;
+	const cov = ss((al - 0.02) / 0.25);
 	const tn = 0.04 + 0.86 * cl(v) ** 1.35;
 	let vd = (1 - tn) ** 0.45;
 	if (edge) vd = Math.max(vd, 0.95);
-	return [Math.max(v, edge ? EDV * lf * al : 0) * cov, vd * cov];
+	return [Math.max(v, edge ? EDV * lf * al : 0) * cov * fade, vd * cov * fadeIn];
 }
 
 function dotRect(cx, x, y, v, i, j, k = 1) {
 	v *= 1 - JIT / 2 + JIT * hsh(i, j);
 	if (v > HB[(j & 3) * 4 + (i & 3)] / 16 + 0.035) {
-		const z = (STEP * (0.36 + 0.6 * Math.min(1, v))) * k;
+		const z = (STEP * (0.5 + 0.5 * Math.min(1, v))) * k;
 		cx.fillRect(x - z / 2, y - z / 2, z, z);
 	}
 }
@@ -640,6 +677,7 @@ function rrPath(g, R, r) {
 
 /** Fallback: Haltehand und Zeige-Sprite für diese Größe vorrechnen. */
 function bakeCpu(st, W, H, dpr, cam) {
+	cpuBottom = Math.min(A.hold.meta.bottomY, (H - cam.oy) / cam.f + 10);
 	const m = cam.f * dpr;
 	const w = Math.max(1, Math.round(W * dpr));
 	const h = Math.max(1, Math.round(H * dpr));
@@ -668,7 +706,11 @@ function bakeCpu(st, W, H, dpr, cam) {
 			const x = (i + 0.5) * STEP;
 			const y = (j + 0.5) * STEP;
 			const r = holdCpu(x, y);
-			if (r && r[0] > 0.02) dotRect(r[1] === 2 ? cf : cb, x, y, r[0], i, j);
+			if (r && r[0] > 0.02) {
+				const vorn = r[1] === 2;
+				if (vorn) cf.fillStyle = sdfRR(x, y, mh.screen, mh.screen.r) < -1 ? '#0A0A0A' : '#FAFAFA';
+				dotRect(vorn ? cf : cb, x, y, r[0], i, j);
+			}
 		}
 	// Zeige-Sprite (Maßstab PS, Licht an einer festen Stelle)
 	const mp = A.point.meta;
@@ -676,9 +718,9 @@ function bakeCpu(st, W, H, dpr, cam) {
 	const sh = Math.ceil((mp.tile[1] / mp.scale) * PS * m);
 	f.sp = [mkCanvas(sw, sh), mkCanvas(sw, sh)];
 	const lf = lightF(840, 420);
-	const cs = f.sp.map((cv) => {
+	const cs = f.sp.map((cv, k) => {
 		const g = cv.getContext('2d');
-		g.fillStyle = '#FAFAFA';
+		g.fillStyle = k ? '#0A0A0A' : '#FAFAFA';
 		return g;
 	});
 	const st2 = STEP / PS;
@@ -693,7 +735,7 @@ function bakeCpu(st, W, H, dpr, cam) {
 					const g = cs[k];
 					const v = r[k] * (1 - JIT / 2 + JIT * hsh(i, j));
 					if (v > HB[(j & 3) * 4 + (i & 3)] / 16 + 0.035) {
-						const z = STEP * (0.36 + 0.6 * Math.min(1, v)) * m;
+						const z = STEP * (0.5 + 0.5 * Math.min(1, v)) * m;
 						g.fillRect((i + 0.5) * st2 * PS * m - z / 2, (j + 0.5) * st2 * PS * m - z / 2, z, z);
 					}
 				}
@@ -737,7 +779,7 @@ function cpuFrame(st, S, cam, W, H, dpr) {
 		const rr = S.ringR;
 		for (let k = 0; k < RING_N; k++) {
 			const an = (k / RING_N) * 6.2832;
-			cf.fillRect(S.light.x + Math.cos(an) * rr - 1, S.light.y + Math.sin(an) * rr - 1, 2, 2);
+			cf.fillRect(S.ringAt.x + Math.cos(an) * rr - 1, S.ringAt.y + Math.sin(an) * rr - 1, 2, 2);
 		}
 		cf.globalAlpha = 1;
 	}
@@ -761,10 +803,13 @@ function newState(back, front) {
 		back,
 		front,
 		host: back.closest('[data-buehne]'),
-		ht: { x: 820, y: 400 },
+		ht: null,
+		lt: { x: 820, y: 400 },
+		park: [940, 1000],
 		lastClick: -9,
 		tap: null,
 		tapT: -9,
+		tapTop: 0,
 		clean: false,
 		mode: null, // 'gl' | 'cpu'
 		layers: null,
@@ -826,6 +871,16 @@ export function draw(back, front, c, cam) {
 	if (st0) st0.ms = (st0.ms ?? 0) * 0.95 + (performance.now() - t0) * 0.05;
 }
 
+/** Zeichenart einmal festlegen (WebGL2 mit beiden Ebenen oder 2D-Fallback). */
+function chooseMode(st, back, front) {
+	if (st.mode) return;
+	if (glTaugt(A.hold.meta, A.point.meta)) {
+		st.layers = [makeLayer(back, false), makeLayer(front, true)];
+		st.mode = st.layers[0] && st.layers[1] ? 'gl' : 'cpu';
+	} else st.mode = 'cpu';
+	if (st.mode === 'cpu') st.layers = null;
+}
+
 function drawIn(back, front, c, cam) {
 	let st = states.get(back);
 	if (!st) {
@@ -833,7 +888,7 @@ function drawIn(back, front, c, cam) {
 		states.set(back, st);
 		qa.hand = () => ({
 			mode: st.mode,
-			tip: { ...st.ht },
+			tip: { ...(st.ht ?? {}) },
 			quiet: st.quiet.slice(),
 			rects: st.rects,
 			ms: st.ms,
@@ -842,6 +897,12 @@ function drawIn(back, front, c, cam) {
 		});
 	}
 	const host = st.host;
+	// Vorwärmen: schon vor dem Eintritt Shader linken und Texturen hochladen (ein Schritt je Bild), damit der
+	// erste sichtbare Frame der Hand keinen Ruckler auslöst
+	if (A.ready && !(c.endA > 0.01) && c.P > 0.5) {
+		chooseMode(st, back, front);
+		if (st.layers) for (const L of st.layers) readyStep(L);
+	}
 	if (!(c.endA > 0.01) || !A.ready) {
 		if (!st.clean && A.ready && st.mode) {
 			clearAll(st);
@@ -854,51 +915,47 @@ function drawIn(back, front, c, cam) {
 	const { W, H, t, now, dt } = c;
 	const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-	// Zeichenart einmal festlegen
-	if (!st.mode) {
-		if (glTaugt(A.hold.meta, A.point.meta)) {
-			st.layers = [makeLayer(back, false), makeLayer(front, true)];
-			st.mode = st.layers[0] && st.layers[1] ? 'gl' : 'cpu';
-		} else st.mode = 'cpu';
-		if (st.mode === 'cpu') st.layers = null;
-	}
+	chooseMode(st, back, front);
 	for (const cv of [back, front]) sizeBackingOf(cv, W, H, dpr);
 
 	// Zeiger im Ende-Raum
 	const mx = (c.m.x - cam.ox) / cam.f;
 	const my = (c.m.y - cam.oy) / cam.f;
+	const sc = A.hold.meta.screen;
+	const aufGlas = (x, y) => x > sc.x - 4 && x < sc.x + sc.w + 4 && y > sc.y - 4 && y < sc.y + sc.h + 4;
+	// Ein Tipp auf den Bildschirm: die Zeigehand fährt von unten zum Ziel, tippt und zieht sich zurück.
 	if (c.m.clickT !== st.lastClick) {
 		st.lastClick = c.m.clickT;
-		if (c.m.type === 'touch') {
+		if (c.endOn && aufGlas(mx, my)) {
 			st.tap = [mx, my];
 			st.tapT = now;
 			st.tapTop = window.scrollY;
 		}
 	}
-	let tg = null;
-	let k = 22;
-	if (c.endOn) {
-		if (c.m.type === 'touch') {
-			k = 8;
-			// nur Tipps zählen, ein Wisch zum Scrollen (die Seite bewegt sich) lässt die Hand in Ruhe
-			if (st.tap && Math.abs(window.scrollY - st.tapTop) < 8) {
-				if (c.m.down) {
-					tg = [mx, my];
-					st.tap = tg;
-					st.tapT = now;
-				} else if (now - st.tapT < 1.5) tg = st.tap;
-			}
-		} else if (c.m.in) tg = [mx, my];
+	let tg = st.park;
+	let k = 7;
+	const swipe = c.m.type === 'touch' && Math.abs(window.scrollY - st.tapTop) > 8;
+	if (st.tap && c.endOn && !swipe && now - st.tapT < TIPP_HALTEN) {
+		tg = st.tap;
+		k = 16;
 	}
-	if (!tg) tg = c.reduced ? [820, 400] : autopilot(t);
-	st.dbg = { m: { x: c.m.x, y: c.m.y, in: c.m.in, down: c.m.down, type: c.m.type }, tg, endOn: c.endOn, tap: st.tap };
+	// Zeigerlicht: folgt der Maus, sonst ein ruhiger Autopilot
+	const lg = c.endOn && c.m.in && c.m.type !== 'touch' ? [mx, my] : c.reduced ? [820, 400] : autopilot(t);
+	const parkY = Math.max(1000, (H - cam.oy) / cam.f + 340);
+	st.park = [940, parkY];
+	if (!st.ht) st.ht = { x: st.park[0], y: st.park[1] };
 	const ht = st.ht;
 	const kk = 1 - Math.exp(-k * Math.min(dt, 0.05));
 	ht.x += (tg[0] - ht.x) * kk;
 	ht.y += (tg[1] - ht.y) * kk;
+	const lt = st.lt;
+	const kl = 1 - Math.exp(-10 * Math.min(dt, 0.05));
+	lt.x += (lg[0] - lt.x) * kl;
+	lt.y += (lg[1] - lt.y) * kl;
+	st.dbg = { m: { x: c.m.x, y: c.m.y, in: c.m.in, down: c.m.down, type: c.m.type }, tg, endOn: c.endOn, tap: st.tap };
 
 	const pr = now - c.m.clickT;
-	const push = pr >= 0 && pr < 0.4 ? Math.sin((pr / 0.4) * Math.PI) : 0;
+	const push = pr >= 0 && pr < 0.4 && st.tap && now - st.tapT < TIPP_HALTEN ? Math.sin((pr / 0.4) * Math.PI) : 0;
 	const hoch = istHoch(W, H);
 	const ax = (hoch ? (W - cam.ox) / cam.f : ARM[0]) - ht.x;
 	const ay = (hoch ? (H - cam.oy) / cam.f : ARM[1]) - ht.y;
@@ -906,29 +963,22 @@ function drawIn(back, front, c, cam) {
 	const ux = ax / AL;
 	const uy = ay / AL;
 	if (st.frames++ % 15 === 0) measure(st, cam);
+	// Das Licht wird gerastert (4 px), damit ruhiges Licht keinen neuen Durchgang auslöst
 	const S = {
-		light: { x: ht.x, y: ht.y },
+		light: { x: Math.round(lt.x / 4) * 4, y: Math.round(lt.y / 4) * 4 },
+		ringAt: { x: st.tap ? st.tap[0] : 0, y: st.tap ? st.tap[1] : 0 },
 		lightPow: st.mode === 'gl' ? 1 : 0,
-		tip: { x: ht.x + ux * (6 + push * 4), y: ht.y + uy * (6 + push * 4) },
+		// Unterarm löst sich am unteren Bildrand auf (Verlauf statt harter Kante)
+		bottomY: Math.min(A.hold.meta.bottomY, (H - cam.oy) / cam.f + 10),
+		tip: { x: Math.round((ht.x + ux * (6 + push * 4)) * 2) / 2, y: Math.round((ht.y + uy * (6 + push * 4)) * 2) / 2 },
 		u: { x: ux, y: uy },
 		sc: PS * (1 - push * 0.06),
 		pa: qa.noPoint ? 0 : 1,
-		ring: pr >= 0 && pr < RING_T ? 1 - pr / RING_T : 0,
+		ring: pr >= 0 && pr < RING_T && st.tap && pr < now - st.tapT + 0.05 ? 1 - pr / RING_T : 0,
 		ringR: 10 + Math.max(0, pr) * 150,
 		q: st.quiet,
 	};
-
-	// Zeiger: nur über Handy und Knopf als Hand ("pointer"), sonst ersetzt die Hand den Zeiger
-	if (host) {
-		let over = false;
-		if (c.endOn) {
-			const cx = c.m.x;
-			const cy = c.m.y;
-			over = st.rects.some((r) => cx >= r[0] && cx <= r[2] && cy >= r[1] && cy <= r[3]);
-		}
-		const cur = c.endOn ? (over ? 'pointer' : 'none') : '';
-		if (host.style.cursor !== cur) host.style.cursor = cur;
-	}
+	if (host && host.style.cursor) host.style.cursor = '';
 
 	if (st.mode === 'gl') {
 		for (const L of st.layers) glFrame(L, S, cam, W, H);

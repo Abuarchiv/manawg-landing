@@ -14,7 +14,7 @@ import { plan as ios } from './ios-plan';
 import { plan as rechner } from './rechner-plan';
 
 const PLAENE = [ios, android, rechner];
-const VORLAUF = 0.5; // Rahmenwechsel beim Tabwechsel, bevor der Ablauf beginnt
+const VORLAUF = 0.12; // kurzer Halt auf dem Startbild beim Tabwechsel, bevor der Ablauf beginnt
 
 /**
  * fr: Gerätrahmen [data-ins="frame"], sec: Abschnitt, getTab(): 0 iPhone, 1 Android, 2 Rechner.
@@ -75,7 +75,8 @@ export function registerAblauf(fr, sec, getTab) {
 			// Beim Tabwechsel bleibt der Schirm dunkel, bis der Rahmen steht, und blendet dann ein. Der Neustart der
 			// Schleife ist ein harter Schnitt (kein Bild halb überblendet, kein leeres Bild).
 			if (t > 0.3) s.frisch = false;
-			put(s.E.veil, { o: s.frisch && !s.reduced ? (t < 0 ? 1 : 1 - cl(t / 0.2)) : 0 });
+			// Kein Schleier: beim Tabwechsel steht sofort das Startbild des neuen Plans (pl.render(0)), nie ein leerer Schirm
+put(s.E.veil, { o: 0 });
 			// Tipp-Anzeige
 			if (s.tap) {
 				const k = s.reduced ? { o: 0, x: 0, y: 0, s: 1 } : tipp(pl.taps, t);

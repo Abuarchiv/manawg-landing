@@ -325,7 +325,8 @@
 			w = M.flags.filter((f) => set.has(f)).join('+') || '-';
 		}
 		if (e.msg === 'C') S.sent = clock();
-		enter(w, e.t, { force: !!e.add });
+		// Ziel ohne aufgenommenen Zustand (eigene Seite der App): kurzer Hinweis statt toter Knopf
+		if (!enter(w, e.t, { force: !!e.add })) toast('Das öffnet sich in der echten App.');
 	};
 
 	const click = async (target) => {
@@ -368,6 +369,96 @@
 				}
 			}
 		}
+		if (!/^(input|textarea)\|/.test(k)) micro(el);
+	};
+
+	// ---------------------------------------------------------------- Bedienung ohne aufgenommenen Zustand
+	// Nicht alles in der App wurde als Zustand aufgenommen. Damit nichts tot wirkt: Schalter, Zähler und
+	// Aufklappbares verhalten sich wie in der App (nur im Bild, ohne Speichern); Ziele, die in der App eine
+	// eigene Seite öffnen (Erinnerungen, Import, Kalender-Feed), melden das kurz als Hinweis.
+	let toastEl = null;
+	let toastT = 0;
+	const toast = (text) => {
+		if (!toastEl) {
+			toastEl = document.createElement('div');
+			toastEl.setAttribute('role', 'status');
+			toastEl.style.cssText = 'position:fixed;left:50%;bottom:calc(var(--sai-bottom,34px) + 92px);transform:translate(-50%,8px);max-width:calc(100% - 48px);padding:10px 14px;border-radius:12px;background:#0a0a0a;color:#fafafa;font:500 13px/1.3 Inter,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.28);opacity:0;pointer-events:none;z-index:80;text-align:center;transition:opacity .18s ease,transform .18s ease';
+			document.body.appendChild(toastEl);
+		}
+		toastEl.textContent = text;
+		void toastEl.offsetWidth;
+		toastEl.style.opacity = '1';
+		toastEl.style.transform = 'translate(-50%,0)';
+		clearTimeout(toastT);
+		toastT = setTimeout(() => {
+			toastEl.style.opacity = '0';
+			toastEl.style.transform = 'translate(-50%,8px)';
+		}, 2200);
+	};
+	const micro = (el) => {
+		const lab = el.getAttribute('aria-label') || el.textContent.trim();
+		if (el.disabled || el.hasAttribute('data-disabled') || el.getAttribute('aria-disabled') === 'true') return true;
+		if (/^Zum (Hauptinhalt|Ende)/.test(lab)) return true;
+		// Abhaken (Einkaufsliste)
+		if (el.getAttribute('role') === 'checkbox' && el.hasAttribute('aria-checked')) {
+			const on = el.getAttribute('aria-checked') !== 'true';
+			el.setAttribute('aria-checked', String(on));
+			el.toggleAttribute('data-checked', on);
+			el.toggleAttribute('data-unchecked', !on);
+			const row = el.closest('[data-slot=item]');
+			const title = row?.querySelector('[data-slot=item-title]');
+			if (title) title.style.textDecoration = on ? 'line-through' : '';
+			if (row) row.style.opacity = on ? '0.6' : '';
+			return true;
+		}
+		// Vorrat erhöhen oder verringern
+		const v = /um eins (erhöhen|verringern)$/.exec(lab);
+		if (v) {
+			const d = el.closest('[data-slot=item]')?.querySelector('[data-slot=item-description]');
+			const m = d && /^(\d+)/.exec(d.textContent);
+			if (m) {
+				const n = Math.max(0, +m[1] + (v[1] === 'erhöhen' ? 1 : -1));
+				d.textContent = d.textContent.replace(/^\d+/, String(n));
+			}
+			return true;
+		}
+		// Reaktion setzen oder entfernen
+		const r = /-Reaktion (setzen|entfernen): (.*)$/.exec(lab);
+		if (r && el.hasAttribute('aria-pressed')) {
+			const on = r[1] === 'setzen';
+			el.setAttribute('aria-pressed', String(on));
+			el.setAttribute('aria-label', lab.replace(/(setzen|entfernen)/, on ? 'entfernen' : 'setzen'));
+			el.style.background = on ? 'var(--secondary)' : '';
+			let c = el.querySelector('span.tabular-nums');
+			if (on && !c) {
+				c = document.createElement('span');
+				c.className = 'tabular-nums';
+				c.textContent = '0';
+				el.appendChild(c);
+			}
+			if (c) {
+				const n = Math.max(0, (+c.textContent || 0) + (on ? 1 : -1));
+				c.textContent = String(n);
+				c.hidden = n === 0;
+			}
+			return true;
+		}
+		// Antworten ein- und ausklappen
+		const pid = el.getAttribute('aria-controls');
+		const panel = pid && document.getElementById(pid);
+		if (panel && el.hasAttribute('aria-expanded')) {
+			const open = el.getAttribute('aria-expanded') !== 'true';
+			el.setAttribute('aria-expanded', String(open));
+			panel.toggleAttribute('data-open', open);
+			panel.toggleAttribute('data-closed', !open);
+			panel.toggleAttribute('inert', !open);
+			panel.style.setProperty('--collapsible-panel-height', open ? `${panel.scrollHeight}px` : '0px');
+			return true;
+		}
+		// aktueller Reiter, Überschrift oder Auswahl: nichts zu tun
+		if (el.getAttribute('aria-current') || el.getAttribute('aria-selected') === 'true' || el.getAttribute('aria-pressed') === 'true') return true;
+		toast('Das öffnet sich in der echten App.');
+		return true;
 	};
 
 	document.addEventListener('click', (ev) => {

@@ -6,8 +6,8 @@
 import { loop, qa, register } from '../../core/loop';
 import { cl, hsh, lag, vnz } from '../../core/math';
 
-export const CW = 9;
-export const CH = 14;
+export const CW = 7;
+export const CH = 11;
 const RAMP = ' .:-=+*#%@';
 qa.masse = { ...(qa.masse ?? {}), finaleZelle: [CW, CH] };
 
@@ -21,7 +21,7 @@ function blatt(s) {
 	cv.width = zw * 10;
 	cv.height = zh;
 	const g = cv.getContext('2d');
-	g.font = `500 ${12 * s.dpr}px "JetBrains Mono", monospace`;
+	g.font = `500 ${9 * s.dpr}px "JetBrains Mono", monospace`;
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
 	g.fillStyle = '#FAFAFA';
@@ -63,6 +63,7 @@ export function registerAscii(cv) {
 			if (reduced && s.sig === sig && Math.hypot(tg[0] - s.sm.x, tg[1] - s.sm.y) < 0.5) return;
 			s.sig = sig;
 			const { cv: sheet, zw, zh } = blatt(s);
+			ctx.globalAlpha = 1;
 			ctx.setTransform(s.dpr, 0, 0, s.dpr, 0, 0);
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
@@ -80,6 +81,25 @@ export function registerAscii(cv) {
 			// Hoch ist die Sonne kleiner als der Titel: dünner, damit die Schrift davor frei bleibt
 			const dichte = s.mode === 'hoch' ? 0.62 : 1;
 			const t12 = Math.floor(t * 12);
+// Aussparung hinter Schlagzeile und Knöpfen: Zeichen dort höchstens 25 %, nach außen weicher Abfall
+if (loop.n % 20 === 0 || !s.box) {
+	const r0 = s.cv.getBoundingClientRect();
+	let x0 = 1e9;
+	let y0 = 1e9;
+	let x1 = -1e9;
+	let y1 = -1e9;
+	for (const el of s.cv.parentElement.querySelectorAll('h2, a')) {
+		const r = el.getBoundingClientRect();
+		if (r.width < 1) continue;
+		x0 = Math.min(x0, r.left - r0.left);
+		y0 = Math.min(y0, r.top - r0.top);
+		x1 = Math.max(x1, r.right - r0.left);
+		y1 = Math.max(y1, r.bottom - r0.top);
+	}
+	s.box = x1 > x0 ? { x0, y0, x1, y1 } : null;
+}
+const box = s.box;
+ctx.globalAlpha = 0.35;
 			for (let y = CH / 2, j = 0; y < s.H; y += CH, j++) {
 				const by = (y - s.oy) * inv;
 				const dy = by - sy;
@@ -101,6 +121,12 @@ export function registerAscii(cv) {
 					}
 					if (funk > 0 && hsh(i, j + Math.floor(t * 4 + i * 0.37) * 7) < funk) v = Math.max(v, 0.2);
 					v *= dichte;
+					if (box && v > 0) {
+						const ddx = Math.max(box.x0 - x, x - box.x1, 0);
+						const ddy = Math.max(box.y0 - y, y - box.y1, 0);
+						const q = cl(Math.hypot(ddx, ddy) / 140);
+						v *= 0.25 + 0.75 * q * q * (3 - 2 * q);
+					}
 					if (v > 0.06) {
 						let ci = Math.min(9, 1 + Math.floor(cl(v) * 8.99));
 						if (mIn) {

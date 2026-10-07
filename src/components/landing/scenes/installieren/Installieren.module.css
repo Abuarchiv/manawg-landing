@@ -250,3 +250,10 @@
 		font-size: 38px;
 	}
 }
+
+/* Symbol im Schritttext: in Höhe der x-Höhe, auf der Grundlinie */
+.ikone {
+	display: inline-block;
+	vertical-align: -0.18em;
+	margin-inline: 0.12em;
+}

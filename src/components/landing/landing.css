@@ -2,7 +2,7 @@
    Regel für einen Entwurfswert d: clamp(MIN, min(d/12,8 vw, d/8 svh), MAX). Bei 1280 x 800 ergibt das genau d. */
 :root {
 	/* Schrift */
-	--t-label: 12px;
+	--t-label: 11px; /* eine Mono-Stufe für alle Beschriftungen (nichts unter 10 px) */
 	--t-13: 13px;
 	--t-14: 14px;
 	--t-15: 15px;
@@ -141,8 +141,8 @@
 	font-family: "JetBrains Mono", monospace;
 	font-size: var(--t-label);
 	font-weight: 500;
-	letter-spacing: 0.08em;
-	opacity: 0.72;
+	letter-spacing: 0.1em;
+	color: #8a8a8a;
 }
 .haar {
 	height: 1px;
@@ -251,21 +251,27 @@
 	transition: opacity var(--zeit) ease;
 }
 
-/* Hinweis „Intro überspringen“: kleine Fläche statt nacktem Text (T-07) */
+/* Hinweis „Intro überspringen“: reine Textzeile ohne Fläche (Mono-Stufe der Labels, 10 px, Sperrung 0,12 em).
+   Die Trefferfläche von 44 px liefert ::after, die Flut lässt um die Zeile nur eine schmale Lücke. */
 .hinweis {
 	position: fixed;
 	left: calc(var(--rand) + env(safe-area-inset-left));
 	bottom: max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px));
 	z-index: 20;
-	padding: 8px 12px;
-	border: 1px solid rgba(250, 250, 250, 0.18);
-	border-radius: 8px;
-	background: rgba(10, 10, 10, 0.72);
+	padding: 0;
+	font-size: 10px;
+	letter-spacing: 0.12em;
 	color: #fafafa;
+	text-shadow: 0 0 6px #0a0a0a, 0 0 2px #0a0a0a;
 	text-decoration: none;
 	cursor: pointer;
-	opacity: calc(1 - var(--e, 0) * 1.38);
-	transition: background-color var(--zeit) ease, border-color var(--zeit) ease;
+	opacity: calc(0.6 * (1 - var(--e, 0) * 1.38));
+	transition: opacity var(--zeit) ease;
+}
+/* Handy quer: neben SCROLLEN rechts unten, damit die Raumkarten links frei bleiben */
+#final[data-flach] .hinweis {
+	left: auto;
+	right: calc(var(--rand) + env(safe-area-inset-right) + 96px);
 }
 .hinweis::after {
 	content: "";
@@ -275,6 +281,36 @@
 	top: 50%;
 	height: max(100%, 44px);
 	transform: translateY(-50%);
+}
+.fokus-anker {
+	position: fixed;
+	left: calc(var(--rand) + env(safe-area-inset-left));
+	bottom: calc(max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px)) + 32px);
+	z-index: 21;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	color: #fafafa;
+	text-decoration: none;
+}
+.fokus-anker:focus-visible {
+	width: auto;
+	height: auto;
+	overflow: visible;
+	clip-path: none;
+	padding: 8px 12px;
+	background: #0a0a0a;
+	border: 1px solid rgba(250, 250, 250, 0.4);
+	border-radius: 8px;
+	outline: 2px solid #fafafa;
+	outline-offset: 2px;
+}
+.fokus-anker[inert],
+[data-phase="nach"] .fokus-anker,
+[data-phase="ende"] .fokus-anker {
+	visibility: hidden;
 }
 [data-phase="nach"] .hinweis,
 .hinweis[inert] {
@@ -343,8 +379,9 @@
 		text-underline-offset: 3px;
 	}
 	.hinweis:hover {
-		background: rgba(10, 10, 10, 0.92);
-		border-color: rgba(250, 250, 250, 0.4);
+		opacity: calc(1 - var(--e, 0) * 1.38);
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 }
 .cta:active {

@@ -12,7 +12,7 @@ import s from './Phone.module.css';
 
 const SRC = '/app-demo/index.html';
 const BILD = '/app-demo/start.webp';
-const AB_P = 0.75; // erst ab hier wird das iframe geladen (davor nur das Standbild)
+const AB_P = 0.3; // ab hier lädt das iframe im Leerlauf (davor nur das Standbild), lange vor der Szene
 
 // Zwei Zeilen des Standbilds hängen vom heutigen Tag ab ("Do., 8. Okt."): das Bild trägt sie nicht, sie werden hier
 // im App-Format (Intl de-DE, Berlin) darüber gesetzt, an den Stellen der Aufnahme (tools/qa/app/still.mjs).
@@ -106,8 +106,11 @@ export function Phone() {
 		if (!root) return;
 		const pruefe = () => {
 			if (Number.parseFloat(root.style.getPropertyValue('--p') || '0') > AB_P) {
-				setSrc(SRC);
 				mo.disconnect();
+				// Das iframe läuft im selben Hauptthread wie die Landing: Laden und Aufbau in einer Leerlaufpause
+				const los = () => setSrc(SRC);
+				if ('requestIdleCallback' in window) window.requestIdleCallback(los, { timeout: 2500 });
+				else setTimeout(los, 300);
 			}
 		};
 		const mo = new MutationObserver(pruefe);

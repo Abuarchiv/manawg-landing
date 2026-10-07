@@ -50,7 +50,7 @@ export function Raeume() {
 					key={k.nr}
 					className={st.karte}
 					style={css(
-						`opacity:var(--c${j},0);transform:translateY(calc((1 - var(--c${j},0)) * 16px));filter:blur(calc((1 - var(--c${j},0)) * 3px))`,
+						`opacity:var(--c${j},0);transform:translateY(calc((1 - var(--c${j},0)) * 16px))`,
 					)}
 				>
 					<div className={`label ${st.kopf}`} style={css('opacity:1')}>

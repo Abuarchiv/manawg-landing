@@ -17,6 +17,7 @@ const F = 720; // Brennweite in Szenen-Einheiten
 const WORDS = ['GELD', 'HAUSHALT', 'ABSPRACHEN'];
 const FONTS = [10, 14, 20, 28]; // Nahzeichen: höchstens 28 px, größere Punkte werden zu Punkten
 const SPACING = 0.065; // Punktabstand der Wörter in Welt-Einheiten
+const SP = 18; // Abstand der Wort-Inseln in der Tiefe (vorher 26): das nächste Wort steht früher da
 
 // Punkte eines Worts aus der Schrift abtasten (Gitter 2 px, Mitte = Mitte der Punktwolke)
 const sampleT = (word, px) => {
@@ -51,11 +52,14 @@ const sampleT = (word, px) => {
 // Deckkraft des Untertitels aus der Tiefe dz seiner Insel. Plateau voll für |dz - 9| <= 3,5.
 // Das kommende Wort ist ab dz 30 mit 0,5 vorgeblendet, damit der Tunnel nie ohne Text bleibt (T-10).
 // Die letzte Zeile steht früher und bleibt bis zum Ende der Fahrt, sonst bliebe ihr nur ein Zehntel.
-const capOpacity = (dz, last) => {
+const plateauOf = (dz, last) => {
 	const dd = last ? Math.max(dz, 12) - 12 : dz - 9;
-	const plateau = cl((5 - Math.abs(dd)) / 1.5);
-	const pre = dz > 9 ? 0.5 * cl((30 - dz) / 2) : 0;
-	return Math.max(plateau, pre);
+	return cl((5 - Math.abs(dd)) / 1.5);
+};
+// Die Vorblende des nächsten Satzes erst, wenn der vorige nicht mehr steht (kein Überlappen).
+const capOpacity = (dz, last, vorher) => {
+	const pre = dz > 9 ? 0.5 * cl((30 - dz) / 2) * (1 - vorher) : 0;
+	return Math.max(plateauOf(dz, last), pre);
 };
 
 // Flächenfaktor: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900),
@@ -66,7 +70,7 @@ const bauKey = (s) => `${s.mode}${flaeche(s)}`;
 function build(s) {
 	const hoch = s.mode === 'hoch';
 	const k = hoch ? 0.5 : 1; // Streuung der Inseln und des Zeigerversatzes an die Boxbreite anpassen
-	const target = ((hoch ? 0.5 : 0.4) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9
+	const target = ((hoch ? 0.72 : 0.5) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9 (hoch: 70 % der Breite)
 	s.isl = s.raw.map((r, i) => {
 		const sc = cl(target / (r.width / 85), 0.25, 1.5);
 		const n = Math.max(1, Math.round((SPACING * 85) / (sc * 2)));
@@ -74,7 +78,7 @@ function build(s) {
 		for (const p of r.pts)
 			if (p[0] % n === 0 && p[1] % n === 0)
 				pts.push([((p[0] * 2 - r.cx) / 85) * sc, ((p[1] * 2 - r.cy) / 85) * sc]);
-		return { z: 26 * i, x: [-4.5, 4.5, -4.5][i] * k, y: [0.8, -0.8, 0.8][i], sc, pts };
+		return { z: SP * i, x: [-4.5, 4.5, -4.5][i] * k, y: [0.8, -0.8, 0.8][i], sc, pts };
 	});
 	s.k = k;
 	const RAMP = '@#%*+=';
@@ -144,8 +148,8 @@ export function registerTiefe(cv, sec) {
 			if (s.reduced) s.dp = sp;
 			else s.dp += (sp - s.dp) * lag(0.1, dt);
 			const p = s.dp;
-			const camZ = -14 + p * 57;
-			const seg = cl((camZ + 14) / 26, 0, 1.999);
+			const camZ = -14 + p * (2 * SP + 5);
+			const seg = cl((camZ + 14) / SP, 0, 1.999);
 			const si = Math.floor(seg);
 			const sf = ss(seg - si);
 			if (s.m.in) {
@@ -163,6 +167,11 @@ export function registerTiefe(cv, sec) {
 			ctx.fillStyle = '#FAFAFA';
 			const snap = (v) => Math.round(v * dpr) / dpr;
 			const near = [];
+			// Fokus je Wort: solange ein Wort steht, bleiben die anderen (Fernwörter) unsichtbar
+			const fok = s.isl.map((I, i) => plateauOf(I.z - camZ, i === s.isl.length - 1));
+			// Ein nahes, großes Wort (Tiefe 2 bis 34) blendet die fernen aus: kein kleines Wort auf der Ecke des großen
+const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2) / 2));
+const fremd = (k) => 1 - Math.max(0, ...gross.filter((_, i) => i !== k));
 			const m = s.m;
 			const mx = m.in ? m.x : 0;
 			const my = m.in ? m.y : 0;
@@ -198,7 +207,7 @@ export function registerTiefe(cv, sec) {
 				// und werden ab dz 34 voll (T-10). Staub blendet in der Ferne aus.
 				if (qa.nurWort != null && q[4] !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
 				const a = word
-					? Math.max(cl((34 - dz) / 12), 0.6 * cl(68 - dz))
+					? Math.max(cl((34 - dz) / 12), 0.6 * cl(68 - dz)) * fremd(q[4]) * (dz < 4.5 ? cl((dz - 0.4) / 4.1) : 1)
 					: cl(dz / 1.2) *
 						cl((110 - dz) / 30) *
 						cl((s.dX - Math.abs(q[0])) / 7) *
@@ -207,7 +216,10 @@ export function registerTiefe(cv, sec) {
 				if (a <= 0.01) continue;
 				const szc = cl(0.07 * fz, 0.8, 64) * f; // Zeichengröße in CSS-px
 				// Schriftstufe: 1,33 x Größe, gerundet auf die Stufen 10, 14, 20, 28 px
-				const tier = Math.round(Math.log2((1.33 * szc) / FONTS[0]) * 2);
+				let tier = Math.round(Math.log2((1.33 * szc) / FONTS[0]) * 2);
+// Staub nah an der Kamera: höchstens 14 px und dunkler (keine Wolke aus großen Zeichen)
+const dust = !word && tier > 1 && tier <= 3;
+if (dust) tier = 1;
 				if (tier < 0) {
 					const side = snap(Math.max(word ? 1 : (s.mode === 'hoch' ? 1.5 : 2) * s.fl, szc * 0.8));
 					ctx.globalAlpha = a;
@@ -216,7 +228,7 @@ export function registerTiefe(cv, sec) {
 					// über 32 px keine Zeichen mehr, nur noch ein Punkt
 					ctx.globalAlpha = a;
 					ctx.fillRect(snap(X) - 1, snap(Y) - 1, 3, 3);
-				} else near.push([tier, X, Y, q[3], a]);
+				} else near.push([tier, X, Y, q[3], dust ? a * 0.7 : a]);
 			}
 			near.sort((a, b) => a[0] - b[0]);
 			let fb = -1;
@@ -234,7 +246,8 @@ export function registerTiefe(cv, sec) {
 			for (const el of s.caps) {
 				const i = +el.getAttribute('data-dcap');
 				const dz = s.isl[i].z - camZ;
-				el.style.opacity = capOpacity(dz, i === s.isl.length - 1).toFixed(3);
+				const vorher = i > 0 ? fok[i - 1] : 0;
+el.style.opacity = capOpacity(dz, i === s.isl.length - 1, vorher).toFixed(3);
 			}
 			if (s.dep) s.dep.textContent = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');
 		},

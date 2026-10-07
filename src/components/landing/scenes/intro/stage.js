@@ -174,8 +174,11 @@ export function createStage({ sec, buehne }) {
 		// CSS-Variablen und Phase, jedes Bild
 		setVar('--p', P.toFixed(4));
 		setVar('--g', (1 - fpA).toFixed(3));
-		setVar('--f', (fpA * (1 - endA)).toFixed(3));
+		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
+		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));
 		setVar('--e', endA.toFixed(3));
+		// Ende-Szene löst sich auf, während die Bühne nach oben wegläuft (kein angeschnittener Arm)
+		setVar('--ab', cl((H - rb.bottom) / (0.55 * H)).toFixed(3));
 		for (let j = 0; j < 4; j++) setVar(`--c${j}`, karten[j].toFixed(3));
 		const kopfUnten = kopf ? kopf.getBoundingClientRect().bottom : 0;
 		const kopfAus = endA * (rb.bottom > kopfUnten ? 1 : 0);
@@ -242,7 +245,7 @@ export function createStage({ sec, buehne }) {
 			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);
 			flut.draw(cvFl, c, loecher);
-			if (P > 0.75 && !st.handsLoaded) {
+			if (P > 0.3 && !st.handsLoaded) {
 				st.handsLoaded = true;
 				hand.laden();
 			}
