@@ -88,7 +88,6 @@ uniform ivec2 uCell0;
 uniform ivec2 uCellN;
 out vec4 o;
 
-const float B[16] = float[16](0.,8.,2.,10.,12.,4.,14.,6.,3.,11.,1.,9.,15.,7.,13.,5.);
 float cl(float x){ return clamp(x, 0., 1.); }
 float ss(float x){ x = cl(x); return x * x * (3. - 2. * x); }
 float hsh(ivec2 c){
@@ -220,8 +219,11 @@ void main(){
   ivec2 tc = cell - uCell0;
   float tone = 0.;
   if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) tone = texelFetch(uTone, tc, 0).r;
+  if (tone <= 0. && uRing.z <= 0.) { o = vec4(0.); return; }
   tone *= (1. - ${(JIT / 2).toFixed(3)}) + ${JIT.toFixed(2)} * hsh(cell);
-  float thr = B[(cell.y & 3) * 4 + (cell.x & 3)] / 16. + .035;
+  int bx = cell.x & 3;
+  int by = cell.y & 3;
+  float thr = float((by & 1) * 12 + (by >> 1) * 3 + (1 - 2 * (by & 1)) * 8 * (bx & 1) + (1 - 2 * (by >> 1)) * 2 * (bx >> 1)) / 16. + .035;
   float c = 0.;
   if (tone > thr) {
     float z = ${STEP.toFixed(1)} * (.36 + .6 * min(1., tone));
@@ -386,6 +388,30 @@ function initProgram(L, k) {
 	gl.uniform1i(u.uFront, L.front ? 1 : 0);
 }
 
+/** Umschließendes Rechteck beider Hände im Ende-Raum: [x0, y0, x1, y1]. */
+function handBox(S) {
+	const mh = A.hold.meta;
+	const mp = A.point.meta;
+	const hb = [mh.origin[0], mh.origin[1], mh.origin[0] + mh.tile[0] / mh.scale, mh.origin[1] + mh.tile[1] / mh.scale];
+	const a0 = mp.origin[0];
+	const b0 = mp.origin[1];
+	const a1 = a0 + mp.tile[0] / mp.scale;
+	const b1 = b0 + mp.tile[1] / mp.scale;
+	let bx0 = 1e9;
+	let by0 = 1e9;
+	let bx1 = -1e9;
+	let by1 = -1e9;
+	for (const [a, b] of [[a0, b0], [a1, b0], [a0, b1], [a1, b1]]) {
+		const x = S.tip.x + (S.u.x * a - S.u.y * b) * S.sc;
+		const y = S.tip.y + (S.u.y * a + S.u.x * b) * S.sc;
+		bx0 = Math.min(bx0, x);
+		by0 = Math.min(by0, y);
+		bx1 = Math.max(bx1, x);
+		by1 = Math.max(by1, y);
+	}
+	return [Math.min(hb[0], bx0), Math.min(hb[1], by0), Math.max(hb[2], bx1), Math.max(hb[3], by1)];
+}
+
 /** Zeichnet eine Ebene in zwei Durchgängen (Ton je Zelle, dann Punkte). false, solange sie nicht bereit ist. */
 function glFrame(L, S, cam, W, H) {
 	const { gl, cv } = L;
@@ -470,7 +496,22 @@ function glFrame(L, S, cam, W, H) {
 	gl.viewport(0, 0, w, h);
 	gl.useProgram(L.prs[1]);
 	setUniforms(L, L.u[1], S, cam, W, w, h, cells);
-	gl.drawArrays(gl.TRIANGLES, 0, 3);
+	// nur dort rastern, wo eine Hand liegen kann (Haltehand-Kachel und Sprite der Zeigehand), Rest bleibt leer
+	const bb = handBox(S);
+	const k = w / W;
+	const x0 = Math.max(0, Math.floor((bb[0] * cam.f + cam.ox) * k));
+	const x1 = Math.min(w, Math.ceil((bb[2] * cam.f + cam.ox) * k));
+	const y0 = Math.max(0, Math.floor(h - (bb[3] * cam.f + cam.oy) * k));
+	const y1 = Math.min(h, Math.ceil(h - (bb[1] * cam.f + cam.oy) * k));
+	gl.disable(gl.SCISSOR_TEST);
+	gl.clearColor(0, 0, 0, 0);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+	if (x1 > x0 && y1 > y0) {
+		gl.enable(gl.SCISSOR_TEST);
+		gl.scissor(x0, y0, x1 - x0, y1 - y0);
+		gl.drawArrays(gl.TRIANGLES, 0, 3);
+		gl.disable(gl.SCISSOR_TEST);
+	}
 	if (q && T) {
 		gl.endQuery(T.TIME_ELAPSED_EXT);
 		L.pend.push(q);
