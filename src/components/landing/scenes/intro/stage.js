@@ -6,7 +6,7 @@
 // Bild gesetzt, auch wenn nichts gezeichnet wird, damit nach Sprüngen nichts stehen bleibt.
 
 import { dprFor, fitBox, observe, sizeBacking } from '../../core/canvas';
-import { loop, onFrame } from '../../core/loop';
+import { loop, onFrame, takt } from '../../core/loop';
 import { cl, ss } from '../../core/math';
 import * as hand from '../ende/hand';
 import { kamera } from '../ende/kamera';
@@ -230,7 +230,7 @@ export function createStage({ sec, buehne }) {
 				hm.ad = st.ad;
 				heroDrawn = hero.frame(c, hm);
 			}
-			if (cvStars && P < 0.075 && loop.n % 2 === 1) zeichneSterne(cvStars, W, safeH, dpr, t);
+			if (cvStars && P < 0.075 && takt(7)) zeichneSterne(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);
 			flut.draw(cvFl, c, loecher);
 			if (P > 0.75 && !st.handsLoaded) {

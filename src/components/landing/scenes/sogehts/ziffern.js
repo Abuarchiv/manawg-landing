@@ -2,7 +2,7 @@
 // Zellen weg, Federn holen sie zurück. Szenenraum: Bezugsbox 340 x 150.
 
 import { hsh } from '../../core/math';
-import { loop, register } from '../../core/loop';
+import { loop, register, takt } from '../../core/loop';
 
 const GR = '@%#*+=-:';
 
@@ -57,14 +57,16 @@ function baue(s, txt, fs, cs, mono) {
 
 /** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
 export function registerZiffer(cv, { text, fs = 150, cs = 8, mono = true, glyph = true }) {
+	const slot = Math.min(2, Math.max(0, Number.parseInt(text, 10) - 1));
 	return register({
+		slot,
 		name: `ziffer ${text}`,
 		el: cv,
 		host: cv.parentElement,
 		box: () => ({ bw: 340, bh: 150 }),
 		dprCap: 2,
 		frame(s) {
-			if (!(loop.n & 1)) return; // Entwurfstakt: jedes zweite Bild
+			if (!takt(slot)) return; // Entwurfstakt: jedes zweite Bild
 			const key = `${text}|${loop.fv}`;
 			if (s.key !== key) {
 				s.key = key;

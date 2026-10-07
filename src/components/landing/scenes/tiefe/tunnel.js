@@ -1,7 +1,7 @@
 // Die Tiefe: Fahrt durch eine Punktwolke, in der die Wörter GELD, HAUSHALT und ABSPRACHEN als Inseln
 // liegen. Die Kamera hängt am Scroll-Fortschritt des Abschnitts. Szenenraum: Bezugsbox 1280 x 800.
 
-import { loop, register } from '../../core/loop';
+import { loop, register, takt } from '../../core/loop';
 import { cl, hsh } from '../../core/math';
 
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -35,6 +35,7 @@ const sampleT = (lines, px, step) => {
 /** Meldet die Tiefe-Szene an. sec: Abschnitt mit Sticky-Bühne. Gibt die Abmeldung zurück. */
 export function registerTiefe(cv, sec) {
 	return register({
+		slot: 4,
 		name: 'tiefe',
 		el: cv,
 		host: cv.parentElement,
@@ -49,7 +50,7 @@ export function registerTiefe(cv, sec) {
 			s.dep = cv.parentElement.querySelector('[data-depth]');
 		},
 		frame(s, t) {
-			if (!(loop.n & 1)) return; // Entwurfstakt: jedes zweite Bild
+			if (!takt(4)) return; // Entwurfstakt: jedes zweite Bild
 			const ctx = s.ctx;
 			if (!s.P || s.built !== loop.fv) {
 				s.built = loop.fv;

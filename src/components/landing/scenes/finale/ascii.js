@@ -2,7 +2,7 @@
 // Fläche, die Sonne geht auf, Strahlen und Funken. Der Zeiger löscht und mischt Zeichen.
 // Szenenraum: Bezugsbox 1280 x 760 für die Sonne, das Raster selbst läuft in CSS-Pixeln.
 
-import { loop, register } from '../../core/loop';
+import { loop, register, takt } from '../../core/loop';
 import { cl, hsh, vnz } from '../../core/math';
 
 const CW = 9;
@@ -12,6 +12,7 @@ const RAMP = ' .:-=+*#%@';
 /** Meldet die ASCII-Sonne an. Gibt die Abmeldung zurück. */
 export function registerAscii(cv) {
 	return register({
+		slot: 6,
 		name: 'ascii',
 		el: cv,
 		host: cv.parentElement,
@@ -22,7 +23,7 @@ export function registerAscii(cv) {
 			s.sm = { x: 1280 * 0.6, y: 760 * 0.4 };
 		},
 		frame(s) {
-			if (!(loop.n & 1)) return; // Entwurfstakt: jedes zweite Bild
+			if (!takt(6)) return; // Entwurfstakt: jedes zweite Bild
 			const ctx = s.ctx;
 			const t = loop.t;
 			const BW = 1280;

@@ -13,7 +13,7 @@ const sharp = createRequire(realpathSync('node_modules/next/package.json'))('sha
 
 const PORT = process.env.PORT_URL ?? 'http://localhost:3100/';
 const REF = process.env.REF_URL ?? 'http://localhost:4191/final.html';
-const OUT = 'tools/out';
+const OUT = process.env.OUT_DIR ?? 'tools/out';
 mkdirSync(OUT, { recursive: true });
 
 const ARGS = ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'];

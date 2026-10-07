@@ -1,7 +1,7 @@
 // Der Planet: eine Kugel aus Punkten mit dem Zeichen als Land, acht Orte als Marken. Ziehen dreht ihn,
 // Antippen eines Orts wählt ihn aus. Szenenraum: Bezugsbox 1280 x 800, Planet bei (820, 430), R 300.
 
-import { loop, register } from '../../core/loop';
+import { loop, register, takt } from '../../core/loop';
 import { AB, aMark, cl, hsh } from '../../core/math';
 import { PL } from './orte';
 
@@ -18,6 +18,7 @@ const ss = (x) => {
  */
 export function registerPlanet(cv, { getSel, onSelect }) {
 	return register({
+		slot: 5,
 		name: 'planet',
 		el: cv,
 		host: cv.parentElement,
@@ -80,7 +81,7 @@ export function registerPlanet(cv, { getSel, onSelect }) {
 		},
 		ownsTouch: (s) => Math.hypot(s.m.x - s.cx, s.m.y - s.cy) < s.R,
 		frame(s) {
-			if (!(loop.n & 1)) return; // Entwurfstakt: jedes zweite Bild
+			if (!takt(5)) return; // Entwurfstakt: jedes zweite Bild
 			const ctx = s.ctx;
 			const t = loop.t;
 			const CX = s.cx;

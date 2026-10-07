@@ -2,7 +2,7 @@
 // ziehen die Körper zurück in das Zeichen. Szenenraum: Bezugsbox 1280 x 760, die Wände sind die Ränder
 // der ganzen Fläche.
 
-import { loop, register } from '../../core/loop';
+import { loop, register, takt } from '../../core/loop';
 import { AB } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
@@ -13,6 +13,7 @@ const HY = 380 - 173 * S + 20;
 /** Meldet die Körper-Szene an. Gibt die Abmeldung zurück. */
 export function registerKoerper(cv) {
 	return register({
+		slot: 3,
 		name: 'koerper',
 		el: cv,
 		host: cv.parentElement,
@@ -63,7 +64,7 @@ export function registerKoerper(cv) {
 		},
 		ownsTouch: (s) => s.grab >= 0,
 		frame(s) {
-			if (!(loop.n & 1)) return; // Entwurfstakt: jedes zweite Bild
+			if (!takt(3)) return; // Entwurfstakt: jedes zweite Bild
 			const ctx = s.ctx;
 			// Flächenränder im Szenenraum: Wände links und rechts, Decke und Boden
 			const x0 = -s.ox / s.f;
