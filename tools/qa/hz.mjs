@@ -2,7 +2,7 @@
 //   node tools/qa/hz.mjs --url http://localhost:3120/ --out <dir>
 // Misst: Planet-Eigendrehung (soll 0,150 +- 0,01 rad/s), Körper-Rückkehr (3,5 +- 0,3 s), Zeichenrate der Art-Szenen.
 // Liest dafür window.__landing.dbg (nur mit ?qa=1): planet() -> yaw, koerper() -> idle.
-import { HZ60, args, launch, open, report, sleep, toMark, vpOf } from './lib.mjs';
+import { HZ60, args, launch, open, report, sleep, toMark, vpOf, wheelTo, yOf } from './lib.mjs';
 
 const a = args();
 const COUNT = () => {
@@ -60,9 +60,30 @@ for (const [label, init] of [
 			),
 		);
 	}
-	// Körper-Rückkehr
-	await toMark(h, 'koerper:0.5');
-	const t = await h.page.evaluate(() => window.__landing.dbg?.koerperRueckkehr?.());
+	// Körper-Rückkehr: Zeit vom Einfall (Abschnitt zu 70 % im Bild) bis die Körper zurückziehen (idle >= 3,5)
+	await toMark(h, 'so-gehts:0.5');
+	await sleep(500);
+	const yk = await yOf(h.page, 'koerper:0.1');
+	await h.page.evaluate(() => {
+		window.__rk = new Promise((res) => {
+			let t0 = null;
+			let i0 = 0;
+			const f = () => {
+				const k = window.__landing.dbg.koerper?.();
+				if (k) {
+					if (t0 === null && !k.ring) {
+						t0 = performance.now();
+						i0 = k.idle;
+					}
+					if (t0 !== null && k.idle >= 3.5) return res((performance.now() - t0) / 1000 + i0);
+				}
+				setTimeout(f, 20);
+			};
+			f();
+		});
+	});
+	await wheelTo(h.page, yk, { settle: 100 });
+	const t = await Promise.race([h.page.evaluate(() => window.__rk), sleep(9000).then(() => null)]);
 	ok(
 		t != null && Math.abs(t - 3.5) <= 0.3,
 		`${label}: Körper-Rückkehr ${t?.toFixed?.(2)} s (soll 3,5 +- 0,3)`,

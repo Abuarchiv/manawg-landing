@@ -133,8 +133,9 @@ export async function open(browser, o = {}) {
 	page.on('response', (r) => {
 		if (r.status() >= 400) log.fail.push(`${r.url()} ${r.status()}`);
 	});
-	const sep = (o.url ?? 'http://localhost:3120/').includes('?') ? '&' : '?';
-	await page.goto(`${o.url ?? 'http://localhost:3120/'}${o.qa === false ? '' : `${sep}qa=1`}`, {
+	const [base, hash = ''] = (o.url ?? 'http://localhost:3120/').split('#');
+	const sep = base.includes('?') ? '&' : '?';
+	await page.goto(`${base}${o.qa === false ? '' : `${sep}qa=1`}${hash ? `#${hash}` : ''}`, {
 		waitUntil: 'load',
 	});
 	let cdp = null;
@@ -285,16 +286,21 @@ export async function wheelTo(page, ziel, o = {}) {
 	return y;
 }
 
-/** Touch: CDP-Wisch mit 150-250 px je Geste. */
+/**
+ * Touch: CDP-Wisch mit 150-250 px je Geste. Die Gesten starten am Rand (Szenen wie der Planet
+ * dürfen die Mitte besitzen), bleibt eine Geste ohne Wirkung, wechselt der Startpunkt.
+ */
 export async function touchTo(page, cdp, ziel, o = {}) {
 	const vp = page.viewportSize();
+	const xs = [10, vp.width - 10, vp.width / 2];
 	let y = await waitIdle(page, 80, 1500);
+	let stall = 0;
 	for (let g = 0; g < 600; g++) {
 		const d = ziel - y;
 		if (Math.abs(d) <= 2) break;
 		const dist = Math.sign(d) * Math.min(Math.abs(d), o.step ?? 200);
 		await cdp.send('Input.synthesizeScrollGesture', {
-			x: vp.width / 2,
+			x: xs[stall % xs.length],
 			y: vp.height * (dist > 0 ? 0.7 : 0.3),
 			yDistance: -dist,
 			speed: o.speed ?? 900,
@@ -302,7 +308,10 @@ export async function touchTo(page, cdp, ziel, o = {}) {
 			preventFling: true,
 		});
 		await sleep(o.pause ?? 90);
-		y = await curY(page);
+		const ny = await curY(page);
+		stall = ny === y ? stall + 1 : 0;
+		if (stall > 8) break;
+		y = ny;
 	}
 	await waitIdle(page, 250, 3000);
 	await sleep(o.settle ?? 350);

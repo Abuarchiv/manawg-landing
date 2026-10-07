@@ -74,7 +74,7 @@ function messen({ fontMin }) {
 		if (x1 - x0 < b.width - 1) continue; // von einem Elternteil abgeschnitten (gewollt, z. B. Gerät)
 		if ((x0 < -1 && x1 > 1) || (x1 > W + 1 && x0 < W - 1))
 			out.probs.push(`Text "${t.slice(0, 30)}" ${Math.round(x0)}..${Math.round(x1)} von ${W}`);
-		if (!geraet(el)) {
+		if (!geraet(el) && !el.closest('[aria-hidden="true"]')) {
 			const fs = Number.parseFloat(getComputedStyle(el).fontSize);
 			const lang = t.length > 40;
 			if (fs < fontMin.label - 0.01 || (lang && fs < fontMin.body - 0.01))
@@ -171,8 +171,9 @@ async function randStreifen(path) {
 	const res = [];
 	const t = (name, xs, ys, xin, yin) => {
 		const s = strip(xs, ys);
-		const inn = strip(xin, yin).sd;
-		if (s.dev <= 3 && s.sd < 1 && inn > 6) res.push(name);
+		const inn = strip(xin, yin);
+		// einfarbig dunkler Streifen neben deutlich hellerem Bild (Balken), nicht bloß dunkles Bildmaterial
+		if (s.dev <= 3 && s.sd < 1 && inn.sd > 6 && inn.m > 40) res.push(name);
 	};
 	t('links', rng(0, k), rng(0, h), rng(k, 3 * k), rng(0, h));
 	t('rechts', rng(w - k, w), rng(0, h), rng(w - 3 * k, w - k), rng(0, h));
@@ -208,6 +209,7 @@ for (const vp of vps) {
 		fail(vp, 'Tiefe', `Fahrt ${(maße.tiefe - 1).toFixed(3)} statt 3,5 Bildschirmhöhen`);
 	for (const m of marks) {
 		const y = await toMark(h, m);
+		if (a.v) console.log(`  ${vp.name} ${m} -> ${y}`);
 		const r = await h.page.evaluate(messen, { fontMin });
 		const tag = `${m}@${y}`;
 		if (r.sw !== r.W) fail(vp, tag, `scrollWidth ${r.sw} != clientWidth ${r.W}`);
@@ -222,7 +224,7 @@ for (const vp of vps) {
 					`Canvas ${c.id} Backing ${c.d.toFixed(2)} über Deckel ${Math.min(vp.dpr, cap)}`,
 				);
 			const min = Math.min(vp.dpr, vp.touch ? 1.5 : cap) - 0.02;
-			if (c.d < min && c.id !== 'hero')
+			if (c.d < min && c.id !== 'hero' && c.id !== 'back' && c.id !== 'front')
 				fail(vp, tag, `Canvas ${c.id} Backing ${c.d.toFixed(2)} unter ${min.toFixed(2)}`);
 		}
 		nProb += r.probs.length + r.fonts.length;

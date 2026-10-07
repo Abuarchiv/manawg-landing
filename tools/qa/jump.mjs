@@ -20,9 +20,10 @@ function reste() {
 		}
 		return o;
 	};
+	// Die letzten Pixel der Bühne (Ankerziel "Intro überspringen" liegt 14 px darüber, wie im Entwurf) zählen nicht.
 	const sichtbar = (el) => {
 		const r = el.getBoundingClientRect();
-		return r.bottom > 0 && r.top < innerHeight && eff(el) > 0.02;
+		return r.bottom > 20 && r.top < innerHeight && eff(el) > 0.02;
 	};
 	const cs = getComputedStyle(document.getElementById('final'));
 	const v = (k) => Number(cs.getPropertyValue(k));
@@ -46,7 +47,7 @@ function reste() {
 	for (const el of document.querySelectorAll('[data-safe] > :not(:first-child)'))
 		if (sichtbar(el) && eff(el) > 0.02) o.probs.push('Raumkarten sichtbar');
 	const bd = document.querySelector('[data-buehne="intro"]').getBoundingClientRect();
-	if (bd.bottom > 0) o.probs.push(`Bühne noch im Bild (Unterkante ${Math.round(bd.bottom)})`);
+	if (bd.bottom > 20) o.probs.push(`Bühne noch im Bild (Unterkante ${Math.round(bd.bottom)})`);
 	return o;
 }
 
@@ -78,10 +79,7 @@ for (const P of [0.5, 0.8, 0.97]) {
 }
 // Deep Links (wie Neuladen mit Anker)
 for (const id of ['so-gehts', 'bereiche', 'installieren', 'fragen']) {
-	const h = await frisch(
-		nvp,
-		`${a.url.replace(/#.*/, '')}${a.url.includes('?') ? '' : '?qa=1'}#${id}`,
-	);
+	const h = await frisch(nvp, `${a.url.replace(/#.*/, '')}#${id}`);
 	const nach = await h.page.evaluate((id) => {
 		const el = document.getElementById(id);
 		const smt = Number.parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
