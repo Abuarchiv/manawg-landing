@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
+import m from './Bereiche.module.css';
 import { PL } from './orte';
 import { registerPlanet } from './planet';
 
@@ -10,14 +11,40 @@ export function Bereiche() {
 	const selRef = useRef(0);
 	selRef.current = sel;
 	const cvRef = useRef<HTMLCanvasElement>(null);
+	const api = useRef<{ face?: (i: number) => void }>({});
+	const knoepfe = useRef<(HTMLButtonElement | null)[]>([]);
 	useEffect(
 		() =>
 			registerPlanet(cvRef.current as HTMLCanvasElement, {
 				getSel: () => selRef.current,
 				onSelect: setSel,
+				api: api.current,
 			}),
 		[],
 	);
+	// Ortsliste: dieselbe Auswahl wie auf dem Planeten, der Ort dreht nach vorn
+	const wahl = (i: number) => {
+		setSel(i);
+		api.current.face?.(i);
+	};
+	const taste = (e: KeyboardEvent, i: number) => {
+		const n = PL.length;
+		const d =
+			e.key === 'ArrowRight' || e.key === 'ArrowDown'
+				? 1
+				: e.key === 'ArrowLeft' || e.key === 'ArrowUp'
+					? -1
+					: e.key === 'Home'
+						? -i
+						: e.key === 'End'
+							? n - 1 - i
+							: 0;
+		if (!d) return;
+		e.preventDefault();
+		const j = (i + d + n) % n;
+		wahl(j);
+		knoepfe.current[j]?.focus();
+	};
 	const pl = PL[sel] as string[];
 	return (
 		<section
@@ -25,16 +52,17 @@ export function Bereiche() {
 			data-sec="bereiche"
 			tabIndex={-1}
 			aria-labelledby="bereiche-titel"
-			style={css(
-				'position:relative;height:max(560px,100lvh);background:#0A0A0A;color:#FAFAFA;overflow:hidden',
-			)}
+			className={m.sektion}
 		>
 			<canvas
 				ref={cvRef}
 				aria-hidden="true"
-				style={css('position:absolute;inset:0;width:100%;height:100%;display:block')}
+				style={css(
+					'position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y',
+				)}
 			/>
 			<div
+				data-titel="1"
 				style={css(
 					'position:absolute;top:var(--sp-72);left:var(--rand);right:var(--rand);display:flex;flex-direction:column;gap:var(--sp-14);pointer-events:none',
 				)}
@@ -52,11 +80,7 @@ export function Bereiche() {
 				</h2>
 				<span className="label">ZIEHEN ZUM DREHEN · ORT ANKLICKEN</span>
 			</div>
-			<div
-				style={css(
-					'position:absolute;left:var(--rand);bottom:var(--sp-48);width:var(--w-380);max-width:calc(100% - 2 * var(--rand));display:flex;flex-direction:column;gap:var(--sp-14);pointer-events:none',
-				)}
-			>
+			<div data-karte="1" className={m.karte}>
 				<span className="label">{`${String(sel + 1).padStart(2, '0')} · ${(pl[0] as string).toUpperCase()}`}</span>
 				<span
 					style={css(
@@ -74,11 +98,30 @@ export function Bereiche() {
 						<span style={css('font-size:var(--t-14);font-weight:500')}>{pl[2]}</span>
 						<span style={css('font-size:12px;color:#737373')}>{pl[3]}</span>
 					</div>
-					<span style={css("font-family:'JetBrains Mono',monospace;font-size:var(--t-13)")}>
+					<span
+						style={css("font-family:'JetBrains Mono',monospace;font-size:14px;white-space:nowrap")}
+					>
 						{pl[4]}
 					</span>
 				</div>
 			</div>
+			<nav className={m.orte} aria-label="Orte der WG">
+				{PL.map((p, i) => (
+					<button
+						type="button"
+						key={p[0]}
+						ref={(el) => {
+							knoepfe.current[i] = el;
+						}}
+						tabIndex={i === sel ? 0 : -1}
+						aria-pressed={i === sel}
+						onClick={() => wahl(i)}
+						onKeyDown={(e) => taste(e, i)}
+					>
+						{`${String(i + 1).padStart(2, '0')} ${(p[0] as string).toUpperCase()}`}
+					</button>
+				))}
+			</nav>
 		</section>
 	);
 }
