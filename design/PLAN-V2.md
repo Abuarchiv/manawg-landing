@@ -348,6 +348,7 @@ Ein Agent, Arbeitsverzeichnis `landing-produktion` (Haupt-Checkout oder eigener 
   - `tools/qa/` aus den Audit-Skripten übertragen: `lib.mjs` (Start mit Metal, Viewports, `wheelTo`, `touchTo`, `toMark`, `shot`, `sheet`, Konsolenwächter), `sheet.mjs`, `check.mjs`, `jump.mjs`, `resize.mjs`, `hz.mjs`, `fps.mjs`, `nogl.mjs`.
   - `tools/pixel.mjs` an den Dokument-Scroll anpassen (Port-Seite ohne `[data-root]`/`[data-scroller]`).
   - Gate A: `pixel.mjs` gegen die Referenz `http://localhost:4191/final.html` bei 1280×800 ≤ 0,10 % an allen 27 Messpunkten, Textgeometrie ≤ 0,5 px.
+  - Einzige Ausnahme: Messpunkt 6000 im Kopfstreifen (oberste 80 px). Der Kopf liegt jetzt fest über der Bühne und wird per `--kopf-aus` ausgeblendet, statt unter der halb deckenden Ende-Ebene zu liegen. Dort wird nur der Rest des Bildes gewertet.
 - **Schritt 3, Vollbild:**
   - Tokens 2.6.1, Modi 2.2, Safe-Area, Grundlayout `hoch` für jede Szene (Spalten stapeln, nichts läuft über), Vollflächigkeit aller Hintergründe, Hero-Shader im Hochformat so gerahmt, dass Sonne und Zeichen im Bild bleiben.
   - Gate A gilt weiter, dazu `check.mjs` bei allen Viewports.
