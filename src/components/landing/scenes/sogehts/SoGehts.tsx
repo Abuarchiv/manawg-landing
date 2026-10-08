@@ -12,7 +12,10 @@ const SCHRITTE = [
 
 function Ziffer({ text }: { text: string }) {
 	const ref = useRef<HTMLCanvasElement>(null);
-	useEffect(() => registerZiffer(ref.current as HTMLCanvasElement, { text }), [text]);
+	useEffect(
+		() => registerZiffer(ref.current as HTMLCanvasElement, { text, farbe: '#0A0A0A' }),
+		[text],
+	);
 	return <canvas ref={ref} aria-hidden="true" className={s.ziffer} />;
 }
 
@@ -23,6 +26,7 @@ export function SoGehts() {
 			data-sec="so-gehts"
 			tabIndex={-1}
 			aria-labelledby="so-gehts-titel"
+			data-hell=""
 			className={s.sektion}
 		>
 			<h2 id="so-gehts-titel" className={`label ${s.titel}`}>

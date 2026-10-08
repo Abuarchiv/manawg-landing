@@ -1,7 +1,7 @@
 .sektion {
 	position: relative;
-	background: #0a0a0a;
-	color: #fafafa;
+	background: #f2f2f2;
+	color: #0a0a0a;
 	padding: var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);
 	display: flex;
 	flex-direction: column;
@@ -46,7 +46,7 @@
 	margin: 0;
 	font-size: var(--t-body);
 	line-height: 1.5;
-	opacity: 0.72;
+	color: #6b6b6b;
 }
 
 /* Hochformat: Spalten stapeln */

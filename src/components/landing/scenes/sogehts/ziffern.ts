@@ -45,6 +45,8 @@ interface ZifferOptionen {
 	cs?: number;
 	/** Glyph in CSS-Pixeln. */
 	gl?: number;
+	/** Farbe der Zeichen (Standard Weiß auf Schwarz). */
+	farbe?: string;
 }
 
 function baue(s: ZifferState, txt: string, cs: number) {
@@ -94,8 +96,8 @@ function baue(s: ZifferState, txt: string, cs: number) {
 }
 
 // Zeichenblatt: die acht Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
-function blatt(s: ZifferState, gl: number): Blatt {
-	const key = `${s.dpr}|${loop.fv}|${gl}`;
+function blatt(s: ZifferState, gl: number, farbe: string): Blatt {
+	const key = `${s.dpr}|${loop.fv}|${gl}|${farbe}`;
 	if (s.blatt && s.blattKey === key) return s.blatt;
 	const z = Math.ceil((gl + 4) * s.dpr);
 	const cv = document.createElement('canvas');
@@ -106,7 +108,7 @@ function blatt(s: ZifferState, gl: number): Blatt {
 	g.font = `500 ${gl * s.dpr}px "JetBrains Mono", monospace`;
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
-	g.fillStyle = '#FAFAFA';
+	g.fillStyle = farbe;
 	for (let i = 0; i < RAMPE.length; i++)
 		g.fillText(RAMPE[i] ?? '', z * i + z / 2, z / 2 + 0.5 * s.dpr);
 	s.blattKey = key;
@@ -117,7 +119,7 @@ function blatt(s: ZifferState, gl: number): Blatt {
 /** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
 export function registerZiffer(
 	cv: HTMLCanvasElement,
-	{ text, cs: cs0 = 4, gl: gl0 = 7 }: ZifferOptionen,
+	{ text, cs: cs0 = 4, gl: gl0 = 7, farbe = '#FAFAFA' }: ZifferOptionen,
 ): () => void {
 	return register<ZifferState>({
 		name: `ziffer ${text}`,
@@ -180,7 +182,7 @@ export function registerZiffer(
 			s.dirty = false;
 			const { ctx, cv: flaeche } = s;
 			if (!ctx || !flaeche) return;
-			const { cv: sheet, z } = blatt(s, gl);
+			const { cv: sheet, z } = blatt(s, gl, farbe);
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.clearRect(0, 0, flaeche.width, flaeche.height);
 			const dpr = s.dpr;

@@ -185,6 +185,7 @@ export function Installieren() {
 			tabIndex={-1}
 			ref={secRef}
 			aria-labelledby="installieren-titel"
+			data-hell=""
 			className={s.sektion}
 		>
 			<div className={s.text}>
