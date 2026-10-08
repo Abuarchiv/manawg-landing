@@ -5,23 +5,6 @@
 	padding: 0 var(--rand);
 	display: flex;
 	flex-direction: column;
-	/* Höhe quer: Platz für die Spalten und das Gebirge darunter; auf niedrigen Fenstern bleibt über dem Finale Raum für den Titel */
-	min-height: clamp(300px, min(26vw, calc(100svh - 520px)), 400px);
-}
-/* Gebirge: Canvas über die ganze Fußzeile, dahinter (ohne WebGL2) das Bild als Ersatz */
-.berg {
-	position: absolute;
-	inset: 0;
-	z-index: 0;
-	pointer-events: none;
-	background: #0a0a0a url("/fuss/berg-quer.webp") left bottom / 100% auto no-repeat;
-}
-.bergCv {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	display: block;
 }
 .raster {
 	display: grid;
@@ -29,31 +12,20 @@
 	border-top: 1px dashed var(--haar);
 	margin: 0 calc(-1 * var(--rand));
 	position: relative;
-	z-index: 1;
-	flex: 1;
+	background: #0a0a0a;
 }
 .marke {
-	padding: calc(var(--sp-32) + 14px) var(--rand) var(--sp-40);
+	padding: var(--sp-32) var(--rand) var(--sp-40);
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-12);
 }
 .spalte {
-	padding: calc(var(--sp-32) + 14px) var(--sp-24) var(--sp-32);
+	padding: var(--sp-32) var(--sp-24);
+	border-left: 1px dashed var(--haar);
 	display: flex;
 	flex-direction: column;
 	gap: 0;
-	position: relative;
-}
-/* gestrichelte Spaltenlinie über die ganze Höhe, läuft unten ins Gebirge aus */
-.spalte::before {
-	content: "";
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	border-left: 1px dashed var(--haar);
-	mask-image: linear-gradient(#000 45%, transparent 92%);
 }
 .kopf {
 	font-size: var(--t-14);
@@ -61,28 +33,16 @@
 	margin-bottom: var(--sp-8, 8px);
 }
 
-/* Hochformat: 2 x 2 (Marke | Produkt, Konto | Rechtliches), gestrichelte Linien über die volle Breite;
-   das Gebirge liegt unter dem Raster (Bild in Hochformat) */
+/* Hochformat: 2 x 2 (Marke | Produkt, Konto | Rechtliches), gestrichelte Linien über die volle Breite */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
-	.fuss {
-		min-height: 0;
-		padding-bottom: clamp(150px, 46vw, 230px);
-	}
-	.berg {
-		background-image: none;
-	}
 	.raster {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		flex: none;
 	}
 	.marke,
 	.spalte {
-		padding: calc(var(--sp-16) + 20px) var(--rand) var(--sp-16);
+		padding: var(--sp-32) var(--rand);
 		border-left: 0;
 		min-width: 0;
-	}
-	.spalte::before {
-		display: none;
 	}
 	.raster > :nth-child(n + 3) {
 		border-top: 1px dashed var(--haar);

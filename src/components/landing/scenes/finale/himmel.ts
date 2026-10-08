@@ -14,7 +14,7 @@ void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-
 const FS = `#version 300 es
 precision highp float;
 uniform sampler2D uSkyQ, uSkyH, uFein, uGrob;
-uniform float uHoch;
+uniform float uHoch, uDprH;
 uniform vec2 uRes, uCC, uRiss; // uRiss: Ober- und Unterkante des Fensters in uv
 uniform float uT, uOpen, uCS;
 uniform vec3 uM;   // Zeiger in uv (y nach oben), z = Stärke
@@ -88,6 +88,8 @@ void main(){
   float licht = seite < .5 ? .9 : .35;
   vec3 saum = vec3(.05) + vec3(.2) * licht * (.7 + .6 * noise(vec2(uv.y * 300., seite)));
   col = mix(col, saum, band);
+  // Unterkante: Wolken laufen in den Grund der Fußzeile aus (keine Kante an der Naht)
+  col *= mix(.0, 1., smoothstep(0., 110. / uRes.y * uDprH, uv.y));
   float alpha = smoothstep(-.03, -.018, d);
   col += (hash(gl_FragCoord.xy + fract(uT) * 91.) - .5) * .03;
   o = vec4(col * alpha, alpha);
@@ -239,6 +241,7 @@ export function registerHimmel(
 			s.zupf += (zupfZiel - s.zupf) * lag(0.08, dt);
 			const hoch = s.mode === 'hoch';
 			gl.uniform1f(u('uHoch'), hoch ? 1 : 0);
+			gl.uniform1f(u('uDprH'), dpr);
 			// Riss-Mitte auf Höhe des Fensters, Wolke im freien Feld neben (quer) bzw. über (hoch) dem Titel
 			const sichtOben = cl(1 + r0.top / s.H, 0, 1);
 			const sichtUnten = cl(1 - (innerHeight - r0.top) / s.H, 0, 1);
