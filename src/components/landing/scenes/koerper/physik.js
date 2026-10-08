@@ -208,6 +208,20 @@ export function registerKoerper(cv, api = {}) {
 				s.grab = -1;
 				s.idle = 0;
 			}
+			// Überschrift als feste Fläche: die Körper prallen an Titelblock (Zeile, Überschrift, Hinweis) ab und
+			// liegen nie darüber. Im Hochformat ist die Unterkante des Titels bereits die Decke.
+			const ti = s.mode === 'hoch' ? null : s.host.querySelector('[data-titel]');
+			let ob = null;
+			if (ti) {
+				const q = ti.getBoundingClientRect();
+				const pad = 10;
+				ob = {
+					x0: (q.left - r.left - s.ox - pad) / s.f,
+					x1: (q.right - r.left - s.ox + pad) / s.f,
+					y0: (q.top - r.top - s.oy - pad) / s.f,
+					y1: (q.bottom - r.top - s.oy + pad) / s.f,
+				};
+			}
 			// Boden: unten der Flächenrand, in der losen Phase höchstens die Unterkante des Bildschirms,
 			// damit nichts außerhalb des Bildes liegen bleibt
 			const loose0 = s.idle < 3.5;
@@ -264,6 +278,29 @@ export function registerKoerper(cv, api = {}) {
 						if (b.x < x0 + b.r) b.x = x0 + b.r;
 						if (b.x > x1 - b.r) b.x = x1 - b.r;
 						if (b.y < y0 + b.r) b.y = y0 + b.r;
+						if (ob) {
+							const cx = Math.max(ob.x0, Math.min(b.x, ob.x1));
+							const cy = Math.max(ob.y0, Math.min(b.y, ob.y1));
+							const dx = b.x - cx;
+							const dy = b.y - cy;
+							const d = Math.hypot(dx, dy);
+							if (d < b.r && d > 1e-6) {
+								const k = (b.r - d) / d;
+								b.x += dx * k;
+								b.y += dy * k;
+							} else if (d <= 1e-6) {
+								// Mittelpunkt im Block: kürzester Weg hinaus
+								const l = b.x - ob.x0;
+								const rr = ob.x1 - b.x;
+								const t = b.y - ob.y0;
+								const bt = ob.y1 - b.y;
+								const mn = Math.min(l, rr, t, bt);
+								if (mn === l) b.x = ob.x0 - b.r;
+								else if (mn === rr) b.x = ob.x1 + b.r;
+								else if (mn === t) b.y = ob.y0 - b.r;
+								else b.y = ob.y1 + b.r;
+							}
+						}
 						const u = Math.max(-1, Math.min(1, (b.x - xm) / hw));
 						const fy = floor - tiefe * u * u;
 						if (b.y > fy - b.r) {
@@ -355,25 +392,6 @@ export function registerKoerper(cv, api = {}) {
 					ctx.fillStyle = '#FAFAFA';
 					ctx.fillText(b.n, b.x, b.y);
 				}
-			// Überschrift freihalten: hinter jeder Textzeile bleibt die Fläche dunkel (Rand 6 px, weich auslaufend),
-			// die Kugeln laufen dahinter durch, ohne die Schrift zu überstrahlen
-			const h2 = s.host.querySelector('h2');
-			if (h2) {
-				const rc = s.cv.getBoundingClientRect();
-				const rg = document.createRange();
-				rg.selectNodeContents(h2);
-				ctx.fillStyle = '#0A0A0A';
-				ctx.shadowColor = '#0A0A0A';
-				ctx.shadowBlur = 26 * s.dpr; // weiche Kante: außen läuft die Aussparung über etwa 13 px aus
-				for (const l of rg.getClientRects()) {
-					if (l.width < 2) continue;
-					const p = 4 / s.f;
-					ctx.fillRect((l.left - rc.left - s.ox) / s.f - p, (l.top - rc.top - s.oy) / s.f - p, l.width / s.f + 2 * p, l.height / s.f + 2 * p);
-				}
-				ctx.shadowBlur = 0;
-				ctx.shadowColor = 'transparent';
-				ctx.globalAlpha = 1;
-			}
 		},
 	});
 }
