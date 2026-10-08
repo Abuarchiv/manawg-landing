@@ -1,26 +1,26 @@
 // Gemeinsame Mathematik aller Szenen. Werte und Formeln 1:1 aus dem Entwurf (final.dc.html),
 // die zwei Fassungen aus hero.js und art.js sind zusammengeführt.
 
-export const cl = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
-export const ss = (x) => {
-	x = cl(x);
-	return x * x * (3 - 2 * x);
+export const cl = (x: number, a = 0, b = 1): number => Math.min(b, Math.max(a, x));
+export const ss = (x: number): number => {
+	const c = cl(x);
+	return c * c * (3 - 2 * c);
 };
-export const lerp = (a, b, t) => a + (b - a) * t;
+export const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 /** Glättungsfaktor k je 60-Hz-Schritt auf die Bilddauer dt umgerechnet: gleiches Tempo bei jeder Bildrate. */
-export const lag = (k, dt) => 1 - (1 - k) ** (dt * 60);
-export const ease = (x) => 1 - Math.pow(1 - cl(x), 4);
+export const lag = (k: number, dt: number): number => 1 - (1 - k) ** (dt * 60);
+export const ease = (x: number): number => 1 - (1 - cl(x)) ** 4;
 
 // 4x4-Bayer-Matrix für das Dithering der Halbton-Flächen.
-export const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+export const BAYER: readonly number[] = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 
 // Ganzzahl-Hash und Value-Noise (stabil, ohne Math.random).
-export const hsh = (i, j) => {
+export const hsh = (i: number, j: number): number => {
 	let h = (i * 374761393 + j * 668265263) | 0;
 	h = Math.imul(h ^ (h >>> 13), 1274126177);
 	return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
 };
-export const vnz = (x, y) => {
+export const vnz = (x: number, y: number): number => {
 	const xi = Math.floor(x);
 	const yi = Math.floor(y);
 	const xf = x - xi;
@@ -35,13 +35,21 @@ export const vnz = (x, y) => {
 };
 
 // Weiches Minimum (Abstandsfelder).
-export const smn = (a, b, k) => {
+export const smn = (a: number, b: number, k: number): number => {
 	const h = Math.max(k - Math.abs(a - b), 0) / k;
 	return Math.min(a, b) - h * h * k * 0.25;
 };
 
 // Abstand zur Kapsel (px, py) -> (ax, ay)-(bx, by) mit Radius r.
-export const cap = (px, py, ax, ay, bx, by, r) => {
+export const cap = (
+	px: number,
+	py: number,
+	ax: number,
+	ay: number,
+	bx: number,
+	by: number,
+	r: number,
+): number => {
 	const pax = px - ax;
 	const pay = py - ay;
 	const bax = bx - ax;
@@ -51,7 +59,16 @@ export const cap = (px, py, ax, ay, bx, by, r) => {
 };
 
 // Abstand zur ungleichen Kapsel (Radius ra bei a, rb bei b).
-export const uc = (px, py, ax, ay, bx, by, ra, rb) => {
+export const uc = (
+	px: number,
+	py: number,
+	ax: number,
+	ay: number,
+	bx: number,
+	by: number,
+	ra: number,
+	rb: number,
+): number => {
 	const x = px - ax;
 	const y = py - ay;
 	const ex = bx - ax;
@@ -70,6 +87,9 @@ export const uc = (px, py, ax, ay, bx, by, ra, rb) => {
 	return m - ra;
 };
 
+// Ein Kreis des Zeichens als (x, y, r).
+export type Kreis = readonly [x: number, y: number, r: number];
+
 // Das ManaWG-Zeichen: acht Kreise (x, y, r) im Raster 416 x 346, Mittelpunkt (208, 173).
 export const AB = [
 	[200, 198, 80],
@@ -80,15 +100,19 @@ export const AB = [
 	[288, 70, 42],
 	[360, 177, 56],
 	[42, 239, 44],
-];
+] as const satisfies readonly Kreis[];
 
 // Abstandsfeld des Zeichens, negativ innen.
-export const aMark = (x, y) => {
+export const aMark = (x: number, y: number): number => {
 	let d = 1e9;
 	for (const c of AB) d = smn(d, Math.hypot(x - c[0], y - c[1]) - c[2], 38);
 	return Math.max(d, 23 - Math.hypot(x - 207, y - 175));
 };
 
 // Ruhelagen der acht Kreise: zweidimensional (Berg, Sonne) und dreidimensional (Organ).
-export const HOME = AB.map((b) => [(b[0] - 208) / 600, -(b[1] - 173) / 600, b[2] / 600]);
-export const HOME3 = AB.map((b) => [(b[0] - 208) / 110, -(b[1] - 173) / 110, b[2] / 110]);
+export const HOME: readonly Kreis[] = AB.map(
+	(b): Kreis => [(b[0] - 208) / 600, -(b[1] - 173) / 600, b[2] / 600],
+);
+export const HOME3: readonly Kreis[] = AB.map(
+	(b): Kreis => [(b[0] - 208) / 110, -(b[1] - 173) / 110, b[2] / 110],
+);
