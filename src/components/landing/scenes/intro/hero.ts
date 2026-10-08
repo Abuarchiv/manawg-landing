@@ -45,9 +45,9 @@ uniform sampler2D uImg, uMsk; uniform float uFoto;
 // Berg: Kupferstich (Codex, Technik wie der Himmel des Finales) als Kamerafahrt. Bildausschnitt deckend, im Hochformat enger um den
 // Gipfel; der Blick nach oben (uLook) schiebt den Ausschnitt bis in den dunklen Himmel. Wolken ziehen leicht, der
 // Zeiger ist Licht auf dem Schnee, die Marke steht als Sonne im Himmel.
-const float IMGA = 2048. / 3584.;
+const float IMGA = 2560. / 3200.;
 vec2 fotoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
-  float cx = clamp(.42, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.885 - hN, 0., lk);
+  float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
   float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
   return c + vec2((s.x - .5) * wN, (.5 - s.y) * hN) / z; }
 float fotoBerg(vec2 uv){
