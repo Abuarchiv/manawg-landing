@@ -7,7 +7,7 @@ import { AB, hsh, ss } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
 const S = 1.15;
-const st = 3; // feiner Halbton (Zellen 3 statt 6 px)
+const LINIE = 3.4; // Linienabstand der gestochenen Kugeln in CSS-px
 const NAME = 11; // Namen auf den Kugeln: Mono 11 px (hoch 10 px), Versalien mit Laufweite, ohne Platte
 const REACH = 22; // Trefferrand um jeden Körper in CSS-px (Touch)
 
@@ -21,7 +21,7 @@ interface Koerper {
 	hx: number;
 	hy: number;
 	n: string;
-	/** Halbton-Sprites je Lichtrichtung und Abstand (siehe sprite). */
+	/** Stich-Sprites je Lichtrichtung und Abstand (siehe sprite). */
 	sp: Map<string, HTMLCanvasElement>;
 }
 
@@ -226,7 +226,15 @@ function schritt(s: KoerperState, B: Koerper[], w: Wand) {
 	}
 }
 
-// Halbton eines Körpers (Zellen 3 px) in ein Sprite gebacken, für Lichtrichtung ai (von 32) und Abstand di (von 4)
+const sm = (a: number, b: number, x: number): number => {
+	const c = Math.min(1, Math.max(0, (x - a) / (b - a)));
+	return c * c * (3 - 2 * c);
+};
+
+// Gestochene Kugel (Technik wie die POST-Stufe des Heros): weiße Linien, deren Breite dem Lambert-Ton zum Zeigerlicht
+// folgt und die sich mit der Helligkeit über die Kugel biegen, dazu Gegenschraffur auf der Schattenseite und eine
+// feine Konturlinie. Als Sprite gebacken, für Lichtrichtung ai (von 32) und Abstand di (von 4). Die Linien hängen
+// an der Kugel, sie laufen mit ihr.
 function sprite(s: KoerperState, b: Koerper, ai: number, di: number): HTMLCanvasElement | null {
 	const pw = Math.ceil((2 * b.r + 4) * s.f * s.dpr);
 	const cv = document.createElement('canvas');
@@ -234,30 +242,72 @@ function sprite(s: KoerperState, b: Koerper, ai: number, di: number): HTMLCanvas
 	cv.height = pw;
 	const g = cv.getContext('2d');
 	if (!g) return null;
-	const u = pw / (2 * b.r + 4);
-	g.setTransform(u, 0, 0, u, 0, 0);
-	g.fillStyle = '#FAFAFA';
+	const u = pw / (2 * b.r + 4); // Bildpunkte je Szenen-Einheit
 	const ang = (ai / 32) * 2 * Math.PI - Math.PI;
 	const dist = [90, 240, 550, 1400][di] ?? 1400;
 	const qLx = Math.cos(ang) * dist;
 	const qLy = Math.sin(ang) * dist;
 	const LL = Math.hypot(qLx, qLy, 200);
 	const c0 = b.r + 2;
-	const n = Math.ceil(b.r / st);
-	g.beginPath();
-	for (let j = -n; j <= n; j++)
-		for (let i = -n; i <= n; i++) {
-			const nx = (i * st) / b.r;
-			const ny = (j * st) / b.r;
+	const p1 = LINIE / s.f; // Linienabstand in Szenen-Einheiten
+	const p2 = (LINIE * 1.5) / s.f;
+	const n = pw * pw;
+	const sl = new Float32Array(n);
+	const tn = new Float32Array(n);
+	const sq = new Float32Array(n);
+	for (let Y = 0; Y < pw; Y++)
+		for (let X = 0; X < pw; X++) {
+			const sx = (X + 0.5) / u - c0;
+			const sy = (Y + 0.5) / u - c0;
+			const nx = sx / b.r;
+			const ny = sy / b.r;
 			const q = nx * nx + ny * ny;
-			if (q > 1) continue;
-			const nz = Math.sqrt(1 - q);
+			const nz = Math.sqrt(Math.max(0, 1 - q));
 			const lam = Math.max(0, (nx * qLx + ny * qLy + nz * 200) / LL);
-			const v = 0.08 + 0.92 * lam * lam;
-			const rr = st * 0.5 * Math.sqrt(v);
-			g.rect(c0 + i * st - rr, c0 + j * st - rr, rr * 2, rr * 2);
+			const tone = 0.08 + 0.92 * lam * lam;
+			const i = Y * pw + X;
+			sq[i] = Math.sqrt(q);
+			tn[i] = tone;
+			sl[i] = (sy + sx * 0.18) / p1 + tone * 7;
 		}
-	g.fill();
+	const im = g.createImageData(pw, pw);
+	const d = im.data;
+	for (let Y = 0; Y < pw; Y++)
+		for (let X = 0; X < pw; X++) {
+			const i = Y * pw + X;
+			const rad = sq[i] ?? 2;
+			const rand = (1 - rad) * b.r * u; // Abstand zum Rand in Bildpunkten
+			if (rand < -1) continue;
+			const tone = tn[i] ?? 0;
+			const v = sl[i] ?? 0;
+			const w =
+				(Math.abs((sl[i + (X < pw - 1 ? 1 : -1)] ?? v) - v) +
+					Math.abs((sl[i + (Y < pw - 1 ? pw : -pw)] ?? v) - v)) *
+					1.3 +
+				1e-4;
+			const dl = Math.abs(v - Math.floor(v) - 0.5) * 2;
+			const r = (Math.max(tone - 0.14, 0) / 0.86) ** 0.8 * 0.8;
+			let ln = 1 - sm(r - w, r + w, dl);
+			// Gegenschraffur nur auf der Schattenseite
+			const sx = ((X + 0.5) / u - c0) as number;
+			const sy = ((Y + 0.5) / u - c0) as number;
+			const s2 = (sy - sx * 0.6) / p2 + tone * 3;
+			const w2 = Math.max(0.03, 0.9 / (p2 * u));
+			const d2 = Math.abs(s2 - Math.floor(s2) - 0.5) * 2;
+			ln = Math.max(
+				ln,
+				(1 - sm(0.05 - w2, 0.05 + w2, d2)) * sm(0.1, 0.2, tone) * (1 - sm(0.25, 0.5, tone)) * 0.4,
+			);
+			// feine Kontur
+			const k = (1 - sm(0.35 * s.dpr, 1.1 * s.dpr, Math.abs(rand))) * 0.7;
+			const a = Math.max(ln * Math.min(1, rand + 0.5), k * Math.min(1, rand + 1));
+			const o = i * 4;
+			d[o] = 250;
+			d[o + 1] = 250;
+			d[o + 2] = 250;
+			d[o + 3] = Math.round(Math.min(1, Math.max(0, a)) * 255);
+		}
+	g.putImageData(im, 0, 0);
 	return cv;
 }
 
@@ -444,8 +494,8 @@ export function registerKoerper(cv: HTMLCanvasElement, api: KoerperApi = {}) {
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			s.scene();
-			// Halbton je Körper einmal in ein Sprite gebacken (Zellen 3 px), je Lichtrichtung in 32 Winkeln und
-			// 4 Abständen. Je Bild nur noch drawImage statt tausender Rechtecke.
+			// Stich je Körper einmal in ein Sprite gebacken, je Lichtrichtung in 32 Winkeln und 4 Abständen.
+			// Je Bild nur noch drawImage.
 			ctx.imageSmoothingEnabled = true;
 			const skey = `${s.f.toFixed(3)}|${s.dpr}`;
 			for (const b of B) {
