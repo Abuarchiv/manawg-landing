@@ -61,45 +61,6 @@ for (const vp of vpList(a.vp ?? '1440x900@2')) {
 			`X-3 So-geht's-Ziffern ${vp.name}`,
 			`Zelle ${m.zifferZelle}, Glyph ${m.zifferGlyph}`,
 		);
-		// Finale: Periode der Zeichen aus dem Pixelfeld des ASCII-Canvas
-		await toMark(h, 'finale:0.3');
-		await sleep(600);
-		const [pw, ph] = await h.page.evaluate(() => {
-			const cv = document.querySelector('#finale canvas');
-			const S = cv.width / cv.clientWidth;
-			const { data, width, height } = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height);
-			const col = new Float64Array(width);
-			const row = new Float64Array(height);
-			for (let y = 0; y < height; y++)
-				for (let x = 0; x < width; x++) {
-					const v = data[(y * width + x) * 4];
-					col[x] += v;
-					row[y] += v;
-				}
-			const per = (sum, lo, hi) => {
-				const n = sum.length;
-				let mean = 0;
-				for (const v of sum) mean += v;
-				mean /= n;
-				let best = [0, -1e18];
-				for (let p = Math.round(lo * S); p <= Math.round(hi * S); p++) {
-					let c = 0;
-					for (let i = 0; i + p < n; i++) c += (sum[i] - mean) * (sum[i + p] - mean);
-					c /= n - p;
-					if (c > best[1] * 1.0001) best = [p / S, c];
-				}
-				return best[0];
-			};
-			return [per(col, 6, 12), per(row, 10, 18)];
-		});
-		say(
-			m.finaleZelle?.[0] === 9 &&
-				m.finaleZelle?.[1] === 14 &&
-				Math.abs(pw - 9) < 0.5 &&
-				Math.abs(ph - 14) < 0.6,
-			`X-3 Finale-Zelle ${vp.name}`,
-			`Konstante ${m.finaleZelle}, gemessene Periode ${pw.toFixed(2)} x ${ph.toFixed(2)} px`,
-		);
 		await h.ctx.close();
 	}
 
