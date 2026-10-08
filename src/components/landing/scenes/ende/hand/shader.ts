@@ -2,18 +2,21 @@
 // Die Konstanten kommen aus konstanten.ts und werden beim Zusammensetzen eingesetzt.
 
 import {
+	BULGE,
 	CON,
+	CREASE_A,
+	CREASE_B,
 	EDV,
 	EDW,
 	GAM,
 	INK,
 	INK_DARK,
-	JIT,
 	RAND_DAUMEN,
 	RAND_IN,
 	RIM,
 	RING_N,
 	STEP,
+	TIEFE,
 } from './konstanten';
 
 export const FS = `#version 300 es
@@ -204,15 +207,16 @@ void main(){
   ivec2 cell = uCell0 + ivec2(gl_FragCoord.xy);
   vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(2)};
   float tone = 0.;
+  float po = 0.; // 1 = Ton stammt von der Zeigehand (Pass 2 holt Normale und Tiefe aus deren Atlas)
   vec2 h = holdTone(C);
   vec2 pt = pointTone(C, uFront == 1);
   float own = 1. - ss((pt.y - .2) / .5);
   if (uFront == 0) { if (h.y == 1.) tone = h.x * own; }
-  else { if (h.y == 2.) tone = h.x * own; tone = max(tone, pt.x); }
+  else { if (h.y == 2.) tone = h.x * own; if (pt.x > tone) po = 1.; tone = max(tone, pt.x); }
   tone = clamp(tone * quiet(C), 0., 1.);
   float lg = 0.;
   if (uZer > 0. && tone > 0.) lg = loes(C, cell);
-  o = vec4(tone, lg, 0., 1.);
+  o = vec4(tone, lg, po, 1.);
 }
 #else
 // Zeigehand: weich geglättete Silhouette (5 Abtastungen), mit Ausblenden zum Arm hin und Deckkraft
@@ -227,8 +231,16 @@ float pointSil(vec2 S){
   float a = (2. * SP(1, ab) + SP(1, ab + vec2(r, 0.)) + SP(1, ab - vec2(r, 0.)) + SP(1, ab + vec2(0., r)) + SP(1, ab - vec2(0., r))) / 6.;
   return clamp((a - .5) / .18 + .5, 0., 1.) * fade * uPS.y;
 }
-// Pass 2: Punkte je Zelle (Bayer, Hash-Zufall), scharf auf Gerätepixel, Silhouette per Pixel-Alpha geglättet.
-// Vorn (Zeigehand) zusätzlich: deckende Grundfläche in der Silhouette und ein weicher Schatten aufs Glas.
+// Zelle des Tonpuffers: Ton nach Zerfall (x) und Besitzer (y: 1 = Zeigehand), außerhalb 0
+vec2 zelle(ivec2 c){
+  ivec2 q = c - uCell0;
+  if (q.x < 0 || q.y < 0 || q.x >= uCellN.x || q.y >= uCellN.y) return vec2(0.);
+  vec3 tz = texelFetch(uTone, q, 0).rgb;
+  return vec2(tz.x * (1. - ss(tz.y / .2)), tz.z);
+}
+// Pass 2: Kupferstich-Linien. Weiße (über dem Glas dunkle) Linien, Breite aus dem Ton; die Phase folgt Normale und
+// Tiefe der Hand, so laufen die Linien um Finger und Handrücken wie die Querschnitte eines Stichs. Gegenschraffur in den Schatten.
+// Staub: Linienstücke statt Punkte. Silhouette per Pixel-Alpha geglättet; vorn zusätzlich Grundfläche und Schatten der Zeigehand.
 void main(){
   vec2 css = vec2(gl_FragCoord.x / uBack.x, (uBack.z - gl_FragCoord.y) / uBack.y);
   vec2 S = (css - uCam.yz) / uCam.x;
@@ -241,23 +253,31 @@ void main(){
     S = pv + vec2(cs * q.x + sn * q.y, -sn * q.x + cs * q.y);
   }
   ivec2 cell = ivec2(floor(S / ${STEP.toFixed(2)}));
-  vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(2)};
   float px = 1. / (uCam.x * uBack.x);
-  ivec2 tc = cell - uCell0;
-  float tone = 0.;
-  if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) {
-    vec2 tz = texelFetch(uTone, tc, 0).rg;
-    tone = tz.x * (1. - ss(tz.y / .2));
-  }
+  // Ton bilinear aus dem Zellpuffer (glatte Breite statt Treppen), Besitzer der nächsten Zelle
+  vec2 pc = S / ${STEP.toFixed(2)} - .5;
+  ivec2 i0 = ivec2(floor(pc));
+  vec2 fr = pc - vec2(i0);
+  vec2 z00 = zelle(i0);
+  vec2 z10 = zelle(i0 + ivec2(1, 0));
+  vec2 z01 = zelle(i0 + ivec2(0, 1));
+  vec2 z11 = zelle(i0 + ivec2(1, 1));
+  float tone = mix(mix(z00.x, z10.x, fr.x), mix(z01.x, z11.x, fr.x), fr.y);
+  float po = zelle(cell).y;
   float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 24.) : 0.;
-  // Staub: gelöste Zellen fliegen schräg nach oben rechts (Quelle je Ziel-Zelle entlang dreier Windrichtungen gesucht)
+  float pitch = 3.0 / uCam.x; // Linienabstand: etwa 3 CSS-px am Bildschirm
+  vec2 sd = vec2(1., .18);    // Grundrichtung der Schraffur (wie im Hero leicht geneigt)
+  // Staub: gelöste Zellen fliegen schräg nach oben rechts (Quelle je Ziel-Block entlang dreier Windrichtungen gesucht).
+  // Gesucht wird je Block von 3x3 Zellen, gezeichnet wird je Block ein kurzer Strich entlang der Schraffur.
   float dust = 0.;
+  ivec2 blk = ivec2(floor(vec2(cell) / 3.));
+  ivec2 cc = blk * 3 + 1;
   if (uZer > 0.) {
     for (int k = 1; k <= 13; k++) {
       float d = .4 * pow(1.62, float(k));
       for (int a = 0; a < 3; a++) {
         float ang = -.6 + (float(a) - 1.) * .32;
-        ivec2 sc = cell - ivec2(round(vec2(cos(ang), sin(ang)) * d));
+        ivec2 sc = cc - ivec2(round(vec2(cos(ang), sin(ang)) * d));
         ivec2 sq = sc - uCell0;
         if (sq.x < 0 || sq.y < 0 || sq.x >= uCellN.x || sq.y >= uCellN.y) continue;
         vec2 tz = texelFetch(uTone, sq, 0).rg;
@@ -269,38 +289,71 @@ void main(){
     }
     dust *= 1. - gk; // über dem Glas bleibt die App frei
   }
-  bool istStaub = dust > tone;
-  tone = max(tone, dust);
   float ink = mix(${INK}, ${INK_DARK}, gk);
   bool pt = uFront == 1 && uPS.y > 0.;
-  if (tone <= 0. && uRing.z <= 0. && !pt) { o = vec4(0.); return; }
-  tone *= (1. - ${(JIT / 2).toFixed(3)}) + ${JIT.toFixed(2)} * hsh(cell);
-  int bx = cell.x & 3;
-  int by = cell.y & 3;
-  float thr = float((by & 1) * 12 + (by >> 1) * 3 + (1 - 2 * (by & 1)) * 8 * (bx & 1) + (1 - 2 * (by >> 1)) * 2 * (bx >> 1)) / 16. + .035;
+  if (tone <= 0. && dust <= 0. && uRing.z <= 0. && !pt) { o = vec4(0.); return; }
   float c = 0.;
-  if (tone > thr || tone > .8) {
-    // Punkte berühren sich nie (Kante höchstens 0,92 Zellen); im Glanzlicht (ab .8) kippt das Raster zu dunklen Löchern in heller Fläche
-    float z = min(${STEP.toFixed(2)} * (.5 + .5 * min(1., tone)), ${STEP.toFixed(2)} * .92);
-    vec2 dd = abs(S - C);
-    c = clamp((z * .5 - max(dd.x, dd.y)) / px + .5, 0., 1.);
-    if (tone > .8 && !istStaub) {
-      float hh = ${STEP.toFixed(2)} * .436 * (1. - clamp((tone - .8) / .2, 0., 1.));
-      c = 1. - clamp((hh - max(dd.x, dd.y)) / px + .5, 0., 1.) * step(.001, hh);
-    }
-    if (!istStaub) {
-      float a = pixA(S);
-      float w = max(fwidth(a), .02);
-      c *= clamp((a - .5) / w + .5, 0., 1.);
+  if (tone > .01) {
+    // Form: Normale und Tiefe aus dem Atlas der Hand, die dem Pixel gehört
+    vec2 ab = pSprite(S);
+    float gx = po > .5 ? SP(2, ab) : SH(2, S);
+    float gy = po > .5 ? SP(3, ab) : SH(3, S);
+    float gz = po > .5 ? SP(4, ab) : SH(4, S);
+    float nx = gx * 2. - 1.;
+    float ny = gy * 2. - 1.;
+    float nz = sqrt(max(0., 1. - nx * nx - ny * ny));
+    float zmm = gz * 200. - 100.;
+    // Phase: Grundschraffur, dazu Wölbung (nz, Tiefe) und Ton: die Linien biegen sich um jede Rundung
+    float sl = (S.y * sd.x + S.x * sd.y) / pitch + tone * 2.4 + nx * .7 + nz * ${BULGE.toFixed(2)} + zmm * ${TIEFE.toFixed(3)};
+    float d1 = abs(fract(sl) - .5) * 2.;
+    float w1 = min(fwidth(sl) * 1.6, 1.);
+    float r1 = pow(max(tone - .1, 0.) / .9, .8) * .84;
+    float l1 = 1. - smoothstep(r1 - w1, r1 + w1, d1);
+    l1 = mix(l1, r1, smoothstep(.55, 1., fwidth(sl) * 1.6)); // zu eng für Linien: Mittelton statt Flimmern
+    // Gegenschraffur in den Schatten: quer zur Grundschraffur, ebenfalls um die Form gebogen
+    float s2 = (S.y * -.55 + S.x) / (pitch * 1.7) + tone * 2. + nx * .8 + nz * ${(BULGE * 0.6).toFixed(2)} + zmm * ${(TIEFE * 0.6).toFixed(3)};
+    float d2 = abs(fract(s2) - .5) * 2.;
+    float w2 = min(fwidth(s2) * 1.6, 1.);
+    float r2 = .26 * smoothstep(.08, .2, tone) * (1. - smoothstep(.26, .42, tone));
+    float l2 = (1. - smoothstep(r2 - w2, r2 + w2, d2)) * step(.001, r2);
+    float ln = max(l1, l2 * .85);
+    // Kontur aus dem Sprung der Normalen: Nägel, Knöchel und Fingerkanten bleiben als Schnitt lesbar
+    vec2 ex = vec2(1.6, 0.);
+    vec2 ey = vec2(0., 1.6);
+    vec2 nA = po > .5 ? vec2(SP(2, pSprite(S + ex)), SP(3, pSprite(S + ey))) : vec2(SH(2, S + ex), SH(3, S + ey));
+    vec2 nB = po > .5 ? vec2(SP(2, pSprite(S - ex)), SP(3, pSprite(S - ey))) : vec2(SH(2, S - ex), SH(3, S - ey));
+    float cr = smoothstep(${CREASE_A.toFixed(2)}, ${CREASE_B.toFixed(2)}, length(nA - nB) * 2.);
+    ln = mix(ln * (1. - cr), max(ln, cr), gk);
+    // Silhouette: Pixel-Alpha der Hände glättet die Kante
+    float a = pixA(S);
+    float w = max(fwidth(a), .02);
+    c = ln * clamp((a - .5) / w + .5, 0., 1.);
+  }
+  if (dust > 0.) {
+    // Strich je Block: Länge und Dicke wachsen mit dem Ton, Richtung folgt der Schraffur (leicht gestreut)
+    vec2 Cc = (vec2(cc) + .5) * ${STEP.toFixed(2)};
+    float hh = hsh(cc + ivec2(13, 7));
+    if (hh < dust * 1.3) {
+      float an = atan(sd.y, sd.x) + (hh - .5) * .5;
+      vec2 e = vec2(sin(an), cos(an)); // Linienrichtung (Schraffur läuft in y)
+      vec2 dv = S - Cc;
+      float al = abs(dot(dv, e));
+      float pe = abs(dot(dv, vec2(e.y, -e.x)));
+      float hl = ${STEP.toFixed(2)} * (1.2 + 1.2 * dust);
+      float hw = max(.4 * pitch * .25 * (.6 + dust), px * .5);
+      c = max(c, clamp((hl - al) / px + .5, 0., 1.) * clamp((hw - pe) / px + .5, 0., 1.));
     }
   }
   if (uFront == 1 && uRing.z > 0.) {
+    // Klick-Ring: dünne Linie in Strichen, RING_N Stücke rund um den Treffpunkt
     vec2 dr = S - uLight.zw;
-    float step_ = 6.2831853 / ${RING_N}.;
-    float a2 = floor(atan(dr.y, dr.x) / step_ + .5) * step_;
-    vec2 pp = uLight.zw + uRing.x * vec2(cos(a2), sin(a2));
-    vec2 d2 = abs(S - pp);
-    c = max(c, clamp((.7 - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S) * (1. - ss(uZer * 5.)));
+    float dist = length(dr);
+    float per = fract(atan(dr.y, dr.x) / 6.2831853 * ${RING_N}.);
+    float da = abs(per - .5) * 2.;
+    float wa = fwidth(per) * 2.;
+    float dash = 1. - smoothstep(.62 - wa, .62 + wa, da);
+    float rl = clamp((.7 - abs(dist - uRing.x)) / px + .5, 0., 1.);
+    c = max(c, rl * dash * uRing.y * quiet(S) * (1. - ss(uZer * 5.)));
   }
   float base = 0.;
   float sh = 0.;
@@ -313,7 +366,7 @@ void main(){
     sh = s0 / 5. * gk * (.15 + .1 * uRing.w) * zf;
   }
   float aOut = c + base * (1. - c);
-  vec3 col = vec3(ink * c + .76 * base * (1. - c));
+  vec3 col = vec3(ink * c + .86 * base * (1. - c));
   float sa = sh * (1. - aOut);
   o = vec4(col, aOut + sa);
 }
