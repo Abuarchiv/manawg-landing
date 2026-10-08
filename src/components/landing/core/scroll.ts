@@ -1,7 +1,12 @@
 // Scroll-Kern (PLAN-V2 4.5): Abschnittsmaße, Stelle halten bei Größenwechsel und Drehen,
-// Sprunglinks nach Entscheidung 12. Nativer Dokument-Scroll, keine Bibliothek.
+// Sprunglinks nach Entscheidung 12. Nativer Dokument-Scroll, Mausrad und Trackpad gleiten über Lenis.
+// Lenis hat keine eigene rAF-Schleife, es läuft im Bild-Takt der Seite (onFrame zuerst, vor den Szenen).
+// Touch bleibt nativ (syncTouch aus), bei reduzierter Bewegung gibt es kein Lenis.
+// Eigene Scrollflächen markiert man mit data-lenis-prevent.
 
-import { loop } from './loop';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+import { loop, onFrame, qa } from './loop';
 
 const SEC = '[data-sec]';
 
@@ -59,8 +64,42 @@ function targetY(el: Element): number {
 	return Math.max(0, Math.round(el.getBoundingClientRect().top + window.scrollY - smt));
 }
 
+const expoOut = (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t));
+
 export function initScroll(root: HTMLElement): () => void {
 	history.scrollRestoration = 'auto';
+	// Lenis: Dauer 1,1 s, ease-out-expo. Aus bei reduzierter Bewegung (auch wenn die Einstellung später wechselt).
+	let lenis: Lenis | null = null;
+	let stopFrame = () => {};
+	const mqRed = matchMedia('(prefers-reduced-motion: reduce)');
+	const lenisAn = () => {
+		if (lenis || mqRed.matches) return;
+		lenis = new Lenis({
+			autoRaf: false,
+			duration: 1.1,
+			easing: expoOut,
+			smoothWheel: true,
+			syncTouch: false,
+		});
+		qa.lenis = lenis;
+		stopFrame = onFrame((_t, _dt, now) => lenis?.raf(now * 1000), true);
+	};
+	const lenisAus = () => {
+		stopFrame();
+		lenis?.destroy();
+		lenis = null;
+		qa.lenis = undefined;
+	};
+	const onReduced = () => (mqRed.matches ? lenisAus() : lenisAn());
+	mqRed.addEventListener('change', onReduced);
+	lenisAn();
+	/** Sofort an eine Stelle (Stelle halten, Sprung hinter dem Schleier). */
+	const setze = (y: number) => {
+		if (lenis) {
+			lenis.resize();
+			lenis.scrollTo(y, { immediate: true, force: true });
+		} else window.scrollTo({ top: y, behavior: 'instant' });
+	};
 	const list = [...root.querySelectorAll<HTMLElement>(SEC)];
 	let m = measureAll(list);
 	let anchor = anchorOf(m, window.scrollY);
@@ -82,8 +121,7 @@ export function initScroll(root: HTMLElement): () => void {
 				(a, i) => Math.abs(a.top - (m[i]?.top ?? 0)) > 1 || Math.abs(a.h - (m[i]?.h ?? 0)) > 1,
 			);
 		const a = anchor && nm[anchor.i];
-		if (changed && anchor && a)
-			window.scrollTo({ top: Math.round(a.top + anchor.p * a.h), behavior: 'instant' });
+		if (changed && anchor && a) setze(Math.round(a.top + anchor.p * a.h));
 		m = changed ? measureAll(list) : nm;
 		w0 = innerWidth;
 		h0 = innerHeight;
@@ -131,7 +169,7 @@ export function initScroll(root: HTMLElement): () => void {
 		const a = v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 80, fill: 'forwards' });
 		a.finished
 			.then(() => {
-				window.scrollTo({ top: y, behavior: 'instant' });
+				setze(y);
 				return v.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 80, fill: 'forwards' })
 					.finished;
 			})
@@ -148,8 +186,10 @@ export function initScroll(root: HTMLElement): () => void {
 		e.preventDefault();
 		const y = targetY(target);
 		const d = Math.abs(y - window.scrollY);
-		if (loop.reduced) window.scrollTo({ top: y, behavior: 'instant' });
+		if (loop.reduced) setze(y);
 		else if (d > 3 * innerHeight) jump(y);
+		else if (lenis)
+			lenis.scrollTo(y, { duration: 1.1 + 0.35 * Math.min(3, d / innerHeight), easing: expoOut });
 		else window.scrollTo({ top: y, behavior: 'smooth' });
 		history.pushState(null, '', `#${id}`);
 		target.focus({ preventScroll: true });
@@ -165,5 +205,7 @@ export function initScroll(root: HTMLElement): () => void {
 		cancelAnimationFrame(settleRaf);
 		ro.disconnect();
 		veil?.remove();
+		mqRed.removeEventListener('change', onReduced);
+		lenisAus();
 	};
 }

@@ -1,5 +1,6 @@
 // Typen der Hände: Atlas-Metadaten (public/hand/hold.json, point.json), Zustand, Bildwerte und die WebGL-Ebene.
 
+import type { Probe } from './gl';
 import type { TILES } from './konstanten';
 
 // ----------------------------------------------------------------------------------------------------
@@ -187,6 +188,8 @@ export interface Ebene {
 	ready: boolean;
 	dead: boolean;
 	stage: number;
+	/** Nächste Zeile des Atlas, die readyStep hochlädt. */
+	zeile: number;
 	last: number[] | null;
 	lastB: number[] | null;
 	prs: [WebGLProgram, WebGLProgram];
@@ -256,6 +259,13 @@ export interface HandZustand {
 	clean: boolean;
 	mode: Zeichenart | null;
 	layers: [Ebene, Ebene] | null;
+	/** Ergebnis der Eignungsprüfung (einmal) und die schon angelegten Ebenen, solange chooseMode schrittweise vorwärmt. */
+	tauglich?: boolean;
+	/** Laufende Eignungsprüfung (glTaugtStart), bis ihr Ergebnis in tauglich steht. */
+	probe?: Probe;
+	ebenen?: (Ebene | null)[];
+	/** Vorwärmen abgeschlossen: Shader gelinkt, Texturen hochgeladen. */
+	warm?: boolean;
 	cpu: { key: string | null; baked: CpuGebacken | null };
 	quiet: number[];
 	rects: [number, number, number, number][];

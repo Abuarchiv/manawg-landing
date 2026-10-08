@@ -267,7 +267,11 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		rb: DOMRect,
 		visible: boolean,
 	): Phase => {
-		setVar('--p', P.toFixed(4));
+		// Titel und Hinweis brauchen --p nur bis 0,09 (danach sind sie ganz weg). Weiter oben würde jeder neue Wert
+		// im Intro die Stile aller Nachfahren von #final neu berechnen (ca. 1,5 ms je Bild).
+		setVar('--p', Math.min(P, 0.1).toFixed(4));
+		// Phone.tsx lädt Standbild und App ab hier, weit vor der Ende-Ebene (der Aufbau der App-Seite dauert 20 bis 60 ms)
+		if (P > 0.55 && root.dataset.nah !== '1') root.dataset.nah = '1';
 		setVar('--g', (1 - fpA).toFixed(3));
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
 		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));

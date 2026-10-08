@@ -501,7 +501,13 @@
 		document.addEventListener('pointerleave', (e) => send('pointerleave', e));
 		root.addEventListener('mouseleave', (e) => send('pointerleave', e));
 		// Rad: der Bildschirm der App scrollt nicht, die Seite der Landing schon
-		addEventListener('wheel', (e) => { e.preventDefault(); window.parent.scrollBy({ left: e.deltaX, top: e.deltaY, behavior: 'instant' }); }, { passive: false });
+		// Gleitet die Seite (html.lenis), geht das Rad als Rad-Ereignis an die Landing, damit es wie daneben weich läuft.
+		addEventListener('wheel', (e) => {
+			e.preventDefault();
+			const P = window.parent;
+			if (P.document.documentElement.classList.contains('lenis')) P.dispatchEvent(new P.WheelEvent('wheel', { deltaX: e.deltaX, deltaY: e.deltaY, deltaMode: e.deltaMode, ctrlKey: e.ctrlKey, cancelable: true, bubbles: true }));
+			else P.scrollBy({ left: e.deltaX, top: e.deltaY, behavior: 'instant' });
+		}, { passive: false });
 		// Wisch: der Bildschirm der App scrollt nicht, also scrollt der senkrechte Wisch die Seite der Landing (mit Auslauf)
 		let ty = 0;
 		let v = 0;
