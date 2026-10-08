@@ -42,7 +42,7 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
 uniform sampler2D uImg, uMsk; uniform float uFoto;
-// Foto-Berg: Schwarzweiß-Fotografie (Codex) als Kamerafahrt. Bildausschnitt deckend, im Hochformat enger um den
+// Berg: Kupferstich (Codex, Technik wie der Himmel des Finales) als Kamerafahrt. Bildausschnitt deckend, im Hochformat enger um den
 // Gipfel; der Blick nach oben (uLook) schiebt den Ausschnitt bis in den dunklen Himmel. Wolken ziehen leicht, der
 // Zeiger ist Licht auf dem Schnee, die Marke steht als Sonne im Himmel.
 const float IMGA = 2048. / 3584.;
@@ -56,6 +56,8 @@ float fotoBerg(vec2 uv){
   float v = texture(uImg, iu + wv).r;
   // Tonkurve wie Schwarzweiß-Abzug: tiefes Schwarz im Fels, Schnee bleibt hell; unten dunkler Grund für die Schrift
   v = smoothstep(.04, .97, pow(v, 1.18)); vec2 sv = gl_FragCoord.xy / uR;
+  // Beim Öffnen zeichnet sich der Stich nach Helligkeit: erst die hellen Striche, dann die feinen
+  float th = 1.05 - uFoto * 1.1; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
   v *= mix(1., .5, smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook)));
   // Zeiger als Licht: der Schnee unter ihm hellt weich auf, Fels bleibt dunkel
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
@@ -64,7 +66,7 @@ float fotoBerg(vec2 uv){
   v += (1. - msk) * exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .07 * (1. + uLook * 3.);
   return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025, 0., 1.); }
 float mountain(vec2 uv){
-  if(uFoto > .999) return fotoBerg(uv);
+  if(uFoto > .001) return fotoBerg(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   vec3 L = normalize(RT * (sp.x * 1.5 + .9) + UP * .42 - FW * .2);
@@ -74,7 +76,6 @@ float mountain(vec2 uv){
 float alb = mix(rockA(p) * .5, .95, sn); float amb = .5 + .5 * n.y; v = alb * (dif * 1.25 + amb * .07); v = v / (v + .55) * 1.5; v = mix(v, uSt < .5 ? .9 : .34, 1. - exp(-t * .035)); if(abs(uSt - 2.) < .5){ float cc = p.y * 15.; float ww = max(fwidth(cc), .04); float ln = 1. - smoothstep(ww * .6, ww * 1.8, abs(fract(cc) - .5)); v = ln * (.3 + .9 * v) + v * .06; } }
   else { float d = sunD(uv, sp, sc); v = mix(v, uSt < .5 ? .4 : .88, smoothstep(.002, -.002, d)); v += exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .08 * (1. + uLook * 3.); }
   if(uSt < .5 && uLook < .7){ float ff = 1. - uLook / .7; for(int L2 = 0; L2 < 2; L2++){ float fl = float(L2); float sx = uv.x * (10. + fl * 6.) + T * (.05 + fl * .08) + fl * 3.7; float id = floor(sx); float fx = fract(sx) - .5; float hgt = (.1 + .12 * hash(vec2(id, fl))) * (1. + fl * .5); float base = -.36 - fl * .08; float tri = base + hgt - abs(fx) * hgt * 2.6; if(uv.y < tri){ float br = step(.5, fract((uv.y - base) * 60. + abs(fx) * 8.)); v = mix(v, .1 + .22 * br, ff); } } }
-  if(uFoto > .001) v = mix(v, fotoBerg(uv), uFoto);
   if(abs(uSt - 4.) < .5){ for(int L3 = 0; L3 < 2; L3++){ float fl = float(L3); vec2 q = uv * vec2(1.6, 2.6) + vec2(T * (.02 + fl * .02) + fl * 4., fl * .7); float c = fbm(q) + fbm(q * 2.3) * .35; float band = smoothstep(.16, .02, abs(uv.y - (-.02 - fl * .2))); float m = smoothstep(.6, .68, c * band + .1); float fp = sin(fbm(q * 5. + c * 2.) * 90.); float tone = .82 * (.55 + .45 * step(0., fp)) * (.6 + .4 * smoothstep(.6, .9, c)); v = mix(v, tone, m * (1. - uLook)); } }
   return v; }
 float omap(vec3 p){ float d = 1e5; for(int i = 0; i < 8; i++) d = smin(d, length(p - uO[i].xyz) - uO[i].w, uK); return max(d, -(length(p.xy - uH.xy) - uH.z)); }
@@ -439,7 +440,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		// Berg-Phase (ruhiges Bild): feinerer Szenenpuffer, die Grate zeigen sonst Treppenstufen; die adaptive Stufe (ad) fängt Last ab
 		const fk = mx < 0.05 ? 0.78 : 0.42;
 		// Foto-Berg: nur Texturzugriffe, deshalb in voller Backing-Auflösung (scharfes Gestein und Schnee)
-		const foto = G.fotoA > 0.999 && mx < 0.05;
+		const foto = G.fotoA > 0.001 && mx < 0.05;
 		const fw = allDots
 			? Math.ceil(w / cs)
 			: foto
@@ -470,7 +471,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform3f(U.uH, hx, hy, hr);
 		fotoTex(gl);
 		if (G.fotoTx) {
-			G.fotoA = c.reduced ? 1 : Math.min(1, G.fotoA + c.dt / 0.6);
+			G.fotoA = c.reduced ? 1 : Math.min(1, G.fotoA + c.dt / 1.8);
 			gl.activeTexture(gl.TEXTURE1);
 			gl.bindTexture(gl.TEXTURE_2D, G.fotoTx[0]);
 			gl.uniform1i(U.uImg, 1);
