@@ -42,6 +42,7 @@ uniform int uFront;
 uniform sampler2D uTone;
 uniform ivec2 uCell0;
 uniform ivec2 uCellN;
+uniform float uZer;    // Zerfall 0..1: die Hände lösen sich vom Rand her in Staub
 out vec4 o;
 
 float cl(float x){ return clamp(x, 0., 1.); }
@@ -162,6 +163,41 @@ float quiet(vec2 C){
   return q;
 }
 
+vec2 pSprite(vec2 S){
+  vec2 d = S - uTipU.xy;
+  vec2 u = uTipU.zw;
+  return vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x;
+}
+// Pixel-Alpha der Hände (Haltehand und, vorn, Zeigehand) für die weiche Silhouette
+float pixA(vec2 S){
+  float a = SH(1, S);
+  if (uFront == 1 && uPS.y > 0.) a = max(a, SP(1, pSprite(S)));
+  return a;
+}
+
+// Zerfall: Randnähe 0..1 aus der Silhouette (1 am Rand, 0 ab etwa 30 px Tiefe)
+float randNaehe(vec2 C){
+  float em = 0.;
+  for (int i = 0; i < 8; i++) {
+    float an = float(i) * .785398;
+    vec2 dv = vec2(cos(an), sin(an));
+    em += 2. - pixA(C + dv * 12.) - pixA(C + dv * 30.);
+  }
+  return clamp(em / 8., 0., 1.);
+}
+float vn(vec2 p){
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3. - 2. * f);
+  ivec2 c = ivec2(i);
+  return mix(mix(hsh(c), hsh(c + ivec2(1, 0)), f.x), mix(hsh(c + ivec2(0, 1)), hsh(c + ivec2(1, 1)), f.x), f.y);
+}
+// Lösegrad 0..1 einer Zelle: Ränder zuerst, dazu Rauschen, damit die Front ausfranst
+float loes(vec2 C, ivec2 cell){
+  float thr = (1. - randNaehe(C)) * .5 + (vn(C / 36.) * .55 + hsh(cell) * .45) * .4;
+  return clamp((uZer * 1.3 - thr) / .4, 0., 1.);
+}
+
 #ifdef PASS1
 // Pass 1: ein Texel je Zelle des Rasters (Ton nach Zeigerlicht, Verdeckung und Ruhe)
 void main(){
@@ -173,15 +209,13 @@ void main(){
   float own = 1. - ss((pt.y - .2) / .5);
   if (uFront == 0) { if (h.y == 1.) tone = h.x * own; }
   else { if (h.y == 2.) tone = h.x * own; tone = max(tone, pt.x); }
-  o = vec4(clamp(tone * quiet(C), 0., 1.), 0., 0., 1.);
+  tone = clamp(tone * quiet(C), 0., 1.);
+  float lg = 0.;
+  if (uZer > 0. && tone > 0.) lg = loes(C, cell);
+  o = vec4(tone, lg, 0., 1.);
 }
 #else
 // Zeigehand: weich geglättete Silhouette (5 Abtastungen), mit Ausblenden zum Arm hin und Deckkraft
-vec2 pSprite(vec2 S){
-  vec2 d = S - uTipU.xy;
-  vec2 u = uTipU.zw;
-  return vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x;
-}
 float pointSil(vec2 S){
   if (uPS.y <= 0.) return 0.;
   float dist = length(S - uTipU.xy);
@@ -192,12 +226,6 @@ float pointSil(vec2 S){
   float r = 1.1 / uPS.x;
   float a = (2. * SP(1, ab) + SP(1, ab + vec2(r, 0.)) + SP(1, ab - vec2(r, 0.)) + SP(1, ab + vec2(0., r)) + SP(1, ab - vec2(0., r))) / 6.;
   return clamp((a - .5) / .18 + .5, 0., 1.) * fade * uPS.y;
-}
-// Pixel-Alpha der Hände (Haltehand und, vorn, Zeigehand) für die weiche Silhouette
-float pixA(vec2 S){
-  float a = SH(1, S);
-  if (uFront == 1 && uPS.y > 0.) a = max(a, SP(1, pSprite(S)));
-  return a;
 }
 // Pass 2: Punkte je Zelle (Bayer, Hash-Zufall), scharf auf Gerätepixel, Silhouette per Pixel-Alpha geglättet.
 // Vorn (Zeigehand) zusätzlich: deckende Grundfläche in der Silhouette und ein weicher Schatten aufs Glas.
@@ -217,8 +245,32 @@ void main(){
   float px = 1. / (uCam.x * uBack.x);
   ivec2 tc = cell - uCell0;
   float tone = 0.;
-  if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) tone = texelFetch(uTone, tc, 0).r;
+  if (tc.x >= 0 && tc.y >= 0 && tc.x < uCellN.x && tc.y < uCellN.y) {
+    vec2 tz = texelFetch(uTone, tc, 0).rg;
+    tone = tz.x * (1. - ss(tz.y / .2));
+  }
   float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 24.) : 0.;
+  // Staub: gelöste Zellen fliegen schräg nach oben rechts (Quelle je Ziel-Zelle entlang dreier Windrichtungen gesucht)
+  float dust = 0.;
+  if (uZer > 0.) {
+    for (int k = 1; k <= 13; k++) {
+      float d = .4 * pow(1.62, float(k));
+      for (int a = 0; a < 3; a++) {
+        float ang = -.6 + (float(a) - 1.) * .32;
+        ivec2 sc = cell - ivec2(round(vec2(cos(ang), sin(ang)) * d));
+        ivec2 sq = sc - uCell0;
+        if (sq.x < 0 || sq.y < 0 || sq.x >= uCellN.x || sq.y >= uCellN.y) continue;
+        vec2 tz = texelFetch(uTone, sq, 0).rg;
+        if (tz.y <= .004 || tz.x <= 0.) continue;
+        if (min(int(hsh(sc + ivec2(5, 3)) * 3.), 2) != a) continue;
+        float ts = 200. * pow(tz.y, 1.4) * (.4 + .6 * hsh(sc + ivec2(91, 17)));
+        if (abs(ts - d) < .45 * d + .6) dust = max(dust, tz.x * pow(1. - tz.y, 1.1));
+      }
+    }
+    dust *= 1. - gk; // über dem Glas bleibt die App frei
+  }
+  bool istStaub = dust > tone;
+  tone = max(tone, dust);
   float ink = mix(${INK}, ${INK_DARK}, gk);
   bool pt = uFront == 1 && uPS.y > 0.;
   if (tone <= 0. && uRing.z <= 0. && !pt) { o = vec4(0.); return; }
@@ -232,13 +284,15 @@ void main(){
     float z = min(${STEP.toFixed(2)} * (.5 + .5 * min(1., tone)), ${STEP.toFixed(2)} * .92);
     vec2 dd = abs(S - C);
     c = clamp((z * .5 - max(dd.x, dd.y)) / px + .5, 0., 1.);
-    if (tone > .8) {
+    if (tone > .8 && !istStaub) {
       float hh = ${STEP.toFixed(2)} * .436 * (1. - clamp((tone - .8) / .2, 0., 1.));
       c = 1. - clamp((hh - max(dd.x, dd.y)) / px + .5, 0., 1.) * step(.001, hh);
     }
-    float a = pixA(S);
-    float w = max(fwidth(a), .02);
-    c *= clamp((a - .5) / w + .5, 0., 1.);
+    if (!istStaub) {
+      float a = pixA(S);
+      float w = max(fwidth(a), .02);
+      c *= clamp((a - .5) / w + .5, 0., 1.);
+    }
   }
   if (uFront == 1 && uRing.z > 0.) {
     vec2 dr = S - uLight.zw;
@@ -246,16 +300,17 @@ void main(){
     float a2 = floor(atan(dr.y, dr.x) / step_ + .5) * step_;
     vec2 pp = uLight.zw + uRing.x * vec2(cos(a2), sin(a2));
     vec2 d2 = abs(S - pp);
-    c = max(c, clamp((.7 - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S));
+    c = max(c, clamp((.7 - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S) * (1. - ss(uZer * 5.)));
   }
   float base = 0.;
   float sh = 0.;
   if (pt && gk > 0.) {
-    base = pointSil(S) * gk;
+    float zf = 1. - ss(uZer * 6.); // Grundfläche und Schatten der Zeigehand lösen sich zuerst, übrig bleiben die Punkte
+    base = pointSil(S) * gk * zf;
     // weicher Schatten der Zeigehand aufs Glas: je näher der Finger (Druck), desto enger und dunkler
     vec2 off = vec2(7., 11.) * (1. - .55 * uRing.w);
     float s0 = pointSil(S - off) + pointSil(S - off + vec2(7., 0.)) + pointSil(S - off - vec2(7., 0.)) + pointSil(S - off + vec2(0., 7.)) + pointSil(S - off - vec2(0., 7.));
-    sh = s0 / 5. * gk * (.15 + .1 * uRing.w);
+    sh = s0 / 5. * gk * (.15 + .1 * uRing.w) * zf;
   }
   float aOut = c + base * (1. - c);
   vec3 col = vec3(ink * c + .76 * base * (1. - c));

@@ -1,11 +1,13 @@
 import { appUrl } from '@/lib/app-origin';
 import { css } from '../../core/dc';
+import { Berg } from './BergFlaeche';
 import s from './Fusszeile.module.css';
 
 export function Fusszeile() {
 	return (
 		<footer id="fusszeile" data-sec="fusszeile" tabIndex={-1} className={s.fuss}>
-			<div className={s.raster}>
+			<Berg />
+			<div className={s.raster} data-fuss-raster="1">
 				<div className={s.marke}>
 					<div style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
 						<img
@@ -24,43 +26,43 @@ export function Fusszeile() {
 						</span>
 					</div>
 					<span style={css('font-size:var(--t-14);opacity:0.72')}>Die App für den WG-Alltag.</span>
-					<span className="label" style={css('margin-top:var(--sp-32)')}>
+					<span className="label" data-fuss-text="1" style={css('margin-top:var(--sp-32)')}>
 						© 2026 MANAWG
 					</span>
 				</div>
 				<div className={s.spalte}>
 					<span className={s.kopf}>Produkt</span>
-					<a href="#funktionen" className="fuss-link">
+					<a href="#funktionen" className="fuss-link" data-fuss-text="1">
 						Funktionen
 					</a>
-					<a href="#so-gehts" className="fuss-link">
+					<a href="#so-gehts" className="fuss-link" data-fuss-text="1">
 						So geht’s
 					</a>
-					<a href="#fragen" className="fuss-link">
+					<a href="#fragen" className="fuss-link" data-fuss-text="1">
 						Fragen
 					</a>
 				</div>
 				<div className={s.spalte}>
 					<span className={s.kopf}>Konto</span>
-					<a href={appUrl('/neu?action=create')} className="fuss-link">
+					<a href={appUrl('/neu?action=create')} className="fuss-link" data-fuss-text="1">
 						WG erstellen
 					</a>
-					<a href={appUrl('/neu')} className="fuss-link">
+					<a href={appUrl('/neu')} className="fuss-link" data-fuss-text="1">
 						Einladung einlösen
 					</a>
-					<a href={appUrl('/')} className="fuss-link">
+					<a href={appUrl('/')} className="fuss-link" data-fuss-text="1">
 						Anmelden
 					</a>
 				</div>
 				<div className={s.spalte}>
 					<span className={s.kopf}>Rechtliches</span>
-					<a href="/impressum" className="fuss-link">
+					<a href="/impressum" className="fuss-link" data-fuss-text="1">
 						Impressum
 					</a>
-					<a href="/datenschutz" className="fuss-link">
+					<a href="/datenschutz" className="fuss-link" data-fuss-text="1">
 						Datenschutz
 					</a>
-					<a href="/agb" className="fuss-link">
+					<a href="/agb" className="fuss-link" data-fuss-text="1">
 						AGB
 					</a>
 				</div>

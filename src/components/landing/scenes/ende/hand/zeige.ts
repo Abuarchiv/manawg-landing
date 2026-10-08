@@ -331,6 +331,7 @@ function werteBauen(
 		// Touch: keine gezeichnete Zeigehand, dort tippt der echte Finger
 		pa: qa.noPoint || touch ? 0 : 1,
 		push: Math.round(push * 20) / 20,
+		zer: Math.round(c.zer * 200) / 200,
 		br,
 		ring: st.tap && pr >= 0 && pr < RING_T ? 1 - pr / RING_T : 0,
 		ringR: 10 + Math.max(0, pr) * 150,

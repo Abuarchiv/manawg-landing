@@ -48,6 +48,8 @@ export interface BuehnenKontext {
 	m: BuehnenZeiger;
 	fpA: number;
 	endA: number;
+	/** Zerfall der Hände beim Wegscrollen der Ende-Ebene (0..1, bei reduzierter Bewegung 0). */
+	zer: number;
 	endOn: boolean;
 	/** Deckung der Flut (flut.deckung). */
 	cover: number;

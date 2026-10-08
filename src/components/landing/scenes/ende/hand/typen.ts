@@ -94,6 +94,8 @@ export interface Zeichenwerte {
 	sc: number;
 	pa: number;
 	push: number;
+	/** Zerfall 0..1 (Scroll-geführt, Hände lösen sich vom Rand her in Staub). */
+	zer: number;
 	br: Atmen;
 	ring: number;
 	ringR: number;
@@ -116,6 +118,7 @@ export interface HandZeiger {
 export interface HandKontext {
 	P: number;
 	endA: number;
+	zer: number;
 	endOn: boolean;
 	W: number;
 	H: number;
@@ -154,6 +157,7 @@ export interface Uniforms {
 	uTone: WebGLUniformLocation | null;
 	uCell0: WebGLUniformLocation | null;
 	uCellN: WebGLUniformLocation | null;
+	uZer: WebGLUniformLocation | null;
 }
 
 /** Zellraster des ersten Durchgangs: Zielgröße, Textur und Framebuffer. */
