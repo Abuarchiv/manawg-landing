@@ -1,4 +1,4 @@
-// Die Flut: weiße Zellen mit Minensucher-Ziffern fluten die Bühne, wie im Entwurf (final.dc.html, Zeilen 554 bis 562).
+// Die Flut: Zellen mit gestochenen Wolken (statt Weiß) und Minensucher-Ziffern fluten die Bühne, wie im Entwurf (final.dc.html, Zeilen 554 bis 562).
 //
 // Quer: Zelle 32 Entwurfs-Pixel (mit der Bühne skaliert, k = min(W / 1280, H / 800)), Ziffer 10 px, Rauschen in
 // Zellkoordinaten (0,13 je Zelle, driftet mit t), Schwelle n + Deckung * 0,55 - 0,45 + Zeile / Zeilen * 0,2 > 0,5.
@@ -16,6 +16,20 @@ import { hochOben } from './wohnung';
 const RAND_TEXT = 64; // Hochformat: Abstand der Raumtext-Lücke zum Text
 const KANTE = 24; // Hochformat: weiche Kante der Lücken
 const STAERKE = 0.55; // Beitrag der Deckung zum Schwellwert (Entwurf)
+
+// Füllung der Zellen: gestochene Wolken (dieselbe Technik wie Himmel und Finale) statt reinem Weiß, damit die Flut
+// nicht grell aufblitzt. Bis das Bild geladen ist, füllt ein ruhiges Grau.
+const WOLKEN_A = 2048 / 592;
+let wolken: HTMLImageElement | null = null;
+function wolkenBild(): HTMLImageElement | null {
+	if (typeof Image === 'undefined') return null;
+	if (!wolken) {
+		wolken = new Image();
+		wolken.decoding = 'async';
+		wolken.src = '/himmel/flut-wolken.webp';
+	}
+	return wolken.complete && wolken.naturalWidth ? wolken : null;
+}
 
 /** Zustand der Flut je Canvas. */
 interface FlutZustand {
@@ -350,7 +364,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 	if (hoch && cover < 0.25) entInseln(on, cols, rows);
 	// Zellkanten auf Gerätepixel runden: scharfe Blöcke ohne Fugen bei gebrochener Zellgröße
 	const px = (v: number) => Math.round(v * dpr) / dpr;
-	fx.fillStyle = '#FAFAFA';
+	const bild = wolkenBild();
 	fx.beginPath();
 	for (let b = 0; b < rows; b++) {
 		let a = 0;
@@ -366,7 +380,22 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 			fx.rect(x0, y0, px(a * cs) - x0, px((b + 1) * cs) - y0);
 		}
 	}
-	fx.fill();
+	if (bild) {
+		// Wolken deckend über die Bühne, langsam nach links ziehend, durch die Zellen als Fenster gesehen
+		const bh = Math.max(H, W / WOLKEN_A) * 1.08;
+		const bw = bh * WOLKEN_A;
+		const dx = -((((t * 6) % bw) + bw) % bw);
+		fx.save();
+		fx.clip();
+		fx.fillStyle = '#121212';
+		fx.fillRect(0, 0, W, H);
+		fx.globalAlpha = 0.92;
+		for (let x = dx; x < W; x += bw) fx.drawImage(bild, x, (H - bh) / 2, bw, bh);
+		fx.restore();
+	} else {
+		fx.fillStyle = '#3A3A3A';
+		fx.fill();
+	}
 	// Ziffern aus dem Atlas, ohne Skalierung
 	fx.setTransform(1, 0, 0, 1, 0, 0);
 	st.fv = loop.fv;
