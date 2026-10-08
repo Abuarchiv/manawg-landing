@@ -1,12 +1,13 @@
 // Die Ziffern 01 bis 03 von "So geht's": Schrift als Punktraster aus Mono-Zeichen (Zelle 4 px, Glyph 7 px).
 // Die Ziffer folgt der Breite der Spalte, die Zellen liegen in festen CSS-Pixeln. Der Zeiger stößt die
-// Zellen weg, Federn holen sie zurück. Die Zeichen sind eine feste 3-Ton-Rampe nach der Lage der Zelle
-// in der Ziffer (innen @, dann #, am Rand +), ohne Zufallsflackern.
+// Zellen weg, Federn holen sie zurück. Wie im Entwurf wechseln die Zeichen einer Zelle im Takt von 90 ms
+// durch die ganze Rampe @%#*+=-:, solange sie unterwegs ist (Einlauf, Zeiger). In Ruhe stehen feste
+// Zeichen nach der Lage der Zelle in der Ziffer (innen @, am Rand #).
 
 import { loop, qa, register } from '../../core/loop';
 import { hsh } from '../../core/math';
 
-const RAMPE = '@#+';
+const RAMPE = '@%#*+=-:';
 qa.masse = { ...(qa.masse ?? {}), zifferZelle: 4, zifferGlyph: 7 };
 
 function baue(s, txt, cs) {
@@ -45,7 +46,7 @@ function baue(s, txt, cs) {
 			s.cells.push({
 				x: a * cs,
 				y: b * cs,
-				ton: n >= 8 ? 0 : n >= 6 ? 1 : 2,
+				ton: n >= 8 ? 0 : 2,
 				ox: s.reduced ? 0 : p ? p.x + p.ox - a * cs : (hsh(q, 1) - 0.5) * 300,
 				oy: s.reduced ? 0 : p ? p.y + p.oy - b * cs : (hsh(q, 2) - 0.5) * 300,
 				vx: 0,
@@ -54,7 +55,7 @@ function baue(s, txt, cs) {
 		}
 }
 
-// Zeichenblatt: die drei Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
+// Zeichenblatt: die acht Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
 function blatt(s, cs, gl) {
 	const key = `${s.dpr}|${loop.fv}|${gl}`;
 	if (s.blattKey === key) return s.blatt;
@@ -116,6 +117,11 @@ export function registerZiffer(cv, { text, cs: cs0 = 4, gl: gl0 = 7 }) {
 					if (Math.abs(c.vx) + Math.abs(c.vy) + Math.abs(c.ox) + Math.abs(c.oy) > 0.02) moving = true;
 				}
 			});
+			// Backing wurde neu gesetzt (Pufferspeicher nach Abwesenheit freigegeben, Größenänderung): neu zeichnen
+			if (s.stale) {
+				s.stale = false;
+				s.dirty = true;
+			}
 			// Ruhende Ziffer ohne Zeiger: nichts neu zeichnen
 			if (!(s.dirty || moving || s.m.in || s.bewegt)) return;
 			s.bewegt = moving;
@@ -125,11 +131,13 @@ export function registerZiffer(cv, { text, cs: cs0 = 4, gl: gl0 = 7 }) {
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.clearRect(0, 0, s.cv.width, s.cv.height);
 			const dpr = s.dpr;
+			const tq = Math.floor(loop.now / 0.09);
 			for (const c of s.cells) {
 				const dx = Math.round((c.x + c.ox + cs / 2) * dpr - z / 2);
 				const dy = Math.round((c.y + c.oy + cs / 2) * dpr - z / 2);
-				// Ruhezustand nur „#“ und „@“, die Randzeichen „+“ gibt es nur, solange die Zelle unterwegs ist
-				const ton = c.ton === 2 && Math.abs(c.ox) + Math.abs(c.oy) < 3 ? 1 : c.ton;
+				// Unterwegs (Entwurf: Abstand über 3 px oder Tempo über 0,5): Zeichen wechselt alle 90 ms, sonst fest
+				const unterwegs = Math.abs(c.ox) + Math.abs(c.oy) > 3 || Math.hypot(c.vx, c.vy) > 0.5;
+				const ton = unterwegs ? Math.floor(hsh(c.x + tq, c.y) * RAMPE.length) % RAMPE.length : c.ton;
 				ctx.drawImage(sheet, z * ton, 0, z, z, dx, dy, z, z);
 			}
 		},
