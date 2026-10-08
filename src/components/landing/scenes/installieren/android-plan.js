@@ -1,7 +1,7 @@
 // Android: Chrome ab 150 (Menü nach Chromium 157), Schleife ≈ 14,3 s. Zeiten nach INSTALL-FLOWS 3.2, 3.3, 3.4:
 // Menü 0,45–0,65 s gestaffelt, Dialog 0,2 s, Meldungen „wird installiert…“ ≈ 2 s. Alles reine Funktionen von t.
 
-import { aus, cl, io, mat, mix, seg } from './zeit';
+import { aus, cl, feder, io, mat, mix, seg } from './zeit';
 import { fl, put, tf } from './stil';
 
 const T1 = 1.2; // ⋮
