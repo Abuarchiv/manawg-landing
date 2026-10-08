@@ -1,31 +1,23 @@
-// Die Ziffern 01 bis 03 von "So geht's": Schrift als Punktraster aus Mono-Zeichen (Zelle 4 px, Glyph 7 px).
+// Die Ziffern 01 bis 03 von "So geht's" als Kupferstich: jede Rasterzelle (4 px) ist ein waagerechtes Strichstück,
+// die Stücke einer Zeile schließen zur Stichlinie, innen kräftig, am Rand fein, wie die Wörter der Tiefe.
 // Die Ziffer folgt der Breite der Spalte, die Zellen liegen in festen CSS-Pixeln. Der Zeiger stößt die
-// Zellen weg, Federn holen sie zurück. Wie im Entwurf wechseln die Zeichen einer Zelle im Takt von 90 ms
-// durch die ganze Rampe @%#*+=-:, solange sie unterwegs ist (Einlauf, Zeiger). In Ruhe stehen feste
-// Zeichen nach der Lage der Zelle in der Ziffer (innen @, am Rand #).
+// Zellen weg, Federn holen sie zurück; unterwegs (Einlauf, Zeiger) werden die Stücke kürzer und kippen leicht.
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
-import { hsh } from '../../core/math';
+import { cl, hsh } from '../../core/math';
 
-const RAMPE = '@%#*+=-:';
-qa.masse = { ...(qa.masse as Record<string, unknown> | undefined), zifferZelle: 4, zifferGlyph: 7 };
+qa.masse = { ...(qa.masse as Record<string, unknown> | undefined), zifferZelle: 4 };
 
 /** Eine Rasterzelle der Ziffer: Ruhelage (x, y), Ton in der Rampe, Auslenkung (ox, oy) und Tempo (vx, vy). */
 interface Zelle {
 	x: number;
 	y: number;
-	/** Zeichen in Ruhe: 0 innen (@), 2 am Rand (#). */
-	ton: 0 | 2;
+	/** Strichstärke in Ruhe: 1 innen, kleiner am Rand. */
+	ton: number;
 	ox: number;
 	oy: number;
 	vx: number;
 	vy: number;
-}
-
-/** Vorgerendertes Zeichenblatt: ein Streifen mit den Glyphen der Rampe, z = Kantenlänge einer Glyphe in Gerätepixeln. */
-interface Blatt {
-	cv: HTMLCanvasElement;
-	z: number;
 }
 
 interface ZifferState extends SceneState {
@@ -35,16 +27,12 @@ interface ZifferState extends SceneState {
 	dirty: boolean;
 	/** Im letzten gezeichneten Bild waren Zellen in Bewegung. */
 	bewegt: boolean;
-	blattKey: string;
-	blatt: Blatt | null;
 }
 
 interface ZifferOptionen {
 	text: string;
 	/** Zelle in CSS-Pixeln. */
 	cs?: number;
-	/** Glyph in CSS-Pixeln. */
-	gl?: number;
 }
 
 function baue(s: ZifferState, txt: string, cs: number) {
@@ -84,7 +72,7 @@ function baue(s: ZifferState, txt: string, cs: number) {
 			s.cells.push({
 				x: a * cs,
 				y: b * cs,
-				ton: n >= 8 ? 0 : 2,
+				ton: 0.3 + (n / 8) * 0.7,
 				ox: s.reduced ? 0 : p ? p.x + p.ox - a * cs : (hsh(q, 1) - 0.5) * 300,
 				oy: s.reduced ? 0 : p ? p.y + p.oy - b * cs : (hsh(q, 2) - 0.5) * 300,
 				vx: 0,
@@ -93,31 +81,10 @@ function baue(s: ZifferState, txt: string, cs: number) {
 		}
 }
 
-// Zeichenblatt: die acht Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
-function blatt(s: ZifferState, gl: number): Blatt {
-	const key = `${s.dpr}|${loop.fv}|${gl}`;
-	if (s.blatt && s.blattKey === key) return s.blatt;
-	const z = Math.ceil((gl + 4) * s.dpr);
-	const cv = document.createElement('canvas');
-	cv.width = z * RAMPE.length;
-	cv.height = z;
-	const g = cv.getContext('2d');
-	if (!g) return { cv, z };
-	g.font = `500 ${gl * s.dpr}px "JetBrains Mono", monospace`;
-	g.textAlign = 'center';
-	g.textBaseline = 'middle';
-	g.fillStyle = '#FAFAFA';
-	for (let i = 0; i < RAMPE.length; i++)
-		g.fillText(RAMPE[i] ?? '', z * i + z / 2, z / 2 + 0.5 * s.dpr);
-	s.blattKey = key;
-	s.blatt = { cv, z };
-	return s.blatt;
-}
-
 /** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
 export function registerZiffer(
 	cv: HTMLCanvasElement,
-	{ text, cs: cs0 = 4, gl: gl0 = 7 }: ZifferOptionen,
+	{ text, cs: cs0 = 4 }: ZifferOptionen,
 ): () => void {
 	return register<ZifferState>({
 		name: `ziffer ${text}`,
@@ -130,13 +97,10 @@ export function registerZiffer(
 			s.key = '';
 			s.dirty = false;
 			s.bewegt = false;
-			s.blattKey = '';
-			s.blatt = null;
 		},
 		frame(s, _t, dt) {
-			// Hochformat: noch feineres Raster (Zelle 3, Glyph 5), die Ziffer bleibt eine Form
+			// Hochformat: noch feineres Raster (Zelle 3), die Ziffer bleibt eine Form
 			const cs = s.mode === 'hoch' ? 3 : cs0;
-			const gl = s.mode === 'hoch' ? 5 : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
 			if (s.key !== key) {
 				s.key = key;
@@ -180,20 +144,26 @@ export function registerZiffer(
 			s.dirty = false;
 			const { ctx, cv: flaeche } = s;
 			if (!ctx || !flaeche) return;
-			const { cv: sheet, z } = blatt(s, gl);
-			ctx.setTransform(1, 0, 0, 1, 0, 0);
-			ctx.clearRect(0, 0, flaeche.width, flaeche.height);
-			const dpr = s.dpr;
-			const tq = Math.floor(loop.now / 0.09);
+			ctx.setTransform(s.dpr, 0, 0, s.dpr, 0, 0);
+			ctx.clearRect(0, 0, s.W, s.H);
+			ctx.fillStyle = '#FAFAFA';
 			for (const c of s.cells) {
-				const dx = Math.round((c.x + c.ox + cs / 2) * dpr - z / 2);
-				const dy = Math.round((c.y + c.oy + cs / 2) * dpr - z / 2);
-				// Unterwegs (Entwurf: Abstand über 3 px oder Tempo über 0,5): Zeichen wechselt alle 90 ms, sonst fest
+				const x = c.x + c.ox + cs / 2;
+				const y = c.y + c.oy + cs / 2;
+				// Unterwegs (Abstand über 3 px oder Tempo über 0,5): kürzeres Stück, kippt mit der Bewegung
 				const unterwegs = Math.abs(c.ox) + Math.abs(c.oy) > 3 || Math.hypot(c.vx, c.vy) > 0.5;
-				const ton = unterwegs
-					? Math.floor(hsh(c.x + tq, c.y) * RAMPE.length) % RAMPE.length
-					: c.ton;
-				ctx.drawImage(sheet, z * ton, 0, z, z, dx, dy, z, z);
+				const h = cs * (0.12 + 0.36 * c.ton);
+				if (!unterwegs) {
+					ctx.fillRect(x - cs * 0.52, y - h / 2, cs * 1.04, h);
+					continue;
+				}
+				const w = cs * (0.7 + hsh(c.x, c.y) * 0.5);
+				const a = cl(Math.atan2(c.vy, c.vx + 0.001) * 0.35, -0.6, 0.6);
+				ctx.save();
+				ctx.translate(x, y);
+				ctx.rotate(a);
+				ctx.fillRect(-w / 2, -h / 2, w, h);
+				ctx.restore();
 			}
 		},
 	});

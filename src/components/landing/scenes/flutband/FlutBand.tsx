@@ -1,7 +1,7 @@
 import s from './FlutBand.module.css';
 
 // Flutband zwischen Ende-Szene und "So geht's", 1:1 aus design/final.dc.html: drei Zeilen zu 40 Zellen,
-// # = weiße Zelle, Ziffer = schwarze Zelle mit Zahl der weißen Nachbarn, "." = schwarze Zelle ohne Ziffer.
+// # = Wolkenfenster (früher weiß), Ziffer = schwarze Zelle mit Zahl der weißen Nachbarn, "." = schwarze Zelle ohne Ziffer.
 // Es steht fest im Fluss und scrollt mit der Ende-Bühne (deren Unterkante es berührt) nach oben, ohne Ein- oder
 // Ausblenden. Läuft es unter den Kopf, deckt es KopfMaske wie jeden Inhalt.
 const MUSTER = [

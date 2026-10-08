@@ -1,6 +1,6 @@
 # V4: von der Demo zur Kunst-Website
 
-Stand 2026-10-08. Grundlage: der umgesetzte Entwurf `final.dc.html` (Motion 1:1 portiert), die Recherche (`BRIEF.md`, `RESEARCH.md`, `MOTION.md`, Lusion-Studie, Awwwards-Aufnahmen in `~/Company/award-motion-study-2026-10-01/`) und die Inspiration des Nutzers (`~/Documents/inspration/`, `Landing/`, `neu/`).
+Stand 2026-10-08. Grundlage: der umgesetzte Entwurf `final.dc.html` (Motion 1:1 portiert), die Recherche (`BRIEF.md`, `RESEARCH.md`, `MOTION.md`, Lusion-Studie, Awwwards-Aufnahmen in `~/Company/unterlagen/recherche/award-motion-study-2026-10-01/`) und die Inspiration des Nutzers (`~/Documents/inspration/`, `Landing/`, `neu/`).
 
 ## Was die Recherche sagt und wo wir stehen
 
