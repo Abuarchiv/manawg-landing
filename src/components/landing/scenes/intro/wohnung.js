@@ -45,18 +45,21 @@ const PEOC = [
 ];
 
 /**
- * Welche Raumkarte steht, bei Fortschritt P: genau eine (Grenzen bei fs 1,5 / 2,5 / 3,5), Höhe der Deckkraft aus
- * Ein- und Ausblendung der Wohnung. Der Wechsel selbst läuft in der Bühne zeitgesteuert (stage.js, 180 ms):
- * so steht beim Scrollen nie ein Moment ohne lesbaren Text und im Stillstand nie ein Doppelbild.
+ * Deckkraft der vier Raumkarten bei Fortschritt P, am Scroll geführt wie im Entwurf (--c0..3): Karte j steht
+ * um fs = j + 1 (Plateau 0,5 Stopps breit), blendet davor und danach in 0,25 Stopps ein und aus. Anders als im
+ * Entwurf überlappen sich die Blenden nie (an der Grenze der Karten ist die Summe 0): kein Text über Text.
  */
 export function karten(P) {
 	const fpA = ss((P - 0.58) / 0.05);
 	const endA = ss((P - 0.9) / 0.05);
 	const fs = cl((P - 0.62) / 0.28) * 5;
-	// die letzte Karte (Pinnwand & Chat) bleibt, bis die Wohnung wegzoomt (endA); sie ist wie die Fläche bei
-	// endA 0,5 weg, erst danach blenden Titel und Handy der Ende-Ebene ein (Ende.module.css): nie Text über Text
-	const idx = fs >= 0.5 ? Math.min(3, Math.floor(fs - 0.5)) : -1;
-	return [0, 1, 2, 3].map((j) => (j === idx ? fpA * (1 - cl(endA * 2)) : 0));
+	return [0, 1, 2, 3].map((j) => {
+		const d = Math.abs(fs - (j + 1));
+		// die letzte Karte (Pinnwand & Chat) bleibt, bis die Wohnung wegzoomt (endA); sie ist wie die Fläche bei
+		// endA 0,5 weg, erst danach blenden Titel und Handy der Ende-Ebene ein (Ende.module.css): nie Text über Text
+		if (j === 3 && fs > 4) return fpA * (1 - cl(endA * 2));
+		return fpA * ss((0.5 - d) / 0.25);
+	});
 }
 
 qa.karten = karten;
