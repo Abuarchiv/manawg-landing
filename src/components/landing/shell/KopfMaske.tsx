@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 // Abschnitts das Band (Kopfunterkante plus 28 px weicher Auslauf). Er wirkt nur, solange das Band im Inhalt
 // liegt (So geht's, Körper, Bereiche, Installieren, Fragen, Finale), nie über den Szenen aus Flut, Wohnung und Tiefe.
 // Bereiche in jedem Format: Überschrift und Ortskarte laufen beim Verlassen der Szene unter das Band.
-const IDS = ['so-gehts', 'koerper', 'bereiche', 'installieren', 'fragen', 'finale'];
+const IDS = ['flutband', 'so-gehts', 'koerper', 'bereiche', 'installieren', 'fragen', 'finale'];
 // Hochformat: auch Tiefe, dort läuft sonst das Wortbild unter dem festen Kopf durch
 const IDS_HOCH = [...IDS, 'funktionen'];
 
@@ -25,6 +25,12 @@ export function KopfMaske() {
 				const s = document.getElementById(id);
 				if (!s) continue;
 				const r = s.getBoundingClientRect();
+				// Flutband (helle Zellen): volle Deckung, sobald seine Oberkante in den Auslauf des Verlaufs läuft,
+				// sonst steht das Logo auf einem grauen Streifen
+				if (id === 'flutband') {
+					if (r.bottom > 0) v = Math.max(v, Math.min(1, Math.max(0, (band + 28 - r.top) / 28)));
+					continue;
+				}
 				const d = Math.min(r.bottom, band) - Math.max(r.top, 0);
 				v = Math.max(v, Math.min(1, Math.max(0, d / band)));
 			}

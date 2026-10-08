@@ -211,9 +211,6 @@ export function createStage({ sec, buehne }) {
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
 		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));
 		setVar('--e', endA.toFixed(3));
-		// Ende-Szene löst sich erst im letzten Drittel des Wegscrollens auf (kein angeschnittener Arm, aber auch
-		// kein leerer Bildschirm vor dem Flutband)
-		setVar('--ab', cl((0.8 * H - rb.bottom) / (0.65 * H)).toFixed(3));
 		// Raumkarten nacheinander: die alte Karte geht in rund 120 ms nach oben weg, erst dann steigt die neue von
 		// unten ein. Nie liegen zwei Titel übereinander.
 		let cur = 0;
