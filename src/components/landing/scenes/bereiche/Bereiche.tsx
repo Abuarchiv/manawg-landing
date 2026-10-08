@@ -3,7 +3,7 @@
 import { type KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
 import m from './Bereiche.module.css';
-import { PL } from './orte';
+import { type Ort, PL } from './orte';
 import { registerPlanet } from './planet';
 
 export function Bereiche() {
@@ -45,7 +45,7 @@ export function Bereiche() {
 		wahl(j);
 		knoepfe.current[j]?.focus();
 	};
-	const pl = PL[sel] as string[];
+	const pl = PL[sel] as Ort;
 	return (
 		<section
 			id="bereiche"
@@ -100,7 +100,7 @@ export function Bereiche() {
 						</button>
 					))}
 				</nav>
-				<span className="label">{`${String(sel + 1).padStart(2, '0')} · ${(pl[0] as string).toUpperCase()}`}</span>
+				<span className="label">{`${String(sel + 1).padStart(2, '0')} · ${pl[0].toUpperCase()}`}</span>
 				<span
 					style={css(
 						"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-32);line-height:1.1;letter-spacing:-0.03em",
