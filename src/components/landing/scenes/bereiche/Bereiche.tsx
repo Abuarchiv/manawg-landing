@@ -84,7 +84,9 @@ export function Bereiche() {
 				ref={cvRef}
 				aria-hidden="true"
 				style={css(
-					'position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y',
+					// Unten weich auslaufen: der Planetenschein reicht quer über die Abschnittskante hinaus und
+					// würde sonst beim Verlassen der Szene als harte Linie über der nächsten Szene stehen
+					'position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;mask-image:linear-gradient(#000 calc(100% - 72px),transparent)',
 				)}
 			/>
 			<div

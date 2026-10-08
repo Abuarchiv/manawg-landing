@@ -53,9 +53,10 @@ export function karten(P) {
 	const fpA = ss((P - 0.58) / 0.05);
 	const endA = ss((P - 0.9) / 0.05);
 	const fs = cl((P - 0.62) / 0.28) * 5;
-	// die letzte Karte (Pinnwand & Chat) bleibt, bis die Wohnung wegzoomt (endA)
+	// die letzte Karte (Pinnwand & Chat) bleibt, bis die Wohnung wegzoomt (endA); sie ist wie die Fläche bei
+	// endA 0,5 weg, erst danach blenden Titel und Handy der Ende-Ebene ein (Ende.module.css): nie Text über Text
 	const idx = fs >= 0.5 ? Math.min(3, Math.floor(fs - 0.5)) : -1;
-	return [0, 1, 2, 3].map((j) => (j === idx ? fpA * (1 - endA) : 0));
+	return [0, 1, 2, 3].map((j) => (j === idx ? fpA * (1 - cl(endA * 2)) : 0));
 }
 
 qa.karten = karten;
