@@ -29,8 +29,7 @@ export default function AgbPage() {
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Geltungsbereich</h2>
 						<p>
 							Diese Bedingungen gelten für die Nutzung der Web-App ManaWG zur Organisation von
-							Wohngemeinschaften. Betreiber ist Abubakar Abditube. Du erreichst
-							ihn unter{' '}
+							Wohngemeinschaften. Betreiber ist Abubakar Abditube. Du erreichst ihn unter{' '}
 							<a href="mailto:info@manawg.com" className="break-all">
 								info@manawg.com
 							</a>
@@ -200,9 +199,7 @@ export default function AgbPage() {
 
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">12. Geltendes Recht</h2>
-						<p>
-							Es gilt deutsches Recht; das UN-Kaufrecht ist ausgeschlossen.
-						</p>
+						<p>Es gilt deutsches Recht; das UN-Kaufrecht ist ausgeschlossen.</p>
 					</section>
 
 					<section>

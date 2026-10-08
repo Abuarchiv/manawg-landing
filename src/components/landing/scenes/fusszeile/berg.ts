@@ -83,7 +83,11 @@ function programm(gl: WebGL2RenderingContext): WebGLProgram | null {
 function bild(src: string): Promise<HTMLImageElement> {
 	return new Promise((ok, fehler) => {
 		const i = new Image();
-		i.onload = () => i.decode().then(() => ok(i), () => ok(i));
+		i.onload = () =>
+			i.decode().then(
+				() => ok(i),
+				() => ok(i),
+			);
 		i.onerror = fehler;
 		i.src = src;
 	});
