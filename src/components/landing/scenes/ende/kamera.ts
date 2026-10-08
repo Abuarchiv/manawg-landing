@@ -4,10 +4,11 @@
 // kamera() sagt, wie er in die Bühne passt: { f, ox, oy } mit Bühnen-CSS-px = Ende-Raum * f + (ox, oy).
 // Ende.tsx setzt daraus --ende-x/-y/-f, hand.draw nutzt dieselbe Funktion (ein Vertrag).
 
-import { fitBox } from '../../core/canvas';
+import { type Fit, fitBox } from '../../core/canvas';
+import type { Modus } from '../../core/loop';
 
-/** Hochformat, wie in core/loop.js modeOf: Breite/Höhe <= 1 oder Breite < 700. */
-export const istHoch = (W, H) => W / H <= 1 || W < 700;
+/** Hochformat, wie in core/loop.ts modeOf: Breite/Höhe <= 1 oder Breite < 700. */
+export const istHoch = (W: number, H: number): boolean => W / H <= 1 || W < 700;
 
 // Hochformat: Ausschnitt im Ende-Raum (Daumen links bei x ~585). Das Handy füllt etwa 78 % der Breite, die
 // Finger rechts laufen aus dem Bild (natürlicher Anschnitt), der Unterarm wird unten angeschnitten.
@@ -20,7 +21,7 @@ const PHONE_H = 620;
 
 let safeTopPx = -1;
 /** safe-area-inset-top in CSS-px (einmal gemessen). */
-function safeTop() {
+function safeTop(): number {
 	if (safeTopPx >= 0) return safeTopPx;
 	if (typeof document === 'undefined') return 0;
 	const p = document.createElement('div');
@@ -36,13 +37,13 @@ function safeTop() {
  * Abstand oben max(72, safe-top + 56), Titel (Schrift 40 bis 60, eine Zeile), Abstand 16, Knopf 40,
  * Abstand zum Handy 20.
  */
-export function titelPlatz(W, _safeH) {
+export function titelPlatz(W: number, _safeH: number): number {
 	const oben = Math.max(72, 56 + safeTop());
 	const fs = Math.max(40, Math.min(0.08 * W, 60));
 	return oben + fs + 16 + 40 + 20;
 }
 
-export function kamera(W, H, safeH, _mode) {
+export function kamera(W: number, H: number, safeH: number, _mode: Modus): Fit {
 	if (!istHoch(W, H)) return fitBox(W, safeH, 1280, 800, 1.25);
 	const top = titelPlatz(W, safeH);
 	// Daumen links (x 584) und Fingerkuppen rechts (x 998) bleiben mit mindestens 8 px Rand im Bild
