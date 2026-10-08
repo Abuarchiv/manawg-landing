@@ -5,9 +5,9 @@ import { css } from '../../core/dc';
 import { registerTiefe } from './tunnel';
 
 const WOERTER = [
-	{ nr: '01 · GELD', text: 'Wer zahlt, trägt ein. ManaWG teilt auf.' },
-	{ nr: '02 · HAUSHALT', text: 'Einkauf, Vorräte, Putzplan.' },
-	{ nr: '03 · ABSPRACHEN', text: 'Kalender, Pinnwand, Chat.' },
+	{ nr: '01 · GELD', text: ['Wer zahlt, trägt ein. ManaWG ', 'teilt auf.'] },
+	{ nr: '02 · HAUSHALT', text: ['Einkauf, Vorräte, ', 'Putzplan.'] },
+	{ nr: '03 · ABSPRACHEN', text: ['Kalender, Pinnwand, ', 'Chat.'] },
 ];
 
 export function Tiefe() {
@@ -54,15 +54,17 @@ export function Tiefe() {
 								'position:absolute;left:var(--rand);right:var(--rand);bottom:var(--sp-72);display:flex;flex-direction:column;gap:var(--sp-10);opacity:0',
 							)}
 						>
-							<span className="label" aria-hidden="true">
+							<span className="label tiefe-label" aria-hidden="true">
 								{w.nr}
+								<i className="leit" />
 							</span>
 							<h3
 								style={css(
 									"margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-44);line-height:inherit;letter-spacing:-0.03em;overflow-wrap:break-word",
 								)}
 							>
-								{w.text}
+								{w.text[0]}
+								<span className="serife">{w.text[1]}</span>
 							</h3>
 						</div>
 					))}

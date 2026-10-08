@@ -61,7 +61,7 @@ export function Koerper() {
 						"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-40);line-height:1.1;letter-spacing:-0.03em;margin:0;overflow-wrap:break-word",
 					)}
 				>
-					Wirf sie. Sie finden zurück.
+					Wirf sie. Sie finden <span className="serife">zurück.</span>
 				</h2>
 				<span className="label" aria-hidden="true">
 					<span className={m.maus}>[ ZIEHEN ZUM WERFEN ]</span>

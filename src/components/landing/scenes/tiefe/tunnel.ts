@@ -500,7 +500,9 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			zeichnePunkte(s, nb, { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm });
 			s.caps.forEach((el, i) => {
 				const ky = el.getBoundingClientRect().top - kopfUnten;
-				el.style.opacity = ((zonen[i]?.w ?? 0) * cl(ky / 28)).toFixed(3);
+				const op = ((zonen[i]?.w ?? 0) * cl(ky / 28)).toFixed(3);
+				el.style.opacity = op;
+				el.style.setProperty('--k', op); // Leitlinie zeichnet mit der Deckkraft (landing.css .leit)
 			});
 			// Hinweis „weiter scrollen“ nur am Anfang der Fahrt, danach ganz weg
 			if (s.hint) s.hint.style.opacity = (1 - ss(p / 0.06)).toFixed(3);

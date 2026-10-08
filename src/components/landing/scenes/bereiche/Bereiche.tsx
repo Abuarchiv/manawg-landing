@@ -78,7 +78,7 @@ export function Bereiche() {
 				>
 					Acht Orte.
 					<br />
-					Eine WG.
+					Eine <span className="serife">WG.</span>
 				</h2>
 				<span className={`label ${m.hinweis}`}>ZIEHEN ZUM DREHEN · ORT ANKLICKEN</span>
 			</div>
