@@ -23,16 +23,13 @@ export default function DatenschutzPage() {
 					Zur Startseite
 				</Link>
 
-				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Datenschutzerklärung</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2. Oktober 2026</p>
+				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-8">Datenschutzerklärung</h1>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					{/* 1. Verantwortlicher */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Verantwortlicher</h2>
 						<p>Abubakar Abditube</p>
-						<p>Kurt-Schumacher-Straße 2</p>
-						<p>60311 Frankfurt am Main, Deutschland</p>
 						<p>
 							E-Mail:{' '}
 							<a href="mailto:info@manawg.com" className="break-all">

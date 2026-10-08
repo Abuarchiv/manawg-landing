@@ -22,15 +22,14 @@ export default function AgbPage() {
 					Zur Startseite
 				</Link>
 
-				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Nutzungsbedingungen</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">Stand: 2. Oktober 2026</p>
+				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-8">Nutzungsbedingungen</h1>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Geltungsbereich</h2>
 						<p>
 							Diese Bedingungen gelten für die Nutzung der Web-App ManaWG zur Organisation von
-							Wohngemeinschaften. Betreiber ist Abubakar Abditube in Frankfurt am Main. Du erreichst
+							Wohngemeinschaften. Betreiber ist Abubakar Abditube. Du erreichst
 							ihn unter{' '}
 							<a href="mailto:info@manawg.com" className="break-all">
 								info@manawg.com
@@ -202,8 +201,7 @@ export default function AgbPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">12. Geltendes Recht</h2>
 						<p>
-							Es gilt deutsches Recht; das UN-Kaufrecht ist ausgeschlossen. Soweit gesetzlich
-							zulässig, ist Frankfurt am Main Gerichtsstand.
+							Es gilt deutsches Recht; das UN-Kaufrecht ist ausgeschlossen.
 						</p>
 					</section>
 

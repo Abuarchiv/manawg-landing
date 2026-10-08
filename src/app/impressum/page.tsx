@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Impressum von ManaWG',
-	description: 'Anbieter, Anschrift und Kontakt von ManaWG.',
+	description: 'Betreiber und Kontakt von ManaWG.',
 	alternates: { canonical: '/impressum' },
 };
 
@@ -23,23 +23,13 @@ export default function ImpressumPage() {
 				</Link>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Impressum</h1>
-				<p className="text-sm text-[var(--text-3)] mb-8">
-					Angaben nach § 5 DDG und § 18 MStV: Stand: 2. Oktober 2026
-				</p>
+				<p className="text-sm text-[var(--text-3)] mb-8">Privates, nicht-kommerzielles Angebot</p>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">Betreiber</h2>
 						<p>Abubakar Abditube</p>
 						<p className="mt-2 text-[var(--text-3)]">ManaWG wird privat und kostenlos betrieben.</p>
-					</section>
-
-					<section>
-						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">Anschrift</h2>
-						<p>Kurt-Schumacher-Straße 2</p>
-						<p>60311 Frankfurt am Main</p>
-						<p>Hessen</p>
-						<p>Deutschland</p>
 					</section>
 
 					<section>
@@ -60,16 +50,6 @@ export default function ImpressumPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">Aufsichtsbehörde</h2>
 						<p>Für diesen Dienst ist keine behördliche Erlaubnis erforderlich.</p>
-					</section>
-
-					<section>
-						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-							Verantwortlich gemäß § 18 Abs. 2 MStV
-						</h2>
-						<p>Abubakar Abditube</p>
-						<p>Kurt-Schumacher-Straße 2</p>
-						<p>60311 Frankfurt am Main</p>
-						<p>Deutschland</p>
 					</section>
 				</div>
 			</div>

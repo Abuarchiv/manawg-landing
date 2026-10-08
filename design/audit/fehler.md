@@ -283,7 +283,7 @@ Priorität: F-01 bis F-04 kritisch. F-05 bis F-12 hoch. F-13 bis F-17 und F-19 m
 - **Texte (alle sichtbaren und versteckten Strings gelesen, `texts.mjs`, Listen in `v3/out/texts-dom.txt`, `texts-extra.txt`, `texts-engine.txt`):**
   1. **Keine falschen Umlaute.** Die Suche nach `ae`, `oe`, `ue` als Umlaut-Ersatz in `src/` findet nur Bezeichner (`Raeume`, `Koerper`), keinen sichtbaren Text. Anführungszeichen („ “) und Apostroph (’) sind typografisch richtig.
   2. **Erste FAQ-Frage mehrdeutig:** "Wie kommen meine Mitbewohner dazu?" kann im Deutschen auch als Empörung gelesen werden ("Wie kommen die dazu?" = "Was fällt denen ein?"). Gemeint ist der Beitritt. Vorschlag: "Wie kommen meine Mitbewohner in die WG?" (`logic.js:11`).
-  3. **"Straße" gegen "Strasse":** Handy-Mock "WG Lindenstraße" (ß), Rechtsseiten "Kurt-Schumacher-Strasse 2" (ss). Die Anschrift ist die des Betreibers, Schreibweise bestätigen und angleichen.
+  3. **"Straße" gegen "Strasse":** erledigt, die Rechtsseiten enthalten keine Anschrift mehr.
   4. **"AGB" gegen "Nutzungsbedingungen":** Auf den Rechtsseiten heißt der Link "AGB", Titel und Überschrift der Seite lauten "Nutzungsbedingungen". Im Footer der Landing fehlt der Link ganz (F-17).
   5. "1 Dinge" und "MÄRZ" siehe F-11, Umbruch "Home- / Bildschirm." siehe F-18.
 - **Rechtsseiten (`legal.mjs`, 1800x987 und 390x844, `v3/shots/sheet-legal.jpg`):** `/impressum`, `/datenschutz`, `/agb` antworten mit 200. Am Handy läuft die Seite über (`scrollWidth` 422 bei 390 px), Text am rechten Rand abgeschnitten (V-16, bestätigt). "Stand: 2026-05-19" steht im ISO-Format und bricht am Handy mitten im Datum um ("2026-05-" und "19"). Deutsch wäre "19.05.2026". Konsole sauber.
