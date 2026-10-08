@@ -14,7 +14,7 @@ import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
 // Bei jedem neuen Render erhöhen: json und webp gehören zusammen und werden gemeinsam gecacht.
-const HAND_V = 6;
+const HAND_V = 7;
 const STEP = 1.25; // Zellgröße in Bühnen-px (fein: Halbton liest als Haut, nicht als Raster)
 const GAM = 0.85;
 const CON = 1.05;
@@ -167,6 +167,8 @@ vec2 holdTone(vec2 C){
     float ti = vd * cov * (1. - ss((-sdS - ri) / 7.));
     tone = mix(tone, ti, gk);
   }
+  // Gehäuserand (zwischen Glas und Außenkante): Daumenkuppe nicht als weiße Fläche ausbrennen
+  if (front && sdf < 0. && sdS > 0.) tone = min(tone, .5);
   return vec2(tone, front ? 2. : 1.);
 }
 

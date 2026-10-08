@@ -4,6 +4,10 @@ Stand 2026-10-07. Die beiden Kapsel-Hände der Engine (Handy-Hand `holdBack`/`ho
 
 Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft): `/Users/abu/Company/archiv/hand/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/scripts/preview.html` mit `?b=../final/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `ascii=1`, `mx/my/px/py`), eingeklebt im Abschnitt 6.
 
+### Stand 2026-10-08, fünfte Runde (HAND_V 7): Haltehand neu gestellt nach Referenzfoto 2
+
+Rohe Farb-Renders mit Front-, Seiten- und Draufsicht (`archiv/hand/v3/ich/go.sh`, `ich/sweep.py`, `ich/r8p.py`) zeigten die Ursache: Die Daumenwurzel lag hinter dem Handy (nur die Kuppe schaute vor), und die Hand saß so weit vorn, dass die Fingerspitzen rechts um die Kante bis aufs Glas griffen. Neu (`archiv/hand/v3/ich/base740.json`): Daumen `finger1-1` −26/−6/−5 (liegt vollständig neben der linken Kante, Nagel und Gelenkfalte sichtbar), Handgelenk `wrist` 588/740 und 55 mm hinter der Referenzebene (Handfläche an der Rückseite, Finger greifen um die rechte Kante und bleiben neben dem Glas). Render `render8.py` 128 Samples, Licht `lights/v9q.json`, Pack `pack8.py --pct 98 --gain 0.76 --lgamma 1.05 --ink 0.8 --inkw 0.65` → `out/I1/pk`. Zeigehand unverändert aus Runde vier. Shader: Auf dem Gehäuserand (zwischen Glas und Außenkante) ist der Ton der vorderen Ebene auf 0,5 gedeckelt, sonst brennt die Daumenkuppe dort als weiße Fläche aus.
+
 ### Stand 2026-10-08, vierte Runde (HAND_V 6): Hände neu gestellt (Referenz: Fotos des Nutzers)
 
 Ursache der „unrealistischen“ Hände: Das Netz war nie das Problem, die Pose war es. Die Haltehand bestand aus zwei getrennt gelösten Pässen (Handfläche ohne Finger plus eine „Finger-Hand“ nur aus Kuppen), die Finger steckten senkrecht hinter dem Handy und es blieben nur abgeschnittene Kuppen. Neu: ein einziger Render der ganzen Hand, so gestellt wie im Referenzfoto (gleiche Struktur: Daumen links am Rand, vier Finger rechts um die Kante).
