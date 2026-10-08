@@ -1,7 +1,7 @@
 .sektion {
 	--h: max(560px, 95svh);
 	--titel-fs: var(--t-200);
-	--knoepfe-h: 44px;
+	--knoepfe-h: 32px;
 	--luecke: var(--sp-32);
 	--pad-oben: calc(max(var(--rand-kopf), env(safe-area-inset-top, 0px) + 8px) + var(--cta-h) + 24px);
 	/* Mindesthöhe aus dem Inhalt: Kopfpolster, Titel (2 Zeilen), Lücke, Knöpfe, Fußpolster */
@@ -61,7 +61,7 @@
 .knoepfe {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: 4px 28px;
 	pointer-events: auto;
 }
 
@@ -83,21 +83,20 @@
 	.titel {
 		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
 	}
+	/* beide Knöpfe in einer Zeile: engere Sperrung und Klammerabstand */
 	.knoepfe {
 		max-width: 520px;
+		gap: 4px 14px;
 	}
-	.knoepfe .knopf {
-		flex: 1 1 auto;
-		justify-content: center;
-		min-height: 44px;
-		padding: 0 12px;
+	.knopf {
+		letter-spacing: 0.04em;
+		gap: 0.5em;
 	}
 }
-
-/* 320 px breit: engeres Polster, damit beide Knöpfe nebeneinander bleiben (ein Umbruch wüchse unter die Fußzeile) */
 @media (max-width: 339px) {
-	.knoepfe .knopf {
-		padding: 0 8px;
+	.knopf {
+		font-size: 11px;
+		letter-spacing: 0.02em;
 	}
 }
 

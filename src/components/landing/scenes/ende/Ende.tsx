@@ -59,7 +59,7 @@ export function Ende() {
 					<a
 						data-cta="1"
 						data-quiet="1"
-						className={`cta cta--rand cta--gross ${s.knopf}`}
+						className={`cta cta--voll cta--gross ${s.knopf}`}
 						href={appUrl('/neu?action=create')}
 					>
 						WG erstellen
