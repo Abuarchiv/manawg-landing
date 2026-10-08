@@ -14,7 +14,7 @@ import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
 // Bei jedem neuen Render erhöhen: json und webp gehören zusammen und werden gemeinsam gecacht.
-const HAND_V = 4;
+const HAND_V = 5;
 const STEP = 1.25; // Zellgröße in Bühnen-px (fein: Halbton liest als Haut, nicht als Raster)
 const GAM = 0.85;
 const CON = 1.05;

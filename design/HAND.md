@@ -4,6 +4,10 @@ Stand 2026-10-07. Die beiden Kapsel-Hände der Engine (Handy-Hand `holdBack`/`ho
 
 Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft): `/Users/abu/Company/archiv/hand/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/scripts/preview.html` mit `?b=../final/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `ascii=1`, `mx/my/px/py`), eingeklebt im Abschnitt 6.
 
+### Stand 2026-10-08, dritte Runde (HAND_V 5): Daumen
+
+Gate-3-Funde 2, 7, 10: der Daumen las sich als Säule (gerade Kanten, kein Knick, kein Nagel, harte Kante zum Ballen). Ursache: Grund- und Endglied lagen in der Projektion beide bei 68° (die Beugung ging in die Tiefe, Endgelenk 31 mm vor dem Glas), und die Daumenachse saß bei x ≈ 612, so dass der Handy-Rand die rechte Daumenkontur gerade abschnitt. Neu gelöst mit `scripts/opt_thumb7.py` (`q8/main2_ziel.json` → `q8/main2.json`): Daumen-Grundgelenk nach links auf x 565 / y 594, Grundglied 76° in der Bildebene, Endglied 60° (Knick 16° sichtbar), Endgelenk 25 mm vor dem Glas, Kuppe 15 px über dem Rand. Knochen (FK, Grad): `finger1-1` −32,4 / −57,4 / −2,7 (vorher −59,7 / −2,8), `finger1-2` 48,4 / 0 / −34,7 (vorher 40,9 / −44,3), `finger1-3` 56,4 (vorher 61,8). Die rechte Daumenkontur ist jetzt von der Kuppe bis zum Grundgelenk sichtbar, dahinter der dunklere Ballen. Beide Atlanten mit Tintenlinien gepackt (`pack8 --ink 0.9`: Tiefensprung und Normalenknick, bisher 0): Nagelränder an Daumen und Kuppen, Beugefalte, Daumenkontur vor dem Ballen. Helligkeit `--gain 0.72 --lgamma 1.15` (vorher 0,8 / 1,0): keine ausgefressenen weißen Flächen mehr auf dem Daumenrücken und keine weißen Glanzpunkte auf den Kuppen. Lauf `v3/final10.sh` → `out/R6/pk`. Messung `measure7`: Daumen Überstand 14,7 px, Spitze y 384; Kuppen unverändert. Bleibt: unterhalb des Grundgelenks ist Ballen plus Daumenbasis weiterhin eine Fläche bis zum Handy-Rand (im Halbton ohne Binnenzeichnung), und die Innenseite der Daumenkuppe auf dem Glas liest als helle Fläche.
+
 ### Stand 2026-10-08, zweite Runde (HAND_V 4)
 
 Haut matter (`skin7.make_skin3` mit `rough` 0,66 / `spec` 0,24 aus den Licht-Specs `lights/L2r.json`, `lights/LP8r.json`): der durchgehende Glanzstreifen auf dem Daumen zerfällt in Formschatten. Daumen-Endglied 15° mehr gebeugt (`q8/main1.json`, Nagel und Beugefalte im Lum-Pass sichtbar, Überstand 15 px). Fingerkuppen stärker gestaffelt (`q8/fp13.json` → `fp13_s.json`: Ziele Zeige 236, Mittel 284, Ring 338, klein 398; Kuppenhöhen 40/36/32/27; kleiner Finger schlanker 0,74). Zeigehand mit gestaffelter Krümmung (`q8/td4.json`: Mittelfinger 70/86/40, Ring 88/100/50, klein 100/100/58), Daumen liegt auf dem Mittelfinger. Lauf `v3/final9.sh` → `out/R5/pk`. Messung `measure7`: Kuppen y 236–275, 282–319, 327–359, 376–402 (Höhen 39/37/32/26).
@@ -16,9 +20,9 @@ Kuppen gestaffelt statt in einer senkrechten Reihe: Finger-Hand neu gelöst und 
 
 | Datei | Inhalt | Größe |
 |---|---|---|
-| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 2072 × 2754, Maßstab 1,5, Kachel ab Bühnen-x 424, y 176) | 88 kB |
-| `public/hand/point.webp` + `point.json` | Zeigehand als Sprite (Atlas 3328 × 894, Maßstab 1,0) | 66 kB |
-| Summe | | 154 kB (Grenze 600 kB) |
+| `public/hand/hold.webp` + `hold.json` | Hand, die das Handy hält (Atlas 1792 × 2640, Maßstab 1,5, Kachel ab Bühnen-x 411, y 227) | 56 kB |
+| `public/hand/point.webp` + `point.json` | Zeigehand als Sprite (Atlas 3800 × 648, Maßstab 1,0) | 49 kB |
+| Summe | | 105 kB (Grenze 600 kB) |
 
 Die JSON-Dateien beschreiben sich selbst (`tiles`, `origin`, `scale`, `encoding`, `space`; `hold.json` zusätzlich `phone`, `screen`, `bottomY`).
 
