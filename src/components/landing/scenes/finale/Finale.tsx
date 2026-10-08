@@ -51,7 +51,7 @@ export function Finale() {
 					<h2 id="finale-titel" className={s.titel}>
 						Alltag
 						<br />
-						teilen.
+						<span className="serife">teilen.</span>
 					</h2>
 					<div data-knoepfe="1" className={s.knoepfe}>
 						<a

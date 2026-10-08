@@ -20,6 +20,7 @@ import { Hinweise } from './shell/Hinweise';
 import { Kopf } from './shell/Kopf';
 import { KopfMaske } from './shell/KopfMaske';
 import { Lader } from './shell/Lader';
+import { Raster } from './shell/Raster';
 
 // Wurzel der Landing: Kopf und Hinweise fest am Fenster, danach der Inhalt im normalen Dokumentfluss,
 // zuletzt der Lader. Dokument-Scroll, keine skalierte Bühne. Szenen melden sich selbst bei der
@@ -81,6 +82,7 @@ export function Landing() {
 			<a className="label sprung" href="#inhalt">
 				Zum Inhalt springen
 			</a>
+			<Raster />
 			<KopfMaske />
 			<Kopf />
 			<Hinweise />

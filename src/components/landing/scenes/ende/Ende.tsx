@@ -54,7 +54,7 @@ export function Ende() {
 				<div className={s.titel} data-ende-titel="1">
 					<h2 data-quiet="1" className={s.h}>
 						Alltag <br />
-						teilen.
+						<span className="serife">teilen.</span>
 					</h2>
 					<a
 						data-cta="1"

@@ -29,6 +29,11 @@
 .nowrap {
 	white-space: nowrap;
 }
+/* „Home-Bildschirm.“ in der Serife ist als eine Zeile länger als die Grotesk: etwas enger, damit sie in die Spalte passt */
+.titel .nowrap {
+	font-size: 1.1em;
+	letter-spacing: -0.028em;
+}
 .lead {
 	margin: 0;
 	font-size: var(--t-18);

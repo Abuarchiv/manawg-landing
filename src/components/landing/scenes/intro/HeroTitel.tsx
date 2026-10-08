@@ -22,7 +22,7 @@ export function HeroTitel() {
 				<h1 className={s.h1}>
 					Die App
 					<br />
-					für eure WG.
+					für eure <span className="serife">WG.</span>
 				</h1>
 				<p className={s.unter}>Ausgaben, Einkauf und Putzplan. Kostenlos, im Browser.</p>
 			</div>
