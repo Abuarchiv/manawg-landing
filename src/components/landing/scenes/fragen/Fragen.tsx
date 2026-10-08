@@ -29,9 +29,8 @@ export function Fragen() {
 			data-sec="fragen"
 			tabIndex={-1}
 			aria-labelledby="fragen-titel"
-			data-hell=""
 			style={css(
-				'position:relative;background:#F2F2F2;color:#0A0A0A;padding:var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);display:flex;flex-direction:column;gap:var(--sp-48)',
+				'position:relative;background:#0A0A0A;color:#FAFAFA;padding:var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);display:flex;flex-direction:column;gap:var(--sp-48)',
 			)}
 		>
 			<h2 id="fragen-titel" className="label" style={css('margin:0')}>
