@@ -6,10 +6,13 @@
 
 import { loop, qa } from '../../core/loop';
 import { BAYER, cl, lag, lerp, ss } from '../../core/math';
+import type { BuehnenKontext } from './types';
 
-const mono = (px) => `500 ${px}px "JetBrains Mono", monospace`;
+const mono = (px: number) => `500 ${px}px "JetBrains Mono", monospace`;
 
-// [Name, x, y, Breite, Tiefe, Zeile]
+/** Raum im Raster: Name, x, y, Breite, Tiefe, Zeile. */
+type Raum = readonly [name: string, x: number, y: number, w: number, d: number, zeile: string];
+
 const ROOMS = [
 	['KÜCHE', 0, 0, 8, 6, 'Einkäufe · Vorräte'],
 	['BAD', 8, 0, 5, 6, 'Putzplan'],
@@ -18,9 +21,19 @@ const ROOMS = [
 	['WOHNZIMMER', 0, 9, 9, 7, 'Ausgaben · Fixkosten'],
 	['ZIMMER · LEA', 9, 9, 5, 7, ''],
 	['ZIMMER · LINA', 14, 9, 6, 7, ''],
-];
-// Blickpunkte: Mitte im Raster (cx, cy), Maßstab u, Ursprung der Projektion (ox, oy), Raum
-const STOPS = [
+] as const satisfies readonly Raum[];
+
+/** Blickpunkt: Mitte im Raster (cx, cy), Maßstab u, Ursprung der Projektion (ox, oy), Raum (-1 = keiner). */
+interface Blick {
+	cx: number;
+	cy: number;
+	u: number;
+	ox: number;
+	oy: number;
+	room: number;
+}
+
+const STOPS: readonly Blick[] = [
 	{ cx: 10, cy: 8, u: 26, ox: 780, oy: 470, room: -1 },
 	{ cx: 4, cy: 3, u: 62, ox: 840, oy: 420, room: 0 },
 	{ cx: 4.5, cy: 12.5, u: 52, ox: 840, oy: 420, room: 4 },
@@ -28,28 +41,37 @@ const STOPS = [
 	{ cx: 10, cy: 7.5, u: 48, ox: 840, oy: 420, room: 3 },
 	{ cx: 10, cy: 8, u: 24, ox: 640, oy: 300, room: -1 },
 ];
-const WALLS = [];
+/** Wand: Anfang (x, y) und Ende (x, y) im Raster. */
+type Wand = [number, number, number, number];
+
+const WALLS: Wand[] = [];
 for (const r of ROOMS) {
 	const x = r[1];
 	const y = r[2];
 	const w = r[3];
 	const hh = r[4];
-	WALLS.push([x, y, x + w, y], [x + w, y, x + w, y + hh], [x, y + hh, x + w, y + hh], [x, y, x, y + hh]);
+	WALLS.push(
+		[x, y, x + w, y],
+		[x + w, y, x + w, y + hh],
+		[x, y + hh, x + w, y + hh],
+		[x, y, x, y + hh],
+	);
 }
 WALLS.sort((a, b) => a[0] + a[1] + a[2] + a[3] - (b[0] + b[1] + b[2] + b[3]));
+/** Bewohner: Name und Größe der Scheibe (in Rastereinheiten). */
 const PEOC = [
 	['LINA', 0.62],
 	['MIKA', 0.5],
 	['JONA', 0.42],
 	['LEA', 0.34],
-];
+] as const;
 
 /**
  * Deckkraft der vier Raumkarten bei Fortschritt P, am Scroll geführt wie im Entwurf (--c0..3): Karte j steht
  * um fs = j + 1 (Plateau 0,5 Stopps breit), blendet davor und danach in 0,25 Stopps ein und aus. Anders als im
  * Entwurf überlappen sich die Blenden nie (an der Grenze der Karten ist die Summe 0): kein Text über Text.
  */
-export function karten(P) {
+export function karten(P: number): number[] {
 	const fpA = ss((P - 0.58) / 0.05);
 	const endA = ss((P - 0.9) / 0.05);
 	const fs = cl((P - 0.62) / 0.28) * 5;
@@ -64,11 +86,65 @@ export function karten(P) {
 
 qa.karten = karten;
 
-const states = new WeakMap();
+/** Rechteck in CSS-Pixeln des Canvas. */
+interface Rect {
+	x0: number;
+	y0: number;
+	x1: number;
+	y1: number;
+}
+
+/** Beschriftung (Raumname oder Bewohner) vor und nach dem Setzen. */
+interface Label {
+	text: string;
+	x: number;
+	y: number;
+	size: number;
+	a: number;
+	art: 'name' | 'raum';
+	/** Ganz außerhalb des Blickfelds: wird nicht gezeigt. */
+	aus: boolean;
+	w: number;
+	/** Belegte Fläche nach setzeLabels (null, solange nicht gesetzt). */
+	rect: Rect | null;
+}
+
+/** Bewohner, der zwischen den Räumen läuft (Ziel tx, ty; nt = Zeitpunkt des nächsten Ziels). */
+interface Person {
+	name: string;
+	rel: number;
+	x: number;
+	y: number;
+	tx: number;
+	ty: number;
+	nt: number;
+}
+
+/** Rechtecke der DOM-Elemente mit data-loch: die Kartenspalte und alles, dem Beschriftungen ausweichen. */
+interface DomMasse {
+	spalte: Rect | null;
+	meiden: Rect[];
+}
+
+/** Zustand der Wohnung je Canvas. */
+interface WohnungsZustand {
+	ctx: CanvasRenderingContext2D;
+	/** Nachlaufender Zeiger in Szenenkoordinaten. */
+	sm: { x: number; y: number };
+	pp: Person[] | null;
+	labels: Label[];
+	dom: DomMasse | null;
+	domN: number;
+	fade: Record<string, number>;
+	W: number;
+	H: number;
+}
+
+const states = new WeakMap<HTMLCanvasElement, WohnungsZustand>();
 
 // Zeichen-Maße für Beschriftungen
-const widths = new Map();
-function breite(ctx, font, text) {
+const widths = new Map<string, number>();
+function breite(ctx: CanvasRenderingContext2D, font: string, text: string): number {
 	const k = `${font}|${text}`;
 	let w = widths.get(k);
 	if (w === undefined) {
@@ -78,14 +154,19 @@ function breite(ctx, font, text) {
 	}
 	return w;
 }
-const trifft = (a, b) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+const trifft = (a: Rect, b: Rect) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
 
 /**
  * Beschriftungen setzen (CSS-Pixel, Identität): in den sichtbaren Bereich klemmen, Rechtecken aus dem
- * DOM (Kartenspalte, Kopf, Hinweis) und anderen Beschriftungen ausweichen. items: [{ text, x, y, size, a }]
+ * DOM (Kartenspalte, Kopf, Hinweis) und anderen Beschriftungen ausweichen.
  */
-function setzeLabels(ctx, items, grenzen, meiden) {
-	const gesetzt = [];
+function setzeLabels(
+	ctx: CanvasRenderingContext2D,
+	items: Label[],
+	grenzen: Rect,
+	meiden: readonly Rect[],
+): Label[] {
+	const gesetzt: Rect[] = [];
 	for (const it of items) {
 		const font = mono(it.size);
 		const w = breite(ctx, font, it.text);
@@ -102,7 +183,7 @@ function setzeLabels(ctx, items, grenzen, meiden) {
 		}
 		let x = Math.min(grenzen.x1 - 8 - w / 2, Math.max(grenzen.x0 + 8 + w / 2, it.x));
 		let y = Math.min(grenzen.y1 - 8, Math.max(grenzen.y0 + 8 + h, it.y));
-		const rect = () => ({ x0: x - w / 2 - 2, x1: x + w / 2 + 2, y0: y - h - 2, y1: y + 3 });
+		const rect = (): Rect => ({ x0: x - w / 2 - 2, x1: x + w / 2 + 2, y0: y - h - 2, y1: y + 3 });
 		for (let n = 0; n < 6; n++) {
 			const r = rect();
 			const m = meiden.find((q) => trifft(r, q));
@@ -139,45 +220,64 @@ function setzeLabels(ctx, items, grenzen, meiden) {
 const HOCH_BOX = { bw: 900, bh: 560, x0: 190, y0: 120, ox: 640, oy: 410 };
 
 /** Hochformat: Oberkante und Unterkante der Wohnungsbox unter der Kartenspalte (CSS-px). Auch die Flut spart sie aus. */
-export function hochOben(textUnten, safeH) {
+export function hochOben(textUnten: number, safeH: number): { top: number; bot: number } {
 	return { top: Math.min(textUnten + 10, safeH * 0.62), bot: safeH - 56 };
 }
 
 /** Rechtecke der DOM-Elemente mit data-loch relativ zum Canvas (alle 20 Bilder neu gemessen). */
-function messeDom(st, cv) {
+function messeDom(st: WohnungsZustand, cv: HTMLCanvasElement): DomMasse {
 	if (st.dom && loop.n - st.domN < 20) return st.dom;
 	const r0 = cv.getBoundingClientRect();
-	const rect = (el) => {
+	const rect = (el: Element): Rect => {
 		const r = el.getBoundingClientRect();
-		return { x0: r.left - r0.left, y0: r.top - r0.top, x1: r.right - r0.left, y1: r.bottom - r0.top };
+		return {
+			x0: r.left - r0.left,
+			y0: r.top - r0.top,
+			x1: r.right - r0.left,
+			y1: r.bottom - r0.top,
+		};
 	};
 	const root = cv.closest('#final') ?? document;
-	st.dom = {
+	const dom: DomMasse = {
 		spalte: null,
 		meiden: [],
 	};
-	for (const el of root.querySelectorAll('[data-loch]')) {
+	st.dom = dom;
+	for (const el of root.querySelectorAll<HTMLElement>('[data-loch]')) {
 		const q = rect(el);
 		if (el.dataset.loch === 'text') {
-			st.dom.spalte = q;
-			st.dom.meiden.push(q);
-		} else st.dom.meiden.push({ x0: q.x0 - 6, y0: q.y0 - 6, x1: q.x1 + 6, y1: q.y1 + 6 });
+			dom.spalte = q;
+			dom.meiden.push(q);
+		} else dom.meiden.push({ x0: q.x0 - 6, y0: q.y0 - 6, x1: q.x1 + 6, y1: q.y1 + 6 });
 	}
 	st.domN = loop.n;
-	return st.dom;
+	return dom;
 }
 
 /** Zeichnet die Wohnung in das 2D-Canvas. c: Kontext der Bühne. */
-export function draw(cv, c) {
+export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	let st = states.get(cv);
 	if (!st) {
-		st = { ctx: cv.getContext('2d'), sm: { x: 640, y: 400 }, pp: null, labels: [], dom: null, domN: -99, fade: {} };
-		states.set(cv, st);
+		const ctx0 = cv.getContext('2d');
+		if (!ctx0) return;
+		const neu: WohnungsZustand = {
+			ctx: ctx0,
+			sm: { x: 640, y: 400 },
+			pp: null,
+			labels: [],
+			dom: null,
+			domN: -99,
+			fade: {},
+			W: 0,
+			H: 0,
+		};
+		st = neu;
+		states.set(cv, neu);
 		qa.wohnungLabels = () => ({
-			labels: st.labels.map((l) => ({ text: l.text, size: l.size, ...l.rect, cx: l.x, cy: l.y })),
-			spalte: st.dom?.spalte ?? null,
-			W: st.W,
-			H: st.H,
+			labels: neu.labels.map((l) => ({ text: l.text, size: l.size, ...l.rect, cx: l.x, cy: l.y })),
+			spalte: neu.dom?.spalte ?? null,
+			W: neu.W,
+			H: neu.H,
 		});
 	}
 	const ctx = st.ctx;
@@ -186,21 +286,25 @@ export function draw(cv, c) {
 	st.H = H;
 	const dom = messeDom(st, cv);
 	// Avatare und Beschriftungen blenden in ca. 120 ms aus, solange sie die Raumtext-Spalte (samt Rand links) schneiden
-	const zone = dom.spalte && Math.max(...karten(c.P)) > 0.01
-		? { x0: 0, x1: dom.spalte.x1 + 8, y0: dom.spalte.y0 - 8, y1: dom.spalte.y1 + 8 }
-		: null;
-	const blende = (key, r) => {
+	const zone =
+		dom.spalte && Math.max(...karten(c.P)) > 0.01
+			? { x0: 0, x1: dom.spalte.x1 + 8, y0: dom.spalte.y0 - 8, y1: dom.spalte.y1 + 8 }
+			: null;
+	const blende = (key: string, r: Rect): number => {
 		const hit = zone && r.x1 > zone.x0 && r.x0 < zone.x1 && r.y1 > zone.y0 && r.y0 < zone.y1;
 		const z = hit ? 0 : 1;
 		const v = st.fade[key] ?? z;
-		st.fade[key] = Math.abs(z - v) < 0.01 ? z : v + (z - v) * (1 - Math.exp(-Math.min(c.dt ?? 0.016, 0.1) / 0.04));
+		st.fade[key] =
+			Math.abs(z - v) < 0.01
+				? z
+				: v + (z - v) * (1 - Math.exp(-Math.min(c.dt ?? 0.016, 0.1) / 0.04));
 		return st.fade[key];
 	};
 	const hoch = c.mode === 'hoch';
 	// Abbildung Szenenraum -> Canvas-CSS-Pixel: X = tx + x * f, Y = ty + y * f
-	let f;
-	let tx;
-	let ty;
+	let f: number;
+	let tx: number;
+	let ty: number;
 	let boxTop = 0;
 	if (hoch) {
 		const sp = dom.spalte;
@@ -231,16 +335,17 @@ export function draw(cv, c) {
 	const e = ss((q - i - 0.2) / 0.6);
 	const A = STOPS[i];
 	const Bs = STOPS[i + 1];
+	if (!A || !Bs) return;
 	const cx = lerp(A.cx, Bs.cx, e);
 	const cy = lerp(A.cy, Bs.cy, e);
 	const u = Math.exp(lerp(Math.log(A.u), Math.log(Bs.u), e));
 	const ox = hoch ? HOCH_BOX.ox : lerp(A.ox, Bs.ox, e);
 	const oy = hoch ? HOCH_BOX.oy : lerp(A.oy, Bs.oy, e);
-	const P = (x, y, zz) => [
+	const P = (x: number, y: number, zz: number): [number, number] => [
 		ox + (x - cx - (y - cy)) * 0.866 * u,
 		oy + (x - cx + (y - cy)) * 0.5 * u - zz * u,
 	];
-	const lit = ROOMS.map((r, ri) => {
+	const lit = ROOMS.map((_, ri) => {
 		let v = 0;
 		STOPS.forEach((S, j) => {
 			if (S.room === ri) v = Math.max(v, 1 - Math.abs(q - j) * 1.4);
@@ -262,7 +367,7 @@ export function draw(cv, c) {
 		const y = r[2];
 		const w = r[3];
 		const hh = r[4];
-		const base = 0.06 + 0.8 * lit[ri];
+		const base = 0.06 + 0.8 * (lit[ri] ?? 0);
 		for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++)
 			for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
 				const pt = P(xx, yy, 0);
@@ -272,19 +377,31 @@ export function draw(cv, c) {
 					const dm = Math.hypot(pt[0] - mx, pt[1] - my);
 					if (dm < FL) I += 0.8 * (1 - dm / FL) ** 2;
 				}
-				if (I > BAYER[(gy & 3) * 4 + (gx & 3)] / 16 + 0.02) ctx.fillRect(pt[0], pt[1], 1.6, 1.6);
+				if (I > (BAYER[(gy & 3) * 4 + (gx & 3)] ?? 0) / 16 + 0.02)
+					ctx.fillRect(pt[0], pt[1], 1.6, 1.6);
 			}
 	});
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
-	if (!st.pp) st.pp = PEOC.map((_, k) => ({ x: 2 + k * 4, y: 7.5, tx: 2 + k * 4, ty: 7.5, nt: 0 }));
+	if (!st.pp)
+		st.pp = PEOC.map(([name, rel], k) => ({
+			name,
+			rel,
+			x: 2 + k * 4,
+			y: 7.5,
+			tx: 2 + k * 4,
+			ty: 7.5,
+			nt: 0,
+		}));
 	const kp = lag(0.02, c.dt ?? 0.016);
+	const fokusRaum = ROOMS[focus];
 	st.pp.forEach((pp, k) => {
-		if (lit[focus] > 0.5) {
-			const r = ROOMS[focus];
+		if (fokusRaum && (lit[focus] ?? 0) > 0.5) {
+			const r = fokusRaum;
 			pp.tx = r[1] + r[3] * (0.3 + 0.4 * (k % 2));
 			pp.ty = r[2] + r[4] * (0.3 + 0.4 * (k > 1 ? 1 : 0));
 		} else if (now > pp.nt) {
 			const r = ROOMS[Math.floor(Math.random() * ROOMS.length)];
+			if (!r) return;
 			pp.tx = r[1] + r[3] * (0.25 + Math.random() * 0.5);
 			pp.ty = r[2] + r[4] * (0.25 + Math.random() * 0.5);
 			pp.nt = now + 2.5 + Math.random() * 3;
@@ -293,7 +410,7 @@ export function draw(cv, c) {
 		pp.y += (pp.ty - pp.y) * kp;
 	});
 	const HW = 1.1;
-	WALLS.forEach((wl) => {
+	for (const wl of WALLS) {
 		const a = P(wl[0], wl[1], 0);
 		const b = P(wl[2], wl[3], 0);
 		const a2 = P(wl[0], wl[1], HW);
@@ -323,11 +440,11 @@ export function draw(cv, c) {
 		ctx.moveTo(a2[0], a2[1]);
 		ctx.lineTo(b2[0], b2[1]);
 		ctx.stroke();
-	});
+	}
 	ctx.globalAlpha = 1;
 	const scheiben = st.pp.map((pp, k) => {
 		const pt = P(pp.x, pp.y, 0.45);
-		const r = PEOC[k][1] * u * 0.5;
+		const r = pp.rel * u * 0.5;
 		const sx = tx + pt[0] * f;
 		const sy = ty + pt[1] * f;
 		const ba = blende(`a${k}`, { x0: sx - r * f, x1: sx + r * f, y0: sy - r * f, y1: sy + r * f });
@@ -375,31 +492,46 @@ export function draw(cv, c) {
 		ctx.fillRect(0, 0, rechts + 150, H);
 	}
 	const size = Math.max(10.5, 11 * f);
-	const items = [];
-	scheiben.forEach(({ pt, r }, k) => {
+	const items: Label[] = [];
+	st.pp.forEach((pp, k) => {
+		const sch = scheiben[k];
+		if (!sch) return;
 		items.push({
-			text: PEOC[k][0],
-			x: tx + pt[0] * f,
-			y: ty + (pt[1] - r) * f - 8,
+			text: pp.name,
+			x: tx + sch.pt[0] * f,
+			y: ty + (sch.pt[1] - sch.r) * f - 8,
 			size,
 			a: 0.72,
 			art: 'name',
+			aus: false,
+			w: 0,
+			rect: null,
 		});
 	});
 	ROOMS.forEach((r, ri) => {
 		const pt = P(r[1] + r[3] / 2, r[2] + r[4] / 2, 0);
-		items.push({ text: r[0], x: tx + pt[0] * f, y: ty + pt[1] * f, size, a: 0.6 + 0.4 * lit[ri], art: 'raum' });
+		items.push({
+			text: r[0],
+			x: tx + pt[0] * f,
+			y: ty + pt[1] * f,
+			size,
+			a: 0.6 + 0.4 * (lit[ri] ?? 0),
+			art: 'raum',
+			aus: false,
+			w: 0,
+			rect: null,
+		});
 	});
 	// Räume zuerst setzen (feste Plätze), Namen weichen aus
 	items.sort((a, b) => (a.art === b.art ? 0 : a.art === 'raum' ? -1 : 1));
-	const sichtbar = { x0: 0, x1: W, y0: hoch ? boxTop : 0, y1: c.safeH };
+	const sichtbar: Rect = { x0: 0, x1: W, y0: hoch ? boxTop : 0, y1: c.safeH };
 	setzeLabels(ctx, items, sichtbar, dom.meiden);
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'alphabetic';
 	ctx.lineJoin = 'round';
 	ctx.lineWidth = 3;
 	for (const it of items) {
-		if (it.aus) continue;
+		if (it.aus || !it.rect) continue;
 		it.a *= blende(`l${it.text}`, it.rect);
 		if (it.a < 0.01) continue;
 		ctx.font = mono(it.size);

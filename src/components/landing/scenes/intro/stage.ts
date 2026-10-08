@@ -1,11 +1,11 @@
 // Die Intro-Bühne: eine Sticky-Fläche in voller Fenstergröße, auf der Berg, Zeichen, Organ, Flut,
 // Wohnung und die Ende-Szene nacheinander laufen (PLAN-V2 2.4 und 4.1).
 //
-// stage.js liest je Bild die Scroll-Strecke s, macht daraus den Fortschritt P (zeitachse.js), setzt die
+// stage.ts liest je Bild die Scroll-Strecke s, macht daraus den Fortschritt P (zeitachse.ts), setzt die
 // CSS-Variablen und data-phase an #final und ruft die Teilrenderer auf. Die Variablen werden JEDES
 // Bild gesetzt, auch wenn nichts gezeichnet wird, damit nach Sprüngen nichts stehen bleibt.
 
-import { dprFor, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
+import { type Fit, dprFor, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
 import { cl, ss } from '../../core/math';
 import * as hand from '../ende/hand';
@@ -13,30 +13,74 @@ import { kamera } from '../ende/kamera';
 import * as flut from './flut';
 import { createHero } from './hero';
 import { zeichneSterne } from './sterne';
+import type { BuehnenKontext, BuehnenZeiger, HeroMarken, Loch } from './types';
 import * as wohnung from './wohnung';
 import { unwarp, warp } from './zeitachse';
 
-/**
- * Die laufende Bühne (für QA-Haken und Landing).
- * @type {{ stage: { state: Record<string, any>, yForP: (P: number) => number, destroy: () => void } | null }}
- */
-export const live = { stage: null };
+/** Phase der Bühne (data-phase an #final): Intro, Ende-Ebene oder vorbeigescrollt. */
+type Phase = 'intro' | 'ende' | 'nach';
 
-export function createStage({ sec, buehne }) {
-	const root = buehne.closest('#final');
-	const q = (k) => buehne.querySelector(`[data-intro="${k}"]`);
-	const cvHero = q('hero');
-	const cvWo = q('wohnung');
-	const cvFl = q('flut');
-	const safe = buehne.querySelector('[data-safe]');
-	const cvStars = buehne.querySelector('canvas[data-sterne]');
-	const hb = buehne.querySelector('[data-hand="back"]');
-	const hf = buehne.querySelector('[data-hand="front"]');
-	const ctas = [...buehne.querySelectorAll('[data-cta]')];
-	const kopf = root.querySelector('[data-kopf]');
-	const kopfCta = kopf?.querySelector('[data-loch="cta"]');
-	const endeTitel = buehne.querySelector('[data-ende-titel]');
-	const nurIntro = [...root.querySelectorAll('[data-nur-intro]')];
+/** Zustand der Bühne (für QA-Haken und Landing). */
+export interface BuehnenZustand {
+	/** Geglätteter Fortschritt. */
+	sp: number;
+	init: boolean;
+	/** Beginn des Aufbaus des Zeichens. */
+	a0: number | null;
+	/** Geglätteter Zeiger (-1..1). */
+	sm: [number, number];
+	/** Adaptive Auflösung des Szenenpuffers. */
+	ad: number;
+	/** Letzte 15 Bilddauern. */
+	rb: number[];
+	bereit: boolean;
+	endOn: boolean;
+	handsLoaded: boolean;
+	/** Zeitgeglättete Deckkraft der Raumkarten. */
+	kv: number[];
+	P: number;
+	s: number;
+	phase: Phase;
+	/** Zeitpunkt, seit dem die Bühne ganz aus dem Bild ist (null: sichtbar). */
+	weg: number | null;
+	/** Pufferspeicher der Ebenen freigegeben. */
+	frei: boolean;
+}
+
+/** Die laufende Bühne. */
+export interface Stage {
+	state: BuehnenZustand;
+	/** y-Position im Dokument für den Fortschritt P (QA). */
+	yForP: (P: number) => number;
+	destroy: () => void;
+}
+
+/** Die laufende Bühne (für QA-Haken und Landing). */
+export const live: { stage: Stage | null } = { stage: null };
+
+/** Der Klick aus der App im Handy (Phone.tsx) trägt direkt = true. */
+type BuehnenEreignis = PointerEvent & { direkt?: boolean };
+
+function braucht<T>(el: T | null, name: string): T {
+	if (!el) throw new Error(`stage: ${name} fehlt`);
+	return el;
+}
+
+export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLElement }): Stage {
+	const root = braucht(buehne.closest<HTMLElement>('#final'), '#final');
+	const q = (k: string) => buehne.querySelector<HTMLCanvasElement>(`[data-intro="${k}"]`);
+	const cvHero = braucht(q('hero'), 'hero');
+	const cvWo = braucht(q('wohnung'), 'wohnung');
+	const cvFl = braucht(q('flut'), 'flut');
+	const safe = braucht(buehne.querySelector<HTMLElement>('[data-safe]'), '[data-safe]');
+	const cvStars = buehne.querySelector<HTMLCanvasElement>('canvas[data-sterne]');
+	const hb = buehne.querySelector<HTMLCanvasElement>('[data-hand="back"]');
+	const hf = buehne.querySelector<HTMLCanvasElement>('[data-hand="front"]');
+	const ctas = [...buehne.querySelectorAll<HTMLElement>('[data-cta]')];
+	const kopf = root.querySelector<HTMLElement>('[data-kopf]');
+	const kopfCta = kopf?.querySelector<HTMLElement>('[data-loch="cta"]');
+	const endeTitel = buehne.querySelector<HTMLElement>('[data-ende-titel]');
+	const nurIntro = [...root.querySelectorAll<HTMLElement>('[data-nur-intro]')];
 	const hero = createHero(cvHero);
 
 	let W = buehne.clientWidth;
@@ -45,12 +89,12 @@ export function createStage({ sec, buehne }) {
 	const strecke = () => Math.max(1, sec.offsetHeight - H);
 	let safeH = safe.clientHeight;
 	let dpr = dprFor(2, 1.5, W, H);
-	let fit = fitBox(W, safeH, 1280, 800, 1.25);
-	let cam = kamera(W, H, safeH, loop.mode);
-	let loecher = [];
+	let fit: Fit = fitBox(W, safeH, 1280, 800, 1.25);
+	let cam: Fit = kamera(W, H, safeH, loop.mode);
+	let loecher: Loch[] = [];
 
 	// Zustand der Bühne
-	const st = {
+	const st: BuehnenZustand = {
 		sp: 0, // geglätteter Fortschritt
 		init: false,
 		a0: null, // Beginn des Aufbaus des Zeichens
@@ -64,10 +108,24 @@ export function createStage({ sec, buehne }) {
 		P: 0,
 		s: 0,
 		phase: 'intro',
+		weg: null,
+		frei: false,
 	};
-	const m = { x: W / 2, y: H / 2, in: false, down: false, type: 'mouse', clickT: -9, moveT: -9, x0: 0, y0: 0, sy0: 0, direkt: false };
-	const hm = { look: 0, mx: 0, split: 0, zoom: 0, dive: 0, sm: st.sm, a0: 0, ad: 1 };
-	const c = {
+	const m: BuehnenZeiger = {
+		x: W / 2,
+		y: H / 2,
+		in: false,
+		down: false,
+		type: 'mouse',
+		clickT: -9,
+		moveT: -9,
+		x0: 0,
+		y0: 0,
+		sy0: 0,
+		direkt: false,
+	};
+	const hm: HeroMarken = { look: 0, mx: 0, split: 0, zoom: 0, dive: 0, sm: st.sm, a0: 0, ad: 1 };
+	const c: BuehnenKontext = {
 		P: 0,
 		s: 0,
 		t: 0,
@@ -89,8 +147,8 @@ export function createStage({ sec, buehne }) {
 		visible: false,
 	};
 
-	const cache = {};
-	const setVar = (k, v) => {
+	const cache: Record<string, string> = {};
+	const setVar = (k: string, v: string) => {
 		if (cache[k] === v) return;
 		cache[k] = v;
 		root.style.setProperty(k, v);
@@ -98,9 +156,15 @@ export function createStage({ sec, buehne }) {
 
 	const measureLoecher = () => {
 		const r0 = buehne.getBoundingClientRect();
-		loecher = [...root.querySelectorAll('[data-loch]')].map((el) => {
+		loecher = [...root.querySelectorAll<HTMLElement>('[data-loch]')].map((el) => {
 			const r = el.getBoundingClientRect();
-			return { x: r.left - r0.left, y: r.top - r0.top, w: r.width, h: r.height, art: el.dataset.loch };
+			return {
+				x: r.left - r0.left,
+				y: r.top - r0.top,
+				w: r.width,
+				h: r.height,
+				art: el.dataset.loch ?? '',
+			};
 		});
 	};
 
@@ -118,7 +182,7 @@ export function createStage({ sec, buehne }) {
 	const stops = [observe(buehne, resize), observe(safe, resize)];
 
 	// Zeiger: Listener an der ganzen Seite, Koordinaten in Bühnen-CSS-Pixeln
-	const place = (e) => {
+	const place = (e: PointerEvent) => {
 		const r = buehne.getBoundingClientRect();
 		m.x = e.clientX - r.left;
 		m.y = e.clientY - r.top;
@@ -129,7 +193,7 @@ export function createStage({ sec, buehne }) {
 	const onLeave = () => {
 		m.in = false;
 	};
-	const onDown = (e) => {
+	const onDown = (e: BuehnenEreignis) => {
 		place(e);
 		m.down = true;
 		// direkt: der Klick kam aus der App im Handy (Phone.tsx) und ist dort schon angekommen, die Hand drückt nur mit
@@ -142,9 +206,10 @@ export function createStage({ sec, buehne }) {
 		m.sy0 = window.scrollY;
 		if (!st.endOn) st.a0 = tt;
 	};
-	const onUp = (e) => {
+	const onUp = (e: PointerEvent) => {
 		if (m.down && m.type === 'touch' && e.type === 'pointerup') {
-			const bewegt = Math.hypot(m.x - m.x0, m.y - m.y0) >= 8 || Math.abs(window.scrollY - m.sy0) >= 8;
+			const bewegt =
+				Math.hypot(m.x - m.x0, m.y - m.y0) >= 8 || Math.abs(window.scrollY - m.sy0) >= 8;
 			if (!bewegt) m.clickT = performance.now() / 1000;
 		}
 		m.down = false;
@@ -160,15 +225,8 @@ export function createStage({ sec, buehne }) {
 		document.dispatchEvent(new CustomEvent('landing:bereit'));
 	};
 
-	const frame = (t0, dt, now, raw) => {
-		const t = loop.reduced ? 0 : t0; // reduce: Hero-Zeit und Autopilot stehen still
-		if (dprFor(2, 1.5, W, H) !== dpr) resize(); // Auflösungsstufe (loop.js) hat sich geändert
-		const rb = buehne.getBoundingClientRect();
-		const rs = sec.getBoundingClientRect();
-		const visible = rb.bottom > 0 && rb.top < innerHeight;
-		const s = cl(-rs.top / strecke());
-		const Pz = warp(s);
-		// Glättung. Sofort übernehmen beim ersten Bild und solange die Bühne nicht zu sehen ist.
+	/** Fortschritt glätten. Sofort übernehmen beim ersten Bild und solange die Bühne nicht zu sehen ist. */
+	const glaette = (Pz: number, dt: number, visible: boolean): number => {
 		if (!st.init || !visible) {
 			st.sp = Pz;
 			st.init = true;
@@ -176,9 +234,14 @@ export function createStage({ sec, buehne }) {
 			st.sp += (Pz - st.sp) * (1 - Math.exp(-Math.min(dt, 0.5) * 10));
 			if (Math.abs(Pz - st.sp) < 1e-4) st.sp = Pz;
 		}
-		const P = st.sp;
-		// Seit 2 s ganz aus dem Bild: Pufferspeicher der Ebenen freigeben (5K-Fläche: 59 MB je Canvas), beim
-		// Wiedereintritt neu messen. Die Ebenen passen ihre Größe beim Zeichnen selbst an.
+		return st.sp;
+	};
+
+	/**
+	 * Seit 2 s ganz aus dem Bild: Pufferspeicher der Ebenen freigeben (5K-Fläche: 59 MB je Canvas), beim
+	 * Wiedereintritt neu messen. Die Ebenen passen ihre Größe beim Zeichnen selbst an.
+	 */
+	const verwalteSpeicher = (visible: boolean, now: number) => {
 		if (!visible) {
 			st.weg ??= now;
 			if (!st.frei && now - st.weg > 2) {
@@ -193,28 +256,26 @@ export function createStage({ sec, buehne }) {
 				resize();
 			}
 		}
-		const look = ss((P - 0.06) / 0.14);
-		const mx = ss((P - 0.18) / 0.06);
-		const split = ss((P - 0.24) / 0.1) * (1 - ss((P - 0.36) / 0.1));
-		const zoom = ss((P - 0.22) / 0.2);
-		const dive = ss((P - 0.48) / 0.12);
-		const fpA = ss((P - 0.58) / 0.05);
-		const endA = ss((P - 0.9) / 0.05);
-		const cover = flut.deckung(P);
-		const karten = wohnung.karten(P);
-		st.P = P;
-		st.s = s;
+	};
 
-		// CSS-Variablen und Phase, jedes Bild
+	/** CSS-Variablen, Phase und Bedienbarkeit, jedes Bild. Gibt die Phase zurück. */
+	const setzeStil = (
+		P: number,
+		fpA: number,
+		endA: number,
+		karten: number[],
+		rb: DOMRect,
+		visible: boolean,
+	): Phase => {
 		setVar('--p', P.toFixed(4));
 		setVar('--g', (1 - fpA).toFixed(3));
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
 		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));
 		setVar('--e', endA.toFixed(3));
 		// Raumkarten am Scroll geführt wie im Entwurf (Kurve und Überlappfreiheit: wohnung.karten)
-		for (let j = 0; j < 4; j++) {
-			st.kv[j] = karten[j];
-			setVar(`--c${j}`, karten[j].toFixed(3));
+		for (const [j, k] of karten.entries()) {
+			st.kv[j] = k;
+			setVar(`--c${j}`, k.toFixed(3));
 		}
 		const kopfUnten = kopf ? kopf.getBoundingClientRect().bottom : 0;
 		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein
@@ -228,11 +289,12 @@ export function createStage({ sec, buehne }) {
 		}
 		setVar('--ende-titel-aus', titelAus.toFixed(3));
 		// Hochformat: der Kopf bleibt, aber sein Knopf geht, solange der Knopf der Ende-Ebene im Bild steht (kein Doppel)
-		const ktAus = loop.mode === 'hoch' ? endA * (rb.bottom > kopfUnten ? 1 : 0) * (1 - titelAus) : 0;
+		const ktAus =
+			loop.mode === 'hoch' ? endA * (rb.bottom > kopfUnten ? 1 : 0) * (1 - titelAus) : 0;
 		setVar('--kopf-cta-aus', ktAus.toFixed(3));
 		if (kopfCta && kopfCta.inert !== ktAus >= 0.6) kopfCta.inert = ktAus >= 0.6;
 		if (kopf && kopf.inert !== kopfAus >= 0.6) kopf.inert = kopfAus >= 0.6;
-		const phase = rb.bottom <= 0 ? 'nach' : P >= 0.9 ? 'ende' : 'intro';
+		const phase: Phase = rb.bottom <= 0 ? 'nach' : P >= 0.9 ? 'ende' : 'intro';
 		if (st.phase !== phase || root.dataset.phase !== phase) {
 			st.phase = phase;
 			root.dataset.phase = phase;
@@ -247,10 +309,14 @@ export function createStage({ sec, buehne }) {
 		}
 		const hinweisAus = endA >= 0.72 || phase === 'nach';
 		for (const el of nurIntro) if (el.inert !== hinweisAus) el.inert = hinweisAus;
-		st.endOn = endA > 0.6 && rb.bottom > 0.625 * H;
+		return phase;
+	};
 
-		// Auflösung des Szenenpuffers (F-07): Ausreißer über 0,25 s (Tab-Wechsel, Pause) zählen nicht.
-		// Abgesenkt wird nur, wenn das gleitende Mittel über 15 Bilder über 0,05 s liegt, erholt bei ruhigem Lauf.
+	/**
+	 * Auflösung des Szenenpuffers (F-07): Ausreißer über 0,25 s (Tab-Wechsel, Pause) zählen nicht.
+	 * Abgesenkt wird nur, wenn das gleitende Mittel über 15 Bilder über 0,05 s liegt, erholt bei ruhigem Lauf.
+	 */
+	const passeAufloesung = (raw: number) => {
 		if (raw <= 0.25) {
 			st.rb.push(raw);
 			if (st.rb.length > 15) st.rb.shift();
@@ -258,11 +324,51 @@ export function createStage({ sec, buehne }) {
 			if (st.rb.length >= 15 && mean > 0.03) st.ad = Math.max(0.25, st.ad * 0.94);
 			else if (raw < 0.022) st.ad = Math.min(1, st.ad * 1.06);
 		}
+	};
+
+	const frame = (t0: number, dt: number, now: number, raw: number) => {
+		const t = loop.reduced ? 0 : t0; // reduce: Hero-Zeit und Autopilot stehen still
+		if (dprFor(2, 1.5, W, H) !== dpr) resize(); // Auflösungsstufe (loop.ts) hat sich geändert
+		const rb = buehne.getBoundingClientRect();
+		const rs = sec.getBoundingClientRect();
+		const visible = rb.bottom > 0 && rb.top < innerHeight;
+		const s = cl(-rs.top / strecke());
+		const Pz = warp(s);
+		const P = glaette(Pz, dt, visible);
+		verwalteSpeicher(visible, now);
+		const look = ss((P - 0.06) / 0.14);
+		const mx = ss((P - 0.18) / 0.06);
+		const split = ss((P - 0.24) / 0.1) * (1 - ss((P - 0.36) / 0.1));
+		const zoom = ss((P - 0.22) / 0.2);
+		const dive = ss((P - 0.48) / 0.12);
+		const fpA = ss((P - 0.58) / 0.05);
+		const endA = ss((P - 0.9) / 0.05);
+		const cover = flut.deckung(P);
+		const karten = wohnung.karten(P);
+		st.P = P;
+		st.s = s;
+
+		setzeStil(P, fpA, endA, karten, rb, visible);
+		st.endOn = endA > 0.6 && rb.bottom > 0.625 * H;
+		passeAufloesung(raw);
 
 		if (st.a0 === null) st.a0 = now;
 		let heroDrawn = false;
 		if (visible) {
-			Object.assign(c, { P, s, t, dt, now, W, H, safeH, dpr, mode: loop.mode, reduced: loop.reduced, fit });
+			Object.assign(c, {
+				P,
+				s,
+				t,
+				dt,
+				now,
+				W,
+				H,
+				safeH,
+				dpr,
+				mode: loop.mode,
+				reduced: loop.reduced,
+				fit,
+			});
 			c.fpA = fpA;
 			c.endA = endA;
 			c.endOn = st.endOn;
@@ -273,7 +379,7 @@ export function createStage({ sec, buehne }) {
 			if (loop.n % 30 === 1) measureLoecher();
 
 			// Zeiger (-1..1) für Berg und Organ, ohne Zeiger läuft ein Autopilot
-			const tm = m.in
+			const tm: [number, number] = m.in
 				? [(m.x - W / 2) / (W / 2), (H / 2 - m.y) / (H / 2)]
 				: [0.5 * Math.cos(t * 0.12), 0.4 * Math.sin(t * 0.16)];
 			// Konstante des Entwurfs 0,06 je Bild bei 120 Hz, auf dt umgerechnet
@@ -290,7 +396,7 @@ export function createStage({ sec, buehne }) {
 				hm.a0 = st.a0;
 				hm.ad = st.ad;
 				c.dprHero = isTouch() ? Math.min(dpr, 1.25) : dpr;
-					heroDrawn = hero.frame(c, hm);
+				heroDrawn = hero.frame(c, hm);
 			}
 			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);
@@ -308,9 +414,8 @@ export function createStage({ sec, buehne }) {
 
 	const off = onFrame(frame);
 
-	const api = {
+	const api: Stage = {
 		state: st,
-		/** y-Position im Dokument für den Fortschritt P (QA). */
 		yForP(P) {
 			const r = sec.getBoundingClientRect();
 			return r.top + window.scrollY + unwarp(P) * strecke();
