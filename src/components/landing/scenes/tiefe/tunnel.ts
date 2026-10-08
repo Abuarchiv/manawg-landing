@@ -351,6 +351,29 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 	ctx.globalAlpha = 1;
 }
 
+/**
+ * Wortmasken abtasten und Wolke bauen, je Aufruf ein Schritt (ein Wort oder der Aufbau), true wenn alles aktuell ist.
+ * Das Vorwärmen (warm) ruft das je Bild einmal, frame holt Fehlendes in einem Zug nach (Schrift oder Format neu).
+ */
+function bereite(s: TiefeState): boolean {
+	if (s.built !== loop.fv) {
+		s.built = loop.fv;
+		s.raw = [];
+		s.bm = null;
+	}
+	const wort = WORDS[s.raw.length];
+	if (wort) {
+		s.raw.push(sampleT(wort, 200));
+		return false;
+	}
+	if (s.bm !== bauKey(s)) {
+		build(s);
+		s.stale = true;
+		return false;
+	}
+	return true;
+}
+
 /** Meldet die Tiefe-Szene an. sec: Abschnitt mit Sticky-Bühne. Gibt die Abmeldung zurück. */
 export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 	const wurzel = cv.parentElement ?? cv;
@@ -392,18 +415,11 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			s.hint = wurzel.querySelector<HTMLElement>('[data-hint]');
 			s.kopf = document.querySelector<HTMLElement>('[data-kopf]');
 		},
+		warm: bereite,
 		frame(s, _t, dt) {
 			const ctx = s.ctx;
 			if (!ctx) return;
-			if (s.built !== loop.fv) {
-				s.built = loop.fv;
-				s.raw = WORDS.map((w) => sampleT(w, 200));
-				s.bm = null;
-			}
-			if (s.bm !== bauKey(s)) {
-				build(s);
-				s.stale = true;
-			}
+			while (!bereite(s));
 			const { f, cx, cy } = s;
 			// Beim Hinausscrollen läuft die Szene unter den fixen Kopf: Wortbild und Zeile blenden über den obersten
 			// 28 px unter dem Kopfband aus (Kopfunterkante in Canvas-Koordinaten)

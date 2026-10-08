@@ -129,41 +129,50 @@ function programm(gl: WebGL2RenderingContext): WebGLProgram | null {
 	return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null;
 }
 
-function bild(src: string): Promise<HTMLImageElement> {
-	return new Promise((ok, fehler) => {
-		const i = new Image();
-		i.onload = () => ok(i);
-		i.onerror = fehler;
-		i.src = src;
-	});
+/** Bild laden, kippen und abseits des Hauptthreads dekodieren: der Texturupload kopiert danach nur noch. */
+async function bild(src: string): Promise<ImageBitmap> {
+	const blob = await (await fetch(src)).blob();
+	return createImageBitmap(blob, { imageOrientation: 'flipY', premultiplyAlpha: 'none' });
 }
 
+/** Nächste Aufgabe abwarten: Shader, Texturen und Kontext landen in verschiedenen Bildern, nicht in einem. */
+const pause = () => new Promise<void>((ok) => setTimeout(ok, 0));
+
 async function laden(s: HimmelState): Promise<void> {
+	const namen = ['uSkyQ', 'uSkyH', 'uFein', 'uGrob'];
+	// Dekodieren läuft parallel und ohne den Hauptthread, während Kontext und Shader entstehen
+	const bilder = Promise.all(
+		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) => bild(`/himmel/${n}.webp`)),
+	);
 	const gl = s.cv2.getContext('webgl2', {
 		premultipliedAlpha: true,
 		alpha: true,
 		antialias: false,
 	});
 	if (!gl) return;
+	await pause();
 	const p = programm(gl);
 	if (!p) return;
 	gl.useProgram(p);
 	const u = (n: string) => gl.getUniformLocation(p, n);
-	const namen = ['uSkyQ', 'uSkyH', 'uFein', 'uGrob'];
-	const bilder = await Promise.all(
-		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) => bild(`/himmel/${n}.webp`)),
-	);
-	bilder.forEach((img, i) => {
+	const fertig = await bilder;
+	for (const [i, img] of fertig.entries()) {
+		await pause();
 		gl.activeTexture(gl.TEXTURE0 + i);
 		gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
-		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.uniform1i(u(namen[i] ?? ''), i);
-	});
+		img.close();
+	}
+	// Ein Zeichenaufruf in 1 x 1 Pixel zwingt den Treiber, das Programm schon jetzt fertig zu übersetzen
+	await pause();
+	gl.viewport(0, 0, 1, 1);
+	gl.drawArrays(gl.TRIANGLES, 0, 3);
 	s.g = { gl, u };
 	s.bereit = true;
 }

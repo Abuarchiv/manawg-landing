@@ -125,6 +125,11 @@ export interface SceneDef<S extends SceneState = SceneState> {
 	minSicht?: number | undefined;
 	init?(s: S): void;
 	frame?(s: S, t: number, dt: number): void;
+	/**
+	 * Vorwärmen in Schritten: wird kurz vor dem Eintritt je Bild einmal gerufen (höchstens eine Szene je Bild),
+	 * bis es true meldet. Ohne warm zeichnet die Szene stattdessen einmal unsichtbar (frame).
+	 */
+	warm?(s: S): boolean;
 	resize?(s: S): void;
 	ownsTouch?(s: S, e: TouchEvent): boolean;
 	onDown?(s: S): void;
@@ -139,10 +144,13 @@ interface Anmeldung<S extends SceneState = SceneState> {
 	host: HTMLElement;
 	inited: boolean;
 	fern: number;
+	/** Einmal vor dem Eintritt unsichtbar gezeichnet (Aufbau der Puffer, Raster, Shader), bis die nächste Messung kommt. */
+	warm: boolean;
 }
 
 const scenes = new Set<Anmeldung>();
 const subs = new Set<BildFn>();
+const vorn = new Set<BildFn>(); // vor den anderen Abonnenten und den Szenen (Lenis setzt hier die Scrollposition)
 let raf = 0;
 let last = 0;
 let t0 = 0;
@@ -160,6 +168,8 @@ const RUHE = 0.3;
 const RUHE_REDUZIERT = 1;
 const MIN_ABSTAND = 0.0105; // unter 10,5 ms (Anzeigen über 95 Hz) wird im Stand jedes zweite Bild ausgelassen
 const FREI_NACH = 2; // Sekunden außer Sicht, bis der Pufferspeicher einer Szene freigegeben wird
+const WARM_ABSTAND = 2.2; // Fensterhöhen vor dem Eintritt, ab denen eine Szene einmal unsichtbar vorgewärmt wird
+let warmFrei = true; // höchstens eine Szene je Bild wärmt vor (der Aufbau einer Szene kann 20 bis 40 ms kosten)
 const wach = () => {
 	loop.act = performance.now() / 1000;
 };
@@ -188,6 +198,7 @@ function measure(r: Anmeldung, W: number, H: number) {
 	wach();
 	s.stale = true; // Backing neu gesetzt: Szenen, die im Stand nicht zeichnen, müssen einmal neu zeichnen
 	s.frei = false;
+	r.warm = false;
 	const b: Box = def.box ? def.box(W, H, s.safeH, s.mode) : { bw: 1280, bh: 800 };
 	const fit = fitBox(W, s.safeH, b.bw, b.bh, b.max);
 	s.bw = b.bw;
@@ -233,13 +244,36 @@ function frameScene(r: Anmeldung, t: number, dt: number) {
 			rc.left > innerWidth ||
 			rc.width < 2
 		) && sicht >= (def.minSicht ?? 0) * innerHeight;
+	// Vorwärmen: kurz vor dem Eintritt unsichtbar aufbauen, damit der erste sichtbare Frame nicht den ganzen Aufbau
+	// trägt (Wortbild der Tiefe, Zeichenblatt und Raster der Sonne). Nicht in den ersten Sekunden.
+	if (
+		!s.visible &&
+		!r.warm &&
+		warmFrei &&
+		loop.n > 120 &&
+		rc.top < WARM_ABSTAND * innerHeight &&
+		rc.bottom > 0
+	) {
+		warmFrei = false;
+		s.reduced = loop.reduced;
+		starte(r);
+		if (def.warm) r.warm = def.warm(s);
+		else {
+			r.warm = true;
+			def.frame?.(s, t, dt);
+		}
+		return;
+	}
 	if (!s.visible) return;
 	s.reduced = loop.reduced;
-	if (!r.inited) {
-		r.inited = true;
-		def.init?.(s);
-	}
+	starte(r);
 	def.frame?.(s, t, dt);
+}
+
+function starte(r: Anmeldung) {
+	if (r.inited) return;
+	r.inited = true;
+	r.def.init?.(r.s);
 }
 
 // Auflösungsstufe nach Bildzeit: Liegt der Median zweier Fenster zu je 45 Bildern über 22 ms (unter 45 Bilder/s),
@@ -293,6 +327,13 @@ function tick() {
 		lastDpr = window.devicePixelRatio;
 		refresh();
 	}
+	for (const fn of vorn) {
+		try {
+			fn(loop.t, loop.dt, now, raw);
+		} catch (e) {
+			report('vorn', e);
+		}
+	}
 	for (const fn of subs) {
 		try {
 			fn(loop.t, loop.dt, now, raw);
@@ -300,6 +341,7 @@ function tick() {
 			report('bühne', e);
 		}
 	}
+	warmFrei = true;
 	for (const r of scenes) {
 		try {
 			frameScene(r, loop.t, loop.dt);
@@ -361,10 +403,14 @@ export function setMode(mode: Modus, flach: boolean) {
 	refresh();
 }
 
-/** Bild-Abonnent (Intro-Bühne). fn(t, dt, now, raw). Gibt die Abmeldung zurück. */
-export function onFrame(fn: BildFn): () => void {
-	subs.add(fn);
-	return () => subs.delete(fn);
+/**
+ * Bild-Abonnent (Intro-Bühne). fn(t, dt, now, raw). Gibt die Abmeldung zurück.
+ * zuerst: läuft vor allen anderen Abonnenten und Szenen im selben Bild.
+ */
+export function onFrame(fn: BildFn, zuerst = false): () => void {
+	const set = zuerst ? vorn : subs;
+	set.add(fn);
+	return () => set.delete(fn);
 }
 
 /**
@@ -422,7 +468,7 @@ export function register<S extends SceneState>(def: SceneDef<S>): () => void {
 			return n;
 		},
 	} as S;
-	const r: Anmeldung<S> = { s, def, host, inited: false, fern: 0 };
+	const r: Anmeldung<S> = { s, def, host, inited: false, fern: 0, warm: false };
 	const stopObserve = observe(el, (W, H) => measure(r, W, H));
 	const setM = (e: PointerEvent) => {
 		const p = pointerIn(e, el.getBoundingClientRect(), s);

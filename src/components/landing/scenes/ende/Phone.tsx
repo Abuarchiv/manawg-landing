@@ -13,7 +13,6 @@ import { datumsZeilen } from './datum';
 
 const SRC = '/app-demo/index.html';
 const BILD = '/app-demo/start.webp';
-const AB_P = 0.8; // ab hier laden Standbild und (im Leerlauf) das iframe, kurz vor der Szene
 
 /** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
 function Statusleiste() {
@@ -112,15 +111,15 @@ export function Phone() {
 		return () => host.removeEventListener('hand:kontakt', an);
 	}, []);
 
-	// Standbild und iframe-src erst ab P > AB_P setzen (Fortschritt steht als --p am #final)
+	// Standbild und iframe-src erst ab P 0,55 setzen (stage.ts setzt data-nah am #final)
 	useEffect(() => {
 		const el = wurzel.current as HTMLDivElement;
 		const root = el.closest('#final') as HTMLElement | null;
 		if (!root) return;
 		const pruefe = () => {
-			if (Number.parseFloat(root.style.getPropertyValue('--p') || '0') > AB_P) {
+			if (root.dataset.nah === '1') {
 				mo.disconnect();
-				setBild(BILD); // Standbild gleichzeitig mit dem Zählen ab AB_P, nicht schon beim Erstladen
+				setBild(BILD); // Standbild gleichzeitig mit dem Zählen ab P 0,55, nicht schon beim Erstladen
 				// Das iframe läuft im selben Hauptthread wie die Landing: Laden und Aufbau in einer Leerlaufpause
 				const los = () => setSrc(SRC);
 				if ('requestIdleCallback' in window) window.requestIdleCallback(los, { timeout: 2000 });
@@ -128,7 +127,7 @@ export function Phone() {
 			}
 		};
 		const mo = new MutationObserver(pruefe);
-		mo.observe(root, { attributes: true, attributeFilter: ['style'] });
+		mo.observe(root, { attributes: true, attributeFilter: ['data-nah'] });
 		pruefe();
 		return () => mo.disconnect();
 	}, []);
@@ -170,6 +169,7 @@ export function Phone() {
 					)}
 				/>
 				<div
+					data-lenis-prevent
 					style={css(
 						'position:relative;width:100%;height:100%;background:#FFFFFF;border-radius:37px;overflow:hidden;box-shadow:0 0 0 1px #000',
 					)}

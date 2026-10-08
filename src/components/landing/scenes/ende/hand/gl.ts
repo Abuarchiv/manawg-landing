@@ -31,21 +31,40 @@ function linkProgram(
 	return { pr, fs };
 }
 
-/** Prüft einmalig, ob WebGL2 mit dem Shader und den Texturgrößen taugt. */
-export function glTaugt(metaH: HaltMeta, metaP: AtlasMeta): boolean {
+/** Laufende Eignungsprüfung: Wegwerf-Kontext mit den angestoßenen Programmen (siehe glTaugtStart). */
+export interface Probe {
+	cv: HTMLCanvasElement;
+	gl: WebGL2RenderingContext;
+	progs: { pr: WebGLProgram; fs: WebGLShader }[];
+}
+
+/** Teil 1 der Eignungsprüfung: Kontext anlegen, Texturgröße prüfen, beide Programme anstoßen. false = untauglich. */
+export function glTaugtStart(metaH: HaltMeta, metaP: AtlasMeta): Probe | false {
 	const cv = document.createElement('canvas');
 	const gl = cv.getContext('webgl2');
 	if (!gl) return false;
-	let ok = true;
 	const need = Math.max(...metaH.atlas, ...metaP.atlas);
-	if (gl.getParameter(gl.MAX_TEXTURE_SIZE) < need) ok = false;
-	if (ok) {
-		for (const p1 of [true, false]) {
-			const { pr, fs } = linkProgram(gl, p1);
-			if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
-				ok = false;
-				console.warn('hand: Shader nicht verwendbar', gl.getShaderInfoLog(fs));
-			}
+	if (gl.getParameter(gl.MAX_TEXTURE_SIZE) < need) return false;
+	return { cv, gl, progs: [true, false].map((p1) => linkProgram(gl, p1)) };
+}
+
+/**
+ * Teil 2: Ergebnis der Programme und der Ausgabe prüfen. undefined, solange der Treiber noch übersetzt
+ * (KHR_parallel_shader_compile), dann in einem späteren Bild erneut rufen.
+ */
+export function glTaugtEnde({ cv, gl, progs }: Probe, sofort = false): boolean | undefined {
+	const ext = gl.getExtension('KHR_parallel_shader_compile');
+	if (
+		!sofort &&
+		ext &&
+		progs.some(({ pr }) => !gl.getProgramParameter(pr, ext.COMPLETION_STATUS_KHR))
+	)
+		return undefined;
+	let ok = true;
+	for (const { pr, fs } of progs) {
+		if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
+			ok = false;
+			console.warn('hand: Shader nicht verwendbar', gl.getShaderInfoLog(fs));
 		}
 	}
 	if (ok && !glSichtbar(gl, cv)) {
@@ -55,6 +74,12 @@ export function glTaugt(metaH: HaltMeta, metaP: AtlasMeta): boolean {
 	}
 	gl.getExtension('WEBGL_lose_context')?.loseContext();
 	return ok;
+}
+
+/** Prüft einmalig, ob WebGL2 mit dem Shader und den Texturgrößen taugt (in einem Zug). */
+export function glTaugt(metaH: HaltMeta, metaP: AtlasMeta): boolean {
+	const p = glTaugtStart(metaH, metaP);
+	return p ? (glTaugtEnde(p, true) ?? false) : false;
 }
 
 const uniformTabelle = (f: (name: string) => WebGLUniformLocation | null): Uniforms => {
@@ -94,13 +119,17 @@ const leereOrte = (): Uniforms => uniformTabelle(() => null);
 /** Programme, Zellpuffer und Zustand einer Ebene (beim Anlegen und nach wiederhergestelltem Kontext). */
 function frisch(
 	gl: WebGL2RenderingContext,
-): Pick<Ebene, 'dead' | 'ready' | 'stage' | 'last' | 'prs' | 'cells' | 'ext' | 'u' | 'vao'> {
+): Pick<
+	Ebene,
+	'dead' | 'ready' | 'stage' | 'zeile' | 'last' | 'prs' | 'cells' | 'ext' | 'u' | 'vao'
+> {
 	const vao = gl.createVertexArray();
 	if (!vao) throw new Error('hand: Vertex-Array nicht erzeugt');
 	return {
 		dead: false,
 		ready: false,
 		stage: 0,
+		zeile: 0,
 		last: null,
 		prs: [linkProgram(gl, true).pr, linkProgram(gl, false).pr],
 		cells: { w: 0, h: 0, tex: null, fbo: null },
@@ -140,7 +169,8 @@ export function makeLayer(cv: HTMLCanvasElement, front: boolean): Ebene | null {
 	return L;
 }
 
-function uploadTex(
+/** Textur für einen Atlas anlegen (leer, Größe des Bildes) und binden. */
+function legeTexAn(
 	gl: WebGL2RenderingContext,
 	unit: number,
 	bmp: ImageBitmap,
@@ -151,7 +181,7 @@ function uploadTex(
 	gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
 	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
 	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, bmp.width, bmp.height, 0, gl.RED, gl.UNSIGNED_BYTE, bmp);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, bmp.width, bmp.height, 0, gl.RED, gl.UNSIGNED_BYTE, null);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -159,7 +189,26 @@ function uploadTex(
 	return tx;
 }
 
-/** Gemeinsame Uniforms eines Programms setzen (Programm muss aktiv sein). */
+const STREIFEN_ZEILEN = 330; // Zeilen je Aufruf: ein ganzer Atlas (8 MP) auf einmal kostet 20 bis 30 ms
+
+/** Nächsten Streifen des Atlas in die gebundene Textur kopieren (UNPACK_SKIP_ROWS). true, wenn der Atlas komplett ist. */
+function ladeStreifen(
+	gl: WebGL2RenderingContext,
+	unit: number,
+	tx: WebGLTexture | null,
+	bmp: ImageBitmap,
+	L: Ebene,
+): boolean {
+	const n = Math.min(STREIFEN_ZEILEN, bmp.height - L.zeile);
+	gl.activeTexture(gl.TEXTURE0 + unit);
+	gl.bindTexture(gl.TEXTURE_2D, tx);
+	gl.pixelStorei(gl.UNPACK_SKIP_ROWS, L.zeile);
+	gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, L.zeile, bmp.width, n, gl.RED, gl.UNSIGNED_BYTE, bmp);
+	gl.pixelStorei(gl.UNPACK_SKIP_ROWS, 0);
+	L.zeile += n;
+	return L.zeile >= bmp.height;
+}
+
 function setUniforms(
 	L: Ebene,
 	u: Uniforms,
@@ -258,12 +307,21 @@ export function readyStep(L: Ebene): boolean {
 				return false;
 			}
 			L.stage = 1;
-			L.th = uploadTex(gl, 0, atlanten().hold.bmp);
+			L.zeile = 0;
+			L.th = legeTexAn(gl, 0, atlanten().hold.bmp);
 			return false;
 		}
+		// Atlanten streifenweise hochladen: ein Streifen je Bild (Hand, dann Zeigehand)
 		if (L.stage === 1) {
-			L.tp = uploadTex(gl, 1, atlanten().point.bmp);
-			L.stage = 2;
+			if (ladeStreifen(gl, 0, L.th, atlanten().hold.bmp, L)) {
+				L.stage = 2;
+				L.zeile = 0;
+				L.tp = legeTexAn(gl, 1, atlanten().point.bmp);
+			}
+			return false;
+		}
+		if (L.stage === 2) {
+			if (ladeStreifen(gl, 1, L.tp, atlanten().point.bmp, L)) L.stage = 3;
 			return false;
 		}
 		initProgram(L, 0);

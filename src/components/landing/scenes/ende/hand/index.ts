@@ -15,19 +15,51 @@ import { type Fit, dprFor, sizeBacking } from '../../../core/canvas';
 import { qa } from '../../../core/loop';
 import { atlanten, bereit } from './atlas';
 import { cpuFrame, cpuLeeren } from './cpu';
-import { glFrame, glTaugt, makeLayer, readyStep } from './gl';
+import { glFrame, glTaugt, glTaugtEnde, glTaugtStart, makeLayer, readyStep } from './gl';
 import type { HandKontext, HandZustand } from './typen';
 import { atem, newState, states, zeigeSchritt } from './zeige';
 
 export { laden } from './atlas';
 
-/** Zeichenart einmal festlegen (WebGL2 mit beiden Ebenen oder 2D-Fallback). */
-function chooseMode(st: HandZustand, back: HTMLCanvasElement, front: HTMLCanvasElement): void {
+/**
+ * Zeichenart einmal festlegen (WebGL2 mit beiden Ebenen oder 2D-Fallback). Mit schritt höchstens ein teurer
+ * Teil je Aufruf (Eignungsprüfung, erste Ebene, zweite Ebene), damit das Vorwärmen kein Bild sprengt.
+ */
+function chooseMode(
+	st: HandZustand,
+	back: HTMLCanvasElement,
+	front: HTMLCanvasElement,
+	schritt = false,
+): void {
 	if (st.mode) return;
 	const { hold, point } = atlanten();
-	const tauglich = glTaugt(hold.meta, point.meta);
-	const l0 = tauglich ? makeLayer(back, false) : null;
-	const l1 = tauglich ? makeLayer(front, true) : null;
+	if (st.tauglich === undefined) {
+		if (!schritt) {
+			st.tauglich = st.probe
+				? (glTaugtEnde(st.probe, true) ?? false)
+				: glTaugt(hold.meta, point.meta);
+		} else if (!st.probe) {
+			// Teil 1 in diesem Bild, Teil 2 in einem späteren (der Treiber übersetzt dazwischen)
+			const p = glTaugtStart(hold.meta, point.meta);
+			if (p) st.probe = p;
+			else st.tauglich = false;
+			return;
+		} else {
+			const ok = glTaugtEnde(st.probe);
+			if (ok !== undefined) st.tauglich = ok;
+			return;
+		}
+	}
+	if (schritt && st.tauglich && !st.ebenen) {
+		st.ebenen = [makeLayer(back, false)];
+		return;
+	}
+	if (st.tauglich && st.ebenen && st.ebenen.length === 1 && schritt) {
+		st.ebenen.push(makeLayer(front, true));
+		return;
+	}
+	const l0 = st.tauglich ? (st.ebenen?.[0] ?? makeLayer(back, false)) : null;
+	const l1 = st.tauglich ? (st.ebenen?.[1] ?? makeLayer(front, true)) : null;
 	if (l0 && l1) {
 		st.layers = [l0, l1];
 		st.mode = 'gl';
@@ -85,9 +117,11 @@ function drawIn(back: HTMLCanvasElement, front: HTMLCanvasElement, c: HandKontex
 	const host = st.host;
 	// Vorwärmen: schon vor dem Eintritt Shader linken und Texturen hochladen (ein Schritt je Bild), damit der
 	// erste sichtbare Frame der Hand keinen Ruckler auslöst
-	if (bereit() && !(c.endA > 0.01) && c.P > 0.5) {
-		chooseMode(st, back, front);
-		if (st.layers) for (const L of st.layers) readyStep(L);
+	if (bereit() && !(c.endA > 0.01) && c.P > 0.5 && !st.warm) {
+		chooseMode(st, back, front, true);
+		// Ein Schritt je Bild und nur bis die Ebenen bereit sind
+		if (st.layers)
+			st.warm = st.layers.map(readyStep).every(Boolean) || st.layers.some((L) => L.dead);
 	}
 	if (!(c.endA > 0.01) || !bereit()) {
 		if (!st.clean && bereit() && st.mode) {
