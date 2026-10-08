@@ -226,7 +226,9 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 			// Übergang aus der Tiefe: Beim Hereinscrollen zieht sich der Staub der Fahrt als Wirbel zur Kugel zusammen
 			// (ein = 0 mit der Abschnittskante am unteren Rand, 1 kurz bevor sie oben ankommt). Kugelscheibe, Ring, Läufer
 			// und Marken kommen erst im letzten Drittel dazu (kz).
-			const ein = s.reduced ? 1 : ss((0.9 - s.el.getBoundingClientRect().top / s.H) / 0.8);
+			// Beim Hinausscrollen läuft derselbe Wirbel rückwärts: die Kugel zerstäubt wieder, bevor das Installieren kommt.
+			const oben = s.el.getBoundingClientRect().top / s.H;
+			const ein = s.reduced ? 1 : Math.min(ss((0.9 - oben) / 0.8), 1 - ss((-oben - 0.15) / 0.7));
 			const kz = ss((ein - 0.65) / 0.35);
 			s.full();
 			ctx.fillStyle = '#0A0A0A';
