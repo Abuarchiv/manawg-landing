@@ -7,12 +7,22 @@ export const STERNE_ANZAHL = 220;
 // Dichte des Entwurfs (220 Punkte auf 1280 x 360 px) bleibt auf jeder Fläche gleich.
 const DICHTE = STERNE_ANZAHL / (1280 * 360);
 
-/** Zeichnet die Sterne. canvas: sichtbares 2D-Canvas, c: Kontext der Bühne (W, H, dpr, t). */
-export function zeichneSterne(cv, W, H, dpr, t) {
-	let ctx = cv.__ctx;
+const kontexte = new WeakMap<HTMLCanvasElement, CanvasRenderingContext2D>();
+
+/** Zeichnet die Sterne. cv: sichtbares 2D-Canvas, W und H in CSS-Pixeln, dpr Pixelfaktor, t Sekunden. */
+export function zeichneSterne(
+	cv: HTMLCanvasElement,
+	W: number,
+	H: number,
+	dpr: number,
+	t: number,
+): void {
+	let ctx = kontexte.get(cv);
 	if (!ctx) {
-		ctx = cv.getContext('2d');
-		cv.__ctx = ctx;
+		const neu = cv.getContext('2d');
+		if (!neu) return;
+		ctx = neu;
+		kontexte.set(cv, ctx);
 	}
 	const w = Math.max(1, Math.round(W * dpr));
 	const h = Math.max(1, Math.round(H * dpr));

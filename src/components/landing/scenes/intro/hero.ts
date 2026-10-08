@@ -8,6 +8,7 @@
 
 import { glSichtbar } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
+import type { BuehnenKontext, HeroMarken } from './types';
 
 const VS = `#version 300 es
 in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
@@ -38,7 +39,7 @@ float rockA(vec3 p){ float st = .5 + .5 * sin(p.y * 70. + nz(p.xz * 5.) * 7.); r
 float sunD(vec2 uv, vec2 sp, float s){ return org((uv - sp) / s) * s; }
 vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v, 0., 1.)); }
 `;
-const SCENE = HEAD + `
+const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
 float mountain(vec2 uv){
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
@@ -73,28 +74,86 @@ const B = new Float32Array(32);
 const O = new Float32Array(32);
 const HO = new Float32Array(16);
 
+/** Gelinktes Shader-Programm mit den Orten seiner Uniforms. */
+interface Programm<K extends string> {
+	pr: WebGLProgram;
+	U: Record<K, WebGLUniformLocation | null>;
+}
+
+type SzeneU =
+	| 'uR'
+	| 'T'
+	| 'uM'
+	| 'uB'
+	| 'uMix'
+	| 'uLook'
+	| 'uK'
+	| 'uO'
+	| 'uC'
+	| 'uH'
+	| 'uSt'
+	| 'uZ';
+type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad';
+
+/** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
+interface HeroGL {
+	cv: HTMLCanvasElement | null;
+	gl: WebGL2RenderingContext | null;
+	lostAt: number;
+	noGL: boolean;
+	fails: number;
+	chk: number;
+	leer: number;
+	tx: WebGLTexture | null;
+	fb: WebGLFramebuffer | null;
+	tw: number;
+	th: number;
+	S: Programm<SzeneU> | null;
+	Pp: Programm<PostU> | null;
+	/** Hilfs-Canvas zum Lesen eines Pixels (willReadFrequently). */
+	pr: CanvasRenderingContext2D | null;
+}
+
 /**
  * Hero an ein sichtbares 2D-Canvas hängen.
  * frame(c, h) zeichnet ein Bild. c ist der Kontext der Bühne (W, H, dpr, t, now, P, m, ...),
  * h trägt die abgeleiteten Marken { look, mx, split, zoom, dive, sm, a0, ad }.
  */
-export function createHero(cv) {
+export function createHero(cv: HTMLCanvasElement) {
 	const ctx = cv.getContext('2d');
-	const G = { cv: null, gl: null, lostAt: 0, noGL: false, fails: 0, chk: 0, leer: 0, tx: null, fb: null, tw: 0, th: 0 };
+	if (!ctx) throw new Error('hero: kein 2D-Kontext');
+	const G: HeroGL = {
+		cv: null,
+		gl: null,
+		lostAt: 0,
+		noGL: false,
+		fails: 0,
+		chk: 0,
+		leer: 0,
+		tx: null,
+		fb: null,
+		tw: 0,
+		th: 0,
+		S: null,
+		Pp: null,
+		pr: null,
+	};
 	const fb = { x: 0, y: 0, ok: false }; // Fallback: nachlaufendes Licht
 
-	const initGL = () => {
-		const gl = G.cv.getContext('webgl2', { antialias: false, preserveDrawingBuffer: false });
+	const initGL = (gcv: HTMLCanvasElement): boolean => {
+		const gl = gcv.getContext('webgl2', { antialias: false, preserveDrawingBuffer: false });
 		if (!gl) return false;
 		// Treiber, deren Ausgabe leer bleibt, gelten wie fehlendes WebGL2 (Halbton-Fallback)
-		if (!glSichtbar(gl, G.cv)) {
+		if (!glSichtbar(gl, gcv)) {
+			// biome-ignore lint/suspicious/noConsole: Diagnose auf Debug-Stufe
 			console.debug('hero: WebGL-Ausgabe bleibt leer, 2D-Fallback');
 			G.gl = null;
 			return false;
 		}
 		G.gl = gl;
-		const sh = (t, src, k) => {
+		const sh = (t: number, src: string, k: string): WebGLShader => {
 			const s = gl.createShader(t);
+			if (!s) throw new Error(`shader ${k}: nicht angelegt`);
 			gl.shaderSource(s, src);
 			gl.compileShader(s);
 			if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
@@ -102,15 +161,16 @@ export function createHero(cv) {
 			return s;
 		};
 		const vs = sh(gl.VERTEX_SHADER, VS, 'vs');
-		const prog = (src, names, k) => {
+		const prog = <K extends string>(src: string, names: readonly K[], k: string): Programm<K> => {
 			const pr = gl.createProgram();
+			if (!pr) throw new Error(`programm ${k}: nicht angelegt`);
 			gl.attachShader(pr, vs);
 			gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, src, k));
 			gl.bindAttribLocation(pr, 0, 'a');
 			gl.linkProgram(pr);
 			if (!gl.getProgramParameter(pr, gl.LINK_STATUS))
 				console.error(`link ${k}`, gl.getProgramInfoLog(pr));
-			const U = {};
+			const U = {} as Record<K, WebGLUniformLocation | null>;
 			for (const n of names) U[n] = gl.getUniformLocation(pr, n);
 			return { pr, U };
 		};
@@ -132,7 +192,7 @@ export function createHero(cv) {
 	};
 
 	// Textur und Framebuffer des Szenenpuffers, bei Größenwechsel neu anlegen.
-	const ensureTex = (gl, tw, th) => {
+	const ensureTex = (gl: WebGL2RenderingContext, tw: number, th: number) => {
 		if (G.tx && G.tw === tw && G.th === th) return;
 		if (G.tx) gl.deleteTexture(G.tx);
 		if (G.fb) gl.deleteFramebuffer(G.fb);
@@ -154,14 +214,15 @@ export function createHero(cv) {
 	// Frischer Offscreen-Canvas (auch nach verlorenem Kontext). Ohne WebGL2 gilt dauerhaft der Fallback.
 	let everOk = false;
 	const fresh = () => {
-		G.cv = document.createElement('canvas');
+		const gcv = document.createElement('canvas');
+		G.cv = gcv;
 		G.gl = null;
-		G.cv.addEventListener('webglcontextlost', (e) => {
+		gcv.addEventListener('webglcontextlost', (e) => {
 			e.preventDefault();
 			G.gl = null;
 			G.lostAt = performance.now();
 		});
-		if (initGL()) {
+		if (initGL(gcv)) {
 			everOk = true;
 			G.fails = 0;
 		} else {
@@ -172,14 +233,16 @@ export function createHero(cv) {
 	fresh();
 
 	// Halbton-Fallback ohne WebGL2: das Zeichen als Punktraster mit nachlaufendem Licht.
-	const tone = (c) => {
+	const tone = (c: BuehnenKontext) => {
 		const { W, H, t, dpr } = c;
 		const step = 6;
 		const f0 = Math.min(1.25, Math.min(W, H) / 800);
 		const sc = 1.3 * f0 * (1 + 0.025 * Math.sin((t * Math.PI) / 3));
 		const cx = W / 2;
 		const cy = H / 2;
-		const tg = c.m.in ? [c.m.x, c.m.y] : [cx + Math.cos(t * 0.3) * 220 * f0, cy - 160 * f0 + Math.sin(t * 0.4) * 80 * f0];
+		const tg: [number, number] = c.m.in
+			? [c.m.x, c.m.y]
+			: [cx + Math.cos(t * 0.3) * 220 * f0, cy - 160 * f0 + Math.sin(t * 0.4) * 80 * f0];
 		if (!fb.ok) {
 			fb.x = tg[0];
 			fb.y = tg[1];
@@ -212,7 +275,7 @@ export function createHero(cv) {
 					const ly = fb.y - y;
 					const ll = Math.hypot(lx, ly, 220 * f0);
 					const lam = Math.max(0, (nx * lx + ny * ly + 220 * f0) / (nl * ll));
-					v = Math.pow(h, 0.3) * (0.08 + 0.92 * lam * lam);
+					v = h ** 0.3 * (0.08 + 0.92 * lam * lam);
 				} else if (d < 70) {
 					if (hsh(i * 7 + Math.floor(t * 2), j) < 0.18 * (1 - d / 70)) v = 0.25;
 				}
@@ -223,7 +286,7 @@ export function createHero(cv) {
 			}
 	};
 
-	const sizeTo = (W, H, dpr) => {
+	const sizeTo = (W: number, H: number, dpr: number) => {
 		const w = Math.max(1, Math.round(W * dpr));
 		const h = Math.max(1, Math.round(H * dpr));
 		if (cv.width !== w || cv.height !== h) {
@@ -233,12 +296,16 @@ export function createHero(cv) {
 	};
 
 	// Ein Bild. Gibt true zurück, wenn gezeichnet wurde.
-	const frame = (c, h) => {
+	const frame = (c: BuehnenKontext, h: HeroMarken): boolean => {
 		if (G.noGL) {
 			tone(c);
 			return true;
 		}
-		if (!G.gl || G.gl.isContextLost()) {
+		const gl = G.gl;
+		const gcv = G.cv;
+		const S = G.S;
+		const Pp = G.Pp;
+		if (!gl || !gcv || !S || !Pp || gl.isContextLost()) {
 			if (!G.lostAt) G.lostAt = performance.now();
 			if (performance.now() - G.lostAt > 800) {
 				G.lostAt = 0;
@@ -247,33 +314,35 @@ export function createHero(cv) {
 			return false;
 		}
 		G.lostAt = 0;
-		const gl = G.gl;
 		const { t, now, W, H } = c;
 		const dpr = c.dprHero ?? c.dpr;
 		const { split, dive, zoom, look, mx } = h;
 		const br = 1 + 0.03 * Math.sin((t * Math.PI) / 3);
+		const home0 = HOME[0];
+		if (!home0) return false;
 		for (let i = 0; i < 8; i++) {
 			const hm = HOME[i];
+			const g = HOME3[i];
+			if (!hm || !g) continue;
 			const e = i ? ease((now - h.a0 - i * 0.07) / 1.4) : 1;
-			const dx = hm[0] - HOME[0][0];
-			const dy = hm[1] - HOME[0][1];
+			const dx = hm[0] - home0[0];
+			const dy = hm[1] - home0[1];
 			const L = Math.hypot(dx, dy) || 1;
 			const far = 0.9 * (1 - e);
 			B[i * 4] = hm[0] + (dx / L) * far;
 			B[i * 4 + 1] = hm[1] + (dy / L) * far;
 			B[i * 4 + 2] = 0;
 			B[i * 4 + 3] = hm[2] * br;
-			const g = HOME3[i];
 			const f = 1 + 1.4 * split;
 			O[i * 4] = g[0] * f + Math.sin(t * 0.3 + i * 1.7) * 0.25 * split;
 			O[i * 4 + 1] = g[1] * f + Math.cos(t * 0.27 + i * 2.3) * 0.25 * split;
 			O[i * 4 + 2] = ((i % 3) - 1) * 1.5 * split;
 			O[i * 4 + 3] = g[2] * br;
 		}
-		const hx = O[0] + 7 / 110;
-		const hy = O[1] + 23 / 110;
+		const hx = (O[0] ?? 0) + 7 / 110;
+		const hy = (O[1] ?? 0) + 23 / 110;
 		const hr = 0.2 * (1 + dive * 2.2);
-		const cz = lerp(lerp(17, 6, zoom), -2.5, Math.pow(dive, 1.6));
+		const cz = lerp(lerp(17, 6, zoom), -2.5, dive ** 1.6);
 		const allDots = mx >= 0.999;
 		// Ausgabe in voller Backing-Auflösung, Szenenpuffer klein und adaptiv
 		const w = Math.max(1, Math.round(W * dpr));
@@ -282,7 +351,9 @@ export function createHero(cv) {
 		const cs = (6 * hh) / 800;
 		// Berg-Phase (ruhiges Bild): feinerer Szenenpuffer, die Grate zeigen sonst Treppenstufen; die adaptive Stufe (ad) fängt Last ab
 		const fk = mx < 0.05 ? 0.78 : 0.42;
-		const fw = allDots ? Math.ceil(w / cs) : Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
+		const fw = allDots
+			? Math.ceil(w / cs)
+			: Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
 		const fh = allDots ? Math.ceil(hh / cs) : Math.round((fw * H) / W);
 		const tw = Math.min(1920, Math.max(960, w));
 		const th = Math.max(fh, Math.round((tw * hh) / w));
@@ -292,8 +363,8 @@ export function createHero(cv) {
 		const uz = Math.min(1, W / H / 0.9);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, G.fb);
 		gl.viewport(0, 0, fw, fh);
-		gl.useProgram(G.S.pr);
-		const U = G.S.U;
+		gl.useProgram(S.pr);
+		const U = S.U;
 		gl.uniform2f(U.uR, fw, fh);
 		gl.uniform1f(U.T, t);
 		gl.uniform2f(U.uM, h.sm[0] * ax, h.sm[1]);
@@ -308,11 +379,11 @@ export function createHero(cv) {
 		gl.uniform3f(U.uH, hx, hy, hr);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-		if (G.cv.width < w) G.cv.width = w;
-		if (G.cv.height < hh) G.cv.height = hh;
+		if (gcv.width < w) gcv.width = w;
+		if (gcv.height < hh) gcv.height = hh;
 		gl.viewport(0, 0, w, hh);
-		gl.useProgram(G.Pp.pr);
-		const Q = G.Pp.U;
+		gl.useProgram(Pp.pr);
+		const Q = Pp.U;
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, G.tx);
 		gl.uniform1i(Q.uT, 0);
@@ -337,13 +408,15 @@ export function createHero(cv) {
 		gl.uniform1f(Q.uPad, 8 * dpr);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.drawImage(G.cv, 0, G.cv.height - hh, w, hh, 0, 0, w, hh);
+		ctx.drawImage(gcv, 0, gcv.height - hh, w, hh, 0, 0, w, hh);
 		// Die ersten Bilder prüfen: bleibt ein Streifen der Fläche leer (Deckkraft 0), zeichnet der Fallback.
 		// Gelesen wird aus einem kleinen Hilfs-Canvas, damit das sichtbare nicht auf Software-Zeichnen kippt.
 		if (G.chk < 4 && ++G.chk > 1) {
 			G.pr ||= document.createElement('canvas').getContext('2d', { willReadFrequently: true });
-			G.pr.drawImage(cv, 0, Math.floor(hh / 2), w, 2, 0, 0, 1, 1);
-			if (G.pr.getImageData(0, 0, 1, 1).data[3] === 0 && ++G.leer >= 2) G.noGL = true;
+			if (G.pr) {
+				G.pr.drawImage(cv, 0, Math.floor(hh / 2), w, 2, 0, 0, 1, 1);
+				if (G.pr.getImageData(0, 0, 1, 1).data[3] === 0 && ++G.leer >= 2) G.noGL = true;
+			}
 		}
 		return true;
 	};
@@ -362,4 +435,3 @@ export function createHero(cv) {
 		},
 	};
 }
-

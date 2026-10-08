@@ -1,7 +1,7 @@
 import { css } from '../../core/dc';
 import s from './HeroTitel.module.css';
 
-// Titel der Intro: Sternenfeld (sterne.js) und die Überschrift der Seite. Voll bis P 0,04, null bei
+// Titel der Intro: Sternenfeld (sterne.ts) und die Überschrift der Seite. Voll bis P 0,04, null bei
 // P 0,086 (T-09: Plateau statt sofortigem Verblassen).
 
 export function HeroTitel() {
