@@ -7,7 +7,7 @@ const KARTEN = [
 	{
 		nr: '01 / 04',
 		raum: 'KÜCHE',
-		titel: ['Einkäufe & ', 'Vorräte'],
+		titel: 'Einkäufe & Vorräte',
 		text: 'Eine Liste für alle. Wer einkauft, hakt ab, der Vorrat zählt mit.',
 		zeile: 'Hafermilch',
 		detail: '2 Packungen · von Mika',
@@ -16,7 +16,7 @@ const KARTEN = [
 	{
 		nr: '02 / 04',
 		raum: 'WOHNZIMMER',
-		titel: ['Ausgaben & ', 'Fixkosten'],
+		titel: 'Ausgaben & Fixkosten',
 		text: 'Jede Ausgabe in unter zehn Sekunden erfasst. Die Salden rechnet ManaWG.',
 		zeile: 'Pizzaabend',
 		detail: 'Mika bezahlt · durch 4',
@@ -25,7 +25,7 @@ const KARTEN = [
 	{
 		nr: '03 / 04',
 		raum: 'BAD',
-		titel: ['', 'Putzplan'],
+		titel: 'Putzplan',
 		text: 'Aufgaben rotieren von selbst. Die App erinnert, sie mahnt nicht.',
 		zeile: 'Bad ist heute dran.',
 		detail: 'Lea · heute',
@@ -34,7 +34,7 @@ const KARTEN = [
 	{
 		nr: '04 / 04',
 		raum: 'FLUR',
-		titel: ['Pinnwand & ', 'Chat'],
+		titel: 'Pinnwand & Chat',
 		text: 'Absprachen an einem Ort statt in drei Chats und auf Zetteln.',
 		zeile: 'Übergabe am Freitag',
 		detail: 'Jona · Schlüssel liegen im Flur',
@@ -59,10 +59,7 @@ export function Raeume() {
 						<i className="leit" style={css(`--k:var(--c${j},0)`)} aria-hidden="true" />
 					</div>
 					<div className="haar" />
-					<h2 className={st.titel}>
-						{k.titel[0]}
-						<span className="serife">{k.titel[1]}</span>
-					</h2>
+					<h2 className={st.titel}>{k.titel}</h2>
 					<p className={st.text}>{k.text}</p>
 					<div className={st.zeile}>
 						<div style={css('display:flex;flex-direction:column;gap:4px')}>

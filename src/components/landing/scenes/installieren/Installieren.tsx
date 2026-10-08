@@ -191,7 +191,7 @@ export function Installieren() {
 				<span className="label">[ 07 ] INSTALLIEREN</span>
 				<h2 id="installieren-titel" className={s.titel}>
 					Auf den <br />
-					<span className={`${s.nowrap} serife`}>Home-Bildschirm.</span>
+					<span className={s.nowrap}>Home-Bildschirm.</span>
 				</h2>
 				<p className={s.lead}>Ohne App Store, offlinefähig. app.manawg.com öffnen, dann:</p>
 				<div className={s.tabs} role="tablist" aria-label="Plattform">

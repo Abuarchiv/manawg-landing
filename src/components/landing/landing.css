@@ -496,19 +496,6 @@
 	letter-spacing: 0.07em;
 }
 
-/* Serife (V5): in jeder großen Überschrift genau ein Wort in Instrument Serif kursiv. Sie braucht etwa
-   1,12-fache Größe und weniger negative Laufweite, damit Mittellänge und Grauwert zur Grotesk passen.
-   Grundlinie bleibt gleich; line-height 0 hält die Zeilenhöhe der Überschrift unverändert. */
-.serife {
-	font-family: "Instrument Serif", "Times New Roman", serif;
-	font-style: italic;
-	font-weight: 400;
-	font-size: 1.14em;
-	letter-spacing: -0.012em;
-	line-height: 0;
-	font-synthesis: none;
-}
-
 /* Leitlinie mit Punkt (V5, Referenz 7): kurze Haarlinie hinter einem Label, Punkt am Ende. --k (0 bis 1) führt
    die Länge, entweder am Scroll (--c0..3 der Raumkarten) oder an der Deckkraft (Tiefe). Ease-out als Kubik. */
 .leit {
