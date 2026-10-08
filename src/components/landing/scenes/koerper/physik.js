@@ -3,7 +3,7 @@
 // der ganzen Fläche.
 
 import { loop, qa, register } from '../../core/loop';
-import { AB, hsh } from '../../core/math';
+import { AB, hsh, ss } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
 const S = 1.15;
@@ -321,6 +321,12 @@ export function registerKoerper(cv, api = {}) {
 			let sig = s.W * 7 + s.H + s.f * 1000 + s.dpr * 100 + loop.fv + (loose ? 0.5 : 0) + (s.grab + 2) * 3e4;
 			sig = (sig + Math.round(lx) * 131 + Math.round(ly) * 17) % 1e9;
 			for (const b of s.B) sig = (sig * 31 + Math.round(b.x * 50) * 7 + Math.round(b.y * 50)) % 1e9;
+			// Übergang in die Tiefe: Beim Hinausscrollen fallen die Körper vom Betrachter weg zur Bildschirmmitte und
+			// werden zu Staubkörnern (aus = 0 mit der Abschnittskante oben, 1 bei 80 % hinaus)
+			const aus = s.reduced ? 0 : ss(-r.top / (0.8 * r.height));
+			const vx = (x0 + x1) / 2;
+			const vy = (Math.min(innerHeight / 2 - r.top, s.H - 60) - s.oy) / s.f;
+			sig = (sig + Math.round(aus * 1000) * 13) % 1e9;
 			if (sig === s.sig && !s.stale) return;
 			s.sig = sig;
 			s.stale = false;
@@ -375,8 +381,10 @@ export function registerKoerper(cv, api = {}) {
 					cache.set(k, e);
 					if (cache.size > 90) cache.delete(cache.keys().next().value);
 				}
-				const sz = 2 * b.r + 4;
-				ctx.drawImage(e, b.x - b.r - 2, b.y - b.r - 2, sz, sz);
+				const kt = 1 - 0.93 * aus;
+				const sz = (2 * b.r + 4) * kt;
+				ctx.globalAlpha = 1 - 0.5 * ss((aus - 0.6) / 0.4);
+				ctx.drawImage(e, vx + (b.x - vx) * kt - sz / 2, vy + (b.y - vy) * kt - sz / 2, sz, sz);
 			}
 			// Namen: Mono 11 px (hoch 10 px) mit Laufweite, ohne Platte, dunkler Saum statt Kasten, nur in der losen Phase
 			ctx.font = `500 ${(s.mode === 'hoch' ? NAME - 1 : NAME) / s.f}px "JetBrains Mono", monospace`;
@@ -385,7 +393,8 @@ export function registerKoerper(cv, api = {}) {
 			ctx.lineWidth = 4 / s.f;
 			ctx.textAlign = 'center';
 			ctx.textBaseline = 'middle';
-			if (loose)
+			ctx.globalAlpha = 1;
+			if (loose && aus < 0.02)
 				for (const b of s.B) {
 					ctx.strokeStyle = 'rgba(10,10,10,0.85)';
 					ctx.strokeText(b.n, b.x, b.y);

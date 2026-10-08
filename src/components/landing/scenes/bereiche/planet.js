@@ -223,6 +223,11 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				const Z1 = -v[0] * sa + v[2] * ca;
 				return [X, v[1] * cb - Z1 * sb, v[1] * sb + Z1 * cb];
 			};
+			// Übergang aus der Tiefe: Beim Hereinscrollen zieht sich der Staub der Fahrt als Wirbel zur Kugel zusammen
+			// (ein = 0 mit der Abschnittskante am unteren Rand, 1 kurz bevor sie oben ankommt). Kugelscheibe, Ring, Läufer
+			// und Marken kommen erst im letzten Drittel dazu (kz).
+			const ein = s.reduced ? 1 : ss((0.9 - s.el.getBoundingClientRect().top / s.H) / 0.8);
+			const kz = ss((ein - 0.65) / 0.35);
 			s.full();
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
@@ -236,7 +241,7 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 			const gl = ctx.createRadialGradient(CX, CY, R, CX, CY, R * 1.3);
 			gl.addColorStop(0, 'rgba(250,250,250,0.12)');
 			gl.addColorStop(1, 'rgba(250,250,250,0)');
-			ctx.globalAlpha = 1;
+			ctx.globalAlpha = kz;
 			ctx.fillStyle = gl;
 			ctx.beginPath();
 			ctx.arc(CX, CY, R * 1.3, 0, 6.2832);
@@ -249,18 +254,31 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 			ctx.strokeStyle = 'rgba(250,250,250,0.35)';
 			ctx.lineWidth = 1;
 			ctx.stroke();
+			ctx.globalAlpha = 1;
 			ctx.fillStyle = '#FAFAFA';
 			const du = cl(R / 300, 0.8, 1.2); // Punktgröße folgt dem Planetenradius
-			for (const q of s.PT) {
+			s.PT.forEach((q, i) => {
 				const v = rot(q);
-				if (v[2] <= 0) continue;
+				if (v[2] <= 0) return;
 				const lam = Math.max(0, v[0] * -0.45 + v[1] * 0.55 + v[2] * 0.7);
 				const a = q[3] ? 0.35 + 0.65 * lam : 0.15 + 0.3 * lam;
 				const sz = (q[3] ? 2.6 : 1.6) * du;
-				ctx.globalAlpha = a * (0.4 + 0.6 * v[2]);
-				ctx.fillRect(CX + v[0] * R - sz / 2, CY - v[1] * R - sz / 2, sz, sz);
-			}
-			ctx.globalAlpha = 0.25;
+				let x = v[0] * R;
+				let y = -v[1] * R;
+				if (ein < 1) {
+					// Jeder Punkt startet mit eigener Verzögerung weit außen und dreht sich auf seinen Platz ein
+					const u = ss((ein - 0.4 * hsh(i, 21)) / 0.6);
+					const w = 1 - u;
+					const d = 1 + w * (2.2 + 3 * hsh(i, 22));
+					const th = w * (1.6 + hsh(i, 23));
+					const c = Math.cos(th);
+					const sn = Math.sin(th);
+					[x, y] = [(x * c - y * sn) * d, (x * sn + y * c) * d];
+					ctx.globalAlpha = a * (0.4 + 0.6 * v[2]) * (0.35 + 0.65 * u);
+				} else ctx.globalAlpha = a * (0.4 + 0.6 * v[2]);
+				ctx.fillRect(CX + x - sz / 2, CY + y - sz / 2, sz, sz);
+			});
+			ctx.globalAlpha = 0.25 * kz;
 			ctx.strokeStyle = '#FAFAFA';
 			ctx.beginPath();
 			ctx.ellipse(CX, CY, R * 1.25, R * 0.28, -0.25, 0, 6.2832);
@@ -271,12 +289,12 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				w.tr.forEach((pt, i) => {
 					const v = rot(pt);
 					if (v[2] <= 0) return;
-					ctx.globalAlpha = (i / w.tr.length) * 0.8;
+					ctx.globalAlpha = (i / w.tr.length) * 0.8 * kz;
 					ctx.fillRect(CX + v[0] * R * 1.01 - 1, CY - v[1] * R * 1.01 - 1, 2, 2);
 				});
 				const v = rot(u);
 				if (v[2] > 0) {
-					ctx.globalAlpha = 1;
+					ctx.globalAlpha = kz;
 					ctx.beginPath();
 					ctx.arc(CX + v[0] * R * 1.015, CY - v[1] * R * 1.015, 4, 0, 6.2832);
 					ctx.fill();
@@ -348,7 +366,7 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 					pl: show ? [lx - pad, ty - fs * 0.78, tw + pad * 2, fs * 1.56] : null,
 				});
 				const hv = i === s.hov;
-				ctx.globalAlpha = Math.min(1, v[2] * 1.6);
+				ctx.globalAlpha = Math.min(1, v[2] * 1.6) * kz;
 				ctx.strokeStyle = '#FAFAFA';
 				ctx.beginPath();
 				ctx.moveTo(bx, by);
@@ -362,14 +380,14 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				ctx.strokeRect(tx - ms / 2 - 0.5, ty - ms / 2 - 0.5, ms + 1, ms + 1);
 				if (on) {
 					const pr = s.reduced ? 0.3 : (t * 0.8) % 1;
-					ctx.globalAlpha = 1 - pr;
+					ctx.globalAlpha = (1 - pr) * kz;
 					ctx.beginPath();
 					ctx.arc(tx, ty, klein ? 8 + pr * 6 : 8 + pr * 26, 0, 6.2832);
 					ctx.stroke();
 				}
 				if (show) {
 					// Beschriftung ohne Hintergrund: dunkler Rand hält sie auf den Punkten lesbar, Hover unterstreicht
-					ctx.globalAlpha = on || hv ? 1 : Math.max(0.85, Math.min(1, v[2] * 1.6));
+					ctx.globalAlpha = (on || hv ? 1 : Math.max(0.85, Math.min(1, v[2] * 1.6))) * kz;
 					ctx.lineJoin = 'round';
 					ctx.lineWidth = 3.5 / s.f;
 					ctx.strokeStyle = 'rgba(10,10,10,0.9)';
