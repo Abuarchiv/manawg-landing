@@ -26,7 +26,14 @@ export function KopfMaske() {
 				if (!s) continue;
 				const r = s.getBoundingClientRect();
 				const d = Math.min(r.bottom, band) - Math.max(r.top, 0);
-				v = Math.max(v, Math.min(1, Math.max(0, d / band)));
+				let e = Math.min(1, Math.max(0, d / band));
+				// Bereiche: steht die Szene still, liegen Label und Titel unter dem Kopfband und müssen voll lesbar sein.
+				// Gedeckt wird erst, wenn der Titel (nicht der Abschnittsrand) ins Band läuft.
+				if (id === 'bereiche' && e > 0) {
+					const t = s.querySelector('[data-titel]')?.getBoundingClientRect();
+					if (t) e = Math.min(e, Math.max(0, (band + 6 - t.top) / 24));
+				}
+				v = Math.max(v, e);
 			}
 			// Hochformat, Ende-Ebene der Intro: läuft die Bühne nach oben weg, schiebt sich das Handy unter das Band
 			if (hoch && document.getElementById('final')?.dataset.phase === 'ende') {

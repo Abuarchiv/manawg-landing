@@ -282,13 +282,13 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 					ctx.fill();
 				}
 			}
-			// Marken und Beschriftungen. Marker 10, Beschriftung 11 (mindestens 10 CSS-px auf dem Bildschirm).
-			// Kleine Schirme (Hochformat, bis 768 px): Marke 7,5 px als Kontur, Beschriftung 10 px mit enger Laufweite
+			// Marken und Beschriftungen: klein und ohne Kasten. Marke 8 px (Hochformat 7 px), Beschriftung 10 CSS-px auf dem
+			// Bildschirm, lesbar über einen dunklen Schriftrand statt einer Platte. Die Trefferfläche bleibt unsichtbar groß.
 			const klein = s.mode === 'hoch' || s.W <= 768;
-			const ms = klein ? 7.5 / s.f : Math.max(10, 9 / s.f);
-			const fs = klein ? 10 / s.f : Math.max(11, 10.5 / s.f);
+			const ms = (klein ? 7 : 8) / s.f;
+			const fs = 10 / s.f;
 			const rand = (klein ? 16 : 4) / s.f;
-			if ('letterSpacing' in ctx) ctx.letterSpacing = klein ? `${0.07 * fs}px` : '0px';
+			if ('letterSpacing' in ctx) ctx.letterSpacing = `${0.06 * fs}px`;
 			const minHit = HIT / s.f;
 			const pad = 4 / s.f;
 			ctx.font = `500 ${fs}px ${MONO}`;
@@ -309,7 +309,7 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 				// Beschriftung auf der Außenseite, am Rand der Fläche nach innen geklappt
 				const label = `${String(i + 1).padStart(2, '0')} ${PL[i][0].toUpperCase()}`;
 				const tw = ctx.measureText(label).width;
-				const gap = ms / 2 + 7 / s.f;
+				const gap = ms / 2 + (on ? 12 : 7) / s.f;
 				let right = v[0] >= 0;
 				if (right && tx + gap + tw + pad > x1 - rand) right = false;
 				else if (!right && tx - gap - tw - pad < x0 + rand) right = true;
@@ -368,12 +368,22 @@ export function registerPlanet(cv, { getSel, onSelect, api }) {
 					ctx.stroke();
 				}
 				if (show) {
-					// Platte hinter der Schrift, damit sie auf den Punkten lesbar bleibt (>= 4,5:1)
-					ctx.globalAlpha = 1;
-					ctx.fillStyle = hv ? 'rgba(40,40,40,0.9)' : 'rgba(10,10,10,0.78)';
-					ctx.fillRect(lx - pad, ty - fs * 0.78, tw + pad * 2, fs * 1.56);
+					// Beschriftung ohne Hintergrund: dunkler Rand hält sie auf den Punkten lesbar, Hover unterstreicht
+					ctx.globalAlpha = on || hv ? 1 : Math.max(0.85, Math.min(1, v[2] * 1.6));
+					ctx.lineJoin = 'round';
+					ctx.lineWidth = 3.5 / s.f;
+					ctx.strokeStyle = 'rgba(10,10,10,0.9)';
+					ctx.strokeText(label, lx, ty);
+					ctx.lineWidth = 1;
 					ctx.fillStyle = '#FAFAFA';
 					ctx.fillText(label, lx, ty);
+					if (hv) {
+						ctx.strokeStyle = '#FAFAFA';
+						ctx.beginPath();
+						ctx.moveTo(lx, ty + fs * 0.7);
+						ctx.lineTo(lx + tw, ty + fs * 0.7);
+						ctx.stroke();
+					}
 				}
 			});
 			ctx.globalAlpha = 1;
