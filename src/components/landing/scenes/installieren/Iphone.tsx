@@ -530,7 +530,9 @@ export function Iphone() {
 						<span className={s.ios_taste_s} style={{ width: 90 }}>
 							123
 						</span>
-						<span className={s.ios_taste} style={{ flex: 1 }} />
+						<span className={s.ios_taste_s} style={{ flex: 1, fontSize: 15 }}>
+							Leerzeichen
+						</span>
 						<span
 							className={s.ios_taste_s}
 							style={{ width: 90, background: '#0a84ff', color: '#fff' }}

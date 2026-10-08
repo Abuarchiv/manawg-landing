@@ -23,14 +23,16 @@ export function Bereiche() {
 			}),
 		[],
 	);
-	// Karte und Titel gehören zum Planeten: sie blenden aus, sobald der Abschnitt nach oben aus dem Bild läuft
+	// Karte und Titel gehören zum Planeten: sie lösen sich erst kurz vor dem Kopfband auf (Unterkante des
+	// Abschnitts von 40 % auf 25 % der Fensterhöhe), bis dahin bleibt die Karte lesbar und füllt den Auslauf
+	// der Szene, ohne als halb durchsichtiger Geist über der nächsten Überschrift zu stehen
 	useEffect(() => {
 		const el = secRef.current as HTMLElement;
 		let raf = 0;
 		const f = () => {
 			raf = 0;
 			const r = el.getBoundingClientRect();
-			const o = Math.min(1, Math.max(0, (r.bottom - 0.3 * innerHeight) / (0.35 * innerHeight)));
+			const o = Math.min(1, Math.max(0, (r.bottom - 0.25 * innerHeight) / (0.15 * innerHeight)));
 			el.style.setProperty('--bo', o.toFixed(2));
 		};
 		const on = () => {

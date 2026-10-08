@@ -76,10 +76,14 @@ export function Landing() {
 
 	return (
 		<div id="final" data-mode={loop.mode} data-phase="intro" suppressHydrationWarning>
+			{/* Sprunglink als erster Tab-Stopp, sichtbar nur bei Fokus (landing.css .sprung) */}
+			<a className="label sprung" href="#inhalt">
+				Zum Inhalt springen
+			</a>
 			<KopfMaske />
 			<Kopf />
 			<Hinweise />
-			<main id="inhalt">
+			<main id="inhalt" tabIndex={-1}>
 				<Intro />
 				<FlutBand />
 				<SoGehts />

@@ -94,6 +94,13 @@
 	}
 }
 
+/* 320 px breit: engeres Polster, damit beide Knöpfe nebeneinander bleiben (ein Umbruch wüchse unter die Fußzeile) */
+@media (max-width: 339px) {
+	.knoepfe .knopf {
+		padding: 0 8px;
+	}
+}
+
 /* Handy quer: wenig Höhe, Titel kleiner, damit er über der Fußzeile ganz Platz hat */
 @media (orientation: landscape) and (max-height: 499px) {
 	.sektion {

@@ -355,6 +355,35 @@
 	outline: 2px solid #fafafa;
 	outline-offset: 2px;
 }
+/* Sprunglink „Zum Inhalt springen“: erster Tab-Stopp, unter dem Kopfband nur bei Tastaturfokus sichtbar */
+.sprung {
+	position: fixed;
+	left: calc(var(--rand) + env(safe-area-inset-left));
+	top: calc(var(--kopf-unten) + 8px);
+	z-index: 22;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	color: #fafafa;
+	text-decoration: none;
+}
+.sprung:focus-visible {
+	width: auto;
+	height: auto;
+	overflow: visible;
+	clip-path: none;
+	padding: 8px 12px;
+	background: #0a0a0a;
+	border: 1px solid rgba(250, 250, 250, 0.4);
+	border-radius: 8px;
+	outline: 2px solid #fafafa;
+	outline-offset: 2px;
+}
+#inhalt:focus {
+	outline: none;
+}
 .fokus-anker[inert],
 [data-phase="nach"] .fokus-anker,
 [data-phase="ende"] .fokus-anker {

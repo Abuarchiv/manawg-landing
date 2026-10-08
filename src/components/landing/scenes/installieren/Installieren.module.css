@@ -264,8 +264,8 @@
 		align-items: stretch;
 		gap: var(--sp-16);
 		min-height: 0;
-		padding: max(var(--abschnitt-oben), calc(var(--kopf-unten) + 24px)) var(--rand)
-			var(--abschnitt-unten);
+		/* unten knapper als die Textszenen: nach dem Knopf folgt nur noch das Label von Fragen */
+		padding: max(var(--abschnitt-oben), calc(var(--kopf-unten) + 24px)) var(--rand) var(--sp-64);
 		box-sizing: border-box;
 	}
 	.text {

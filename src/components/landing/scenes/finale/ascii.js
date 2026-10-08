@@ -40,7 +40,10 @@ export function registerAscii(cv) {
 		name: 'ascii',
 		el: cv,
 		host: cv.parentElement,
-		box: (_W, _H, _safeH, mode) => (mode === 'hoch' ? { bw: 760, bh: 760 } : { bw: 1280, bh: 760 }),
+		// Hoch sitzt der Horizont (Unterkante der Bezugsbox) auf der Unterkante der Fläche: der Sonnenbogen steht
+		// hinter dem Titel, die Unterkante des Kreises bleibt wie quer außerhalb des Bildes
+		box: (_W, _H, _safeH, mode) =>
+			mode === 'hoch' ? { bw: 760, bh: 760, align: 'bottom' } : { bw: 1280, bh: 760 },
 		dprCap: 2,
 		touchCap: 1.5,
 		init(s) {
@@ -95,10 +98,14 @@ export function registerAscii(cv) {
 			const inv = 1 / f;
 			const ray0 = t * 0.2;
 			const fern = sr + 450;
-			// Hoch ist die Sonne kleiner als der Titel: dünner, damit die Schrift davor frei bleibt
-			const dichte = s.mode === 'hoch' ? 0.62 : 1;
+			// Hoch liegt die Sonne ganz hinter Titel und Knöpfen: Zeichen kräftiger, Aussparung weniger tief und Strahlen
+			// länger, sonst bleibt vom Bild auf dem Handy nur ein blasses Raster
+			const hoch = s.mode === 'hoch';
+			const dichte = hoch ? 0.9 : 1;
+			const boden = hoch ? 0.45 : 0.25;
+			const strahl = hoch ? 260 : 160;
 			const t12 = Math.floor(t * 12);
-			// Aussparung hinter Schlagzeile und Knöpfen: Zeichen dort höchstens 25 %, nach außen weicher Abfall
+			// Aussparung hinter Schlagzeile und Knöpfen: Zeichen dort höchstens „boden“ (quer 25 %), nach außen weicher Abfall
 			if (loop.n % 20 === 0 || !s.box) {
 				const r0 = s.cv.getBoundingClientRect();
 				let x0 = 1e9;
@@ -117,7 +124,7 @@ export function registerAscii(cv) {
 			}
 			const box = s.box;
 			// Raster-Cache: Abstand, Strahlwinkel und Aussparung je Zelle einmal pro Größe und Sonnenstand
-			const key = `${s.W}|${s.H}|${f}|${s.ox}|${s.oy}|${sy.toFixed(2)}|${dichte}|${box ? `${box.x0 | 0},${box.y0 | 0},${box.x1 | 0},${box.y1 | 0}` : 0}`;
+			const key = `${s.W}|${s.H}|${f}|${s.ox}|${s.oy}|${sy.toFixed(2)}|${dichte}|${boden}|${box ? `${box.x0 | 0},${box.y0 | 0},${box.x1 | 0},${box.y1 | 0}` : 0}`;
 			let C = s.cache;
 			if (!C || C.key !== key) {
 				const cols = Math.ceil((s.W - CW / 2) / CW);
@@ -159,7 +166,7 @@ export function registerAscii(cv) {
 							const ddx = Math.max(box.x0 - x, x - box.x1, 0);
 							const ddy = Math.max(box.y0 - y, y - box.y1, 0);
 							const g = cl(Math.hypot(ddx, ddy) / 140);
-							bq *= 0.25 + 0.75 * g * g * (3 - 2 * g);
+							bq *= boden + (1 - boden) * g * g * (3 - 2 * g);
 						}
 						C.BQ[q] = bq;
 					}
@@ -198,7 +205,7 @@ export function registerAscii(cv) {
 						if (r < sr * 0.72) k = 2; // Kern kräftiger
 					} else if (r < fern) {
 						const ray = 0.5 + 0.5 * (CS[q] * cr - SN[q] * sn0);
-						v = ray > 0.82 ? 0.5 * Math.exp(-(r - sr) / 160) : 0;
+						v = ray > 0.82 ? 0.5 * Math.exp(-(r - sr) / strahl) : 0;
 						k = 0; // Strahlen leise
 					}
 					const kontur = Math.abs(r - sr + band * 0.2) < band * 0.5;
