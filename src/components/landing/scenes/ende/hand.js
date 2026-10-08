@@ -14,7 +14,7 @@ import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
 // Bei jedem neuen Render erhöhen: json und webp gehören zusammen und werden gemeinsam gecacht.
-const HAND_V = 5;
+const HAND_V = 6;
 const STEP = 1.25; // Zellgröße in Bühnen-px (fein: Halbton liest als Haut, nicht als Raster)
 const GAM = 0.85;
 const CON = 1.05;
@@ -22,7 +22,8 @@ const RIM = 0.14;
 const EDW = 2.0;
 const EDV = 0.9;
 const JIT = 0.08;
-const RAND_IN = 7; // Haltehand: höchstens so viele px ragen über den Bildschirmrand (Tab-Leiste bleibt frei)
+const RAND_IN = 7; // Haltehand, Finger rechts: höchstens so viele px ragen über den Bildschirmrand (Tab-Leiste bleibt frei)
+const RAND_DAUMEN = 32; // Daumen links liegt wie im Referenzfoto leicht aufs Glas
 const PS = 0.54; // Maßstab der Zeigehand (Finger ~ 41 Bühnen-px, Haltefinger ~ 55)
 const ARM = [1460, 1020]; // Ziel des Zeigearms im Ende-Raum (quer)
 const INK = 0.98; // #FAFAFA
@@ -162,7 +163,8 @@ vec2 holdTone(vec2 C){
     float vd = pow(1. - tn, .45);
     if (edge) vd = max(vd, .95);
     // auf dem Glas nur ein schmaler Streifen am Rand: Tab-Leiste und Inhalt bleiben frei
-    float ti = vd * cov * (1. - ss((-sdS - ${(RAND_IN - 4).toFixed(1)}) / 7.));
+    float ri = C.x < 800. ? ${(RAND_DAUMEN - 4).toFixed(1)} : ${(RAND_IN - 4).toFixed(1)};
+    float ti = vd * cov * (1. - ss((-sdS - ri) / 7.));
     tone = mix(tone, ti, gk);
   }
   return vec2(tone, front ? 2. : 1.);
@@ -680,7 +682,7 @@ function holdCpu(x, y) {
 		const tn = 0.04 + 0.86 * cl(v) ** 1.35;
 		let vd = (1 - tn) ** 0.45;
 		if (edge) vd = Math.max(vd, 0.95);
-		return [vd * cov * (1 - ss((-sdS - (RAND_IN - 4)) / 7)), 2];
+		return [vd * cov * (1 - ss((-sdS - ((x < 800 ? RAND_DAUMEN : RAND_IN) - 4)) / 7)), 2];
 	}
 	if (edge) v = Math.max(v, EDV * lf * al);
 	return [v * cov, front ? 2 : 1];
