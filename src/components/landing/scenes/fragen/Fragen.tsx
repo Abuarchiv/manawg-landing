@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { css } from '../../core/dc';
+import { StichGrund } from '../stichgrund/StichGrund';
 
 const FRAGEN: [string, string][] = [
 	[
@@ -30,9 +31,35 @@ export function Fragen() {
 			tabIndex={-1}
 			aria-labelledby="fragen-titel"
 			style={css(
-				'position:relative;background:#0A0A0A;color:#FAFAFA;padding:var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);display:flex;flex-direction:column;gap:var(--sp-48)',
+				'position:relative;isolation:isolate;background:#0A0A0A;color:#FAFAFA;padding:var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);display:flex;flex-direction:column;gap:var(--sp-48)',
 			)}
 		>
+			<StichGrund
+				frei=":scope > h2, :scope > div"
+				puls={offen}
+				ziel={(r) => {
+					// Breit: der Schein sitzt rechts auf Höhe der offenen Antwort. Schmal: unter der Liste, wo kein Text steht
+					const sec = document.getElementById('fragen');
+					const _liste = sec?.lastElementChild?.getBoundingClientRect();
+					const o = sec?.querySelector('.faq-antwort[data-offen="true"]')?.parentElement;
+					const b = o?.getBoundingClientRect();
+					// Schmal: kleiner und leiser, damit zwischen den Textzeilen wenig Linie steht
+					if (r.width < 700)
+						return {
+							x: r.width * 0.78,
+							y: b ? b.top + b.height / 2 - r.top : r.height * 0.5,
+							rx: r.width * 0.55,
+							ry: 150,
+							a: 0.55,
+						};
+					return {
+						x: r.width * 0.8,
+						y: b ? b.top + b.height / 2 - r.top : r.height * 0.55,
+						rx: Math.max(240, r.width * 0.3),
+						ry: 200,
+					};
+				}}
+			/>
 			<h2 id="fragen-titel" className="label" style={css('margin:0')}>
 				<span aria-hidden="true">[ 08 ] </span>FRAGEN
 			</h2>
