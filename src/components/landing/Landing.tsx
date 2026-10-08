@@ -2,11 +2,11 @@
 
 import { useEffect } from 'react';
 import './landing.css';
+import './papier.css';
 import { loop, modeOf, qa, setMode, start } from './core/loop';
 import { initScroll, sectionBox } from './core/scroll';
 import { Bereiche } from './scenes/bereiche/Bereiche';
 import { Finale } from './scenes/finale/Finale';
-import { FlutBand } from './scenes/flutband/FlutBand';
 import { Fragen } from './scenes/fragen/Fragen';
 import { Fusszeile } from './scenes/fusszeile/Fusszeile';
 import { Installieren } from './scenes/installieren/Installieren';
@@ -15,6 +15,7 @@ import { live } from './scenes/intro/stage';
 import { Koerper } from './scenes/koerper/Koerper';
 import { SoGehts } from './scenes/sogehts/SoGehts';
 import { Tiefe } from './scenes/tiefe/Tiefe';
+import { Uebergang } from './scenes/uebergang/Uebergang';
 import { Hinweise } from './shell/Hinweise';
 import { Kopf } from './shell/Kopf';
 import { KopfMaske } from './shell/KopfMaske';
@@ -85,13 +86,16 @@ export function Landing() {
 			<Hinweise />
 			<main id="inhalt" tabIndex={-1}>
 				<Intro />
-				<FlutBand />
+				<Uebergang id="flutband" nach="papier" seed={3} />
 				<SoGehts />
+				<Uebergang id="uebergang-koerper" nach="schwarz" seed={11} />
 				<Koerper />
 				<Tiefe />
 				<Bereiche />
+				<Uebergang id="uebergang-installieren" nach="papier" seed={23} />
 				<Installieren />
 				<Fragen />
+				<Uebergang id="uebergang-finale" nach="schwarz" seed={37} />
 				<Finale />
 				<Fusszeile />
 			</main>
