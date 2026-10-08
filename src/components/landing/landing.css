@@ -65,13 +65,10 @@
 	--h-520: clamp(260px, min(40.625vw, 65svh), 572px);
 
 	/* Bedienelemente */
-	--cta-h: 40px;
-	--cta-fs: 14px;
-	--cta-px: 16px;
-	--cta-r: 10px;
-	--cta-gross-h: 44px;
-	--cta-gross-fs: 15px;
-	--cta-gross-px: 22px;
+	--cta-h: 32px;
+	--cta-fs: 12px;
+	--cta-gross-h: 32px;
+	--cta-gross-fs: 13px;
 	--faq-marke: clamp(20px, 1.7vw, 22px);
 	--zeit: 140ms; /* Übergänge der Bedienzustände, 120 bis 160 ms */
 	--haar: rgba(250, 250, 250, 0.18);
@@ -100,51 +97,101 @@
 	scroll-margin-top: calc(var(--kopf-unten) + 16px);
 }
 
-/* Klassen-Vertrag (PLAN-V2 2.7). Hover, Fokus und Aktiv gestaltet SHELL hier zentral. */
-.cta {
+/* Klassen-Vertrag (PLAN-V2 2.7). Hover, Fokus und Aktiv gestaltet SHELL hier zentral.
+   Knöpfe sind feiner Mono-Text in Klammern, ohne Füllfläche und ohne Kasten: sichtbare Höhe 32 px,
+   Trefferfläche 44 px (je 6 px Polster oben und unten, durch negativen Rand ausgeglichen).
+   Der Hauptknopf (--voll) steht hell mit Haarlinie, die anderen gedämpft. Hover und Fokus: Klammern öffnen sich,
+   Linie läuft ein, Schrift volle Helligkeit. */
+.cta,
+.tab {
 	box-sizing: border-box;
 	position: relative;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
-	height: var(--cta-h);
-	padding: 0 var(--cta-px);
-	border-radius: var(--cta-r);
+	gap: 0.7em;
+	height: calc(var(--cta-h) + 12px);
+	margin-block: -6px;
+	padding: 6px 0;
+	font-family: "JetBrains Mono", monospace;
 	font-size: var(--cta-fs);
 	font-weight: 500;
+	line-height: 1;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
 	white-space: nowrap;
 	flex-shrink: 0;
 	cursor: pointer;
 	text-decoration: none;
-	color: #fafafa;
-	transition: background-color var(--zeit) ease, border-color var(--zeit) ease, transform
-		var(--zeit) ease;
+	color: rgba(250, 250, 250, 0.7);
+	/* ohne Fläche: Lesbarkeit über Kunst (Berg, Hand, ASCII) aus einem weichen dunklen Schatten */
+	text-shadow: 0 0 10px rgba(10, 10, 10, 0.85), 0 0 2px rgba(10, 10, 10, 0.6);
+	background: transparent no-repeat;
+	border: 0;
+	border-radius: 2px;
+	background-image: linear-gradient(#fafafa, #fafafa);
+	background-position: 0 29px;
+	background-size: 0 1px;
+	transition: color var(--zeit) ease, gap var(--zeit) ease, background-size var(--zeit) ease,
+		transform var(--zeit) ease;
 }
-/* Trefferfläche mindestens 44 px hoch, ohne die sichtbare Höhe zu ändern */
-.cta::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 50%;
-	height: max(100%, 44px);
-	transform: translateY(-50%);
+.cta::before,
+.cta::after,
+.tab::before,
+.tab::after {
+	opacity: 0.6;
+	transition: opacity var(--zeit) ease;
+}
+.cta::before,
+.tab::before {
+	content: "[";
+}
+.cta::after,
+.tab::after {
+	content: "]";
+}
+/* Tabs: nur der gewählte zeigt Klammern, die übrigen sind schlichter Text */
+.tab:not([aria-selected="true"])::before,
+.tab:not([aria-selected="true"])::after {
+	content: none;
+}
+.tab {
+	--cta-h: 32px;
+	--cta-fs: 12px;
+	color: rgba(250, 250, 250, 0.5);
+}
+.tab[aria-selected="true"] {
+	color: #fafafa;
+	background-image: linear-gradient(rgba(250, 250, 250, 0.45), rgba(250, 250, 250, 0.45));
+	background-size: 100% 1px;
 }
 .cta--voll {
-	background: #fafafa;
-	color: #0a0a0a;
-}
-.cta--rand {
-	border: 1px solid rgba(250, 250, 250, 0.6);
 	color: #fafafa;
+	background-image: linear-gradient(#fafafa, #fafafa),
+		linear-gradient(rgba(250, 250, 250, 0.45), rgba(250, 250, 250, 0.45));
+	background-position: 0 29px, 0 29px;
+	background-size: 0 1px, 100% 1px;
 }
+.cta--voll::before,
+.cta--voll::after {
+	opacity: 0.85;
+}
+.cta--rand,
 .cta--dunkel {
-	border: 1px solid rgba(250, 250, 250, 0.3);
-	background: #0a0a0a;
+	color: rgba(250, 250, 250, 0.88);
+}
+.cta:focus-visible,
+.tab:focus-visible {
 	color: #fafafa;
+	gap: 1.1em;
+	background-size: 100% 1px;
+	outline: 2px solid #fafafa;
+	outline-offset: 0;
+}
+.cta:focus-visible::before,
+.cta:focus-visible::after {
+	opacity: 1;
 }
 .cta--gross {
-	height: var(--cta-gross-h);
-	padding: 0 var(--cta-gross-px);
 	font-size: var(--cta-gross-fs);
 }
 .label {
@@ -158,30 +205,6 @@
 	height: 1px;
 	background: var(--haar);
 }
-.tab {
-	box-sizing: border-box;
-	position: relative;
-	height: 40px;
-	padding: 0 16px;
-	display: flex;
-	align-items: center;
-	border-radius: 8px;
-	font-size: var(--t-14);
-	font-weight: 500;
-	cursor: pointer;
-	white-space: nowrap;
-	transition: background-color var(--zeit) ease;
-}
-.tab::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 50%;
-	height: max(100%, 44px);
-	transform: translateY(-50%);
-}
-
 /* Fragen: Akkordeon mit Höhenanimation über grid-template-rows */
 .faq-zeile {
 	border-top: 1px solid var(--haar);
@@ -296,25 +319,27 @@
 	border: 0;
 }
 
-/* Hinweis „Intro überspringen“: Mono-Stufe der Labels, 11 px, Sperrung 0,12 em, auf dunkler Glasfläche
-   (wie der Kopf-Knopf), damit die Zeile über Berg, Halbton und Isometrie lesbar bleibt.
-   Die Trefferfläche von 44 px liefert ::after, die Flut lässt um die Zeile nur eine schmale Lücke. */
+/* Hinweis „Intro überspringen“: Mono-Stufe der Labels, 11 px, Sperrung 0,12 em, ohne Hintergrund. Die Lesbarkeit
+   über Berg, Halbton und Isometrie kommt aus einem weichen dunklen Schatten. Die Trefferfläche von 44 px liefert
+   ::after, die Flut lässt um die Zeile nur eine schmale Lücke. Hover und Fokus: Unterstrich. */
 .hinweis {
 	position: fixed;
 	left: calc(var(--rand) + env(safe-area-inset-left));
 	bottom: max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px));
 	z-index: 20;
-	padding: 6px 10px;
+	padding: 6px 0;
 	font-size: 11px;
 	letter-spacing: 0.12em;
 	color: #fafafa;
-	background: rgba(10, 10, 10, 0.55);
-	-webkit-backdrop-filter: blur(8px);
-	backdrop-filter: blur(8px);
+	text-shadow: 0 0 10px rgba(10, 10, 10, 0.9), 0 0 2px rgba(10, 10, 10, 0.7);
 	text-decoration: none;
 	cursor: pointer;
 	opacity: calc(0.85 * (1 - var(--e, 0) * 1.38));
 	transition: opacity var(--zeit) ease;
+}
+.hinweis:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 4px;
 }
 /* Handy quer: neben SCROLLEN rechts unten, damit die Raumkarten links frei bleiben */
 #final[data-flach] .hinweis {
@@ -397,12 +422,6 @@
 /* Kopf: kein Schleier über der Kunst, sie läuft randlos bis zum oberen Rand. Läuft Inhalt (Text) unter dem Kopf
    durch, blendet KopfMaske das Band aus. Das Logo hat keinen eigenen Grund mehr. */
 
-[data-kopf] .cta--rand:not(:hover) {
-	background: rgba(10, 10, 10, 0.55);
-	-webkit-backdrop-filter: blur(8px);
-	backdrop-filter: blur(8px);
-}
-
 [data-kopf][inert] {
 	visibility: hidden;
 }
@@ -415,19 +434,15 @@
 
 /* Hover nur mit Zeiger, Aktiv überall */
 @media (hover: hover) {
-	.cta--voll:hover {
-		background: #e5e5e5;
+	.cta:hover,
+	.tab:hover {
+		color: #fafafa;
+		gap: 1.1em;
+		background-size: 100% 1px;
 	}
-	.cta--rand:hover {
-		border-color: #fafafa;
-		background: rgba(250, 250, 250, 0.08);
-	}
-	.cta--dunkel:hover {
-		border-color: #fafafa;
-		background: #1d1d1d; /* #0a0a0a mit 8 % Weiß, deckend, damit die Szene nicht durchscheint */
-	}
-	.tab:not([aria-selected="true"]):not([aria-pressed="true"]):hover {
-		background: rgba(250, 250, 250, 0.08) !important;
+	.cta:hover::before,
+	.cta:hover::after {
+		opacity: 1;
 	}
 	.faq-frage:hover {
 		opacity: 1;

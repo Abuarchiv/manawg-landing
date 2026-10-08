@@ -43,9 +43,4 @@
 	.h br {
 		display: none;
 	}
-	.titel .knopf {
-		height: var(--cta-h);
-		font-size: var(--cta-fs);
-		padding: 0 var(--cta-px);
-	}
 }
