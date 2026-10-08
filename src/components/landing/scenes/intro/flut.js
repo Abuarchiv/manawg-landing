@@ -1,105 +1,94 @@
-// Die Flut: weiße Zellen mit Minensucher-Ziffern fluten die Bühne.
+// Die Flut: weiße Zellen mit Minensucher-Ziffern fluten die Bühne, wie im Entwurf (final.dc.html, Zeilen 554 bis 562).
 //
-// Zelle 12 CSS-Pixel fest, Ziffer 10 px (fein, wie die übrigen ASCII-Elemente), das Rauschen läuft im Pixelraum (die Form bleibt bei jeder
-// Zellgröße gleich). Freigehalten werden echte DOM-Rechtecke (loecher): Logo und Knopf immer, der
-// Sprunglink solange er sichtbar ist, die Spalte der Raumkarten solange eine Karte stehen kann.
-// Der Zeiger wischt eine Spur frei.
+// Quer: Zelle 32 Entwurfs-Pixel (mit der Bühne skaliert, k = min(W / 1280, H / 800)), Ziffer 10 px, Rauschen in
+// Zellkoordinaten (0,13 je Zelle, driftet mit t), Schwelle n + Deckung * 0,55 - 0,45 + Zeile / Zeilen * 0,2 > 0,5.
+// Zwei Wellen: P 0,50 bis 0,78 (Organ zur Wohnung) und P 0,84 bis 0,99 (Wohnung zur Ende-Ebene). Der Zeiger wischt
+// eine 5 x 5 Zellen große Spur frei (Abklingen 0,985 je Bild bei 60 Hz).
+// Hoch (Handy): Zelle 8 px, Ziffer 7 px, sonst dieselbe Rechnung; dort bleibt die Wohnung unter dem Text frei.
+// Freigehalten werden echte DOM-Rechtecke (loecher): Logo, Knopf und Sprunglink immer, die Raumkarte solange
+// sie steht (Texte bleiben lesbar, der Entwurf deckt sie weiß zu).
 
-import { loop, qa } from '../../core/loop';
-import { ss, vnz } from '../../core/math';
+import { loop, modeOf, qa } from '../../core/loop';
+import { cl, ss, vnz } from '../../core/math';
 import { hochOben } from './wohnung';
 
-export const CELL = 8;
-const RAND_TEXT = 64; // Abstand der Raumtext-Lücke zum Text
-const KANTE = 24; // weiche Kante der Lücken (1,5 Zellen)
-const SKALA = 0.006; // Rauschfrequenz je Pixel bei 900 px kurzer Seite: kleinere Inseln als im Entwurf
-const STAERKE = 0.14; // Beitrag der Deckung zum Schwellwert: die Spitze deckt höchstens etwa 15 % der Fläche
+const RAND_TEXT = 64; // Hochformat: Abstand der Raumtext-Lücke zum Text
+const KANTE = 24; // Hochformat: weiche Kante der Lücken
+const STAERKE = 0.55; // Beitrag der Deckung zum Schwellwert (Entwurf)
 const states = new WeakMap();
 
-/** Anteil der Fläche, den die Flut deckt (0..1), in den zwei Flutphasen der Intro. */
-export function deckung(P) {
-	// Phase 1 deckt den Wechsel vom Organ zur Wohnung und ist bei P 0,63 weg, bevor die erste Raumkarte
-	// (ab P 0,65) steht. Phase 2 ist kurz und schwach und endet bei P 0,895, bevor die Ende-Ebene einblendet (kein grauer
-	// Schleier aus Flut und Handy): Pinnwand & Chat und das Handy bleiben lesbar.
-	return ss((P - 0.48) / 0.06) * (1 - ss((P - 0.56) / 0.07));
+/** Zellgröße und Ziffergröße in CSS-Pixeln: quer 32 und 10 des Entwurfs mit der Bühne skaliert, hoch fest 8 und 7. */
+export function masse(W, H, mode) {
+	if (mode === 'hoch') return { cs: 8, zf: 7 };
+	const cs = cl(32 * Math.min(W / 1280, H / 800), 20, 96);
+	return { cs, zf: (10 * cs) / 32 };
 }
 
-/** Phase 2: eine geschlossene Front, die vom unteren Rand aufsteigt und wieder zurückweicht (0..1). */
-export function front(P) {
-	return ss((P - 0.83) / 0.03) * (1 - ss((P - 0.865) / 0.03));
+/** Anteil der Fläche, den die Flut deckt (0..1): zwei Wellen wie im Entwurf. */
+export function deckung(P) {
+	return Math.max(
+		ss((P - 0.5) / 0.07) * (1 - ss((P - 0.66) / 0.12)),
+		ss((P - 0.84) / 0.05) * (1 - ss((P - 0.94) / 0.05)),
+	);
+}
+
+/** Gewicht der Lücke um die Raumkarte: geht kurz vor der ersten Karte (P 0,67) auf und mit der Wohnung (endA 0,5) zu. */
+export function textGewicht(P) {
+	return ss((P - 0.64) / 0.03) * (1 - cl(2 * ss((P - 0.9) / 0.05)));
 }
 
 qa.deckung = deckung;
-qa.front = front;
-qa.masse = { ...(qa.masse ?? {}), flutZelle: CELL, flutZiffer: 10 };
 
 /** Stärke einer Lücke (0..1) an der Stelle (x, y) für ein Rechteck mit Rand. */
-function loch(x, y, r, rand) {
+function loch(x, y, r, rand, kante) {
 	const dx = Math.max(r.x - rand - x, x - (r.x + r.w + rand), 0);
 	const dy = Math.max(r.y - rand - y, y - (r.y + r.h + rand), 0);
-	const k = r.kante ?? KANTE;
-	const q = Math.min(1, Math.hypot(dx, dy) / k);
+	const q = Math.min(1, Math.hypot(dx, dy) / kante);
 	return 1 - q * q * (3 - 2 * q);
 }
 
-/** Welche Lücken gelten, in Bühnen-Pixeln: [{ x, y, w, h, rand, w0 }] mit Gewicht w0 (0..1). */
-export function lueckenVon(loecher, c) {
+/** Welche Lücken gelten, in Bühnen-Pixeln: [{ x, y, w, h, rand, kante, w0 }] mit Gewicht w0 (0..1). */
+export function lueckenVon(loecher, c, cs) {
 	const aus = [];
-	const textGewicht = (c.fpA ?? 0) * (1 - (c.endA ?? 0));
+	const hoch = c.mode === 'hoch';
+	const tw = c.tw ?? 0;
 	for (const l of loecher) {
-		if (l.art === 'logo' || l.art === 'cta') aus.push({ ...l, rand: 14, w0: 1 });
+		if (l.art === 'logo' || l.art === 'cta') aus.push({ ...l, rand: 14, kante: hoch ? KANTE : cs, w0: 1 });
 		else if (l.art === 'hinweis') {
-			if ((c.endA ?? 0) < 0.72) aus.push({ ...l, rand: 6, kante: 14, w0: 1 });
-		} else if (l.art === 'text' && textGewicht > 0) {
-			// Querformat: die ganze Textspalte bleibt über die volle Höhe frei, nicht nur die Karte selbst
-			const quer = c.W > c.H;
-			aus.push({
-				...l,
-				y: quer ? -400 : l.y,
-				h: quer ? c.H + 800 : l.h,
-				rand: RAND_TEXT,
-				kante: 48,
-				w0: Math.min(1, textGewicht * 2),
-			});
-			// Hochformat: die Wohnung unter dem Text bleibt frei
-			if (!quer) {
+			if ((c.endA ?? 0) < 0.72) aus.push({ ...l, rand: 6, kante: hoch ? 14 : cs * 0.5, w0: 1 });
+		} else if (l.art === 'text' && tw > 0) {
+			if (hoch) {
+				aus.push({ ...l, rand: RAND_TEXT, kante: 48, w0: Math.min(1, tw * 2) });
+				// die Wohnung unter dem Text bleibt frei
 				const b = hochOben(l.y + l.h, c.safeH ?? c.H);
-				aus.push({ x: 0, y: b.top, w: c.W, h: b.bot - b.top, rand: 0, kante: 140, w0: textGewicht });
-			}
+				aus.push({ x: 0, y: b.top, w: c.W, h: b.bot - b.top, rand: 0, kante: 140, w0: tw });
+			} else aus.push({ ...l, rand: cs * 1.5, kante: cs * 1.5, w0: tw });
 		}
-	}
-	// Wohnungsmodell (Querformat): die Mitte der Bühne bleibt frei, solange die Wohnung steht
-	if (textGewicht > 0 && c.fit && c.W > c.H) {
-		const { f, ox, oy } = c.fit;
-		aus.push({ x: ox + 460 * f, y: oy + 150 * f, w: 700 * f, h: 500 * f, rand: 0, kante: 120, w0: textGewicht });
 	}
 	return aus;
 }
 
 /**
  * Rechnet das Raster: on[q] = 1 für weiße Zellen. Rein, für draw und QA (qa.flutGitter).
- * W, H in CSS-Pixeln, t in Sekunden (bei reduzierter Bewegung 0), cover 0..1.
+ * t in Sekunden (bei reduzierter Bewegung 0), cover 0..1, cs Zellgröße in CSS-Pixeln.
  */
-export function gitter(W, H, t, cover, luecken, tr, cols, rows, on, fr = 0) {
-	// Strukturgröße an die kurze Seite koppeln: auf kleinen Bildschirmen entstehen Blobs statt einer Fläche
-	const sk = SKALA * Math.min(3, Math.max(0.6, 900 / Math.min(W, H)));
+export function gitter(t, cover, luecken, tr, cols, rows, on, cs) {
 	for (let b = 0; b < rows; b++) {
-		const y = b * CELL + CELL / 2;
+		const y = b * cs + cs / 2;
 		for (let a = 0; a < cols; a++) {
-			const x = a * CELL + CELL / 2;
+			const x = a * cs + cs / 2;
 			const q = b * cols + a;
-			const n = vnz(x * sk + t * 0.03, y * sk - t * 0.02);
+			const n = vnz(a * 0.13 + t * 0.03, b * 0.13 - t * 0.02);
 			let pk = 0;
-			for (const l of luecken) pk = Math.max(pk, l.w0 * loch(x, y, l, l.rand));
-			const insel = cover > 0.001 && n + cover * STAERKE - 0.45 + (y / H) * 0.2 - 2 * pk > 0.5;
-			// Front: Fläche unterhalb einer unruhigen Kante, die mit fr (0..1) bis 40 % der Höhe steigt
-			const welle = fr > 0 && pk < 0.5 && y / H > 1 - fr * 0.4 + (n - 0.5) * 0.3;
-			on[q] = (insel || welle) && (!tr || tr[q] < 0.3) ? 1 : 0;
+			for (const l of luecken) pk = Math.max(pk, l.w0 * loch(x, y, l, l.rand, l.kante));
+			const insel = cover > 0.001 && n + cover * STAERKE - 0.45 + (b / rows) * 0.2 - 2 * pk > 0.5;
+			on[q] = insel && (!tr || tr[q] < 0.3) ? 1 : 0;
 		}
 	}
 }
 
-// Restinseln unter MIN_INSEL zusammenhängenden Zellen fallen weg: sie sähen am Ende einer Phase wie Renderreste aus.
+// Restinseln unter MIN_INSEL zusammenhängenden Zellen fallen weg (nur Hochformat): sie sähen am Ende einer Phase
+// wie Renderreste aus. Quer bleibt es wie im Entwurf: einzelne Blöcke tauchen auf und verschwinden.
 const MIN_INSEL = 8;
 let flag = new Uint8Array(0);
 let stack = new Int32Array(0);
@@ -126,8 +115,6 @@ function entInseln(on, cols, rows) {
 			if (b < rows - 1 && on[q + cols] && !flag[q + cols]) (flag[q + cols] = 1), (stack[sp++] = q + cols);
 		}
 		if (cnt < MIN_INSEL) {
-			// Zellen der Insel wieder einsammeln: zweiter Durchlauf über flag==1 in der Nachbarschaft ist teuer,
-			// deshalb beim Zählen merken
 			sp = 0;
 			stack[sp++] = q0;
 			on[q0] = 0;
@@ -145,18 +132,18 @@ function entInseln(on, cols, rows) {
 }
 
 // Atlas der Ziffern 1 bis 8 für drawImage (scharf bei jedem Pixelfaktor)
-function atlas(st, dpr) {
-	const key = `${dpr}|${CELL}`;
+function atlas(st, dpr, cs, zf, alpha) {
+	const key = `${dpr}|${cs}|${zf}`;
 	if (st.atlasKey === key && st.atlasFv === st.fv) return st.atlas;
 	const cv = document.createElement('canvas');
-	const z = Math.round(CELL * dpr);
+	const z = Math.round(cs * dpr);
 	cv.width = z * 9;
 	cv.height = z;
 	const g = cv.getContext('2d');
-	g.font = `500 ${7 * dpr}px "JetBrains Mono", monospace`;
+	g.font = `500 ${zf * dpr}px "JetBrains Mono", monospace`;
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
-	g.fillStyle = 'rgba(250,250,250,0.66)';
+	g.fillStyle = `rgba(250,250,250,${alpha})`;
 	for (let n = 1; n <= 8; n++) g.fillText(String(n), z * n + z / 2, z / 2 + 0.5 * dpr);
 	st.atlas = cv;
 	st.atlasKey = key;
@@ -166,34 +153,41 @@ function atlas(st, dpr) {
 
 /**
  * Zeichnet die Flut in das 2D-Canvas.
- * c: Kontext der Bühne (W, H, dpr, t, dt, m, cover, fpA, endA, reduced). loecher: freizuhaltende
+ * c: Kontext der Bühne (W, H, dpr, t, dt, m, cover, P, endA, mode, reduced). loecher: freizuhaltende
  * Rechtecke aus dem DOM (Bühnen-CSS-Pixel).
  */
 export function draw(cv, c, loecher = []) {
 	let st = states.get(cv);
 	if (!st) {
-		st = { ctx: cv.getContext('2d'), tr: null, clean: false, fv: 0, on: null, cols: 0, rows: 0 };
+		st = { ctx: cv.getContext('2d'), tr: null, clean: false, fv: 0, on: null, cols: 0, rows: 0, cs: 32 };
 		states.set(cv, st);
-		qa.flutGitter = (W, H, t, cover, fpA, endA, lo) => {
-			const cols = Math.ceil(W / CELL);
-			const rows = Math.ceil(H / CELL);
+		qa.flutGitter = (W, H, t, cover, P, lo) => {
+			const mode = modeOf(W, H).mode;
+			const { cs } = masse(W, H, mode);
+			const cols = Math.ceil(W / cs);
+			const rows = Math.ceil(H / cs);
 			const on = new Uint8Array(cols * rows);
-			gitter(W, H, t, cover, lueckenVon(lo ?? st.loecher ?? [], { fpA, endA, W, H, safeH: H }), null, cols, rows, on);
-			return { cols, rows, cell: CELL, on: Array.from(on) };
+			const endA = ss((P - 0.9) / 0.05);
+			const lue = lueckenVon(lo ?? st.loecher ?? [], { tw: textGewicht(P), endA, W, H, safeH: H, mode }, cs);
+			gitter(t, cover, lue, null, cols, rows, on, cs);
+			return { cols, rows, cell: cs, on: Array.from(on) };
 		};
-		qa.flutZustand = () => ({ cols: st.cols, rows: st.rows, cell: CELL, on: st.on ? Array.from(st.on) : [] });
+		qa.flutZustand = () => ({ cols: st.cols, rows: st.rows, cell: st.cs, on: st.on ? Array.from(st.on) : [] });
 	}
 	const fx = st.ctx;
 	const { W, H, dpr, m } = c;
+	const hoch = c.mode === 'hoch';
+	const { cs, zf } = masse(W, H, c.mode);
+	st.cs = cs;
+	qa.masse = { ...(qa.masse ?? {}), flutZelle: cs, flutZiffer: zf };
 	st.loecher = loecher;
 	fx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	// Bei reduzierter Bewegung keine Flut: die Räume blenden nur ein und aus (kein Schwarz-Weiß-Blitzen)
 	let cover = c.reduced ? 0 : c.cover;
 	// Hochformat: die zweite Flutphase (Pinnwand & Chat) deckt höchstens 0,35, die Wohnung bleibt lesbar
-	if (c.W <= c.H && c.P > 0.75) cover = Math.min(cover, 0.35);
+	if (hoch && c.P > 0.75) cover = Math.min(cover, 0.35);
 	const t = c.reduced ? 0 : c.t;
-	const fr = c.reduced ? 0 : front(c.P);
-	if (!(cover > 0.001) && !(fr > 0.001)) {
+	if (!(cover > 0.001)) {
 		if (!st.clean) {
 			fx.clearRect(0, 0, W, H);
 			st.clean = true;
@@ -203,34 +197,37 @@ export function draw(cv, c, loecher = []) {
 	}
 	st.clean = false;
 	fx.clearRect(0, 0, W, H);
-	const cs = CELL;
 	const cols = Math.ceil(W / cs);
 	const rows = Math.ceil(H / cs);
 	st.cols = cols;
 	st.rows = rows;
 	if (!st.tr || st.tr.length !== cols * rows) st.tr = new Float32Array(cols * rows);
 	const tr = st.tr;
-	// Zeiger-Spur: Abklingen im Tempo des Entwurfs (0,985 je Bild bei 120 Hz)
-	const k = 0.985 ** (Math.min(c.dt ?? 0.016, 0.05) * 120);
+	// Zeiger-Spur: Abklingen im Tempo des Entwurfs (0,985 je Bild bei 60 Hz)
+	const k = 0.985 ** (Math.min(c.dt ?? 0.016, 0.05) * 60);
 	for (let q = 0; q < tr.length; q++) tr[q] *= k;
 	if (m.in) {
 		const mi = Math.floor(m.x / cs);
 		const mj = Math.floor(m.y / cs);
-		const R = 5; // Radius der Spur in Zellen (83 px wie im Entwurf)
+		// Quer wie im Entwurf: 5 x 5 Zellen, Radius 2,6 Zellen. Hoch (Zellen 8 px): 11 x 11.
+		const R = hoch ? 5 : 2;
+		const rr = hoch ? R + 0.2 : 2.6;
 		for (let dj = -R; dj <= R; dj++)
 			for (let di = -R; di <= R; di++) {
 				const a = mi + di;
 				const b = mj + dj;
 				if (a >= 0 && b >= 0 && a < cols && b < rows) {
-					const g = Math.max(0, 1 - Math.hypot(di, dj) / (R + 0.2));
+					const g = Math.max(0, 1 - Math.hypot(di, dj) / rr);
 					tr[b * cols + a] = Math.max(tr[b * cols + a], g);
 				}
 			}
 	}
 	if (!st.on || st.on.length !== cols * rows) st.on = new Uint8Array(cols * rows);
 	const on = st.on;
-	gitter(W, H, t, cover, lueckenVon(loecher, c), tr, cols, rows, on, fr);
-	if (cover < 0.25) entInseln(on, cols, rows);
+	gitter(t, cover, lueckenVon(loecher, { ...c, tw: textGewicht(c.P) }, cs), tr, cols, rows, on, cs);
+	if (hoch && cover < 0.25) entInseln(on, cols, rows);
+	// Zellkanten auf Gerätepixel runden: scharfe Blöcke ohne Fugen bei gebrochener Zellgröße
+	const px = (v) => Math.round(v * dpr) / dpr;
 	fx.fillStyle = '#FAFAFA';
 	fx.beginPath();
 	for (let b = 0; b < rows; b++) {
@@ -242,14 +239,16 @@ export function draw(cv, c, loecher = []) {
 			}
 			const a0 = a;
 			while (a < cols && on[b * cols + a]) a++;
-			fx.rect(a0 * cs, b * cs, (a - a0) * cs, cs);
+			const x0 = px(a0 * cs);
+			const y0 = px(b * cs);
+			fx.rect(x0, y0, px(a * cs) - x0, px((b + 1) * cs) - y0);
 		}
 	}
 	fx.fill();
 	// Ziffern aus dem Atlas, ohne Skalierung
 	fx.setTransform(1, 0, 0, 1, 0, 0);
 	st.fv = loop.fv;
-	const at = atlas(st, dpr);
+	const at = atlas(st, dpr, cs, zf, hoch ? 0.66 : 0.6);
 	const z = Math.round(cs * dpr);
 	for (let b = 0; b < rows; b++)
 		for (let a = 0; a < cols; a++) {
@@ -261,7 +260,12 @@ export function draw(cv, c, loecher = []) {
 					const y = b + dj;
 					if ((di || dj) && x >= 0 && y >= 0 && x < cols && y < rows && on[y * cols + x]) n++;
 				}
-			if (n) fx.drawImage(at, z * n, 0, z, z, Math.round(a * cs * dpr), Math.round(b * cs * dpr), z, z);
+			if (n) {
+				// Zelle in Gerätepixeln: Mitte der gerundeten Zellkanten
+				const gx = Math.round(a * cs * dpr);
+				const gy = Math.round(b * cs * dpr);
+				fx.drawImage(at, z * n, 0, z, z, gx, gy, z, z);
+			}
 		}
 	fx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	if (m.in) {

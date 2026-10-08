@@ -46,10 +46,6 @@ for (const vp of vpList(a.vp ?? '1440x900@2')) {
 		const r = await h.page.evaluate(
 			({ cells, j, n, W, H, lo, PHASEN }) => {
 				const dbg = window.__landing.dbg;
-				const ss = (v) => {
-					const x = Math.min(1, Math.max(0, v));
-					return x * x * (3 - 2 * x);
-				};
 				const lov = lo.map((l) => ({
 					x: l.r[0],
 					y: l.r[1],
@@ -64,11 +60,9 @@ for (const vp of vpList(a.vp ?? '1440x900@2')) {
 				for (const d of [-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3]) {
 					const P = 0.62 + (0.28 * (j + 1 + d)) / 5;
 					const cover = dbg.deckung(P);
-					const fpA = ss((P - 0.58) / 0.05);
-					const endA = ss((P - 0.9) / 0.05);
 					for (let k = 0; k < PHASEN; k++) {
 						const t = 0.37 + k * 1.913;
-						const g = dbg.flutGitter(W, H, t, cover, fpA, endA, lov);
+						const g = dbg.flutGitter(W, H, t, cover, P, lov);
 						let hid = 0;
 						for (const [cx, cy, w] of cells) if (g.on[cy * g.cols + cx]) hid += w;
 						const fr = hid / n;

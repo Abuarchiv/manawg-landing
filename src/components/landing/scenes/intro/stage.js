@@ -211,22 +211,10 @@ export function createStage({ sec, buehne }) {
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
 		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));
 		setVar('--e', endA.toFixed(3));
-		// Raumkarten nacheinander: die alte Karte geht in rund 120 ms nach oben weg, erst dann steigt die neue von
-		// unten ein. Nie liegen zwei Titel übereinander.
-		let cur = 0;
-		for (let j = 1; j < 4; j++) if (karten[j] > karten[cur]) cur = j;
-		const frei = st.kv.every((v, j) => j === cur || v < 0.03);
-		const kUp = !visible || loop.reduced;
-		const dt1 = Math.min(dt, 0.1);
+		// Raumkarten am Scroll geführt wie im Entwurf (Kurve und Überlappfreiheit: wohnung.karten)
 		for (let j = 0; j < 4; j++) {
-			const ziel = kUp ? karten[j] : j === cur ? (frei ? karten[j] : 0) : 0;
-			if (kUp) st.kv[j] = ziel;
-			else {
-				st.kv[j] += (ziel - st.kv[j]) * (1 - Math.exp(-dt1 / (ziel < st.kv[j] ? 0.03 : 0.06)));
-				if (Math.abs(ziel - st.kv[j]) < 0.003) st.kv[j] = ziel;
-			}
-			setVar(`--c${j}`, st.kv[j].toFixed(3));
-			setVar(`--d${j}`, j < cur ? '-1' : '1');
+			st.kv[j] = karten[j];
+			setVar(`--c${j}`, karten[j].toFixed(3));
 		}
 		const kopfUnten = kopf ? kopf.getBoundingClientRect().bottom : 0;
 		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein
