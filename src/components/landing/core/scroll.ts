@@ -5,7 +5,21 @@ import { loop } from './loop';
 
 const SEC = '[data-sec]';
 
-function measureAll(list) {
+/** Gemessener Abschnitt in Dokumentkoordinaten. */
+interface Mass {
+	el: HTMLElement;
+	id: string;
+	top: number;
+	h: number;
+}
+
+/** Stelle im Dokument: Abschnittsindex i und Anteil p darin. */
+interface Anker {
+	i: number;
+	p: number;
+}
+
+function measureAll(list: HTMLElement[]): Mass[] {
 	const y = window.scrollY;
 	return list.map((el) => {
 		const r = el.getBoundingClientRect();
@@ -13,7 +27,7 @@ function measureAll(list) {
 	});
 }
 
-function anchorOf(m, y) {
+function anchorOf(m: Mass[], y: number): Anker | null {
 	let i = m.length - 1;
 	for (let k = 0; k < m.length; k++) {
 		const a = m[k];
@@ -27,7 +41,7 @@ function anchorOf(m, y) {
 }
 
 /** Abschnitt per Id: { top, height } in Dokumentkoordinaten. */
-export function sectionBox(id) {
+export function sectionBox(id: string): { top: number; height: number } | null {
 	const el = document.getElementById(id);
 	if (!el) return null;
 	const r = el.getBoundingClientRect();
@@ -35,19 +49,19 @@ export function sectionBox(id) {
 }
 
 /** Fortschritt in einem Sticky-Abschnitt: 0 am Anfang, 1 wenn die Bühne am Ende loslässt. */
-export function stickP(sec, stageH) {
+export function stickP(sec: Element, stageH: number): number {
 	const r = sec.getBoundingClientRect();
 	return Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - stageH)));
 }
 
-function targetY(el) {
+function targetY(el: Element): number {
 	const smt = Number.parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
 	return Math.max(0, Math.round(el.getBoundingClientRect().top + window.scrollY - smt));
 }
 
-export function initScroll(root) {
+export function initScroll(root: HTMLElement): () => void {
 	history.scrollRestoration = 'auto';
-	const list = [...root.querySelectorAll(SEC)];
+	const list = [...root.querySelectorAll<HTMLElement>(SEC)];
 	let m = measureAll(list);
 	let anchor = anchorOf(m, window.scrollY);
 	let w0 = innerWidth;
@@ -64,7 +78,9 @@ export function initScroll(root) {
 		const nm = measureAll(list);
 		const changed =
 			nm.length !== m.length ||
-			nm.some((a, i) => Math.abs(a.top - (m[i]?.top ?? 0)) > 1 || Math.abs(a.h - (m[i]?.h ?? 0)) > 1);
+			nm.some(
+				(a, i) => Math.abs(a.top - (m[i]?.top ?? 0)) > 1 || Math.abs(a.h - (m[i]?.h ?? 0)) > 1,
+			);
 		const a = anchor && nm[anchor.i];
 		if (changed && anchor && a)
 			window.scrollTo({ top: Math.round(a.top + anchor.p * a.h), behavior: 'instant' });
@@ -100,8 +116,8 @@ export function initScroll(root) {
 	});
 
 	// Sprunglinks: bis 3 Bildschirmhöhen weich, darüber sofort mit kurzer Überblendung über #0A0A0A.
-	let veil = null;
-	const veilEl = () => {
+	let veil: HTMLDivElement | null = null;
+	const veilEl = (): HTMLDivElement => {
 		if (veil) return veil;
 		veil = document.createElement('div');
 		veil.setAttribute('aria-hidden', 'true');
@@ -110,7 +126,7 @@ export function initScroll(root) {
 		root.appendChild(veil);
 		return veil;
 	};
-	const jump = (y) => {
+	const jump = (y: number) => {
 		const v = veilEl();
 		const a = v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 80, fill: 'forwards' });
 		a.finished
@@ -121,10 +137,10 @@ export function initScroll(root) {
 			})
 			.catch(() => {});
 	};
-	const onClick = (e) => {
+	const onClick = (e: MouseEvent) => {
 		if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
 			return;
-		const a = e.target.closest?.('a[href^="#"]');
+		const a = (e.target as Element | null)?.closest?.('a[href^="#"]');
 		if (!a) return;
 		const id = decodeURIComponent((a.getAttribute('href') ?? '').slice(1));
 		const target = id ? document.getElementById(id) : null;
