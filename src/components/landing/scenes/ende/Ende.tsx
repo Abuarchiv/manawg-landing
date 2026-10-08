@@ -39,7 +39,7 @@ export function Ende() {
 			data-ende="1"
 			aria-label="App-Vorschau"
 			style={css(
-				'position:absolute;inset:0;opacity:calc(clamp(0, (var(--e,0) - 0.35) * 1.54, 1) * (1 - var(--ab,0)));pointer-events:none;background:#0A0A0A',
+				'position:absolute;inset:0;opacity:clamp(0, (var(--e,0) - 0.35) * 1.54, 1);pointer-events:none;background:#0A0A0A',
 			)}
 		>
 			<canvas
