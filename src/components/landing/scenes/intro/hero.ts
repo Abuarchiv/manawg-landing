@@ -85,14 +85,22 @@ float organ(vec2 uv){ vec3 ro = uC, rd = normalize(vec3(uv, -1.6)); float t = 0.
 if(d < .0015){ vec3 n = onrm(p); vec3 l = normalize(vec3(uM.x * 2.4, uM.y * 2.4 + .5, 1.3)); float df = max(dot(n, l), 0.), ao = clamp(omap(p + n * .2) / .2, 0., 1.), rim = pow(1. - max(dot(n, -rd), 0.), 3.);
   return clamp(df * .9 * (.45 + .55 * ao) + .05 + rim * .22, 0., 1.); }
 t += d * .9; if(t > 40.) break; }
-  return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)); }
+  return 0.; }
 void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv), uMix); o = vec4(v, v, v, 1.); }`;
 const POST = `#version 300 es
-precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad;
+precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt, uE; uniform vec4 uHo[4]; uniform float uPad;
 void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
   float cs = 6. * uR.y / 800.; vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r; if(uL > .5) L = mix(clamp((L - .36) / .64, 0., 1.), L, uMx);
   float r = cs * .5 * sqrt(clamp(L, 0., 1.)) * 1.15; float vd = smoothstep(r + .7, r - .7, length(fc - c));
-  float v = mix(vr, vd, uD); if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
+  float v = mix(vr, vd, uD); if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } // Kupferstich (uE): weiße Linien, deren Breite dem Ton folgt und die sich mit der Helligkeit biegen, so laufen sie um
+  // Kugeln und Marke herum wie die Striche der gestochenen Wolken. Dunkle Flächen bekommen eine feine Gegenschraffur.
+  if(uE > .001){ float k8 = uR.y / 800.; float tone = clamp(vr, 0., 1.); float sl = (fc.y + fc.x * .18) / (3.4 * k8) + tone * 7.;
+    float d = abs(fract(sl) - .5) * 2.; float w = fwidth(sl) * 1.6; float r = pow(max(tone - .14, 0.) / .86, .8) * .95; // dunkler Grund ohne Linien
+    float ln = 1. - smoothstep(r - w, r + w, d);
+    float s2 = (fc.y - fc.x * .6) / (5. * k8) + tone * 3.; float d2 = abs(fract(s2) - .5) * 2.;
+    ln = max(ln, (1. - smoothstep(.06 - fwidth(s2), .06 + fwidth(s2), d2)) * smoothstep(.18, .26, tone) * (1. - smoothstep(.3, .5, tone)) * .45);
+    v = mix(v, ln, uE); }
+  float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
   if(uL > .5) v = 1. - v * .96; else v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
 
 const B = new Float32Array(32);
@@ -121,7 +129,7 @@ type SzeneU =
 	| 'uImg'
 	| 'uMsk'
 	| 'uFoto';
-type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad';
+type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uE' | 'uHo' | 'uPad';
 
 /** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
 interface HeroGL {
@@ -243,7 +251,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			],
 			'scene',
 		);
-		G.Pp = prog(POST, ['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad'], 'post');
+		G.Pp = prog(POST, ['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uE', 'uHo', 'uPad'], 'post');
 		gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 		gl.enableVertexAttribArray(0);
@@ -431,7 +439,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		const hy = (O[1] ?? 0) + 23 / 110;
 		const hr = 0.2 * (1 + dive * 2.2);
 		const cz = lerp(lerp(17, 6, zoom), -2.5, dive ** 1.6);
-		const allDots = mx >= 0.999;
+		const allDots = false; // Stich braucht den vollen Szenenpuffer (vorher Halbton in Zellgröße)
 		// Ausgabe in voller Backing-Auflösung, Szenenpuffer klein und adaptiv
 		const w = Math.max(1, Math.round(W * dpr));
 		const hh = Math.max(1, Math.round(H * dpr));
@@ -497,6 +505,8 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(Q.uL, 0);
 		gl.uniform1f(Q.uMx, mx);
 		gl.uniform1f(Q.uSt, 1);
+		// Stich statt Halbton, sobald der Blick den Berg verlässt (Marke, Organ, Kugeln); der Berg ist schon ein Stich
+		gl.uniform1f(Q.uE, Math.max(ss((look - 0.15) / 0.3), ss(mx / 0.15)));
 		// Löcher: Logo, Knopf und Hinweis bleiben im Halbton dunkel (Zellen im Rechteck plus 8 px), damit ihre Schrift lesbar ist
 		HO.fill(0);
 		let ho = 0;

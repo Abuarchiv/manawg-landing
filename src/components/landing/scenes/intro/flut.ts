@@ -399,7 +399,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 	// Ziffern aus dem Atlas, ohne Skalierung
 	fx.setTransform(1, 0, 0, 1, 0, 0);
 	st.fv = loop.fv;
-	const at = atlas(st, dpr, cs, zf, hoch ? 0.66 : 0.6);
+	const at = atlas(st, dpr, cs, zf, hoch ? 0.4 : 0.32); // leiser als im Entwurf: Ziffern sind Randnotiz, nicht Muster
 	const z = Math.round(cs * dpr);
 	for (let b = 0; b < rows; b++)
 		for (let a = 0; a < cols; a++) {
