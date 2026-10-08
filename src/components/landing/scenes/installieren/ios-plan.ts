@@ -1,8 +1,9 @@
 // iPhone: iOS 27, Safari im Layout „Kompakt“. Zeiten nach INSTALL-FLOWS 2.2, 2.6 und 8.3 (gemessen am Simulator),
 // Schleife ≈ 13,5 s. Alle Werte sind reine Funktionen der Zeit t.
 
-import { aus, cl, feder, io, mix, seg } from './zeit';
 import { fl, put, tf } from './stil';
+import type { Ablaufplan } from './types';
+import { aus, cl, feder, io, mix, seg } from './zeit';
 
 // Tippzeiten: ≡, Teilen, Mehr anzeigen, Zum Home-Bildschirm, Hinzufügen, Icon
 const T1 = 1.3;
@@ -13,13 +14,13 @@ const T5 = 8.1;
 const T6 = 10.35;
 export const LOOP = 13.45; // die laufende App bleibt 2,3 s stehen, bevor die Schleife neu beginnt
 
-export const plan = {
+export const plan: Ablaufplan = {
 	loop: LOOP,
 	ks: 278 / 390,
 	// Beginn der drei Schritte (Ruhezustände, ein Fingertipp steht kurz bevor)
-	sprung: [0, T3 - 0.9, T5 - 1.2],
+	sprung: [0, T3 - 0.9, T5 - 1.2] as const,
 	// Standbilder für „reduce“: Ruhelage je Schritt
-	still: [T2 - 0.6, T4 - 0.5, T5 + 1.2],
+	still: [T2 - 0.6, T4 - 0.5, T5 + 1.2] as const,
 	taps: [
 		{ t: T1, x: 115, y: 786, g: 0 },
 		{ t: T2, x: 176, y: 321, g: 0 },
@@ -27,7 +28,7 @@ export const plan = {
 		{ t: T4, x: 158, y: 635, g: 1 },
 		{ t: T5, x: 312, y: 85, g: 2 },
 		{ t: T6, x: 329, y: 196, g: 3 },
-	],
+	] as const,
 	render(t, E) {
 		// ---------- Seitenmenü: Feder aus der Taste (ζ 0,59, ωn 16,6 rad/s) ----------
 		const h1 = t - (T1 + 0.05);
@@ -71,7 +72,9 @@ export const plan = {
 			borderRadius: `${mix(40, 30, dh)}px`,
 		});
 		put(E['ios-dlg-in'], { o: seg(t, T4 + 0.4, 0.4) });
-		put(E['ios-caret'], { o: t > T4 + 0.5 && t < T5 && Math.floor((t - T4) * 1.9) % 2 === 0 ? 1 : 0 });
+		put(E['ios-caret'], {
+			o: t > T4 + 0.5 && t < T5 && Math.floor((t - T4) * 1.9) % 2 === 0 ? 1 : 0,
+		});
 		const kIn = aus(seg(t, T4 + 0.33, 0.3));
 		const kOut = io(seg(t, T5, 0.1));
 		put(E['ios-kbd'], {

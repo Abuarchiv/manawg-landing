@@ -1,8 +1,9 @@
 // Android: Chrome ab 150 (Menü nach Chromium 157), Schleife ≈ 14,3 s. Zeiten nach INSTALL-FLOWS 3.2, 3.3, 3.4:
 // Menü 0,45–0,65 s gestaffelt, Dialog 0,2 s, Meldungen „wird installiert…“ ≈ 2 s. Alles reine Funktionen von t.
 
-import { aus, cl, feder, io, mat, mix, seg } from './zeit';
 import { fl, put, tf } from './stil';
+import type { Ablaufplan } from './types';
+import { aus, cl, feder, io, mat, mix, seg } from './zeit';
 
 const T1 = 1.2; // ⋮
 const T2 = 3.1; // „Installieren und Verknüpfung erstellen“
@@ -13,18 +14,18 @@ const T5 = 11.0; // Icon antippen
 export const LOOP = 14.3; // die laufende App bleibt 2,3 s stehen, bevor die Schleife neu beginnt
 const ZEILEN = 17;
 
-export const plan = {
+export const plan: Ablaufplan = {
 	loop: LOOP,
 	ks: 278 / 411,
-	sprung: [0, T2 - 0.9, T4 - 1.3],
-	still: [T2 - 0.5, T4 - 0.5, T5 - 0.4],
+	sprung: [0, T2 - 0.9, T4 - 1.3] as const,
+	still: [T2 - 0.5, T4 - 0.5, T5 - 0.4] as const,
 	taps: [
 		{ t: T1, x: 359, y: 830, g: 0 },
 		{ t: T2, x: 237, y: 782, g: 1 },
 		{ t: T3, x: 129, y: 736, g: 1 },
 		{ t: T4, x: 338, y: 542, g: 2 },
 		{ t: T5, x: 64, y: 104, g: 3 },
-	],
+	] as const,
 	render(t, E) {
 		// ---------- Menü: Popup rechts, Zeilen gestaffelt ----------
 		const h = t - (T1 + 0.05);
@@ -56,7 +57,9 @@ export const plan = {
 			o: dIn * (1 - dOut),
 			t: tf(0, 0, mix(0.9, 1, dIn)),
 		});
-		put(E['and-caret'], { o: t > T3 + 0.3 && t < T4 && Math.floor((t - T3) * 1.9) % 2 === 0 ? 1 : 0 });
+		put(E['and-caret'], {
+			o: t > T3 + 0.3 && t < T4 && Math.floor((t - T3) * 1.9) % 2 === 0 ? 1 : 0,
+		});
 		// Abdunkelung: Sheet 50 %, Dialog 65 % (Seite auf 35 % Helligkeit)
 		const sc1 = 0.5 * aus(seg(t, T2 + 0.1, 0.3));
 		const scrim =

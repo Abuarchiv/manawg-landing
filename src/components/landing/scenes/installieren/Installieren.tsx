@@ -8,6 +8,7 @@ import s from './Installieren.module.css';
 import { Iphone } from './Iphone';
 import { Rechner } from './Rechner';
 import { registerAblauf } from './ablauf';
+import type { TabIndex } from './types';
 
 // Szene [07] INSTALLIEREN: je Plattform der echte Installationsablauf (INSTALL-FLOWS), zeitgesteuerte Schleife
 // im Gerät, Schrittliste synchron und klickbar, Tabs als Tablist mit Pfeiltasten.
@@ -113,7 +114,7 @@ export function Installieren() {
 		const a = registerAblauf(
 			frRef.current as HTMLDivElement,
 			secRef.current as HTMLElement,
-			() => instRef.current,
+			() => instRef.current as TabIndex,
 		);
 		api.current = a;
 		return () => a.stop();
