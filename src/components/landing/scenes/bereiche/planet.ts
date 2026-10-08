@@ -62,6 +62,8 @@ interface PlanetState extends SceneState {
 	/** Gestochene Breitenkreise und Landschraffur (je 6 Werte: Mitte, Strichrichtung), gebaut für den Radius lnR. */
 	LN?: Breite[];
 	HA?: Float32Array;
+	/** Gegenlinien auf dem Land: Läufe von Stützpunkten (x, y, z) entlang schräger Spiralen. */
+	GH?: Float32Array[];
 	lnR: number;
 	LM: Vec[];
 	yaw: number;
@@ -218,6 +220,25 @@ function baueStich(s: PlanetState) {
 	}
 	s.LN = LN;
 	s.HA = new Float32Array(ha);
+	// Gegenlinien: Spiralen mit festem Winkel zu den Breitenkreisen, nur die Stücke auf dem Land
+	const F = Math.round((2 * Math.PI * s.R) / (LIN * 2.4));
+	const GH: Float32Array[] = [];
+	for (let f = 0; f < F; f++) {
+		let lauf: number[] = [];
+		for (let k = 0; k <= 70; k++) {
+			const lat = -1.4 + (k / 70) * 2.8;
+			const lon = (f / F) * 2 * Math.PI - Math.PI + lat * -2.2;
+			const cf = Math.cos(lat);
+			const d = aMark(208 + (wrap(lon) / Math.PI) * 200, 173 - (lat / (Math.PI / 2)) * 160);
+			if (d < -2) lauf.push(cf * Math.sin(lon), Math.sin(lat), cf * Math.cos(lon));
+			else {
+				if (lauf.length > 6) GH.push(new Float32Array(lauf));
+				lauf = [];
+			}
+		}
+		if (lauf.length > 6) GH.push(new Float32Array(lauf));
+	}
+	s.GH = GH;
 	s.lnR = s.R;
 }
 
@@ -248,7 +269,8 @@ const VY = new Float32Array(420);
 function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number) {
 	const LN = s.LN;
 	const HA = s.HA;
-	if (!LN || !HA) return;
+	const GH = s.GH;
+	if (!LN || !HA || !GH) return;
 	const R = s.R;
 	const CX = s.cx;
 	const CY = s.cy;
@@ -342,7 +364,9 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 	ctx.fill();
 	// Landschraffur in drei Stufen (Deckkraft), nur dort, wo das Licht schwach ist
 	const pa = new Path2D();
-	const nh = HA.length / 6;
+	// Im Wirbel streuen kurze Striche, zum Schluss blenden die Gegenlinien ein
+	const gf = ss((ein - 0.8) / 0.2);
+	const nh = gf < 1 ? HA.length / 6 : 0;
 	for (let h = 0; h < nh; h++) {
 		const x = HA[6 * h] ?? 0;
 		const y = HA[6 * h + 1] ?? 0;
@@ -381,8 +405,33 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 	}
 	ctx.strokeStyle = '#FAFAFA';
 	ctx.lineWidth = 0.8;
-	ctx.globalAlpha = 0.6;
+	ctx.globalAlpha = 0.6 * (1 - gf);
 	ctx.stroke(pa);
+	if (gf > 0) {
+		const pg = new Path2D();
+		for (const lauf of GH) {
+			let an = false;
+			for (let i = 0; i < lauf.length; i += 3) {
+				const x = lauf[i] ?? 0;
+				const y = lauf[i + 1] ?? 0;
+				const z0 = lauf[i + 2] ?? 0;
+				const z1 = -x * sa + z0 * ca;
+				const X = x * ca + z0 * sa;
+				const Y = y * cb - z1 * sb;
+				const Z = y * sb + z1 * cb;
+				const lam = Math.max(0, X * LICHT[0] + Y * LICHT[1] + Z * LICHT[2]);
+				if (Z <= 0.08 || lam > 0.75) {
+					an = false;
+					continue;
+				}
+				if (an) pg.lineTo(CX + X * R, CY - Y * R);
+				else pg.moveTo(CX + X * R, CY - Y * R);
+				an = true;
+			}
+		}
+		ctx.globalAlpha = 0.6 * gf;
+		ctx.stroke(pg);
+	}
 	ctx.globalAlpha = 1;
 }
 
