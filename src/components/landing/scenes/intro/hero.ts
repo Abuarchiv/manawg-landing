@@ -41,7 +41,7 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 `;
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
-uniform sampler2D uImg, uMsk; uniform float uFoto;
+uniform sampler2D uImg, uMsk; uniform float uFoto, uAb;
 // Berg: Kupferstich (Codex, Technik wie der Himmel des Finales) als Kamerafahrt. Bildausschnitt deckend, im Hochformat enger um den
 // Gipfel; der Blick nach oben (uLook) schiebt den Ausschnitt bis in den dunklen Himmel. Wolken ziehen leicht, der
 // Zeiger ist Licht auf dem Schnee, die Marke steht als Sonne im Himmel.
@@ -57,14 +57,15 @@ float fotoBerg(vec2 uv){
   // Tonkurve wie Schwarzweiß-Abzug: tiefes Schwarz im Fels, Schnee bleibt hell; unten dunkler Grund für die Schrift
   v = smoothstep(.04, .97, pow(v, 1.18)); vec2 sv = gl_FragCoord.xy / uR;
   // Beim Öffnen zeichnet sich der Stich nach Helligkeit: erst die hellen Striche, dann die feinen
-  float th = 1.05 - uFoto * 1.1; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
+  // Rückzug (uAb): die Schwelle läuft zurück, erst gehen die dunklen, zuletzt die hellen Striche
+  float th = 1.05 - uFoto * 1.1 + uAb * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
   v *= mix(1., .5, smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook)));
   // Zeiger als Licht: der Schnee unter ihm hellt weich auf, Fels bleibt dunkel
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   float lm = exp(-length(uv - uM * vec2(.9, .5)) * 3.2); v += smoothstep(.45, .85, v) * msk * lm * .12;
   float d = sunD(uv, sp, sc); float sun = (1. - msk) * smoothstep(.002, -.002, d); v = mix(v, .9, sun);
   v += (1. - msk) * exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .07 * (1. + uLook * 3.);
-  return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025, 0., 1.); }
+  return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.); } // ohne Körnung, sobald Linien den Ton tragen: sie würden flimmern
 float mountain(vec2 uv){
   if(uFoto > .001) return fotoBerg(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
@@ -96,7 +97,7 @@ void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
   // Kugeln und Marke herum wie die Striche der gestochenen Wolken. Dunkle Flächen bekommen eine feine Gegenschraffur.
   if(uE > .001){ float k8 = uR.y / 800.; float tone = clamp(vr, 0., 1.); float sl = (fc.y + fc.x * .18) / (3.4 * k8) + tone * 7.;
     float d = abs(fract(sl) - .5) * 2.; float w = fwidth(sl) * 1.6; float r = pow(max(tone - .14, 0.) / .86, .8) * .95; // dunkler Grund ohne Linien
-    float ln = 1. - smoothstep(r - w, r + w, d);
+    float ln = (1. - smoothstep(r - w, r + w, d)) * smoothstep(.02, .09, r); // kein Strich im Grund: bei r = 0 bliebe sonst die halbe Kantenbreite stehen
     float s2 = (fc.y - fc.x * .6) / (5. * k8) + tone * 3.; float d2 = abs(fract(s2) - .5) * 2.;
     ln = max(ln, (1. - smoothstep(.06 - fwidth(s2), .06 + fwidth(s2), d2)) * smoothstep(.18, .26, tone) * (1. - smoothstep(.3, .5, tone)) * .45);
     v = mix(v, ln, uE); }
@@ -128,7 +129,8 @@ type SzeneU =
 	| 'uZ'
 	| 'uImg'
 	| 'uMsk'
-	| 'uFoto';
+	| 'uFoto'
+	| 'uAb';
 type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uE' | 'uHo' | 'uPad';
 
 /** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
@@ -248,6 +250,7 @@ export function createHero(cv: HTMLCanvasElement) {
 				'uImg',
 				'uMsk',
 				'uFoto',
+				'uAb',
 			],
 			'scene',
 		);
@@ -489,6 +492,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			gl.activeTexture(gl.TEXTURE0);
 		}
 		gl.uniform1f(U.uFoto, G.fotoTx ? G.fotoA : 0);
+		gl.uniform1f(U.uAb, ss((look - 0.02) / 0.6));
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		if (gcv.width < w) gcv.width = w;
@@ -506,7 +510,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(Q.uMx, mx);
 		gl.uniform1f(Q.uSt, 1);
 		// Stich statt Halbton, sobald der Blick den Berg verlässt (Marke, Organ, Kugeln); der Berg ist schon ein Stich
-		gl.uniform1f(Q.uE, Math.max(ss((look - 0.15) / 0.3), ss(mx / 0.15)));
+		gl.uniform1f(Q.uE, Math.max(ss((look - 0.12) / 0.3), ss(mx / 0.15)));
 		// Löcher: Logo, Knopf und Hinweis bleiben im Halbton dunkel (Zellen im Rechteck plus 8 px), damit ihre Schrift lesbar ist
 		HO.fill(0);
 		let ho = 0;

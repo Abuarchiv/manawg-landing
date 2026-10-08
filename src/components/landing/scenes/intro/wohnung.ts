@@ -5,7 +5,7 @@
 // Wände laufen über die ganze Fläche.
 
 import { loop, qa } from '../../core/loop';
-import { BAYER, cl, lag, lerp, ss } from '../../core/math';
+import { cl, lag, lerp, ss } from '../../core/math';
 import type { BuehnenKontext } from './types';
 
 const mono = (px: number) => `500 ${px}px "JetBrains Mono", monospace`;
@@ -45,19 +45,29 @@ const STOPS: readonly Blick[] = [
 type Wand = [number, number, number, number];
 
 const WALLS: Wand[] = [];
-for (const r of ROOMS) {
-	const x = r[1];
-	const y = r[2];
-	const w = r[3];
-	const hh = r[4];
-	WALLS.push(
-		[x, y, x + w, y],
-		[x + w, y, x + w, y + hh],
-		[x, y + hh, x + w, y + hh],
-		[x, y, x, y + hh],
-	);
+{
+	// Räume teilen Wände: jede Wand nur einmal, sonst läge der Stich doppelt
+	const gesehen = new Set<string>();
+	for (const r of ROOMS) {
+		const [, x, y, w, hh] = r;
+		for (const wd of [
+			[x, y, x + w, y],
+			[x + w, y, x + w, y + hh],
+			[x, y + hh, x + w, y + hh],
+			[x, y, x, y + hh],
+		] as Wand[]) {
+			const k = wd.join(',');
+			if (gesehen.has(k)) continue;
+			gesehen.add(k);
+			WALLS.push(wd);
+		}
+	}
 }
 WALLS.sort((a, b) => a[0] + a[1] + a[2] + a[3] - (b[0] + b[1] + b[2] + b[3]));
+// Maße des Stichs: Wandstärke und -höhe in Rastereinheiten, Linienabstand am Bildschirm in CSS-Pixeln
+const WAND_DICKE = 0.24;
+const WAND_HOEHE = 1.1;
+const FEIN = 3.4;
 /** Bewohner: Name und Größe der Scheibe (in Rastereinheiten). */
 const PEOC = [
 	['LINA', 0.62],
@@ -360,27 +370,60 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	const mx = st.sm.x;
 	const my = st.sm.y;
 	const FL = 210;
-	const stp = Math.max(0.12, 5.5 / u);
-	ctx.fillStyle = '#FAFAFA';
+	// Böden: feine parallele Schraffur entlang der x-Achse, Abstand FEIN am Bildschirm; der angefahrene Raum zeichnet dichter
+	// und heller, der Zeiger leuchtet sie weich auf. Strichstärken in acht Stufen, je Stufe ein Pfad.
+	const ds = FEIN / (f * u * 0.866);
+	const STUFEN = 8;
+	const pfade: Path2D[] = Array.from({ length: STUFEN }, () => new Path2D());
+	const hW = WAND_DICKE / 2;
+	const stufe = (I: number) => Math.min(STUFEN - 1, Math.max(0, Math.round(I * (STUFEN - 1))));
 	ROOMS.forEach((r, ri) => {
-		const x = r[1];
-		const y = r[2];
-		const w = r[3];
-		const hh = r[4];
-		const base = 0.06 + 0.8 * (lit[ri] ?? 0);
-		for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++)
-			for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
-				const pt = P(xx, yy, 0);
-				if (pt[0] < x0 - 4 || pt[1] < y0 - 4 || pt[0] > x1 || pt[1] > y1) continue;
+		const rx0 = r[1] + hW;
+		const rx1 = r[1] + r[3] - hW;
+		const ry0 = r[2] + hW;
+		const ry1 = r[2] + r[4] - hW;
+		const base = 0.07 + 0.5 * (lit[ri] ?? 0);
+		// Richtung je Raum: entlang x, entlang y oder diagonal (Linien x - y = const, am Rechteck beschnitten)
+		const richt = ri % 3;
+		const lauf = (ax: number, ay: number, bx: number, by: number) => {
+			const A = P(ax, ay, 0);
+			const B2 = P(bx, by, 0);
+			if (Math.max(A[0], B2[0]) < x0 || Math.min(A[0], B2[0]) > x1) return;
+			if (Math.max(A[1], B2[1]) < y0 || Math.min(A[1], B2[1]) > y1) return;
+			const seg = m.in ? Math.max(1, Math.ceil(Math.hypot(B2[0] - A[0], B2[1] - A[1]) / 40)) : 1;
+			for (let k = 0; k < seg; k++) {
+				const p0 = P(lerp(ax, bx, k / seg), lerp(ay, by, k / seg), 0);
+				const p1 = P(lerp(ax, bx, (k + 1) / seg), lerp(ay, by, (k + 1) / seg), 0);
 				let I = base;
 				if (m.in) {
-					const dm = Math.hypot(pt[0] - mx, pt[1] - my);
-					if (dm < FL) I += 0.8 * (1 - dm / FL) ** 2;
+					const dm = Math.hypot((p0[0] + p1[0]) / 2 - mx, (p0[1] + p1[1]) / 2 - my);
+					if (dm < FL) I += 0.6 * (1 - dm / FL) ** 2;
 				}
-				if (I > (BAYER[(gy & 3) * 4 + (gx & 3)] ?? 0) / 16 + 0.02)
-					ctx.fillRect(pt[0], pt[1], 1.6, 1.6);
+				const pf = pfade[stufe(I)];
+				pf?.moveTo(p0[0], p0[1]);
+				pf?.lineTo(p1[0], p1[1]);
 			}
+		};
+		if (richt === 0) for (let yy = ry0 + ds / 2; yy < ry1; yy += ds) lauf(rx0, yy, rx1, yy);
+		else if (richt === 1) for (let xx = rx0 + ds / 2; xx < rx1; xx += ds) lauf(xx, ry0, xx, ry1);
+		else {
+			const dd = ds * 1.4;
+			for (let c0 = rx0 - ry1 + dd / 2; c0 < rx1 - ry0; c0 += dd) {
+				// Schnitt der Geraden y = x - c0 mit dem Rechteck
+				const xa = Math.max(rx0, ry0 + c0);
+				const xb = Math.min(rx1, ry1 + c0);
+				if (xb > xa) lauf(xa, xa - c0, xb, xb - c0);
+			}
+		}
 	});
+	ctx.strokeStyle = '#FAFAFA';
+	ctx.lineCap = 'butt';
+	pfade.forEach((pf, k) => {
+		ctx.globalAlpha = 0.14 + (0.86 * k) / (STUFEN - 1);
+		ctx.lineWidth = (0.6 + (0.5 * k) / (STUFEN - 1)) / f;
+		ctx.stroke(pf);
+	});
+	ctx.globalAlpha = 1;
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
 	if (!st.pp)
 		st.pp = PEOC.map(([name, rel], k) => ({
@@ -409,53 +452,133 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		pp.x += (pp.tx - pp.x) * kp;
 		pp.y += (pp.ty - pp.y) * kp;
 	});
-	const HW = 1.1;
+	// Wände als Architektur-Stich: Doppellinie der Schnittfläche mit Schraffur im Wandquerschnitt (45 Grad), die dem Raum
+	// zugewandte Seite mit senkrechten Haarlinien (rechte Seiten dichter: sie liegen im Schatten), Fußlinie darunter.
+	const stk = 1 / f;
+	const fein = FEIN / (f * u);
 	for (const wl of WALLS) {
-		const a = P(wl[0], wl[1], 0);
-		const b = P(wl[2], wl[3], 0);
-		const a2 = P(wl[0], wl[1], HW);
-		const b2 = P(wl[2], wl[3], HW);
-		ctx.globalAlpha = 0.92;
+		const [ax, ay, bx, by] = wl;
+		const quer = ay === by; // Wand läuft entlang x
+		const ex0 = ax - hW;
+		const ey0 = ay - hW;
+		const ex1 = bx + hW;
+		const ey1 = by + hW;
+		const c0 = P(ex0, ey0, WAND_HOEHE);
+		const c1 = P(ex1, ey1, WAND_HOEHE);
+		const lo = P(ex0, ey0, 0);
+		const ro = P(ex1, ey1, 0);
+		if (
+			Math.max(c0[0], c1[0], lo[0], ro[0]) < x0 ||
+			Math.min(c0[0], c1[0], lo[0], ro[0]) > x1 ||
+			Math.max(c0[1], c1[1], lo[1], ro[1]) < y0 - 40 ||
+			Math.min(c0[1], c1[1], lo[1], ro[1]) > y1
+		)
+			continue;
+		// Körper: Fläche nahe Seite plus Schnittfläche decken die Böden dahinter ab
+		const ny = quer ? ay + hW : ey1;
+		const nx = quer ? ex1 : ax + hW;
+		const t0 = P(quer ? ex0 : nx, quer ? ny : ey0, WAND_HOEHE);
+		const t1 = P(nx, ny, WAND_HOEHE);
+		const b0 = P(quer ? ex0 : nx, quer ? ny : ey0, 0);
+		const b1 = P(nx, ny, 0);
+		const f0 = P(ex0, ey0, WAND_HOEHE);
+		const f1 = P(quer ? ex1 : ex0, quer ? ey0 : ey1, WAND_HOEHE);
+		const g0 = P(ex1, ey1, WAND_HOEHE);
+		const g1 = P(quer ? ex0 : ex1, quer ? ey1 : ey0, WAND_HOEHE);
+		ctx.globalAlpha = 1;
 		ctx.fillStyle = '#0A0A0A';
 		ctx.beginPath();
-		ctx.moveTo(a[0], a[1]);
-		ctx.lineTo(b[0], b[1]);
-		ctx.lineTo(b2[0], b2[1]);
-		ctx.lineTo(a2[0], a2[1]);
+		ctx.moveTo(t0[0], t0[1]);
+		ctx.lineTo(t1[0], t1[1]);
+		ctx.lineTo(b1[0], b1[1]);
+		ctx.lineTo(b0[0], b0[1]);
 		ctx.closePath();
 		ctx.fill();
-		ctx.globalAlpha = 0.3;
+		ctx.beginPath();
+		ctx.moveTo(f0[0], f0[1]);
+		ctx.lineTo(f1[0], f1[1]);
+		ctx.lineTo(g0[0], g0[1]);
+		ctx.lineTo(g1[0], g1[1]);
+		ctx.closePath();
+		ctx.fill();
 		ctx.strokeStyle = '#FAFAFA';
-		ctx.lineWidth = 1;
+		// Haarlinien der Seitenfläche, nur im sichtbaren Ausschnitt
+		const len = quer ? ex1 - ex0 : ey1 - ey0;
+		const dichte = quer ? 1.5 : 1;
+		const sh = new Path2D();
+		for (let s2 = fein * 0.5 * (1 / dichte); s2 < len; s2 += fein * 1.8 * (1 / dichte)) {
+			const a1 = quer ? P(ex0 + s2, ny, WAND_HOEHE) : P(nx, ey0 + s2, WAND_HOEHE);
+			if (a1[0] < x0 - 4 || a1[0] > x1 + 4) continue;
+			const a2 = quer ? P(ex0 + s2, ny, 0) : P(nx, ey0 + s2, 0);
+			sh.moveTo(a1[0], a1[1]);
+			sh.lineTo(a2[0], a2[1]);
+		}
+		ctx.globalAlpha = quer ? 0.2 : 0.28;
+		ctx.lineWidth = 0.5 * stk;
+		ctx.stroke(sh);
+		ctx.globalAlpha = 0.45;
+		ctx.lineWidth = stk;
 		ctx.beginPath();
-		ctx.moveTo(a[0], a[1]);
-		ctx.lineTo(b[0], b[1]);
-		ctx.moveTo(a[0], a[1]);
-		ctx.lineTo(a2[0], a2[1]);
-		ctx.moveTo(b[0], b[1]);
-		ctx.lineTo(b2[0], b2[1]);
+		ctx.moveTo(b0[0], b0[1]);
+		ctx.lineTo(b1[0], b1[1]);
 		ctx.stroke();
-		ctx.globalAlpha = 0.9;
+		// Schnittfläche: 45-Grad-Schraffur im Wandquerschnitt
+		const ps = new Path2D();
+		for (let s2 = 0; s2 < len; s2 += fein) {
+			const e = Math.min(len, s2 + WAND_DICKE);
+			const w2 = e - s2;
+			const p0 = quer ? P(ex0 + s2, ay - hW, WAND_HOEHE) : P(ax - hW, ey0 + s2, WAND_HOEHE);
+			if (p0[0] < x0 - 8 || p0[0] > x1 + 8) continue;
+			const p1 = quer ? P(ex0 + e, ay - hW + w2, WAND_HOEHE) : P(ax - hW + w2, ey0 + e, WAND_HOEHE);
+			ps.moveTo(p0[0], p0[1]);
+			ps.lineTo(p1[0], p1[1]);
+		}
+		ctx.globalAlpha = 0.55;
+		ctx.lineWidth = 0.6 * stk;
+		ctx.stroke(ps);
+		// Doppellinie: die beiden Längskanten und die Stirnen der Schnittfläche
+		ctx.globalAlpha = 0.95;
+		ctx.lineWidth = 1.05 * stk;
 		ctx.beginPath();
-		ctx.moveTo(a2[0], a2[1]);
-		ctx.lineTo(b2[0], b2[1]);
+		ctx.moveTo(f0[0], f0[1]);
+		ctx.lineTo(f1[0], f1[1]);
+		ctx.lineTo(g0[0], g0[1]);
+		ctx.lineTo(g1[0], g1[1]);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.globalAlpha = 0.7;
+		ctx.beginPath();
+		ctx.moveTo(f0[0], f0[1]);
+		ctx.lineTo(lo[0], lo[1]);
+		ctx.moveTo(g0[0], g0[1]);
+		ctx.lineTo(ro[0], ro[1]);
 		ctx.stroke();
 	}
 	ctx.globalAlpha = 1;
 	const scheiben = st.pp.map((pp, k) => {
 		const pt = P(pp.x, pp.y, 0.45);
-		const r = pp.rel * u * 0.5;
+		const r = pp.rel * u * 0.42;
 		const sx = tx + pt[0] * f;
 		const sy = ty + pt[1] * f;
 		const ba = blende(`a${k}`, { x0: sx - r * f, x1: sx + r * f, y0: sy - r * f, y1: sy + r * f });
+		// Bewohner: kleiner Kreis mit Haarlinie, innen eine Gegenlinie als Rundung und ein Punkt als Mitte
 		ctx.globalAlpha = ba;
-		ctx.fillStyle = '#FAFAFA';
+		ctx.fillStyle = '#0A0A0A';
 		ctx.beginPath();
 		ctx.arc(pt[0], pt[1], r, 0, 6.2832);
 		ctx.fill();
-		ctx.fillStyle = '#0A0A0A';
+		ctx.strokeStyle = '#FAFAFA';
+		ctx.lineWidth = 1.1 * stk;
+		ctx.stroke();
+		ctx.globalAlpha = ba * 0.55;
+		ctx.lineWidth = 0.6 * stk;
 		ctx.beginPath();
-		ctx.arc(pt[0] + r * 0.12, pt[1] - r * 0.28, r * 0.22, 0, 6.2832);
+		ctx.arc(pt[0] + r * 0.16, pt[1] + r * 0.16, r * 0.68, 0.2, 2.4);
+		ctx.stroke();
+		ctx.globalAlpha = ba;
+		ctx.fillStyle = '#FAFAFA';
+		ctx.beginPath();
+		ctx.arc(pt[0], pt[1], Math.max(0.9 * stk, r * 0.07), 0, 6.2832);
 		ctx.fill();
 		ctx.globalAlpha = 1;
 		return { pt, r };
@@ -551,7 +674,5 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		ctx.beginPath();
 		ctx.arc(px, py, 18, 0, 6.2832);
 		ctx.stroke();
-		ctx.fillStyle = '#FAFAFA';
-		ctx.fillRect(px - 1.5, py - 1.5, 3, 3);
 	}
 }
