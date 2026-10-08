@@ -1,0 +1,76 @@
+{
+ "name": "hold",
+ "scale": 1.5,
+ "atlas": [
+  1792,
+  2640
+ ],
+ "tile": [
+  896,
+  1760
+ ],
+ "origin": [
+  410.667,
+  226.667
+ ],
+ "tiles": {
+  "lum": {
+   "x": 0,
+   "y": 0,
+   "w": 896,
+   "h": 1760,
+   "div": 1
+  },
+  "a": {
+   "x": 896,
+   "y": 0,
+   "w": 896,
+   "h": 1760,
+   "div": 1
+  },
+  "nx": {
+   "x": 0,
+   "y": 1760,
+   "w": 448,
+   "h": 880,
+   "div": 2
+  },
+  "ny": {
+   "x": 448,
+   "y": 1760,
+   "w": 448,
+   "h": 880,
+   "div": 2
+  },
+  "z": {
+   "x": 896,
+   "y": 1760,
+   "w": 448,
+   "h": 880,
+   "div": 2
+  }
+ },
+ "encoding": {
+  "lum": "0..255 -> 0..1, sRGB-Anzeigewert (Studiolicht, Hautstreuung, keine eingebackenen Konturen)",
+  "a": "0..255 -> Alpha der Hand (Holdout/Handy: 0)",
+  "nx": "0..255 -> -1..1, Normale im Bildraum, x nach rechts (halbe Aufloesung)",
+  "ny": "0..255 -> -1..1, Normale im Bildraum, y nach oben (halbe Aufloesung)",
+  "z": "0..255 -> -100..+100 mm relativ zur Referenzebene (Handy-Vorderseite bzw. Fingerspitzen-Ebene), plus = weiter weg (halbe Aufloesung)"
+ },
+ "space": "Buehnen-px (1280x800, 4,19 px/mm in der Handy-Ebene), Ursprung oben links; origin = obere linke Ecke der Kachel lum/a; Kachel-px = (x - origin.x) * scale / div",
+ "phone": {
+  "x": 650.0,
+  "y": 90.0,
+  "w": 300.0,
+  "h": 620.0,
+  "r": 48.0
+ },
+ "screen": {
+  "x": 661.0,
+  "y": 101.0,
+  "w": 278.0,
+  "h": 598.0,
+  "r": 37.0
+ },
+ "bottomY": 1400.0
+}

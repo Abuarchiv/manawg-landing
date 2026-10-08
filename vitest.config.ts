@@ -11,6 +11,7 @@ export default defineConfig({
 		exclude: ['e2e/**', 'node_modules/**', '.next/**'],
 		setupFiles: ['./src/test/setup.ts'],
 		testTimeout: 15_000,
+		passWithNoTests: true,
 	},
 	resolve: {
 		alias: {

@@ -1,0 +1,369 @@
+.sektion {
+	position: relative;
+	min-height: 100lvh;
+	background: #0a0a0a;
+	color: #fafafa;
+	overflow: clip; /* kein Scroll-Container: das Handy im Querformat bleibt sticky */
+	display: grid;
+	grid-template-columns: calc(var(--rand) + var(--w-520)) minmax(0, 1fr);
+	column-gap: var(--sp-60);
+	padding: 0;
+}
+.text {
+	/* Oberkante unter dem Kopfband (Kopf + 28 px Verlauf der KopfMaske), sonst verdeckt es Label und Handy */
+	padding: max(var(--sp-96), calc(var(--kopf-unten) + 24px)) 0 var(--sp-32) var(--rand);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-24);
+	min-width: 0;
+}
+.titel {
+	margin: 0;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--t-72);
+	line-height: 0.95;
+	letter-spacing: -0.045em;
+	overflow-wrap: break-word;
+}
+.nowrap {
+	white-space: nowrap;
+}
+.lead {
+	margin: 0;
+	font-size: var(--t-18);
+	line-height: 1.5;
+	opacity: 0.72;
+	max-width: var(--w-420);
+}
+.tabs {
+	display: flex;
+	gap: 4px;
+	border: 1px solid var(--haar);
+	border-radius: 12px;
+	padding: 4px;
+	align-self: flex-start;
+	max-width: 100%;
+}
+.tab {
+	position: relative;
+	border: 0;
+	background: transparent;
+	color: #fafafa;
+	font-family: inherit;
+	transition: background 0.2s, color 0.2s;
+}
+.tab::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: -2px;
+	bottom: -2px;
+}
+.tab[aria-selected="true"] {
+	background: #fafafa;
+	color: #0a0a0a;
+}
+.tab:not([aria-selected="true"]):hover {
+	background: rgba(250, 250, 250, 0.1);
+}
+.tab:focus-visible,
+.schritt:focus-visible {
+	outline: 2px solid #fafafa;
+	outline-offset: 2px;
+}
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	max-width: var(--w-520);
+}
+.schritte {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 1px solid var(--haar);
+}
+.schritte li {
+	display: block;
+}
+.schritt {
+	display: grid;
+	grid-template-columns: 48px minmax(0, 1fr);
+	align-items: baseline;
+	width: 100%;
+	min-height: 44px;
+	border: 0;
+	border-bottom: 1px solid var(--haar);
+	background: transparent;
+	color: #fafafa;
+	font: inherit;
+	text-align: left;
+	padding: var(--sp-16) 0;
+	cursor: pointer;
+	opacity: 0.55;
+	transition: opacity 0.3s;
+}
+.schritt[data-aktiv],
+.schritt:hover {
+	opacity: 1;
+}
+.nr {
+	font-family: "JetBrains Mono", monospace;
+	font-size: 13px;
+}
+.zeile {
+	font-size: var(--t-19);
+	font-weight: 500;
+	line-height: 1.3;
+}
+.cta {
+	align-self: flex-start;
+}
+.weitere {
+	margin: 0;
+	line-height: 1.6;
+	text-transform: none;
+}
+.buehne {
+	/* oben und unten mindestens das Kopfband, damit das Handy im Ruhezustand ganz unter dem Kopf steht */
+	--luft: calc(var(--kopf-unten) + 28px);
+	padding-top: var(--luft);
+	padding-bottom: max(calc(var(--sp-96) - var(--sp-32)), var(--luft));
+	min-width: 0;
+	align-self: center;
+	justify-self: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+/* Rechner im Querformat: das Fenster endet auf dem Seitenrand (rechts wie der Titel links), nicht mittig in der Spalte */
+@media (min-aspect-ratio: 1 / 1) and (min-width: 900px) {
+	.buehne:has(.rahmen[data-tab="2"]) {
+		justify-content: flex-end;
+		box-sizing: border-box;
+		padding-right: var(--rand);
+	}
+}
+.skala {
+	position: relative;
+	width: 300px;
+	height: 620px;
+	transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.45s
+		cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.rahmen {
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	width: 300px;
+	height: 620px;
+	padding: 10px;
+	background: #0a0a0a;
+	border: 1px solid rgba(250, 250, 250, 0.3);
+	border-radius: 46px;
+	box-shadow: 0 0 120px rgba(250, 250, 250, 0.08);
+	transform-origin: 0 0;
+	transform: scale(var(--z, 1));
+	transition: width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.45s
+		cubic-bezier(0.2, 0.8, 0.2, 1), border-radius 0.45s, padding 0.45s;
+}
+.rahmen[data-tab="2"] {
+	width: 600px;
+	height: 400px;
+	padding: 8px;
+	border-radius: 14px;
+}
+.schirm {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 36px;
+	background: #0a0a0a;
+	isolation: isolate;
+	transition: border-radius 0.45s;
+}
+.rahmen[data-tab="2"] .schirm {
+	border-radius: 8px;
+}
+.geraet {
+	position: absolute;
+	inset: 0;
+}
+.geraet[hidden] {
+	display: none;
+}
+.schleier {
+	position: absolute;
+	inset: 0;
+	background: #0a0a0a;
+	opacity: 1;
+	pointer-events: none;
+	z-index: 20;
+}
+.tipp {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 36px;
+	height: 36px;
+	box-sizing: border-box;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.16);
+	border: 1.5px solid rgba(0, 0, 0, 0.42);
+	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+	opacity: 0;
+	pointer-events: none;
+	z-index: 21;
+}
+/* Rechner: macOS-Pfeil, die Spitze liegt auf dem Ziel */
+.tipp[data-z="maus"] {
+	width: 17px;
+	height: 25px;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='25' viewBox='0 0 17 25'%3E%3Cpath d='M1.500 1.500v18l4.600-4.300 3.200 7.400 3.100-1.300-3.200-7.300H16Z' fill='%23000' stroke='%23fff' stroke-width='1.400' stroke-linejoin='round'/%3E%3C/svg%3E")
+		no-repeat;
+	transform-origin: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.skala,
+	.rahmen,
+	.schirm,
+	.tab,
+	.schritt {
+		transition: none;
+	}
+}
+
+/* Hochformat: Label, Titel, Absatz, Tabs, Gerät mit Bildunterschrift (alles in einem Bild), CTA. Die volle
+   Schrittliste bleibt für Screenreader und erscheint bei Fokus. */
+.kurz {
+	display: none;
+	margin: 0;
+	min-height: 2.6em;
+	text-align: center;
+	font-size: var(--t-17);
+	font-weight: 500;
+	line-height: 1.3;
+	text-wrap: balance;
+}
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px),
+	(orientation: landscape) and (max-height: 499px) {
+	.sektion {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--sp-16);
+		min-height: 0;
+		/* unten knapper als die Textszenen: nach dem Knopf folgt nur noch das Label von Fragen */
+		padding: max(var(--abschnitt-oben), calc(var(--kopf-unten) + 24px)) var(--rand) var(--sp-64);
+		box-sizing: border-box;
+	}
+	.text {
+		display: contents;
+	}
+	.lead {
+		max-width: none;
+	}
+	.panel {
+		order: 3;
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+	.panel:focus-within {
+		position: static;
+		width: auto;
+		height: auto;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
+		max-width: none;
+	}
+	.cta {
+		order: 4;
+	}
+	.buehne {
+		order: 1;
+		height: max(
+			340px,
+			calc(100svh - 340px - max(0px, var(--kopf-unten) + 24px - var(--abschnitt-oben)))
+		);
+		padding: var(--sp-8, 8px) 0;
+		box-sizing: border-box;
+	}
+	/* Rechner: das Fenster ist flach, die Bühne nur so hoch wie das Fenster (kein Loch zwischen Tabs und Fenster) */
+	.buehne:has(.rahmen[data-tab="2"]) {
+		height: auto;
+	}
+	.kurz {
+		order: 2;
+		display: block;
+	}
+}
+/* Handy quer: zwei Spalten. Links Titel, Tabs und Schritte (scrollen), rechts das Handy fest unter dem Kopf. */
+@media (orientation: landscape) and (max-height: 499px) {
+	.sektion {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		column-gap: var(--sp-32);
+		align-items: start;
+		row-gap: 0;
+		padding: calc(var(--kopf-unten) + 16px) var(--rand) var(--sp-48);
+	}
+	.text {
+		display: flex;
+		padding: 0;
+	}
+	.lead {
+		display: none;
+	}
+	.panel,
+	.panel:focus-within {
+		position: static;
+		width: auto;
+		height: auto;
+		overflow: visible;
+		clip-path: none;
+		white-space: normal;
+		max-width: none;
+	}
+	.schritt {
+		padding: var(--sp-10) 0;
+	}
+	.buehne {
+		order: 0;
+		position: sticky;
+		align-self: start;
+		top: calc(var(--kopf-unten) + 8px);
+		height: calc(100svh - var(--kopf-unten) - 24px);
+		padding: 0;
+	}
+	.kurz {
+		display: none;
+	}
+}
+@media (max-width: 420px) {
+	.titel {
+		font-size: 38px;
+	}
+}
+
+/* Symbol im Schritttext: in Höhe der x-Höhe, auf der Grundlinie */
+.ikone {
+	display: inline-block;
+	vertical-align: -0.18em;
+	margin-inline: 0.12em;
+}

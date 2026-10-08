@@ -17,8 +17,7 @@
  * *event handler* vector is closed instead via script-src-attr 'none'.
  */
 export function contentSecurityPolicy(): string {
-	// wasm-unsafe-eval: Draco-Decoder (WebAssembly) für das 3D-Modell der Startseite
-	const scriptSrc = ["'self'", "'unsafe-inline'", "'wasm-unsafe-eval'"];
+	const scriptSrc = ["'self'", "'unsafe-inline'"];
 	if (process.env.NODE_ENV === 'development') {
 		// React Fast Refresh / the dev overlay evaluate code at runtime; this
 		// branch is unreachable in a production build.
@@ -36,12 +35,11 @@ export function contentSecurityPolicy(): string {
 		"font-src 'self' data:",
 		"connect-src 'self'",
 		"media-src 'self'",
-		// DRACOLoader startet seine Worker aus einem blob:-URL
-		"worker-src 'self' blob:",
+		"worker-src 'self'",
 		"frame-ancestors 'none'",
 		"base-uri 'self'",
 		"form-action 'self'",
 		"object-src 'none'",
-		'upgrade-insecure-requests',
+		...(process.env.VERCEL ? ['upgrade-insecure-requests'] : []),
 	].join('; ');
 }

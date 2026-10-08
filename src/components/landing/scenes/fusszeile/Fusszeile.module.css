@@ -1,0 +1,53 @@
+.fuss {
+	position: relative;
+	background: #0a0a0a;
+	color: #fafafa;
+	padding: 0 var(--rand);
+	display: flex;
+	flex-direction: column;
+}
+.raster {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+	border-top: 1px dashed var(--haar);
+	margin: 0 calc(-1 * var(--rand));
+	position: relative;
+	background: #0a0a0a;
+}
+.marke {
+	padding: var(--sp-32) var(--rand) var(--sp-40);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-12);
+}
+.spalte {
+	padding: var(--sp-32) var(--sp-24);
+	border-left: 1px dashed var(--haar);
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+.kopf {
+	font-size: var(--t-14);
+	font-weight: 600;
+	margin-bottom: var(--sp-8, 8px);
+}
+
+/* Hochformat: 2 x 2 (Marke | Produkt, Konto | Rechtliches), gestrichelte Linien über die volle Breite */
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	.raster {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.marke,
+	.spalte {
+		padding: var(--sp-32) var(--rand);
+		border-left: 0;
+		min-width: 0;
+	}
+	.raster > :nth-child(n + 3) {
+		border-top: 1px dashed var(--haar);
+	}
+	.raster > :nth-child(even) {
+		border-left: 1px dashed var(--haar);
+	}
+}

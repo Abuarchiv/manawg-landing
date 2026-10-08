@@ -1,0 +1,19 @@
+/* Marker #hero: Berg, Sonne = Zeichen, Organ, Zerfall, Tauchgang. */
+.hero{background:var(--ink)}
+/* Canvas bleibt deckend, bis die Wohnung ueber ctx.stage ins Loch clippt (kein Crossfade, keine schwarze Buehne) */
+.hero canvas{opacity:1}
+.wm{position:absolute;left:var(--pad);top:76px;opacity:calc(1 - var(--p,0) * 14);pointer-events:none;display:flex;flex-direction:column;gap:2px}
+.wm-name{font-family:var(--f-tight);font-weight:600;font-size:var(--t);line-height:1.3;letter-spacing:-.02em}
+.wm-l{display:block;overflow:hidden}
+.wm-l>span{display:block}
+/* Zeilen-Masken: erst scharf, wenn hero.js laeuft (ohne JS bleibt der Text sichtbar) */
+.hero.arm .wm-l>span{transform:translateY(105%)}
+.hero.arm .hint{opacity:0}
+.hero.in .wm-l>span{transform:none;transition:transform .6s var(--ease) calc(var(--i,0) * .08s)}
+.hint{position:absolute;right:var(--pad);bottom:28px;opacity:calc(.72 - var(--p,0) * 10);pointer-events:none}
+.hero.arm.in .hint{opacity:calc(.72 - var(--p,0) * 10);animation:hin .6s var(--ease) .3s backwards}
+@keyframes hin{from{opacity:0}}
+/* Ohne WebGL2: statisches Halbton-Bild des ersten Frames */
+.hero.nogl{background:var(--ink) url(../img/hero-fallback-m.png) center/cover no-repeat}
+@media (min-width:900px){.hero.nogl{background-image:url(../img/hero-fallback-d.png)}}
+.hero.nogl canvas{display:none}

@@ -1,0 +1,51 @@
+/* Titel und Knopf der Ende-Szene. Quer unten links wie im Entwurf, hoch oben über dem Handy
+   (Platz dafür reserviert kamera.js, titelPlatz). Sie erscheinen erst, wenn der dunkle Grund steht
+   (T-05): Deckkraft = clamp(0, (--e - 0,5) * 2,5, 1). */
+.titel {
+	position: absolute;
+	left: var(--rand);
+	bottom: var(--sp-48);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-24);
+	color: #fafafa;
+	opacity: clamp(0, calc((var(--e, 0) - 0.5) * 2.5), 1);
+}
+
+.h {
+	margin: 0;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--t-96);
+	line-height: 0.9;
+	letter-spacing: -0.05em;
+}
+
+.knopf {
+	align-self: flex-start;
+}
+
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	/* Hoch: unter dem Kopf (der bleibt sichtbar), Titel eine Zeile, Knopf in der Höhe des Kopf-Knopfs.
+	   Muss zu kamera.js titelPlatz passen. */
+	.titel {
+		bottom: auto;
+		top: max(72px, calc(env(safe-area-inset-top, 0px) + 56px));
+		gap: 16px;
+		/* beim Hinausscrollen weg, bevor der Titel das Kopfband erreicht (stage.js) */
+		opacity: calc(clamp(0, calc((var(--e, 0) - 0.5) * 2.5), 1) * (1 - var(--ende-titel-aus, 0)));
+	}
+	.h {
+		font-size: clamp(40px, 8vw, 60px);
+		line-height: 1;
+		white-space: nowrap;
+	}
+	.h br {
+		display: none;
+	}
+	.titel .knopf {
+		height: var(--cta-h);
+		font-size: var(--cta-fs);
+		padding: 0 var(--cta-px);
+	}
+}

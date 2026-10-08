@@ -1,0 +1,70 @@
+.sektion {
+	position: relative;
+	background: #0a0a0a;
+	color: #fafafa;
+	padding: var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-48);
+}
+.titel {
+	margin: 0;
+}
+.raster {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	border-top: 1px solid var(--haar);
+}
+.spalte {
+	padding: var(--sp-28) var(--sp-28) 0 var(--sp-28);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	border-right: 1px solid var(--haar);
+}
+.spalte:first-child {
+	padding-left: 0;
+}
+.spalte:last-child {
+	padding-right: 0;
+	border-right: 0;
+}
+.ziffer {
+	width: 100%;
+	height: 72px;
+	display: block;
+}
+.h3 {
+	margin: 0;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--t-30);
+	letter-spacing: -0.03em;
+	overflow-wrap: break-word;
+}
+.text {
+	margin: 0;
+	font-size: var(--t-body);
+	line-height: 1.5;
+	opacity: 0.72;
+}
+
+/* Hochformat: Spalten stapeln */
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	.raster {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.spalte,
+	.spalte:first-child,
+	.spalte:last-child {
+		padding: var(--sp-28) 0 var(--sp-32);
+		border-right: 0;
+		border-bottom: 1px solid var(--haar);
+	}
+	.spalte:last-child {
+		border-bottom: 0;
+	}
+	.ziffer {
+		height: 52px;
+	}
+}

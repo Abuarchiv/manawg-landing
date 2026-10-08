@@ -1,0 +1,110 @@
+.sektion {
+	--h: max(560px, 95svh);
+	--titel-fs: var(--t-200);
+	--knoepfe-h: 44px;
+	--luecke: var(--sp-32);
+	--pad-oben: calc(max(var(--rand-kopf), env(safe-area-inset-top, 0px) + 8px) + var(--cta-h) + 24px);
+	/* Mindesthöhe aus dem Inhalt: Kopfpolster, Titel (2 Zeilen), Lücke, Knöpfe, Fußpolster */
+	--noetig: calc(
+		var(--pad-oben) +
+		1.76 *
+		var(--titel-fs) +
+		var(--luecke) +
+		var(--knoepfe-h) +
+		var(--sp-32)
+	);
+	position: relative;
+	height: max(var(--h), var(--noetig));
+	background: #0a0a0a;
+	color: #fafafa;
+	overflow: hidden;
+}
+.feld {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+/* Der Inhalt liegt in dem Teil des Finales, der im Endbild der Seite über der Fußzeile zu sehen ist
+   (--fuss = Höhe der Fußzeile, von Finale.tsx gesetzt), mit dem Kopf als Oberkante. So steht der
+   Titel am Ende der Seite ganz unter dem Kopf (T-06). */
+.inhalt {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: min(
+		max(0px, calc(var(--h) + var(--fuss, 0px) - 100svh)),
+		calc(max(var(--h), var(--noetig)) - var(--noetig))
+	);
+	display: flex;
+	flex-direction: column;
+	padding: var(--pad-oben) var(--rand) var(--sp-32);
+	pointer-events: none;
+}
+.block {
+	margin-block: auto;
+	display: flex;
+	flex-direction: column;
+	gap: var(--luecke);
+}
+.titel {
+	margin: 0;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--titel-fs);
+	line-height: 0.88;
+	letter-spacing: -0.06em;
+	overflow-wrap: break-word;
+}
+.knoepfe {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	pointer-events: auto;
+}
+
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	/* Im Endbild müssen Titel, Knöpfe und Fußzeile zusammen in den Viewport passen (Safari mit Leisten ist
+	   niedriger als 100svh am Rechner): der Titel schrumpft bis 64 px, die Knöpfe stehen nebeneinander. */
+	.sektion {
+		--luecke: var(--sp-24);
+		--frei: calc(
+			100svh -
+			var(--fuss, 0px) -
+			var(--pad-oben) -
+			var(--luecke) -
+			var(--knoepfe-h) -
+			var(--sp-32)
+		);
+		--titel-fs: clamp(64px, min(27vw, var(--frei) / 1.76), 150px);
+	}
+	.titel {
+		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
+	}
+	.knoepfe {
+		max-width: 520px;
+	}
+	.knoepfe .knopf {
+		flex: 1 1 auto;
+		justify-content: center;
+		min-height: 44px;
+		padding: 0 12px;
+	}
+}
+
+/* 320 px breit: engeres Polster, damit beide Knöpfe nebeneinander bleiben (ein Umbruch wüchse unter die Fußzeile) */
+@media (max-width: 339px) {
+	.knoepfe .knopf {
+		padding: 0 8px;
+	}
+}
+
+/* Handy quer: wenig Höhe, Titel kleiner, damit er über der Fußzeile ganz Platz hat */
+@media (orientation: landscape) and (max-height: 499px) {
+	.sektion {
+		--titel-fs: clamp(48px, 15svh, 64px);
+		--luecke: 12px;
+	}
+}
