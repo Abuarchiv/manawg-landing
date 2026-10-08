@@ -25,7 +25,7 @@ export function Tiefe() {
 			tabIndex={-1}
 			ref={secRef}
 			aria-label="Funktionen"
-			style={css('position:relative;height:calc(3.8 * 100lvh);background:#0A0A0A;color:#FAFAFA')}
+			style={css('position:relative;height:calc(4.5 * 100lvh);background:#0A0A0A;color:#FAFAFA')}
 		>
 			<h2 className="sr-only">Funktionen</h2>
 			<div style={css('position:sticky;top:0;height:100lvh;overflow:hidden')}>
@@ -46,12 +46,6 @@ export function Tiefe() {
 					>
 						[ TIEFE ] WEITER SCROLLEN
 					</div>
-					<div
-						data-verlauf="1"
-						style={css(
-							'position:absolute;left:0;right:0;bottom:0;height:42%;opacity:0;background:linear-gradient(to top,rgba(10,10,10,0.8) 0,rgba(10,10,10,0.55) 55%,rgba(10,10,10,0) 100%)',
-						)}
-					/>
 					{WOERTER.map((w, i) => (
 						<div
 							key={w.nr}

@@ -15,11 +15,11 @@ const MONO = '"JetBrains Mono", monospace';
 const TT = '"Inter Tight", sans-serif';
 const F = 720; // Brennweite in Szenen-Einheiten
 const WORDS = ['GELD', 'HAUSHALT', 'ABSPRACHEN'];
-const FONTS = [10, 14, 20, 28]; // Nahzeichen: höchstens 28 px, größere Punkte werden zu Punkten
-const SPACING = 0.065; // Punktabstand der Wörter in Welt-Einheiten
-const SP = 18; // Abstand der Wort-Inseln in der Tiefe (vorher 26): das nächste Wort steht früher da
+const SPACING = 0.065; // Punktabstand der Wörter in Welt-Einheiten (nur Hochformat)
+const SP = 26; // Abstand der Wort-Inseln in der Tiefe, wie im Entwurf
 
-// Punkte eines Worts aus der Schrift abtasten (Gitter 2 px, Mitte = Mitte der Punktwolke)
+// Wort aus der Schrift abtasten (wie im Entwurf: Schrift 200 px auf 1600 x 270, Grundlinie 0,82). Die Maske
+// bleibt erhalten, damit je Format mit anderem Raster abgetastet werden kann.
 const sampleT = (word, px) => {
 	const w = 1600;
 	const h = Math.ceil(px * 1.35);
@@ -30,63 +30,54 @@ const sampleT = (word, px) => {
 	o.font = `600 ${px}px ${TT}`;
 	o.textAlign = 'center';
 	o.fillStyle = '#000';
-	o.fillText(word, w / 2, px * 0.95);
+	o.fillText(word, w / 2, px * 0.82);
 	const d = o.getImageData(0, 0, w, h).data;
-	const pts = [];
 	let x0 = 1e9;
 	let x1 = -1e9;
 	let y0 = 1e9;
 	let y1 = -1e9;
-	for (let iy = 0; iy < h / 2; iy++)
-		for (let ix = 0; ix < w / 2; ix++)
-			if (d[(iy * 2 * w + ix * 2) * 4 + 3] > 128) {
-				pts.push([ix, iy]);
-				x0 = Math.min(x0, ix * 2);
-				x1 = Math.max(x1, ix * 2);
-				y0 = Math.min(y0, iy * 2);
-				y1 = Math.max(y1, iy * 2);
+	for (let y = 0; y < h; y++)
+		for (let x = 0; x < w; x++)
+			if (d[(y * w + x) * 4 + 3] > 128) {
+				if (x < x0) x0 = x;
+				if (x > x1) x1 = x;
+				if (y < y0) y0 = y;
+				if (y > y1) y1 = y;
 			}
-	return { pts, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, width: x1 - x0 };
+	return { d, w, h, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, width: x1 - x0 };
+};
+// Punkte der Maske im Raster step, bezogen auf (ox, oy)
+const rasterPts = (r, step, ox, oy) => {
+	const pts = [];
+	for (let y = 0; y < r.h; y += step)
+		for (let x = 0; x < r.w; x += step)
+			if (r.d[(y * r.w + x) * 4 + 3] > 128) pts.push([x - ox, y - oy]);
+	return pts;
 };
 
-// Deckkraft des Untertitels aus der Tiefe dz seiner Insel. Plateau voll für |dz - 9| <= 3,5.
-// Das kommende Wort ist ab dz 30 mit 0,5 vorgeblendet, damit der Tunnel nie ohne Text bleibt (T-10).
-// Die letzte Zeile steht früher und bleibt bis zum Ende der Fahrt, sonst bliebe ihr nur ein Zehntel.
-const plateauOf = (dz, last) => {
-	const dd = last ? Math.max(dz, 12) - 12 : dz - 9;
-	return cl((5 - Math.abs(dd)) / 1.5);
-};
-// Die Vorblende des nächsten Satzes erst, wenn der vorige nicht mehr steht (kein Überlappen).
-// Dichte des Worts aus seiner Tiefe (dieselbe Kurve wie die Wortpartikel): zerfällt das Wort, geht der Satz mit.
-const wortDichte = (dz) => Math.max(cl((46 - dz) / 12), 0.6 * cl(68 - dz)) * (dz < 4.5 ? cl((dz - 0.4) / 4.1) : 1);
-// Das alte Wort wird beim Durchflug auf höchstens 35 % gesenkt, damit es das neue Wort und die Zeile nicht überdeckt
-const altFaktor = (dz) => (dz < 9 ? 0.35 + 0.65 * cl((dz - 5) / 4) : 1);
-// Die Unterzeile erscheint, sobald ihr Wort zu 60 % steht, und ist dann sofort gut lesbar (mindestens 0,85);
-// die Vorblende (0,5) gilt nur davor. Zerfällt das Wort, geht die Zeile mit ihm.
-const capOpacity = (dz, last, vorher, fremd = 1) => {
-	const d = wortDichte(dz) * fremd;
-	const pre = dz > 9 ? 0.5 * cl((30 - dz) / 2) * (1 - vorher) : 0;
-	// Wort voll (d >= 1 ab Tiefe 34): Zeile mindestens 0,85, solange die vorige nicht mehr steht
-	const voll = 0.85 * cl((d - 0.85) / 0.15) * (1 - vorher);
-	return Math.max(plateauOf(dz, last), pre, voll) * cl((d - 0.6) / 0.3);
-};
+// Deckkraft des Untertitels aus der Tiefe dz seiner Insel. Im Entwurf ein Dreieck um dz 9 (Breite 5 nach
+// beiden Seiten); hier dieselben Grenzen, aber mit Plateau (voll für |dz - 9| <= 3,5), damit der Satz lesbar steht.
+const plateauOf = (dz) => cl((5 - Math.abs(dz - 9)) / 1.5);
+// Dichte des Worts aus seiner Tiefe, wie im Entwurf: ab dz 34 da, ab dz 22 voll, im Durchflug (dz < 1,2) weg
+const wortDichte = (dz) => cl((34 - dz) / 12) * cl(dz / 1.2);
 
-// Flächenfaktor: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900),
-// damit der Anteil heller Pixel auf großen Schirmen nicht sinkt. Gerastert, damit nicht jede Größenänderung neu baut.
-const flaeche = (s) => Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4;
+// Hochformat: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900), gerastert, damit nicht
+// jede Größenänderung neu baut. Querformat: feste Menge wie im Entwurf (die Bühne skaliert als Ganzes).
+const flaeche = (s) =>
+	s.mode === 'hoch' ? Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4 : 1;
 const bauKey = (s) => `${s.mode}${flaeche(s)}`;
 
 function build(s) {
 	const hoch = s.mode === 'hoch';
 	const k = hoch ? 0.5 : 1; // Streuung der Inseln und des Zeigerversatzes an die Boxbreite anpassen
-	const target = ((hoch ? 0.72 : 0.5) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9 (hoch: 70 % der Breite)
+	const target = ((hoch ? 0.72 : 0.5) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9 (hoch: 72 % der Breite)
 	s.isl = s.raw.map((r, i) => {
-		const sc = cl(target / (r.width / 85), 0.25, 1.5);
-		const n = Math.max(1, Math.round((SPACING * 85) / (sc * 2)));
-		const pts = [];
-		for (const p of r.pts)
-			if (p[0] % n === 0 && p[1] % n === 0)
-				pts.push([((p[0] * 2 - r.cx) / 85) * sc, ((p[1] * 2 - r.cy) / 85) * sc]);
+		// Querformat wie im Entwurf: Maßstab 1, Raster 5 px, Mitte der Abtast-Fläche. Hochformat: Wort an die Breite angepasst.
+		const sc = hoch ? cl(target / (r.width / 85), 0.25, 1.5) : 1;
+		const raw = hoch
+			? rasterPts(r, 2 * Math.max(1, Math.round((SPACING * 85) / (sc * 2))), r.cx, r.cy)
+			: rasterPts(r, 5, r.w / 2, r.h / 2);
+		const pts = raw.map((p) => [(p[0] / 85) * sc, (p[1] / 85) * sc]);
 		// hw: halbe Wortbreite in Welt-Einheiten (für die Klemmung am Bildschirmrand)
 		return { z: SP * i, x: [-4.5, 4.5, -4.5][i] * k, y: [0.8, -0.8, 0.8][i], sc, pts, hw: (r.width / 85) * sc * 0.5 };
 	});
@@ -104,11 +95,11 @@ function build(s) {
 			]);
 		});
 	});
-	// Staub: dichter als im Entwurf, damit zwischen den Wörtern nie Leere entsteht (F-13)
-	// Hochformat: schmaler und höher, die Kanten des Staubkastens blenden weich aus (siehe frame)
+	// Staub: Querformat 1600 Punkte in 60 x 36 Einheiten wie im Entwurf; Hochformat schmaler, höher und dichter,
+	// die Kanten des Staubkastens blenden dort weich aus (siehe frame)
 	const fl = flaeche(s);
 	s.fl = Math.sqrt(fl);
-	const nd = Math.round((hoch ? 11000 : 22000) * fl);
+	const nd = hoch ? Math.round(11000 * fl) : 1600;
 	s.dX = hoch ? 24 : 30;
 	s.dY = hoch ? 40 : 18;
 	for (let q = 0; q < nd; q++)
@@ -144,7 +135,6 @@ export function registerTiefe(cv, sec) {
 			s.caps = [...cv.parentElement.querySelectorAll('[data-dcap]')];
 			s.dep = cv.parentElement.querySelector('[data-depth]');
 			s.hint = cv.parentElement.querySelector('[data-hint]');
-			s.verlauf = cv.parentElement.querySelector('[data-verlauf]');
 			s.kopf = document.querySelector('[data-kopf]');
 		},
 		frame(s, _t, dt) {
@@ -158,7 +148,8 @@ export function registerTiefe(cv, sec) {
 				build(s);
 				s.stale = true;
 			}
-			const { f, ox, oy, cx, cy, dpr } = s;
+			const { f, ox, oy, cx, cy } = s;
+			const hoch = s.mode === 'hoch';
 			// Beim Hinausscrollen läuft die Szene unter den fixen Kopf: Wortbild und Zeile blenden über den obersten
 			// 28 px unter dem Kopfband aus (Kopfunterkante in Canvas-Koordinaten)
 			const kopfUnten = s.kopf ? s.kopf.getBoundingClientRect().bottom : 0;
@@ -204,17 +195,9 @@ export function registerTiefe(cv, sec) {
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			ctx.fillStyle = '#FAFAFA';
-			const snap = (v) => Math.round(v * dpr) / dpr;
-			// Nahzeichen je Schriftstufe in wiederverwendeten Eimern (keine neuen Arrays, kein sort)
-			const nb = (s.nb ||= [[], [], [], []]);
+				// Nahzeichen je Schriftstufe (8, 11, 16, 23, 32, 45 px wie im Entwurf) in wiederverwendeten Eimern
+			const nb = (s.nb ||= [[], [], [], [], [], []]);
 			for (const e of nb) e.length = 0;
-			// Fokus je Wort: solange ein Wort steht, bleiben die anderen (Fernwörter) unsichtbar
-			const fok = s.isl.map((I, i) => plateauOf(I.z - camZ, i === s.isl.length - 1));
-			// Ein nahes, großes Wort (Tiefe 2 bis 34) blendet die fernen aus: kein kleines Wort auf der Ecke des großen
-const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2) / 2));
-// Nur ein NÄHERES großes Wort blendet ein fernes aus (nie das nähere Wort durch ein fernes)
-			const fremd = (k) =>
-				1 - Math.max(0, ...gross.filter((_, i) => i !== k && s.isl[i].z < s.isl[k].z));
 			const m = s.m;
 			const mx = m.in ? m.x : 0;
 			const my = m.in ? m.y : 0;
@@ -228,17 +211,15 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 			pv.x = m.x;
 			pv.y = m.y;
 			const rep = pv.a > 0.01 ? pv.a : 0;
-			const plat = Math.max(...s.isl.map((I, i) => plateauOf(I.z - camZ, i === s.isl.length - 1)));
+			const plat = Math.max(...s.isl.map((I) => plateauOf(I.z - camZ)));
 			const rad = 120 * (1 - 0.5 * plat);
 			// Unterzeilen: Deckkraft und Rechteck (Ausschlusszone der Partikel)
 			const zonen = (s.zonen ||= s.caps.map(() => ({ x0: 0, y0: 0, x1: 0, y1: 0, w: 0 })));
-			let capMax = 0;
 			s.caps.forEach((el, i) => {
 				const dz = s.isl[i].z - camZ;
-				const w = capOpacity(dz, i === s.isl.length - 1, i > 0 ? fok[i - 1] : 0, fremd(i));
+				const w = plateauOf(dz);
 				const z = zonen[i];
 				z.w = w;
-				capMax = Math.max(capMax, w);
 				if (w >= 0.02) {
 					const b = el.offsetParent;
 					z.x0 = el.offsetLeft - 28;
@@ -249,17 +230,18 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 			});
 			// Klemmung je Wort: die Kamera driftet seitlich zum nächsten Wort, während das aktuelle noch groß ist. Die
 			// Wortbox bleibt immer innerhalb von Viewport minus 16 px Rand (Verschiebung in Szenen-Einheiten) und wird
-			// im Hochformat auf höchstens 92 % der Breite skaliert statt angeschnitten (dz < 5: Durchflug, dort blendet der Rand aus).
+			// auf höchstens 92 % der Breite skaliert statt angeschnitten (dz < 5: Durchflug, dort blendet der Rand aus).
+			// Nur Hochformat: im Querformat fliegen die Wörter wie im Entwurf frei durchs Bild.
 			const klemm = (s.klemm ||= s.isl.map(() => ({ dx: 0, k: 1 })));
 			s.isl.forEach((I, i) => {
 				const z = klemm[i];
 				const dz = I.z - camZ;
 				z.dx = 0;
 				z.k = 1;
-				if (dz < 0.25 || dz > 60) return;
+				if (!hoch || dz < 0.25 || dz > 60) return;
 				const fz = F / dz;
 				let hw = I.hw * fz * f;
-				if (s.mode === 'hoch' && 2 * hw > 0.92 * s.W) {
+				if (2 * hw > 0.92 * s.W) {
 					z.k = (0.92 * s.W) / (2 * hw);
 					hw *= z.k;
 				}
@@ -303,62 +285,51 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 						Y += (dy / (d + 0.1)) * g;
 					}
 				}
-				// Wörter stehen ab dz 68 sofort mit 0,6 da (Kontrast über 4,5:1 schon beim ersten Erscheinen)
-				// und werden ab dz 34 voll (T-10). Staub blendet in der Ferne aus.
-				if (qa.nurWort != null && q[4] !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
-				let a = word
-					? wortDichte(dz) * altFaktor(dz) * fremd(q[4])
-					: cl(dz / 1.2) *
-						cl((110 - dz) / 30) *
-						cl((s.dX - Math.abs(q[0])) / 7) *
-						cl((s.dY - Math.abs(q[1])) / 7) *
-						0.6;
-				a *= cl((Y - kopfY) / 28);
-				// Nahe Wörter (dz < 5) ziehen beim Durchflug nach außen: am Bildrand weich ausblenden, statt sie
-				// hart anzuschneiden (im Hochformat sonst wie ein Layoutfehler)
-				if (word && dz < 5) a *= cl(Math.min(X, s.W - X) / 48) * cl(Math.min(Y, s.H - Y) / 48);
-				if (a <= 0.01) continue;
-				// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
-				for (const z of zonen) {
-					if (z.w < 0.02) continue;
-					const ddx = Math.max(z.x0 - X, X - z.x1, 0);
-					const ddy = Math.max(z.y0 - Y, Y - z.y1, 0);
-					a *= 1 - z.w * (1 - cl(Math.hypot(ddx, ddy) / 28));
-				}
-				if (a <= 0.01) continue;
-				const szc = cl(0.07 * fz, 0.8, 64) * f; // Zeichengröße in CSS-px
-				// Schriftstufe: 1,33 x Größe, gerundet auf die Stufen 10, 14, 20, 28 px
-				let tier = Math.round(Math.log2((1.33 * szc) / FONTS[0]) * 2);
-// Staub nah an der Kamera: höchstens 14 px und dunkler (keine Wolke aus großen Zeichen)
-const dust = !word && tier > 1 && tier <= 3;
-if (dust) tier = 1;
-				if (tier < 0) {
-					const side = snap(Math.max(word ? 1 : (s.mode === 'hoch' ? 1.5 : 2) * s.fl, szc * 0.8));
-					ctx.globalAlpha = a;
-					ctx.fillRect(snap(X), snap(Y), side, side);
-				} else if (tier > 3) {
-					// über 32 px keine Zeichen mehr, nur noch ein Punkt
-					ctx.globalAlpha = a;
-					ctx.fillRect(snap(X) - 1, snap(Y) - 1, 3, 3);
-				} else nb[tier].push(X, Y, q[3], dust ? a * 0.7 : a);
+					if (qa.nurWort != null && q[4] !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
+			// Wörter und Staub wie im Entwurf: Wort ab dz 34 da und ab 22 voll, Staub blendet in der Ferne aus
+			let a = word
+				? wortDichte(dz)
+				: cl(dz / 1.2) *
+					(hoch
+						? cl((110 - dz) / 30) * cl((s.dX - Math.abs(q[0])) / 7) * cl((s.dY - Math.abs(q[1])) / 7) * 0.6
+						: cl((110 - dz) / 50) * 0.55);
+			a *= cl((Y - kopfY) / 28);
+			// Hochformat: nahe Wörter (dz < 5) ziehen beim Durchflug nach außen und blenden am Bildrand weich aus,
+			// statt hart angeschnitten zu wirken. Querformat: Zeichen fliegen unverändert aus dem Bild.
+			if (hoch && word && dz < 5) a *= cl(Math.min(X, s.W - X) / 48) * cl(Math.min(Y, s.H - Y) / 48);
+			if (a <= 0.01) continue;
+			// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
+			for (const z of zonen) {
+				if (z.w < 0.02) continue;
+				const ddx = Math.max(z.x0 - X, X - z.x1, 0);
+				const ddy = Math.max(z.y0 - Y, Y - z.y1, 0);
+				a *= 1 - z.w * (1 - cl(Math.hypot(ddx, ddy) / 28));
 			}
-			ctx.textAlign = 'center';
-			ctx.textBaseline = 'middle';
-			for (let tr = 0; tr < 4; tr++) {
-				const e = nb[tr];
-				if (!e.length) continue;
-				ctx.font = `500 ${FONTS[tr]}px ${MONO}`;
-				for (let i = 0; i < e.length; i += 4) {
-					ctx.globalAlpha = e[i + 3];
-					ctx.fillText(e[i + 2], e[i], e[i + 1]);
-				}
+			if (a <= 0.01) continue;
+			const sz = cl(0.07 * fz, 0.8, 64); // Zeichengröße in Szenen-Einheiten (Entwurf)
+			if (sz < 6) {
+				// Punkt: Quadrat der Kantenlänge 0,55 x sz; im Hochformat mit Mindestgröße
+				const side = hoch ? Math.max(word ? 1 : 1.5 * s.fl, sz * 0.8 * f) : sz * 0.55 * f;
+				ctx.globalAlpha = a;
+				ctx.fillRect(X, Y, side, side);
+			} else nb[Math.min(5, Math.floor(Math.log2(sz / 6) * 2))].push(X, Y, q[3], a);
+		}
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		for (let tr = 0; tr < 6; tr++) {
+			const e = nb[tr];
+			if (!e.length) continue;
+			ctx.font = `500 ${(Math.round(8 * 2 ** (tr / 2)) * f).toFixed(2)}px ${MONO}`;
+			for (let i = 0; i < e.length; i += 4) {
+				ctx.globalAlpha = e[i + 3];
+				ctx.fillText(e[i + 2], e[i], e[i + 1]);
 			}
+		}
 			ctx.globalAlpha = 1;
 			s.caps.forEach((el, i) => {
 				const ky = el.getBoundingClientRect().top - kopfUnten;
 				el.style.opacity = (zonen[i].w * cl(ky / 28)).toFixed(3);
 			});
-			if (s.verlauf) s.verlauf.style.opacity = capMax.toFixed(3);
 			// Hinweis „weiter scrollen“ nur am Anfang der Fahrt, danach ganz weg
 			if (s.hint) s.hint.style.opacity = (1 - ss(p / 0.06)).toFixed(3);
 			if (s.dep) s.dep.textContent = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');
