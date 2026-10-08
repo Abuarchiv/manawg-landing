@@ -214,6 +214,11 @@ export function registerKoerper(cv, api = {}) {
 			const visB = (innerHeight - r.top - s.oy) / s.f;
 			// Boden bei etwa 80 % der sichtbaren Höhe: Titel und Körper bleiben ein Bild
 			const floor = loose0 ? Math.min(y1, Math.max(y0 + (visB - y0) * 0.8, y0 + (y1 - y0) * 0.5)) : y1;
+			// Der Boden ist eine flache Mulde (Ränder 7 % der Breite höher): die Körper rollen zur Mitte und legen sich
+			// aufeinander, statt in einer Reihe am unteren Rand zu liegen
+			const xm = (x0 + x1) / 2;
+			const hw = Math.max(1, (x1 - x0) / 2);
+			const tiefe = 0.07 * (x1 - x0);
 			// Physik im festen 60-Hz-Schritt (Verlet), unabhängig von der Bildrate
 			s.step(dt, 1 / 60, () => {
 				s.idle += 1 / 60;
@@ -259,9 +264,12 @@ export function registerKoerper(cv, api = {}) {
 						if (b.x < x0 + b.r) b.x = x0 + b.r;
 						if (b.x > x1 - b.r) b.x = x1 - b.r;
 						if (b.y < y0 + b.r) b.y = y0 + b.r;
-						if (b.y > floor - b.r) {
-							b.y = floor - b.r;
+						const u = Math.max(-1, Math.min(1, (b.x - xm) / hw));
+						const fy = floor - tiefe * u * u;
+						if (b.y > fy - b.r) {
+							b.y = fy - b.r;
 							b.py = b.y + (b.y - b.py) * 0.4;
+							b.x -= ((2 * tiefe * u) / hw) * G * 0.8; // Hangabtrieb zur Mitte
 						}
 					}
 				}

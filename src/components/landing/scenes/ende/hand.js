@@ -14,7 +14,7 @@ import { qa } from '../../core/loop';
 import { istHoch } from './kamera';
 
 // Bei jedem neuen Render erhöhen: json und webp gehören zusammen und werden gemeinsam gecacht.
-const HAND_V = 3;
+const HAND_V = 4;
 const STEP = 1.25; // Zellgröße in Bühnen-px (fein: Halbton liest als Haut, nicht als Raster)
 const GAM = 0.85;
 const CON = 1.05;
@@ -351,7 +351,7 @@ function glTaugt(metaH, metaP) {
 	}
 	if (ok && !glSichtbar(gl, cv)) {
 		ok = false;
-		console.warn('hand: WebGL-Ausgabe bleibt leer, 2D-Hand');
+		console.debug('hand: WebGL-Ausgabe bleibt leer, 2D-Hand');
 	}
 	gl.getExtension('WEBGL_lose_context')?.loseContext();
 	return ok;
@@ -1062,6 +1062,8 @@ function drawIn(back, front, c, cam) {
 	// und drei Sekunden später auf „Start“ (über denselben Kontakt-Pfad wie ein echter Tipp). Hover über dem Glas, ein Tipp
 	// oder Touch beenden sie. Bei reduzierter Bewegung läuft sie nicht (nur der Hinweis unter dem Handy).
 	if (c.endOn && !touch && c.m.in && aufGlas(mx, my) && now - (c.m.moveT ?? -9) < 1.4) dm.off = true;
+	// Fokus im App-iframe (Tastatur, Screenreader): der Besucher bedient die App, die Vorführung bleibt aus
+	if (document.activeElement?.tagName === 'IFRAME') dm.off = true;
 	if (dm.off || c.reduced || touch || isTouch() || !c.endOn || dm.n >= 2) {
 		if (!c.endOn) dm.seit = null;
 		if (dm.off && st.pending?.demo) st.pending = null;

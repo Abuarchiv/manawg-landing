@@ -14,9 +14,10 @@
 	const layer = document.getElementById('layer');
 
 	// ---------------------------------------------------------------- Uhr und Datum
-	// Ref-Modus: feste Uhr Di, 06.10.2026 17:43 Europe/Berlin (Zeitpunkt der Originalaufnahmen), Insets 0.
+	// Feste Uhr Di, 06.10.2026 17:43 Europe/Berlin (Zeitpunkt der Originalaufnahmen, REF.md §Zeiten): alle Datums- und
+	// Zeittexte der Vorschau stehen fest, nichts läuft mit der Systemzeit (nachts wäre „Pizza heute Abend?“ um 00:14 unglaubwürdig).
 	const REF_NOW = Date.parse('2026-10-06T15:43:00Z');
-	const clock = () => (REF ? REF_NOW : Date.now());
+	const clock = () => REF_NOW;
 	const T0 = clock();
 	const TZ = 'Europe/Berlin';
 	const dtf = (o) => new Intl.DateTimeFormat('de-DE', { timeZone: 'UTC', ...o });
@@ -182,6 +183,11 @@
 		app.innerHTML = tpl(`p-${n.p}`);
 		prep(app);
 		gridFix(app);
+		// Wie die App: die Tableiste misst sich selbst (mit Inset unten 84 px statt der aufgenommenen 57 px), damit Inhalt
+		// und Eingabezeile des Chats über ihr enden statt dahinter
+		const nav = app.querySelector('nav[data-app-chrome]');
+		const shell = app.querySelector('[style*="--app-nav-height"]');
+		if (nav && shell) shell.style.setProperty('--app-nav-height', `${nav.offsetHeight}px`);
 		document.body.setAttribute('style', n.b || '');
 		const next = [];
 		[...app.querySelectorAll('nav')].forEach((nv, i) => {

@@ -87,7 +87,8 @@ function build(s) {
 		for (const p of r.pts)
 			if (p[0] % n === 0 && p[1] % n === 0)
 				pts.push([((p[0] * 2 - r.cx) / 85) * sc, ((p[1] * 2 - r.cy) / 85) * sc]);
-		return { z: SP * i, x: [-4.5, 4.5, -4.5][i] * k, y: [0.8, -0.8, 0.8][i], sc, pts };
+		// hw: halbe Wortbreite in Welt-Einheiten (für die Klemmung am Bildschirmrand)
+		return { z: SP * i, x: [-4.5, 4.5, -4.5][i] * k, y: [0.8, -0.8, 0.8][i], sc, pts, hw: (r.width / 85) * sc * 0.5 };
 	});
 	s.k = k;
 	const RAMP = '@#%*+=';
@@ -246,20 +247,47 @@ const gross = s.isl.map((I) => cl((34 - (I.z - camZ)) / 8) * cl((I.z - camZ - 2)
 					z.y1 = (b ? b.clientHeight : s.H) + 28;
 				}
 			});
+			// Klemmung je Wort: die Kamera driftet seitlich zum nächsten Wort, während das aktuelle noch groß ist. Die
+			// Wortbox bleibt immer innerhalb von Viewport minus 16 px Rand (Verschiebung in Szenen-Einheiten) und wird
+			// im Hochformat auf höchstens 92 % der Breite skaliert statt angeschnitten (dz < 5: Durchflug, dort blendet der Rand aus).
+			const klemm = (s.klemm ||= s.isl.map(() => ({ dx: 0, k: 1 })));
+			s.isl.forEach((I, i) => {
+				const z = klemm[i];
+				const dz = I.z - camZ;
+				z.dx = 0;
+				z.k = 1;
+				if (dz < 0.25 || dz > 60) return;
+				const fz = F / dz;
+				let hw = I.hw * fz * f;
+				if (s.mode === 'hoch' && 2 * hw > 0.92 * s.W) {
+					z.k = (0.92 * s.W) / (2 * hw);
+					hw *= z.k;
+				}
+				const X = ox + (cx + (I.x - camX) * fz) * f;
+				const d = 2 * hw > s.W - 32 ? s.W / 2 - X : X - hw < 16 ? 16 - (X - hw) : X + hw > s.W - 16 ? s.W - 16 - (X + hw) : 0;
+				z.dx = d / f;
+			});
 			for (const q of s.P) {
 				let x = q[0];
 				let y = q[1];
 				const dz = q[2] - camZ;
 				if (dz < 0.25 || dz > 110) continue;
 				const word = q[4] >= 0;
-				if (word && dz < 5) {
+				let kx = 1;
+				let ddx = 0;
+				if (word) {
 					const I = s.isl[q[4]];
-					const k = (5 - dz) * 0.35;
-					x += (x - I.x) * k;
-					y += (y - I.y) * k;
+					kx = klemm[q[4]].k;
+					ddx = klemm[q[4]].dx;
+					if (dz < 5) {
+						const k = (5 - dz) * 0.35;
+						x += (x - I.x) * k;
+						y += (y - I.y) * k;
+					}
+					x = I.x + (x - I.x) * kx;
 				}
 				const fz = F / dz;
-				let sx = cx + (x - camX) * fz;
+				let sx = cx + (x - camX) * fz + ddx;
 				let sy = cy + (y - camY) * fz;
 				let X = ox + sx * f;
 				let Y = oy + sy * f;

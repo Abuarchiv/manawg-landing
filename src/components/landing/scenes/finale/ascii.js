@@ -9,7 +9,9 @@ import { cl, hsh, lag, vnz } from '../../core/math';
 export const CW = 7;
 export const CH = 11;
 const RAMP = ' .:-=+*#%@';
-const ALPHA = [0.25, 0.4, 0.55, 0.65]; // Strahlen, Fläche, Kern, Kontur und Zeigerspur
+const ALPHA0 = [0.25, 0.4, 0.55, 0.65]; // Strahlen, Fläche, Kern, Kontur und Zeigerspur
+// Bei 1x-Schirmen (externe 1080p-Monitore) zeichnen die dünnen Glyphen weniger Pixel: 18 % mehr Deckkraft
+const alphaFuer = (dpr) => (dpr < 1.5 ? ALPHA0.map((a) => a * 1.18) : ALPHA0);
 qa.masse = { ...(qa.masse ?? {}), finaleZelle: [CW, CH] };
 
 // Zeichenblatt: ein Streifen mit den neun sichtbaren Zeichen, je Pixelfaktor und Schriftstand neu
@@ -84,6 +86,7 @@ export function registerAscii(cv) {
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			const dpr = s.dpr;
+			const ALPHA = alphaFuer(dpr);
 			const cx = BW / 2;
 			const rise = Math.min(1, t / 6);
 			const sr = BH * 0.62;

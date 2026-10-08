@@ -79,19 +79,21 @@ export const plan = {
 			t: tf(0, (1 - kIn) * 329 + kOut * 329),
 		});
 
-		// ---------- Hinzufügen: Safari zieht sich aus der Mitte zusammen und blendet aus, Home entblurrt ----------
-		const sp = io(seg(t, T5 + 0.1, 0.25));
-		const sc = 1 - 0.4 * sp;
-		const stackAn = t < T5 + 0.37;
+		// ---------- Hinzufügen: der ganze Stapel (Safari, Teilen-Blatt, Dialog) zieht sich in 200 ms klein in Richtung
+		// der Symbolzelle und blendet aus; darunter steht der Home-Bildschirm deckend (nur unscharf), nie zwei
+		// halbdurchsichtige Ebenen. Erst wenn der Stapel weg ist, wird Home scharf und das Symbol springt in die Zelle ----------
+		const sp = io(seg(t, T5 + 0.1, 0.2));
+		const sc = 1 - 0.9 * sp;
+		const stackAn = t < T5 + 0.31;
 		put(E['ios-stack'], {
 			d: stackAn ? 'block' : '',
-			t: tf(195 - sc * 195, 422 - sc * 422, sc),
+			t: tf(331 - sc * 331, 195 - sc * 195, sc),
 			o: 1 - sp,
 			borderRadius: `${46 * sp}px`,
 		});
-		const he = aus(seg(t, T5 + 0.12, 0.5));
+		const he = aus(seg(t, T5 + 0.3, 0.3));
 		const lz = aus(seg(t, T6, 0.4));
-		const homeAn = t > T5 - 0.01 && t < T6 + 1.15;
+		const homeAn = t > T5 + 0.09 && t < T6 + 1.15;
 		put(E['ios-home'], {
 			d: homeAn ? 'block' : '',
 			o: 1,
@@ -99,9 +101,9 @@ export const plan = {
 			t: tf(0, 0, 1.08 - 0.08 * he - 0.05 * lz),
 		});
 		// das Symbol kommt erst in die Zelle, wenn der Home-Bildschirm scharf ist, mit weicher Feder 0,7 -> 1
-		const ip = feder(t - (T5 + 0.55), 0.6, 20);
+		const ip = feder(t - (T5 + 0.62), 0.6, 20);
 		put(E['ios-icon'], {
-			o: seg(t, T5 + 0.53, 0.12),
+			o: seg(t, T5 + 0.6, 0.12),
 			t: tf(0, 0, mix(0.7, 1, Math.min(ip, 1.15))),
 		});
 

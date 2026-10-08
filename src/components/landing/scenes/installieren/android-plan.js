@@ -71,24 +71,27 @@ export const plan = {
 		put(E['and-toast1'], { o: seg(t, T4 + 0.2, 0.2) * (1 - seg(t, T4 + 1.9, 0.2)) });
 		put(E['and-toast2'], { o: seg(t, T4 + 2.0, 0.2) * (1 - seg(t, T4 + 2.9, 0.2)) });
 
-		// ---------- Home: Chrome schrumpft ins Home (≈ 0,5 s), das Symbol steht schon da ----------
-		const hp = io(seg(t, TH, 0.5));
-		const sc = 1 - 0.88 * hp;
-		const cx = mix(205.5, 252, hp);
-		const cy = mix(442, 718, hp);
+		// ---------- Home: Chrome schrumpft in 350 ms auf das ManaWG-Symbol oben links (Mitte 64, 104) und blendet
+		// dabei aus, danach springt das Symbol kurz (Feder) ----------
+		const hp = io(seg(t, TH, 0.35));
+		const sc = 1 - 0.9 * hp;
+		const cx = mix(205.5, 64, hp);
+		const cy = mix(442, 104, hp);
 		put(E['and-stack'], {
-			d: t < TH + 0.55 ? 'block' : '',
+			d: t < TH + 0.36 ? 'block' : '',
 			t: tf(cx - sc * 205.5, cy - sc * 442, sc),
-			o: 1 - seg(t, TH + 0.35, 0.15),
+			o: 1 - seg(t, TH + 0.15, 0.2),
 			borderRadius: `${36 * hp}px`,
 		});
-		const hv = aus(seg(t, TH, 0.4));
+		const hv = aus(seg(t, TH, 0.3));
 		put(E['and-home'], {
 			d: t > TH - 0.01 && t < T5 + 1.3 ? 'block' : '',
 			o: hv,
 			f: fl(0, 1),
 			t: tf(0, 0, mix(1.06, 1, hv)),
 		});
+		const ip = feder(t - (TH + 0.33), 0.6, 20);
+		put(E['and-icon'], { t: tf(0, 0, t < TH + 0.33 ? 1 : mix(0.8, 1, Math.min(ip, 1.15))) });
 
 		// ---------- Start: Karte wächst aus dem Icon, Splash, Überblendung ----------
 		const lz = aus(seg(t, T5, 0.4));

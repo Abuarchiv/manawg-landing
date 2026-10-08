@@ -12,7 +12,7 @@ import { vnz } from '../../core/math';
 
 const CELL = 8;
 const ZEILEN = 6;
-const SKALA = 0.13 / 6;
+const SKALA = 0.13 / 3; // doppelt so feine Inseln wie die Intro-Flut: ein durchgehender Streifen statt weniger Klumpen
 
 function zeichne(cv: HTMLCanvasElement, W: number) {
 	const dpr = dprFor(2, 2);
@@ -28,8 +28,9 @@ function zeichne(cv: HTMLCanvasElement, W: number) {
 	for (let b = 0; b < ZEILEN; b++)
 		for (let a = 0; a < cols; a++) {
 			const n = vnz((a + 0.5) * CELL * SKALA + 7.3, (b + 0.5) * CELL * SKALA + 2.1);
-			// licht: oben noch dicht, nach unten lichtet sich die Flut aus, über die ganze Breite gleich verteilt
-			const dichte = 0.34 - (b / (ZEILEN - 1)) * 0.34;
+			// licht: oben noch dicht, nach unten lichtet sich die Flut aus, über die ganze Breite gleich verteilt;
+			// unterste Zeile nie unter 0,22, sonst stehen einzelne Blöcke wie ein Darstellungsfehler
+			const dichte = 0.46 - (b / (ZEILEN - 1)) * 0.24;
 			on[b * cols + a] = n + dichte * 0.8 - 0.4 > 0.5 ? 1 : 0;
 		}
 	g.fillStyle = '#FAFAFA';

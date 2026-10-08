@@ -4,6 +4,10 @@ Stand 2026-10-07. Die beiden Kapsel-Hände der Engine (Handy-Hand `holdBack`/`ho
 
 Referenz-Umsetzung (läuft, Screenshots bei 1440 × 900 und 390 × 844 geprüft): `/Users/abu/Company/archiv/hand/scripts/preview.html` (Aufruf: Ordner `archiv/hand` mit `python3 -m http.server`, dann `/scripts/preview.html` mit `?b=../final/`; Parameter `ps`, `g`, `con`, `rim`, `view`, `ascii=1`, `mx/my/px/py`), eingeklebt im Abschnitt 6.
 
+### Stand 2026-10-08, zweite Runde (HAND_V 4)
+
+Haut matter (`skin7.make_skin3` mit `rough` 0,66 / `spec` 0,24 aus den Licht-Specs `lights/L2r.json`, `lights/LP8r.json`): der durchgehende Glanzstreifen auf dem Daumen zerfällt in Formschatten. Daumen-Endglied 15° mehr gebeugt (`q8/main1.json`, Nagel und Beugefalte im Lum-Pass sichtbar, Überstand 15 px). Fingerkuppen stärker gestaffelt (`q8/fp13.json` → `fp13_s.json`: Ziele Zeige 236, Mittel 284, Ring 338, klein 398; Kuppenhöhen 40/36/32/27; kleiner Finger schlanker 0,74). Zeigehand mit gestaffelter Krümmung (`q8/td4.json`: Mittelfinger 70/86/40, Ring 88/100/50, klein 100/100/58), Daumen liegt auf dem Mittelfinger. Lauf `v3/final9.sh` → `out/R5/pk`. Messung `measure7`: Kuppen y 236–275, 282–319, 327–359, 376–402 (Höhen 39/37/32/26).
+
 ### Stand 2026-10-08 (HAND_V 3)
 
 Kuppen gestaffelt statt in einer senkrechten Reihe: Finger-Hand neu gelöst und gerendert (`archiv/hand/v3/q8/fp12.json` → `fp12_s.json` mit `scripts/fing8.py`, Ziele Zeige 927, Mittel 929, Ring 933, klein 940 Bühnen-px, Ring und kleiner Finger schlanker: `fs8` 0,72 und 0,8), über den Haupt-Pass `out/HM` gepackt (`pack8.py --over`, Lauf `out/R4`). Messung `measure7`: Kuppen y 238–275, 285–320, 325–357, 367–394; Überstand über x 950: 11, 11, 10 px; App-Spalte x 880–939 in Ruhe 0 % verdeckt (Finger nie auf dem Glas, Shader-Regel `RAND_IN`). Daumen und Unterarm unverändert (Haupt-Pass `q8/main0.json`: die linke Kontur ist dort über `left`/`left_lo` auf x 560–590 gebunden; eine gekrümmte Handkante braucht ein neues Lösen des Haupt-Passes mit gelockertem `left_lo` unterhalb y 660).

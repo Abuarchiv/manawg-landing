@@ -187,12 +187,12 @@ export function draw(cv, c, loecher = []) {
 	const { W, H, dpr, m } = c;
 	st.loecher = loecher;
 	fx.setTransform(dpr, 0, 0, dpr, 0, 0);
-	// Bei reduzierter Bewegung: Deckung höchstens 0,6, das Rauschen läuft nicht mit der Zeit
-	let cover = c.reduced ? Math.min(c.cover, 0.4) : c.cover;
+	// Bei reduzierter Bewegung keine Flut: die Räume blenden nur ein und aus (kein Schwarz-Weiß-Blitzen)
+	let cover = c.reduced ? 0 : c.cover;
 	// Hochformat: die zweite Flutphase (Pinnwand & Chat) deckt höchstens 0,35, die Wohnung bleibt lesbar
 	if (c.W <= c.H && c.P > 0.75) cover = Math.min(cover, 0.35);
 	const t = c.reduced ? 0 : c.t;
-	const fr = c.reduced ? Math.min(front(c.P), 0.5) : front(c.P);
+	const fr = c.reduced ? 0 : front(c.P);
 	if (!(cover > 0.001) && !(fr > 0.001)) {
 		if (!st.clean) {
 			fx.clearRect(0, 0, W, H);

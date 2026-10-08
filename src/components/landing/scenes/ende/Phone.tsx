@@ -209,6 +209,7 @@ export function Phone() {
 								if (doc) {
 									// Der erste eigene Tipp beendet den Hinweis
 									doc.addEventListener('pointerdown', () => setBenutzt(true), { once: true });
+									doc.addEventListener('keydown', () => setBenutzt(true), { once: true });
 									// Zeigerereignisse steigen nicht aus dem iframe auf: Maus und Stift werden mit Fensterkoordinaten
 									// an die Bühne gemeldet (als direkt markiert), damit die Zeigehand folgt und beim Klick drückt,
 									// ohne den Klick ein zweites Mal auszulösen (stage.js, hand.js)

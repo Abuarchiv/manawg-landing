@@ -141,7 +141,11 @@ export function Android() {
 			{/* Launcher */}
 			<div className={s.and_home} data-k="and-home">
 				<div className={s.and_wall} />
-				<div className={s.and_hicon} style={{ left: 34, top: 74 }}>
+				<div
+					className={s.and_hicon}
+					data-k="and-icon"
+					style={{ left: 34, top: 74, transformOrigin: '30px 30px' }}
+				>
 					{/* WebAPK nach „Installieren“: eigenes Symbol ohne Chrome-Abzeichen (INSTALL-FLOWS 3.4) */}
 					<i className={s.and_hrund}>
 						<img loading="lazy" src={ICON} alt="ManaWG" width="36" height="36" />

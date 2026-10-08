@@ -10,7 +10,8 @@ import { kamera } from './kamera';
 
 // Ende-Ebene der Intro-Bühne: Handy und Hände auf #0A0A0A, darunter Titel und Knopf. Die Ebene liegt in
 // der Sticky-Bühne und scrollt mit ihr weg. Der Ende-Raum [data-ende-space] ist 1280 x 800 groß und wird
-// über --ende-x, --ende-y und --ende-f per kamera() in die Bühne eingepasst.
+// über --ende-x, --ende-y und --ende-f per kamera() in die Bühne eingepasst. Titel und Knopf stehen im DOM vor dem
+// Handy, damit Shift+Tab aus dem App-iframe auf dem Knopf landet (nicht auf dem Body); Kopf und Hinweise sind im Ende inert.
 
 export function Ende() {
 	const spaceRef = useRef<HTMLDivElement>(null);
@@ -47,22 +48,6 @@ export function Ende() {
 				style={css('position:absolute;inset:0;width:100%;height:100%;display:block')}
 			/>
 			<div
-				ref={spaceRef}
-				data-ende-space="1"
-				style={css(
-					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--ende-x,0px),var(--ende-y,0px)) scale(var(--ende-f,1)) translate(var(--ax,0px),var(--ay,0px)) translate(800px,400px) rotate(var(--ar,0deg)) translate(-800px,-400px)',
-				)}
-			>
-				<Phone />
-			</div>
-			<canvas
-				data-hand="front"
-				aria-hidden="true"
-				style={css(
-					'position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none',
-				)}
-			/>
-			<div
 				data-safe-ende="1"
 				style={css('position:absolute;left:0;right:0;top:0;height:100svh;pointer-events:none')}
 			>
@@ -81,6 +66,22 @@ export function Ende() {
 					</a>
 				</div>
 			</div>
+			<div
+				ref={spaceRef}
+				data-ende-space="1"
+				style={css(
+					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--ende-x,0px),var(--ende-y,0px)) scale(var(--ende-f,1)) translate(var(--ax,0px),var(--ay,0px)) translate(800px,400px) rotate(var(--ar,0deg)) translate(-800px,-400px)',
+				)}
+			>
+				<Phone />
+			</div>
+			<canvas
+				data-hand="front"
+				aria-hidden="true"
+				style={css(
+					'position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none',
+				)}
+			/>
 		</section>
 	);
 }

@@ -88,7 +88,7 @@ export function createHero(cv) {
 		if (!gl) return false;
 		// Treiber, deren Ausgabe leer bleibt, gelten wie fehlendes WebGL2 (Halbton-Fallback)
 		if (!glSichtbar(gl, G.cv)) {
-			console.warn('hero: WebGL-Ausgabe bleibt leer, 2D-Fallback');
+			console.debug('hero: WebGL-Ausgabe bleibt leer, 2D-Fallback');
 			G.gl = null;
 			return false;
 		}
