@@ -141,6 +141,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		m,
 		fpA: 0,
 		endA: 0,
+		zer: 0,
 		endOn: false,
 		cover: 0,
 		stageTop: 0,
@@ -371,6 +372,8 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			});
 			c.fpA = fpA;
 			c.endA = endA;
+			// Zerfall der Hände: beginnt, sobald die Bühne nach oben weggeschoben wird (rb.top < 0), Rückwärts setzt zusammen
+			c.zer = loop.reduced ? 0 : ss(cl(-rb.top / (0.6 * H)));
 			c.endOn = st.endOn;
 			c.cover = cover;
 			c.stageTop = rb.top;

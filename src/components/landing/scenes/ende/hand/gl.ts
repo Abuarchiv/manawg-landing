@@ -81,6 +81,7 @@ const uniformTabelle = (f: (name: string) => WebGLUniformLocation | null): Unifo
 		uTone: f('uTone'),
 		uCell0: f('uCell0'),
 		uCellN: f('uCellN'),
+		uZer: f('uZer'),
 	};
 };
 
@@ -182,6 +183,7 @@ function setUniforms(
 	gl.uniform3f(u.uBack, w / W, h / cells.H, h);
 	gl.uniform2i(u.uCell0, cells.i0, cells.j0);
 	gl.uniform2i(u.uCellN, cells.cw, cells.ch);
+	gl.uniform1f(u.uZer, S.zer);
 }
 
 function initProgram(L: Ebene, k: 0 | 1): void {
@@ -308,6 +310,7 @@ export function glFrame(L: Ebene, S: Zeichenwerte, cam: Fit, W: number, H: numbe
 		...S.q,
 		S.pa,
 		S.push,
+		S.zer,
 	];
 	const bkey = [S.br.x, S.br.y, S.br.r];
 	const same =
@@ -365,6 +368,11 @@ export function glFrame(L: Ebene, S: Zeichenwerte, cam: Fit, W: number, H: numbe
 	setUniforms(L, L.u[1], S, cam, W, w, h, cells);
 	// nur dort rastern, wo eine Hand liegen kann (Haltehand-Kachel und Sprite der Zeigehand), Rest bleibt leer
 	const bb = handBox(S);
+	// Staub weht nach oben rechts über die Kachel hinaus
+	if (S.zer > 0) {
+		bb[2] += 260;
+		bb[1] -= 260;
+	}
 	const k = w / W;
 	const x0 = Math.max(0, Math.floor((bb[0] * cam.f + cam.ox) * k));
 	const x1 = Math.min(w, Math.ceil((bb[2] * cam.f + cam.ox) * k));

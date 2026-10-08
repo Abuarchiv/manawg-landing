@@ -118,5 +118,11 @@ function drawIn(back: HTMLCanvasElement, front: HTMLCanvasElement, c: HandKontex
 
 	if (st.mode === 'gl' && st.layers) {
 		for (const L of st.layers) glFrame(L, S, cam, W, H);
-	} else cpuFrame(st, S, cam, W, H, dpr);
+	} else {
+		cpuFrame(st, S, cam, W, H, dpr);
+		// 2D-Fallback: kein Staub, die Hände blenden beim Wegscrollen nur aus
+		const o = String(1 - c.zer);
+		back.style.opacity = o;
+		front.style.opacity = o;
+	}
 }
