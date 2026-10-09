@@ -6,6 +6,8 @@ const KURZ = new Intl.DateTimeFormat('de-DE', {
 	day: 'numeric',
 	month: 'short',
 });
+// Feste Uhr der App-Vorschau (public/app-demo/demo.js, REF_NOW): Standbild und Live-Vorschau zeigen denselben Tag
+const REF_NOW = Date.parse('2026-10-06T15:43:00Z');
 export function datumsZeilen(): [string, string] {
 	const p: Record<string, string> = Object.fromEntries(
 		new Intl.DateTimeFormat('en-CA', {
@@ -14,11 +16,10 @@ export function datumsZeilen(): [string, string] {
 			month: '2-digit',
 			day: '2-digit',
 		})
-			.formatToParts(new Date())
+			.formatToParts(REF_NOW)
 			.map((x) => [x.type, x.value]),
 	);
 	const tag = (k: number) => Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day) + k, 12);
-	const dow = new Date(tag(0)).getUTCDay();
-	const freitag = (5 - dow + 7) % 7 || 7;
-	return [`${KURZ.format(tag(2))} · Lina`, `${KURZ.format(tag(freitag))} · 18:00`];
+	// Heizungsableser und Müll runterbringen, beide übermorgen (Seed in design/app-ref/tools/demo-server.mjs)
+	return [`${KURZ.format(tag(2))} · 10:00`, `${KURZ.format(tag(2))} · Lina`];
 }

@@ -1,12 +1,12 @@
-// Die Tiefe: Fahrt durch eine Wolke aus Stichen, in der die Wörter GELD, HAUSHALT und ABSPRACHEN als gestochene
-// Inseln liegen (waagerechte Linien wie bei Kupferstich-Lettern, am Buchstabenrand dünner, leicht gewölbt).
-// Die Kamera hängt am Scroll-Fortschritt des Abschnitts.
+// Die Tiefe: Fahrt durch eine Punktwolke, in der die Wörter GELD, HAUSHALT und ABSPRACHEN als Inseln
+// liegen. Die Kamera hängt am Scroll-Fortschritt des Abschnitts.
 // Szenenraum: quer Bezugsbox 1280 x 800, hoch eigene Box von 640 Einheiten Breite (die Wörter stehen bei
 // Tiefe 9 auf 40 bis 50 % der Breite und passen so in jedes Format). Gezeichnet wird in CSS-px.
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { cl, hsh, lag, lerp, ss } from '../../core/math';
 
+const MONO = '"JetBrains Mono", monospace';
 const TT = '"Inter Tight", sans-serif';
 const F = 720; // Brennweite in Szenen-Einheiten
 const WORDS = ['GELD', 'HAUSHALT', 'ABSPRACHEN'] as const;
@@ -25,10 +25,9 @@ interface Maske {
 	width: number;
 }
 
-/** Rasterpunkt der Wortmaske: x, y und Ton (1 innen, kleiner am Buchstabenrand). */
-type Pt = [x: number, y: number, ton: number];
+type Pt = [x: number, y: number];
 
-/** Wort-Insel: Tiefe z, Mitte (x, y), Maßstab sc, Punkte relativ zur Mitte, halbe Wortbreite hw, Linienabstand sp. */
+/** Wort-Insel: Tiefe z, Mitte (x, y), Maßstab sc, Punkte relativ zur Mitte, halbe Wortbreite hw. */
 interface Insel {
 	z: number;
 	x: number;
@@ -36,11 +35,10 @@ interface Insel {
 	sc: number;
 	pts: Pt[];
 	hw: number;
-	sp: number;
 }
 
-/** Punkt der Wolke: x, y, z, Ton (Strichstärke 0 bis 1), Insel (-1 = Staub). */
-type Punkt = [x: number, y: number, z: number, ton: number, insel: number];
+/** Punkt der Wolke: x, y, z, Zeichen, Insel (-1 = Staub). */
+type Punkt = [x: number, y: number, z: number, zeichen: string, insel: number, nr: number];
 
 /** Ausschlusszone um eine Unterzeile (DOM-Rechteck) samt Deckkraft w. */
 interface Zone {
@@ -55,6 +53,12 @@ interface Zone {
 interface Klemmung {
 	dx: number;
 	k: number;
+}
+
+/** Zeichen einer Schriftstufe: Positionen und Deckkraft (x, y, a je Zeichen) getrennt von den Zeichen. */
+interface Eimer {
+	xya: number[];
+	ch: string[];
 }
 
 /** Zustand des letzten gezeichneten Bildes (im Stand bleibt es stehen). */
@@ -89,6 +93,7 @@ interface TiefeState extends SceneState {
 	/** Schlüssel des Aufbaus (Modus und Fläche), null = neu abtasten. */
 	bm: string | null;
 	kk: Stand;
+	nb: Eimer[];
 	/** Zeigergeschwindigkeit für die Abstoßung (a = Stärke). */
 	pv?: { x: number; y: number; a: number };
 	zonen: Zone[];
@@ -125,19 +130,12 @@ const sampleT = (word: string, px: number): Maske => {
 			}
 	return { d, w, h, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, width: x1 - x0 };
 };
-// Punkte der Maske im Raster step, bezogen auf (ox, oy). Ton aus den Nachbarn im halben Raster: innen 1, am
-// Rand dünner, so schwellen die Stichlinien zur Buchstabenmitte an.
+// Punkte der Maske im Raster step, bezogen auf (ox, oy)
 const rasterPts = (r: Maske, step: number, ox: number, oy: number): Pt[] => {
 	const pts: Pt[] = [];
-	const an = (x: number, y: number) =>
-		x >= 0 && y >= 0 && x < r.w && y < r.h && (r.d[(y * r.w + x) * 4 + 3] ?? 0) > 128;
-	const h = Math.max(1, Math.round(step / 2));
 	for (let y = 0; y < r.h; y += step)
 		for (let x = 0; x < r.w; x += step)
-			if (an(x, y)) {
-				const n = +an(x - step, y) + +an(x + step, y) + +an(x, y - h) + +an(x, y + h);
-				pts.push([x - ox, y - oy, 0.35 + n * 0.1625]);
-			}
+			if ((r.d[(y * r.w + x) * 4 + 3] ?? 0) > 128) pts.push([x - ox, y - oy]);
 	return pts;
 };
 
@@ -160,9 +158,10 @@ function build(s: TiefeState) {
 	s.isl = s.raw.map((r, i): Insel => {
 		// Querformat wie im Entwurf: Maßstab 1, Raster 5 px, Mitte der Abtast-Fläche. Hochformat: Wort an die Breite angepasst.
 		const sc = hoch ? cl(target / (r.width / 85), 0.25, 1.5) : 1;
-		const step = hoch ? 2 * Math.max(1, Math.round((SPACING * 85) / (sc * 2))) : 5;
-		const raw = hoch ? rasterPts(r, step, r.cx, r.cy) : rasterPts(r, step, r.w / 2, r.h / 2);
-		const pts = raw.map((p): Pt => [(p[0] / 85) * sc, (p[1] / 85) * sc, p[2]]);
+		const raw = hoch
+			? rasterPts(r, 2 * Math.max(1, Math.round((SPACING * 85) / (sc * 2))), r.cx, r.cy)
+			: rasterPts(r, 5, r.w / 2, r.h / 2);
+		const pts = raw.map((p): Pt => [(p[0] / 85) * sc, (p[1] / 85) * sc]);
 		// hw: halbe Wortbreite in Welt-Einheiten (für die Klemmung am Bildschirmrand)
 		return {
 			z: SP * i,
@@ -171,21 +170,29 @@ function build(s: TiefeState) {
 			sc,
 			pts,
 			hw: (r.width / 85) * sc * 0.5,
-			sp: (step / 85) * sc,
 		};
 	});
 	s.k = k;
 	s.klemm = s.isl.map((): Klemmung => ({ dx: 0, k: 1 }));
+	const RAMP = '@#%@#%*';
 	s.P = [];
 	s.isl.forEach((I, kk) => {
-		// eine Ebene je Wort: die Strichstücke einer Zeile schließen zur Linie
-		for (const p of I.pts) s.P.push([I.x + p[0], I.y + p[1], I.z, p[2], kk]);
+		I.pts.forEach((p, q) => {
+			s.P.push([
+				I.x + p[0],
+				I.y + p[1],
+				I.z + (hsh(q, kk) - 0.5) * 0.6,
+				RAMP.charAt(Math.floor(hsh(q, kk + 9) * 6)),
+				kk,
+				q,
+			]);
+		});
 	});
 	// Staub: Querformat 1600 Punkte in 60 x 36 Einheiten wie im Entwurf; Hochformat schmaler, höher und dichter,
 	// die Kanten des Staubkastens blenden dort weich aus (siehe frame)
 	const fl = flaeche(s);
 	s.fl = Math.sqrt(fl);
-	const nd = hoch ? Math.round(11000 * fl) : 1600;
+	const nd = hoch ? Math.round(7000 * fl) : 1000;
 	s.dX = hoch ? 24 : 30;
 	s.dY = hoch ? 40 : 18;
 	for (let q = 0; q < nd; q++)
@@ -193,8 +200,9 @@ function build(s: TiefeState) {
 			(hsh(q, 1) - 0.5) * 2 * s.dX,
 			(hsh(q, 2) - 0.5) * 2 * s.dY,
 			hsh(q, 3) * 90 - 14,
-			hsh(q, 4),
+			'..:'.charAt(Math.floor(hsh(q, 4) * 3)),
 			-1,
+			q,
 		]);
 	s.bm = bauKey(s);
 }
@@ -247,10 +255,9 @@ interface Ansicht {
 	klemm: Klemmung[];
 }
 
-// Alle Punkte projizieren und als Stich zeichnen. Wortpunkte: waagerechtes Strichstück über einen Rasterabstand,
-// Nachbarn schließen zur durchgehenden Linie; Dicke aus dem Ton, die Zeile wölbt sich sanft über das Wort.
-// Staub: kurze waagerechte Stiche, Länge aus dem Ton, wachsen mit der Nähe wie im Entwurf die Zeichen.
-function zeichnePunkte(s: TiefeState, a: Ansicht) {
+// Alle Punkte projizieren: Punkte als Quadrate, nahe Zeichen in Eimern je Schriftstufe (8, 11, 16, 23, 32, 45 px
+// wie im Entwurf), danach die Eimer gezeichnet.
+function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 	const ctx = s.ctx;
 	if (!ctx) return;
 	const { f, ox, oy, cx, cy } = s;
@@ -264,16 +271,22 @@ function zeichnePunkte(s: TiefeState, a: Ansicht) {
 		const word = q[4] >= 0;
 		let kx = 1;
 		let ddx = 0;
-		let auf = 1; // Aufweitung beim Durchflug: die Striche wachsen mit, die Linien bleiben geschlossen
 		if (word) {
 			const I = s.isl[q[4]];
 			const kl = klemm[q[4]];
 			if (!I || !kl) continue;
 			kx = kl.k;
 			ddx = kl.dx;
+			// Anflug: Zeichen liegen weit vorn verstreut und laufen zwischen dz 40 und 20 zum Wort zusammen
+			const sc0 = (1 - ss(cl((40 - dz) / 20))) ** 1.4;
+			if (sc0 > 0.002) {
+				const w = hsh(q[5], q[4] + 17) * Math.PI * 2;
+				const r = (0.8 + hsh(q[5], q[4] + 29) * 3.2) * sc0;
+				x += Math.cos(w) * r * (hoch ? 0.5 : 1);
+				y += Math.sin(w) * r * 0.7;
+			}
 			if (dz < 5) {
-				const k = (5 - dz) * 0.35;
-				auf = 1 + k;
+				const k = (5 - dz) * 0.12;
 				x += (x - I.x) * k;
 				y += (y - I.y) * k;
 			}
@@ -311,6 +324,7 @@ function zeichnePunkte(s: TiefeState, a: Ansicht) {
 		// Hochformat: nahe Wörter (dz < 5) ziehen beim Durchflug nach außen und blenden am Bildrand weich aus,
 		// statt hart angeschnitten zu wirken. Querformat: Zeichen fliegen unverändert aus dem Bild.
 		if (hoch && word && dz < 5) al *= cl(Math.min(X, s.W - X) / 48) * cl(Math.min(Y, s.H - Y) / 48);
+		if (word) al *= cl((dz - 1.2) / 2.8);
 		if (al <= 0.01) continue;
 		// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
 		for (const z of zonen) {
@@ -320,27 +334,33 @@ function zeichnePunkte(s: TiefeState, a: Ansicht) {
 			al *= 1 - z.w * (1 - cl(Math.hypot(zx, zy) / 28));
 		}
 		if (al <= 0.01) continue;
-		const ton = q[3];
-		let w: number;
-		let h: number;
-		if (word) {
-			const I = s.isl[q[4]];
-			const sp = (I?.sp ?? 0.06) * fz * f; // Linienabstand am Bildschirm
-			w = sp * kx * auf * 1.04;
-			h = sp * (0.08 + 0.3 * ton);
-			Y += Math.sin((q[0] - (I?.x ?? 0)) * 1.3 + q[4]) * sp * 0.45;
+		const sz = cl(0.07 * fz, 0.8, 64); // Zeichengröße in Szenen-Einheiten (Entwurf)
+		// Staub wird nie zum großen Symbol: ab etwa 6 Einheiten blendet er aus
+		if (!word) al *= cl((9 - sz) / 3);
+		if (al <= 0.01) continue;
+		if (sz < 6) {
+			// Punkt: Quadrat der Kantenlänge 0,55 x sz; im Hochformat mit Mindestgröße
+			const side = hoch ? Math.max(word ? 1 : 1.5 * s.fl, sz * 0.8 * f) : sz * 0.55 * f;
+			ctx.globalAlpha = al;
+			ctx.fillRect(X, Y, side, side);
 		} else {
-			const sz = cl(0.07 * fz, 0.8, 64) * f; // Zeichengröße wie im Entwurf
-			h = hoch ? Math.max(0.9 * s.fl, sz * 0.22) : Math.max(0.6, sz * 0.16);
-			w = h * (2.2 + ton * 3);
+			const e = nb[Math.min(5, Math.floor(Math.log2(sz / 6) * 2))];
+			if (e) {
+				e.xya.push(X, Y, al);
+				e.ch.push(q[3]);
+			}
 		}
-		// Unter einem Gerätepixel: Deckkraft statt Dicke, damit feine Linien nicht flimmern
-		if (h < 0.75) {
-			al *= h / 0.75;
-			h = 0.75;
+	}
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	for (let tr = 0; tr < 6; tr++) {
+		const e = nb[tr];
+		if (!e || !e.ch.length) continue;
+		ctx.font = `500 ${(Math.round(8 * 2 ** (tr / 2)) * f).toFixed(2)}px ${MONO}`;
+		for (let i = 0; i < e.ch.length; i++) {
+			ctx.globalAlpha = e.xya[3 * i + 2] ?? 0;
+			ctx.fillText(e.ch[i] ?? '', e.xya[3 * i] ?? 0, e.xya[3 * i + 1] ?? 0);
 		}
-		ctx.globalAlpha = al;
-		ctx.fillRect(X - w / 2, Y - h / 2, w, h);
 	}
 	ctx.globalAlpha = 1;
 }
@@ -402,6 +422,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 				my: Number.NaN,
 				mIn: false,
 			};
+			s.nb = [0, 1, 2, 3, 4, 5].map((): Eimer => ({ xya: [], ch: [] }));
 			s.caps = [...wurzel.querySelectorAll<HTMLElement>('[data-dcap]')];
 			s.zonen = s.caps.map((): Zone => ({ x0: 0, y0: 0, x1: 0, y1: 0, w: 0 }));
 			s.dep = wurzel.querySelector<HTMLElement>('[data-depth]');
@@ -467,6 +488,12 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			ctx.fillStyle = '#FAFAFA';
+			// Nahzeichen je Schriftstufe in wiederverwendeten Eimern
+			const nb = s.nb;
+			for (const e of nb) {
+				e.xya.length = 0;
+				e.ch.length = 0;
+			}
 			const m = s.m;
 			const mx = m.in ? m.x : 0;
 			const my = m.in ? m.y : 0;
@@ -500,7 +527,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			});
 			const klemm = s.klemm;
 			klemmen(s, klemm, camZ, camX);
-			zeichnePunkte(s, { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm });
+			zeichnePunkte(s, nb, { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm });
 			s.caps.forEach((el, i) => {
 				const ky = el.getBoundingClientRect().top - kopfUnten;
 				const op = ((zonen[i]?.w ?? 0) * cl(ky / 28)).toFixed(3);

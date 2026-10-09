@@ -44,23 +44,67 @@ function seed() {
 	const inv = (n, q, unit, threshold, category, decrements = 0) => ({ id: randomUUID(), wgId: WG, name: n, quantity: q, unit, threshold, category, lastDecrementedAt: decrements ? iso(now - 2 * DAY) : null, decrementCount30d: decrements, createdAt: iso(now - 20 * DAY), updatedAt: iso(now - 2 * DAY) });
 	const msg = (sender, body, agoMin, replyTo = null, id = randomUUID()) => ({ id, wgId: WG, senderMemberId: sender, kind: 'text', body, imageUrl: null, replyToMessageId: replyTo, systemKind: null, systemPayload: null, createdAt: iso(now - agoMin * 60_000), editedAt: null, deletedAt: null });
 	const FIX1 = '1c2c9254-5945-4774-9f03-d12e772d3a6f', FIX2 = '8c1bb4a9-4722-42fe-bb86-aebf2e2d5b11'; // IDs der Fixture-Nachrichten im SSR-Chat
+	const at = (k, h, min = 0) => { const d = new Date(now); d.setDate(d.getDate() + k); d.setHours(h, min, 0, 0); return d; };
+	const done = (choreId, who, agoDays) => ({ id: randomUUID(), choreId, completedByMemberId: who, completedAt: iso(now - agoDays * DAY) });
+	const comment = (who, content, agoH) => ({ id: randomUUID(), memberId: who, content, createdAt: iso(now - agoH * HOUR), authorName: name(who), authorColor: color(who) });
+	const post = (who, kind, content, agoH, counts = {}, comments = [], mine = []) => {
+		const id = randomUUID();
+		return { id, authorMemberId: who, content, imageUrl: null, kind, status: 'open', source: 'manual', sourcePath: null, pinnedAt: null, resolvedAt: null, resolvedByMemberId: null, createdAt: iso(now - agoH * HOUR), reactionCounts: counts, myReactions: mine, takers: [], comments: comments.map((c) => ({ ...c, announcementId: id })) };
+	};
+	const strom = randomUUID(), rundfunk = randomUUID(), musik = randomUUID();
+	const fix = (id, desc, cents, payer, ageDays) => ({ id, wgId: WG, createdByMemberId: payer, paidByMemberId: payer, description: desc, amountCents: cents, currency: 'EUR', intervalMonths: 1, nextDueAt: iso(new Date(new Date(now).getFullYear(), new Date(now).getMonth() + 1, 3, 9).getTime()), lastCreatedAt: iso(now - 3 * DAY), pausedAt: null, createdAt: iso(now - ageDays * DAY), splits: share(cents, MEMBERS.map((m) => m.id)).map(({ debtorMemberId, amountCents }) => ({ debtorMemberId, amountCents })) });
+	const chores = [chore('Bad putzen', LEA, 0), chore('Küche wischen', MIKA, 1), chore('Müll runterbringen', LINA, 2, 3), chore('Flur saugen', JONA, 4), chore('Pflanzen gießen', LEA, 3, 4), chore('Altglas wegbringen', MIKA, 6, 14)];
+	const [bad, kueche, muell, flur, pflanzen] = chores;
+	Object.assign(kueche, { lastCompletedAt: iso(now - 6 * DAY), lastCompletedByName: 'Lina' });
+	Object.assign(muell, { lastCompletedAt: iso(now - DAY), lastCompletedByName: 'Mika' });
+	Object.assign(pflanzen, { lastCompletedAt: iso(now - 2 * DAY), lastCompletedByName: 'Lea' });
+	const pizza = msg(MIKA, 'Pizza heute Abend?', 62, null, FIX1), salat = msg(LINA, 'Ich bring Salat mit.', 30);
 	const leaMsg = msg(LEA, 'Bin um acht wieder da.', 14);
+	const r = (m, who, emoji) => ({ messageId: m.id, memberId: who, emoji, memberName: name(who), memberColor: color(who) });
 	return {
-		// Vorherige Ausgaben sind beglichen: Saldo 0,00 € – genau der Startzustand der Landing.
+		// Schaufenster-Stand: eine lebendige WG mit offenen Salden (Jona bekommt etwas zurück), alles von der echten App gerendert.
 		expenses: [
-			exp('Pizzaabend', 2840, MIKA, DAY + 2 * HOUR, DAY),
-			exp('Internet', 2999, JONA, 3 * DAY, 3 * DAY, undefined, true, recurringId),
-			exp('Wocheneinkauf', 1890, LINA, 5 * DAY, 25 * 60_000),
+			exp('Blumen für den Balkon', 1890, LEA, 3 * HOUR, 3 * HOUR, undefined, false),
+			exp('Pizzaabend', 2840, MIKA, DAY + 2 * HOUR, DAY, undefined, false),
+			exp('Wocheneinkauf', 4685, LINA, 2 * DAY, 2 * DAY, undefined, false),
+			exp('Internet', 2999, JONA, 3 * DAY, 3 * DAY, undefined, false, recurringId),
+			exp('Putzmittel & Schwämme', 1236, JONA, 4 * DAY, 4 * DAY, undefined, false),
+			exp('Strom', 8400, MIKA, 5 * DAY, 5 * DAY, undefined, true, strom),
+			exp('Wocheneinkauf', 3920, LINA, 9 * DAY, 9 * DAY),
+			exp('Rundfunkbeitrag', 1836, LINA, 11 * DAY, 11 * DAY, undefined, true, rundfunk),
 		],
-		recurring: [{ id: recurringId, wgId: WG, createdByMemberId: JONA, paidByMemberId: JONA, description: 'Internet', amountCents: 2999, currency: 'EUR', intervalMonths: 1, nextDueAt: iso(new Date(new Date(now).getFullYear(), new Date(now).getMonth() + 1, 3, 9).getTime()), lastCreatedAt: iso(now - 3 * DAY), pausedAt: null, createdAt: iso(now - 90 * DAY), splits: MEMBERS.map((m, i) => ({ debtorMemberId: m.id, amountCents: i === 0 ? 750 : 750 - (i === 3 ? 1 : 0) })) }],
-		shopping: [item('Hafermilch', MIKA, '2 Packungen', false, 30), item('Bananen', LEA, '6 Stück', false, 28), item('Spülmittel', JONA, '1 Flasche', true, 26), item('Toilettenpapier', LINA, '2 Packungen', false, 24)],
-		chores: [chore('Bad putzen', LEA, 0), chore('Küche wischen', MIKA, 1), chore('Müll runterbringen', LINA, 2, 3), chore('Flur saugen', JONA, 4)],
-		completions: [],
-		events: [event('Putzplan-Check', nextFriday(), 1, MIKA)],
-		inventory: [inv('Toilettenpapier', 2, 'Packung', 1, 'bad', 2), inv('Spülmittel', 2, 'Stück', 1, 'putzmittel'), inv('Müllbeutel', 3, 'Rolle', 1, 'kueche')],
-		announcements: [{ id: randomUUID(), authorMemberId: JONA, content: 'Übergabe am Freitag\nSchlüssel liegen im Flur bereit.', imageUrl: null, kind: 'info', status: 'open', source: 'manual', sourcePath: null, pinnedAt: null, resolvedAt: null, resolvedByMemberId: null, createdAt: iso(now - 5 * HOUR), reactionCounts: {}, myReactions: [], takers: [], comments: [] }],
-		chat: [msg(MIKA, 'Pizza heute Abend?', 62, null, FIX1), msg(JONA, 'Bin dabei.', 41, FIX1, FIX2), leaMsg],
-		reactions: [], absences: [],
+		recurring: [fix(recurringId, 'Internet', 2999, JONA, 90), fix(strom, 'Strom', 8400, MIKA, 120), fix(rundfunk, 'Rundfunkbeitrag', 1836, LINA, 200), fix(musik, 'Spotify Family', 1799, LEA, 60)],
+		shopping: [
+			item('Hafermilch', MIKA, '2 Packungen', false, 30), item('Bananen', LEA, '6 Stück', false, 28), item('Toilettenpapier', LINA, '2 Packungen', false, 24),
+			item('Basilikum', LEA, '1 Topf', false, 6), item('Kaffeebohnen', JONA, '500 g', false, 4), item('Parmesan', MIKA, null, false, 2),
+			item('Spülmittel', JONA, '1 Flasche', true, 26),
+		],
+		chores,
+		completions: [done(muell.id, MIKA, 1), done(pflanzen.id, LEA, 2), done(bad.id, JONA, 4), done(flur.id, LINA, 5)],
+		events: [
+			event('Heizungsableser', at(2, 10), 2, JONA),
+			event('Putzplan-Check', nextFriday(), 1, MIKA),
+			event('Pasta & Filmabend', at((6 - new Date(now).getDay() + 7) % 7 || 7, 19, 30), 3, LINA),
+			event('Flohmarkt Mauerpark', at((7 - new Date(now).getDay()) % 7 || 7, 11), 4, LEA),
+		],
+		inventory: [
+			inv('Toilettenpapier', 2, 'Packung', 1, 'bad', 2), inv('Duschgel', 1, 'Flasche', 1, 'bad', 1), inv('Zahnpasta', 2, 'Tube', 1, 'bad'),
+			inv('Müllbeutel', 3, 'Rolle', 1, 'kueche'), inv('Kaffee', 1, 'Packung', 1, 'kueche', 3), inv('Olivenöl', 1, 'Flasche', 1, 'kueche', 1), inv('Reis', 2, 'Packung', 1, 'kueche'),
+			inv('Spülmittel', 2, 'Stück', 1, 'putzmittel'), inv('Spülmaschinentabs', 24, 'Stück', 10, 'putzmittel', 4),
+		],
+		announcements: [
+			post(JONA, 'info', 'Übergabe am Freitag\nSchlüssel liegen im Flur bereit.', 5, { seen: 2 }),
+			post(MIKA, 'problem', 'Die Spülmaschine piept wieder.\nKann sich das jemand ansehen?', 20, { take: 1 }, [comment(LINA, 'Ich schau heute Abend rein.', 18)]),
+			post(LINA, 'question', 'Wer kommt Sonntag mit zum Flohmarkt im Mauerpark?', 30, { seen: 3 }, [comment(LEA, 'Ich! Ich brauche noch einen Spiegel.', 28), comment(MIKA, 'Bin dabei, wenn wir um elf los.', 26)]),
+			post(LEA, 'decision', 'Ab November kommt Biomüll in den grünen Eimer unter der Spüle.', 72, { ok: 3 }),
+		],
+		chat: [
+			msg(LINA, 'Hat jemand meinen Schirm gesehen?', 26 * 60), msg(MIKA, 'Hängt an der Garderobe.', 25 * 60 + 40), msg(LINA, 'Danke dir!', 25 * 60 + 30),
+			msg(LEA, 'Hab Basilikum auf die Liste gesetzt.', 95),
+			pizza, msg(JONA, 'Bin dabei.', 41, FIX1, FIX2), salat, leaMsg,
+		],
+		reactions: [r(pizza, LINA, '🍕'), r(pizza, LEA, '🍕'), r(pizza, JONA, '👍'), r(salat, MIKA, '❤️')],
+		absences: [],
 	};
 }
 let S = seed();
@@ -174,8 +218,12 @@ async function api(req, res, path, orig, query) {
 	}
 	if ((mm = path.match(/^chores\/([^/]+)\/complete$/))) {
 		const c = S.chores.find((x) => x.id === mm[1]); if (!c) return json(res, { error: 'chore_not_found' }, 404);
+		// Rotation wie chooseNextAvailableMember der App: wenigste Aufgaben (ohne den bisherigen), Gleichstand reihum ab ihm
 		const idx = MEMBERS.findIndex((x) => x.id === c.assignedMemberId);
-		Object.assign(c, { lastCompletedAt: stamp, lastCompletedByName: name(me), nextDueAt: iso(now + c.intervalDays * DAY), assignedMemberId: MEMBERS[(idx + 1) % MEMBERS.length].id });
+		const load = (id) => S.chores.filter((x) => x.assignedMemberId === id).length;
+		const cand = MEMBERS.filter((x) => x.id !== c.assignedMemberId), min = Math.min(...cand.map((x) => load(x.id)));
+		const next = MEMBERS.map((_, k) => MEMBERS[(idx + 1 + k) % MEMBERS.length]).find((x) => x.id !== c.assignedMemberId && load(x.id) === min);
+		Object.assign(c, { lastCompletedAt: stamp, lastCompletedByName: name(me), nextDueAt: iso(now + c.intervalDays * DAY), assignedMemberId: next.id });
 		const completion = { id: randomUUID(), choreId: c.id, completedByMemberId: me, completedAt: stamp };
 		S.completions.unshift(completion); emit('chore', { chore: c }); return json(res, { chore: c, completion });
 	}

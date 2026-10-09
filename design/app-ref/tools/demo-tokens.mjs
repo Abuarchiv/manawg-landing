@@ -64,9 +64,10 @@ export function tokenize(html, route) {
 		inner = `{{A:${mins}}}`;
 		return `<time${a.replace(/title="[^"]*"/, `title="{{TF:${mins}}}"`)}>${inner}</time>`;
 	});
-	// Datum mit Uhrzeit in den Ausgaben-Details: Minuten seit Anlage aus dem Seed (Pizzaabend 26 h, Internet 3 Tage, Wocheneinkauf 5 Tage)
+	// Datum mit Uhrzeit in den Ausgaben-Details: Minuten seit Anlage aus dem Seed (demo-server.mjs), am Betrag erkannt
 	if (/\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}/.test(h)) {
-		const mins = /Pizzaabend/.test(h) ? 1560 : /Internet/.test(h) ? 4320 : /Wocheneinkauf/.test(h) ? 7200 : null;
+		const SEED = [['18,90', 180], ['28,40', 1560], ['46,85', 2880], ['29,99', 4320], ['12,36', 5760], ['84,00', 7200], ['39,20', 12960], ['18,36', 15840]];
+		const mins = SEED.find(([b]) => h.includes(`${b}\u00a0€`) || h.includes(`${b} €`))?.[1] ?? null;
 		if (mins !== null) h = h.replace(/\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}/g, `{{TF:${mins}}}`);
 	}
 	// Fixkosten: nächste Buchungen am 3. der Folgemonate

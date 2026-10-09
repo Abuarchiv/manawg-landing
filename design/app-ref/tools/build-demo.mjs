@@ -37,7 +37,8 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g
 const SAI = (s) =>
 	s
 		.replace(/env\(safe-area-inset-(top|bottom|left|right)\s*,\s*0(?:px)?\)/g, 'var(--sai-$1,0px)')
-		.replace(/env\(safe-area-inset-(top|bottom|left|right)\)/g, 'var(--sai-$1)');
+		.replace(/env\(safe-area-inset-(top|bottom|left|right)\)/g, 'var(--sai-$1)')
+	.replace(/url\(fonts\//g, 'url(/fonts/'); // Schriften der Landing (public/fonts)
 function clean(html, items, route) {
 	if (!html) return '';
 	const key = new Map(items.map((it) => [it.i, keyOf(it, items)]));
@@ -391,7 +392,8 @@ writeFileSync(join(OUT, 'index.html'), html);
 // app.css: env(safe-area-inset-*) in Werten als Variable (im iframe ist env() immer 0), Selektoren bleiben
 const css = readFileSync(join(REPO, 'design/app-ref/app.css'), 'utf8')
 	.replace(/env\(safe-area-inset-(top|bottom|left|right)\s*,\s*0(?:px)?\)/g, 'var(--sai-$1,0px)')
-	.replace(/env\(safe-area-inset-(top|bottom|left|right)\)/g, 'var(--sai-$1)');
+	.replace(/env\(safe-area-inset-(top|bottom|left|right)\)/g, 'var(--sai-$1)')
+	.replace(/url\(fonts\//g, 'url(/fonts/'); // Schriften der Landing (public/fonts)
 writeFileSync(join(OUT, 'app.css'), css);
 console.log('Vorlagen', usedSet.size, 'Seiten je Welt', Object.keys(PG).length, 'Knoten', Object.values(W).reduce((a, n) => a + Object.keys(n).length, 0), 'index.html', Math.round(html.length / 1024), 'kB');
 console.log(flows.join('\n'));

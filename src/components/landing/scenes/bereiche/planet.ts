@@ -17,7 +17,6 @@ const wrap = (a: number): number => Math.atan2(Math.sin(a), Math.cos(a));
 type Vec = [x: number, y: number, z: number];
 
 const LIN = 3.8; // Abstand der Breitenkreise in CSS-px
-const STUECK = 4; // Linienstück im Wirbel: so viele Stützpunkte hängen zusammen
 const ZMIN = 0.03; // darunter ist ein Punkt der Kugel hinter dem Rand
 const HLEN = 8; // Länge der Landschraffur in CSS-px
 const SEG = 14; // Länge eines Linienstücks des Breitenkreises in CSS-px
@@ -166,9 +165,22 @@ function drehe(s: PlanetState) {
 	}
 }
 
-// Zufall des Wirbels, der mit der Streuung (1 am Anfang, 0 kurz vor dem Ende) zur Mitte schrumpft: am Ende drehen
-// alle Stücke gleich, die Bänder schließen sich zu glatten Spiralen statt zu versetzten Balken.
-const zufall = (key: number, i: number, streu: number): number => 0.5 + (hsh(key, i) - 0.5) * streu;
+// Wirbel beim Hereinscrollen: geordnet statt Staub. Jeder Punkt (X, Y in Kugeleinheiten) dreht sich je nach Abstand zur
+// Mitte (innen weiter) und liegt etwas weiter außen, solange die Kugel noch nicht steht. Die Kreise bleiben ganze Linien
+// und wickeln sich zu Spiralen um die Mitte, außen schließen sie sich zuletzt. Gibt Drehung (c, s), Aufweitung d und
+// Fortschritt u (0 Wirbel, 1 Kugel) zurück.
+const WIRBEL = { c: 1, s: 0, d: 1, u: 1 };
+function wirbel(X: number, Y: number, ein: number): typeof WIRBEL {
+	const rho = Math.min(1, Math.hypot(X, Y));
+	const u = ss((ein - 0.32 * rho) / 0.68);
+	const w = 1 - u;
+	const th = w * (0.9 + 2.4 * (1 - rho));
+	WIRBEL.c = Math.cos(th);
+	WIRBEL.s = Math.sin(th);
+	WIRBEL.d = 1 + w * (0.18 + 0.3 * rho);
+	WIRBEL.u = u;
+	return WIRBEL;
+}
 
 // Breitenkreise und Landschraffur für den Radius R einmal aufbauen (Landanteil aus dem Abstandsfeld des Zeichens)
 function baueStich(s: PlanetState) {
@@ -266,7 +278,7 @@ const VY = new Float32Array(420);
 // kräftiger als Meer, am Rand schmaler, weil die Kreise dort enger liegen), dazu auf dem Land Schraffur, die erst in
 // der Schattenseite sichtbar wird. Im Wirbel (ein < 1) zerfallen die Bänder in Linienstücke, die sich einzeln
 // zusammendrehen. Die Kreise stehen still, nur das Land läuft hindurch: kein Flimmern.
-function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number) {
+function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number, ab: number) {
 	const LN = s.LN;
 	const HA = s.HA;
 	const GH = s.GH;
@@ -279,13 +291,9 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 	const cb = Math.cos(s.pitch);
 	const sb = Math.sin(s.pitch);
 	const dl = Math.PI / LN.length;
-	const wirbel = ein < 1;
-	const streu = 1 - ss((ein - 0.5) / 0.45);
-	let c = 1;
-	let sn = 0;
-	let dd = 1;
-	let uu = 1;
+	const im = ein < 1;
 	ctx.fillStyle = '#FAFAFA';
+	ctx.globalAlpha = ab;
 	ctx.beginPath();
 	for (let k = 0; k < LN.length; k++) {
 		const ln = LN[k];
@@ -300,27 +308,12 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 			BZ[i] = y * sb + z1 * cb;
 		}
 		let m = 0;
-		let chunk = -1;
 		for (let j = 0; j <= n; j++) {
 			const i = j % n;
 			const z = BZ[i] ?? 0;
 			if (z <= ZMIN) {
 				m = flush(ctx, m);
 				continue;
-			}
-			if (wirbel) {
-				const ch = streu < 0.3 ? 0 : Math.floor(j / STUECK);
-				if (ch !== chunk) {
-					m = flush(ctx, m);
-					chunk = ch;
-					const key = k * 131 + ch;
-					uu = ss((ein - 0.4 * zufall(key, 21, streu)) / 0.6);
-					const w = 1 - uu;
-					dd = 1 + w * (2.2 + 3 * zufall(key, 22, streu));
-					const th = w * (1.6 + zufall(key, 23, streu));
-					c = Math.cos(th);
-					sn = Math.sin(th);
-				}
 			}
 			const pv = (i + n - 1) % n;
 			const nx = (i + 1) % n;
@@ -347,10 +340,13 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 			let w = Math.min(sp * 0.9, Math.max(sp * r, 0.5)) * ss((sp - 0.7) / 1.6);
 			let sx = X * R;
 			let sy = -Y * R;
-			if (wirbel && uu < 1) {
-				[sx, sy] = [(sx * c - sy * sn) * dd, (sx * sn + sy * c) * dd];
-				[tx, ty] = [tx * c - ty * sn, tx * sn + ty * c];
-				w = (1 + (w - 1) * uu * uu) * (0.35 + 0.65 * uu);
+			if (im) {
+				const q = wirbel(X, Y, ein);
+				if (q.u < 1) {
+					[sx, sy] = [(sx * q.c - sy * q.s) * q.d, (sx * q.s + sy * q.c) * q.d];
+					[tx, ty] = [tx * q.c - ty * q.s, tx * q.s + ty * q.c];
+					w *= 0.5 + 0.5 * q.u;
+				}
 			}
 			const h = w / 2;
 			UX[m] = CX + sx - ty * h;
@@ -364,7 +360,7 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 	ctx.fill();
 	// Landschraffur in drei Stufen (Deckkraft), nur dort, wo das Licht schwach ist
 	const pa = new Path2D();
-	// Im Wirbel streuen kurze Striche, zum Schluss blenden die Gegenlinien ein
+	// Im Wirbel fehlt die Schraffur, zum Schluss blenden die Gegenlinien ein
 	const gf = ss((ein - 0.8) / 0.2);
 	const nh = gf < 1 ? HA.length / 6 : 0;
 	for (let h = 0; h < nh; h++) {
@@ -386,17 +382,12 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 		let ty = -((HA[6 * h + 4] ?? 0) * cb - tz1 * sb) * R;
 		let sx = X * R;
 		let sy = -Y * R;
-		if (wirbel) {
-			const u = ss((ein - 0.4 * zufall(h, 21, streu)) / 0.6);
-			if (u < 1) {
-				const w = 1 - u;
-				const d = 1 + w * (2.2 + 3 * zufall(h, 22, streu));
-				const th = w * (1.6 + zufall(h, 23, streu));
-				const cc = Math.cos(th);
-				const ss2 = Math.sin(th);
-				[sx, sy] = [(sx * cc - sy * ss2) * d, (sx * ss2 + sy * cc) * d];
-				[tx, ty] = [tx * cc - ty * ss2, tx * ss2 + ty * cc];
-				wg *= 0.35 + 0.65 * u;
+		if (im) {
+			const q = wirbel(X, Y, ein);
+			if (q.u < 1) {
+				[sx, sy] = [(sx * q.c - sy * q.s) * q.d, (sx * q.s + sy * q.c) * q.d];
+				[tx, ty] = [tx * q.c - ty * q.s, tx * q.s + ty * q.c];
+				wg *= q.u;
 			}
 		}
 		if (wg < 0.3) continue;
@@ -405,7 +396,7 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 	}
 	ctx.strokeStyle = '#FAFAFA';
 	ctx.lineWidth = 0.8;
-	ctx.globalAlpha = 0.6 * (1 - gf);
+	ctx.globalAlpha = 0.6 * (1 - gf) * ab;
 	ctx.stroke(pa);
 	if (gf > 0) {
 		const pg = new Path2D();
@@ -429,7 +420,7 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 				an = true;
 			}
 		}
-		ctx.globalAlpha = 0.6 * gf;
+		ctx.globalAlpha = 0.6 * gf * ab;
 		ctx.stroke(pg);
 	}
 	ctx.globalAlpha = 1;
@@ -439,6 +430,8 @@ function zeichneStich(s: PlanetState, ctx: CanvasRenderingContext2D, ein: number
 interface Ansicht {
 	rot: (v: Vec) => Vec;
 	ein: number;
+	/** Ausblenden beim Verlassen der Szene (1 voll, 0 weg). */
+	ab: number;
 	kz: number;
 	sel: number;
 	t: number;
@@ -450,7 +443,8 @@ interface Ansicht {
 
 // Sterne, Schein, Scheibe, Punkte der Kugel, Ring und Läufer
 function zeichneKugel(s: PlanetState, ctx: CanvasRenderingContext2D, a: Ansicht) {
-	const { rot, ein, kz, t, x0, x1, y0, y1 } = a;
+	const { rot, ein, ab, t, x0, x1, y0, y1 } = a;
+	const kz = a.kz * ab;
 	const CX = s.cx;
 	const CY = s.cy;
 	const R = s.R;
@@ -459,7 +453,7 @@ function zeichneKugel(s: PlanetState, ctx: CanvasRenderingContext2D, a: Ansicht)
 	ctx.lineWidth = 0.8;
 	for (const st of s.stars) {
 		ctx.globalAlpha =
-			0.15 + 0.35 * st[2] * (s.reduced ? 0.8 : 0.6 + 0.4 * Math.sin(t * 2 + st[0] * 1280));
+			ab * (0.15 + 0.35 * st[2] * (s.reduced ? 0.8 : 0.6 + 0.4 * Math.sin(t * 2 + st[0] * 1280)));
 		const sx = x0 + st[0] * (x1 - x0);
 		const sy = y0 + st[1] * (y1 - y0);
 		ctx.beginPath();
@@ -484,7 +478,7 @@ function zeichneKugel(s: PlanetState, ctx: CanvasRenderingContext2D, a: Ansicht)
 	ctx.lineWidth = 0.8;
 	ctx.stroke();
 	ctx.globalAlpha = 1;
-	zeichneStich(s, ctx, ein);
+	zeichneStich(s, ctx, ein, ab);
 	// Ring als Haarlinie
 	ctx.globalAlpha = 0.45 * kz;
 	ctx.strokeStyle = '#FAFAFA';
@@ -530,7 +524,8 @@ function zeichneKugel(s: PlanetState, ctx: CanvasRenderingContext2D, a: Ansicht)
 // Bildschirm, lesbar über einen dunklen Schriftrand statt einer Platte. Die Trefferfläche bleibt unsichtbar groß.
 // Gibt die Trefferflächen zurück.
 function zeichneMarken(s: PlanetState, ctx: CanvasRenderingContext2D, a: Ansicht): Treffer[] {
-	const { rot, kz, sel, t, x0, x1 } = a;
+	const { rot, sel, t, x0, x1 } = a;
+	const kz = a.kz * a.ab;
 	const CX = s.cx;
 	const CY = s.cy;
 	const R = s.R;
@@ -768,16 +763,41 @@ export function registerPlanet(cv: HTMLCanvasElement, { getSel, onSelect, api }:
 			// Übergang aus der Tiefe: Beim Hereinscrollen zieht sich der Staub der Fahrt als Wirbel zur Kugel zusammen
 			// (ein = 0 mit der Abschnittskante am unteren Rand, 1 kurz bevor sie oben ankommt). Kugelscheibe, Ring, Läufer
 			// und Marken kommen erst im letzten Drittel dazu (kz).
-			// Beim Hinausscrollen läuft derselbe Wirbel rückwärts: die Kugel zerstäubt wieder, bevor das Installieren kommt.
-			const oben = s.el.getBoundingClientRect().top / s.H;
-			const ein = s.reduced ? 1 : Math.min(ss((0.9 - oben) / 0.8), 1 - ss((-oben - 0.15) / 0.7));
+			// Beim Hinausscrollen wird die Kugel nur feiner und verlischt (ab), noch ehe die Mitte die Abschnittskante
+			// verlässt: kein Wirbel, kein Rest über dem Installieren.
+			const sr = s.el.getBoundingClientRect();
+			const oben = sr.top / s.H;
+			const ein = s.reduced ? 1 : ss((0.9 - oben) / 0.8);
+			const ab = s.reduced ? 1 : 1 - ss((-oben - 0.02) / 0.5);
 			const kz = ss((ein - 0.65) / 0.35);
 			s.full();
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			s.scene();
-			const ansicht: Ansicht = { rot, ein, kz, sel, t: loop.t, x0, x1, y0, y1 };
+			const ansicht: Ansicht = { rot, ein, ab, kz, sel, t: loop.t, x0, x1, y0, y1 };
+			// Im Wirbel bleiben Titel und Karte frei: die Linien laufen nie hinter den Text
+			if (ein < 1) {
+				const cr = s.cv.getBoundingClientRect();
+				ctx.save();
+				ctx.beginPath();
+				ctx.rect(x0, y0, x1 - x0, y1 - y0);
+				const rg = document.createRange();
+				for (const e of s.host.querySelectorAll('[data-titel] > *, [data-karte] > :not(nav)')) {
+					rg.selectNodeContents(e);
+					const r = rg.getBoundingClientRect();
+					if (r.width < 1) continue;
+					const px = 16;
+					ctx.rect(
+						(r.left - cr.left - s.ox - px) / s.f,
+						(r.top - cr.top - s.oy - px) / s.f,
+						(r.width + 2 * px) / s.f,
+						(r.height + 2 * px) / s.f,
+					);
+				}
+				ctx.clip('evenodd');
+			}
 			zeichneKugel(s, ctx, ansicht);
+			if (ein < 1) ctx.restore();
 			s.hits = zeichneMarken(s, ctx, ansicht);
 			// Zeigerposition (Maus): Auswahl-Hervorhebung aus der Trefferfläche, ohne Zeiger keine
 			s.hov = s.m.in && s.m.type === 'mouse' ? pick(s, s.m.x, s.m.y) : -1;

@@ -3,6 +3,7 @@
 import { appUrl } from '@/lib/app-origin';
 import { EllipsisVertical, Menu } from 'lucide-react';
 import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react';
+import { StichGrund } from '../stichgrund/StichGrund';
 import { Android } from './Android';
 import s from './Installieren.module.css';
 import { Iphone } from './Iphone';
@@ -187,6 +188,21 @@ export function Installieren() {
 			aria-labelledby="installieren-titel"
 			className={s.sektion}
 		>
+			<StichGrund
+				frei=":scope > div:first-of-type"
+				puls={inst}
+				ziel={(r) => {
+					const e = skRef.current;
+					if (!e) return null;
+					const b = e.getBoundingClientRect();
+					return {
+						x: b.left + b.width / 2 - r.left,
+						y: b.top + b.height / 2 - r.top,
+						rx: Math.min(b.width * 1.2, r.width * 0.6),
+						ry: b.height * 0.64,
+					};
+				}}
+			/>
 			<div className={s.text}>
 				<span className="label">[ 07 ] INSTALLIEREN</span>
 				<h2 id="installieren-titel" className={s.titel}>

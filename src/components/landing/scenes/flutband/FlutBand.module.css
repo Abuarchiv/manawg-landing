@@ -1,34 +1,15 @@
-/* Flutband zwischen Ende und "So geht's" (final.dc.html: 40 Spalten x 3 Zeilen aus 32-px-Zellen, feste Muster).
-   Zelle = Breite / 40 (bei 1280 px genau 32 px), nie unter 28 px: in schmalen Fenstern bleibt die Mitte des
-   Musters stehen und Ziffern bleiben lesbar. Reines CSS, kein Canvas: nichts zeichnet neu, nichts flackert. */
+/* Übergang zwischen Ende und "So geht's": ASCII-Zeichen, die sich zu den drei Ziffern zusammenziehen. Nur Canvas
+   auf Schwarz, die Höhe folgt dem Bildschirm. */
 .band {
-	container-type: inline-size;
+	position: relative;
+	height: clamp(190px, 34svh, 330px);
+	background: #0a0a0a;
 	overflow: hidden;
-	background: #0a0a0a;
 }
-
-.raster {
-	--z: max(calc(100cqw / 40), 28px);
-	display: grid;
-	grid-template-columns: repeat(40, var(--z));
-	grid-auto-rows: var(--z);
-	justify-content: center;
-	font-family: "JetBrains Mono", monospace;
-	font-size: max(9px, calc(var(--z) * 0.3125));
-	font-weight: 500;
-	color: rgba(250, 250, 250, 0.6);
-	/* Weiße Zellen sind Fenster auf gestochene Wolken (wie die Flut), kein greller Weiß-Streifen */
-	background: #121212 url("/himmel/flut-wolken.webp") center / cover;
-}
-
-.raster > i {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-style: normal;
-	background: #0a0a0a;
-}
-
-.raster > i.w {
-	background: none;
+.cv {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
 }
