@@ -21,8 +21,8 @@ export function AppDatum({ left, top, k = 1 }: { left: number; top: number; k?: 
 	});
 	return (
 		<>
-			<span style={st(375.875)}>{z[0]}</span>
-			<span style={st(426.125)}>{z[1]}</span>
+			<span style={st(476.375)}>{z[0]}</span>
+			<span style={st(526.625)}>{z[1]}</span>
 		</>
 	);
 }

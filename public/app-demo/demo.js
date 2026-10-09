@@ -65,7 +65,8 @@
 	};
 	const S = { sent: null }; // Zeitpunkt der gesendeten Chat-Antwort
 	// Tokens: {{D:k:fmt}} Tag + k, {{F:fmt}} nächster Freitag, {{M:n:fmt}} 3. des n-ten Folgemonats, {{A:min}} "vor n",
-	// {{CT:n}} Chat-Uhrzeit n (0..2 = T0 - 62/41/14 min, 3 = Antwort), {{CD:n}} dazugehöriges datetime/title
+	// {{CT:n}} Chat-Uhrzeit n (Minuten vor T0 aus CHAT_AGO in der Reihenfolge des Verlaufs, n = Länge: Antwort), {{CD:n}} datetime/title
+	const CHAT_AGO = [1560, 1540, 1530, 95, 62, 41, 30, 14]; // Seed in design/app-ref/tools/demo-server.mjs
 	const TOK = (s) =>
 		s.replace(/\{\{([^}]+)\}\}/g, (_, t) => {
 			const a = t.split(':');
@@ -85,11 +86,11 @@
 				case 'A':
 					return ago(+a[1] + (clock() - T0) / 60000);
 				case 'CT': {
-					const ms = a[1] === '3' ? (S.sent ?? clock()) : T0 - [62, 41, 14][+a[1]] * 60000;
+					const ms = +a[1] >= CHAT_AGO.length ? (S.sent ?? clock()) : T0 - CHAT_AGO[+a[1]] * 60000;
 					return hhmm(ms);
 				}
 				case 'CD': {
-					const ms = a[1] === '3' ? (S.sent ?? clock()) : T0 - [62, 41, 14][+a[1]] * 60000;
+					const ms = +a[1] >= CHAT_AGO.length ? (S.sent ?? clock()) : T0 - CHAT_AGO[+a[1]] * 60000;
 					const b = berlin(ms);
 					return `${String(b.d).padStart(2, '0')}.${String(b.m).padStart(2, '0')}.${b.y}, ${b.hh}:${b.mm}`;
 				}
@@ -274,6 +275,9 @@
 		focusKey(n);
 		if (n.a) st.timer = setTimeout(() => enter(w, n.a[1]), n.a[0]);
 		if (pageChanged) window.scrollTo(0, 0);
+		// Der Chat steht wie in der App am Ende des Verlaufs (die Aufnahme speichert keine Scrollposition)
+		const vp = app.querySelector('[data-slot="message-scroller-viewport"]');
+		if (vp) vp.scrollTop = vp.scrollHeight;
 		document.dispatchEvent(new CustomEvent('demo:state', { detail: { w, id } }));
 		return true;
 	};

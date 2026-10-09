@@ -187,10 +187,10 @@ export function Phone() {
 						/>
 						{zeilen && (
 							<>
-								<span className={s.datum} style={{ top: 422.875 }}>
+								<span className={s.datum} style={{ top: 523.375 }}>
 									{zeilen[0]}
 								</span>
-								<span className={s.datum} style={{ top: 473.125 }}>
+								<span className={s.datum} style={{ top: 573.625 }}>
 									{zeilen[1]}
 								</span>
 							</>

@@ -42,7 +42,7 @@ const SC = [
 		name: 'chat-antwort',
 		route: '/chat',
 		steps: [
-			{ click: /Nachricht von Lea/ },
+			{ click: /Nachricht von Lea: Bin um acht/ },
 			{ click: /^Antworten$/ },
 			{ type: /Chat-Nachricht/, text: 'Passt, ich bin auch da.' },
 			{ click: /^Nachricht senden$/ },
