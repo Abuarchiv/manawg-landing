@@ -78,11 +78,16 @@ export function masse(W: number, H: number, mode: Modus): { cs: number; zf: numb
 	return { cs, zf: (10 * cs) / 32 };
 }
 
-/** Anteil der Fläche, den die Flut deckt (0..1): zwei Wellen wie im Entwurf. */
+/**
+ * Anteil der Fläche, den die Flut deckt (0..1): zwei Wellen wie im Entwurf, aber nie als Deckblende.
+ * Gemessen 2026-10-09: bei voller Deckung sprang die mittlere Helligkeit 43 → 72 → 24 auf 320 px Scrollweg
+ * (ein Blitz). Die Wolken bleiben Inseln (höchstens 0,38 bzw. 0,3) und ziehen länger, der Wechsel der
+ * Ebenen darunter läuft als Überblendung (--g, --f, --e in stage.ts) statt hinter einer weißen Wand.
+ */
 export function deckung(P: number): number {
 	return Math.max(
-		ss((P - 0.5) / 0.07) * (1 - ss((P - 0.66) / 0.12)),
-		ss((P - 0.84) / 0.05) * (1 - ss((P - 0.94) / 0.05)),
+		0.38 * ss((P - 0.47) / 0.09) * (1 - ss((P - 0.64) / 0.14)),
+		0.3 * ss((P - 0.82) / 0.07) * (1 - ss((P - 0.93) / 0.06)),
 	);
 }
 

@@ -15,7 +15,7 @@ import { createHero } from './hero';
 import { zeichneSterne } from './sterne';
 import type { BuehnenKontext, BuehnenZeiger, HeroMarken, Loch } from './types';
 import * as wohnung from './wohnung';
-import { unwarp, warp } from './zeitachse';
+import { unwarp, warp, zoomVon } from './zeitachse';
 
 /** Phase der Bühne (data-phase an #final): Intro, Ende-Ebene oder vorbeigescrollt. */
 type Phase = 'intro' | 'ende' | 'nach';
@@ -41,6 +41,8 @@ export interface BuehnenZustand {
 	P: number;
 	s: number;
 	phase: Phase;
+	/** Kamerafahrt ins Handy (0..1, zeitachse.zoomVon). */
+	fahrt: number;
 	/** Zeitpunkt, seit dem die Bühne ganz aus dem Bild ist (null: sichtbar). */
 	weg: number | null;
 	/** Pufferspeicher der Ebenen freigegeben. */
@@ -80,6 +82,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 	const kopf = root.querySelector<HTMLElement>('[data-kopf]');
 	const kopfCta = kopf?.querySelector<HTMLElement>('[data-loch="cta"]');
 	const endeTitel = buehne.querySelector<HTMLElement>('[data-ende-titel]');
+	const endeSpace = buehne.querySelector<HTMLElement>('[data-ende-space]');
 	const nurIntro = [...root.querySelectorAll<HTMLElement>('[data-nur-intro]')];
 	const hero = createHero(cvHero);
 
@@ -108,6 +111,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		P: 0,
 		s: 0,
 		phase: 'intro',
+		fahrt: 0,
 		weg: null,
 		frei: false,
 	};
@@ -273,7 +277,12 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		setVar('--p', Math.min(P, 0.1).toFixed(4));
 		// Phone.tsx lädt Standbild und App ab hier, weit vor der Ende-Ebene (der Aufbau der App-Seite dauert 20 bis 60 ms)
 		if (P > 0.55 && root.dataset.nah !== '1') root.dataset.nah = '1';
-		setVar('--g', (1 - fpA).toFixed(3));
+		// Hero dunkelt mit dem Tauchgang ab, damit das helle Organ nicht in 300 px auf Schwarz kippt (gemessen
+		// L 76 → 15), sondern die Tinte über rund 900 px ausläuft. Zwei Stufen: bis zum Durchflug durch das Loch
+		// (dive 0,6) auf 35 %, danach auf 7 %.
+		const dive = ss((P - 0.48) / 0.12);
+		const dunkel = (1 - 0.65 * ss((dive - 0.1) / 0.5)) * (1 - 0.8 * ss((dive - 0.6) / 0.4));
+		setVar('--g', ((1 - fpA) * dunkel).toFixed(3));
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
 		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));
 		setVar('--e', endA.toFixed(3));
@@ -306,7 +315,11 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		}
 
 		// Bedienelemente der Ende-Ebene nur bedienbar, wenn sie zu sehen sind
-		const ctaOn = endA > 0.6 && visible;
+		// Während der Kamerafahrt (0 < fahrt < 1) nicht bedienbar: Rad und Finger führen die Seite, nicht die App
+		// Sobald die Bühne nach oben wegläuft (die App löst sich auf), ist sie nicht mehr bedienbar: sonst fängt die
+		// unsichtbare App Rad und Finger ab
+		const ctaOn =
+			endA > 0.6 && visible && !(st.fahrt > 0.001 && st.fahrt < 0.999) && rb.top > -0.02 * H;
 		for (const el of ctas) {
 			const v = ctaOn ? 'auto' : 'none';
 			if (el.style.pointerEvents !== v) el.style.pointerEvents = v;
@@ -340,13 +353,35 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		const s = cl(-rs.top / strecke());
 		const Pz = warp(s);
 		const P = glaette(Pz, dt, visible);
+		// Kamerafahrt ins Handy (Schlussabschnitt der Bühne): der Bildschirm des Handys wächst in die Fenstermitte,
+		// die Hände zerfallen zu Staub, Hülle, Titel und Knopf blenden aus. Bei reduzierter Bewegung keine Fahrt.
+		const fahrt = loop.reduced ? 0 : zoomVon(s);
+		let camZ: Fit = cam;
+		if (fahrt > 0.0005) {
+			// Bildschirm 278 x 598 um (800, 400) im Ende-Raum; Ziel: passt mit 4 % Rand ins Fenster (contain)
+			const fZiel = Math.min(W / 278, H / 598) * 0.96;
+			const f = Math.exp(Math.log(cam.f) + (Math.log(fZiel) - Math.log(cam.f)) * fahrt);
+			const cx = cam.ox + 800 * cam.f + (W / 2 - (cam.ox + 800 * cam.f)) * fahrt;
+			const cy = cam.oy + 400 * cam.f + (H / 2 - (cam.oy + 400 * cam.f)) * fahrt;
+			camZ = { f, ox: cx - 800 * f, oy: cy - 400 * f };
+		}
+		if (endeSpace && (fahrt > 0.0005 || st.fahrt > 0.0005)) {
+			endeSpace.style.setProperty('--ende-x', `${camZ.ox.toFixed(2)}px`);
+			endeSpace.style.setProperty('--ende-y', `${camZ.oy.toFixed(2)}px`);
+			endeSpace.style.setProperty('--ende-f', camZ.f.toFixed(4));
+		}
+		if (Math.abs(fahrt - st.fahrt) > 0.0005) {
+			st.fahrt = fahrt;
+			setVar('--fahrt', fahrt.toFixed(3));
+		}
 		verwalteSpeicher(visible, now);
 		const look = ss((P - 0.06) / 0.14);
 		const mx = ss((P - 0.18) / 0.06);
 		const split = ss((P - 0.24) / 0.1) * (1 - ss((P - 0.36) / 0.1));
 		const zoom = ss((P - 0.22) / 0.2);
 		const dive = ss((P - 0.48) / 0.12);
-		const fpA = ss((P - 0.58) / 0.05);
+		// Wohnung kommt erst, wenn der Hero schon dunkel ist (dive 1 bei P 0,6): Überblendung dunkel → dunkel
+		const fpA = ss((P - 0.61) / 0.05);
 		const endA = ss((P - 0.9) / 0.05);
 		const cover = flut.deckung(P);
 		const karten = wohnung.karten(P);
@@ -377,7 +412,16 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			c.fpA = fpA;
 			c.endA = endA;
 			// Zerfall der Hände: beginnt, sobald die Bühne nach oben weggeschoben wird (rb.top < 0), Rückwärts setzt zusammen
-			c.zer = loop.reduced ? 0 : ss(cl(-rb.top / (0.6 * H)));
+			const zerDom = loop.reduced ? 0 : ss(cl(-rb.top / (0.6 * H)));
+			// Während der Kamerafahrt zerfallen die Hände schon zu Staub, die App bleibt
+			c.zer = Math.max(zerDom, fahrt);
+			// Nach der Bühne löst sich die App selbst als Halbton auf (Ende.tsx: Maske aus Punkten im 8-px-Raster).
+			// Radius 5,7 px deckt die Zelle, danach mit der Wurzel, damit die gedeckte Fläche (∝ r²) linear abnimmt.
+			if (endeSpace) {
+				const r = `${(5.7 * Math.sqrt(1 - zerDom)).toFixed(2)}px`;
+				if (endeSpace.style.getPropertyValue('--zer-r') !== r)
+					endeSpace.style.setProperty('--zer-r', r);
+			}
 			c.endOn = st.endOn;
 			c.cover = cover;
 			c.stageTop = rb.top;
@@ -412,7 +456,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 				st.handsLoaded = true;
 				hand.laden();
 			}
-			if (hb && hf) hand.draw(hb, hf, c, cam);
+			if (hb && hf) hand.draw(hb, hf, c, camZ);
 		} else {
 			c.visible = false;
 		}

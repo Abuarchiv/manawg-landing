@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
+import { radAnSeite } from '../../core/scroll';
 import s from './Phone.module.css';
 import { datumsZeilen } from './datum';
 
@@ -144,34 +145,39 @@ export function Phone() {
 			)}
 		>
 			<div
-				style={css(
-					'position:relative;width:100%;height:100%;box-sizing:border-box;background:linear-gradient(145deg,#525252 0%,#171717 18%,#0A0A0A 50%,#262626 82%,#737373 100%);border-radius:48px;padding:11px;box-shadow:inset 0 0 0 1px rgba(250,250,250,0.35),inset 0 0 0 3px #0A0A0A,0 50px 120px rgba(0,0,0,0.7),0 0 90px rgba(250,250,250,0.1)',
-				)}
+				style={css('position:relative;width:100%;height:100%;box-sizing:border-box;padding:11px')}
 			>
+				{/* Hülle als eigene Ebene hinter dem Bildschirm: blendet mit der Kamerafahrt aus (--fahrt), die App bleibt */}
 				<span
+					aria-hidden="true"
 					style={css(
-						'position:absolute;left:-3px;top:118px;width:3px;height:30px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626)',
+						'position:absolute;inset:0;border-radius:48px;background:linear-gradient(145deg,#525252 0%,#171717 18%,#0A0A0A 50%,#262626 82%,#737373 100%);box-shadow:inset 0 0 0 1px rgba(250,250,250,0.35),inset 0 0 0 3px #0A0A0A,0 50px 120px rgba(0,0,0,0.7),0 0 90px rgba(250,250,250,0.1);opacity:calc(1 - var(--fahrt,0))',
 					)}
 				/>
 				<span
 					style={css(
-						'position:absolute;left:-3px;top:164px;width:3px;height:52px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626)',
+						'position:absolute;left:-3px;top:118px;width:3px;height:30px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626);opacity:calc(1 - var(--fahrt,0))',
 					)}
 				/>
 				<span
 					style={css(
-						'position:absolute;left:-3px;top:226px;width:3px;height:52px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626)',
+						'position:absolute;left:-3px;top:164px;width:3px;height:52px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626);opacity:calc(1 - var(--fahrt,0))',
 					)}
 				/>
 				<span
 					style={css(
-						'position:absolute;right:-3px;top:180px;width:3px;height:80px;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#737373,#262626)',
+						'position:absolute;left:-3px;top:226px;width:3px;height:52px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626);opacity:calc(1 - var(--fahrt,0))',
+					)}
+				/>
+				<span
+					style={css(
+						'position:absolute;right:-3px;top:180px;width:3px;height:80px;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#737373,#262626);opacity:calc(1 - var(--fahrt,0))',
 					)}
 				/>
 				<div
 					data-lenis-prevent
 					style={css(
-						'position:relative;width:100%;height:100%;background:#FFFFFF;border-radius:37px;overflow:hidden;box-shadow:0 0 0 1px #000',
+						'position:relative;width:100%;height:100%;background:#FFFFFF;border-radius:calc(37px - 25px * var(--fahrt,0));overflow:hidden;box-shadow:0 0 0 1px #000',
 					)}
 				>
 					{/* Standbild: derselbe Zustand und dieselben Insets wie das iframe, liegt darunter und bleibt bis zum Laden stehen */}
@@ -230,9 +236,40 @@ export function Phone() {
 									};
 									for (const t of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel'])
 										doc.addEventListener(t, weiter);
+									// Mausrad über der App: scrollt die App, solange sie in diese Richtung kann, sonst die Seite.
+									// Der Browser kettet Rad-Ereignisse aus dem iframe nicht zuverlässig an die Seite (Lenis sieht sie
+									// nie), und bei der Kamerafahrt füllt die App fast das ganze Fenster.
+									const rad = (ev: Event) => {
+										const we = ev as WheelEvent;
+										const win = doc.defaultView;
+										if (!win) return;
+										// Während der Kamerafahrt (stage.ts --fahrt zwischen 0 und 1) führt das Rad die Seite, nie die App
+										const root = document.getElementById('final');
+										const fahrt = root
+											? Number.parseFloat(getComputedStyle(root).getPropertyValue('--fahrt')) || 0
+											: 0;
+										const unterwegs = fahrt > 0.001 && fahrt < 0.999;
+										const kann = (el: Element): boolean =>
+											el.scrollHeight > el.clientHeight + 1 &&
+											(we.deltaY > 0
+												? el.scrollTop + el.clientHeight < el.scrollHeight - 1
+												: el.scrollTop > 0);
+										if (!unterwegs) {
+											for (let el = we.target as Element | null; el; el = el.parentElement) {
+												if (/(auto|scroll)/.test(win.getComputedStyle(el).overflowY) && kann(el))
+													return;
+											}
+											const se = doc.scrollingElement;
+											if (se && kann(se)) return;
+										}
+										we.preventDefault();
+										radAnSeite(we.deltaMode === 1 ? we.deltaY * 16 : we.deltaY);
+									};
+									doc.addEventListener('wheel', rad, { passive: false });
 									// Über dem Glas ersetzt die gezeichnete Fingerspitze den Zeiger (hand.js setzt data-hand)
 									const st = doc.createElement('style');
-									st.textContent = 'html[data-hand] *{cursor:none!important}';
+									st.textContent =
+										'html[data-hand] *{cursor:none!important}*{overscroll-behavior:auto!important}';
 									doc.head.appendChild(st);
 								}
 								requestAnimationFrame(() => requestAnimationFrame(() => setBereit(true)));
@@ -253,7 +290,7 @@ export function Phone() {
 					data-ende-hinweis="1"
 					aria-hidden="true"
 					style={css(
-						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:${benutzt ? 0 : 1}`,
+						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:calc(${benutzt ? 0 : 1} * (1 - var(--fahrt,0)))`,
 					)}
 				>
 					TIPP INS HANDY · DAS IST DIE ECHTE APP

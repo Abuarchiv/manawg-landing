@@ -39,7 +39,9 @@ export function Ende() {
 			data-ende="1"
 			aria-label="App-Vorschau"
 			style={css(
-				'position:absolute;inset:0;opacity:clamp(0, (var(--e,0) - 0.35) * 1.54, 1);pointer-events:none;background:#0A0A0A',
+				// Einblenden über fast die ganze endA-Strecke (0,08 bis 0,91): vorher kam die Ebene in 4 % der Intro-Strecke
+				// von 0 auf 1 und das helle Handy schlug als Blitz ein (gemessen 22 → 57 auf 170 px)
+				'position:absolute;inset:0;opacity:clamp(0, (var(--e,0) - 0.08) * 1.2, 1);pointer-events:none;background:#0A0A0A',
 			)}
 		>
 			<canvas
@@ -69,8 +71,10 @@ export function Ende() {
 			<div
 				ref={spaceRef}
 				data-ende-space="1"
+				// Nach der Bühne löst sich die App als Halbton auf: Punktraster 8 px, Punktradius --zer-r von 6 px (deckend) auf 0
+				// (stage.ts schreibt --zer-r aus der Scrollstrecke, rückwärts setzt sie sich wieder zusammen)
 				style={css(
-					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--ende-x,0px),var(--ende-y,0px)) scale(var(--ende-f,1)) translate(var(--ax,0px),var(--ay,0px)) translate(800px,400px) rotate(var(--ar,0deg)) translate(-800px,-400px)',
+					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--ende-x,0px),var(--ende-y,0px)) scale(var(--ende-f,1)) translate(var(--ax,0px),var(--ay,0px)) translate(800px,400px) rotate(var(--ar,0deg)) translate(-800px,-400px);-webkit-mask-image:radial-gradient(circle,#000 var(--zer-r,6px),transparent calc(var(--zer-r,6px) + 0.6px));mask-image:radial-gradient(circle,#000 var(--zer-r,6px),transparent calc(var(--zer-r,6px) + 0.6px));-webkit-mask-size:8px 8px;mask-size:8px 8px',
 				)}
 			>
 				<Phone />
