@@ -1,3 +1,4 @@
+import { THEMEN } from '@/app/[thema]/themen';
 import { appUrl } from '@/lib/app-origin';
 import { css } from '../../core/dc';
 import s from './Fusszeile.module.css';
@@ -39,6 +40,11 @@ export function Fusszeile() {
 					<a href="#fragen" className="fuss-link">
 						Fragen
 					</a>
+					{Object.entries(THEMEN).map(([slug, t]) => (
+						<a key={slug} href={`/${slug}`} className="fuss-link">
+							{t.link}
+						</a>
+					))}
 				</div>
 				<div className={s.spalte}>
 					<span className={s.kopf}>Konto</span>

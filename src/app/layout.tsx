@@ -4,7 +4,7 @@ import './globals.css';
 
 const appUrl = getAppUrl();
 
-const title = 'ManaWG: Ausgaben, Einkauf und Putzplan für eure WG';
+const title = 'ManaWG, die WG-App: Ausgaben, Einkauf und Putzplan für eure WG';
 const description =
 	'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die App ist kostenlos und läuft im Browser.';
 
@@ -17,6 +17,15 @@ const organizationSchema = {
 	description,
 };
 
+const webSiteSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: 'ManaWG',
+	alternateName: ['Mana WG', 'ManaWG App'],
+	url: appUrl,
+	inLanguage: 'de-DE',
+};
+
 const softwareApplicationSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'SoftwareApplication',
@@ -25,6 +34,8 @@ const softwareApplicationSchema = {
 	url: appUrl,
 	applicationCategory: 'LifestyleApplication',
 	operatingSystem: 'Web, iOS, Android',
+	inLanguage: 'de-DE',
+	featureList: ['Ausgaben teilen', 'Einkaufsliste', 'Putzplan', 'Pinnwand', 'Kalender', 'Chat'],
 	offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
 };
 
@@ -94,6 +105,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					type="application/ld+json"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
+				/>
+				<script
+					type="application/ld+json"
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
 				/>
 			</head>
 			<body>{children}</body>

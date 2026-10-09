@@ -1,0 +1,38 @@
+# ManaWG
+
+> ManaWG ist eine kostenlose deutschsprachige WG-App (WG = Wohngemeinschaft). Mitbewohner teilen Ausgaben, führen eine gemeinsame Einkaufsliste, organisieren einen rotierenden Putzplan und halten Absprachen an einer Pinnwand fest. Die App läuft im Browser und lässt sich ohne App Store auf den Home-Bildschirm installieren.
+
+Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat nichts mit WireGuard zu tun.
+
+## Funktionen
+
+- Ausgaben teilen: gleichmäßig oder mit eigenen Beträgen pro Person, Salden, Ausgleich mit möglichst wenigen Überweisungen
+- Fixkosten und Monatsabrechnung: wiederkehrende Kosten wie Miete oder Internet
+- Import: Ausgaben aus Splitwise- und Splid-CSV übernehmen, Belege per Foto lesen
+- Einkaufsliste und Vorräte: eine Liste für alle, abgehakte Einkäufe direkt als Ausgabe eintragen
+- Putzplan: Aufgaben wiederholen sich, rotieren fair, abwesende Mitbewohner werden übersprungen
+- Kalender (auch als Kalender-Abo), Pinnwand und Chat
+
+## So starten
+
+1. Auf https://app.manawg.com/neu?action=create eine WG erstellen
+2. Einladungslink an die Mitbewohner schicken
+3. Erste Ausgabe, ersten Einkauf oder ersten Putztermin eintragen
+
+## Seiten
+
+- [Startseite](https://manawg.com/): Überblick
+- [Putzplan](https://manawg.com/putzplan)
+- [WG-Kasse](https://manawg.com/wg-kasse)
+- [Einkaufsliste](https://manawg.com/einkaufsliste)
+- [Splitwise-Alternative](https://manawg.com/splitwise-alternative)
+- [Häufige Fragen](https://manawg.com/faq)
+- [App öffnen](https://app.manawg.com/)
+- [Datenschutz](https://manawg.com/datenschutz)
+
+## Rahmen
+
+- Preis: kostenlos
+- Sprache: Deutsch
+- Plattform: Web-App (PWA) für iPhone, Android und Desktop
+- Keine Werbung; Daten liegen in Frankfurt am Main (EU)

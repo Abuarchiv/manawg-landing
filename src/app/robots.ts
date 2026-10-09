@@ -8,11 +8,7 @@ export default function robots(): MetadataRoute.Robots {
 			{
 				userAgent: '*',
 				allow: ['/'],
-				// Real app routes live under /wg/[code]/... (not the flat
-				// /ausgaben, /einkauf, ... paths this list used to name — those
-				// never existed) plus /api/. /offline is the PWA fallback shell,
-				// not a page worth indexing. /neu stays crawlable — it's the
-				// public "create a WG" entry point, listed in the sitemap below.
+				// /wg, /api und /offline leiten nur auf app.manawg.com weiter (next.config.ts).
 				disallow: ['/wg/', '/api/', '/offline'],
 			},
 		],
