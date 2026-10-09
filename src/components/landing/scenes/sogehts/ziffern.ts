@@ -1,20 +1,19 @@
-// Die Ziffern 01 bis 03 von "So geht's": Schrift als Punktraster aus Mono-Zeichen (Zelle 4 px, Glyph 7 px).
-// Die Ziffer folgt der Breite der Spalte, die Zellen liegen in festen CSS-Pixeln. Der Zeiger stößt die
-// Zellen weg, Federn holen sie zurück. Wie im Entwurf wechseln die Zeichen einer Zelle im Takt von 90 ms
-// durch die ganze Rampe @%#*+=-:, solange sie unterwegs ist (Einlauf, Zeiger). In Ruhe stehen feste
-// Zeichen nach der Lage der Zelle in der Ziffer (innen @, am Rand #).
+// Die Ziffern 01 bis 03 von "So geht's": große Schrift als Raster aus Mono-Zeichen (Zelle 7 px, Glyph 8 px).
+// Die Zellen liegen in festen CSS-Pixeln. Der Zeiger stößt die
+// Zellen weg, Federn holen sie zurück. Unterwegs (Einlauf, Zeiger) wechseln die Zeichen einer Zelle im Takt von
+// 90 ms durch die Rampe, in Ruhe steht die Ziffer ruhig: heller Rand aus @, Körper aus gedämpften #.
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { hsh } from '../../core/math';
 
 const RAMPE = '@%#*+=-:';
-qa.masse = { ...(qa.masse as Record<string, unknown> | undefined), zifferZelle: 4, zifferGlyph: 7 };
+qa.masse = { ...(qa.masse as Record<string, unknown> | undefined), zifferZelle: 7, zifferGlyph: 8 };
 
 /** Eine Rasterzelle der Ziffer: Ruhelage (x, y), Ton in der Rampe, Auslenkung (ox, oy) und Tempo (vx, vy). */
 interface Zelle {
 	x: number;
 	y: number;
-	/** Zeichen in Ruhe: 0 innen (@), 2 am Rand (#). */
+	/** Zeichen in Ruhe: 0 am Rand (@, hell), 2 innen (#, gedämpft). */
 	ton: 0 | 2;
 	ox: number;
 	oy: number;
@@ -84,9 +83,9 @@ function baue(s: ZifferState, txt: string, cs: number) {
 			s.cells.push({
 				x: a * cs,
 				y: b * cs,
-				ton: n >= 8 ? 0 : 2,
-				ox: s.reduced ? 0 : p ? p.x + p.ox - a * cs : (hsh(q, 1) - 0.5) * 300,
-				oy: s.reduced ? 0 : p ? p.y + p.oy - b * cs : (hsh(q, 2) - 0.5) * 300,
+				ton: n >= 8 ? 2 : 0,
+				ox: s.reduced ? 0 : p ? p.x + p.ox - a * cs : (hsh(q, 1) - 0.5) * 160,
+				oy: s.reduced ? 0 : p ? p.y + p.oy - b * cs : (hsh(q, 2) - 0.5) * 160,
 				vx: 0,
 				vy: 0,
 			});
@@ -117,7 +116,7 @@ function blatt(s: ZifferState, gl: number): Blatt {
 /** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
 export function registerZiffer(
 	cv: HTMLCanvasElement,
-	{ text, cs: cs0 = 4, gl: gl0 = 7 }: ZifferOptionen,
+	{ text, cs: cs0 = 7, gl: gl0 = 8 }: ZifferOptionen,
 ): () => void {
 	return register<ZifferState>({
 		name: `ziffer ${text}`,
@@ -134,9 +133,9 @@ export function registerZiffer(
 			s.blatt = null;
 		},
 		frame(s, _t, dt) {
-			// Hochformat: noch feineres Raster (Zelle 3, Glyph 5), die Ziffer bleibt eine Form
-			const cs = s.mode === 'hoch' ? 3 : cs0;
-			const gl = s.mode === 'hoch' ? 5 : gl0;
+			// Hochformat: etwas feineres Raster (Zelle 6, Glyph 7), die Ziffer bleibt eine Form
+			const cs = s.mode === 'hoch' ? 6 : cs0;
+			const gl = s.mode === 'hoch' ? 7 : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
 			if (s.key !== key) {
 				s.key = key;
@@ -184,6 +183,7 @@ export function registerZiffer(
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.clearRect(0, 0, flaeche.width, flaeche.height);
 			const dpr = s.dpr;
+			ctx.globalAlpha = 1;
 			const tq = Math.floor(loop.now / 0.09);
 			for (const c of s.cells) {
 				const dx = Math.round((c.x + c.ox + cs / 2) * dpr - z / 2);
@@ -193,8 +193,11 @@ export function registerZiffer(
 				const ton = unterwegs
 					? Math.floor(hsh(c.x + tq, c.y) * RAMPE.length) % RAMPE.length
 					: c.ton;
+				// Körper der Ziffer gedämpft, Rand hell: so liest sich die Form sofort
+				ctx.globalAlpha = unterwegs || c.ton === 0 ? 1 : 0.42;
 				ctx.drawImage(sheet, z * ton, 0, z, z, dx, dy, z, z);
 			}
+			ctx.globalAlpha = 1;
 		},
 	});
 }

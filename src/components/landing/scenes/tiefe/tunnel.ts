@@ -38,7 +38,7 @@ interface Insel {
 }
 
 /** Punkt der Wolke: x, y, z, Zeichen, Insel (-1 = Staub). */
-type Punkt = [x: number, y: number, z: number, zeichen: string, insel: number];
+type Punkt = [x: number, y: number, z: number, zeichen: string, insel: number, nr: number];
 
 /** Ausschlusszone um eine Unterzeile (DOM-Rechteck) samt Deckkraft w. */
 interface Zone {
@@ -174,7 +174,7 @@ function build(s: TiefeState) {
 	});
 	s.k = k;
 	s.klemm = s.isl.map((): Klemmung => ({ dx: 0, k: 1 }));
-	const RAMP = '@#%*+=';
+	const RAMP = '@#%@#%*';
 	s.P = [];
 	s.isl.forEach((I, kk) => {
 		I.pts.forEach((p, q) => {
@@ -184,6 +184,7 @@ function build(s: TiefeState) {
 				I.z + (hsh(q, kk) - 0.5) * 0.6,
 				RAMP.charAt(Math.floor(hsh(q, kk + 9) * 6)),
 				kk,
+				q,
 			]);
 		});
 	});
@@ -191,7 +192,7 @@ function build(s: TiefeState) {
 	// die Kanten des Staubkastens blenden dort weich aus (siehe frame)
 	const fl = flaeche(s);
 	s.fl = Math.sqrt(fl);
-	const nd = hoch ? Math.round(11000 * fl) : 1600;
+	const nd = hoch ? Math.round(7000 * fl) : 1000;
 	s.dX = hoch ? 24 : 30;
 	s.dY = hoch ? 40 : 18;
 	for (let q = 0; q < nd; q++)
@@ -199,8 +200,9 @@ function build(s: TiefeState) {
 			(hsh(q, 1) - 0.5) * 2 * s.dX,
 			(hsh(q, 2) - 0.5) * 2 * s.dY,
 			hsh(q, 3) * 90 - 14,
-			'.:+'.charAt(Math.floor(hsh(q, 4) * 3)),
+			'..:'.charAt(Math.floor(hsh(q, 4) * 3)),
 			-1,
+			q,
 		]);
 	s.bm = bauKey(s);
 }
@@ -275,8 +277,16 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 			if (!I || !kl) continue;
 			kx = kl.k;
 			ddx = kl.dx;
+			// Anflug: Zeichen liegen weit vorn verstreut und laufen zwischen dz 40 und 20 zum Wort zusammen
+			const sc0 = (1 - ss(cl((40 - dz) / 20))) ** 1.4;
+			if (sc0 > 0.002) {
+				const w = hsh(q[5], q[4] + 17) * Math.PI * 2;
+				const r = (0.8 + hsh(q[5], q[4] + 29) * 3.2) * sc0;
+				x += Math.cos(w) * r * (hoch ? 0.5 : 1);
+				y += Math.sin(w) * r * 0.7;
+			}
 			if (dz < 5) {
-				const k = (5 - dz) * 0.35;
+				const k = (5 - dz) * 0.12;
 				x += (x - I.x) * k;
 				y += (y - I.y) * k;
 			}
@@ -314,6 +324,7 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 		// Hochformat: nahe Wörter (dz < 5) ziehen beim Durchflug nach außen und blenden am Bildrand weich aus,
 		// statt hart angeschnitten zu wirken. Querformat: Zeichen fliegen unverändert aus dem Bild.
 		if (hoch && word && dz < 5) al *= cl(Math.min(X, s.W - X) / 48) * cl(Math.min(Y, s.H - Y) / 48);
+		if (word) al *= cl((dz - 1.2) / 2.8);
 		if (al <= 0.01) continue;
 		// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
 		for (const z of zonen) {
@@ -324,6 +335,9 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 		}
 		if (al <= 0.01) continue;
 		const sz = cl(0.07 * fz, 0.8, 64); // Zeichengröße in Szenen-Einheiten (Entwurf)
+		// Staub wird nie zum großen Symbol: ab etwa 6 Einheiten blendet er aus
+		if (!word) al *= cl((9 - sz) / 3);
+		if (al <= 0.01) continue;
 		if (sz < 6) {
 			// Punkt: Quadrat der Kantenlänge 0,55 x sz; im Hochformat mit Mindestgröße
 			const side = hoch ? Math.max(word ? 1 : 1.5 * s.fl, sz * 0.8 * f) : sz * 0.55 * f;

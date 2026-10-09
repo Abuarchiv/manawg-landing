@@ -6,7 +6,10 @@ import { type SceneState, loop, qa, register } from '../../core/loop';
 import { AB, hsh, ss } from '../../core/math';
 import { PL } from '../bereiche/orte';
 
-const S = 1.15;
+// Maßstab der Kugeln im Szenenraum: quer groß (die Wolke füllt etwa zwei Drittel der Breite), hoch passt sie in die Boxbreite 600
+const S_QUER = 1.5;
+const S_HOCH = 1.28;
+const sOf = (s: SceneState): number => (s.mode === 'hoch' ? S_HOCH : S_QUER);
 const LINIE = 3.4; // Linienabstand der gestochenen Kugeln in CSS-px
 const NAME = 11; // Namen auf den Kugeln: Mono 11 px (hoch 10 px), Versalien mit Laufweite, ohne Platte
 const REACH = 22; // Trefferrand um jeden Körper in CSS-px (Touch)
@@ -66,33 +69,40 @@ interface Wand {
 // Ruhelage des Rings. Quer: Mitte der Bezugsbox 1280 x 760. Hoch: eigene Bezugsbox von 600 Einheiten Breite,
 // der Ring (481 Einheiten) füllt so etwa 80 % der Breite und liegt unter dem Titel in der Mitte des Rests.
 function homes(s: KoerperState) {
+	const S = sOf(s);
 	let cx = 640;
 	let cy = 400;
+	const oben0 = Math.min(...AB.map((c) => (c[1] - 173) * S - c[2] * S * 0.98));
+	const unten0 = Math.max(...AB.map((c) => (c[1] - 173) * S + c[2] * S * 0.98));
+	const t = s.host.querySelector<HTMLElement>('[data-titel]');
 	if (s.mode === 'hoch') {
-		const t = s.host.querySelector<HTMLElement>('[data-titel]');
 		const tb = t ? t.offsetTop + t.offsetHeight : 0;
 		cx = s.bw / 2;
 		// Unterkante des Titels samt Abstand in Szenen-Einheiten: Ring und Decke bleiben darunter
 		s.tbU = (tb + 14 - s.oy) / s.f;
-		const oben = Math.min(...AB.map((c) => (c[1] - 173) * S - c[2] * S * 0.98));
-		cy = Math.max((tb + (s.H - tb) / 2 - s.oy) / s.f, s.tbU - oben);
+		cy = Math.max((tb + (s.H - tb) / 2 - s.oy) / s.f, s.tbU - oben0);
+	} else if (t) {
+		// Quer: Titelblock und Kugelwolke bilden eine Gruppe, die im Bild (unter dem Kopf, über dem Boden) mittig steht.
+		// Der Titel sitzt 36 px über der Wolke, nie näher als eine Stufe unter dem Kopf.
+		const kopf =
+			document.querySelector<HTMLElement>('[data-kopf]')?.getBoundingClientRect().bottom ?? 64;
+		const vis = Math.min(s.H, innerHeight);
+		const th = t.offsetHeight;
+		const ringH = (unten0 - oben0) * s.f;
+		const von = Math.max(0, kopf - s.el.getBoundingClientRect().top) + 14;
+		const bis = vis - 48;
+		const gruppe = th + 36 + ringH;
+		const top = von + Math.max(0, (bis - von - gruppe) / 2);
+		t.style.top = `${Math.round(top)}px`;
+		cy = (top + th + 36 + ringH / 2 - s.oy) / s.f - (oben0 + unten0) / 2;
 	}
 	s.cx = cx;
 	s.cy = cy;
-	// Quer: die Überschrift sitzt knapp über der Kugelwolke (höchstens etwa 40 px Luft), nicht am Abschnittsrand
-	if (s.mode !== 'hoch' && s.B) {
-		const t = s.host.querySelector<HTMLElement>('[data-titel]');
-		if (t) {
-			const oben = Math.min(...AB.map((c) => cy + (c[1] - 173) * S - c[2] * S * 0.98));
-			const px = s.oy + oben * s.f - t.offsetHeight - 40;
-			// nie näher als eine Stufe unter dem Kopf
-			t.style.top = `max(calc(var(--kopf-unten) + var(--sp-14)), ${Math.round(px)}px)`;
-		}
-	}
 	if (!s.B) return;
 	AB.forEach((c, i) => {
 		const b = s.B?.[i];
 		if (!b) return;
+		b.r = c[2] * S * 0.98;
 		b.hx = cx + (c[0] - 208) * S;
 		b.hy = cy + (c[1] - 173) * S;
 		if (s.idle >= 3.5 || s.ring) {
@@ -330,7 +340,7 @@ export function registerKoerper(cv: HTMLCanvasElement, api: KoerperApi = {}) {
 				y: 0,
 				px: 0,
 				py: 0,
-				r: c[2] * S * 0.98,
+				r: c[2] * S_QUER * 0.98,
 				hx: 0,
 				hy: 0,
 				n: PL[i]?.[0].toUpperCase() ?? '',
@@ -454,7 +464,7 @@ export function registerKoerper(cv: HTMLCanvasElement, api: KoerperApi = {}) {
 			const visB = (innerHeight - r.top - s.oy) / s.f;
 			// Boden bei etwa 80 % der sichtbaren Höhe: Titel und Körper bleiben ein Bild
 			const floor = loose0
-				? Math.min(y1, Math.max(y0 + (visB - y0) * 0.8, y0 + (y1 - y0) * 0.5))
+				? Math.min(y1, Math.max(y0 + (visB - y0) * 0.88, y0 + (y1 - y0) * 0.5))
 				: y1;
 			// Der Boden ist eine flache Mulde (Ränder 7 % der Breite höher): die Körper rollen zur Mitte und legen sich
 			// aufeinander, statt in einer Reihe am unteren Rand zu liegen
@@ -497,7 +507,7 @@ export function registerKoerper(cv: HTMLCanvasElement, api: KoerperApi = {}) {
 			// Stich je Körper einmal in ein Sprite gebacken, je Lichtrichtung in 32 Winkeln und 4 Abständen.
 			// Je Bild nur noch drawImage.
 			ctx.imageSmoothingEnabled = true;
-			const skey = `${s.f.toFixed(3)}|${s.dpr}`;
+			const skey = `${s.f.toFixed(3)}|${s.dpr}|${Math.round(sOf(s) * 100)}`;
 			for (const b of B) {
 				const Lx = lx - b.x;
 				const Ly = ly - b.y;

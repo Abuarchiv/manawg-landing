@@ -57,7 +57,7 @@ for (const vp of vpList(a.vp ?? '1440x900@2')) {
 			`Konstante ${m.flutZelle} px, Läufe ${laeufe}, Raster-Abweichung max ${maxErr.toFixed(2)} px, Ziffer ${m.flutZiffer} px`,
 		);
 		say(
-			m.zifferZelle === 6 && m.zifferGlyph === 8,
+			m.zifferZelle === 7 && m.zifferGlyph === 8,
 			`X-3 So-geht's-Ziffern ${vp.name}`,
 			`Zelle ${m.zifferZelle}, Glyph ${m.zifferGlyph}`,
 		);

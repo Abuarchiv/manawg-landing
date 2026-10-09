@@ -25,12 +25,6 @@ export function KopfMaske() {
 				const s = document.getElementById(id);
 				if (!s) continue;
 				const r = s.getBoundingClientRect();
-				// Flutband (helle Zellen): volle Deckung, sobald seine Oberkante in den Auslauf des Verlaufs läuft,
-				// sonst steht das Logo auf einem grauen Streifen
-				if (id === 'flutband') {
-					if (r.bottom > 0) v = Math.max(v, Math.min(1, Math.max(0, (band + 28 - r.top) / 28)));
-					continue;
-				}
 				const d = Math.min(r.bottom, band) - Math.max(r.top, 0);
 				let e = Math.min(1, Math.max(0, d / band));
 				// Bereiche: steht die Szene still, liegen Label und Titel unter dem Kopfband und müssen voll lesbar sein.
