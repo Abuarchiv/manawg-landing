@@ -12,9 +12,8 @@ const FS = `#version 300 es
 precision highp float;
 uniform sampler2D uSkyQ, uSkyH, uFein, uGrob;
 uniform float uHoch, uDprH;
-uniform vec2 uRes, uCC, uRiss; // uRiss: Ober- und Unterkante des Fensters in uv
+uniform vec2 uRes, uCC;
 uniform float uT, uOpen, uCS;
-uniform vec3 uM;   // Zeiger in uv (y nach oben), z = Stärke
 uniform vec4 uTxt; // Textfeld in uv (x0, y0, x1, y1), dort bleibt der Himmel ruhig und dunkler
 out vec4 o;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -58,17 +57,10 @@ void main(){
   vec2 tb = smoothstep(vec2(-.15), vec2(.02), min(uv - uTxt.xy, uTxt.zw - uv));
   float tm = tb.x * tb.y;
   col = mix(col, vec3(.035), tm * .7);
-  // Schatten des Stoffs auf dem Himmel, dann der Umschlag: schmales Band, Rückseite des Stoffs, Licht von oben links
-  col *= 1. - .55 * exp(-max(d, 0.) * 55.);
-  float band = 1. - smoothstep(.0, .012, d);
-  float licht = seite < .5 ? .9 : .35;
-  vec3 saum = vec3(.05) + vec3(.2) * licht * (.7 + .6 * noise(vec2(uv.y * 300., seite)));
-  col = mix(col, saum, band);
   // Unterkante: Wolken laufen in den Grund der Fußzeile aus (keine Kante an der Naht)
   col *= mix(.0, 1., smoothstep(0., 110. / uRes.y * uDprH, uv.y));
-  float alpha = smoothstep(-.03, -.018, d);
   col += (hash(gl_FragCoord.xy + fract(uT) * 91.) - .5) * .03;
-  o = vec4(col * alpha, alpha);
+  o = vec4(col, 1.);
 }
 `;
 
@@ -82,9 +74,6 @@ interface HimmelState extends SceneState {
 	g: Gl | null;
 	bereit: boolean;
 	offen: number;
-	zupf: number;
-	mx: number;
-	my: number;
 }
 
 function programm(gl: WebGL2RenderingContext): WebGLProgram | null {
@@ -188,9 +177,6 @@ export function registerHimmel(
 			s.g = null;
 			s.bereit = false;
 			s.offen = 0;
-			s.zupf = 0;
-			s.mx = 0.5;
-			s.my = 0.5;
 			laden(s).catch(() => {});
 		},
 		frame(s) {
@@ -211,11 +197,7 @@ export function registerHimmel(
 			const hoch = s.mode === 'hoch';
 			gl.uniform1f(u('uHoch'), hoch ? 1 : 0);
 			gl.uniform1f(u('uDprH'), dpr);
-			// Riss-Mitte auf Höhe des Fensters, Wolke im freien Feld neben (quer) bzw. über (hoch) dem Titel
-			const sichtOben = cl(1 + r0.top / s.H, 0, 1);
-			const sichtUnten = cl(1 - (innerHeight - r0.top) / s.H, 0, 1);
 			gl.uniform2f(u('uRes'), w, h);
-			gl.uniform2f(u('uRiss'), sichtOben, sichtUnten);
 			gl.uniform1f(u('uT'), s.reduced ? 4 : loop.t);
 			gl.uniform1f(u('uOpen'), s.offen);
 			const unten = cl((r0.bottom - innerHeight) / s.H, 0, 1); // Teil der Fläche unter dem Fensterrand
@@ -227,7 +209,6 @@ export function registerHimmel(
 				gl.uniform2f(u('uCC'), 0.72, unten + (1 - unten) * 0.55);
 				gl.uniform1f(u('uCS'), 0.62);
 			}
-			gl.uniform3f(u('uM'), s.mx, s.my, s.zupf);
 			const tf = textFeld(sec, r0);
 			if (tf) gl.uniform4f(u('uTxt'), tf[0] / s.W, 1 - tf[3] / s.H, tf[2] / s.W, 1 - tf[1] / s.H);
 			else gl.uniform4f(u('uTxt'), 0, 0, 0, 0);
