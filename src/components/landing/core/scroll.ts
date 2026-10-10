@@ -66,16 +66,6 @@ function targetY(el: Element): number {
 
 const expoOut = (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t));
 
-/**
- * Rad-Weg von außerhalb des Dokuments (die App im Handy, Phone.tsx): Lenis bekommt die Strecke wie ein eigenes
- * Rad-Ereignis (gleiches Gleiten), ohne Lenis scrollt das Fenster nativ.
- */
-export function radAnSeite(deltaY: number): void {
-	const l = qa.lenis as Lenis | null | undefined;
-	if (l && !loop.reduced) l.scrollTo(l.targetScroll + deltaY, { programmatic: false });
-	else window.scrollBy({ top: deltaY, behavior: 'auto' });
-}
-
 export function initScroll(root: HTMLElement): () => void {
 	history.scrollRestoration = 'auto';
 	// Lenis: Dauer 1,1 s, ease-out-expo. Aus bei reduzierter Bewegung (auch wenn die Einstellung später wechselt).
