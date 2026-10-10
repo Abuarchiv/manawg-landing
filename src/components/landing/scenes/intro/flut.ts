@@ -1,51 +1,39 @@
-// Die Flut: gestochene Wolken fluten die Bühne als weicher Übergang zwischen Organ, Wohnung und Ende-Ebene.
+// Die Flut: weiße Zellen mit Minensucher-Ziffern fluten die Bühne, wie im Entwurf (final.dc.html, Zeilen 554 bis 562).
 //
-// Je Punkt der Maske entscheidet ein Dichtewert, wie viel Wolke steht: Rauschen in Zellkoordinaten (0,13 je Einheit,
-// driftet mit t) plus Feinrauschen für eine organische Kante, Deckung, Zeilenverlauf, Lücken und Zeiger-Spur.
-// Gezeichnet wird sie in kleiner Auflösung als Alpha-Maske, die hochgerechnet die Wolken (gedämpft, dunkel) mit weicher
-// Kante ausstanzt: keine Blöcke, keine Ziffern.
+// Quer: Zelle 32 Entwurfs-Pixel (mit der Bühne skaliert, k = min(W / 1280, H / 800)), Ziffer 10 px, Rauschen in
+// Zellkoordinaten (0,13 je Zelle, driftet mit t), Schwelle n + Deckung * 0,55 - 0,45 + Zeile / Zeilen * 0,2 > 0,5.
 // Zwei Wellen: P 0,50 bis 0,78 (Organ zur Wohnung) und P 0,84 bis 0,99 (Wohnung zur Ende-Ebene). Der Zeiger wischt
-// eine Spur frei (Abklingen 0,985 je Bild bei 60 Hz).
+// eine 5 x 5 Zellen große Spur frei (Abklingen 0,985 je Bild bei 60 Hz).
+// Hoch (Handy): Zelle 8 px, Ziffer 7 px, sonst dieselbe Rechnung; dort bleibt die Wohnung unter dem Text frei.
 // Freigehalten werden echte DOM-Rechtecke (loecher): Logo, Knopf und Sprunglink immer, die Raumkarte solange
-// sie steht (Texte bleiben lesbar).
+// sie steht (Texte bleiben lesbar, der Entwurf deckt sie weiß zu).
 
-import { type Modus, modeOf, qa } from '../../core/loop';
+import { type Modus, loop, modeOf, qa } from '../../core/loop';
 import { cl, ss, vnz } from '../../core/math';
 import type { BuehnenKontext, Loch } from './types';
 import { hochOben } from './wohnung';
 
 const RAND_TEXT = 64; // Hochformat: Abstand der Raumtext-Lücke zum Text
 const KANTE = 24; // Hochformat: weiche Kante der Lücken
-const STAERKE = 0.3; // Beitrag der Deckung zum Schwellwert (kleiner als im Entwurf: die Flut deckt nie den ganzen Schirm)
-const SCHRITT = 6; // Auflösung der Maske in CSS-Pixeln (hochgerechnet ergibt sie die weiche Kante)
-const KANTE_W = 0.022; // Breite der Kante im Dichtewert
-
-// Füllung: gestochene Wolken (dieselbe Technik wie Himmel und Finale), gedämpft, damit die Flut nicht grell aufblitzt.
-// Bis das Bild geladen ist, füllt ein ruhiges Dunkelgrau.
-const WOLKEN_A = 2048 / 592;
-let wolken: HTMLImageElement | null = null;
-function wolkenBild(): HTMLImageElement | null {
-	if (typeof Image === 'undefined') return null;
-	if (!wolken) {
-		wolken = new Image();
-		wolken.decoding = 'async';
-		wolken.src = '/himmel/flut-wolken.webp';
-	}
-	return wolken.complete && wolken.naturalWidth ? wolken : null;
-}
+const STAERKE = 0.55; // Beitrag der Deckung zum Schwellwert (Entwurf)
 
 /** Zustand der Flut je Canvas. */
 interface FlutZustand {
 	ctx: CanvasRenderingContext2D;
-	/** Zeiger-Spur in Maskenauflösung (1 = frisch gewischt). */
+	/** Zeiger-Spur je Zelle (1 = frisch gewischt). */
 	tr: Float32Array | null;
 	clean: boolean;
-	/** Maske der Wolken (Alpha) in kleiner Auflösung. */
-	mask: HTMLCanvasElement | null;
-	mctx: CanvasRenderingContext2D | null;
-	img: ImageData | null;
-	mw: number;
-	mh: number;
+	/** Schrift-Version des Atlas (loop.fv beim letzten Zeichnen). */
+	fv: number;
+	/** Weiße Zellen (1) des letzten Bildes. */
+	on: Uint8Array | null;
+	cols: number;
+	rows: number;
+	cs: number;
+	loecher: readonly Loch[];
+	atlas: HTMLCanvasElement | null;
+	atlasKey: string | null;
+	atlasFv: number;
 }
 
 /** Eine Lücke in der Flut: Rechteck mit Rand, weicher Kante und Gewicht w0 (0..1). */
@@ -162,10 +150,100 @@ export function gitter(
 	}
 }
 
-const sstep = (a: number, b: number, x: number): number => {
-	const q = cl((x - a) / (b - a));
-	return q * q * (3 - 2 * q);
-};
+// Restinseln unter MIN_INSEL zusammenhängenden Zellen fallen weg (nur Hochformat): sie sähen am Ende einer Phase
+// wie Renderreste aus. Quer bleibt es wie im Entwurf: einzelne Blöcke tauchen auf und verschwinden.
+const MIN_INSEL = 8;
+let flag = new Uint8Array(0);
+let stack = new Int32Array(0);
+function entInseln(on: Uint8Array, cols: number, rows: number): void {
+	const n = cols * rows;
+	if (flag.length !== n) {
+		flag = new Uint8Array(n);
+		stack = new Int32Array(n);
+	} else flag.fill(0);
+	for (let q0 = 0; q0 < n; q0++) {
+		if (!on[q0] || flag[q0]) continue;
+		let sp = 0;
+		let cnt = 0;
+		stack[sp++] = q0;
+		flag[q0] = 1;
+		while (sp) {
+			const q = stack[--sp] ?? 0;
+			cnt++;
+			const a = q % cols;
+			const b = (q - a) / cols;
+			if (a > 0 && on[q - 1] && !flag[q - 1]) {
+				flag[q - 1] = 1;
+				stack[sp++] = q - 1;
+			}
+			if (a < cols - 1 && on[q + 1] && !flag[q + 1]) {
+				flag[q + 1] = 1;
+				stack[sp++] = q + 1;
+			}
+			if (b > 0 && on[q - cols] && !flag[q - cols]) {
+				flag[q - cols] = 1;
+				stack[sp++] = q - cols;
+			}
+			if (b < rows - 1 && on[q + cols] && !flag[q + cols]) {
+				flag[q + cols] = 1;
+				stack[sp++] = q + cols;
+			}
+		}
+		if (cnt < MIN_INSEL) {
+			sp = 0;
+			stack[sp++] = q0;
+			on[q0] = 0;
+			while (sp) {
+				const q = stack[--sp] ?? 0;
+				const a = q % cols;
+				const b = (q - a) / cols;
+				if (a > 0 && on[q - 1]) {
+					on[q - 1] = 0;
+					stack[sp++] = q - 1;
+				}
+				if (a < cols - 1 && on[q + 1]) {
+					on[q + 1] = 0;
+					stack[sp++] = q + 1;
+				}
+				if (b > 0 && on[q - cols]) {
+					on[q - cols] = 0;
+					stack[sp++] = q - cols;
+				}
+				if (b < rows - 1 && on[q + cols]) {
+					on[q + cols] = 0;
+					stack[sp++] = q + cols;
+				}
+			}
+		}
+	}
+}
+
+// Atlas der Ziffern 1 bis 8 für drawImage (scharf bei jedem Pixelfaktor)
+function atlas(
+	st: FlutZustand,
+	dpr: number,
+	cs: number,
+	zf: number,
+	alpha: number,
+): HTMLCanvasElement {
+	const key = `${dpr}|${cs}|${zf}`;
+	if (st.atlas && st.atlasKey === key && st.atlasFv === st.fv) return st.atlas;
+	const cv = document.createElement('canvas');
+	const z = Math.round(cs * dpr);
+	cv.width = z * 9;
+	cv.height = z;
+	const g = cv.getContext('2d');
+	if (!g) return cv;
+	g.font = `500 ${zf * dpr}px "JetBrains Mono", monospace`;
+	g.textAlign = 'center';
+	g.textBaseline = 'middle';
+	g.fillStyle = `rgba(250,250,250,${alpha})`;
+	for (let n = 1; n <= 8; n++) g.fillText(String(n), z * n + z / 2, z / 2 + 0.5 * dpr);
+	st.atlas = cv;
+	st.atlasKey = key;
+	st.atlasFv = st.fv;
+	return cv;
+}
 
 /**
  * Zeichnet die Flut in das 2D-Canvas.
@@ -181,11 +259,15 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 			ctx,
 			tr: null,
 			clean: false,
-			mask: null,
-			mctx: null,
-			img: null,
-			mw: 0,
-			mh: 0,
+			fv: 0,
+			on: null,
+			cols: 0,
+			rows: 0,
+			cs: 32,
+			loecher: [],
+			atlas: null,
+			atlasKey: null,
+			atlasFv: -1,
 		};
 		st = neu;
 		states.set(cv, neu);
@@ -203,17 +285,30 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 			const rows = Math.ceil(H / cs);
 			const on = new Uint8Array(cols * rows);
 			const endA = ss((P - 0.9) / 0.05);
-			const lue = lueckenVon(lo ?? [], { tw: textGewicht(P), endA, W, H, safeH: H, mode }, cs);
+			const lue = lueckenVon(
+				lo ?? neu.loecher,
+				{ tw: textGewicht(P), endA, W, H, safeH: H, mode },
+				cs,
+			);
 			gitter(t, cover, lue, null, cols, rows, on, cs);
 			return { cols, rows, cell: cs, on: Array.from(on) };
 		};
+		qa.flutZustand = () => ({
+			cols: neu.cols,
+			rows: neu.rows,
+			cell: neu.cs,
+			on: neu.on ? Array.from(neu.on) : [],
+		});
 	}
 	const fx = st.ctx;
 	const { W, H, dpr, m } = c;
 	const hoch = c.mode === 'hoch';
 	const { cs, zf } = masse(W, H, c.mode);
+	st.cs = cs;
 	const alt = qa.masse;
 	qa.masse = { ...(typeof alt === 'object' ? alt : null), flutZelle: cs, flutZiffer: zf };
+	st.loecher = loecher;
+	fx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	// Bei reduzierter Bewegung keine Flut: die Räume blenden nur ein und aus (kein Schwarz-Weiß-Blitzen)
 	let cover = c.reduced ? 0 : c.cover;
 	// Hochformat: die zweite Flutphase (Pinnwand & Chat) deckt höchstens 0,35, die Wohnung bleibt lesbar
@@ -221,93 +316,88 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 	const t = c.reduced ? 0 : c.t;
 	if (!(cover > 0.001)) {
 		if (!st.clean) {
-			fx.setTransform(1, 0, 0, 1, 0, 0);
-			fx.clearRect(0, 0, cv.width, cv.height);
+			fx.clearRect(0, 0, W, H);
 			st.clean = true;
-			st.tr?.fill(0);
+			st.on = null;
 		}
 		return;
 	}
 	st.clean = false;
-	const mw = Math.ceil(W / SCHRITT);
-	const mh = Math.ceil(H / SCHRITT);
-	if (!st.mask || st.mw !== mw || st.mh !== mh) {
-		st.mask = document.createElement('canvas');
-		st.mask.width = mw;
-		st.mask.height = mh;
-		st.mctx = st.mask.getContext('2d');
-		st.img = st.mctx ? st.mctx.createImageData(mw, mh) : null;
-		st.mw = mw;
-		st.mh = mh;
-		st.tr = new Float32Array(mw * mh);
-	}
-	const { mctx, img, mask } = st;
+	fx.clearRect(0, 0, W, H);
+	const cols = Math.ceil(W / cs);
+	const rows = Math.ceil(H / cs);
+	st.cols = cols;
+	st.rows = rows;
+	if (!st.tr || st.tr.length !== cols * rows) st.tr = new Float32Array(cols * rows);
 	const tr = st.tr;
-	if (!mctx || !img || !mask || !tr) return;
-	// Zeiger-Spur: Abklingen im Tempo des Entwurfs (0,985 je Bild bei 60 Hz), Stempel mit weichem Rand
+	// Zeiger-Spur: Abklingen im Tempo des Entwurfs (0,985 je Bild bei 60 Hz)
 	const k = 0.985 ** (Math.min(c.dt ?? 0.016, 0.05) * 60);
 	for (let q = 0; q < tr.length; q++) tr[q] = (tr[q] ?? 0) * k;
 	if (m.in) {
-		const R = (hoch ? 5.2 : 2.6) * (hoch ? 8 : cs) * 0.9;
-		const a0 = Math.max(0, Math.floor((m.x - R) / SCHRITT));
-		const a1 = Math.min(mw - 1, Math.ceil((m.x + R) / SCHRITT));
-		const b0 = Math.max(0, Math.floor((m.y - R) / SCHRITT));
-		const b1 = Math.min(mh - 1, Math.ceil((m.y + R) / SCHRITT));
-		for (let b = b0; b <= b1; b++)
-			for (let a = a0; a <= a1; a++) {
-				const g = Math.max(
-					0,
-					1 - Math.hypot((a + 0.5) * SCHRITT - m.x, (b + 0.5) * SCHRITT - m.y) / R,
-				);
-				const q = b * mw + a;
-				tr[q] = Math.max(tr[q] ?? 0, g);
+		const mi = Math.floor(m.x / cs);
+		const mj = Math.floor(m.y / cs);
+		// Quer wie im Entwurf: 5 x 5 Zellen, Radius 2,6 Zellen. Hoch (Zellen 8 px): 11 x 11.
+		const R = hoch ? 5 : 2;
+		const rr = hoch ? R + 0.2 : 2.6;
+		for (let dj = -R; dj <= R; dj++)
+			for (let di = -R; di <= R; di++) {
+				const a = mi + di;
+				const b = mj + dj;
+				if (a >= 0 && b >= 0 && a < cols && b < rows) {
+					const g = Math.max(0, 1 - Math.hypot(di, dj) / rr);
+					tr[b * cols + a] = Math.max(tr[b * cols + a] ?? 0, g);
+				}
 			}
 	}
-	const luecken = lueckenVon(loecher, { ...c, tw: textGewicht(c.P) }, cs);
-	const d = img.data;
-	const fn = 1 / cs;
-	const st2 = STAERKE * (c.P > 0.8 ? 1.3 : 1); // zweite Welle (Wohnung zur Ende-Ebene) etwas kräftiger: der Raum dahinter ist heller, die Flut braucht mehr Dichte
-	for (let b = 0; b < mh; b++) {
-		const y = (b + 0.5) * SCHRITT;
-		for (let a = 0; a < mw; a++) {
-			const x = (a + 0.5) * SCHRITT;
-			const q = b * mw + a;
-			// Grundrauschen wie im Entwurf, dazu Feinrauschen für eine organische, ausgefranste Kante
-			const n =
-				vnz(x * fn * 0.2 + t * 0.03, y * fn * 0.2 - t * 0.02) +
-				(vnz(x * fn * 0.55 + 7.3, y * fn * 0.55 + 3.1 + t * 0.05) - 0.5) * 0.22;
-			let pk = 0;
-			for (const l of luecken) pk = Math.max(pk, l.w0 * loch(x, y, l, l.rand, l.kante));
-			const dich =
-				n + cover * st2 - 0.45 + (y / H) * 0.2 - 2 * pk - 2 * sstep(0.1, 0.5, tr[q] ?? 0);
-			const o = q * 4;
-			d[o] = d[o + 1] = d[o + 2] = 255;
-			d[o + 3] = Math.round(255 * sstep(0.5 - KANTE_W, 0.5 + KANTE_W, dich));
+	if (!st.on || st.on.length !== cols * rows) st.on = new Uint8Array(cols * rows);
+	const on = st.on;
+	gitter(t, cover, lueckenVon(loecher, { ...c, tw: textGewicht(c.P) }, cs), tr, cols, rows, on, cs);
+	if (hoch && cover < 0.25) entInseln(on, cols, rows);
+	// Zellkanten auf Gerätepixel runden: scharfe Blöcke ohne Fugen bei gebrochener Zellgröße
+	const px = (v: number) => Math.round(v * dpr) / dpr;
+	fx.fillStyle = '#FAFAFA';
+	fx.beginPath();
+	for (let b = 0; b < rows; b++) {
+		let a = 0;
+		while (a < cols) {
+			if (!on[b * cols + a]) {
+				a++;
+				continue;
+			}
+			const a0 = a;
+			while (a < cols && on[b * cols + a]) a++;
+			const x0 = px(a0 * cs);
+			const y0 = px(b * cs);
+			fx.rect(x0, y0, px(a * cs) - x0, px((b + 1) * cs) - y0);
 		}
 	}
-	mctx.putImageData(img, 0, 0);
+	fx.fill();
+	// Ziffern aus dem Atlas, ohne Skalierung
+	fx.setTransform(1, 0, 0, 1, 0, 0);
+	st.fv = loop.fv;
+	const at = atlas(st, dpr, cs, zf, hoch ? 0.66 : 0.6);
+	const z = Math.round(cs * dpr);
+	for (let b = 0; b < rows; b++)
+		for (let a = 0; a < cols; a++) {
+			if (on[b * cols + a]) continue;
+			let n = 0;
+			for (let dj = -1; dj <= 1; dj++)
+				for (let di = -1; di <= 1; di++) {
+					const x = a + di;
+					const y = b + dj;
+					if ((di || dj) && x >= 0 && y >= 0 && x < cols && y < rows && on[y * cols + x]) n++;
+				}
+			if (n) {
+				// Zelle in Gerätepixeln: Mitte der gerundeten Zellkanten
+				const gx = Math.round(a * cs * dpr);
+				const gy = Math.round(b * cs * dpr);
+				fx.drawImage(at, z * n, 0, z, z, gx, gy, z, z);
+			}
+		}
 	fx.setTransform(dpr, 0, 0, dpr, 0, 0);
-	fx.clearRect(0, 0, W, H);
-	fx.globalCompositeOperation = 'source-over';
-	fx.fillStyle = '#0E0E0E';
-	fx.fillRect(0, 0, W, H);
-	const bild = wolkenBild();
-	if (bild) {
-		// Wolken langsam nach links ziehend, gedämpft: sie bleiben Hintergrund, nie heller Block
-		const bh = Math.max(H, W / WOLKEN_A) * 1.08;
-		const bw = bh * WOLKEN_A;
-		const dx = -((((t * 6) % bw) + bw) % bw);
-		fx.globalAlpha = 0.34;
-		for (let x = dx; x < W; x += bw) fx.drawImage(bild, x, (H - bh) / 2, bw, bh);
-		fx.globalAlpha = 1;
-	} else {
-		fx.fillStyle = '#1C1C1C';
-		fx.fillRect(0, 0, W, H);
+	if (m.in) {
+		fx.strokeStyle = '#FAFAFA';
+		fx.lineWidth = 1;
+		fx.strokeRect(Math.floor(m.x / cs) * cs + 0.5, Math.floor(m.y / cs) * cs + 0.5, cs - 1, cs - 1);
 	}
-	// Maske ausstanzen: bilinear hochgerechnet, die Kante bleibt weich
-	fx.globalCompositeOperation = 'destination-in';
-	fx.imageSmoothingEnabled = true;
-	fx.imageSmoothingQuality = 'high';
-	fx.drawImage(mask, 0, 0, mw, mh, 0, 0, mw * SCHRITT, mh * SCHRITT);
-	fx.globalCompositeOperation = 'source-over';
 }
