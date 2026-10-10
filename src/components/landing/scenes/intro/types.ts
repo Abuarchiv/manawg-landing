@@ -55,6 +55,8 @@ export interface BuehnenKontext {
 	cover: number;
 	stageTop: number;
 	visible: boolean;
+	/** Geglättete Scrollgeschwindigkeit der Seite (CSS-px/s, positiv nach unten). */
+	sv: number;
 	/** Pixelfaktor des Heros (auf Touch-Geräten gedeckelt). */
 	dprHero?: number;
 	loecher?: Loch[];

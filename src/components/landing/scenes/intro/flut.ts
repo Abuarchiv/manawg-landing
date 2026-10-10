@@ -4,6 +4,8 @@
 // Zellkoordinaten (0,13 je Zelle, driftet mit t), Schwelle n + Deckung * 0,55 - 0,45 + Zeile / Zeilen * 0,2 > 0,5.
 // Zwei Wellen: P 0,50 bis 0,78 (Organ zur Wohnung) und P 0,84 bis 0,99 (Wohnung zur Ende-Ebene). Der Zeiger wischt
 // eine 5 x 5 Zellen große Spur frei (Abklingen 0,985 je Bild bei 60 Hz).
+// Seit 2026-10-10: das Rauschen wandert mit dem Scroll (drift = P), jeder Scrollschritt lässt also neue Zellen
+// kommen und gehen, und jede Zelle klappt aus ihrer Mitte auf statt zu springen (Alter je Zelle, ~0,2 s).
 // Hoch (Handy): Zelle 8 px, Ziffer 7 px, sonst dieselbe Rechnung; dort bleibt die Wohnung unter dem Text frei.
 // Freigehalten werden echte DOM-Rechtecke (loecher): Logo, Knopf und Sprunglink immer, die Raumkarte solange
 // sie steht (Texte bleiben lesbar, der Entwurf deckt sie weiß zu).
@@ -16,6 +18,8 @@ import { hochOben } from './wohnung';
 const RAND_TEXT = 64; // Hochformat: Abstand der Raumtext-Lücke zum Text
 const KANTE = 24; // Hochformat: weiche Kante der Lücken
 const STAERKE = 0.55; // Beitrag der Deckung zum Schwellwert (Entwurf)
+const DRIFT = 40; // Zellen, die das Rauschfeld über P 0..1 nach oben wandert (eine Welle ≈ 12 Zellen)
+const AUF = 14; // Tempo des Aufklappens je Zelle (1/s): 63 % nach 70 ms, fertig nach ~0,25 s
 
 /** Zustand der Flut je Canvas. */
 interface FlutZustand {
@@ -25,8 +29,10 @@ interface FlutZustand {
 	clean: boolean;
 	/** Schrift-Version des Atlas (loop.fv beim letzten Zeichnen). */
 	fv: number;
-	/** Weiße Zellen (1) des letzten Bildes. */
+	/** Weiße Zellen (1) des letzten Bildes (Ziel). */
 	on: Uint8Array | null;
+	/** Alter je Zelle (0..1): zieht dem Ziel nach, die Zelle klappt damit auf und zu. */
+	age: Float32Array | null;
 	cols: number;
 	rows: number;
 	cs: number;
@@ -116,7 +122,7 @@ export function lueckenVon(loecher: readonly Loch[], c: LueckenKontext, cs: numb
 				// die Wohnung unter dem Text bleibt frei
 				const b = hochOben(l.y + l.h, c.safeH ?? c.H);
 				aus.push({ x: 0, y: b.top, w: c.W, h: b.bot - b.top, rand: 0, kante: 140, w0: tw });
-			} else aus.push({ ...l, rand: cs * 1.5, kante: cs * 1.5, w0: tw });
+			} else aus.push({ ...l, rand: cs * 2, kante: cs * 2, w0: tw });
 		}
 	}
 	return aus;
@@ -135,16 +141,24 @@ export function gitter(
 	rows: number,
 	on: Uint8Array,
 	cs: number,
+	drift = 0,
 ): void {
+	// drift = Fortschritt P: das Rauschfeld zieht mit dem Scroll nach oben (DRIFT in Zellen je P), so bringt
+	// jeder Scrollschritt neue Blöcke, Stillstand lässt sie nur langsam mit t treiben
+	const dy = drift * DRIFT * 0.13;
+	const dx = drift * DRIFT * 0.04;
 	for (let b = 0; b < rows; b++) {
 		const y = b * cs + cs / 2;
 		for (let a = 0; a < cols; a++) {
 			const x = a * cs + cs / 2;
 			const q = b * cols + a;
-			const n = vnz(a * 0.13 + t * 0.03, b * 0.13 - t * 0.02);
+			const n = vnz(a * 0.13 + t * 0.03 + dx, b * 0.13 - t * 0.02 + dy);
 			let pk = 0;
 			for (const l of luecken) pk = Math.max(pk, l.w0 * loch(x, y, l, l.rand, l.kante));
-			const insel = cover > 0.001 && n + cover * STAERKE - 0.45 + (b / rows) * 0.2 - 2 * pk > 0.5;
+			// Hysterese: eine Zelle, die schon weiß ist, bleibt es bis 0,48, eine schwarze wird erst ab 0,52 weiß.
+			// Sonst flackern Zellen an der Schwelle mit dem Rauschen und bleiben halb aufgeklappt stehen.
+			const wert = n + cover * STAERKE - 0.45 + (b / rows) * 0.2 - 2 * pk;
+			const insel = cover > 0.001 && wert > (on[q] ? 0.48 : 0.52);
 			on[q] = insel && (!tr || (tr[q] ?? 0) < 0.3) ? 1 : 0;
 		}
 	}
@@ -218,6 +232,14 @@ function entInseln(on: Uint8Array, cols: number, rows: number): void {
 	}
 }
 
+let vis = new Uint8Array(0);
+/** Zellen mit mindestens halbem Alter zählen als weiß (Nachbarn der Ziffern). */
+function sichtbar(age: Float32Array, n: number): Uint8Array {
+	if (vis.length !== n) vis = new Uint8Array(n);
+	for (let q = 0; q < n; q++) vis[q] = (age[q] ?? 0) >= 0.5 ? 1 : 0;
+	return vis;
+}
+
 // Atlas der Ziffern 1 bis 8 für drawImage (scharf bei jedem Pixelfaktor)
 function atlas(
 	st: FlutZustand,
@@ -261,6 +283,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 			clean: false,
 			fv: 0,
 			on: null,
+			age: null,
 			cols: 0,
 			rows: 0,
 			cs: 32,
@@ -290,7 +313,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 				{ tw: textGewicht(P), endA, W, H, safeH: H, mode },
 				cs,
 			);
-			gitter(t, cover, lue, null, cols, rows, on, cs);
+			gitter(t, cover, lue, null, cols, rows, on, cs, P);
 			return { cols, rows, cell: cs, on: Array.from(on) };
 		};
 		qa.flutZustand = () => ({
@@ -319,6 +342,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 			fx.clearRect(0, 0, W, H);
 			st.clean = true;
 			st.on = null;
+			st.age = null;
 		}
 		return;
 	}
@@ -349,10 +373,38 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 				}
 			}
 	}
-	if (!st.on || st.on.length !== cols * rows) st.on = new Uint8Array(cols * rows);
-	const on = st.on;
-	gitter(t, cover, lueckenVon(loecher, { ...c, tw: textGewicht(c.P) }, cs), tr, cols, rows, on, cs);
-	if (hoch && cover < 0.25) entInseln(on, cols, rows);
+	if (!st.on || st.on.length !== cols * rows) {
+		st.on = new Uint8Array(cols * rows);
+		st.age = null;
+	}
+	const ziel = st.on;
+	gitter(
+		t,
+		cover,
+		lueckenVon(loecher, { ...c, tw: textGewicht(c.P) }, cs),
+		tr,
+		cols,
+		rows,
+		ziel,
+		cs,
+		c.P,
+	);
+	if (hoch && cover < 0.25) entInseln(ziel, cols, rows);
+	// Alter je Zelle zieht dem Ziel nach: Zellen klappen aus der Mitte auf und zu statt zu springen.
+	// Beim ersten Bild einer Phase (age fehlt) steht alles sofort, sonst blitzt nach Sprüngen eine leere Fläche.
+	let age = st.age;
+	if (!age) {
+		age = st.age = new Float32Array(cols * rows);
+		for (let q = 0; q < age.length; q++) age[q] = ziel[q] ?? 0;
+	} else {
+		const ka = c.reduced ? 1 : 1 - Math.exp(-AUF * Math.min(c.dt ?? 0.016, 0.05));
+		for (let q = 0; q < age.length; q++) {
+			const v = (age[q] ?? 0) + ((ziel[q] ?? 0) - (age[q] ?? 0)) * ka;
+			age[q] = v < 0.01 ? 0 : v > 0.99 ? 1 : v;
+		}
+	}
+	// Sichtbar (für Ziffern und Nachbarn): ab halbem Alter
+	const on = sichtbar(age, cols * rows);
 	// Zellkanten auf Gerätepixel runden: scharfe Blöcke ohne Fugen bei gebrochener Zellgröße
 	const px = (v: number) => Math.round(v * dpr) / dpr;
 	fx.fillStyle = '#FAFAFA';
@@ -360,17 +412,26 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext, loecher: Loch[] =
 	for (let b = 0; b < rows; b++) {
 		let a = 0;
 		while (a < cols) {
-			if (!on[b * cols + a]) {
+			if ((age[b * cols + a] ?? 0) < 1) {
 				a++;
 				continue;
 			}
 			const a0 = a;
-			while (a < cols && on[b * cols + a]) a++;
+			while (a < cols && (age[b * cols + a] ?? 0) >= 1) a++;
 			const x0 = px(a0 * cs);
 			const y0 = px(b * cs);
 			fx.rect(x0, y0, px(a * cs) - x0, px((b + 1) * cs) - y0);
 		}
 	}
+	// Zellen im Aufklappen: Quadrat aus der Mitte, Kante = cs * ease(age)
+	for (let b = 0; b < rows; b++)
+		for (let a = 0; a < cols; a++) {
+			const v = age[b * cols + a] ?? 0;
+			if (v <= 0 || v >= 1) continue;
+			const e = 1 - (1 - v) * (1 - v);
+			const k = cs * e;
+			fx.rect(a * cs + (cs - k) / 2, b * cs + (cs - k) / 2, k, k);
+		}
 	fx.fill();
 	// Ziffern aus dem Atlas, ohne Skalierung
 	fx.setTransform(1, 0, 0, 1, 0, 0);

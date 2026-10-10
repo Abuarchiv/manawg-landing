@@ -20,6 +20,7 @@ import type { HandKontext, HandZustand } from './typen';
 import { atem, newState, states, zeigeSchritt } from './zeige';
 
 export { laden } from './atlas';
+export { scrollTipp } from './zeige';
 
 /**
  * Zeichenart einmal festlegen (WebGL2 mit beiden Ebenen oder 2D-Fallback). Mit schritt höchstens ein teurer
@@ -140,6 +141,8 @@ function drawIn(back: HTMLCanvasElement, front: HTMLCanvasElement, c: HandKontex
 
 	// Atmen: Handy und Hände bewegen sich gemeinsam um ±1,5 px und ±0,4° (Periode 4 bis 6 s), nur Transform
 	const br = c.reduced || st.mode !== 'gl' ? { x: 0, y: 0, r: 0 } : atem(t);
+	// Nachhängen: beim Scrollen bleiben Handy und Hände bis 6 px hinter der Seite zurück (Gewicht in der Hand)
+	if (!c.reduced) br.y += Math.max(-6, Math.min(6, c.sv * 0.005));
 	if (!st.space)
 		st.space = back.parentElement?.querySelector<HTMLElement>('[data-ende-space]') ?? null;
 	if (st.space) {

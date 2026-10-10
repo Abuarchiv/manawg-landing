@@ -204,7 +204,7 @@ function vorfuehren(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung
 	if (document.activeElement?.tagName === 'IFRAME') dm.off = true;
 	if (dm.off || c.reduced || e.touch || isTouch() || !c.endOn || dm.n >= 2) {
 		if (!c.endOn) dm.seit = null;
-		if (dm.off && st.pending?.demo) st.pending = null;
+		if (dm.off && st.pending?.demo && !st.pending.scroll) st.pending = null;
 	} else {
 		dm.seit ??= now;
 		if (!st.pending && now - dm.seit > 2.5 && now >= dm.next) {
@@ -267,7 +267,7 @@ function bewegen(
 		(Math.hypot(ht.x - pend.x, ht.y - pend.y) < 8 || now - pend.t0 > (pend.slow ? 2.2 : 0.3))
 	) {
 		st.pending = null;
-		if (pend.demo) {
+		if (pend.demo && !pend.scroll) {
 			dm.n++;
 			dm.next = now + 3;
 			if (dm.n >= 2) demoGetan(true);
@@ -343,8 +343,28 @@ function werteBauen(
  * Ein Bild der Zeigehand-Steuerung (Reihenfolge wie im Ablauf): Tipp, Vorführung, Ziel, Bewegung, Cursor, Werte.
  * br: Atmen dieses Bildes.
  */
+/** Die zuletzt gezeichnete Zeigehand mit ihrer Zeigerlage (für scrollTipp). */
+let aktiv: { st: HandZustand; obj: ObjFn; now: number; endOn: boolean; touch: boolean } | null =
+	null;
+
+/**
+ * Scroll-Choreografie (Phone.tsx): die Zeigehand tippt die Tab-Taste name an, der Klick geht über hand:kontakt in
+ * die App. Gibt false zurück, wenn gerade keine Zeigehand läuft (Touch, reduzierte Bewegung, Ende nicht im Bild);
+ * dann schaltet Phone.tsx die App direkt um. Die Vorführung bei Untätigkeit ist danach aus.
+ */
+export function scrollTipp(name: string): boolean {
+	const a = aktiv;
+	if (!a || !a.endOn || a.touch || isTouch()) return false;
+	const z = demoZiel(a.st, name, a.obj);
+	if (!z) return false;
+	if (a.st.demo) a.st.demo.off = true;
+	a.st.pending = { ...z, t0: a.now, demo: true, slow: true, scroll: true };
+	return true;
+}
+
 export function zeigeSchritt(st: HandZustand, c: HandKontext, cam: Fit, br: Atmen): Zeichenwerte {
 	const obj = objektRaum(cam, br);
+	aktiv = { st, obj, now: c.now, endOn: c.endOn && !c.reduced, touch: c.m.type === 'touch' };
 	const [mx, my] = obj(c.m.x, c.m.y);
 	const touch = c.m.type === 'touch';
 	const e: Eingabe = { obj, mx, my, touch };

@@ -146,7 +146,9 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		cover: 0,
 		stageTop: 0,
 		visible: false,
+		sv: 0,
 	};
+	let syAlt = window.scrollY;
 
 	const cache: Record<string, string> = {};
 	const setVar = (k: string, v: string) => {
@@ -341,6 +343,11 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		const Pz = warp(s);
 		const P = glaette(Pz, dt, visible);
 		verwalteSpeicher(visible, now);
+		// Scrollgeschwindigkeit (px/s), geglättet: Handy und Hände hängen dem Scroll nach (hand/index.ts)
+		const sy = window.scrollY;
+		const svRoh = dt > 0 ? cl((sy - syAlt) / Math.max(dt, 0.004), -4000, 4000) : 0;
+		syAlt = sy;
+		c.sv += (svRoh - c.sv) * (1 - Math.exp(-8 * Math.min(dt, 0.1)));
 		const look = ss((P - 0.06) / 0.14);
 		const mx = ss((P - 0.18) / 0.06);
 		const split = ss((P - 0.24) / 0.1) * (1 - ss((P - 0.36) / 0.1));

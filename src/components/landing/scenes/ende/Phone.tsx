@@ -2,8 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
+import { onFrame } from '../../core/loop';
+import { cl } from '../../core/math';
+import { live } from '../intro/stage';
 import s from './Phone.module.css';
 import { datumsZeilen } from './datum';
+import { scrollTipp } from './hand';
 
 // Das Handy der Ende-Szene mit der echten ManaWG-App: ein gleich-originiges iframe auf
 // /app-demo/index.html (Standalone-DOM und CSS der App, Zustandsautomat in demo.js). Hülle und Geometrie
@@ -13,6 +17,24 @@ import { datumsZeilen } from './datum';
 
 const SRC = '/app-demo/index.html';
 const BILD = '/app-demo/start.webp';
+
+/**
+ * Scroll-Choreografie: auf dem letzten Stück der Bühne (P 0,95 bis 1) tippt die Zeigehand mit dem Scroll durch die
+ * vier Tabs der App (ein Viertel je Tab), rückwärts wieder zurück. Ohne Zeigehand (Touch, reduzierte Bewegung)
+ * schaltet die App direkt um. Der erste eigene Tipp beendet die Choreografie (benutzt).
+ */
+const TABS = [
+	['Start', '/|'],
+	['Haushalt', '/putzen|'],
+	['Finanzen', '/ausgaben|'],
+	['Austausch', '/chat|'],
+] as const;
+
+/** Zustandsautomat der App im iframe (app-demo/demo.js). */
+interface Demo {
+	enter: (w: string, id: string, opts?: { force?: boolean; instant?: boolean }) => boolean;
+	state: () => { w: string; id: string };
+}
 
 /** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
 function Statusleiste() {
@@ -110,6 +132,27 @@ export function Phone() {
 		host.addEventListener('hand:kontakt', an);
 		return () => host.removeEventListener('hand:kontakt', an);
 	}, []);
+
+	// Scroll-Choreografie, Bild für Bild am Fortschritt der Bühne
+	useEffect(() => {
+		if (!bereit || benutzt) return;
+		let stufe = -1;
+		const off = onFrame(() => {
+			const st = live.stage?.state;
+			const fr = rahmen.current;
+			const demo = (fr?.contentWindow as (Window & { __demo?: Demo }) | null)?.__demo;
+			if (!st || !demo || !st.endOn) return;
+			const neu = Math.min(TABS.length - 1, Math.floor(cl((st.P - 0.95) / 0.05) * TABS.length));
+			if (neu === stufe) return;
+			// Erstes Bild: nur merken, die App steht schon richtig (Start)
+			const erst = stufe < 0;
+			stufe = neu;
+			if (erst && neu === 0) return;
+			const [name, id] = TABS[neu] ?? TABS[0];
+			if (!scrollTipp(name)) demo.enter('-', id);
+		});
+		return off;
+	}, [bereit, benutzt]);
 
 	// Standbild und iframe-src erst ab P 0,55 setzen (stage.ts setzt data-nah am #final)
 	useEffect(() => {
