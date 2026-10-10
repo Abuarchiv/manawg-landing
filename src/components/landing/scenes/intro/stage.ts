@@ -345,9 +345,9 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		const ein = ss((P - 0.6) / 0.03);
 		const fall = ss((P - 0.86) / 0.09);
 		const aus = ss((P - 0.955) / 0.02);
-		const x0 = hoch ? 0.74 * W : 0.78 * W;
-		const y0 = hoch ? 0.43 * safeH : 0.34 * H; // hoch: unter dem Kartentext, über der Wohnung
-		const r0 = hoch ? 0.11 * W : 0.14 * H;
+		const x0 = hoch ? 0.74 * W : 0.86 * W; // quer: freie Ecke oben rechts, nicht über dem Grundriss
+		const y0 = hoch ? 0.43 * safeH : 0.2 * H; // hoch: unter dem Kartentext, über der Wohnung
+		const r0 = hoch ? 0.11 * W : 0.11 * H;
 		// Ziel: Icon in der Kopfzeile der App (Ende-Raum 680/150, Radius 11)
 		const x1 = cam.ox + 680 * cam.f;
 		const y1 = cam.oy + 150 * cam.f;

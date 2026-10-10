@@ -79,9 +79,11 @@ export function masse(W: number, H: number, mode: Modus): { cs: number; zf: numb
  * Ebenen darunter läuft als Überblendung (--g, --f, --e in stage.ts) statt hinter einer weißen Wand.
  */
 export function deckung(P: number): number {
+	// Welle 1 ist der Übergang Organ → Wohnung und ist weg, bevor die erste Raumkarte (P 0,634) steht: die Wohnung
+	// ist dann der Inhalt und bleibt frei. Welle 2 ist der Übergang Wohnung → Ende-Ebene.
 	return Math.max(
-		0.38 * ss((P - 0.47) / 0.09) * (1 - ss((P - 0.64) / 0.14)),
-		0.3 * ss((P - 0.82) / 0.07) * (1 - ss((P - 0.93) / 0.06)),
+		0.38 * ss((P - 0.47) / 0.09) * (1 - ss((P - 0.57) / 0.04)),
+		0.3 * ss((P - 0.88) / 0.04) * (1 - ss((P - 0.94) / 0.04)),
 	);
 }
 
