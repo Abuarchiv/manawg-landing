@@ -41,7 +41,33 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 `;
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
+uniform sampler2D uImg, uMsk; uniform float uFoto, uAb;
+// Berg: Kupferstich (Codex, Technik wie der Himmel des Finales) als Kamerafahrt. Bildausschnitt deckend, im Hochformat enger um den
+// Gipfel; der Blick nach oben (uLook) schiebt den Ausschnitt bis in den dunklen Himmel. Wolken ziehen leicht, der
+// Zeiger ist Licht auf dem Schnee, die Marke steht als Sonne im Himmel.
+const float IMGA = 2560. / 3200.;
+vec2 fotoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
+  float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
+  float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
+  return c + vec2((s.x - .5) * wN, (.5 - s.y) * hN) / z; }
+float fotoBerg(vec2 uv){
+  vec2 iu = fotoUV(gl_FragCoord.xy); iu.y = 1. - iu.y; float msk = texture(uMsk, iu).r; float himmel = 1. - texture(uMsk, iu, 2.5).r; // Bild gekippt hochgeladen
+  vec2 wv = (vec2(nz(iu * vec2(6., 14.) + vec2(T * .05, 0.)), nz(iu * vec2(6., 14.) + vec2(3.7, T * .03))) - .5) * .006 * himmel;
+  float v = texture(uImg, iu + wv).r;
+  // Tonkurve wie Schwarzweiß-Abzug: tiefes Schwarz im Fels, Schnee bleibt hell; unten dunkler Grund für die Schrift
+  v = smoothstep(.04, .97, pow(v, 1.18)); vec2 sv = gl_FragCoord.xy / uR;
+  // Beim Öffnen zeichnet sich der Stich nach Helligkeit: erst die hellen Striche, dann die feinen
+  // Rückzug (uAb): die Schwelle läuft zurück, erst gehen die dunklen, zuletzt die hellen Striche
+  float th = 1.05 - uFoto * 1.1 + uAb * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
+  v *= mix(1., .5, smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook)));
+  // Zeiger als Licht: der Schnee unter ihm hellt weich auf, Fels bleibt dunkel
+  vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
+  float lm = exp(-length(uv - uM * vec2(.9, .5)) * 3.2); v += smoothstep(.45, .85, v) * msk * lm * .12;
+  float d = sunD(uv, sp, sc); float sun = (1. - msk) * smoothstep(.002, -.002, d); v = mix(v, .9, sun);
+  v += (1. - msk) * exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .07 * (1. + uLook * 3.);
+  return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.); } // ohne Körnung, sobald Linien den Ton tragen: sie würden flimmern
 float mountain(vec2 uv){
+  if(uFoto > .001) return fotoBerg(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   vec3 L = normalize(RT * (sp.x * 1.5 + .9) + UP * .42 - FW * .2);
@@ -92,7 +118,11 @@ type SzeneU =
 	| 'uC'
 	| 'uH'
 	| 'uSt'
-	| 'uZ';
+	| 'uZ'
+	| 'uImg'
+	| 'uMsk'
+	| 'uFoto'
+	| 'uAb';
 type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad';
 
 /** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
@@ -112,6 +142,11 @@ interface HeroGL {
 	Pp: Programm<PostU> | null;
 	/** Hilfs-Canvas zum Lesen eines Pixels (willReadFrequently). */
 	pr: CanvasRenderingContext2D | null;
+	/** Foto-Berg: Bild und Maske, sobald geladen und dekodiert. */
+	foto: { img: ImageBitmap; msk: ImageBitmap } | null;
+	fotoTx: [WebGLTexture, WebGLTexture] | null;
+	/** Einblendung des Fotos 0..1 (über den Rechen-Berg, falls das Bild spät kommt). */
+	fotoA: number;
 }
 
 /**
@@ -137,7 +172,22 @@ export function createHero(cv: HTMLCanvasElement) {
 		S: null,
 		Pp: null,
 		pr: null,
+		foto: null,
+		fotoTx: null,
+		fotoA: 0,
 	};
+	// Foto-Berg laden (Dekodieren abseits des Hauptthreads). Höchstens 2,5 s hält der Hero das erste Bild zurück,
+	// damit der Lader direkt auf das Foto öffnet; kommt es später, blendet es über den Rechen-Berg ein.
+	const t0 = performance.now();
+	const bitmap = (src: string) =>
+		fetch(src)
+			.then((r) => r.blob())
+			.then((b) => createImageBitmap(b, { imageOrientation: 'flipY' }));
+	Promise.all([bitmap('/hero/berg.webp'), bitmap('/hero/berg-maske.webp')])
+		.then(([img, msk]) => {
+			G.foto = { img, msk };
+		})
+		.catch(() => {});
 	const fb = { x: 0, y: 0, ok: false }; // Fallback: nachlaufendes Licht
 
 	const initGL = (gcv: HTMLCanvasElement): boolean => {
@@ -176,7 +226,24 @@ export function createHero(cv: HTMLCanvasElement) {
 		};
 		G.S = prog(
 			SCENE,
-			['uR', 'T', 'uM', 'uB', 'uMix', 'uLook', 'uK', 'uO', 'uC', 'uH', 'uSt', 'uZ'],
+			[
+				'uR',
+				'T',
+				'uM',
+				'uB',
+				'uMix',
+				'uLook',
+				'uK',
+				'uO',
+				'uC',
+				'uH',
+				'uSt',
+				'uZ',
+				'uImg',
+				'uMsk',
+				'uFoto',
+				'uAb',
+			],
 			'scene',
 		);
 		G.Pp = prog(POST, ['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad'], 'post');
@@ -188,7 +255,30 @@ export function createHero(cv: HTMLCanvasElement) {
 		G.fb = null;
 		G.tw = 0;
 		G.th = 0;
+		G.fotoTx = null;
 		return true;
+	};
+
+	// Foto und Maske als Texturen (Maske mit Mipmaps: weiche Himmelsgewichtung über die Bias-Stufe).
+	const fotoTex = (gl: WebGL2RenderingContext) => {
+		if (G.fotoTx || !G.foto) return;
+		const mk = (b: ImageBitmap, mip: boolean): WebGLTexture => {
+			const t = gl.createTexture();
+			if (!t) throw new Error('hero: Textur nicht angelegt');
+			gl.bindTexture(gl.TEXTURE_2D, t);
+			gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, gl.RED, gl.UNSIGNED_BYTE, b);
+			gl.texParameteri(
+				gl.TEXTURE_2D,
+				gl.TEXTURE_MIN_FILTER,
+				mip ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
+			);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+			if (mip) gl.generateMipmap(gl.TEXTURE_2D);
+			return t;
+		};
+		G.fotoTx = [mk(G.foto.img, false), mk(G.foto.msk, true)];
 	};
 
 	// Textur und Framebuffer des Szenenpuffers, bei Größenwechsel neu anlegen.
@@ -314,6 +404,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			return false;
 		}
 		G.lostAt = 0;
+		if (!G.foto && performance.now() - t0 < 2500) return false;
 		const { t, now, W, H } = c;
 		const dpr = c.dprHero ?? c.dpr;
 		const { split, dive, zoom, look, mx } = h;
@@ -351,11 +442,15 @@ export function createHero(cv: HTMLCanvasElement) {
 		const cs = (6 * hh) / 800;
 		// Berg-Phase (ruhiges Bild): feinerer Szenenpuffer, die Grate zeigen sonst Treppenstufen; die adaptive Stufe (ad) fängt Last ab
 		const fk = mx < 0.05 ? 0.78 : 0.42;
+		// Foto-Berg: nur Texturzugriffe, deshalb in voller Backing-Auflösung (scharfes Gestein und Schnee)
+		const foto = G.fotoA > 0.001 && mx < 0.05;
 		const fw = allDots
 			? Math.ceil(w / cs)
-			: Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
+			: foto
+				? w
+				: Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
 		const fh = allDots ? Math.ceil(hh / cs) : Math.round((fw * H) / W);
-		const tw = Math.min(1920, Math.max(960, w));
+		const tw = Math.min(4096, Math.max(960, w));
 		const th = Math.max(fh, Math.round((tw * hh) / w));
 		ensureTex(gl, tw, th);
 		// Hochformat: waagerechte Bewegung dämpfen und den Ausschnitt weiter fassen
@@ -377,6 +472,19 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(U.uZ, uz);
 		gl.uniform3f(U.uC, lerp(0, hx, ss(dive * 1.6)), lerp(0, hy, ss(dive * 1.6)), cz);
 		gl.uniform3f(U.uH, hx, hy, hr);
+		fotoTex(gl);
+		if (G.fotoTx) {
+			G.fotoA = c.reduced ? 1 : Math.min(1, G.fotoA + c.dt / 1.8);
+			gl.activeTexture(gl.TEXTURE1);
+			gl.bindTexture(gl.TEXTURE_2D, G.fotoTx[0]);
+			gl.uniform1i(U.uImg, 1);
+			gl.activeTexture(gl.TEXTURE2);
+			gl.bindTexture(gl.TEXTURE_2D, G.fotoTx[1]);
+			gl.uniform1i(U.uMsk, 2);
+			gl.activeTexture(gl.TEXTURE0);
+		}
+		gl.uniform1f(U.uFoto, G.fotoTx ? G.fotoA : 0);
+		gl.uniform1f(U.uAb, ss((look - 0.02) / 0.6));
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		if (gcv.width < w) gcv.width = w;
