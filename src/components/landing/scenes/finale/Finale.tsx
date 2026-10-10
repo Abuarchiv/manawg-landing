@@ -18,16 +18,27 @@ export function Finale() {
 			),
 		[],
 	);
-	// Höhe der Fußzeile als --fuss, damit der Titel im Endbild unter dem Kopf steht
+	// Höhe der Fußzeile als --fuss, damit der Titel im Endbild unter dem Kopf steht. Passt die Fußzeile samt
+	// Titelblock nicht in den Viewport (Fußzeile mit Kurztext ist höher als ein Bildschirm), gilt die Endbild-Regel
+	// nicht: dann steht der Titel in der Mitte des Finales und die Fußzeile folgt darunter.
 	useEffect(() => {
 		const fuss = document.getElementById('fusszeile');
 		const el = sec.current;
-		if (!fuss || !el) return;
-		const set = () => el.style.setProperty('--fuss', `${fuss.offsetHeight}px`);
+		const inhalt = el?.querySelector<HTMLElement>(`.${s.inhalt}`);
+		const block = el?.querySelector<HTMLElement>(`.${s.block}`);
+		if (!fuss || !el || !inhalt || !block) return;
+		const set = () => {
+			const cs = getComputedStyle(inhalt);
+			const noetig =
+				block.offsetHeight + Number.parseFloat(cs.paddingTop) + Number.parseFloat(cs.paddingBottom);
+			const passt = window.innerHeight - fuss.offsetHeight >= noetig;
+			el.style.setProperty('--fuss', `${passt ? fuss.offsetHeight : 0}px`);
+		};
 		set();
 		if (typeof ResizeObserver === 'undefined') return;
 		const ro = new ResizeObserver(set);
 		ro.observe(fuss);
+		ro.observe(block);
 		return () => ro.disconnect();
 	}, []);
 	return (

@@ -528,9 +528,13 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			const klemm = s.klemm;
 			klemmen(s, klemm, camZ, camX);
 			zeichnePunkte(s, nb, { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm });
+			// Am Ende der Fahrt scrollt die Bühne nach oben weg: Wortzeile und Tiefenzähler blenden dabei aus, sonst
+			// fährt der letzte Satz über den Titel der nächsten Szene
+			const aus = 1 - cl(-s.el.getBoundingClientRect().top / (0.3 * s.H));
+			if (s.dep) s.dep.style.opacity = aus.toFixed(3);
 			s.caps.forEach((el, i) => {
 				const ky = el.getBoundingClientRect().top - kopfUnten;
-				const op = ((zonen[i]?.w ?? 0) * cl(ky / 28)).toFixed(3);
+				const op = ((zonen[i]?.w ?? 0) * cl(ky / 28) * aus).toFixed(3);
 				el.style.opacity = op;
 				el.style.setProperty('--k', op); // Leitlinie zeichnet mit der Deckkraft (landing.css .leit)
 			});
