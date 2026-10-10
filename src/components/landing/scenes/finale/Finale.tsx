@@ -39,7 +39,7 @@ export function Finale() {
 			data-sec="finale"
 			tabIndex={-1}
 			ref={sec}
-			aria-labelledby="finale-titel"
+			aria-label="Loslegen"
 			className={s.sektion}
 		>
 			<canvas ref={ref} aria-hidden="true" className={s.feld} />
@@ -48,11 +48,6 @@ export function Finale() {
 			</div>
 			<div className={s.inhalt}>
 				<div className={s.block}>
-					<h2 id="finale-titel" className={s.titel}>
-						Alltag
-						<br />
-						teilen.
-					</h2>
 					<div data-knoepfe="1" className={s.knoepfe}>
 						<a
 							href={appUrl('/neu?action=create')}
