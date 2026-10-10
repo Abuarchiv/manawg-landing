@@ -1,12 +1,9 @@
-// Der Himmel hinter dem Finale: Beim Hereinscrollen reißt das Schwarz (die ASCII-Sonne darunter) von oben nach unten
-// auf wie Stoff, dahinter liegt ein Himmel als Kupferstich in Graustufen, und die Marke verdichtet sich aus Dunst zur Wolke. Himmel, Wolke und
-// Masken sind die Ebenen des Wolken-Loaders (landing-konzept/wolke), der Shader ist dessen Fassung, auf Scroll statt
-// Zeit umgestellt. Der Zeiger zupft am Stoff: unter ihm öffnet sich schon vorher ein kleiner Riss.
-// Die Fläche ist durchsichtig, wo der Stoff noch zu ist; so bleibt die ASCII-Sonne darunter sichtbar.
+// Der Himmel hinter dem Finale: ein Kupferstich-Wolkenhimmel in Graustufen mit der Marke als Wolke. Himmel, Wolke und
+// Masken sind die Ebenen des Wolken-Loaders (landing-konzept/wolke). Ohne Vorhang und ohne Scroll-Öffnung, er steht still.
 
 import { dprFor } from '../../core/canvas';
 import { type SceneState, loop, register } from '../../core/loop';
-import { cl, lag, ss } from '../../core/math';
+import { cl } from '../../core/math';
 
 const VS = `#version 300 es
 void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0.,1.);}`;
@@ -27,27 +24,6 @@ float fbm(vec2 p){ float s = 0., a = .5; for(int i = 0; i < 5; i++){ s += a*nois
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes;
   float asp = uRes.x / uRes.y;
-  // Riss von oben nach unten: oben im Fenster reißt der Stoff zuerst, die Kante läuft zackig (grob + fein), die beiden
-  // Hälften weichen auseinander, bis der Himmel das ganze Feld füllt. Maße in Höhen-Einheiten (x mal Seitenverhältnis).
-  float fy = clamp((uRiss.x - uv.y) / max(uRiss.x - uRiss.y, .01), 0., 1.);
-  float auf = clamp(uOpen * 1.9 - fy * .9, 0., 1.);
-  float x0 = .5 + (fbm(vec2(uv.y * 2.6, 1.7)) - .5) * .16 + (noise(vec2(uv.y * 38., 4.)) - .5) * .012;
-  float dx = (uv.x - x0) * asp;
-  float seite = dx < 0. ? 0. : 1.;
-  float hw = (.5 * asp + .25) * pow(auf, 1.6);
-  float rag = (fbm(vec2(uv.y * 9., seite * 5.)) - .5) * .07 * min(1., auf * 4.) + (noise(vec2(uv.y * 140., seite * 9.)) - .5) * .01;
-  float d = hw - abs(dx) + rag;
-  // Fasern: einzelne Fäden ragen vom Saum in den Spalt
-  float zeile = floor(gl_FragCoord.y / 2.);
-  float lt = step(.965, hash(vec2(zeile, seite + 3.))) * hash(vec2(zeile, seite + 8.)) * .07 * min(1., auf * 3.);
-  if (lt > 0. && abs(dx) > hw + rag - lt && d > 0.) d = -.004;
-  // Zupfen: der Zeiger reißt einen kleinen Riss, der mit dem Stoff mitwächst
-  vec2 mq = (uv - uM.xy) * vec2(asp, 1.);
-  float mr = length(mq);
-  float mang = atan(mq.y, mq.x);
-  d = max(d, uM.z * (.05 + (fbm(vec2(mang * 3., uT * .2)) - .5) * .04) - mr + (fbm(vec2(mang * 30., mr * 9.)) - .5) * .012);
-  vec2 q = vec2(dx, 0.);
-  if (d < -.03) { o = vec4(0.); return; }
   // Himmel: gestochener Wolkenhimmel (Codex, Technik wie Referenz „gestochene Wolken“), deckend skaliert und unten
   // verankert, damit die Wolkenbänke am unteren Rand stehen. Die Striche erscheinen beim Öffnen nach Helligkeit:
   // erst die hellsten Linien, dann die feinen, als würde der Stich gerade gezogen.
@@ -217,7 +193,7 @@ export function registerHimmel(
 			s.my = 0.5;
 			laden(s).catch(() => {});
 		},
-		frame(s, _t, dt) {
+		frame(s) {
 			const g = s.g;
 			if (!s.bereit || !g) return;
 			const { gl, u } = g;
@@ -229,16 +205,9 @@ export function registerHimmel(
 				cv.height = h;
 				gl.viewport(0, 0, w, h);
 			}
-			// Öffnen am Scroll: zu, solange die Oberkante unter 85 % der Fensterhöhe liegt, ganz offen, wenn sie oben ankommt
+			// Kein Vorhang mehr: der Himmel steht von Anfang an offen
 			const r0 = s.el.getBoundingClientRect();
-			const ziel = s.reduced ? 1 : ss((0.9 - r0.top / innerHeight) / 0.9);
-			s.offen = s.reduced ? ziel : s.offen + (ziel - s.offen) * lag(0.12, dt);
-			if (s.m.in && s.m.type === 'mouse') {
-				s.mx = s.m.px / s.W;
-				s.my = 1 - s.m.py / s.H;
-			}
-			const zupfZiel = s.m.in && s.m.type === 'mouse' && !s.reduced ? 1 : 0;
-			s.zupf += (zupfZiel - s.zupf) * lag(0.08, dt);
+			s.offen = 1;
 			const hoch = s.mode === 'hoch';
 			gl.uniform1f(u('uHoch'), hoch ? 1 : 0);
 			gl.uniform1f(u('uDprH'), dpr);
