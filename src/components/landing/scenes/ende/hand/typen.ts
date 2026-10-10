@@ -239,7 +239,7 @@ export interface CpuGebacken {
 	sp: [HTMLCanvasElement, HTMLCanvasElement];
 }
 
-/** Messwerte für tools/qa (qa.hand). */
+/** Messwerte für landing-konzept/werkzeuge/qa (qa.hand). */
 export interface HandDbg {
 	m: { x: number; y: number; in: boolean; down: boolean; type: string };
 	tg: readonly [number, number];

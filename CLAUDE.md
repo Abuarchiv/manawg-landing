@@ -1,8 +1,7 @@
 # manawg-landing
 
-Struktur und Befehle: `README.md`. Werkstatt (Blender, Studien, Verworfenes): `../landing-konzept/`.
+Ins Repo gehört nur, was die Seite baut. Design-Vorlage (`design/final.dc.html`), Prüfskripte und Aufnahmekette liegen in `../landing-konzept/` (siehe dortige README).
 
-- `design/final.dc.html` ist das gelieferte Design: 1:1 umsetzen, nicht ausdünnen oder neu interpretieren.
+- `final.dc.html` 1:1 umsetzen, nicht ausdünnen oder neu interpretieren.
 - Nur `main`, lokal committen. Push und Deploy erst nach ausdrücklicher Freigabe (Vercel baut `main` automatisch).
-- Vor „fertig“: `pnpm lint && pnpm typecheck && pnpm build`. Build mit `NEXT_DIST_DIR=.next-xyz`, wenn parallel ein Dev-Server läuft, danach den Ordner entfernen.
-- Ändert sich die App, `public/app-demo` mit der Kette in `tools/app-demo/` neu aufnehmen, nicht die alte Aufnahme nachbessern.
+- Vor „fertig“: `pnpm lint && pnpm typecheck && pnpm build`. Bei laufendem Dev-Server `NEXT_DIST_DIR=.next-xyz`, Ordner danach entfernen.

@@ -1,7 +1,7 @@
 // ManaWG-Demo: Zustandsautomat ohne Framework über den aufgenommenen Zuständen der echten App.
 // Alle Zustände (Seiten und Overlays) liegen als <script type="text/plain"> in index.html (Rohtext, kein DOM-Aufbau beim Laden), der Graph (Klickfolgen, Welten) im
-// <script id="model">. Jedes Element stammt aus einer Aufnahme der App (tools/app-demo). Gebaut von
-// tools/app-demo/build-demo.mjs. Nichts hier erfindet Inhalt: demo.js tauscht Aufnahmen aus und animiert
+// <script id="model">. Jedes Element stammt aus einer Aufnahme der App (landing-konzept/werkzeuge/app-demo). Gebaut von
+// landing-konzept/werkzeuge/app-demo/build-demo.mjs. Nichts hier erfindet Inhalt: demo.js tauscht Aufnahmen aus und animiert
 // die Übergänge mit den Dauern und Kurven der App (REF §7) über deren eigenes CSS (data-open, data-ending-style).
 (() => {
 	'use strict';
@@ -66,7 +66,7 @@
 	const S = { sent: null }; // Zeitpunkt der gesendeten Chat-Antwort
 	// Tokens: {{D:k:fmt}} Tag + k, {{F:fmt}} nächster Freitag, {{M:n:fmt}} 3. des n-ten Folgemonats, {{A:min}} "vor n",
 	// {{CT:n}} Chat-Uhrzeit n (Minuten vor T0 aus CHAT_AGO in der Reihenfolge des Verlaufs, n = Länge: Antwort), {{CD:n}} datetime/title
-	const CHAT_AGO = [1560, 1540, 1530, 95, 62, 41, 30, 14]; // Seed in tools/app-demo/demo-server.mjs
+	const CHAT_AGO = [1560, 1540, 1530, 95, 62, 41, 30, 14]; // Seed in landing-konzept/werkzeuge/app-demo/demo-server.mjs
 	const TOK = (s) =>
 		s.replace(/\{\{([^}]+)\}\}/g, (_, t) => {
 			const a = t.split(':');

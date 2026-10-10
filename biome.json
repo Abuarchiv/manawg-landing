@@ -48,28 +48,6 @@
 		}
 	},
 	"files": {
-		"ignore": [
-			"node_modules",
-			".next",
-			".next-*",
-			".vercel",
-			"graphify-out",
-			"public",
-			"design",
-			"tools/app-demo",
-			"tools/qa/install/ref"
-		]
-	},
-	"overrides": [
-		{
-			"include": ["tools/**"],
-			"linter": {
-				"rules": {
-					"suspicious": {
-						"noConsole": "off"
-					}
-				}
-			}
-		}
-	]
+		"ignore": ["node_modules", ".next", ".next-*", ".vercel", "graphify-out", "public"]
+	}
 }

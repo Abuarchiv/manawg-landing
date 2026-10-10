@@ -20,6 +20,6 @@ export function datumsZeilen(): [string, string] {
 			.map((x) => [x.type, x.value]),
 	);
 	const tag = (k: number) => Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day) + k, 12);
-	// Heizungsableser und Müll runterbringen, beide übermorgen (Seed in tools/app-demo/demo-server.mjs)
+	// Heizungsableser und Müll runterbringen, beide übermorgen (Seed in landing-konzept/werkzeuge/app-demo/demo-server.mjs)
 	return [`${KURZ.format(tag(2))} · 10:00`, `${KURZ.format(tag(2))} · Lina`];
 }

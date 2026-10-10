@@ -62,7 +62,7 @@ export const loop: Loop = {
 	act: 0, // letzte Eingabe oder Bewegung (Sekunden, performance.now()): Scroll, Zeiger, Taste, Größenänderung
 };
 
-/** Messhaken der Szenen für tools/qa (nur lesend), hängt an window.__landing.dbg. */
+/** Messhaken der Szenen für landing-konzept/werkzeuge/qa (nur lesend), hängt an window.__landing.dbg. */
 export const qa: Record<string, unknown> = {};
 
 /** Zeigerzustand einer Szene (Szenenkoordinaten x, y; CSS-Pixel px, py). */

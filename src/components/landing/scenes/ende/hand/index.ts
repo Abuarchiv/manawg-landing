@@ -1,5 +1,5 @@
 // Die Hände der Ende-Szene: eine Hand hält das Handy, die andere wartet unten außerhalb des Bildschirms und
-// fährt nur zum Tippen über das Ziel. Beide kommen aus gerenderten Daten-Pässen (public/hand/, design/HAND.md):
+// fährt nur zum Tippen über das Ziel. Beide kommen aus gerenderten Daten-Pässen (public/hand/, landing-konzept/design/HAND.md):
 // Leuchtdichte, Alpha, Normale und Tiefe. Gezeichnet wird als feiner Halbton (Zellraster 1,25 Bühnen-px,
 // Bayer 4 x 4), die Silhouette per Pixel-Alpha geglättet, im WebGL2-Fragment-Shader. Ohne WebGL2 wird der Halbton
 // einmal je Größenänderung auf 2D vorberechnet (ohne Zeigerlicht, die Zeigehand als Sprite).

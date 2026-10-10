@@ -151,7 +151,7 @@ export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => 
 			}
 		},
 	});
-	// Messhaken für tools/qa (nur mit ?qa=1 gelesen): Uhr anhalten und setzen, Zustand je Zeit prüfen
+	// Messhaken für landing-konzept/werkzeuge/qa (nur mit ?qa=1 gelesen): Uhr anhalten und setzen, Zustand je Zeit prüfen
 	qa.install = {
 		halte(b: unknown) {
 			if (st) st.halt = !!b;
