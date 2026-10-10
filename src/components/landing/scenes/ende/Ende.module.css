@@ -9,7 +9,7 @@
 	flex-direction: column;
 	gap: var(--sp-24);
 	color: #fafafa;
-	opacity: calc(clamp(0, calc((var(--e, 0) - 0.5) * 2.5), 1) * (1 - var(--dive-aus, 0)));
+	opacity: clamp(0, calc((var(--e, 0) - 0.5) * 2.5), 1);
 }
 
 .h {
@@ -33,11 +33,7 @@
 		top: max(72px, calc(env(safe-area-inset-top, 0px) + 56px));
 		gap: 16px;
 		/* beim Hinausscrollen weg, bevor der Titel das Kopfband erreicht (stage.js) */
-		opacity: calc(
-			clamp(0, calc((var(--e, 0) - 0.5) * 2.5), 1) *
-			(1 - var(--ende-titel-aus, 0)) *
-			(1 - var(--dive-aus, 0))
-		);
+		opacity: calc(clamp(0, calc((var(--e, 0) - 0.5) * 2.5), 1) * (1 - var(--ende-titel-aus, 0)));
 	}
 	.h {
 		font-size: clamp(40px, 8vw, 60px);

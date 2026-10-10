@@ -385,29 +385,12 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		const dive = ss((P - 0.48) / 0.12);
 		const fpA = ss((P - 0.58) / 0.05);
 		const endA = ss((P - 0.9) / 0.05);
-		// Tauchgang in den Bildschirm des Handys (P 0,988 bis 1): der Ende-Raum wächst um die Handymitte auf das
-		// Sechsfache und rückt sie in die Fenstermitte; Titel, Knopf und Hinweis gehen, die Hände zerfallen
-		const tauch = ss((P - 0.988) / 0.012);
 		const cover = flut.deckung(P);
 		const karten = wohnung.karten(P);
 		st.P = P;
 		st.s = s;
 
 		setzeStil(P, fpA, endA, karten, rb, visible);
-		{
-			const px = cam.ox + 800 * cam.f;
-			const py = cam.oy + 250 * cam.f; // Pivot im oberen Bildschirmdrittel (Kopf und erste Zeilen)
-			const k = tauch * tauch * (3 - 2 * tauch);
-			// hoch: kleinerer Sprung, sonst sind bei 390 px Breite nur Wortfetzen zu sehen
-			setVar('--dive', (1 + (loop.mode === 'hoch' ? 2.6 : 5) * k).toFixed(4));
-			setVar('--dive-tx', `${((W / 2 - px) * k).toFixed(2)}px`);
-			setVar('--dive-ty', `${((H / 2 - py) * k).toFixed(2)}px`);
-			setVar('--dive-aus', k.toFixed(3));
-			// Beim Tauchgang ragt der vergrößerte Ende-Raum weit über die Bühne hinaus: dann clippt die Bühne, damit beim
-			// Wegscrollen die nächste Szene unter ihrer Kante erscheint statt hinter dem Riesenbildschirm zu bleiben
-			const ov = k > 0.001 ? 'clip' : '';
-			if (buehne.style.overflowY !== ov) buehne.style.overflowY = ov;
-		}
 		st.endOn = endA > 0.6 && rb.bottom > 0.625 * H;
 		passeAufloesung(raw);
 
@@ -431,7 +414,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			c.fpA = fpA;
 			c.endA = endA;
 			// Zerfall der Hände: beginnt, sobald die Bühne nach oben weggeschoben wird (rb.top < 0), Rückwärts setzt zusammen
-			c.zer = loop.reduced ? 0 : Math.max(ss(cl(-rb.top / (0.6 * H))), tauch);
+			c.zer = loop.reduced ? 0 : ss(cl(-rb.top / (0.6 * H)));
 			c.endOn = st.endOn;
 			c.cover = cover;
 			c.stageTop = rb.top;

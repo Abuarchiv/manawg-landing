@@ -20,7 +20,7 @@ import type { HandKontext, HandZustand } from './typen';
 import { atem, newState, states, zeigeSchritt } from './zeige';
 
 export { laden } from './atlas';
-export { scrollTipp, scrollWisch } from './zeige';
+export { scrollTipp } from './zeige';
 
 /**
  * Zeichenart einmal festlegen (WebGL2 mit beiden Ebenen oder 2D-Fallback). Mit schritt höchstens ein teurer

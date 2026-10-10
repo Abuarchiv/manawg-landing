@@ -4,15 +4,14 @@
 // wird der Fortschritt P der Choreografie: P = warp(s). Alle Marken der Szenen (look, mx, split,
 // zoom, dive, fpA, endA, Flut-Deckung, Kartenkurve) bleiben in P definiert.
 
-export const INTRO_SCREENS = 11;
+export const INTRO_SCREENS = 10;
 
-// Stückweise lineare Abbildung s -> P, Knoten (s, P). Seit 2026-10-11 elf Bildschirmhöhen: P 0,95 bis 1 (Handy:
-// Scroll-Choreografie und Tauchgang in den Bildschirm) bekommt zwei davon.
+// Stückweise lineare Abbildung s -> P, Knoten (s, P).
 export const KNOTS = [
 	[0, 0],
-	[0.4509, 0.62],
-	[0.7782, 0.9],
-	[0.8145, 0.95],
+	[0.496, 0.62],
+	[0.856, 0.9],
+	[0.896, 0.95],
 	[1, 1],
 ] as const satisfies readonly (readonly [s: number, P: number])[];
 

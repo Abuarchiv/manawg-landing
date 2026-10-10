@@ -262,8 +262,6 @@ export interface HandZustand {
 	tap: [number, number] | null;
 	contactT: number;
 	pending: Tipp | null;
-	/** Wisch der Scroll-Choreografie: die Spitze liegt auf dem Glas und zieht (Objektraum), null = kein Wisch. */
-	wisch: [number, number] | null;
 	space: HTMLElement | null;
 	appDoc: HTMLElement | null;
 	clean: boolean;
