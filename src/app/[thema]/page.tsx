@@ -22,7 +22,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		title: t.titel,
 		description: t.beschreibung,
 		alternates: { canonical: `/${thema}` },
-		openGraph: { title: t.titel, description: t.beschreibung, url: `/${thema}` },
+		openGraph: {
+			title: t.titel,
+			description: t.beschreibung,
+			url: `/${thema}`,
+			images: ['/og.png'],
+		},
+		twitter: { title: t.titel, description: t.beschreibung, images: ['/og.png'] },
 	};
 }
 

@@ -114,6 +114,33 @@ export const THEMEN: Record<string, Thema> = {
 			],
 		],
 	},
+	'flatastic-alternative': {
+		link: 'Flatastic-Alternative',
+		titel: 'Flatastic-Alternative: WG-App ohne Werbung und Paywall | ManaWG',
+		beschreibung:
+			'ManaWG ist eine kostenlose WG-App als Alternative zu Flatastic: Putzplan, WG-Kasse, Einkaufsliste, Kalender, Pinnwand und Chat ohne Werbung und ohne Premium-Stufe.',
+		h1: 'Eine WG-App ohne Werbung und ohne Premium',
+		einleitung:
+			'Flatastic hat die WG-App bekannt gemacht. Wer sie nutzt, kennt die Werbung nach dem Abhaken und die Funktionen hinter der Bezahlschranke. ManaWG macht dasselbe ohne beides.',
+		abschnitte: [
+			[
+				'Keine Werbung, keine Premium-Stufe',
+				'Alle Funktionen stehen jeder WG offen. Es gibt keine Anzeigen im Ablauf und keine Stufe, die man kaufen müsste.',
+			],
+			[
+				'Putzplan, der zeigt, wer dran ist',
+				'Aufgaben rotieren fair und überspringen, wer verreist ist. Wer als Nächstes dran ist, steht sichtbar in der App.',
+			],
+			[
+				'WG-Kasse mit Monatsabrechnung',
+				'Ausgaben teilen, Fixkosten wie Miete anlegen, Salden sehen und am Monatsende die Abrechnung lesen. Bestehende Daten kommen per CSV-Import mit.',
+			],
+			[
+				'Im Browser, ohne App Store',
+				'ManaWG läuft unter app.manawg.com und lässt sich auf iPhone und Android auf den Home-Bildschirm legen. Die Daten liegen in Frankfurt am Main.',
+			],
+		],
+	},
 	faq: {
 		link: 'Häufige Fragen',
 		titel: 'Häufige Fragen zu ManaWG, der WG-App',
