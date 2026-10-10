@@ -54,9 +54,8 @@ export function Tiefe() {
 								'position:absolute;left:var(--rand);right:var(--rand);bottom:var(--sp-72);display:flex;flex-direction:column;gap:var(--sp-10);opacity:0',
 							)}
 						>
-							<span className="label tiefe-label" aria-hidden="true">
+							<span className="label" aria-hidden="true">
 								{w.nr}
-								<i className="leit" />
 							</span>
 							<h3
 								style={css(

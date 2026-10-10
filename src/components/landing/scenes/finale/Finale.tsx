@@ -4,23 +4,11 @@ import { appUrl } from '@/lib/app-origin';
 import { useEffect, useRef } from 'react';
 import s from './Finale.module.css';
 import { registerAscii } from './ascii';
-import { registerHimmel } from './himmel';
 
 export function Finale() {
 	const ref = useRef<HTMLCanvasElement>(null);
 	const sec = useRef<HTMLElement>(null);
-	const ebene = useRef<HTMLDivElement>(null);
-	const himmel = useRef<HTMLCanvasElement>(null);
 	useEffect(() => registerAscii(ref.current as HTMLCanvasElement), []);
-	useEffect(
-		() =>
-			registerHimmel(
-				ebene.current as HTMLDivElement,
-				himmel.current as HTMLCanvasElement,
-				sec.current as HTMLElement,
-			),
-		[],
-	);
 	// Höhe der Fußzeile als --fuss, damit der Titel im Endbild unter dem Kopf steht
 	useEffect(() => {
 		const fuss = document.getElementById('fusszeile');
@@ -43,9 +31,6 @@ export function Finale() {
 			className={s.sektion}
 		>
 			<canvas ref={ref} aria-hidden="true" className={s.feld} />
-			<div ref={ebene} aria-hidden="true" className={s.feld}>
-				<canvas ref={himmel} className={s.feld} />
-			</div>
 			<div className={s.inhalt}>
 				<div className={s.block}>
 					<h2 id="finale-titel" className={s.titel}>
@@ -53,7 +38,7 @@ export function Finale() {
 						<br />
 						teilen.
 					</h2>
-					<div data-knoepfe="1" className={s.knoepfe}>
+					<div className={s.knoepfe}>
 						<a
 							href={appUrl('/neu?action=create')}
 							className={`cta cta--voll cta--gross ${s.knopf}`}

@@ -1,5 +1,4 @@
-// Die Wohnung: isometrischer Grundriss als Kupferstich (Dielen als Stichlinien, Küche und Bad mit Gegenschraffur
-// wie Fliesen, Wände senkrecht schraffiert, Bewohner als gestochene Kugeln), vier Räume werden nacheinander
+// Die Wohnung: isometrischer Grundriss aus Punktraster und Wänden, vier Räume werden nacheinander
 // angefahren. Dazu die Kurve der Raumkarten (karten) für die Texte der Bühne.
 //
 // Szenenraum: Die Komposition liegt in der Bezugsbox 1280 x 800 (c.fit), das Punktraster und die
@@ -362,56 +361,25 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	const my = st.sm.y;
 	const FL = 210;
 	const stp = Math.max(0.12, 5.5 / u);
-	// Böden: Stichlinien im Abstand stp, je Linie Stücke der Länge stp. Ton aus Raumlicht und Zeigerlicht, die
-	// Bayer-Schwelle lässt in dunklen Räumen Lücken, helle Stücke werden dicker. Stärken in vier Eimern.
-	const eimer: Path2D[] = [new Path2D(), new Path2D(), new Path2D(), new Path2D()];
-	const linie = (
-		ri: number,
-		ax: number,
-		ay: number,
-		bx: number,
-		by: number,
-		gl: number,
-		gs: number,
-		dim = 1,
-	) => {
-		const a = P(ax, ay, 0);
-		const b = P(bx, by, 0);
-		const mxp = (a[0] + b[0]) / 2;
-		const myp = (a[1] + b[1]) / 2;
-		if (Math.max(a[0], b[0]) < x0 - 4 || Math.min(a[0], b[0]) > x1) return;
-		if (Math.max(a[1], b[1]) < y0 - 4 || Math.min(a[1], b[1]) > y1) return;
-		let I = 0.06 + 0.8 * (lit[ri] ?? 0);
-		if (m.in) {
-			const dm = Math.hypot(mxp - mx, myp - my);
-			if (dm < FL) I += 0.8 * (1 - dm / FL) ** 2;
-		}
-		I *= dim;
-		if (I <= (BAYER[(gl & 3) * 4 + (gs & 3)] ?? 0) / 16 + 0.02) return;
-		const e = eimer[Math.min(3, Math.floor(cl(I) * 3.99))];
-		e?.moveTo(a[0], a[1]);
-		e?.lineTo(b[0], b[1]);
-	};
+	ctx.fillStyle = '#FAFAFA';
 	ROOMS.forEach((r, ri) => {
 		const x = r[1];
 		const y = r[2];
 		const w = r[3];
 		const hh = r[4];
-		// Dielen: Linien längs x
-		for (let gl = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gl++)
-			for (let gs = 0, xx = x; xx < x + w - 1e-6; xx += stp, gs++)
-				linie(ri, xx, yy, Math.min(x + w, xx + stp), yy, gl, gs);
-		// Küche und Bad: Gegenschraffur längs y, gröber, ergibt das Fliesenraster
-		if (ri <= 1)
-			for (let gl = 0, xx = x + stp; xx < x + w; xx += stp * 2, gl++)
-				for (let gs = 0, yy = y; yy < y + hh - 1e-6; yy += stp, gs++)
-					linie(ri, xx, yy, xx, Math.min(y + hh, yy + stp), gl + 2, gs + 1, 0.55);
-	});
-	ctx.strokeStyle = '#FAFAFA';
-	ctx.lineCap = 'butt';
-	eimer.forEach((e, k) => {
-		ctx.lineWidth = 0.45 + k * 0.35;
-		ctx.stroke(e);
+		const base = 0.06 + 0.8 * (lit[ri] ?? 0);
+		for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++)
+			for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
+				const pt = P(xx, yy, 0);
+				if (pt[0] < x0 - 4 || pt[1] < y0 - 4 || pt[0] > x1 || pt[1] > y1) continue;
+				let I = base;
+				if (m.in) {
+					const dm = Math.hypot(pt[0] - mx, pt[1] - my);
+					if (dm < FL) I += 0.8 * (1 - dm / FL) ** 2;
+				}
+				if (I > (BAYER[(gy & 3) * 4 + (gx & 3)] ?? 0) / 16 + 0.02)
+					ctx.fillRect(pt[0], pt[1], 1.6, 1.6);
+			}
 	});
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
 	if (!st.pp)
@@ -456,22 +424,6 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		ctx.lineTo(a2[0], a2[1]);
 		ctx.closePath();
 		ctx.fill();
-		// Wandfläche senkrecht schraffiert, Wände längs y dichter (Schattenseite)
-		const lang = Math.hypot(wl[2] - wl[0], wl[3] - wl[1]);
-		const hs = Math.max(0.06, (wl[0] === wl[2] ? 2.6 : 4.2) / u);
-		ctx.globalAlpha = 0.34;
-		ctx.lineWidth = 0.6;
-		ctx.beginPath();
-		for (let d = hs / 2; d < lang; d += hs) {
-			const k = d / lang;
-			const xx = lerp(wl[0], wl[2], k);
-			const yy = lerp(wl[1], wl[3], k);
-			const s0 = P(xx, yy, 0);
-			const s1 = P(xx, yy, HW);
-			ctx.moveTo(s0[0], s0[1]);
-			ctx.lineTo(s1[0], s1[1]);
-		}
-		ctx.stroke();
 		ctx.globalAlpha = 0.3;
 		ctx.strokeStyle = '#FAFAFA';
 		ctx.lineWidth = 1;
@@ -497,30 +449,10 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		const sy = ty + pt[1] * f;
 		const ba = blende(`a${k}`, { x0: sx - r * f, x1: sx + r * f, y0: sy - r * f, y1: sy + r * f });
 		ctx.globalAlpha = ba;
-		// Gestochene Kugel: dunkle Scheibe, waagerechte Stichlinien, oben links kräftig, unten fein, dazu Kontur
-		ctx.fillStyle = '#0A0A0A';
+		ctx.fillStyle = '#FAFAFA';
 		ctx.beginPath();
 		ctx.arc(pt[0], pt[1], r, 0, 6.2832);
 		ctx.fill();
-		ctx.save();
-		ctx.clip();
-		ctx.strokeStyle = '#FAFAFA';
-		const n = Math.max(5, Math.round(r / 1.6));
-		for (let li = 0; li < n; li++) {
-			const dy = ((li + 0.5) / n) * 2 - 1;
-			const hw = Math.sqrt(1 - dy * dy) * r;
-			ctx.lineWidth = ((r * 2) / n) * cl(0.75 - dy * 0.45) * 0.85;
-			ctx.beginPath();
-			ctx.moveTo(pt[0] - hw, pt[1] + dy * r);
-			ctx.lineTo(pt[0] + hw, pt[1] + dy * r);
-			ctx.stroke();
-		}
-		ctx.restore();
-		ctx.lineWidth = 0.8;
-		ctx.strokeStyle = '#FAFAFA';
-		ctx.beginPath();
-		ctx.arc(pt[0], pt[1], r, 0, 6.2832);
-		ctx.stroke();
 		ctx.fillStyle = '#0A0A0A';
 		ctx.beginPath();
 		ctx.arc(pt[0] + r * 0.12, pt[1] - r * 0.28, r * 0.22, 0, 6.2832);

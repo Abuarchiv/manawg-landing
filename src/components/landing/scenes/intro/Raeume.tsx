@@ -56,7 +56,6 @@ export function Raeume() {
 					<div className={`label ${st.kopf}`} style={css('opacity:1')}>
 						<span>{k.nr}</span>
 						<span style={css('opacity:0.72')}>{k.raum}</span>
-						<i className="leit" style={css(`--k:var(--c${j},0)`)} aria-hidden="true" />
 					</div>
 					<div className="haar" />
 					<h2 className={st.titel}>{k.titel}</h2>
