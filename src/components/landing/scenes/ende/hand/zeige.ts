@@ -70,6 +70,7 @@ export function newState(back: HTMLCanvasElement, front: HTMLCanvasElement): Han
 		tap: null,
 		contactT: -9,
 		pending: null,
+		wisch: null,
 		space: null,
 		appDoc: null,
 		clean: false,
@@ -118,20 +119,30 @@ function demoGetan(setzen?: boolean): boolean {
 	}
 }
 
-/** Mitte der Tab-Taste (Name) in der App-Vorschau als Ziel der Zeigehand: Objektraum plus Fensterkoordinaten. */
+/**
+ * Mitte eines Bedienelements der App-Vorschau als Ziel der Zeigehand: Objektraum plus Fensterkoordinaten.
+ * art 'tab': Tab-Taste mit dem Namen (unten in der Leiste), 'knopf': Knopf mit diesem Schlüssel (data-k), sichtbar.
+ */
 function demoZiel(
 	st: HandZustand,
 	name: string,
 	obj: ObjFn,
+	art: 'tab' | 'knopf' = 'tab',
 ): { x: number; y: number; cx: number; cy: number } | null {
 	const fr = st.back.parentElement?.querySelector('iframe');
 	const doc = fr?.contentDocument;
 	if (!fr || !doc?.body) return null;
 	const r = fr.getBoundingClientRect();
 	const k = r.width / fr.clientWidth;
-	const el = [...doc.querySelectorAll(`a[data-k^="a|${name}"]`)].find(
-		(e) => e.getBoundingClientRect().top > fr.clientHeight * 0.7,
-	);
+	const el =
+		art === 'tab'
+			? [...doc.querySelectorAll(`a[data-k^="a|${name}"]`)].find(
+					(e) => e.getBoundingClientRect().top > fr.clientHeight * 0.7,
+				)
+			: [...doc.querySelectorAll(`[data-k^="button|${name}"]`)].find((e) => {
+					const q = e.getBoundingClientRect();
+					return q.width > 0 && q.bottom > 0 && q.top < fr.clientHeight;
+				});
 	if (!el || !k) return null;
 	const q = el.getBoundingClientRect();
 	const cx = r.left + (q.left + q.width / 2) * k;
@@ -230,7 +241,11 @@ function zielWaehlen(st: HandZustand, c: HandKontext, e: Eingabe): Ziel {
 		now - (c.m.moveT ?? -9) < 1.4;
 	let tg: readonly [number, number] = st.park;
 	let k = 7;
-	if (pend) {
+	if (st.wisch) {
+		// Wisch: die Spitze folgt dem Ziehpunkt straff (sie liegt auf dem Glas)
+		tg = st.wisch;
+		k = 24;
+	} else if (pend) {
 		tg = [pend.x, pend.y];
 		k = pend.slow ? 4 : 16;
 	} else if (folgt) {
@@ -305,7 +320,9 @@ function werteBauen(
 ): Zeichenwerte {
 	const { W, H, now } = c;
 	const pr = now - st.contactT;
-	const push = st.tap && pr >= 0 && pr < 0.4 && !touch ? Math.sin((pr / 0.4) * Math.PI) : 0;
+	let push = st.tap && pr >= 0 && pr < 0.4 && !touch ? Math.sin((pr / 0.4) * Math.PI) : 0;
+	// Wisch: der Finger bleibt gedrückt, solange er zieht
+	if (st.wisch && !touch) push = Math.max(push, 0.55);
 	const hoch = istHoch(W, H);
 	const ax = (hoch ? (W - cam.ox) / cam.f : ARM[0]) - ht.x;
 	const ay = (hoch ? (H - cam.oy) / cam.f : ARM[1]) - ht.y;
@@ -352,13 +369,34 @@ let aktiv: { st: HandZustand; obj: ObjFn; now: number; endOn: boolean; touch: bo
  * die App. Gibt false zurück, wenn gerade keine Zeigehand läuft (Touch, reduzierte Bewegung, Ende nicht im Bild);
  * dann schaltet Phone.tsx die App direkt um. Die Vorführung bei Untätigkeit ist danach aus.
  */
-export function scrollTipp(name: string): boolean {
+export function scrollTipp(name: string, art: 'tab' | 'knopf' = 'tab'): boolean {
 	const a = aktiv;
 	if (!a || !a.endOn || a.touch || isTouch()) return false;
-	const z = demoZiel(a.st, name, a.obj);
+	const z = demoZiel(a.st, name, a.obj, art);
 	if (!z) return false;
 	if (a.st.demo) a.st.demo.off = true;
+	a.st.wisch = null;
 	a.st.pending = { ...z, t0: a.now, demo: true, slow: true, scroll: true };
+	return true;
+}
+
+/**
+ * Scroll-Choreografie: die Spitze liegt bei (cx, cy) (Fensterkoordinaten) auf dem Glas und zieht die Liste mit.
+ * null hebt den Finger. Gibt false zurück, wenn keine Zeigehand läuft.
+ */
+export function scrollWisch(cx: number | null, cy = 0): boolean {
+	const a = aktiv;
+	if (!a) return false;
+	if (cx === null) {
+		a.st.wisch = null;
+		return true;
+	}
+	if (!a.endOn || a.touch || isTouch()) return false;
+	if (a.st.demo) a.st.demo.off = true;
+	a.st.pending = null;
+	const r0 = a.st.back.getBoundingClientRect();
+	const [x, y] = a.obj(cx - r0.left, cy - r0.top);
+	a.st.wisch = [x, y];
 	return true;
 }
 
@@ -374,7 +412,7 @@ export function zeigeSchritt(st: HandZustand, c: HandKontext, cam: Fit, br: Atme
 	vorfuehren(st, c, e, dm);
 	const z = zielWaehlen(st, c, e);
 	const ht = bewegen(st, c, cam, e, z, dm);
-	cursorSetzen(st, !!(z.folgt || z.pend));
+	cursorSetzen(st, !!(z.folgt || z.pend || st.wisch));
 	st.dbg = {
 		m: { x: c.m.x, y: c.m.y, in: c.m.in, down: c.m.down, type: c.m.type },
 		tg: z.tg,

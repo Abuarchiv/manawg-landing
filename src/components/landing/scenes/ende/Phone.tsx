@@ -7,7 +7,7 @@ import { cl } from '../../core/math';
 import { live } from '../intro/stage';
 import s from './Phone.module.css';
 import { datumsZeilen } from './datum';
-import { scrollTipp } from './hand';
+import { scrollTipp, scrollWisch } from './hand';
 
 // Das Handy der Ende-Szene mit der echten ManaWG-App: ein gleich-originiges iframe auf
 // /app-demo/index.html (Standalone-DOM und CSS der App, Zustandsautomat in demo.js). Hülle und Geometrie
@@ -19,16 +19,23 @@ const SRC = '/app-demo/index.html';
 const BILD = '/app-demo/start.webp';
 
 /**
- * Scroll-Choreografie: auf dem letzten Stück der Bühne (P 0,95 bis 1) tippt die Zeigehand mit dem Scroll durch die
- * vier Tabs der App (ein Viertel je Tab), rückwärts wieder zurück. Ohne Zeigehand (Touch, reduzierte Bewegung)
- * schaltet die App direkt um. Der erste eigene Tipp beendet die Choreografie (benutzt).
+ * Scroll-Choreografie (P 0,95 bis 0,988, zwei Drittel einer Bildschirmhöhe): die Zeigehand bedient die App mit dem
+ * Scroll. Sie tippt Finanzen, zieht die Ausgabenliste mit dem Finger durch (dein Scroll ist ihr Wisch), tippt
+ * Austausch, dann Haushalt und hakt „Bad putzen“ ab. Rückwärts läuft alles zurück. Ohne Zeigehand (Touch, reduzierte
+ * Bewegung) schaltet die App direkt. Der erste eigene Tipp beendet die Choreografie (benutzt). Danach (P 0,988 bis 1)
+ * taucht die Kamera in den Bildschirm (stage.ts --dive).
  */
-const TABS = [
-	['Start', '/|'],
-	['Haushalt', '/putzen|'],
-	['Finanzen', '/ausgaben|'],
-	['Austausch', '/chat|'],
-] as const;
+type Schritt =
+	| { P: number; tipp: string; art?: 'tab' | 'knopf'; id: string }
+	| { P: number; wisch: [von: number, bis: number]; id: string };
+const SCHRITTE: readonly Schritt[] = [
+	{ P: 0, tipp: 'Start', id: '/|' },
+	{ P: 0.952, tipp: 'Finanzen', id: '/ausgaben|' },
+	{ P: 0.957, wisch: [0.957, 0.967], id: '/ausgaben|' },
+	{ P: 0.969, tipp: 'Austausch', id: '/pinnwand|' },
+	{ P: 0.975, tipp: 'Haushalt', id: '/putzen|' },
+	{ P: 0.98, tipp: 'Als erledigt markieren: Bad putzen', art: 'knopf', id: '/putzen|' },
+];
 
 /** Zustandsautomat der App im iframe (app-demo/demo.js). */
 interface Demo {
@@ -137,21 +144,46 @@ export function Phone() {
 	useEffect(() => {
 		if (!bereit || benutzt) return;
 		let stufe = -1;
+		let wischt = false;
 		const off = onFrame(() => {
 			const st = live.stage?.state;
 			const fr = rahmen.current;
-			const demo = (fr?.contentWindow as (Window & { __demo?: Demo }) | null)?.__demo;
-			if (!st || !demo || !st.endOn) return;
-			const neu = Math.min(TABS.length - 1, Math.floor(cl((st.P - 0.95) / 0.05) * TABS.length));
-			if (neu === stufe) return;
-			// Erstes Bild: nur merken, die App steht schon richtig (Start)
-			const erst = stufe < 0;
-			stufe = neu;
-			if (erst && neu === 0) return;
-			const [name, id] = TABS[neu] ?? TABS[0];
-			if (!scrollTipp(name)) demo.enter('-', id);
+			const win = fr?.contentWindow as (Window & { __demo?: Demo }) | null;
+			const demo = win?.__demo;
+			if (!st || !fr || !win || !demo || !st.endOn) return;
+			const P = st.P;
+			let neu = 0;
+			for (let i = 0; i < SCHRITTE.length; i++) if (P >= (SCHRITTE[i]?.P ?? 0)) neu = i;
+			const schritt = SCHRITTE[neu];
+			if (!schritt) return;
+			if (neu !== stufe) {
+				const erst = stufe < 0;
+				stufe = neu;
+				if (wischt) {
+					scrollWisch(null);
+					wischt = false;
+				}
+				if (!(erst && neu === 0)) {
+					if ('tipp' in schritt) {
+						if (!scrollTipp(schritt.tipp, schritt.art)) demo.enter('-', schritt.id);
+					} else if (demo.state().id !== schritt.id) demo.enter('-', schritt.id);
+				}
+			}
+			if ('wisch' in schritt) {
+				// Der Finger liegt auf der Liste und zieht sie mit dem Scroll durch: Dokument der App scrollt 0..max,
+				// die Spitze wandert dabei auf dem Glas von unten nach oben (App-Koordinaten 390 x 839)
+				const k = cl((P - schritt.wisch[0]) / (schritt.wisch[1] - schritt.wisch[0]));
+				const max = Math.max(0, win.document.documentElement.scrollHeight - win.innerHeight);
+				win.scrollTo(0, k * max);
+				const r = fr.getBoundingClientRect();
+				const f = r.width / fr.clientWidth;
+				wischt = scrollWisch(r.left + 230 * f, r.top + (640 - 340 * k) * f) || wischt;
+			}
 		});
-		return off;
+		return () => {
+			off();
+			scrollWisch(null);
+		};
 	}, [bereit, benutzt]);
 
 	// Standbild und iframe-src erst ab P 0,55 setzen (stage.ts setzt data-nah am #final)
@@ -296,7 +328,7 @@ export function Phone() {
 					data-ende-hinweis="1"
 					aria-hidden="true"
 					style={css(
-						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:${benutzt ? 0 : 1}`,
+						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:calc(${benutzt ? 0 : 1} * (1 - var(--dive-aus, 0)))`,
 					)}
 				>
 					TIPP INS HANDY · DAS IST DIE ECHTE APP
