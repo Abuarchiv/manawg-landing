@@ -1,4 +1,5 @@
 import { appUrl } from '@/lib/app-origin';
+import { getAppUrl } from '@/lib/app-url';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -26,9 +27,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			title: t.titel,
 			description: t.beschreibung,
 			url: `/${thema}`,
-			images: ['/og.png'],
+			images: [`/${thema}/opengraph-image`],
 		},
-		twitter: { title: t.titel, description: t.beschreibung, images: ['/og.png'] },
+		twitter: { title: t.titel, description: t.beschreibung, images: [`/${thema}/opengraph-image`] },
 	};
 }
 
@@ -47,8 +48,22 @@ export default async function ThemaPage({ params }: Props) {
 		})),
 	};
 
+	const breadcrumb = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'ManaWG', item: `${getAppUrl()}/` },
+			{ '@type': 'ListItem', position: 2, name: t.link },
+		],
+	};
+
 	return (
 		<main id="main" tabIndex={-1} className="min-h-screen flex flex-col focus:outline-none">
+			<script
+				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+			/>
 			{faqSchema && (
 				<script
 					type="application/ld+json"

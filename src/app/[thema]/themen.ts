@@ -11,11 +11,14 @@ export interface Thema {
 	abschnitte: Array<[string, string]>;
 	/** Wird zusätzlich als FAQPage-JSON-LD ausgegeben. */
 	fragen?: Array<[string, string]>;
+	/** Letzte inhaltliche Änderung (ISO-Datum), für lastmod in der Sitemap. */
+	stand: string;
 }
 
 export const THEMEN: Record<string, Thema> = {
 	putzplan: {
 		link: 'Putzplan',
+		stand: '2026-10-10',
 		titel: 'Putzplan für die WG: fair und automatisch | ManaWG',
 		beschreibung:
 			'Der kostenlose WG-Putzplan von ManaWG: Aufgaben wiederholen sich, rotieren fair weiter und überspringen, wer gerade nicht da ist.',
@@ -43,6 +46,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'wg-kasse': {
 		link: 'WG-Kasse',
+		stand: '2026-10-10',
 		titel: 'WG-Kasse: Ausgaben teilen und Schulden sehen | ManaWG',
 		beschreibung:
 			'Die kostenlose WG-Kasse von ManaWG: Ausgaben gleich oder mit eigenen Beträgen aufteilen, Salden sehen und Schulden mit möglichst wenigen Überweisungen ausgleichen.',
@@ -70,6 +74,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	einkaufsliste: {
 		link: 'Einkaufsliste',
+		stand: '2026-10-10',
 		titel: 'Gemeinsame Einkaufsliste für die WG | ManaWG',
 		beschreibung:
 			'Die geteilte Einkaufsliste von ManaWG: Alle tragen ein, alle sehen den Stand, und der Einkauf wird direkt zur geteilten Ausgabe.',
@@ -93,6 +98,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'splitwise-alternative': {
 		link: 'Splitwise-Alternative',
+		stand: '2026-10-10',
 		titel: 'Splitwise-Alternative für WGs, kostenlos mit Putzplan | ManaWG',
 		beschreibung:
 			'ManaWG ist eine kostenlose Alternative zu Splitwise und Splid für Wohngemeinschaften: Ausgaben teilen plus Putzplan, Einkaufsliste und Pinnwand. Mit CSV-Import.',
@@ -116,6 +122,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'flatastic-alternative': {
 		link: 'Flatastic-Alternative',
+		stand: '2026-10-10',
 		titel: 'Flatastic-Alternative: WG-App ohne Werbung und Paywall | ManaWG',
 		beschreibung:
 			'ManaWG ist eine kostenlose WG-App als Alternative zu Flatastic: Putzplan, WG-Kasse, Einkaufsliste, Kalender, Pinnwand und Chat ohne Werbung und ohne Premium-Stufe.',
@@ -143,6 +150,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	faq: {
 		link: 'Häufige Fragen',
+		stand: '2026-10-10',
 		titel: 'Häufige Fragen zu ManaWG, der WG-App',
 		beschreibung:
 			'Antworten zu ManaWG: Kosten, Installation, Einladung, Ausgaben teilen, Putzplan, Abwesenheiten und Import aus Splitwise oder Splid.',

@@ -9,9 +9,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	const appUrl = getAppUrl();
 	return [
 		{ url: `${appUrl}/`, lastModified: LAST_MODIFIED, changeFrequency: 'weekly', priority: 1 },
-		...Object.keys(THEMEN).map((thema) => ({
+		...Object.entries(THEMEN).map(([thema, t]) => ({
 			url: `${appUrl}/${thema}`,
-			lastModified: LAST_MODIFIED,
+			lastModified: new Date(t.stand),
 			changeFrequency: 'monthly' as const,
 			priority: 0.8,
 		})),
