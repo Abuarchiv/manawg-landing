@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 // Welche Flags verändern welche Route? (aus pages.json, Vergleich der normalisierten Seite)
 import { readFileSync } from 'node:fs';
-import { norm } from '../../../design/app-ref/tools/demo-lib.mjs';
+import { norm } from '../../../tools/app-demo/demo-lib.mjs';
 const p = JSON.parse(readFileSync(`${process.argv[2]}/pages.json`, 'utf8'));
 const h = (s) =>
 	createHash('sha1')

@@ -1,44 +1,75 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
-	"organizeImports": { "enabled": true },
+	"organizeImports": {
+		"enabled": true
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"correctness": { "noUnusedVariables": "error", "noUnusedImports": "error" },
+			"correctness": {
+				"noUnusedVariables": "error",
+				"noUnusedImports": "error"
+			},
 			"suspicious": {
 				"noExplicitAny": "warn",
-				"noConsole": { "level": "warn", "options": { "allow": ["warn", "error"] } },
+				"noConsole": {
+					"level": "warn",
+					"options": {
+						"allow": ["warn", "error"]
+					}
+				},
 				"noArrayIndexKey": "off"
 			},
-			"a11y": { "noAriaHiddenOnFocusable": "off" }
+			"a11y": {
+				"noAriaHiddenOnFocusable": "off"
+			}
 		}
 	},
-	"formatter": { "enabled": true, "indentStyle": "tab", "indentWidth": 2, "lineWidth": 100 },
-	"javascript": {
-		"formatter": { "quoteStyle": "single", "trailingCommas": "all", "semicolons": "always" },
-		"parser": { "unsafeParameterDecoratorsEnabled": true }
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 100
 	},
-	"json": { "formatter": { "enabled": true } },
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"trailingCommas": "all",
+			"semicolons": "always"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	},
+	"json": {
+		"formatter": {
+			"enabled": true
+		}
+	},
 	"files": {
 		"ignore": [
 			"node_modules",
 			".next",
 			".next-*",
 			".vercel",
-			"coverage",
-			"test-results",
-			"playwright-report",
 			"graphify-out",
-			"src/components/landing/**/*.js",
-			"tools/out",
 			"public",
-			"site",
-			"site-1zu1",
-			"design"
+			"design",
+			"tools/app-demo",
+			"tools/qa/install/ref"
 		]
 	},
 	"overrides": [
-		{ "include": ["tools/**"], "linter": { "rules": { "suspicious": { "noConsole": "off" } } } }
+		{
+			"include": ["tools/**"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noConsole": "off"
+					}
+				}
+			}
+		}
 	]
 }

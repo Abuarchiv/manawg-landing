@@ -1,6 +1,6 @@
 # INSTALL-FLOWS: echte Installationsabläufe von ManaWG
 
-Stand 2026-10-06, zweite Fassung (nach erneuter Prüfung aller Bilder gegen den Text). Referenz für die Install-Szene der Landing (Tabs iPhone, Android, Rechner). Alle Bilder liegen in `design/install-ref/` (Dateinamen siehe Abschnitt 9).
+Stand 2026-10-06, zweite Fassung (nach erneuter Prüfung aller Bilder gegen den Text). Referenz für die Install-Szene der Landing (Tabs iPhone, Android, Rechner). Alle Bilder liegen in `tools/qa/install/ref/` (Dateinamen siehe Abschnitt 9).
 
 Neu gegenüber der ersten Fassung: Rechner-Teil (Abschnitt 4) mit Belegen aus dem Chromium-Quelltext des hier installierten Chrome 154, Edge-Dialoge mit Originalbildern von Microsoft, echte Meldungstexte der Android-Installation (3.4), gemessene Feder des iOS-Seitenmenüs (2.6), Referenzclip des iPhone-Ablaufs (2.7). Korrigiert: Tooltip des Chrome-Symbols („ManaWG installieren“, nicht „App installieren“), Dialogform (tab-modal, keine Blase am Symbol), Titel „App installieren“ ohne Fragezeichen.
 
@@ -22,7 +22,7 @@ Herkunft der Angaben, jeweils markiert:
 6. Die aktuelle Landing-Szene (`engine/install.js`, `engine/logic.js`) zeigt eine erfundene Reihenfolge. Konkrete Abweichungen und eine Choreografie mit Zeiten: Abschnitt 8.
 7. **Chrome 154 am Rechner:** Symbol „Monitor mit Pfeil nach unten“ plus Chip „Installieren“ (nur zeitweise ausgeklappt) rechts in der Adressleiste, Tooltip „ManaWG installieren“. Der Dialog „App installieren“ ist **tab-modal** (oben mittig im Seitenbereich, ohne Pfeil, nicht an das Symbol geheftet) mit Icon, Name, `app.manawg.com` und den Knöpfen „Abbrechen“ und „Installieren“. Danach wandert der aktuelle Tab in ein eigenes App-Fenster. Der neue mehrstufige Dialog („Installation war erfolgreich“, „Tab in App öffnen“) ist in 154 abgeschaltet, erst in Chromium 157 an. [SRC, LOC]
 8. **Android nach „Installieren“ auf einem echten Gerät:** Meldungen „„ManaWG“ wird installiert…“ und danach „App wurde installiert“, bei Fehler „ManaWG konnte nicht installiert werden.“. Der Endzustand auf einem echten Gerät wurde nicht aufgenommen (Emulator ohne Google-Konto kann kein WebAPK anlegen). [LOC]
-9. **Edge** nutzt eine eigene Oberfläche (Flyout „Installieren der ManaWG-App“ mit „Installieren“ und „Jetzt nicht“, danach Dialog „App wurde installiert“), Originalbilder von Microsoft in `design/install-ref/desk-edge-*.webp`. [DOK-Bild, LOC]
+9. **Edge** nutzt eine eigene Oberfläche (Flyout „Installieren der ManaWG-App“ mit „Installieren“ und „Jetzt nicht“, danach Dialog „App wurde installiert“), Originalbilder von Microsoft in `tools/qa/install/ref/desk-edge-*.webp`. [DOK-Bild, LOC]
 
 ## 2. iPhone: iOS 27, Safari [REC]
 
@@ -105,7 +105,7 @@ Unabhängige Nachmessung am Rohvideo (60 Hz, Differenzbild gegen das Bild 0,3 s 
 
 ### 2.7 Referenzclip [REC]
 
-`design/install-ref/ios-flow-real.webm`: der gesamte iPhone-Ablauf in Echtzeit, 585 × 1266 px (1,5 × pt), 30 Bilder/s, 19,6 s, VP9 ohne Ton, 0,7 MB. Ausschnitt 1,8 bis 21,4 s des Rohvideos. Zeit im Clip = Rohzeit − 1,8 s:
+`tools/qa/install/ref/ios-flow-real.webm`: der gesamte iPhone-Ablauf in Echtzeit, 585 × 1266 px (1,5 × pt), 30 Bilder/s, 19,6 s, VP9 ohne Ton, 0,7 MB. Ausschnitt 1,8 bis 21,4 s des Rohvideos. Zeit im Clip = Rohzeit − 1,8 s:
 
 | Clip-Zeit | Ereignis (Tippbeginn laut Protokoll) |
 |-----------|--------------------------------------|
@@ -308,7 +308,7 @@ Rechner (Chrome 154), nur Reihenfolge, **keine Messzeiten** [?]: Seite mit Symbo
 - Chrome auf Android zeigt die Werkzeugleiste je nach Version oben (124) oder unten (Chromium 157, ob das in Chrome-Stable 154/155 schon so ist: [?]); das Menü-Popup liegt immer rechts.
 - Startzeiten der installierten Apps sind Simulator-/Emulator-Werte.
 
-## 9. Bildverzeichnis `design/install-ref/`
+## 9. Bildverzeichnis `tools/qa/install/ref/`
 
 iOS-Standbilder, 780 × 1688 px (2× pt), Sprache Deutsch, 09:41:
 

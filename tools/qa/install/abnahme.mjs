@@ -141,10 +141,8 @@ res.texte = texte;
 // ---------- I-4: Icon md5, Name, Adresse ----------
 const md5 = (b) => createHash('md5').update(b).digest('hex');
 const ref = {
-	'/apple-touch-icon.png': md5(
-		readFileSync(join(repo, 'design/app-ref/brand/apple-touch-icon.png')),
-	),
-	'/icon-512.png': md5(readFileSync(join(repo, 'design/app-ref/brand/icon-512.png'))),
+	'/apple-touch-icon.png': md5(readFileSync(join(repo, 'public/apple-touch-icon.png'))),
+	'/icon-512.png': md5(readFileSync(join(repo, 'public/icon-512.png'))),
 };
 const srcs = await page.evaluate(() =>
 	[...document.querySelectorAll('[data-ins="screen"] img')]

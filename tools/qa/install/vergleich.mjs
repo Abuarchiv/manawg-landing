@@ -1,15 +1,14 @@
 // Gegenüberstellung mit den Referenzen (Abnahme I-10): oben die Referenz, unten die Szene zur entsprechenden Zeit.
-// iPhone: design/install-ref/ios-flow-real.webm. Android: Standbilder and-new-01..03 und and-06..08.
+// iPhone: tools/qa/install/ref/ios-flow-real.webm. Android: Standbilder and-new-01..03 und and-06..08.
 // node tools/qa/install/vergleich.mjs --url http://localhost:3122/ --out <dir>
 import { execFileSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join } from 'node:path';
 import { args, launch, open, sheet, sleep, toMark, vpOf } from '../lib.mjs';
 
 const a = args();
 mkdirSync(a.out, { recursive: true });
-const repo = resolve(import.meta.dirname, '../../..');
-const ref = join(repo, 'design/install-ref');
+const ref = join(import.meta.dirname, 'ref');
 
 // iPhone: Zeit im Referenzclip (s) -> Zeit in der Schleife (s); Tippzeiten Referenz 0,44 2,50 5,26 7,35 11,67, hier 1,3 2,9 4,5 6,1 8,1
 const PAARE = [

@@ -1,4 +1,4 @@
-// A-3: Bewegung im Demo gegen REF §7 (transitionrun/animationstart, wie design/app-ref/tools/motion.mjs).
+// A-3: Bewegung im Demo gegen REF §7 (transitionrun/animationstart, wie tools/app-demo/motion.mjs).
 // Erwartung: Dialog 200/220 ms ease, Sheet 300 ms auf und 400 ms zu mit (.22,1,.36,1), Vollbild 220 ms, Knopf 80 ms,
 // Tabbar 120 ms, SubNav 150 ms, Hinweis 4 s, Abhaken ohne Animation.
 // Aufruf: node tools/qa/app/motion.mjs [--base http://127.0.0.1:4261/app-demo/index.html]
