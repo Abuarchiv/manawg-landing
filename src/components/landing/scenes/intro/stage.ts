@@ -12,6 +12,7 @@ import * as hand from '../ende/hand';
 import { kamera } from '../ende/kamera';
 import * as flut from './flut';
 import { createHero } from './hero';
+import { type MarkeLage, createMarke } from './marke';
 import { zeichneSterne } from './sterne';
 import type { BuehnenKontext, BuehnenZeiger, HeroMarken, Loch } from './types';
 import * as wohnung from './wohnung';
@@ -82,6 +83,8 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 	const endeTitel = buehne.querySelector<HTMLElement>('[data-ende-titel]');
 	const nurIntro = [...root.querySelectorAll<HTMLElement>('[data-nur-intro]')];
 	const hero = createHero(cvHero);
+	const cvMa = q('marke');
+	const marke = cvMa ? createMarke(cvMa) : null;
 
 	let W = buehne.clientWidth;
 	let H = buehne.clientHeight;
@@ -333,6 +336,33 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		}
 	};
 
+	/**
+	 * Lage der Marke am Scroll: nach dem Tauchgang (P 0,60) rechts über der Wohnung, dreht eine Umdrehung je 0,3 P,
+	 * schwebt leicht, und fällt ab P 0,86 ins Handy, wo sie als App-Icon (Ende-Raum 680/150) verschwindet.
+	 */
+	const markeLage = (P: number, t: number): MarkeLage => {
+		const hoch = loop.mode === 'hoch';
+		const ein = ss((P - 0.6) / 0.03);
+		const fall = ss((P - 0.86) / 0.09);
+		const aus = ss((P - 0.955) / 0.02);
+		const x0 = hoch ? 0.74 * W : 0.78 * W;
+		const y0 = hoch ? 0.43 * safeH : 0.34 * H; // hoch: unter dem Kartentext, über der Wohnung
+		const r0 = hoch ? 0.11 * W : 0.14 * H;
+		// Ziel: Icon in der Kopfzeile der App (Ende-Raum 680/150, Radius 11)
+		const x1 = cam.ox + 680 * cam.f;
+		const y1 = cam.oy + 150 * cam.f;
+		const r1 = 11 * cam.f;
+		const k = fall * fall * (3 - 2 * fall);
+		return {
+			x: x0 + (x1 - x0) * k + Math.sin(t * 0.5) * 4 * (1 - fall),
+			y: y0 + (y1 - y0) * k + (1 - ein) * 40 + Math.cos(t * 0.4) * 5 * (1 - fall),
+			r: r0 + (r1 - r0) * k,
+			yaw: (P - 0.6) * ((2 * Math.PI) / 0.3) + t * 0.12,
+			pitch: 0.35 + Math.sin(t * 0.3) * 0.08,
+			alpha: ein * (1 - aus),
+		};
+	};
+
 	const frame = (t0: number, dt: number, now: number, raw: number) => {
 		const t = loop.reduced ? 0 : t0; // reduce: Hero-Zeit und Autopilot stehen still
 		if (dprFor(2, 1.5, W, H) !== dpr) resize(); // Auflösungsstufe (loop.ts) hat sich geändert
@@ -414,7 +444,8 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			}
 			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);
-			flut.draw(cvFl, c, loecher);
+			const mr = marke && !loop.reduced ? marke.frame(markeLage(P, t), H, dpr, t, st.sm) : null;
+			flut.draw(cvFl, c, mr ? [...loecher, { ...mr, art: 'marke' }] : loecher);
 			if (P > 0.3 && !st.handsLoaded) {
 				st.handsLoaded = true;
 				hand.laden();
@@ -443,6 +474,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			window.removeEventListener('pointerup', onUp);
 			window.removeEventListener('pointercancel', onUp);
 			hero.destroy();
+			marke?.destroy();
 			if (live.stage === api) live.stage = null;
 		},
 	};

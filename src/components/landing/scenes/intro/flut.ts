@@ -114,6 +114,7 @@ export function lueckenVon(loecher: readonly Loch[], c: LueckenKontext, cs: numb
 	for (const l of loecher) {
 		if (l.art === 'logo' || l.art === 'cta')
 			aus.push({ ...l, rand: 14, kante: hoch ? KANTE : cs, w0: 1 });
+		else if (l.art === 'marke') aus.push({ ...l, rand: 0, kante: cs * 2, w0: 1 });
 		else if (l.art === 'hinweis') {
 			if ((c.endA ?? 0) < 0.72) aus.push({ ...l, rand: 6, kante: hoch ? 14 : cs * 0.5, w0: 1 });
 		} else if (l.art === 'text' && tw > 0) {

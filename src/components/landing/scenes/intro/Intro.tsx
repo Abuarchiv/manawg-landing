@@ -69,6 +69,13 @@ export function Intro() {
 					<Raeume />
 				</div>
 				<Ende />
+				{/* Die Marke als Signatur-Objekt (marke.ts): nur so groß wie sie selbst, über Flut und Ende-Ebene,
+				    damit sie am Schluss sichtbar ins Handy fällt */}
+				<canvas
+					data-intro="marke"
+					aria-hidden="true"
+					style={css('position:absolute;left:0;top:0;display:none;pointer-events:none')}
+				/>
 			</div>
 		</section>
 	);
