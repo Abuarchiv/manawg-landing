@@ -48,6 +48,18 @@ export default async function ThemaPage({ params }: Props) {
 		})),
 	};
 
+	const artikel = {
+		'@context': 'https://schema.org',
+		'@type': 'Article',
+		headline: t.h1,
+		description: t.beschreibung,
+		inLanguage: 'de-DE',
+		dateModified: t.stand,
+		mainEntityOfPage: `${getAppUrl()}/${thema}`,
+		author: { '@type': 'Organization', name: 'ManaWG', url: getAppUrl() },
+		publisher: { '@type': 'Organization', name: 'ManaWG', url: getAppUrl() },
+	};
+
 	const breadcrumb = {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
@@ -63,6 +75,11 @@ export default async function ThemaPage({ params }: Props) {
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+			/>
+			<script
+				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(artikel) }}
 			/>
 			{faqSchema && (
 				<script
@@ -100,7 +117,10 @@ export default async function ThemaPage({ params }: Props) {
 				</div>
 
 				<p className="mt-10">
-					<a href={appUrl('/registrieren?action=create')} className={`${TEXT_LINK} text-[var(--text-1)]`}>
+					<a
+						href={appUrl('/registrieren?action=create')}
+						className={`${TEXT_LINK} text-[var(--text-1)]`}
+					>
 						WG kostenlos erstellen
 					</a>
 				</p>

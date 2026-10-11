@@ -36,6 +36,8 @@ const softwareApplicationSchema = {
 	operatingSystem: 'Web, iOS, Android',
 	inLanguage: 'de-DE',
 	featureList: ['Ausgaben teilen', 'Einkaufsliste', 'Putzplan', 'Pinnwand', 'Kalender', 'Chat'],
+	isAccessibleForFree: true,
+	browserRequirements: 'Aktueller Browser, installierbar als PWA',
 	offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
 };
 

@@ -31,6 +31,17 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Splid-Alternative](https://manawg.com/splid-alternative)
 - [OurHome-Alternative](https://manawg.com/ourhome-alternative)
 - [Häufige Fragen](https://manawg.com/faq)
+
+## Ratgeber
+
+- [WG-Kosten fair aufteilen](https://manawg.com/wg-kosten-aufteilen): Miete, Nebenkosten, Internet, drei Modelle
+- [Putzplan erstellen](https://manawg.com/putzplan-erstellen): Aufgaben, Rotation, Abwesenheit
+- [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste)
+- [WG-Regeln](https://manawg.com/wg-regeln): Ruhezeiten, Besuch, Haushalt
+- [Nebenkosten, Strom und Internet](https://manawg.com/wg-nebenkosten)
+- [Einkaufen in der WG](https://manawg.com/wg-einkauf-organisieren)
+
+Alle Seiten als ein Text: https://manawg.com/llms-full.txt
 - [App öffnen](https://app.manawg.com/)
 - [Datenschutz](https://manawg.com/datenschutz)
 

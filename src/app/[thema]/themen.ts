@@ -1,5 +1,6 @@
 // Themenseiten für Suchanfragen, die die Startseite allein nicht abdeckt.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
+import { RATGEBER } from './ratgeber';
 
 export interface Thema {
 	/** Kurzer Linktext für Querverweise. */
@@ -521,4 +522,5 @@ export const THEMEN: Record<string, Thema> = {
 			],
 		],
 	},
+	...RATGEBER,
 };
