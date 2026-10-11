@@ -2,22 +2,7 @@
 
 import { useState } from 'react';
 import { css } from '../../core/dc';
-
-const FRAGEN: [string, string][] = [
-	[
-		'Wie kommen meine Mitbewohner in die WG?',
-		'Du erstellst die WG und teilst den Einladungslink. Wer ihn öffnet, kann beitreten.',
-	],
-	[
-		'Brauche ich eine App aus dem Store?',
-		'Nein. ManaWG läuft im Browser unter app.manawg.com und lässt sich auf den Home-Bildschirm installieren.',
-	],
-	['Was kostet ManaWG?', 'Nichts. ManaWG ist kostenlos.'],
-	[
-		'Wie wird abgerechnet?',
-		'Jede Ausgabe wird auf die Personen verteilt, die beteiligt waren. ManaWG zeigt, wer wem wie viel schuldet.',
-	],
-];
+import { FRAGEN } from './fragenDaten';
 
 // Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
 // Die Höhe läuft über grid-template-rows (landing.css .faq-antwort), nur eine Antwort ist offen.

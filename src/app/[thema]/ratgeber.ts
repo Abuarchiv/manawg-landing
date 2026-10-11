@@ -283,4 +283,58 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 		],
 	},
+	'beste-wg-app': {
+		link: 'Beste WG-App',
+		stand: '2026-10-11',
+		titel: 'Die beste WG-App finden: 7 Kriterien im Vergleich | ManaWG',
+		beschreibung:
+			'Welche WG-App passt zu euch? Sieben Kriterien von Kosten über Putzplan bis Datenschutz, dazu Vergleiche mit Splitwise, Splid, Flatastic und OurHome.',
+		h1: 'Die beste WG-App: 7 Kriterien für die Auswahl',
+		einleitung:
+			'Es gibt viele Apps für Wohngemeinschaften, und keine ist für jede WG die beste. Manche rechnen nur Geld, andere organisieren nur den Haushalt. Mit diesen sieben Kriterien findet ihr die App, die zu eurem Alltag passt, bevor ihr alle Mitbewohner zum Umstieg bewegt.',
+		abschnitte: [
+			[
+				'1. Was kostet die App wirklich?',
+				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. ManaWG ist kostenlos, ohne Werbung und ohne Bezahlstufe.',
+			],
+			[
+				'2. Deckt sie Geld und Haushalt ab?',
+				'Reine Ausgaben-Apps wie Splitwise oder Splid lösen das Geldproblem, aber nicht den Putzplan. Haushalts-Apps wie Flatastic oder OurHome organisieren Aufgaben, haben aber teils nur einfache Kassen. Wollt ihr alles an einem Ort, braucht ihr eine App mit Kasse, Putzplan und Einkaufsliste, zum Beispiel ManaWG.',
+			],
+			[
+				'3. Wie gut ist die Kasse?',
+				'Gute Kassen teilen ungleich, kennen Fixkosten, zeigen Salden und schlagen Ausgleiche mit wenigen Überweisungen vor. Achtet auch darauf, wie Cent-Reste behandelt werden und ob ihr Daten anderer Apps importieren könnt.',
+			],
+			[
+				'4. Wie fair ist der Putzplan?',
+				'Entscheidend sind faire Rotation, Wiederholung in Tagen oder Monaten, Umgang mit Abwesenheit und Erinnerungen. Ein Punktesystem motiviert manche WGs, andere empfinden es als Gängelung.',
+			],
+			[
+				'5. Müssen alle eine App installieren?',
+				'Je höher die Hürde, desto eher macht jemand nicht mit. Eine Web-App, die im Browser läuft und per Link beitritt, senkt diese Hürde. ManaWG läuft ohne App Store und lässt sich auf den Home-Bildschirm legen.',
+			],
+			[
+				'6. Datenschutz und Sprache',
+				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App ist durchgehend deutsch. Eine englische Oberfläche und andere Währungen als Euro gibt es nicht.',
+			],
+			[
+				'7. Wie leicht ist der Umstieg?',
+				'Wer schon Daten in Splitwise oder Splid hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus CSV-Dateien dieser Apps und zeigt vorher eine Vorschau. Ausführliche Vergleiche findet ihr unter Splitwise-Alternative, Splid-Alternative, Flatastic-Alternative und OurHome-Alternative.',
+			],
+		],
+		fragen: [
+			[
+				'Welche WG-App ist kostenlos?',
+				'ManaWG ist vollständig kostenlos, ohne Werbung und ohne Bezahlstufe. Bei anderen Apps hängt der Umfang des kostenlosen Tarifs vom Anbieter ab und kann sich ändern.',
+			],
+			[
+				'Gibt es eine WG-App mit Putzplan und Kasse in einem?',
+				'Ja. ManaWG verbindet Ausgaben teilen, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat in einer App.',
+			],
+			[
+				'Welche App eignet sich für Reisen mit mehreren Währungen?',
+				'Dafür ist eine Ausgaben-App mit Wechselkursen besser geeignet. ManaWG rechnet nur in Euro und ist für den WG-Alltag gedacht.',
+			],
+		],
+	},
 };
