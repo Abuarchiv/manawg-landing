@@ -60,3 +60,14 @@ a:hover {
 	--bg-base: #0a0a0a;
 }
 @tailwind utilities;
+/* Themenseiten: kein Preflight, daher Box-Modell und Haarlinie hier festlegen */
+.thema,
+.thema *,
+.thema *::before,
+.thema *::after {
+	box-sizing: border-box;
+}
+.thema .linie {
+	border: 0 solid rgba(250, 250, 250, 0.14);
+	border-top-width: 1px;
+}

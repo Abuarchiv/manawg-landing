@@ -1,10 +1,9 @@
 import { appUrl } from '@/lib/app-origin';
 import { getAppUrl } from '@/lib/app-url';
-import { TEXT_LINK } from '@/lib/text-link';
-import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { GRUPPEN, gruppeVon, verwandte } from './gruppen';
 import { THEMEN } from './themen';
 
 export const dynamicParams = false;
@@ -60,17 +59,32 @@ export default async function ThemaPage({ params }: Props) {
 		publisher: { '@type': 'Organization', name: 'ManaWG', url: getAppUrl() },
 	};
 
+	const gruppe = gruppeVon(thema);
 	const breadcrumb = {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
 		itemListElement: [
 			{ '@type': 'ListItem', position: 1, name: 'ManaWG', item: `${getAppUrl()}/` },
-			{ '@type': 'ListItem', position: 2, name: t.link },
+			...(gruppe ? [{ '@type': 'ListItem', position: 2, name: gruppe.name }] : []),
+			{
+				'@type': 'ListItem',
+				position: gruppe ? 3 : 2,
+				name: t.link,
+				item: `${getAppUrl()}/${thema}`,
+			},
 		],
 	};
 
+	const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
+	const rand = 'px-5 md:px-8 lg:px-16 mx-auto w-full max-w-[1440px]';
+	const linie = 'linie';
+
 	return (
-		<main id="main" tabIndex={-1} className="min-h-screen flex flex-col focus:outline-none">
+		<main
+			id="main"
+			tabIndex={-1}
+			className="thema min-h-screen flex flex-col bg-[#0a0a0a] text-[#fafafa] focus:outline-none"
+		>
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
@@ -88,56 +102,157 @@ export default async function ThemaPage({ params }: Props) {
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
 				/>
 			)}
-			<div className="flex-1 max-w-2xl mx-auto w-full px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
+
+			<header
+				className={`${rand} flex items-center justify-between pt-[max(1.25rem,env(safe-area-inset-top))] pb-6`}
+			>
 				<Link
 					href="/"
-					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-					aria-label="Zur Startseite"
+					aria-label="ManaWG, zur Startseite"
+					className="inline-flex items-center gap-3 min-h-[44px] no-underline"
 				>
-					<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />
-					Zur Startseite
+					<img
+						src="/manawg-mark-weiss.png"
+						alt=""
+						width={416}
+						height={346}
+						className="h-5 w-auto"
+					/>
+					<span className="font-[family-name:'Inter_Tight'] text-[17px] font-semibold tracking-[-0.03em]">
+						ManaWG
+					</span>
 				</Link>
+				<a
+					href={appUrl('/registrieren?action=create')}
+					className="font-mono text-[12px] text-[var(--text-3)] min-h-[44px] inline-flex items-center"
+				>
+					App öffnen
+				</a>
+			</header>
 
-				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-4">{t.h1}</h1>
-				<p className="text-[var(--text-2)] mb-8 leading-relaxed">{t.einleitung}</p>
+			<nav aria-label="Brotkrumen" className={`${rand} ${mono} pb-10 md:pb-16`}>
+				<ol className="flex flex-wrap gap-x-2 m-0 p-0 list-none">
+					<li>
+						<Link href="/">ManaWG</Link>
+					</li>
+					{gruppe && <li aria-hidden="true">/ {gruppe.name}</li>}
+					<li aria-current="page">/ {t.link}</li>
+				</ol>
+			</nav>
 
-				<div className="text-[var(--text-2)] space-y-6 leading-relaxed">
+			<div className={`${rand} flex-1`}>
+				<h1 className="font-[family-name:'Inter_Tight'] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch]">
+					{t.h1}
+				</h1>
+				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
+					{t.einleitung}
+				</p>
+
+				<div className="mt-20 md:mt-32">
 					{t.abschnitte.map(([kopf, text]) => (
-						<section key={kopf}>
-							<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">{kopf}</h2>
-							<p>{text}</p>
-						</section>
-					))}
-					{t.fragen?.map(([frage, antwort]) => (
-						<section key={frage}>
-							<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">{frage}</h2>
-							<p>{antwort}</p>
+						<section
+							key={kopf}
+							className={`${linie} py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8`}
+						>
+							<h2 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
+								{kopf}
+							</h2>
+							<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
+								{text}
+							</p>
 						</section>
 					))}
 				</div>
 
-				<p className="mt-10">
-					<a
-						href={appUrl('/registrieren?action=create')}
-						className={`${TEXT_LINK} text-[var(--text-1)]`}
-					>
-						WG kostenlos erstellen
-					</a>
-				</p>
+				{t.fragen && (
+					<section aria-labelledby="fragen" className={`${linie} pt-10 md:pt-14`}>
+						<h2 id="fragen" className={`${mono} m-0 mb-8 font-normal`}>
+							Fragen
+						</h2>
+						{t.fragen.map(([frage, antwort]) => (
+							<div key={frage} className={`${linie} py-8 md:grid md:grid-cols-12 md:gap-8`}>
+								<h3 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
+									{frage}
+								</h3>
+								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-[var(--text-2)]">
+									{antwort}
+								</p>
+							</div>
+						))}
+					</section>
+				)}
+
+				<div
+					className={`${linie} mt-16 md:mt-24 pt-14 md:pt-20 md:grid md:grid-cols-12 md:gap-8 items-end`}
+				>
+					<p className="m-0 md:col-span-7 font-[family-name:'Inter_Tight'] font-semibold text-[clamp(30px,4.4vw,64px)] leading-[1] tracking-[-0.045em]">
+						Eure WG, an einem Ort.
+					</p>
+					<div className="mt-8 md:mt-0 md:col-start-9 md:col-span-4">
+						<a
+							href={appUrl('/registrieren?action=create')}
+							className="inline-flex items-center justify-center min-h-[56px] px-8 rounded-full bg-[#fafafa] text-[#0a0a0a] font-semibold no-underline hover:bg-[#d4d4d4] transition-colors"
+						>
+							WG kostenlos erstellen
+						</a>
+						<p className={`${mono} mt-4 mb-0`}>Kostenlos, ohne Werbung, im Browser.</p>
+					</div>
+				</div>
+
+				<nav aria-labelledby="weiter" className={`${linie} mt-20 md:mt-32 pt-10`}>
+					<h2 id="weiter" className={`${mono} m-0 mb-6 font-normal`}>
+						Weiterlesen
+					</h2>
+					<ul className="list-none m-0 p-0">
+						{verwandte(thema).map((slug) => {
+							const v = THEMEN[slug];
+							if (!v) return null;
+							return (
+								<li key={slug} className={`${linie}`}>
+									<Link
+										href={`/${slug}`}
+										className="group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-6 no-underline"
+									>
+										<span className="font-[family-name:'Inter_Tight'] font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
+											{v.h1}
+										</span>
+										<span className={mono}>{gruppeVon(slug)?.name}</span>
+									</Link>
+								</li>
+							);
+						})}
+					</ul>
+				</nav>
 			</div>
 
-			<footer className="pb-[max(1.5rem,env(safe-area-inset-bottom))] px-4 text-center">
-				<p className="text-xs text-[var(--text-3)]">
-					{Object.entries(THEMEN)
-						.filter(([slug]) => slug !== thema)
-						.map(([slug, andere], i) => (
-							<span key={slug}>
-								{i > 0 && ' · '}
-								<Link href={`/${slug}`} className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
-									{andere.link}
-								</Link>
-							</span>
-						))}
+			<footer
+				className={`${rand} ${linie} mt-24 md:mt-32 pt-12 pb-[max(2rem,env(safe-area-inset-bottom))]`}
+			>
+				<div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+					{GRUPPEN.map((g) => (
+						<nav key={g.name} aria-label={g.name}>
+							<p className={`${mono} m-0 mb-4`}>{g.name}</p>
+							<ul className="list-none m-0 p-0 flex flex-col">
+								{g.slugs.map((slug) => (
+									<li key={slug}>
+										<Link
+											href={`/${slug}`}
+											aria-current={slug === thema ? 'page' : undefined}
+											className="inline-block py-[7px] text-[14px] text-[var(--text-2)] no-underline hover:text-[#fafafa] aria-[current=page]:text-[#fafafa]"
+										>
+											{THEMEN[slug]?.link}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</nav>
+					))}
+				</div>
+				<p className={`${mono} mt-12 mb-0 flex flex-wrap gap-x-5`}>
+					<span>ManaWG, 2026</span>
+					<Link href="/impressum">Impressum</Link>
+					<Link href="/datenschutz">Datenschutz</Link>
+					<Link href="/agb">AGB</Link>
 				</p>
 			</footer>
 		</main>
