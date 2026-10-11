@@ -39,6 +39,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste)
 - [WG-Regeln](https://manawg.com/wg-regeln): Ruhezeiten, Besuch, Haushalt
 - [Nebenkosten, Strom und Internet](https://manawg.com/wg-nebenkosten)
+- [Was ist ManaWG? Fakten](https://manawg.com/ueber-manawg)
 - [Beste WG-App: 7 Kriterien](https://manawg.com/beste-wg-app)
 - [Einkaufen in der WG](https://manawg.com/wg-einkauf-organisieren)
 

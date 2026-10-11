@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 	keywords: ['WG', 'Wohngemeinschaft', 'Ausgaben teilen', 'Putzplan', 'WG-App'],
 	authors: [{ name: 'ManaWG' }],
 	applicationName: 'ManaWG',
-	alternates: { canonical: '/' },
+	alternates: { canonical: '/', types: { 'application/atom+xml': '/feed.xml' } },
 	robots: { index: true, follow: true },
 	openGraph: {
 		title,

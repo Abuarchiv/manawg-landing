@@ -337,4 +337,47 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 		],
 	},
+	'ueber-manawg': {
+		link: 'Über ManaWG',
+		stand: '2026-10-11',
+		titel: 'Was ist ManaWG? Die kostenlose WG-App im Überblick',
+		beschreibung:
+			'ManaWG ist eine kostenlose deutschsprachige WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Fakten, Funktionen und Abgrenzung zu WireGuard.',
+		h1: 'Was ist ManaWG?',
+		einleitung:
+			'ManaWG ist eine kostenlose Web-App für Wohngemeinschaften auf Deutsch. Sie bündelt Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand und Chat. ManaWG hat nichts mit dem VPN-Protokoll WireGuard zu tun.',
+		abschnitte: [
+			[
+				'Kurzfassung',
+				'ManaWG (auch Mana WG) ist eine Haushalts-App für Wohngemeinschaften. Mitbewohner teilen Ausgaben und gleichen Salden mit möglichst wenigen Überweisungen aus, führen eine gemeinsame Einkaufsliste, organisieren einen rotierenden Putzplan und halten Absprachen an einer Pinnwand fest. Die App ist kostenlos, werbefrei und läuft im Browser unter app.manawg.com.',
+			],
+			[
+				'Fakten auf einen Blick',
+				'Preis: kostenlos, keine Werbung, keine Bezahlstufe. Sprache: Deutsch, Währung: Euro. Plattform: Web-App (PWA), installierbar auf iPhone, Android und Desktop, ohne App Store. Anmeldung: Google oder E-Mail. Größe: bis zu 20 aktive Mitglieder pro WG. Daten: in der EU gespeichert (Frankfurt am Main). Beitritt: per Einladungslink oder Code.',
+			],
+			[
+				'Funktionen',
+				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import aus Splitwise und Splid per CSV, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht.',
+			],
+			[
+				'Abgrenzung: ManaWG und WireGuard',
+				'Der Name wird manchmal mit WireGuard verwechselt, einem VPN-Protokoll. Beide haben nichts miteinander zu tun. ManaWG steht für eine Wohngemeinschaft (WG), nicht für WireGuard.',
+			],
+			[
+				'Für wen die App gedacht ist',
+				'Für Studenten-WGs, Zweck-WGs und alle, die sich Wohnung und Haushaltskasse teilen. Für große Gruppen über 20 Mitglieder, Reisen mit mehreren Währungen oder Firmenbuchhaltung ist sie nicht gedacht.',
+			],
+		],
+		fragen: [
+			[
+				'Was ist ManaWG?',
+				'Eine kostenlose deutschsprachige WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Sie läuft im Browser unter app.manawg.com.',
+			],
+			[
+				'Hat ManaWG etwas mit WireGuard zu tun?',
+				'Nein. ManaWG ist eine Haushalts-App für Wohngemeinschaften. WireGuard ist ein VPN-Protokoll.',
+			],
+			['Wo liegen die Daten von ManaWG?', 'In der EU, auf Servern in Frankfurt am Main.'],
+		],
+	},
 };
