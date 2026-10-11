@@ -30,7 +30,7 @@ export function Kopf() {
 			</div>
 			<a
 				data-loch="cta"
-				href={appUrl('/neu?action=create')}
+				href={appUrl('/registrieren?action=create')}
 				className="cta cta--voll"
 				style={css('pointer-events:auto;opacity:calc(1 - var(--kopf-cta-aus,0))')}
 			>

@@ -74,13 +74,13 @@ export function Fusszeile() {
 				</div>
 				<div className={s.spalte}>
 					<span className={s.kopf}>Konto</span>
-					<a href={appUrl('/neu?action=create')} className="fuss-link">
+					<a href={appUrl('/registrieren?action=create')} className="fuss-link">
 						WG erstellen
 					</a>
-					<a href={appUrl('/neu')} className="fuss-link">
+					<a href={appUrl('/registrieren')} className="fuss-link">
 						Einladung einlösen
 					</a>
-					<a href={appUrl('/')} className="fuss-link">
+					<a href={appUrl('/neu')} className="fuss-link">
 						Anmelden
 					</a>
 				</div>

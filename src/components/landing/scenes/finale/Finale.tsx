@@ -62,7 +62,7 @@ export function Finale() {
 					</h2>
 					<div data-knoepfe="1" className={s.knoepfe}>
 						<a
-							href={appUrl('/neu?action=create')}
+							href={appUrl('/registrieren?action=create')}
 							className={`cta cta--voll cta--gross ${s.knopf}`}
 						>
 							WG erstellen

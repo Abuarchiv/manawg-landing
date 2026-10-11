@@ -100,7 +100,7 @@ export default async function ThemaPage({ params }: Props) {
 				</div>
 
 				<p className="mt-10">
-					<a href={appUrl('/neu?action=create')} className={`${TEXT_LINK} text-[var(--text-1)]`}>
+					<a href={appUrl('/registrieren?action=create')} className={`${TEXT_LINK} text-[var(--text-1)]`}>
 						WG kostenlos erstellen
 					</a>
 				</p>
