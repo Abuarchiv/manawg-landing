@@ -8,15 +8,15 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 
 - Ausgaben teilen: gleichmäßig oder mit eigenen Beträgen pro Person, Salden, Ausgleich mit möglichst wenigen Überweisungen
 - Fixkosten und Monatsabrechnung: wiederkehrende Kosten wie Miete oder Internet
-- Import: Ausgaben aus Splitwise- und Splid-CSV übernehmen, Belege per Foto lesen
+- Import: Ausgaben aus Splitwise- und Splid-CSV übernehmen (Vorschau, rückgängig); Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen, Foto am einzelnen Beleg nur als Anhang
 - Einkaufsliste und Vorräte: eine Liste für alle, abgehakte Einkäufe direkt als Ausgabe eintragen
 - Putzplan: Aufgaben wiederholen sich, rotieren fair, abwesende Mitbewohner werden übersprungen
 - Kalender (auch als Kalender-Abo), Pinnwand und Chat
 
 ## So starten
 
-1. Auf https://app.manawg.com/neu?action=create eine WG erstellen
-2. Einladungslink an die Mitbewohner schicken
+1. Auf https://app.manawg.com/registrieren?action=create eine WG erstellen
+2. Mitbewohner melden sich an und treten per Einladungslink bei
 3. Erste Ausgabe, ersten Einkauf oder ersten Putztermin eintragen
 
 ## Seiten
@@ -39,7 +39,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste)
 - [WG-Regeln](https://manawg.com/wg-regeln): Ruhezeiten, Besuch, Haushalt
 - [Nebenkosten, Strom und Internet](https://manawg.com/wg-nebenkosten)
-- [Putzplan-Vorlage](https://manawg.com/putzplan-vorlage)
+- [Putzplan-Vorlage](https://manawg.com/putzplan-vorlage): Vorlage für 4 Personen ([CSV-Download](https://manawg.com/putzplan-vorlage.csv))
 - [WG-Haushaltskasse](https://manawg.com/wg-haushaltskasse)
 - [Einzug in die WG](https://manawg.com/wg-einzug-checkliste)
 - [Urlaub und Abwesenheit](https://manawg.com/wg-abwesenheit-urlaub)

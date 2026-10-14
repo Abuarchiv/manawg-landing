@@ -1,5 +1,7 @@
 import { Landing } from '@/components/landing/Landing';
 import { FRAGEN } from '@/components/landing/scenes/fragen/fragenDaten';
+import { APP_ORIGIN } from '@/lib/app-origin';
+import { schemaIds } from '@/lib/schema-ids';
 
 const faqSchema = {
 	'@context': 'https://schema.org',
@@ -9,6 +11,25 @@ const faqSchema = {
 		name: frage,
 		acceptedAnswer: { '@type': 'Answer', text: antwort },
 	})),
+};
+
+// Nur auf der Startseite: Die App ist ein eigenes Produkt auf eigener Origin.
+const softwareApplicationSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	'@id': `${APP_ORIGIN}/#app`,
+	name: 'ManaWG',
+	publisher: { '@id': schemaIds().organisation },
+	description:
+		'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die App ist kostenlos und läuft im Browser.',
+	url: APP_ORIGIN,
+	applicationCategory: 'LifestyleApplication',
+	operatingSystem: 'Web',
+	inLanguage: 'de-DE',
+	featureList: ['Ausgaben teilen', 'Einkaufsliste', 'Putzplan', 'Pinnwand', 'Kalender', 'Chat'],
+	isAccessibleForFree: true,
+	browserRequirements: 'Aktueller Browser, installierbar als PWA',
+	offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
 };
 
 // Vor dem ersten Paint: Klasse "js" und Modus (hoch/quer) am Dokument, damit das Layout ohne Sprung steht.
@@ -26,6 +47,11 @@ export default function Page() {
 					__html:
 						'<style>[data-loader]{display:none!important}#intro,[data-buehne]{height:100svh!important}</style>',
 				}}
+			/>
+			<script
+				type="application/ld+json"
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
 			/>
 			<script
 				type="application/ld+json"

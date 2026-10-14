@@ -1,9 +1,10 @@
 import { appUrl } from '@/lib/app-origin';
-import { getAppUrl } from '@/lib/app-url';
+import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { GRUPPEN, gruppeVon, verwandte } from './gruppen';
+import { GRUPPEN, VERGLEICHS_HINWEIS, gruppeVon, verwandte } from './gruppen';
+import { PUTZPLAN_VORLAGE } from './ratgeber';
 import { THEMEN } from './themen';
 
 export const dynamicParams = false;
@@ -26,6 +27,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			title: t.titel,
 			description: t.beschreibung,
 			url: `/${thema}`,
+			siteName: 'ManaWG',
+			locale: 'de_DE',
+			type: 'article',
+			modifiedTime: t.stand,
 			images: [`/${thema}/opengraph-image`],
 		},
 		twitter: { title: t.titel, description: t.beschreibung, images: [`/${thema}/opengraph-image`] },
@@ -47,33 +52,55 @@ export default async function ThemaPage({ params }: Props) {
 		})),
 	};
 
+	const ids = schemaIds();
+	const site = ids.site;
+	const orgId = ids.organisation;
+	const webseiteId = ids.webseite;
+	const quellen = (t.quellen ?? []).map(([name, url]): [string, string] => [
+		name,
+		url.startsWith('/') ? `${site}${url}` : url,
+	]);
+
 	const artikel = {
 		'@context': 'https://schema.org',
 		'@type': 'Article',
+		'@id': `${site}/${thema}#artikel`,
 		headline: t.h1,
 		description: t.beschreibung,
+		image: `${site}/${thema}/opengraph-image`,
 		inLanguage: 'de-DE',
 		dateModified: t.stand,
-		mainEntityOfPage: `${getAppUrl()}/${thema}`,
-		author: { '@type': 'Organization', name: 'ManaWG', url: getAppUrl() },
-		publisher: { '@type': 'Organization', name: 'ManaWG', url: getAppUrl() },
+		mainEntityOfPage: `${site}/${thema}`,
+		author: { '@id': orgId },
+		publisher: { '@id': orgId },
+		isPartOf: { '@id': webseiteId },
+		...(quellen.length > 0 ? { citation: quellen.map(([, url]) => url) } : {}),
 	};
 
-	const gruppe = gruppeVon(thema);
 	const breadcrumb = {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
 		itemListElement: [
-			{ '@type': 'ListItem', position: 1, name: 'ManaWG', item: `${getAppUrl()}/` },
-			...(gruppe ? [{ '@type': 'ListItem', position: 2, name: gruppe.name }] : []),
+			{ '@type': 'ListItem', position: 1, name: 'ManaWG', item: `${site}/` },
 			{
 				'@type': 'ListItem',
-				position: gruppe ? 3 : 2,
+				position: 2,
 				name: t.link,
-				item: `${getAppUrl()}/${thema}`,
+				item: `${site}/${thema}`,
 			},
 		],
 	};
+
+	const aktualisiert = new Intl.DateTimeFormat('de-DE', {
+		timeZone: 'UTC',
+		day: 'numeric',
+		month: 'long',
+		year: 'numeric',
+	}).format(new Date(`${t.stand}T00:00:00Z`));
+
+	// Anbietervergleich: Hinweis vom Anbieter, oberhalb des Inhalts.
+	const istVergleich = gruppeVon(thema)?.name === 'Vergleiche';
+	const hinweis = VERGLEICHS_HINWEIS;
 
 	const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
 	const rand = 'px-5 md:px-8 lg:px-16 mx-auto w-full max-w-[1440px]';
@@ -135,7 +162,6 @@ export default async function ThemaPage({ params }: Props) {
 					<li>
 						<Link href="/">ManaWG</Link>
 					</li>
-					{gruppe && <li aria-hidden="true">/ {gruppe.name}</li>}
 					<li aria-current="page">/ {t.link}</li>
 				</ol>
 			</nav>
@@ -147,6 +173,11 @@ export default async function ThemaPage({ params }: Props) {
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
 					{t.einleitung}
 				</p>
+				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
+					Von <Link href="/ueber-manawg">ManaWG</Link> · Aktualisiert am{' '}
+					<time dateTime={t.stand}>{aktualisiert}</time>
+				</p>
+				{istVergleich && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{hinweis}</p>}
 
 				<div className="mt-20 md:mt-32">
 					{t.abschnitte.map(([kopf, text]) => (
@@ -164,6 +195,70 @@ export default async function ThemaPage({ params }: Props) {
 					))}
 				</div>
 
+				{thema === 'putzplan-vorlage' && (
+					<section aria-labelledby="vorlage-tabelle" className={`${linie} pt-10 md:pt-14`}>
+						<h2 id="vorlage-tabelle" className={`${mono} m-0 mb-8 font-normal`}>
+							Vorlage: Vier-Wochen-Rotation für vier Personen
+						</h2>
+						<div
+							className="min-w-0 overflow-x-auto"
+							// biome-ignore lint/a11y/useSemanticElements: scrollbare Tabelle braucht beschriftete Region statt Section
+							role="region"
+							aria-labelledby="vorlage-tabelle"
+							// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollbare Region muss per Tastatur erreichbar sein
+							tabIndex={0}
+						>
+							<table className="w-full min-w-[540px] border-collapse text-left">
+								<caption className={`${mono} mb-4 text-left`}>
+									Vier-Wochen-Rotation: jede Woche rückt jede Person eine Aufgabe weiter
+								</caption>
+								<thead>
+									<tr>
+										<th
+											scope="col"
+											className="px-3 py-2 text-left font-normal border-b border-white/10"
+										>
+											Woche
+										</th>
+										{PUTZPLAN_VORLAGE.aufgaben.map((aufgabe) => (
+											<th
+												key={aufgabe}
+												scope="col"
+												className="px-3 py-2 text-left font-normal border-b border-white/10"
+											>
+												{aufgabe}
+											</th>
+										))}
+									</tr>
+								</thead>
+								<tbody>
+									{PUTZPLAN_VORLAGE.wochen.map((woche, i) => (
+										<tr key={`woche-${i + 1}`}>
+											<th
+												scope="row"
+												className="px-3 py-2 text-left font-normal border-b border-white/10"
+											>
+												Woche {i + 1}
+											</th>
+											{woche.map((person, j) => (
+												<td key={`${i}-${j}`} className="px-3 py-2 border-b border-white/10">
+													{person}
+												</td>
+											))}
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+						<p className={`${mono} mt-4 mb-0`}>A, B, C und D stehen für vier Beispielpersonen.</p>
+						<p className={`${mono} mt-4 mb-0`}>
+							<a href="/putzplan-vorlage.csv" download>
+								Vorlage als CSV herunterladen
+							</a>
+						</p>
+					</section>
+				)}
+
 				{t.fragen && (
 					<section aria-labelledby="fragen" className={`${linie} pt-10 md:pt-14`}>
 						<h2 id="fragen" className={`${mono} m-0 mb-8 font-normal`}>
@@ -179,6 +274,21 @@ export default async function ThemaPage({ params }: Props) {
 								</p>
 							</div>
 						))}
+					</section>
+				)}
+
+				{quellen.length > 0 && (
+					<section aria-labelledby="quellen" className={`${linie} pt-10 md:pt-14`}>
+						<h2 id="quellen" className={`${mono} m-0 mb-6 font-normal`}>
+							Quellen (Stand {aktualisiert})
+						</h2>
+						<ul className="list-none m-0 p-0">
+							{quellen.map(([name, url]) => (
+								<li key={url} className={`${linie} py-3`}>
+									<a href={url}>{name}</a>
+								</li>
+							))}
+						</ul>
 					</section>
 				)}
 

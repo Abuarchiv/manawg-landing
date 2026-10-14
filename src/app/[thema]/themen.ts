@@ -14,12 +14,14 @@ export interface Thema {
 	fragen?: Array<[string, string]>;
 	/** Letzte inhaltliche Änderung (ISO-Datum), für lastmod in der Sitemap. */
 	stand: string;
+	/** Belege als [Name, URL]; erscheinen als Quellenliste, Article-citation und llms-full. */
+	quellen?: Array<[string, string]>;
 }
 
 export const THEMEN: Record<string, Thema> = {
 	'wg-app': {
 		link: 'WG-App',
-		stand: '2026-10-10',
+		stand: '2026-10-14',
 		titel: 'WG App: Organisation für die ganze WG | ManaWG',
 		beschreibung:
 			'ManaWG ist die kostenlose WG-App auf Deutsch: Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand für Studenten-WGs und Zweck-WGs.',
@@ -131,7 +133,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'wg-kasse': {
 		link: 'WG-Kasse',
-		stand: '2026-10-10',
+		stand: '2026-10-14',
 		titel: 'WG Kasse App: Ausgaben teilen, Abrechnung | ManaWG',
 		beschreibung:
 			'Die kostenlose WG Kasse App: Ausgaben teilen, mit wenigen Überweisungen ausgleichen, Fixkosten buchen und die Monatsabrechnung per Mail bekommen.',
@@ -161,7 +163,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Umzug aus Splitwise oder Splid',
-				'Bestehende Abrechnungen übernehmt ihr per CSV aus Splitwise oder Splid. Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren.',
+				'Falls eure bisherigen Abrechnungen als CSV-Datei vorliegen, übernehmt ihr sie per Import in eurer WG. Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren.',
 			],
 			[
 				'Was ManaWG nicht ist',
@@ -183,7 +185,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kann ich Daten aus Splitwise übernehmen?',
-				'Ja, per CSV aus Splitwise oder Splid, mit Vorschau und Rückgängig-Funktion. Übernommen werden nur Beträge in Euro, Zeilen mit anderen Währungen werden einzeln abgelehnt.',
+				'Falls sie als CSV-Datei vorliegen: per CSV-Import aus Splitwise oder Splid, mit Vorschau und Rückgängig-Funktion. Übernommen werden nur Beträge in Euro, Zeilen mit anderen Währungen werden einzeln abgelehnt.',
 			],
 			[
 				'Wie viele Leute passen in eine WG?',
@@ -251,17 +253,21 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'splitwise-alternative': {
 		link: 'Splitwise-Alternative',
-		stand: '2026-10-10',
+		stand: '2026-10-14',
 		titel: 'Splitwise-Alternative ohne Werbung und Paywall | ManaWG',
 		beschreibung:
-			'ManaWG ist eine kostenlose Splitwise-Alternative für WGs: keine Werbung, keine Bezahlstufe, dazu Putzplan, Einkaufsliste und CSV-Import aus Splitwise.',
+			'ManaWG ist eine kostenlose Splitwise-Alternative für WGs: keine Werbung, keine Bezahlstufe, dazu Putzplan, Einkaufsliste und CSV-Import.',
 		h1: 'Eine Splitwise-Alternative ohne Paywall und Werbung',
 		einleitung:
-			'Splitwise teilt Ausgaben zuverlässig, doch die kostenlose Version bremst im WG-Alltag. ManaWG kostet nichts, zeigt keine Werbung und kennt keine Bezahlstufe. Dazu kommen Putzplan, Einkaufsliste und Kalender.',
+			'Splitwise teilt Ausgaben zuverlässig und bietet mit Splitwise Pro laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, Belegscan und Währungsumrechnung. Was die kostenlose Version heute genau umfasst, legen wir hier nicht dar, prüft das bei Splitwise selbst. ManaWG kostet nichts, zeigt keine Werbung und kennt keine Bezahlstufe. Dazu kommen Putzplan, Einkaufsliste und Kalender.',
+		quellen: [
+			['Splitwise Pro', 'https://www.splitwise.com/pro'],
+			['ManaWG WG-App', 'https://manawg.com/wg-app'],
+		],
 		abschnitte: [
 			[
-				'Wo die kostenlose Splitwise-Version bremst',
-				'Splitwise begrenzt in der kostenlosen Version, wie viele Ausgaben ihr pro Tag erfassen könnt, blendet Werbung ein und hält den Belegscan für Pro bereit. Für eine Reise passt das oft, im WG-Alltag mit Einkauf und Kleinkram nervt es. Wie die Grenzen heute genau aussehen, steht bei Splitwise selbst. Prüft das, bevor ihr euch festlegt, denn Tarife ändern sich.',
+				'Was Splitwise Pro laut Anbieter enthält',
+				'Die Pro-Seite von Splitwise nennt unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Aus Pro lassen sich keine genauen Grenzen der kostenlosen Version ableiten; Details zur kostenlosen Version haben wir hier nicht verifiziert, prüft das bei Splitwise selbst. Tarife ändern sich, verlasst euch deshalb auf die Anbieter-Seite mit Stand 14. Oktober 2026.',
 			],
 			[
 				'Keine Bezahlstufe, keine Werbung',
@@ -272,12 +278,12 @@ export const THEMEN: Record<string, Thema> = {
 				'Im Import wählt ihr die Quelle Screenshot. ManaWG liest ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung im Browser und zeigt eine Vorschau zum Korrigieren. Erkannt werden nur Eurobeträge, das Lesen kann bis zu 30 Sekunden dauern. Am einzelnen Beleg hängt ihr ein Foto nur an, es wird dort nicht ausgewertet.',
 			],
 			[
-				'CSV-Import aus Splitwise und Splid',
-				'Exportiert eure Daten als CSV, öffnet den Import eurer WG und wählt die Quelle. Vor dem Speichern seht ihr eine Vorschau mit allen erkannten Zeilen. Danach steht der Import im Verlauf und lässt sich rückgängig machen, falls etwas nicht stimmt. Ihr prüft also vorher und könnt hinterher zurück. Die Historie anderer Mitglieder importieren dürfen nur WG-Admins.',
+				'CSV-Import, falls eure Daten als Datei vorliegen',
+				'Falls eure Splitwise-Ausgaben als CSV-Datei vorliegen, öffnet ihr den Import eurer WG und wählt die Quelle. Vor dem Speichern seht ihr eine Vorschau mit allen erkannten Zeilen. Danach steht der Import im Verlauf und lässt sich rückgängig machen, falls etwas nicht stimmt. Ihr prüft also vorher und könnt hinterher zurück. Die Historie anderer Mitglieder importieren dürfen nur WG-Admins.',
 			],
 			[
 				'Nur Euro',
-				'ManaWG rechnet ausschließlich in Euro und kennt keine Wechselkurse. Zeilen in anderen Währungen lehnt der Import einzeln ab, der Rest wird übernommen. Für Reisen mit mehreren Währungen ist Splitwise die bessere Wahl, für den WG-Alltag in Euro genügt ManaWG. Die Beträge werden in Cent gespeichert, die Anteile gehen ohne Rundungsrest auf.',
+				'ManaWG rechnet ausschließlich in Euro und kennt keine Wechselkurse. Zeilen in anderen Währungen lehnt der Import einzeln ab, der Rest wird übernommen. Für Reisen mit mehreren Währungen ist eine App mit Währungsumrechnung die bessere Wahl, für den WG-Alltag in Euro genügt ManaWG. Die Beträge werden in Cent gespeichert, die Anteile gehen ohne Rundungsrest auf.',
 			],
 			[
 				'Mehr als eine Kasse',
@@ -291,7 +297,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kann ich meine Splitwise-Daten mitnehmen?',
-				'Ja, per CSV-Import. Ihr seht vorab eine Vorschau, und der Import lässt sich im Verlauf rückgängig machen. Nur Euro-Zeilen werden übernommen.',
+				'Falls sie als CSV-Datei vorliegen: per CSV-Import. Ihr seht vorab eine Vorschau, und der Import lässt sich im Verlauf rückgängig machen. Nur Euro-Zeilen werden übernommen.',
 			],
 			[
 				'Liest ManaWG Kassenbons per Foto?',
@@ -299,7 +305,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Funktioniert ManaWG auch mit Fremdwährungen?',
-				'Nein. ManaWG rechnet nur in Euro, ohne Wechselkurse. Wer auf Reisen in mehreren Währungen teilt, ist bei Splitwise besser aufgehoben.',
+				'Nein. ManaWG rechnet nur in Euro, ohne Wechselkurse. Wer auf Reisen in mehreren Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
 			],
 			[
 				'Gibt es eine App im App Store?',
@@ -309,21 +315,25 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'splid-alternative': {
 		link: 'Splid-Alternative',
-		stand: '2026-10-10',
+		stand: '2026-10-14',
 		titel: 'Splid Alternative mit Putzplan und Einkaufsliste | ManaWG',
 		beschreibung:
-			'ManaWG ist eine kostenlose Splid Alternative für WGs: Ausgaben teilen plus Putzplan, Einkaufsliste und Fixkosten. Splid CSV lässt sich importieren.',
+			'ManaWG ist eine kostenlose Splid Alternative für WGs: Ausgaben teilen plus Putzplan, Einkaufsliste und Fixkosten.',
 		h1: 'Eine Splid Alternative mit Putzplan und Einkaufsliste',
 		einleitung:
-			'Splid teilt Ausgaben, ohne dass sich jemand registrieren muss. Für eine WG reicht das oft nicht lange, denn der Haushalt besteht aus mehr als Rechnungen. ManaWG verbindet die Kasse mit dem Rest.',
+			'Splid teilt Ausgaben in Gruppen und nennt auf seiner deutschen Seite unter anderem über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Für eine WG reicht eine reine Kasse oft nicht lange, denn der Haushalt besteht aus mehr als Rechnungen. ManaWG verbindet die Kasse mit dem Rest.',
+		quellen: [
+			['Splid auf Deutsch', 'https://splid.app/german'],
+			['ManaWG WG-App', 'https://manawg.com/wg-app'],
+		],
 		abschnitte: [
 			[
-				'Was Splid gut macht',
-				'Splid arbeitet ohne Konto: Gruppe anlegen, Ausgaben eintragen, fertig. Das passt für Reisen oder einen Abend zu zweit. In ManaWG meldet sich dagegen jede Person an, mit Google oder E-Mail und Passwort. Dafür gehören Ausgaben, Salden und Verlauf fest zu eurer WG, und Mitbewohner kommen per Link oder Code dazu. Den Code könnt ihr jederzeit erneuern.',
+				'Was Splid laut Anbieter kann',
+				'Die deutsche Splid-Seite nennt unter anderem über 150 Währungen, Gruppen vor Ort und online sowie den Export als PDF und Excel. Details zum Funktionsumfang stehen dort mit Stand 14. Oktober 2026. In ManaWG meldet sich dagegen jede Person mit Google oder E-Mail und Passwort an. Dafür gehören Ausgaben, Salden und Verlauf fest zu eurer WG, und Mitbewohner kommen per Link oder Code dazu. Den Code könnt ihr jederzeit erneuern.',
 			],
 			[
-				'Was in Splid für eine WG fehlt',
-				'Splid hat keinen Putzplan, keine Einkaufsliste und keine wiederkehrenden Kosten. ManaWG bringt alle drei mit: Aufgaben wiederholen sich in Tagen oder Monaten und rotieren auf die nächste Person, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht.',
+				'Kasse plus Haushalt in einer App',
+				'ManaWG verbindet die Kasse mit dem Rest: Aufgaben wiederholen sich in Tagen oder Monaten und rotieren auf die nächste Person, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht.',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',
@@ -331,7 +341,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Umzug per CSV-Import',
-				'Unter Import in eurer WG ladet ihr die Splid-CSV hoch. Ihr seht erst eine Vorschau, bevor etwas gespeichert wird, und könnt den Import im Verlauf wieder rückgängig machen. Übernommen werden nur Euro-Zeilen, andere Währungen lehnt ManaWG einzeln ab. Fremde Historie importieren dürfen nur WG-Admins. Wer nur Screenshots hat, liest ein Foto einer Ausgabenliste ein und korrigiert es vor dem Speichern.',
+				'Falls eure Splid-Ausgaben als CSV-Datei vorliegen, ladet ihr sie unter Import in eurer WG hoch. Ihr seht erst eine Vorschau, bevor etwas gespeichert wird, und könnt den Import im Verlauf wieder rückgängig machen. Übernommen werden nur Euro-Zeilen, andere Währungen lehnt ManaWG einzeln ab. Fremde Historie importieren dürfen nur WG-Admins. Wer nur Screenshots hat, liest ein Foto einer Ausgabenliste ein und korrigiert es vor dem Speichern.',
 			],
 			[
 				'Aufteilen und ausgleichen',
@@ -345,11 +355,11 @@ export const THEMEN: Record<string, Thema> = {
 		fragen: [
 			[
 				'Braucht ManaWG ein Konto?',
-				'Ja. Jede Person meldet sich mit Google oder mit E-Mail und Passwort an. Das ist der Unterschied zu Splid, das ohne Konto auskommt. Beitreten geht danach per Einladungslink oder Code.',
+				'Ja. Jede Person meldet sich mit Google oder mit E-Mail und Passwort an. Beitreten geht danach per Einladungslink oder Code.',
 			],
 			[
 				'Wie übernehme ich meine Daten aus Splid?',
-				'Exportiert die Ausgaben als CSV und ladet die Datei unter Import in eurer WG hoch. Nach der Vorschau bestätigt ihr den Import. Falls etwas nicht stimmt, macht ihr ihn im Verlauf rückgängig.',
+				'Falls sie als CSV-Datei vorliegen, ladet ihr die Datei unter Import in eurer WG hoch. Nach der Vorschau bestätigt ihr den Import. Falls etwas nicht stimmt, macht ihr ihn im Verlauf rückgängig.',
 			],
 			[
 				'Was kostet ManaWG?',
@@ -367,17 +377,22 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'flatastic-alternative': {
 		link: 'Flatastic-Alternative',
-		stand: '2026-10-10',
+		stand: '2026-10-14',
 		titel: 'Flatastic-Alternative ohne Werbung und Premium | ManaWG',
 		beschreibung:
 			'ManaWG ist eine kostenlose Flatastic-Alternative für WGs: Putzplan, WG-Kasse, Einkauf, Kalender und Chat, ohne Werbung und ohne Premium-Stufe.',
 		h1: 'Eine WG-App ohne Werbung und ohne Premium',
 		einleitung:
-			'Flatastic hat WG-Apps bekannt gemacht. Als Wechselgrund nennen Nutzer oft Werbung nach dem Abhaken und Funktionen hinter einem Premium-Angebot; den aktuellen Stand prüft ihr am besten selbst bei Flatastic. ManaWG ist kostenlos und kommt ohne Werbung und ohne Bezahlstufe aus.',
+			'Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium unter anderem ohne Werbung und mit Verläufen. Den aktuellen Stand prüft ihr am besten selbst bei Flatastic. ManaWG ist kostenlos und kommt ohne Werbung und ohne Bezahlstufe aus.',
+		quellen: [
+			['Flatastic', 'https://www.flatastic-app.com/'],
+			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
+			['ManaWG WG-App', 'https://manawg.com/wg-app'],
+		],
 		abschnitte: [
 			[
 				'Kostenlos, ohne Werbung, ohne Premium',
-				'ManaWG zeigt keine Werbung, weder nach dem Abhaken von Aufgaben noch sonst. Es gibt keine Bezahlstufe: Jede WG nutzt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Ob ihr zu zweit oder zu zehnt seid, ändert daran nichts, solange die WG in das Limit von 20 aktiven Mitgliedern passt. Ausgezogene Personen zählen nicht mit, ihre Historie bleibt erhalten.',
+				'ManaWG zeigt keine Werbung und kennt keine Bezahlstufe: Jede WG nutzt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Ob ihr zu zweit oder zu zehnt seid, ändert daran nichts, solange die WG in das Limit von 20 aktiven Mitgliedern passt. Ausgezogene Personen zählen nicht mit, ihre Historie bleibt erhalten.',
 			],
 			[
 				'Erinnerungen, die ihr selbst steuert',
@@ -389,7 +404,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'WG-Kasse und Umstieg',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. CSV-Dateien aus Splitwise und Splid lassen sich mit Vorschau importieren. Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an.',
+				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, lassen sie sich mit Vorschau importieren. Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an.',
 			],
 			[
 				'Einkauf, Pinnwand und Chat',
@@ -407,11 +422,11 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Zeigt ManaWG Werbung?',
-				'Nein. In ManaWG erscheint keine Werbung, auch nicht nach dem Abhaken von Aufgaben oder Einkäufen. Ebenso wenig gibt es Funktionen, die erst nach einem Upgrade nutzbar sind.',
+				'Nein. In ManaWG erscheint keine Werbung, und es gibt keine Funktionen, die erst nach einem Upgrade nutzbar sind.',
 			],
 			[
 				'Kann ich meine Daten aus Flatastic übernehmen?',
-				'Einen direkten Flatastic-Import gibt es nicht. Importieren könnt ihr CSV-Dateien aus Splitwise und Splid, mit Vorschau, Importverlauf und Rückgängig-Funktion. Es werden nur Euro-Beträge übernommen, andere Währungen werden abgelehnt.',
+				'Einen direkten Flatastic-Import gibt es nicht. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, importiert ihr sie mit Vorschau, Importverlauf und Rückgängig-Funktion. Es werden nur Euro-Beträge übernommen, andere Währungen werden abgelehnt.',
 			],
 			[
 				'Gibt es ManaWG im App Store?',
@@ -425,13 +440,14 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'ourhome-alternative': {
 		link: 'OurHome-Alternative',
-		stand: '2026-10-10',
-		titel: 'OurHome-Alternative ohne Punktesystem, kostenlos | ManaWG',
+		stand: '2026-10-14',
+		titel: 'OurHome-Alternative für WGs, kostenlos | ManaWG',
 		beschreibung:
-			'ManaWG ist eine kostenlose OurHome-Alternative für WGs: Putzplan und Kasse in einer App, ohne Punktesystem, im Browser statt im App Store.',
-		h1: 'Eine OurHome-Alternative ohne Punktesystem',
+			'ManaWG als Alternative zu OurHome: kostenloser Putzplan und WG-Kasse im Browser. Der aktuelle Funktionsumfang von OurHome wurde nicht verifiziert.',
+		h1: 'Eine OurHome-Alternative für WGs',
 		einleitung:
-			'OurHome verteilt Aufgaben mit Punkten und Belohnungen. Das passt gut zu Familien mit Kindern. Eine WG braucht meistens etwas anderes: einen fairen Putzplan und eine saubere Kasse. ManaWG verbindet beides, ohne dass jemand Punkte zählt.',
+			'Ob und in welchem Umfang OurHome aktuell verfügbar ist, haben wir nicht verifiziert (Stand 14. Oktober 2026), prüft das selbst. Im Folgenden beschreiben wir nur, wie ManaWG Putzplan und Kasse für WGs löst.',
+		quellen: [['ManaWG WG-App', 'https://manawg.com/wg-app']],
 		abschnitte: [
 			[
 				'Fairness statt Punkte',
@@ -483,7 +499,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	faq: {
 		link: 'Häufige Fragen',
-		stand: '2026-10-10',
+		stand: '2026-10-14',
 		titel: 'Häufige Fragen zu ManaWG, der WG-App',
 		beschreibung:
 			'Antworten zu ManaWG: Kosten, Installation, Einladung, Ausgaben teilen, Putzplan, Abwesenheiten und Import aus Splitwise oder Splid.',
@@ -498,7 +514,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie kommen meine Mitbewohner in die WG?',
-				'Eine Person erstellt die WG und teilt den Einladungslink. Die anderen öffnen ihn und sind drin.',
+				'Eine Person erstellt die WG und teilt den Einladungslink. Die anderen melden sich mit Google oder E-Mail an und treten per Link bei.',
 			],
 			[
 				'Wie werden Ausgaben aufgeteilt?',
@@ -514,7 +530,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kann ich Daten aus Splitwise oder Splid mitnehmen?',
-				'Ja, per CSV-Import. Beim Import kann ManaWG auch Belege aus einem Foto lesen.',
+				'Falls eure Daten als CSV-Datei vorliegen: per CSV-Import mit Vorschau. Beim Import lässt sich auch ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen und vor dem Speichern korrigieren; ein Foto am einzelnen Beleg wird nur angehängt, nicht ausgewertet.',
 			],
 			[
 				'Was gibt es außer Geld und Putzen?',

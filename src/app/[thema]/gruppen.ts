@@ -32,6 +32,10 @@ export const GRUPPEN: Array<{ name: string; slugs: string[] }> = [
 
 export const gruppeVon = (slug: string) => GRUPPEN.find((g) => g.slugs.includes(slug));
 
+/** Anbieterhinweis für Vergleichsseiten: keine unabhängige Rangliste; Belege stehen in den verlinkten Quellen, Unverifiziertes ist als solches gekennzeichnet. Ohne Stichtag, die Seite zeigt t.stand. */
+export const VERGLEICHS_HINWEIS =
+	'Dieser Vergleich wurde von ManaWG, dem Anbieter der hier vorgestellten WG-App, erstellt und ist keine unabhängige Rangliste. Bestätigte Aussagen zu anderen Anbietern verweisen auf die verlinkten Quellen; nicht verifizierte Angaben sind als solche gekennzeichnet. Prüft den aktuellen Stand bei den Anbietern selbst.';
+
 /** Drei verwandte Seiten: die nächsten der eigenen Gruppe, aufgefüllt aus der Ratgeber-Gruppe. */
 export function verwandte(slug: string): string[] {
 	const g = gruppeVon(slug);

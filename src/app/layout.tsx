@@ -1,8 +1,10 @@
 import { getAppUrl } from '@/lib/app-url';
+import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 const appUrl = getAppUrl();
+const ids = schemaIds();
 
 const title = 'ManaWG, die WG-App: Ausgaben, Einkauf und Putzplan für eure WG';
 const description =
@@ -11,36 +13,23 @@ const description =
 const organizationSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'Organization',
+	'@id': ids.organisation,
 	name: 'ManaWG',
-	url: appUrl,
+	url: ids.site,
 	logo: { '@type': 'ImageObject', url: `${appUrl}/icon-512.png`, width: 512, height: 512 },
 	image: `${appUrl}/og.png`,
-	sameAs: ['https://app.manawg.com'],
 	description,
 };
 
 const webSiteSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'WebSite',
+	'@id': ids.webseite,
 	name: 'ManaWG',
 	alternateName: ['Mana WG', 'ManaWG App'],
-	url: appUrl,
+	url: ids.site,
 	inLanguage: 'de-DE',
-};
-
-const softwareApplicationSchema = {
-	'@context': 'https://schema.org',
-	'@type': 'SoftwareApplication',
-	name: 'ManaWG',
-	description,
-	url: appUrl,
-	applicationCategory: 'LifestyleApplication',
-	operatingSystem: 'Web, iOS, Android',
-	inLanguage: 'de-DE',
-	featureList: ['Ausgaben teilen', 'Einkaufsliste', 'Putzplan', 'Pinnwand', 'Kalender', 'Chat'],
-	isAccessibleForFree: true,
-	browserRequirements: 'Aktueller Browser, installierbar als PWA',
-	offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+	publisher: { '@id': ids.organisation },
 };
 
 export const metadata: Metadata = {
@@ -111,11 +100,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					type="application/ld+json"
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-				/>
-				<script
-					type="application/ld+json"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
 				/>
 				<script
 					type="application/ld+json"

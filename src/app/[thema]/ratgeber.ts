@@ -2,6 +2,42 @@
 // ManaWG-Funktionen nur nennen, wenn es sie in manawg-app wirklich gibt (siehe themen.ts).
 import type { Thema } from './themen';
 
+/** Einzige Quelle der Vier-Wochen-Rotation: HTML-Tabelle, CSV und Markdown lesen hier. */
+export const PUTZPLAN_VORLAGE = {
+	aufgaben: ['Bad', 'Küche', 'Böden', 'Müll und Flur'],
+	/** Vier Wochen, je Woche eine Person pro Aufgabe (zyklisch rotiert, A wandert Bad->Küche->Böden->Müll/Flur). */
+	wochen: [
+		['A', 'B', 'C', 'D'],
+		['D', 'A', 'B', 'C'],
+		['C', 'D', 'A', 'B'],
+		['B', 'C', 'D', 'A'],
+	],
+} as const;
+
+const csvFeld = (wert: string): string =>
+	/[;"\r\n]/.test(wert) ? `"${wert.replace(/"/g, '""')}"` : wert;
+
+/** Dieselben Vorlagendaten als CSV (Semikolon, CRLF, BOM vorn). Statisch, keine Nutzereingaben. */
+export function putzplanVorlageCsv(): string {
+	const zeilen = [
+		['Woche', ...PUTZPLAN_VORLAGE.aufgaben],
+		...PUTZPLAN_VORLAGE.wochen.map((woche, i) => [`Woche ${i + 1}`, ...woche]),
+	];
+	return `\uFEFF${zeilen.map((zeile) => zeile.map(csvFeld).join(';')).join('\r\n')}\r\n`;
+}
+
+const mdZelle = (wert: string): string => wert.replace(/\|/g, '\\|');
+
+/** Dieselben Vorlagendaten als Markdown-Tabelle (gleiche Werte wie HTML und CSV). */
+export function putzplanVorlageMarkdown(): string {
+	const kopf = ['Woche', ...PUTZPLAN_VORLAGE.aufgaben].map(mdZelle);
+	const zeilen = PUTZPLAN_VORLAGE.wochen.map((woche, i) =>
+		[`Woche ${i + 1}`, ...woche].map(mdZelle),
+	);
+	const trenner = kopf.map(() => '---');
+	return [kopf, trenner, ...zeilen].map((zeile) => `| ${zeile.join(' | ')} |`).join('\n');
+}
+
 export const RATGEBER: Record<string, Thema> = {
 	'wg-kosten-aufteilen': {
 		link: 'WG-Kosten aufteilen',
@@ -243,7 +279,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-einkauf-organisieren': {
 		link: 'WG-Einkauf organisieren',
-		stand: '2026-10-11',
+		stand: '2026-10-14',
 		titel: 'Einkaufen in der WG: gemeinsam oder getrennt? | ManaWG',
 		beschreibung:
 			'Gemeinsame Kasse, geteilte Einkaufsliste oder jeder für sich: So organisiert ihr den Einkauf in der WG ohne Streit um Lebensmittel und Haushaltsbedarf.',
@@ -269,7 +305,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Abrechnen ohne Zettelwirtschaft',
-				'Kassenzettel in der Küche gehen verloren. Besser: Beträge sofort in die App eintragen. ManaWG kann beim Import auch Belege aus einem Foto lesen. Am Monatsende zeigt der Saldo, wer wem wie viel schuldet.',
+				'Kassenzettel in der Küche gehen verloren. Besser: Beträge sofort in die App eintragen. Beim Import lässt sich ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen und vor dem Speichern korrigieren. Am Monatsende zeigt der Saldo, wer wem wie viel schuldet.',
 			],
 		],
 		fragen: [
@@ -285,13 +321,20 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'beste-wg-app': {
 		link: 'Beste WG-App',
-		stand: '2026-10-11',
+		stand: '2026-10-14',
 		titel: 'Die beste WG-App finden: 7 Kriterien im Vergleich | ManaWG',
 		beschreibung:
-			'Welche WG-App passt zu euch? Sieben Kriterien von Kosten über Putzplan bis Datenschutz, dazu Vergleiche mit Splitwise, Splid, Flatastic und OurHome.',
+			'Welche WG-App passt zu euch? Sieben Kriterien von Kosten über Putzplan bis Datenschutz, dazu Vergleiche mit Splitwise, Splid und Flatastic.',
 		h1: 'Die beste WG-App: 7 Kriterien für die Auswahl',
 		einleitung:
-			'Es gibt viele Apps für Wohngemeinschaften, und keine ist für jede WG die beste. Manche rechnen nur Geld, andere organisieren nur den Haushalt. Mit diesen sieben Kriterien findet ihr die App, die zu eurem Alltag passt, bevor ihr alle Mitbewohner zum Umstieg bewegt.',
+			'Es gibt viele Apps für Wohngemeinschaften, und keine ist für jede WG die beste. Manche rechnen nur Geld, andere organisieren nur den Haushalt. Diese Seite ist kein unabhängiges Ranking, sondern die Sicht des Anbieters ManaWG. Mit diesen sieben Kriterien findet ihr die App, die zu eurem Alltag passt, bevor ihr alle Mitbewohner zum Umstieg bewegt.',
+		quellen: [
+			['Splitwise Pro', 'https://www.splitwise.com/pro'],
+			['Splid auf Deutsch', 'https://splid.app/german'],
+			['Flatastic', 'https://www.flatastic-app.com/'],
+			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
+			['Was ist ManaWG?', 'https://manawg.com/ueber-manawg'],
+		],
 		abschnitte: [
 			[
 				'1. Was kostet die App wirklich?',
@@ -299,15 +342,15 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'2. Deckt sie Geld und Haushalt ab?',
-				'Reine Ausgaben-Apps wie Splitwise oder Splid lösen das Geldproblem, aber nicht den Putzplan. Haushalts-Apps wie Flatastic oder OurHome organisieren Aufgaben, haben aber teils nur einfache Kassen. Wollt ihr alles an einem Ort, braucht ihr eine App mit Kasse, Putzplan und Einkaufsliste, zum Beispiel ManaWG.',
+				'Reine Ausgaben-Apps lösen das Geldproblem, Haushalts-Apps organisieren Aufgaben. Wollt ihr alles an einem Ort, braucht ihr eine App mit Kasse, Putzplan und Einkaufsliste, zum Beispiel ManaWG.',
 			],
 			[
 				'3. Wie gut ist die Kasse?',
-				'Gute Kassen teilen ungleich, kennen Fixkosten, zeigen Salden und schlagen Ausgleiche mit wenigen Überweisungen vor. Achtet auch darauf, wie Cent-Reste behandelt werden und ob ihr Daten anderer Apps importieren könnt.',
+				'Gute Kassen teilen ungleich, kennen Fixkosten, zeigen Salden und schlagen Ausgleiche mit wenigen Überweisungen vor. Achtet auch darauf, wie Cent-Reste behandelt werden und ob ihr vorhandene Daten als Datei importieren könnt.',
 			],
 			[
 				'4. Wie fair ist der Putzplan?',
-				'Entscheidend sind faire Rotation, Wiederholung in Tagen oder Monaten, Umgang mit Abwesenheit und Erinnerungen. Ein Punktesystem motiviert manche WGs, andere empfinden es als Gängelung.',
+				'Entscheidend sind faire Rotation, Wiederholung in Tagen oder Monaten, Umgang mit Abwesenheit und Erinnerungen. Ein Punktesystem motiviert manche WGs, andere empfinden es als Gängelung. ManaWG rotiert nach überfälligen Aufgaben und kommt ohne Punkte aus.',
 			],
 			[
 				'5. Müssen alle eine App installieren?',
@@ -315,11 +358,11 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'6. Datenschutz und Sprache',
-				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App ist durchgehend deutsch. Eine englische Oberfläche und andere Währungen als Euro gibt es nicht.',
+				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App ist durchgehend deutsch. Eine englische Oberfläche und andere Währungen als Euro gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
 			],
 			[
 				'7. Wie leicht ist der Umstieg?',
-				'Wer schon Daten in Splitwise oder Splid hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus CSV-Dateien dieser Apps und zeigt vorher eine Vorschau. Ausführliche Vergleiche findet ihr unter Splitwise-Alternative, Splid-Alternative, Flatastic-Alternative und OurHome-Alternative.',
+				'Wer Daten aus Splitwise oder Splid bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau. Ausführliche Vergleiche findet ihr unter Splitwise-Alternative, Splid-Alternative, Flatastic-Alternative und OurHome-Alternative.',
 			],
 		],
 		fragen: [
@@ -329,7 +372,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Gibt es eine WG-App mit Putzplan und Kasse in einem?',
-				'Ja. ManaWG verbindet Ausgaben teilen, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat in einer App.',
+				'Ja. ManaWG verbindet Ausgaben teilen, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat in einer App, auf Deutsch, in Euro und für bis zu 20 Mitglieder pro WG.',
 			],
 			[
 				'Welche App eignet sich für Reisen mit mehreren Währungen?',
@@ -382,10 +425,10 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'putzplan-vorlage': {
 		link: 'Putzplan-Vorlage',
-		stand: '2026-10-11',
+		stand: '2026-10-14',
 		titel: 'Putzplan Vorlage für die WG: Beispiel zum Übernehmen | ManaWG',
 		beschreibung:
-			'Putzplan-Vorlage für 3, 4 und 5 Mitbewohner: Aufgabenliste, Rhythmus und Rotation zum Abschreiben, plus die digitale Variante ohne Ausdrucken.',
+			'Putzplan-Vorlage für 4 Personen als CSV-Download: Aufgabenliste, Rhythmus und Vier-Wochen-Rotation zum Übernehmen, mit Hinweisen für 3 und 5 Personen und der digitalen Variante ohne Ausdrucken.',
 		h1: 'Putzplan-Vorlage für die WG',
 		einleitung:
 			'Eine Vorlage spart die Diskussion am Anfang. Hier steht eine Aufgabenliste mit Rhythmus, die ihr direkt übernehmen und an eure Wohnung anpassen könnt, und wie ihr sie ohne Ausdrucken pflegt.',
@@ -400,7 +443,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Vorlage für vier und fünf Personen',
-				'Bei vier Personen: Bad, Küche, Boden, Müll und Flur. Bei fünf kommt Wohnzimmer oder Balkon als eigene Aufgabe hinzu. Gilt die Regel „eine Aufgabe pro Woche“, ist der Aufwand klein und planbar. Wer verreist, wird übersprungen und holt nichts doppelt nach.',
+				'Bei vier Personen rotieren Bad, Küche, Böden sowie Müll und Flur (siehe Vorlage unten): Jede Woche rückt jede Person eine Aufgabe weiter, nach vier Wochen hatte jede alles einmal. Bei fünf kommt Wohnzimmer oder Balkon als eigene Aufgabe hinzu. Wer verreist, wird übersprungen und holt nichts doppelt nach.',
 			],
 			[
 				'Warum der Zettel scheitert',
@@ -408,7 +451,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Digital starten in zwei Minuten',
-				'WG in ManaWG erstellen, Einladungslink an die Mitbewohner schicken, die Aufgaben aus der Liste oben als Putzplan anlegen. Fertig, ohne Konto beim App Store und kostenlos.',
+				'WG in ManaWG erstellen, Einladungslink an die Mitbewohner schicken (sie melden sich mit Google oder E-Mail an und treten per Link bei), die Aufgaben aus der Liste oben als Putzplan anlegen. Fertig, ohne App Store und kostenlos.',
 			],
 		],
 		fragen: [
@@ -462,7 +505,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
-		stand: '2026-10-11',
+		stand: '2026-10-14',
 		titel: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		beschreibung:
 			'Checkliste für den Einzug in eine WG: Absprachen, Schlüssel, Geld, Putzplan, Mitbewohner kennenlernen und die wichtigsten Dinge in der ersten Woche.',
@@ -494,7 +537,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Wie trete ich einer WG in ManaWG bei?',
-				'Über den Einladungslink oder einen Code, den euch ein Mitbewohner schickt.',
+				'Über den Einladungslink oder einen Code, den euch ein Mitbewohner schickt. Vorher meldet ihr euch mit Google oder E-Mail an.',
 			],
 		],
 	},
