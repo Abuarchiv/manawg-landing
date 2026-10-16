@@ -382,13 +382,18 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'ueber-manawg': {
 		link: 'Über ManaWG',
-		stand: '2026-10-11',
+		stand: '2026-10-16',
 		titel: 'Was ist ManaWG? Die kostenlose WG-App im Überblick',
 		beschreibung:
 			'ManaWG ist eine kostenlose deutschsprachige WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Fakten, Funktionen und Abgrenzung zu WireGuard.',
 		h1: 'Was ist ManaWG?',
 		einleitung:
 			'ManaWG ist eine kostenlose Web-App für Wohngemeinschaften auf Deutsch. Sie bündelt Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand und Chat. ManaWG hat nichts mit dem VPN-Protokoll WireGuard zu tun.',
+		quellen: [
+			['Impressum', '/impressum'],
+			['Datenschutz', '/datenschutz'],
+			['AGB', '/agb'],
+		],
 		abschnitte: [
 			[
 				'Kurzfassung',
@@ -400,7 +405,11 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Funktionen',
-				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import aus Splitwise und Splid per CSV, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht.',
+				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import bereits vorhandener passender CSV-Dateien, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht.',
+			],
+			[
+				'Betreiber und Kontakt',
+				'Betreiber ist Abubakar Abditube. ManaWG wird privat und nicht-kommerziell betrieben. Kontakt: info@manawg.com.',
 			],
 			[
 				'Abgrenzung: ManaWG und WireGuard',

@@ -8,7 +8,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 
 - Ausgaben teilen: gleichmäßig oder mit eigenen Beträgen pro Person, Salden, Ausgleich mit möglichst wenigen Überweisungen
 - Fixkosten und Monatsabrechnung: wiederkehrende Kosten wie Miete oder Internet
-- Import: Ausgaben aus Splitwise- und Splid-CSV übernehmen (Vorschau, rückgängig); Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen, Foto am einzelnen Beleg nur als Anhang
+- Import: passende vorhandene CSV-Dateien aus Splitwise und Splid übernehmen (Vorschau, rückgängig); Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen, Foto am einzelnen Beleg nur als Anhang
 - Einkaufsliste und Vorräte: eine Liste für alle, abgehakte Einkäufe direkt als Ausgabe eintragen
 - Putzplan: Aufgaben wiederholen sich, rotieren fair, abwesende Mitbewohner werden übersprungen
 - Kalender (auch als Kalender-Abo), Pinnwand und Chat

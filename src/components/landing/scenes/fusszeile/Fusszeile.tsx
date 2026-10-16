@@ -20,15 +20,16 @@ export function Fusszeile() {
 					<p>
 						In der <a href="/wg-kasse">WG-Kasse</a> teilt ihr Ausgaben gleichmäßig oder mit eigenen
 						Beträgen, seht Salden und gleicht Schulden mit möglichst wenigen Überweisungen aus.
-						Fixkosten wie Miete legt ihr einmal an, die Monatsabrechnung zeigt den Monat. Ausgaben
-						aus Splitwise oder Splid kommen per CSV-Import mit (
+						Fixkosten wie Miete legt ihr einmal an, die Monatsabrechnung zeigt den Monat. Liegen
+						passende CSV-Dateien aus Splitwise oder Splid vor, kommen sie per CSV-Import mit (
 						<a href="/splitwise-alternative">Splitwise-Alternative</a>).
 					</p>
 					<p>
 						Der <a href="/putzplan">Putzplan</a> wiederholt Aufgaben, rotiert fair und überspringt,
 						wer verreist ist. Die <a href="/einkaufsliste">Einkaufsliste</a> ist für alle dieselbe,
 						abgehakte Einkäufe werden direkt zur Ausgabe. Dazu Kalender mit Kalender-Abo, Pinnwand
-						und Chat. Antworten auf häufige Fragen stehen unter <a href="/faq">FAQ</a>.
+						und Chat. Antworten auf häufige Fragen stehen unter <a href="/faq">FAQ</a>. Mehr über
+						das Projekt: <a href="/ueber-manawg">Betreiber und Kontakt</a>.
 					</p>
 				</div>
 			</section>
