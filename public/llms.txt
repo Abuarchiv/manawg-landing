@@ -34,6 +34,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 
 ## Ratgeber
 
+- [Alle Ratgeber im Überblick](https://manawg.com/ratgeber): Geld, Haushalt, Zusammenleben, Gründen, Ein- und Auszug
 - [WG-Kosten fair aufteilen](https://manawg.com/wg-kosten-aufteilen): Miete, Nebenkosten, Internet, drei Modelle
 - [Putzplan erstellen](https://manawg.com/putzplan-erstellen): Aufgaben, Rotation, Abwesenheit
 - [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste)
