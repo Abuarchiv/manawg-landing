@@ -92,11 +92,11 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'putzplan-erstellen': {
 		link: 'Putzplan erstellen',
-		stand: '2026-10-11',
+		stand: '2026-10-19',
 		erschienen: '2026-10-11',
-		titel: 'WG-Putzplan erstellen: Vorlage, Regeln, Beispiele | ManaWG',
+		titel: 'WG-Putzplan erstellen: Wochenplan, Regeln, Beispiele | ManaWG',
 		beschreibung:
-			'So erstellt ihr einen Putzplan für die WG, den alle einhalten: Aufgaben, Rhythmus, faire Rotation, Umgang mit Abwesenheit und eine Beispielverteilung.',
+			'Putzplan selbst erstellen: Aufgaben, Zeitaufwand, Wochenplan, faire Rotation und Umgang mit Abwesenheit. Mit Beispiel für vier Personen.',
 		h1: 'Putzplan für die WG erstellen',
 		einleitung:
 			'Ein Putzplan scheitert selten an der Faulheit, sondern an unklaren Aufgaben und an Plänen, die niemand pflegt. Hier steht, wie ihr Aufgaben zuschneidet, fair verteilt und dafür sorgt, dass der Plan im Alltag funktioniert.',
@@ -121,6 +121,14 @@ export const RATGEBER: Record<string, Thema> = {
 				'Beispielverteilung für vier Personen',
 				'Vier Aufgaben, vier Personen, jede Woche eine Position weiter: Bad, Küche, Boden und Müll/Flur. Nach vier Wochen hat jede Person jede Aufgabe einmal gemacht. Alle zwei Wochen kommen Kühlschrank und Backofen dazu, monatlich die Fenster. Wichtig: Der Plan muss für alle sichtbar sein, am besten dort, wo ohnehin jeder täglich hinschaut.',
 			],
+			[
+				'Aufgaben nach Aufwand gewichten',
+				'Fair heißt nicht, dass alle gleich viele Aufgaben haben, sondern ungefähr gleich viel Zeit putzen. Grobe Richtwerte für eine typische WG-Wohnung: Bad gründlich 30 bis 45 Minuten, Küche 20 bis 30 Minuten, Böden saugen und wischen 30 bis 40 Minuten, Müll und Pfand 10 Minuten. Wer den Müll übernimmt, kann deshalb zusätzlich den Flur oder den Kühlschrank bekommen. Schätzt die Zeiten für eure Wohnung einmal gemeinsam, dann gibt es später weniger Streit über ungleiche Lasten.',
+			],
+			[
+				'Ein Wochen-Putzplan als Beispiel',
+				'Montag: Müll, Altpapier und Pfand rausbringen\nDienstag: Küche (Herd, Arbeitsflächen, Spüle, Boden)\nMittwoch: Bad (Waschbecken, Dusche, WC, Spiegel, Boden)\nDonnerstag: Böden in Flur und Wohnzimmer saugen\nFreitag: Kühlschrank durchsehen, Abgelaufenes entsorgen\nWochenende: Böden wischen, Handtücher und Lappen waschen',
+			],
 		],
 		fragen: [
 			[
@@ -132,6 +140,10 @@ export const RATGEBER: Record<string, Thema> = {
 				'Zuerst sachlich ansprechen, was konkret nicht gemacht wurde, nicht die Person bewerten. Hilft das nicht, sprecht in der WG-Runde über Regeln und Folgen, zum Beispiel, dass nicht erledigte Aufgaben nachgeholt werden.',
 			],
 			[
+				'Wie erstelle ich einen Wochen-Putzplan?',
+				'Aufgaben auflisten, nach Häufigkeit sortieren und auf Wochentage verteilen. Danach festlegen, wer welche Aufgabe übernimmt und wie oft gewechselt wird, meist wöchentlich.',
+			],
+			[
 				'Gibt es eine Putzplan-App für die WG?',
 				'Ja, ManaWG enthält einen Putzplan mit Rhythmus, fairer Rotation, Abwesenheiten und Erinnerungen. Die App ist kostenlos und läuft im Browser.',
 			],
@@ -139,44 +151,68 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-gruenden-checkliste': {
 		link: 'WG gründen',
-		stand: '2026-10-11',
+		stand: '2026-10-19',
 		erschienen: '2026-10-11',
-		titel: 'WG gründen: Checkliste für Start, Geld und Regeln | ManaWG',
+		titel: 'WG gründen: Checkliste von Mietvertrag bis Putzplan | ManaWG',
 		beschreibung:
-			'Checkliste für eine neue WG: Mitbewohner finden, Mietvertrag klären, Geld und Haushalt organisieren, Regeln festhalten und gut in den Alltag starten.',
+			'WG gründen Schritt für Schritt: Mietvertrag, Kaution, Anmeldung, Strom und Internet, Kosten aufteilen und Regeln festlegen. Mit Checkliste zum Abhaken.',
 		h1: 'WG gründen: die Checkliste',
 		einleitung:
-			'Eine neue WG fängt oft mit Begeisterung an und endet mit Streit über Dinge, die niemand besprochen hat. Diese Checkliste hilft, die wichtigen Fragen vor dem Einzug zu klären. Sie ersetzt keine Rechtsberatung, besonders nicht bei Mietverträgen.',
+			'Eine neue WG fängt oft mit Begeisterung an und endet mit Streit über Dinge, die niemand besprochen hat. Diese Checkliste führt durch die Fragen, die vor und kurz nach dem Einzug geklärt sein sollten: vom Mietvertrag über Anmeldung und Verträge bis zu Geld, Putzplan und Regeln. Sie ersetzt keine Rechtsberatung, besonders nicht bei Mietverträgen.',
 		abschnitte: [
 			[
 				'1. Passende Mitbewohner finden',
-				'Entscheidend ist weniger, ob ihr beste Freunde seid, als ob ihr ähnliche Vorstellungen vom Zusammenleben habt. Sprecht über Ruhezeiten, Besuch, Sauberkeit, Rauchen und Haustiere, bevor ihr zusagt. Wer Zimmer nachbesetzt, sollte diese Fragen auch beim Kennenlernen stellen.',
+				'Entscheidend ist weniger, ob ihr beste Freunde seid, als ob ihr ähnliche Vorstellungen vom Zusammenleben habt. Sprecht über Ruhezeiten, Besuch, Sauberkeit, Rauchen, Haustiere und darüber, ob ihr eine Zweck-WG oder gemeinsame Abende sucht. Klärt auch, wie lange jede Person ungefähr bleiben will: Eine WG, in der alle zwei Jahre planen, funktioniert anders als eine mit Zwischenmietern.',
 			],
 			[
-				'2. Mietvertrag und Rechtliches klären',
-				'In einer WG gibt es verschiedene Konstellationen: Ein gemeinsamer Hauptmietvertrag für alle, Untermietverträge oder Einzelmietverträge. Das bestimmt, wer wem gegenüber haftet und wer bei Auszug kündigen kann. Lasst euch den Vertrag vor dem Unterschreiben erklären und holt im Zweifel Rat bei einem Mieterverein ein. Auch Kaution und Übergabeprotokoll gehören vorher geklärt.',
+				'2. Die richtige Vertragsform wählen',
+				'In einer WG gibt es drei übliche Konstellationen. Beim gemeinsamen Hauptmietvertrag unterschreiben alle und haften gemeinsam für die ganze Miete; ausziehen kann eine Person nur mit Zustimmung von Vermieter und Mitbewohnern. Beim Untermietvertrag mietet eine Person die Wohnung und vermietet Zimmer weiter; sie trägt das Risiko, braucht dafür die Erlaubnis des Vermieters und hat mehr Einfluss bei Nachmietern. Bei Einzelmietverträgen hat jede Person einen eigenen Vertrag über ihr Zimmer mit dem Vermieter. Welche Form passt, hängt davon ab, wie fest die WG ist. Im Zweifel hilft ein Mieterverein.',
 			],
 			[
-				'3. Geld verbindlich regeln',
-				'Legt fest, wer den Vertrag für Internet und Strom führt, wie die Miete aufgeteilt wird und was ihr gemeinsam kauft. Wer die Kosten gleich zu Beginn sauber erfasst, vermeidet späteren Streit. Mit ManaWG legt ihr Miete und Internet einmal als Fixkosten an und erfasst gemeinsame Einkäufe laufend. Die App zeigt Salden und Ausgleichsvorschläge, ihr überweist selbst.',
+				'3. Kaution und Übergabe festhalten',
+				'Die Kaution darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Haltet fest, wer welchen Anteil eingezahlt hat, damit bei einem Auszug klar ist, wem was zusteht. Bei der Wohnungsübergabe gehört jedes Zimmer ins Übergabeprotokoll, am besten mit Fotos von Schäden und den Zählerständen für Strom, Gas und Wasser.',
 			],
 			[
-				'4. Haushalt organisieren',
-				'Klärt, welche Dinge gemeinsam gehören (Putzmittel, Küchenausstattung) und was privat bleibt. Einigt euch auf einen Putzplan mit konkreten Aufgaben und eine gemeinsame Einkaufsliste für Dinge, die alle brauchen. Beides lässt sich in ManaWG teilen, ohne dass jemand die Liste per Hand pflegen muss.',
+				'4. Anmelden und Verträge abschließen',
+				'Nach dem Einzug muss sich jede Person innerhalb von zwei Wochen beim Bürgeramt anmelden. Dafür braucht es eine Wohnungsgeberbestätigung, die der Vermieter ausstellt, bei Untermiete der Hauptmieter. Strom und Internet laufen meist auf eine Person, die Kosten teilt ihr. Der Rundfunkbeitrag fällt einmal pro Wohnung an, nicht pro Person: Eine Person meldet sich an, die anderen geben deren Beitragsnummer an. Jede Person sollte eine eigene Haftpflichtversicherung haben und prüfen, ob ihre Hausratversicherung eine WG abdeckt.',
 			],
 			[
-				'5. Regeln festhalten',
+				'5. Geld verbindlich regeln',
+				'Legt fest, wie die Miete aufgeteilt wird (gleich oder nach Zimmergröße), wer welche Verträge führt und was ihr gemeinsam kauft. Wer zahlt, sollte das Geld zuverlässig zurückbekommen, ohne jedes Mal nachfragen zu müssen. Mit ManaWG legt ihr Miete, Strom und Internet einmal als Fixkosten an und erfasst gemeinsame Einkäufe laufend. Die App zeigt Salden und Ausgleichsvorschläge, ihr überweist selbst.',
+			],
+			[
+				'6. Erstausstattung absprechen',
+				'Klärt, was gemeinsam angeschafft wird (Waschmaschine, Staubsauger, Küchengeräte, Putzmittel) und wem es gehört, wenn jemand auszieht. Bei teuren Dingen hilft eine einfache Notiz, wer wie viel bezahlt hat. Viele WGs kaufen Grundausstattung gemeinsam und den Rest bringt jede Person selbst mit.',
+			],
+			[
+				'7. Haushalt und Putzplan organisieren',
+				'Einigt euch auf einen Putzplan mit konkreten Aufgaben und festen Zyklen, etwa Bad wöchentlich, Küche wöchentlich, Flur alle zwei Wochen, Müll nach Bedarf. Eine gemeinsame Einkaufsliste für Dinge, die alle brauchen, verhindert, dass drei Leute Spülmittel kaufen und niemand Klopapier. Beides lässt sich in ManaWG teilen, ohne dass jemand die Liste per Hand pflegen muss.',
+			],
+			[
+				'8. Regeln festhalten',
 				'Haltet die wichtigsten Absprachen schriftlich fest, etwa Ruhezeiten, Umgang mit Besuch und Übernachtungsgästen, Gemeinschaftsräume und Vorgehen bei Streit. Es geht nicht um Paragrafen, sondern darum, dass später niemand sagen kann, davon habe er nichts gewusst. Die Pinnwand in ManaWG eignet sich dafür, weil Beschlüsse dort sichtbar bleiben und nicht im Chat untergehen.',
 			],
 			[
-				'6. Einen Termin für die WG-Runde festlegen',
+				'9. Einen Termin für die WG-Runde festlegen',
 				'Einmal im Monat eine halbe Stunde reicht: Geld ausgleichen, Termine besprechen, Dinge ansprechen, die stören. Wer regelmäßig redet, muss selten eskalieren.',
+			],
+			[
+				'Die Checkliste zum Abhaken',
+				'1. Mitbewohner gefunden und Erwartungen besprochen\n2. Vertragsform gewählt und Mietvertrag unterschrieben\n3. Kaution gezahlt, Anteile notiert\n4. Übergabeprotokoll mit Fotos und Zählerständen\n5. Alle innerhalb von zwei Wochen angemeldet\n6. Strom, Internet und Rundfunkbeitrag auf eine Person, Kosten geteilt\n7. Haftpflicht- und Hausratversicherung geprüft\n8. Mietaufteilung und Fixkosten festgelegt\n9. Erstausstattung abgesprochen\n10. Putzplan, Einkaufsliste und Regeln eingerichtet',
 			],
 		],
 		fragen: [
 			[
 				'Was braucht man, um eine WG zu gründen?',
-				'Eine geeignete Wohnung, passende Mitbewohner, einen geklärten Mietvertrag, verbindliche Regeln für Geld und Haushalt und einen Rhythmus für Absprachen.',
+				'Eine geeignete Wohnung, passende Mitbewohner, einen geklärten Mietvertrag, die Anmeldung beim Bürgeramt, verbindliche Regeln für Geld und Haushalt und einen Rhythmus für Absprachen.',
+			],
+			[
+				'Welcher Mietvertrag ist für eine WG am besten?',
+				'Das hängt davon ab, wie fest die WG ist. Ein gemeinsamer Hauptmietvertrag gibt allen dieselben Rechte, macht aber den Auszug Einzelner umständlich. Untermiet- und Einzelmietverträge sind flexibler, wenn Mitbewohner öfter wechseln.',
+			],
+			[
+				'Muss jeder in der WG Rundfunkbeitrag zahlen?',
+				'Nein. Der Rundfunkbeitrag fällt einmal pro Wohnung an. Eine Person zahlt, die anderen melden sich mit deren Beitragsnummer ab, und die WG teilt den Betrag.',
 			],
 			[
 				'Wie organisiert man Geld in einer neuen WG?',
@@ -292,7 +328,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-einkauf-organisieren': {
 		link: 'WG-Einkauf organisieren',
-		stand: '2026-10-14',
+		stand: '2026-10-19',
 		erschienen: '2026-10-11',
 		titel: 'Einkaufen in der WG: gemeinsam oder getrennt? | ManaWG',
 		beschreibung:
@@ -307,11 +343,23 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Modell 2: Gemeinsamer Grundbedarf',
-				'Staples wie Öl, Nudeln, Reis, Gewürze und Getränke gehören allen, der Rest ist privat. Dafür braucht ihr eine Liste, in die jeder einträgt, was fehlt. In ManaWG gibt es eine gemeinsame Einkaufsliste: Wer einkauft, hakt ab und kann den Einkauf danach direkt als Ausgabe erfassen.',
+				'Grundnahrungsmittel wie Öl, Nudeln, Reis, Gewürze und Getränke gehören allen, der Rest ist privat. Dafür braucht ihr eine Liste, in die jeder einträgt, was fehlt. In ManaWG gibt es eine gemeinsame Einkaufsliste: Wer einkauft, hakt ab und kann den Einkauf danach direkt als Ausgabe erfassen.',
 			],
 			[
 				'Modell 3: Gemeinsam kochen und einkaufen',
 				'Bei gemeinsamem Essen lohnt sich ein reihum geführter Einkauf. Die Kosten teilt ihr unter den Beteiligten. Wer nur gelegentlich mitisst, zahlt nur dann mit. Das lässt sich pro Ausgabe festlegen.',
+			],
+			[
+				'Was in den gemeinsamen Einkauf gehört',
+				'Putz- und Spülmittel, Schwämme und Lappen\nKlopapier, Küchenrolle, Müllbeutel\nSalz, Pfeffer, Öl, Essig und Grundgewürze\nKaffee, Tee, Zucker, wenn alle davon nehmen\nGlühbirnen, Batterien für Rauchmelder, Spülmaschinentabs',
+			],
+			[
+				'Kühlschrank und Regale aufteilen',
+				'Wer getrennt einkauft, braucht feste Plätze: ein Fach im Kühlschrank und ein Regalbrett pro Person, dazu ein gemeinsames Fach für Geteiltes. Was im gemeinsamen Fach steht, darf jede Person nehmen, alles andere nur nach Fragen. Einmal pro Woche sieht die Person mit dem Küchendienst den Kühlschrank durch und sortiert Abgelaufenes aus.',
+			],
+			[
+				'Einen Rhythmus finden',
+				'Viele WGs fahren gut mit einem festen Großeinkauf pro Woche für den Grundbedarf und kleinen Einkäufen nach Bedarf. Den Großeinkauf übernimmt reihum eine Person, die Liste füllen alle vorher. Wer ohnehin im Laden ist, sieht in der geteilten Liste, was fehlt, und bringt es mit.',
 			],
 			[
 				'Vorräte im Blick behalten',
@@ -326,6 +374,14 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Sollte man in der WG gemeinsam einkaufen?',
 				'Das hängt von eurem Essverhalten ab. Gemeinsamer Grundbedarf und getrennte Lebensmittel ist der häufigste Kompromiss.',
+			],
+			[
+				'Was gehört zum gemeinsamen WG-Einkauf?',
+				'Meist Haushaltsartikel wie Putzmittel, Klopapier und Müllbeutel sowie Grundzutaten wie Öl, Salz und Gewürze. Lebensmittel für einzelne Personen bleiben privat.',
+			],
+			[
+				'Wie teilt man den Kühlschrank in der WG auf?',
+				'Ein Fach pro Person und ein gemeinsames Fach für Geteiltes. Was im gemeinsamen Fach steht, dürfen alle nehmen.',
 			],
 			[
 				'Gibt es eine gemeinsame Einkaufsliste für WGs?',
@@ -450,7 +506,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'putzplan-vorlage': {
 		link: 'Putzplan-Vorlage',
-		stand: '2026-10-14',
+		stand: '2026-10-19',
 		erschienen: '2026-10-11',
 		titel: 'Putzplan Vorlage für die WG: Beispiel zum Übernehmen | ManaWG',
 		beschreibung:
@@ -472,6 +528,10 @@ export const RATGEBER: Record<string, Thema> = {
 				'Bei vier Personen rotieren Bad, Küche, Böden sowie Müll und Flur (siehe Vorlage unten): Jede Woche rückt jede Person eine Aufgabe weiter, nach vier Wochen hatte jede alles einmal. Bei fünf kommt Wohnzimmer oder Balkon als eigene Aufgabe hinzu. Wer verreist, wird übersprungen und holt nichts doppelt nach.',
 			],
 			[
+				'Die Vier-Wochen-Rotation',
+				'Woche 1: Person A Bad, B Küche, C Böden, D Müll und Flur\nWoche 2: Person A Küche, B Böden, C Müll und Flur, D Bad\nWoche 3: Person A Böden, B Müll und Flur, C Bad, D Küche\nWoche 4: Person A Müll und Flur, B Bad, C Küche, D Böden',
+			],
+			[
 				'Warum der Zettel scheitert',
 				'Ausgedruckte Pläne rotieren nicht von selbst, werden nicht aktualisiert und erinnern niemanden. Nach ein paar Wochen weiß keiner mehr, wer dran ist. Eine App löst das: In ManaWG legt ihr Aufgaben mit Rhythmus an, die App zeigt, wer als Nächstes dran ist, überspringt Abwesende und erinnert per Push an fällige Aufgaben.',
 			],
@@ -488,6 +548,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Wie oft wechseln die Aufgaben?',
 				'Üblich ist ein wöchentlicher Wechsel. So macht jede Person jede Aufgabe regelmäßig und niemand bleibt dauerhaft beim unbeliebten Bad.',
+			],
+			[
+				'Wie erstelle ich einen Putzplan selber?',
+				'Nehmt die Aufgabenliste oben, streicht, was bei euch nicht anfällt, und tragt die Namen in die Vier-Wochen-Rotation ein. Bei drei oder fünf Personen passt ihr die Zahl der Wochenaufgaben an die Zahl der Personen an.',
 			],
 		],
 	},
