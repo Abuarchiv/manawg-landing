@@ -10,6 +10,9 @@ import { THEMEN } from './themen';
 
 export const dynamicParams = false;
 
+/** Google verlangt Datum mit Uhrzeit und Zeitzone (Rich Results Test: „Zeitzone fehlt“). */
+const zeitpunkt = (tag: string) => `${tag}T00:00:00+00:00`;
+
 export function generateStaticParams() {
 	return Object.keys(THEMEN).map((thema) => ({ thema }));
 }
@@ -31,8 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			siteName: 'ManaWG',
 			locale: 'de_DE',
 			type: 'article',
-			publishedTime: t.erschienen,
-			modifiedTime: t.stand,
+			publishedTime: zeitpunkt(t.erschienen),
+			modifiedTime: zeitpunkt(t.stand),
 			images: [`/${thema}/opengraph-image`],
 		},
 		twitter: { title: t.titel, description: t.beschreibung, images: [`/${thema}/opengraph-image`] },
@@ -73,11 +76,12 @@ export default async function ThemaPage({ params }: Props) {
 		description: t.beschreibung,
 		image: `${site}/${thema}/opengraph-image`,
 		inLanguage: 'de-DE',
-		datePublished: t.erschienen,
-		dateModified: t.stand,
+		datePublished: zeitpunkt(t.erschienen),
+		dateModified: zeitpunkt(t.stand),
 		mainEntityOfPage: `${site}/${thema}`,
-		author: { '@id': orgId },
-		publisher: { '@id': orgId },
+		// Name und URL direkt mit, damit der Artikel auch ohne aufgelöste @id vollständig ist (Rich Results Test).
+		author: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/` },
+		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/` },
 		isPartOf: { '@id': webseiteId },
 		...(quellen.length > 0 ? { citation: quellen.map(([, url]) => url) } : {}),
 	};
