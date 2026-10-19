@@ -3,6 +3,7 @@ import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { preload } from 'react-dom';
 import { GRUPPEN, VERGLEICHS_HINWEIS, gruppeVon, verwandte } from './gruppen';
 import { PUTZPLAN_VORLAGE } from './ratgeber';
 import { THEMEN } from './themen';
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			siteName: 'ManaWG',
 			locale: 'de_DE',
 			type: 'article',
+			publishedTime: t.erschienen,
 			modifiedTime: t.stand,
 			images: [`/${thema}/opengraph-image`],
 		},
@@ -41,6 +43,8 @@ export default async function ThemaPage({ params }: Props) {
 	const { thema } = await params;
 	const t = THEMEN[thema];
 	if (!t) notFound();
+	// Der Fließtext (größtes Element, LCP) steht in Inter; das Layout lädt nur Inter Tight und Mono vor.
+	preload('/fonts/inter-latin.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
 
 	const faqSchema = t.fragen && {
 		'@context': 'https://schema.org',
@@ -69,6 +73,7 @@ export default async function ThemaPage({ params }: Props) {
 		description: t.beschreibung,
 		image: `${site}/${thema}/opengraph-image`,
 		inLanguage: 'de-DE',
+		datePublished: t.erschienen,
 		dateModified: t.stand,
 		mainEntityOfPage: `${site}/${thema}`,
 		author: { '@id': orgId },
@@ -133,13 +138,15 @@ export default async function ThemaPage({ params }: Props) {
 			<header
 				className={`${rand} flex items-center justify-between pt-[max(1.25rem,env(safe-area-inset-top))] pb-6`}
 			>
+				{/* Kein Prefetch: die Startseite bringt ~100 KB Szenen-JS mit, das Textseiten nicht vorladen sollen. */}
 				<Link
 					href="/"
+					prefetch={false}
 					aria-label="ManaWG, zur Startseite"
 					className="inline-flex items-center gap-3 min-h-[44px] no-underline"
 				>
 					<img
-						src="/manawg-mark-weiss.png"
+						src="/manawg-mark-weiss-120.png"
 						alt=""
 						width={416}
 						height={346}
@@ -160,7 +167,9 @@ export default async function ThemaPage({ params }: Props) {
 			<nav aria-label="Brotkrumen" className={`${rand} ${mono} pb-10 md:pb-16`}>
 				<ol className="flex flex-wrap gap-x-2 m-0 p-0 list-none">
 					<li>
-						<Link href="/">ManaWG</Link>
+						<Link href="/" prefetch={false}>
+							ManaWG
+						</Link>
 					</li>
 					<li aria-current="page">/ {t.link}</li>
 				</ol>

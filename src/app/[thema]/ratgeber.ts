@@ -42,6 +42,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-kosten-aufteilen': {
 		link: 'WG-Kosten aufteilen',
 		stand: '2026-10-11',
+		erschienen: '2026-10-11',
 		titel: 'WG-Kosten fair aufteilen: Miete, Nebenkosten, Internet | ManaWG',
 		beschreibung:
 			'So teilt ihr in der WG Miete, Nebenkosten, Strom, Internet und Einkäufe fair auf: drei Modelle mit Beispielrechnung und Tipps gegen Streit ums Geld.',
@@ -92,7 +93,8 @@ export const RATGEBER: Record<string, Thema> = {
 	'putzplan-erstellen': {
 		link: 'Putzplan erstellen',
 		stand: '2026-10-11',
-		titel: 'Putzplan für die WG erstellen: Vorlage, Regeln, Beispiele | ManaWG',
+		erschienen: '2026-10-11',
+		titel: 'WG-Putzplan erstellen: Vorlage, Regeln, Beispiele | ManaWG',
 		beschreibung:
 			'So erstellt ihr einen Putzplan für die WG, den alle einhalten: Aufgaben, Rhythmus, faire Rotation, Umgang mit Abwesenheit und eine Beispielverteilung.',
 		h1: 'Putzplan für die WG erstellen',
@@ -138,6 +140,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-gruenden-checkliste': {
 		link: 'WG gründen',
 		stand: '2026-10-11',
+		erschienen: '2026-10-11',
 		titel: 'WG gründen: Checkliste für Start, Geld und Regeln | ManaWG',
 		beschreibung:
 			'Checkliste für eine neue WG: Mitbewohner finden, Mietvertrag klären, Geld und Haushalt organisieren, Regeln festhalten und gut in den Alltag starten.',
@@ -188,6 +191,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-regeln': {
 		link: 'WG-Regeln',
 		stand: '2026-10-11',
+		erschienen: '2026-10-11',
 		titel: 'WG-Regeln: Beispiele für Haushalt, Ruhe und Besuch | ManaWG',
 		beschreibung:
 			'Welche Regeln sinnvoll sind und wie ihr sie festhaltet: Ruhezeiten, Besuch, Putzen, gemeinsame Kasse und Umgang mit Konflikten, mit Formulierungsbeispielen.',
@@ -234,7 +238,8 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-nebenkosten': {
 		link: 'WG-Nebenkosten',
 		stand: '2026-10-11',
-		titel: 'WG-Nebenkosten, Strom und Internet: Verteilung und Abrechnung | ManaWG',
+		erschienen: '2026-10-11',
+		titel: 'WG-Nebenkosten, Strom und Internet fair aufteilen | ManaWG',
 		beschreibung:
 			'Wie WGs Nebenkosten, Strom, Internet und Rundfunkbeitrag aufteilen: Wer den Vertrag führt, wie ihr abrechnet und wie Nachzahlungen fair verteilt werden.',
 		h1: 'Nebenkosten, Strom und Internet in der WG',
@@ -280,6 +285,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-einkauf-organisieren': {
 		link: 'WG-Einkauf organisieren',
 		stand: '2026-10-14',
+		erschienen: '2026-10-11',
 		titel: 'Einkaufen in der WG: gemeinsam oder getrennt? | ManaWG',
 		beschreibung:
 			'Gemeinsame Kasse, geteilte Einkaufsliste oder jeder für sich: So organisiert ihr den Einkauf in der WG ohne Streit um Lebensmittel und Haushaltsbedarf.',
@@ -322,6 +328,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'beste-wg-app': {
 		link: 'Beste WG-App',
 		stand: '2026-10-14',
+		erschienen: '2026-10-11',
 		titel: 'Die beste WG-App finden: 7 Kriterien im Vergleich | ManaWG',
 		beschreibung:
 			'Welche WG-App passt zu euch? Sieben Kriterien von Kosten über Putzplan bis Datenschutz, dazu Vergleiche mit Splitwise, Splid und Flatastic.',
@@ -383,6 +390,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'ueber-manawg': {
 		link: 'Über ManaWG',
 		stand: '2026-10-16',
+		erschienen: '2026-10-11',
 		titel: 'Was ist ManaWG? Die kostenlose WG-App im Überblick',
 		beschreibung:
 			'ManaWG ist eine kostenlose deutschsprachige WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Fakten, Funktionen und Abgrenzung zu WireGuard.',
@@ -435,9 +443,10 @@ export const RATGEBER: Record<string, Thema> = {
 	'putzplan-vorlage': {
 		link: 'Putzplan-Vorlage',
 		stand: '2026-10-14',
+		erschienen: '2026-10-11',
 		titel: 'Putzplan Vorlage für die WG: Beispiel zum Übernehmen | ManaWG',
 		beschreibung:
-			'Putzplan-Vorlage für 4 Personen als CSV-Download: Aufgabenliste, Rhythmus und Vier-Wochen-Rotation zum Übernehmen, mit Hinweisen für 3 und 5 Personen und der digitalen Variante ohne Ausdrucken.',
+			'Putzplan-Vorlage für 4 Personen als CSV-Download: Aufgaben, Rhythmus und Vier-Wochen-Rotation zum Übernehmen, mit Hinweisen für 3 und 5 Personen.',
 		h1: 'Putzplan-Vorlage für die WG',
 		einleitung:
 			'Eine Vorlage spart die Diskussion am Anfang. Hier steht eine Aufgabenliste mit Rhythmus, die ihr direkt übernehmen und an eure Wohnung anpassen könnt, und wie ihr sie ohne Ausdrucken pflegt.',
@@ -477,6 +486,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-haushaltskasse': {
 		link: 'WG-Haushaltskasse',
 		stand: '2026-10-19',
+		erschienen: '2026-10-11',
 		titel: 'WG-Haushaltskasse: gemeinsame Kasse führen und abrechnen | ManaWG',
 		beschreibung:
 			'Gemeinsame Haushaltskasse in der WG: Bargeldkasse, Gemeinschaftskonto oder App? Vor- und Nachteile, Beispielrechnung, Regeln und Abrechnung ohne Streit.',
@@ -527,6 +537,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
 		stand: '2026-10-19',
+		erschienen: '2026-10-11',
 		titel: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		beschreibung:
 			'Checkliste für den Einzug in eine WG: Vertrag, Anmeldung, Schlüssel, Geld, Putzplan, Mitbewohner kennenlernen und die wichtigsten Dinge in der ersten Woche.',
@@ -577,6 +588,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'wg-abwesenheit-urlaub': {
 		link: 'WG im Urlaub',
 		stand: '2026-10-19',
+		erschienen: '2026-10-11',
 		titel: 'WG und Urlaub: Putzplan und Kosten bei Abwesenheit | ManaWG',
 		beschreibung:
 			'Was gilt in der WG, wenn jemand verreist? Putzplan, Miete, gemeinsame Kosten, Auslandssemester und Absprachen bei längerer Abwesenheit fair regeln.',
@@ -623,6 +635,7 @@ export const RATGEBER: Record<string, Thema> = {
 	'schulden-mitbewohner': {
 		link: 'Schulden in der WG',
 		stand: '2026-10-19',
+		erschienen: '2026-10-11',
 		titel: 'Schulden unter Mitbewohnern: ausgleichen ohne Streit | ManaWG',
 		beschreibung:
 			'Mitbewohner schuldet dir Geld? So behaltet ihr den Überblick, sprecht es an und gleicht Schulden in der WG mit wenigen Überweisungen aus. Mit Beispiel.',
@@ -667,6 +680,202 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Überweist ManaWG Geld automatisch?',
 				'Nein. ManaWG berechnet Vorschläge, ihr überweist selbst und markiert Beträge als bezahlt.',
+			],
+		],
+	},
+	'wg-casting-fragen': {
+		link: 'WG-Casting',
+		stand: '2026-10-19',
+		erschienen: '2026-10-19',
+		titel: 'WG-Casting: Fragen, Ablauf und Tipps für beide Seiten | ManaWG',
+		beschreibung:
+			'Gute Fragen fürs WG-Casting: Alltag, Geld, Putzen, Gäste. Wie die WG das Casting plant und wie Bewerber sich vorbereiten, mit Fragenliste zum Übernehmen.',
+		h1: 'WG-Casting: die richtigen Fragen',
+		einleitung:
+			'Beim WG-Casting entscheidet sich in zwanzig Minuten, ob ihr die nächsten Jahre gut zusammenlebt. Beide Seiten prüfen einander: die WG die neue Person, die Bewerberin oder der Bewerber die WG. Mit den richtigen Fragen erfahrt ihr, was wirklich zählt, und nicht nur, wer am sympathischsten wirkt.',
+		abschnitte: [
+			[
+				'Ablauf für die WG',
+				'Ladet nicht zu viele Leute auf einmal ein. Einzeltermine von 20 bis 30 Minuten mit etwas Puffer funktionieren besser als ein Gruppencasting, bei dem die Lautesten gewinnen. Es sollten möglichst alle Mitbewohner dabei sein, denn wer nicht mitentscheidet, fühlt sich später übergangen. Zeigt die Wohnung ehrlich, auch das kleine Bad und die volle Küche. Und legt vorher fest, worauf es euch ankommt, damit die Entscheidung nicht nur am Bauchgefühl hängt.',
+			],
+			[
+				'Fragen zum Alltag',
+				'Wie sieht ein normaler Tag bei dir aus, wann stehst du auf, wann gehst du schlafen? Kochst du gern, und isst du lieber allein oder mit anderen? Wie oft bist du am Wochenende zu Hause? Arbeitest oder lernst du viel von zu Hause aus? Diese Fragen zeigen, ob sich Rhythmen ergänzen oder ständig kollidieren, etwa wenn zwei Personen gleichzeitig ins Bad müssen.',
+			],
+			[
+				'Fragen zu Ordnung und Putzen',
+				'Was bedeutet für dich sauber? Wie oft sollte das Bad geputzt werden? Hast du schon mit einem Putzplan gelebt, und wie lief das? Was stört dich in einer Küche am meisten? Ehrliche Antworten sind hier wichtiger als die erwartete. Wer zugibt, eher unordentlich zu sein, aber feste Aufgaben zuverlässig erledigt, passt oft besser als jemand, der Perfektion verspricht.',
+			],
+			[
+				'Fragen zu Geld und Gemeinsamem',
+				'Wie stellst du dir das mit gemeinsamen Einkäufen vor, alles teilen oder jeder für sich? Wie sollen Kosten wie Internet und Putzmittel aufgeteilt werden? Erzählt dabei offen, wie eure WG es bisher macht, zum Beispiel mit einer App wie ManaWG, in der jede Ausgabe eingetragen und am Monatsende ausgeglichen wird. Wer schon beim Casting weiß, wie abgerechnet wird, hat später keine Überraschungen.',
+			],
+			[
+				'Fragen zu Gästen, Lautstärke und Erwartungen',
+				'Wie oft hast du Besuch, und übernachtet der auch mal länger? Feierst du gern zu Hause? Rauchst du, hast du Haustiere oder planst welche? Suchst du eher eine Zweck-WG oder Anschluss und gemeinsame Abende? Gerade die letzte Frage wird oft vergessen, dabei ist sie einer der häufigsten Gründe, warum es später nicht passt.',
+			],
+			[
+				'Tipps für Bewerberinnen und Bewerber',
+				'Stellt selbst Fragen, das zeigt Interesse und schützt euch vor einer falschen Wahl. Fragt, warum das Zimmer frei wird, wie Kosten verteilt werden, ob es einen Putzplan gibt und wie oft die WG gemeinsam etwas unternimmt. Fragt nach der Warmmiete und den Nebenkosten und danach, ob es einen eigenen Mietvertrag oder einen Untermietvertrag gibt. Und seid ehrlich: Eine WG, in die ihr nur mit einer geschönten Version von euch passt, wird auf Dauer anstrengend.',
+			],
+		],
+		fragen: [
+			[
+				'Welche Fragen stellt man beim WG-Casting?',
+				'Fragen zum Tagesrhythmus, zu Ordnung und Putzen, zum Umgang mit Geld und Einkäufen, zu Gästen und Lautstärke und dazu, ob jemand eine Zweck-WG oder gemeinsame Abende sucht.',
+			],
+			[
+				'Wie lange dauert ein WG-Casting?',
+				'Üblich sind 20 bis 30 Minuten pro Person. Das reicht für eine Wohnungsführung und ein Gespräch, ohne dass es für beide Seiten zu anstrengend wird.',
+			],
+			[
+				'Was sollte ich als Bewerber beim WG-Casting fragen?',
+				'Warum das Zimmer frei wird, wie Miete und Nebenkosten aufgeteilt werden, ob es einen eigenen Mietvertrag gibt, wie der Putzplan funktioniert und wie viel die WG gemeinsam unternimmt.',
+			],
+		],
+	},
+	'mitbewohner-finden': {
+		link: 'Mitbewohner finden',
+		stand: '2026-10-19',
+		erschienen: '2026-10-19',
+		titel: 'Mitbewohner finden: WG-Anzeige schreiben und auswählen | ManaWG',
+		beschreibung:
+			'So findet ihr einen neuen Mitbewohner: Wo ihr die WG-Anzeige schaltet, was hineingehört, wie ihr auswählt und was vor dem Einzug geklärt sein sollte.',
+		h1: 'Neuen Mitbewohner finden',
+		einleitung:
+			'Ein Zimmer wird frei, und in wenigen Wochen soll jemand Neues einziehen. Damit es passt, kommt es auf eine ehrliche Anzeige, eine gute Auswahl und klare Absprachen vor dem Einzug an. Hier steht der Ablauf von der Anzeige bis zum ersten gemeinsamen Monat.',
+		abschnitte: [
+			[
+				'Vorher klären: Vermieter und Vertrag',
+				'Bevor ihr sucht, klärt, wer den Mietvertrag mit dem Vermieter hat. Ist die WG über Untermiete organisiert, braucht ihr für eine neue Person in der Regel die Erlaubnis des Vermieters. Haben alle einen eigenen Vertrag, regelt der Vermieter den Wechsel oft selbst. Legt außerdem fest, ab wann das Zimmer frei ist, was es warm kostet und ob Möbel übernommen werden sollen.',
+			],
+			[
+				'Wo ihr die Anzeige schaltet',
+				'Für Studenten-WGs sind WG-Portale wie WG-Gesucht der übliche Weg, dazu kommen Gruppen der Hochschule, Aushänge beim Studierendenwerk und Kleinanzeigen. Für Berufstätige lohnen sich zusätzlich Aushänge beim Arbeitgeber und das eigene Umfeld. Wer persönlich empfohlen wird, passt nicht automatisch besser, aber ihr wisst schneller, woran ihr seid.',
+			],
+			[
+				'Was in eine gute WG-Anzeige gehört',
+				'Die Fakten zuerst: Größe des Zimmers, Warmmiete mit allen Nebenkosten, Einzugsdatum, Befristung, Lage und Verkehrsanbindung. Dann die WG selbst: Wie viele Personen, welches Alter, was macht ihr, wie viel Gemeinsames gibt es? Gute Fotos von Zimmer, Küche und Bad bei Tageslicht. Und ein ehrlicher Satz dazu, wie ihr Haushalt und Geld organisiert, etwa mit Putzplan und gemeinsamer Abrechnung in einer App. Das filtert Bewerber, die etwas ganz anderes suchen.',
+			],
+			[
+				'Auswählen ohne Chaos',
+				'Bei beliebten Zimmern kommen schnell dutzende Nachrichten. Legt fest, wer antwortet, und sammelt die Bewerbungen an einer Stelle. Ladet nur die Personen zum Casting ein, deren Nachricht zur WG passt. Nach den Terminen entscheidet ihr gemeinsam, möglichst zeitnah, denn gute Bewerber haben oft mehrere Zusagen. Sagt allen Eingeladenen ab, die es nicht geworden sind. Passende Fragen fürs Gespräch stehen im Ratgeber zum WG-Casting.',
+			],
+			[
+				'Vor dem Einzug',
+				'Schickt der neuen Person die wichtigsten Regeln schriftlich: Putzplan, Kostenverteilung, Ruhezeiten, Müll. Klärt die Schlüsselübergabe und die Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG ManaWG nutzt, schickt ihr einen Einladungslink oder Code. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand sofort, neue Ausgaben werden ab dann mit ihr geteilt.',
+			],
+		],
+		fragen: [
+			[
+				'Wo finde ich einen neuen Mitbewohner?',
+				'Auf WG-Portalen wie WG-Gesucht, in Gruppen der Hochschule, über Aushänge beim Studierendenwerk, Kleinanzeigen und das eigene Umfeld.',
+			],
+			[
+				'Was gehört in eine WG-Anzeige?',
+				'Zimmergröße, Warmmiete mit Nebenkosten, Einzugsdatum, Befristung, Lage, Fotos bei Tageslicht und eine ehrliche Beschreibung der WG und ihres Alltags.',
+			],
+			[
+				'Braucht man für einen neuen Mitbewohner die Erlaubnis des Vermieters?',
+				'Bei Untermiete in der Regel ja. Haben alle Mitbewohner einen eigenen Vertrag mit dem Vermieter, regelt er den Wechsel meist selbst. Maßgeblich ist euer Mietvertrag.',
+			],
+		],
+	},
+	'wg-auszug-checkliste': {
+		link: 'WG-Auszug',
+		stand: '2026-10-19',
+		erschienen: '2026-10-19',
+		titel: 'WG-Auszug: Checkliste für Kündigung und Abrechnung | ManaWG',
+		beschreibung:
+			'Checkliste für den Auszug aus der WG: Kündigung, Nachmieter, Kaution, offene Kosten, Rundfunkbeitrag, Ummeldung und Übergabe ohne Streit.',
+		h1: 'Auszug aus der WG: die Checkliste',
+		einleitung:
+			'Beim Auszug aus einer WG hängt mehr dran als Kisten packen: Kündigung, ein Nachfolger fürs Zimmer, Kaution, offene Beträge und Verträge, die auf euren Namen laufen. Wer die Punkte früh angeht, geht ohne offene Rechnungen und ohne Streit.',
+		abschnitte: [
+			[
+				'Kündigung und Fristen',
+				'Prüft zuerst euren Vertrag. Bei einem unbefristeten Mietvertrag gilt für Mieter meist eine Kündigungsfrist von drei Monaten. Bei einem möblierten Zimmer in der Wohnung des Hauptmieters können kürzere Fristen gelten. Kündigt schriftlich und sagt der WG möglichst früh Bescheid, auch wenn ihr formal noch Zeit habt. Die anderen brauchen Wochen, um jemanden zu finden.',
+			],
+			[
+				'Nachmieter finden',
+				'Oft sucht die WG gemeinsam mit euch einen Nachfolger. Ob die neue Person euren Vertrag übernimmt oder einen eigenen bekommt, entscheidet der Vermieter beziehungsweise der Hauptmieter. Einen allgemeinen Anspruch darauf, durch einen Nachmieter früher aus dem Vertrag zu kommen, gibt es nicht, viele Vermieter lassen sich aber darauf ein. Helft bei Anzeige und Casting, ihr kennt das Zimmer am besten.',
+			],
+			[
+				'Geld: offene Beträge und Kaution',
+				'Gleicht alle offenen Beträge vor dem Auszug aus, solange alle noch erreichbar sind. In ManaWG seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Wenn der Saldo auf null steht, ist alles erledigt. Klärt außerdem, was mit gemeinsamen Anschaffungen passiert: Bleibt der Staubsauger in der WG, und zahlen die anderen euren Anteil? Die Kaution bekommt ihr vom Vermieter oder Hauptmieter zurück. Die Prüfung kann einige Monate dauern, vor allem wenn noch eine Nebenkostenabrechnung aussteht.',
+			],
+			[
+				'Verträge und Behörden',
+				'Läuft der Internetvertrag, der Stromvertrag oder der Rundfunkbeitrag auf euren Namen, muss jemand aus der WG übernehmen oder der Vertrag umgestellt werden. Sprecht das früh ab. In Deutschland meldet ihr euch innerhalb von zwei Wochen am neuen Wohnort an. Eine eigene Abmeldung ist nur nötig, wenn ihr ins Ausland zieht oder keine neue Wohnung in Deutschland bezieht. Denkt auch an einen Nachsendeauftrag für die Post.',
+			],
+			[
+				'Übergabe',
+				'Räumt Zimmer und eure Fächer in Küche und Bad vollständig. Streicht das Zimmer, falls der Vertrag das vorsieht. Macht eine Übergabe mit Fotos und gebt alle Schlüssel zurück. Erledigt eure letzte Runde im Putzplan, bevor ihr geht. In ManaWG verlasst ihr die WG zum Schluss selbst über die Einstellungen.',
+			],
+		],
+		fragen: [
+			[
+				'Welche Kündigungsfrist gilt beim Auszug aus einer WG?',
+				'Bei einem unbefristeten Mietvertrag meist drei Monate. Bei einem möblierten Zimmer in der Wohnung des Hauptmieters können kürzere Fristen gelten. Maßgeblich ist euer Vertrag.',
+			],
+			[
+				'Muss ich einen Nachmieter für mein WG-Zimmer stellen?',
+				'Eine allgemeine Pflicht gibt es nicht, und ohne Vereinbarung auch keinen Anspruch, dadurch früher aus dem Vertrag zu kommen. In der Praxis sucht die WG aber meist gemeinsam.',
+			],
+			[
+				'Was passiert mit offenen WG-Kosten beim Auszug?',
+				'Offene Beträge sollten vor dem Auszug ausgeglichen werden. Eine App wie ManaWG zeigt den Saldo und schlägt die nötigen Überweisungen vor.',
+			],
+		],
+	},
+	'wg-streit-loesen': {
+		link: 'Streit in der WG',
+		stand: '2026-10-19',
+		erschienen: '2026-10-19',
+		titel: 'Streit in der WG lösen: Putzen, Lärm, Geld | ManaWG',
+		beschreibung:
+			'Streit in der WG um Putzen, Lärm oder Geld? So sprecht ihr Konflikte an, findet Regeln, die halten, und verhindert, dass kleine Ärgernisse eskalieren.',
+		h1: 'Streit in der WG lösen',
+		einleitung:
+			'In fast jeder WG gibt es irgendwann Streit, meist um dieselben drei Dinge: Putzen, Lärm und Geld. Selten liegt es an bösem Willen. Meist fehlen klare Absprachen, oder kleine Ärgernisse wurden zu lange nicht angesprochen. Mit ein paar Gewohnheiten lassen sich die meisten Konflikte lösen, bevor sie die Stimmung kippen.',
+		abschnitte: [
+			[
+				'Früh ansprechen, nicht sammeln',
+				'Der häufigste Fehler ist, Ärger herunterzuschlucken, bis er sich auf einmal entlädt. Sprecht Dinge an, solange sie klein sind, und am besten direkt mit der betroffenen Person statt zuerst mit den anderen. Ein ruhiger Moment ist besser als der Augenblick, in dem das dreckige Geschirr gerade wieder in der Spüle steht.',
+			],
+			[
+				'Sachlich bleiben: Ich-Botschaften',
+				'Beschreibt, was passiert ist und was es bei euch auslöst, statt der anderen Person Eigenschaften zuzuschreiben. „Mich stresst es, wenn die Küche morgens voll ist“ kommt anders an als „Du bist immer so schlampig“. Fragt nach, wie die andere Seite es sieht. Oft gibt es Gründe, die ihr nicht kennt, etwa Prüfungsphasen oder Schichtarbeit.',
+			],
+			[
+				'Streit ums Putzen',
+				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein Putzplan mit fester Rotation nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. In ManaWG wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
+			],
+			[
+				'Streit um Lärm und Gäste',
+				'Hier helfen Regeln, die alle vorher vereinbart haben: Ruhezeiten unter der Woche, Ankündigung von Partys, wie lange Gäste bleiben dürfen. Was einmal gemeinsam festgelegt ist, muss nicht jedes Mal neu verhandelt werden. Haltet Beschlüsse schriftlich fest, etwa auf der Pinnwand in ManaWG, damit sich später niemand auf ein anderes Gedächtnis beruft.',
+			],
+			[
+				'Streit ums Geld',
+				'Geldstreit entsteht fast immer aus Unübersichtlichkeit: Wer hat was bezahlt, wer schuldet wem? Tragt Ausgaben sofort ein und gleicht zu einem festen Termin aus. Eine App, die Salden rechnet und Überweisungen vorschlägt, ersetzt Erinnerungen an Einzelbeträge. Klärt außerdem vorher, was gemeinsam gekauft wird und ab welchem Betrag gefragt werden muss.',
+			],
+			[
+				'Die WG-Runde',
+				'Ein regelmäßiges kurzes Treffen, etwa einmal im Monat, gibt allen einen festen Ort für Themen. Jede Person darf etwas einbringen, Entscheidungen werden festgehalten. Wenn es trotz Gesprächen nicht besser wird, ist es kein Scheitern zu überlegen, ob die Konstellation passt. Manchmal ist ein Auszug die fairste Lösung für alle.',
+			],
+		],
+		fragen: [
+			[
+				'Worüber streiten WGs am häufigsten?',
+				'Über Putzen, Lärm und Geld. In allen drei Fällen helfen klare, gemeinsam vereinbarte Regeln und ein fester Ort, an dem sie festgehalten sind.',
+			],
+			[
+				'Wie spreche ich ein Problem mit einem Mitbewohner an?',
+				'Früh, direkt und in einem ruhigen Moment. Beschreibt, was euch stört, statt der Person Vorwürfe zu machen, und fragt nach ihrer Sicht.',
+			],
+			[
+				'Hilft ein Putzplan gegen Streit in der WG?',
+				'Ja, wenn er feste Rotation hat und für alle sichtbar ist. Dann ist klar, wer dran ist, und die Diskussion darüber entfällt.',
 			],
 		],
 	},

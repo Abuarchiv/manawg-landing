@@ -14,6 +14,8 @@ export interface Thema {
 	fragen?: Array<[string, string]>;
 	/** Letzte inhaltliche Änderung (ISO-Datum), für lastmod in der Sitemap. */
 	stand: string;
+	/** Erste Veröffentlichung (ISO-Datum), für datePublished. */
+	erschienen: string;
 	/** Belege als [Name, URL]; erscheinen als Quellenliste, Article-citation und llms-full. */
 	quellen?: Array<[string, string]>;
 }
@@ -22,6 +24,7 @@ export const THEMEN: Record<string, Thema> = {
 	'wg-app': {
 		link: 'WG-App',
 		stand: '2026-10-14',
+		erschienen: '2026-10-10',
 		titel: 'WG App: Organisation für die ganze WG | ManaWG',
 		beschreibung:
 			'ManaWG ist die kostenlose WG-App auf Deutsch: Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand für Studenten-WGs und Zweck-WGs.',
@@ -76,6 +79,7 @@ export const THEMEN: Record<string, Thema> = {
 	putzplan: {
 		link: 'WG Putzplan App',
 		stand: '2026-10-10',
+		erschienen: '2026-10-09',
 		titel: 'WG Putzplan App: fair, mit Rotation | ManaWG',
 		beschreibung:
 			'Kostenlose WG Putzplan App statt Vorlage zum Ausdrucken: Aufgaben wiederholen sich, rotieren fair weiter und überspringen Abwesende.',
@@ -134,6 +138,7 @@ export const THEMEN: Record<string, Thema> = {
 	'wg-kasse': {
 		link: 'WG-Kasse',
 		stand: '2026-10-14',
+		erschienen: '2026-10-09',
 		titel: 'WG Kasse App: Ausgaben teilen, Abrechnung | ManaWG',
 		beschreibung:
 			'Die kostenlose WG Kasse App: Ausgaben teilen, mit wenigen Überweisungen ausgleichen, Fixkosten buchen und die Monatsabrechnung per Mail bekommen.',
@@ -196,6 +201,7 @@ export const THEMEN: Record<string, Thema> = {
 	einkaufsliste: {
 		link: 'Einkaufsliste',
 		stand: '2026-10-10',
+		erschienen: '2026-10-09',
 		titel: 'Gemeinsame Einkaufsliste App für die WG | ManaWG',
 		beschreibung:
 			'Die gemeinsame Einkaufsliste für die WG: alle tragen ein, Vorräte melden Nachschub, und aus dem Einkauf wird direkt eine geteilte Ausgabe. Kostenlos.',
@@ -254,6 +260,7 @@ export const THEMEN: Record<string, Thema> = {
 	'splitwise-alternative': {
 		link: 'Splitwise-Alternative',
 		stand: '2026-10-14',
+		erschienen: '2026-10-09',
 		titel: 'Splitwise-Alternative ohne Werbung und Paywall | ManaWG',
 		beschreibung:
 			'ManaWG ist eine kostenlose Splitwise-Alternative für WGs: keine Werbung, keine Bezahlstufe, dazu Putzplan, Einkaufsliste und CSV-Import.',
@@ -316,6 +323,7 @@ export const THEMEN: Record<string, Thema> = {
 	'splid-alternative': {
 		link: 'Splid-Alternative',
 		stand: '2026-10-14',
+		erschienen: '2026-10-10',
 		titel: 'Splid Alternative mit Putzplan und Einkaufsliste | ManaWG',
 		beschreibung:
 			'ManaWG ist eine kostenlose Splid Alternative für WGs: Ausgaben teilen plus Putzplan, Einkaufsliste und Fixkosten.',
@@ -378,6 +386,7 @@ export const THEMEN: Record<string, Thema> = {
 	'flatastic-alternative': {
 		link: 'Flatastic-Alternative',
 		stand: '2026-10-14',
+		erschienen: '2026-10-10',
 		titel: 'Flatastic-Alternative ohne Werbung und Premium | ManaWG',
 		beschreibung:
 			'ManaWG ist eine kostenlose Flatastic-Alternative für WGs: Putzplan, WG-Kasse, Einkauf, Kalender und Chat, ohne Werbung und ohne Premium-Stufe.',
@@ -441,6 +450,7 @@ export const THEMEN: Record<string, Thema> = {
 	'ourhome-alternative': {
 		link: 'OurHome-Alternative',
 		stand: '2026-10-14',
+		erschienen: '2026-10-10',
 		titel: 'OurHome-Alternative für WGs, kostenlos | ManaWG',
 		beschreibung:
 			'ManaWG als Alternative zu OurHome: kostenloser Putzplan und WG-Kasse im Browser. Der aktuelle Funktionsumfang von OurHome wurde nicht verifiziert.',
@@ -500,6 +510,7 @@ export const THEMEN: Record<string, Thema> = {
 	faq: {
 		link: 'Häufige Fragen',
 		stand: '2026-10-14',
+		erschienen: '2026-10-09',
 		titel: 'Häufige Fragen zu ManaWG, der WG-App',
 		beschreibung:
 			'Antworten zu ManaWG: Kosten, Installation, Einladung, Ausgaben teilen, Putzplan, Abwesenheiten und Import aus Splitwise oder Splid.',
