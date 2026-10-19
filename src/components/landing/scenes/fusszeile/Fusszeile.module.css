@@ -14,29 +14,6 @@
 	position: relative;
 	background: #0a0a0a;
 }
-.ueber {
-	border-top: 1px dashed var(--haar);
-	margin: 0 calc(-1 * var(--rand));
-	padding: var(--sp-32) var(--rand);
-	display: grid;
-	grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-	gap: var(--sp-24);
-	font-size: var(--t-14);
-	line-height: 1.5;
-	color: #fafafa;
-}
-.ueber p {
-	margin: 0 0 var(--sp-12);
-	opacity: 0.72;
-}
-.ueber p:last-child {
-	margin-bottom: 0;
-}
-.ueber a {
-	color: inherit;
-	text-decoration: underline;
-	text-underline-offset: 0.15em;
-}
 .marke {
 	padding: var(--sp-32) var(--rand) var(--sp-40);
 	display: flex;
@@ -58,10 +35,6 @@
 
 /* Hochformat: 2 x 2 (Marke | Produkt, Konto | Rechtliches), gestrichelte Linien über die volle Breite */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
-	.ueber {
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--sp-12);
-	}
 	.raster {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
