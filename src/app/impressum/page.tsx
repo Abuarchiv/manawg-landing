@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'Impressum von ManaWG',
-	description: 'Betreiber und Kontakt von ManaWG.',
+	description:
+		'Impressum von ManaWG, der kostenlosen WG-App: wer die App betreibt und wie ihr bei Fragen zur App und zu dieser Website Kontakt aufnehmt.',
 	alternates: { canonical: '/impressum' },
 };
 
@@ -15,6 +16,7 @@ export default function ImpressumPage() {
 			<div className="flex-1 max-w-2xl mx-auto w-full px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
 				<Link
 					href="/"
+					prefetch={false}
 					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
 					aria-label="Zur Startseite"
 				>

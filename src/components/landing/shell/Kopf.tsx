@@ -14,7 +14,7 @@ export function Kopf() {
 		>
 			<div data-loch="logo" style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
 				<img
-					src="/manawg-mark-weiss.png"
+					src="/manawg-mark-weiss-120.png"
 					alt=""
 					width={416}
 					height={346}

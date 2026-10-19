@@ -73,8 +73,12 @@ const nextConfig: NextConfig = {
 				'/apple-touch-icon.png',
 				'/hand/:path*',
 				'/install/:path*',
-				'/fonts/:path*',
 			].map((source) => ({ source, headers: [{ key: 'Cache-Control', value: publicCache }] })),
+			// Schriften ändern sich nie unter gleichem Namen: ein Jahr fest. Neue Schriftdatei = neuer Dateiname.
+			{
+				source: '/fonts/:path*',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+			},
 			// Demo-Dateien ohne Hash im Namen: immer per ETag prüfen, damit index.html, demo.js und app.css zusammenpassen.
 			{
 				source: '/app-demo/:path*',
