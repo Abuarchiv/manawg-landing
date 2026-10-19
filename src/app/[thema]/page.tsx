@@ -150,7 +150,7 @@ export default async function ThemaPage({ params }: Props) {
 					className="inline-flex items-center gap-3 min-h-[44px] no-underline"
 				>
 					<img
-						src="/manawg-mark-weiss-120.png"
+						src="/manawg-mark-weiss-80.webp"
 						alt=""
 						width={416}
 						height={346}

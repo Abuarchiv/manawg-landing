@@ -331,11 +331,42 @@ export function createHero(cv: HTMLCanvasElement) {
 	});
 
 	// Halbton-Fallback ohne WebGL2: das Zeichen als Punktraster mit nachlaufendem Licht.
+	// Abstand und Normale je Zelle hängen nur an der Größe: einmal rechnen, je Bild nur noch das Licht.
+	// Je Zelle 8 Werte: x, y, i, j, Abstand, Normale x/y samt Länge, Höhe^0,3.
+	const feld = { W: 0, H: 0, n: 0, z: new Float32Array(0) };
+	const baueFeld = (W: number, H: number, sc: number) => {
+		const step = 6;
+		const cx = W / 2;
+		const cy = H / 2;
+		const z: number[] = [];
+		for (let y = step / 2, j = 0; y < H; y += step, j++)
+			for (let x = step / 2, i = 0; x < W; x += step, i++) {
+				const mx = (x - cx) / sc + 208;
+				const my = (y - cy) / sc + 173;
+				if (mx < -60 || mx > 480 || my < -60 || my > 400) continue;
+				const d = aMark(mx, my);
+				if (d >= 70) continue;
+				let nx = 0;
+				let ny = 0;
+				let hp = 0;
+				if (d < 0) {
+					const h = Math.sqrt(cl(-d / 46));
+					const sl = (1 - h) * 2;
+					nx = (aMark(mx + 1, my) - d) * sl;
+					ny = (aMark(mx, my + 1) - d) * sl;
+					hp = h ** 0.3;
+				}
+				z.push(x, y, i, j, d, nx, ny, hp);
+			}
+		feld.W = W;
+		feld.H = H;
+		feld.n = z.length / 8;
+		feld.z = Float32Array.from(z);
+	};
 	const tone = (c: BuehnenKontext) => {
 		const { W, H, t, dpr } = c;
 		const step = 6;
 		const f0 = Math.min(1.25, Math.min(W, H) / 800);
-		const sc = 1.3 * f0 * (1 + 0.025 * Math.sin((t * Math.PI) / 3));
 		const cx = W / 2;
 		const cy = H / 2;
 		const tg: [number, number] = c.m.in
@@ -350,38 +381,40 @@ export function createHero(cv: HTMLCanvasElement) {
 		fb.x += (tg[0] - fb.x) * kf;
 		fb.y += (tg[1] - fb.y) * kf;
 		sizeTo(c.W, c.H, dpr);
+		if (feld.W !== W || feld.H !== H) baueFeld(W, H, 1.3 * f0);
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		ctx.fillStyle = '#0A0A0A';
 		ctx.fillRect(0, 0, W, H);
 		ctx.fillStyle = '#FAFAFA';
-		for (let y = step / 2, j = 0; y < H; y += step, j++)
-			for (let x = step / 2, i = 0; x < W; x += step, i++) {
-				const mx = (x - cx) / sc + 208;
-				const my = (y - cy) / sc + 173;
-				if (mx < -60 || mx > 480 || my < -60 || my > 400) continue;
-				const d = aMark(mx, my);
-				let v = 0;
-				if (d < 0) {
-					const gx = aMark(mx + 1, my) - d;
-					const gy = aMark(mx, my + 1) - d;
-					const h = Math.sqrt(cl(-d / 46));
-					const sl = (1 - h) * 2;
-					const nx = gx * sl;
-					const ny = gy * sl;
-					const nl = Math.hypot(nx, ny, 1);
-					const lx = fb.x - x;
-					const ly = fb.y - y;
-					const ll = Math.hypot(lx, ly, 220 * f0);
-					const lam = Math.max(0, (nx * lx + ny * ly + 220 * f0) / (nl * ll));
-					v = h ** 0.3 * (0.08 + 0.92 * lam * lam);
-				} else if (d < 70) {
-					if (hsh(i * 7 + Math.floor(t * 2), j) < 0.18 * (1 - d / 70)) v = 0.25;
-				}
-				if (v > 0.03) {
-					const r = step * 0.5 * Math.sqrt(cl(v));
-					ctx.fillRect(x - r, y - r, r * 2, r * 2);
-				}
+		// Atmen als Skalierung um die Mitte, das Licht in Feld-Koordinaten
+		const br = 1 + 0.025 * Math.sin((t * Math.PI) / 3);
+		ctx.setTransform(dpr * br, 0, 0, dpr * br, dpr * cx * (1 - br), dpr * cy * (1 - br));
+		const lx0 = (fb.x - cx) / br + cx;
+		const ly0 = (fb.y - cy) / br + cy;
+		const L = 220 * f0;
+		const blink = Math.floor(t * 2);
+		const z = feld.z;
+		for (let k = 0; k < feld.n * 8; k += 8) {
+			const x = z[k] ?? 0;
+			const y = z[k + 1] ?? 0;
+			const d = z[k + 4] ?? 0;
+			let v = 0;
+			if (d < 0) {
+				const nx = z[k + 5] ?? 0;
+				const ny = z[k + 6] ?? 0;
+				const lx = lx0 - x;
+				const ly = ly0 - y;
+				const lam = Math.max(
+					0,
+					(nx * lx + ny * ly + L) / (Math.hypot(nx, ny, 1) * Math.hypot(lx, ly, L)),
+				);
+				v = (z[k + 7] ?? 0) * (0.08 + 0.92 * lam * lam);
+			} else if (hsh((z[k + 2] ?? 0) * 7 + blink, z[k + 3] ?? 0) < 0.18 * (1 - d / 70)) v = 0.25;
+			if (v > 0.03) {
+				const r = step * 0.5 * Math.sqrt(cl(v));
+				ctx.fillRect(x - r, y - r, r * 2, r * 2);
 			}
+		}
 	};
 
 	const sizeTo = (W: number, H: number, dpr: number) => {

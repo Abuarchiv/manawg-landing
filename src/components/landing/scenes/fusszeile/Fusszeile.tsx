@@ -14,7 +14,7 @@ export function Fusszeile() {
 				<div className={s.marke}>
 					<div style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
 						<img
-							src="/manawg-mark-weiss-120.png"
+							src="/manawg-mark-weiss-80.webp"
 							alt=""
 							width={416}
 							height={346}
