@@ -476,101 +476,133 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-haushaltskasse': {
 		link: 'WG-Haushaltskasse',
-		stand: '2026-10-11',
+		stand: '2026-10-19',
 		titel: 'WG-Haushaltskasse: gemeinsame Kasse führen und abrechnen | ManaWG',
 		beschreibung:
-			'Gemeinsame Haushaltskasse in der WG: Bargeldkasse, Gemeinschaftskonto oder App? Vor- und Nachteile, Regeln und Abrechnung ohne Streit.',
+			'Gemeinsame Haushaltskasse in der WG: Bargeldkasse, Gemeinschaftskonto oder App? Vor- und Nachteile, Beispielrechnung, Regeln und Abrechnung ohne Streit.',
 		h1: 'Die WG-Haushaltskasse: drei Wege',
 		einleitung:
-			'Klopapier, Putzmittel, Spülmaschinentabs: Kleinkram summiert sich und sorgt für Reibung. Eine gemeinsame Kasse kann das lösen, wenn klar ist, wie sie geführt wird.',
+			'Klopapier, Putzmittel, Spülmaschinentabs: Kleinkram summiert sich und sorgt für Reibung. Eine gemeinsame Kasse kann das lösen, wenn klar ist, wie sie geführt wird. Hier stehen die drei üblichen Wege mit ihren Vor- und Nachteilen, eine Beispielrechnung und die Regeln, die bei jedem Weg gelten sollten.',
 		abschnitte: [
 			[
+				'Was in die Haushaltskasse gehört',
+				'Bevor ihr über die Form sprecht, klärt den Inhalt. Typisch sind Dinge, die alle verbrauchen: Klopapier, Spülmittel, Putzmittel, Müllbeutel, Glühbirnen, Gewürze und Grundnahrungsmittel wie Öl, Salz oder Kaffee, falls ihr die teilt. Private Lebensmittel, Kosmetik und Dinge für das eigene Zimmer gehören nicht hinein. Größere Anschaffungen wie ein Staubsauger laufen besser getrennt, weil sie beim Auszug die Frage aufwerfen, wem das Gerät gehört.',
+			],
+			[
 				'Weg 1: Bargeldkasse',
-				'Alle zahlen monatlich einen festen Betrag in eine Dose, aus der gemeinsame Einkäufe bezahlt werden. Das ist anschaulich, aber unübersichtlich: Belege gehen verloren, niemand weiß den Stand, und wer wegzieht, will sein Geld zurück.',
+				'Alle zahlen monatlich einen festen Betrag in eine Dose, aus der gemeinsame Einkäufe bezahlt werden. Das ist anschaulich und braucht keine Technik. In der Praxis wird es schnell unübersichtlich: Belege gehen verloren, niemand weiß den Stand, wer gerade kein Bargeld hat, legt aus und vergisst es, und wer wegzieht, will seinen Anteil am Restbestand zurück. Wer diesen Weg wählt, sollte ein Kassenbuch führen und den Bestand einmal im Monat gemeinsam zählen.',
 			],
 			[
 				'Weg 2: Gemeinschaftskonto',
-				'Ein Konto, auf das alle einzahlen, bietet Transparenz. Es braucht aber jemanden, der es führt und haftet, und bei vielen Banken Gebühren. Ein Konto auf den Namen einer Person birgt Risiko, wenn diese ausfällt.',
+				'Ein Konto, auf das alle per Dauerauftrag einzahlen, bietet Transparenz, weil jede Buchung sichtbar ist. Es braucht aber jemanden, der es eröffnet, führt und dafür geradesteht, und bei vielen Banken fallen Gebühren an. Läuft das Konto auf den Namen einer Person, trägt diese das Risiko, wenn andere nicht zahlen. Bei häufigen Wechseln in der WG wird die Verwaltung der Zugänge zudem mühsam.',
 			],
 			[
 				'Weg 3: Ausgaben erfassen und ausgleichen',
-				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein. Am Monatsende zeigen die Salden, wer wem etwas schuldet. In ManaWG teilt ihr gleichmäßig oder nach eigenen Beträgen, die App schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt.',
+				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein. Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In ManaWG teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt.',
+			],
+			[
+				'Beispielrechnung',
+				'Eine WG mit drei Personen kauft im Monat gemeinsam für 90 Euro ein. Anna zahlt Putzmittel für 30 Euro, Ben den Großeinkauf für 51 Euro, Cem Müllbeutel für 9 Euro. Jeder Anteil liegt bei 30 Euro. Anna ist ausgeglichen, Ben hat 21 Euro zu viel gezahlt, Cem 21 Euro zu wenig. Eine einzige Überweisung von Cem an Ben gleicht alles aus. Bei Bargeldkasse oder Konto wären stattdessen drei Einzahlungen und drei Auszahlungen nötig gewesen.',
 			],
 			[
 				'Regeln für jede Kasse',
-				'Legt fest, was hineingehört (Haushaltsbedarf, Putzmittel) und was nicht (private Lebensmittel). Setzt eine Grenze, ab der vorher gefragt wird. Und bestimmt einen festen Tag für den Ausgleich.',
+				'Legt fest, was hineingehört und was nicht. Setzt eine Grenze, ab der vorher gefragt wird, etwa 30 oder 50 Euro. Bestimmt einen festen Tag für den Ausgleich, zum Beispiel den Monatsersten. Und klärt, was beim Auszug passiert: Offene Beträge werden vor dem Auszug beglichen, gemeinsame Anschaffungen bleiben in der WG oder werden abgelöst. In ManaWG kommt am Monatsanfang eine Abrechnung per Mail mit Summen je Kategorie und den Überweisungsvorschlägen, jede Person kann sie abschalten.',
 			],
 		],
 		fragen: [
 			[
 				'Wie viel Geld gehört monatlich in die WG-Kasse?',
-				'Das hängt vom Bedarf ab. Rechnet drei Monate eure tatsächlichen Gemeinschaftsausgaben zusammen und teilt durch die Zahl der Bewohner. Bei der Variante mit Ausgleich entfällt die feste Einzahlung.',
+				'Das hängt vom Bedarf ab. Rechnet drei Monate eure tatsächlichen Gemeinschaftsausgaben zusammen und teilt durch die Zahl der Bewohner und Monate. Bei der Variante mit Ausgleich entfällt die feste Einzahlung.',
+			],
+			[
+				'Was passiert mit der WG-Kasse, wenn jemand auszieht?',
+				'Offene Beträge sollten vor dem Auszug ausgeglichen werden. Bei einer Bargeldkasse oder einem Konto bekommt die Person ihren Anteil am Restbestand. Bei erfassten Ausgaben reicht es, den Saldo auf null zu bringen.',
 			],
 			[
 				'Gibt es eine App für die WG-Kasse?',
-				'Ja, ManaWG ist kostenlos, auf Deutsch und zeigt Salden und Ausgleichsvorschläge.',
+				'Ja, ManaWG ist kostenlos, auf Deutsch, ohne Werbung und zeigt Salden und Ausgleichsvorschläge.',
 			],
 		],
 	},
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
-		stand: '2026-10-14',
+		stand: '2026-10-19',
 		titel: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		beschreibung:
-			'Checkliste für den Einzug in eine WG: Absprachen, Schlüssel, Geld, Putzplan, Mitbewohner kennenlernen und die wichtigsten Dinge in der ersten Woche.',
+			'Checkliste für den Einzug in eine WG: Vertrag, Anmeldung, Schlüssel, Geld, Putzplan, Mitbewohner kennenlernen und die wichtigsten Dinge in der ersten Woche.',
 		h1: 'Einzug in die WG: die Checkliste',
 		einleitung:
-			'Wer neu in eine WG zieht, muss nicht nur Kisten tragen, sondern auch Gewohnheiten kennenlernen. Mit diesen Punkten startet ihr ohne Missverständnisse.',
+			'Wer neu in eine WG zieht, muss nicht nur Kisten tragen, sondern auch Gewohnheiten kennenlernen. Die Punkte unten sind nach Zeitpunkt geordnet: vor dem Einzug, am Einzugstag, in der ersten Woche und im ersten Monat. Damit startet ihr ohne Missverständnisse.',
 		abschnitte: [
 			[
-				'Vor dem Einzug',
-				'Klärt Übergabe, Schlüssel und Mietvertrag. Lasst euch zeigen, welche Räume und Schränke euch gehören. Fragt nach den bestehenden Regeln für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
+				'Vor dem Einzug: Vertrag und Formalien',
+				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen Untermietvertrag mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution und danach, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden Regeln für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
+			],
+			[
+				'Am Einzugstag',
+				'Lasst euch die Schlüssel übergeben und notiert, wie viele es sind. Seht euch das Zimmer mit der Person an, die übergibt, und haltet Schäden mit Fotos fest. Das schützt euch beim Auszug. Fragt nach dem WLAN, nach Sicherungskasten, Haupthahn und dem Platz für Fahrräder. Für die Anmeldung beim Bürgeramt braucht ihr in Deutschland eine Wohnungsgeberbestätigung, die der Vermieter oder Hauptmieter ausstellt. Die Anmeldung ist innerhalb von zwei Wochen nach dem Einzug fällig.',
 			],
 			[
 				'In der ersten Woche',
-				'Lernt die Mitbewohner kennen, am besten mit einem gemeinsamen Abendessen. Lasst euch Müllregeln, Waschmaschinenzeiten und WLAN-Zugang erklären. Tragt euch in den Putzplan ein.',
+				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den Putzplan ein und fragt, wie die Rotation funktioniert. Wenn die WG ManaWG nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
 			],
 			[
 				'Geld von Anfang an klären',
-				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt, und wie ihr euren Anteil zahlt. Wenn die WG ManaWG nutzt, tretet ihr per Einladungslink bei und seht Salden und Fixkosten sofort.',
+				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt und wie ihr euren Anteil zahlt. Der Rundfunkbeitrag wird pro Wohnung nur einmal fällig, also nicht von jedem einzeln. Klärt, ob es eine gemeinsame Haushaltskasse gibt und ob bereits vorhandene Dinge wie Waschmaschine oder Küchengeräte abgelöst werden sollen. In ManaWG seht ihr nach dem Beitritt Fixkosten, Ausgaben und Salden der WG, neue Ausgaben werden ab dann mit euch geteilt.',
 			],
 			[
 				'Gewohnheiten abgleichen',
-				'Sprecht früh an, was euch wichtig ist: Schlafenszeiten, Gäste, Rauchen, Tiere. Kleine Unterschiede lassen sich besprechen, wenn sie früh auf dem Tisch liegen.',
+				'Sprecht früh an, was euch wichtig ist: Schlafenszeiten, Gäste über Nacht, Rauchen, Tiere, Lautstärke, gemeinsames Kochen. Kleine Unterschiede lassen sich besprechen, solange sie früh auf dem Tisch liegen. Wer nach drei Monaten zum ersten Mal sagt, dass ihn etwas stört, hat es schwerer. Was die WG vereinbart, könnt ihr auf der Pinnwand festhalten, damit es nicht nur im Gruppenchat untergeht.',
+			],
+			[
+				'Nach dem ersten Monat',
+				'Setzt euch einmal zusammen und fragt, was gut läuft und was nicht. Passt den Putzplan an, wenn Aufgaben ungleich verteilt sind. Prüft beim ersten Ausgleich, ob die Aufteilung der Kosten so funktioniert wie besprochen.',
 			],
 		],
 		fragen: [
 			[
 				'Was sollte man beim Einzug in eine WG klären?',
-				'Mietvertrag und Übergabe, Kostenverteilung, Putzplan, Ruhezeiten und den Umgang mit Besuch.',
+				'Mietvertrag oder Untermietvertrag, Kaution, Kostenverteilung, Putzplan, Ruhezeiten und den Umgang mit Besuch. Dazu die Wohnungsgeberbestätigung für die Anmeldung.',
+			],
+			[
+				'Muss in einer WG jeder Rundfunkbeitrag zahlen?',
+				'Nein. Der Rundfunkbeitrag wird pro Wohnung einmal fällig. Eine Person meldet die Wohnung an, die anderen beteiligen sich intern an den Kosten.',
 			],
 			[
 				'Wie trete ich einer WG in ManaWG bei?',
-				'Über den Einladungslink oder einen Code, den euch ein Mitbewohner schickt. Vorher meldet ihr euch mit Google oder E-Mail an.',
+				'Über den Einladungslink oder einen Code, den euch ein Mitbewohner schickt. Vorher meldet ihr euch mit Google oder mit E-Mail an.',
 			],
 		],
 	},
 	'wg-abwesenheit-urlaub': {
 		link: 'WG im Urlaub',
-		stand: '2026-10-11',
+		stand: '2026-10-19',
 		titel: 'WG und Urlaub: Putzplan und Kosten bei Abwesenheit | ManaWG',
 		beschreibung:
-			'Was gilt in der WG, wenn jemand verreist? Putzplan, Miete, gemeinsame Kosten und Absprachen bei längerer Abwesenheit fair regeln.',
+			'Was gilt in der WG, wenn jemand verreist? Putzplan, Miete, gemeinsame Kosten, Auslandssemester und Absprachen bei längerer Abwesenheit fair regeln.',
 		h1: 'Urlaub und Abwesenheit in der WG',
 		einleitung:
-			'Wenn jemand wochenlang weg ist, fragen sich die anderen, wer die Aufgaben übernimmt und wer welche Kosten trägt. Mit klaren Regeln gibt es keinen Streit.',
+			'Wenn jemand wochenlang weg ist, fragen sich die anderen, wer die Aufgaben übernimmt und wer welche Kosten trägt. Ob Urlaub, Praktikum oder Auslandssemester: Mit klaren Regeln, die vorher feststehen, gibt es keinen Streit.',
 		abschnitte: [
 			[
 				'Putzplan bei Abwesenheit',
-				'Wer nicht da ist, kann nicht putzen. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. In ManaWG tragt ihr eine Abwesenheit ein, die Person wird in der Zeit beim Putzplan übersprungen.',
+				'Wer nicht da ist, kann nicht putzen. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In ManaWG tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
 			],
 			[
 				'Miete und Fixkosten',
-				'Die Miete läuft weiter, sie bleibt Sache der Person. Bei Fixkosten wie Internet zahlen alle weiter, auch bei Abwesenheit. Bei verbrauchsabhängigen Kosten wie Strom oder Lebensmitteln kann man vereinbaren, dass Abwesende weniger zahlen.',
+				'Die Miete läuft weiter, auch wenn das Zimmer leer steht. Bei Fixkosten wie Internet zahlen in der Regel alle weiter, weil der Vertrag unabhängig von der Nutzung kostet. Bei verbrauchsabhängigen Kosten wie Strom, Heizung oder gemeinsamen Lebensmitteln kann man vereinbaren, dass Abwesende weniger zahlen. Das lohnt sich vor allem bei längeren Zeiträumen. Für zwei Wochen Urlaub ist eine Sonderregel meist mehr Aufwand als Ersparnis.',
+			],
+			[
+				'Gemeinsame Ausgaben während der Abwesenheit',
+				'Wer nicht da ist, isst nicht mit. Einkäufe in dieser Zeit sollten nur auf die Anwesenden verteilt werden. In ManaWG wählt ihr bei jeder Ausgabe, wer beteiligt ist, und lasst die abwesende Person einfach weg. So entsteht kein Saldo für Dinge, die sie nie genutzt hat.',
+			],
+			[
+				'Längere Abwesenheit: Praktikum und Auslandssemester',
+				'Bei mehreren Monaten stellt sich die Frage nach einer Zwischenmiete. Ob das erlaubt ist, hängt vom Mietvertrag ab, meist muss der Vermieter zustimmen. Klärt in der WG, ob alle mit der Person einverstanden sind, denn sie lebt in dieser Zeit mit euch. Die Zwischenmieterin oder der Zwischenmieter kann der WG in ManaWG beitreten und übernimmt für die Zeit Aufgaben und Kosten. Danach tritt sie wieder aus.',
 			],
 			[
 				'Absprachen vor der Reise',
-				'Sagt rechtzeitig Bescheid, wie lange ihr weg seid. Klärt, wer sich um Pflanzen, Post und Haustiere kümmert. Trennt Gemeinschaftsregeln klar von Privatem.',
+				'Sagt rechtzeitig Bescheid, wie lange ihr weg seid, und tragt den Zeitraum in den gemeinsamen Kalender ein. Klärt, wer sich um Pflanzen, Post und Haustiere kümmert. Leert verderbliche Lebensmittel aus dem Kühlschrank oder gebt sie frei. Und gleicht offene Beträge vor der Abreise aus, damit niemand wochenlang auf sein Geld wartet.',
 			],
 		],
 		fragen: [
@@ -582,39 +614,55 @@ export const RATGEBER: Record<string, Thema> = {
 				'Zahlt man in der WG im Urlaub Nebenkosten?',
 				'Feste Kosten wie Miete und Internet laufen weiter. Bei verbrauchsabhängigen Kosten könnt ihr etwas anderes vereinbaren.',
 			],
+			[
+				'Darf man sein WG-Zimmer während eines Auslandssemesters untervermieten?',
+				'Das hängt vom Mietvertrag ab. In der Regel braucht ihr die Zustimmung des Vermieters, und die Mitbewohner sollten einverstanden sein.',
+			],
 		],
 	},
 	'schulden-mitbewohner': {
 		link: 'Schulden in der WG',
-		stand: '2026-10-11',
+		stand: '2026-10-19',
 		titel: 'Schulden unter Mitbewohnern: ausgleichen ohne Streit | ManaWG',
 		beschreibung:
-			'Mitbewohner schuldet dir Geld? So behaltet ihr den Überblick, sprecht es an und gleicht Schulden in der WG mit wenigen Überweisungen aus.',
+			'Mitbewohner schuldet dir Geld? So behaltet ihr den Überblick, sprecht es an und gleicht Schulden in der WG mit wenigen Überweisungen aus. Mit Beispiel.',
 		h1: 'Schulden unter Mitbewohnern ausgleichen',
 		einleitung:
-			'Kleine Beträge vergisst man leicht, und genau deshalb stauen sie sich auf. Mit einem Überblick und festen Zeitpunkten entsteht kein Groll.',
+			'Kleine Beträge vergisst man leicht, und genau deshalb stauen sie sich auf. Nach ein paar Monaten weiß niemand mehr, wer wem was schuldet, und die Stimmung leidet. Mit einem Überblick und festen Zeitpunkten entsteht kein Groll.',
 		abschnitte: [
 			[
 				'Warum Schulden entstehen',
-				'Jeder bezahlt mal für alle: Pizza, Einkauf, Reparatur. Ohne Aufzeichnung wissen nach einem Monat weder Gläubiger noch Schuldner, wie viel offen ist.',
+				'Jeder bezahlt mal für alle: Pizza, Einkauf, Reparatur, die Nachzahlung beim Strom. Ohne Aufzeichnung wissen nach einem Monat weder Gläubiger noch Schuldner, wie viel offen ist. Wer häufiger zahlt, fühlt sich ausgenutzt, wer seltener zahlt, merkt es oft gar nicht. Das Problem ist selten böser Wille, sondern fehlender Überblick.',
 			],
 			[
 				'Sofort erfassen',
-				'Tragt jede Ausgabe direkt ein, solange der Beleg da ist. In ManaWG seht ihr jederzeit den Saldo pro Person. Die Anteile ergeben immer genau den Betrag, ohne Rundungsrest.',
+				'Tragt jede Ausgabe direkt ein, solange der Beleg da ist. In ManaWG seht ihr jederzeit den Saldo pro Person. Die Anteile ergeben immer genau den Betrag. Bei gleichmäßiger Teilung wandert ein übrig bleibender Cent von Buchung zu Buchung weiter, damit nicht immer dieselbe Person ihn trägt.',
 			],
 			[
 				'Ausgleichen mit wenigen Überweisungen',
-				'Wenn mehrere Personen einander Geld schulden, lassen sich die Salden verrechnen. ManaWG schlägt Überweisungen vor, die mit möglichst wenigen Zahlungen alles ausgleichen. Überwiesen wird außerhalb der App, ihr markiert nur als bezahlt.',
+				'Wenn mehrere Personen einander Geld schulden, lassen sich die Salden verrechnen. Statt dass jeder jedem einzeln etwas überweist, reichen meist wenige Zahlungen. ManaWG schlägt Überweisungen vor, die mit möglichst wenigen Zahlungen alles ausgleichen. Überwiesen wird außerhalb der App, ihr markiert nur als bezahlt.',
+			],
+			[
+				'Beispiel mit vier Personen',
+				'In einer Vierer-WG hat Lea 120 Euro mehr bezahlt, als ihr Anteil war, Tim 20 Euro mehr. Jonas hat 80 Euro zu wenig gezahlt, Mia 60 Euro. Einzeln abgerechnet wären bis zu sechs Überweisungen nötig. Verrechnet reichen drei: Jonas überweist 80 Euro an Lea, Mia 40 Euro an Lea und 20 Euro an Tim. Danach stehen alle auf null.',
+			],
+			[
+				'Feste Termine statt ständiger Erinnerungen',
+				'Niemand mag es, wegen 4,50 Euro nachzufragen. Ein fester Ausgleichstag, etwa am Monatsersten, nimmt die Peinlichkeit heraus: Dann wird ausgeglichen, egal wie hoch der Betrag ist. ManaWG schickt am Monatsanfang eine Abrechnung per Mail mit den Überweisungsvorschlägen. Jede Person kann diese Mail abschalten.',
 			],
 			[
 				'Wenn jemand nicht zahlt',
-				'Sprecht es sachlich an, nennt den Betrag und einen Termin. Hilft das nicht, bringt es in die WG-Runde. Klärt, ob eine Ratenzahlung hilft. Rechtliche Schritte sind selten sinnvoll, hier hilft nur ein Gespräch.',
+				'Sprecht es sachlich und unter vier Augen an, nennt den Betrag und einen Termin. Hilft das nicht, bringt es in die WG-Runde, ohne die Person bloßzustellen. Klärt, ob eine Ratenzahlung hilft, wenn das Geld gerade knapp ist. Rechtliche Schritte sind bei kleinen Beträgen selten sinnvoll und belasten das Zusammenleben mehr als der offene Betrag.',
 			],
 		],
 		fragen: [
 			[
 				'Wie gleicht man Schulden in der WG aus?',
 				'Mit einer Übersicht der Salden und festen Ausgleichsterminen, etwa am Monatsende. Eine App berechnet die nötigen Überweisungen.',
+			],
+			[
+				'Wie spreche ich einen Mitbewohner auf Schulden an?',
+				'Sachlich und unter vier Augen, mit konkretem Betrag und Termin. Ein fester Ausgleichstag für alle macht das Nachfragen meist überflüssig.',
 			],
 			[
 				'Überweist ManaWG Geld automatisch?',
