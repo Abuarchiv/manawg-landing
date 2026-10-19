@@ -19,6 +19,15 @@ const organizationSchema = {
 	logo: { '@type': 'ImageObject', url: `${appUrl}/icon-512.png`, width: 512, height: 512 },
 	image: `${appUrl}/og.png`,
 	description,
+	email: 'info@manawg.com',
+	contactPoint: {
+		'@type': 'ContactPoint',
+		contactType: 'customer support',
+		email: 'info@manawg.com',
+		availableLanguage: 'de',
+	},
+	// Verknüpft die Marke mit ihren offiziellen Profilen (Abgrenzung zu gleichnamigen WireGuard-Projekten).
+	sameAs: ['https://github.com/Abuarchiv/manawg-landing', 'https://app.manawg.com'],
 };
 
 const webSiteSchema = {
