@@ -874,12 +874,24 @@ export const RATGEBER: Record<string, Thema> = {
 				'Die Fakten zuerst: Größe des Zimmers, Warmmiete mit allen Nebenkosten, Einzugsdatum, Befristung, Lage und Verkehrsanbindung. Dann die WG selbst: Wie viele Personen, welches Alter, was macht ihr, wie viel Gemeinsames gibt es? Gute Fotos von Zimmer, Küche und Bad bei Tageslicht. Und ein ehrlicher Satz dazu, wie ihr Haushalt und Geld organisiert, etwa mit Putzplan und gemeinsamer Abrechnung in einer App. Das filtert Bewerber, die etwas ganz anderes suchen.',
 			],
 			[
+				'Beispiel für eine WG-Anzeige',
+				'„Ab 1. Dezember wird in unserer Dreier-WG in Leipzig-Connewitz ein 16-Quadratmeter-Zimmer frei, 420 Euro warm inklusive Internet. Wir sind Mia (26, Pflege) und Jonas (24, Informatik) und suchen jemanden zwischen 21 und 30. Unter der Woche kocht jeder für sich, sonntags essen wir oft zusammen. Geputzt wird nach Plan im Wochenwechsel, gemeinsame Ausgaben rechnen wir in einer App ab. Schreib uns kurz, was du machst und wie du dir WG-Leben vorstellst.“ Solche Angaben sind konkret genug, dass sich die Richtigen melden und die anderen gar nicht erst schreiben.',
+			],
+			[
 				'Auswählen ohne Chaos',
 				'Bei beliebten Zimmern kommen schnell dutzende Nachrichten. Legt fest, wer antwortet, und sammelt die Bewerbungen an einer Stelle. Ladet nur die Personen zum Casting ein, deren Nachricht zur WG passt. Nach den Terminen entscheidet ihr gemeinsam, möglichst zeitnah, denn gute Bewerber haben oft mehrere Zusagen. Sagt allen Eingeladenen ab, die es nicht geworden sind. Passende Fragen fürs Gespräch stehen im Ratgeber zum WG-Casting.',
 			],
 			[
 				'Vor dem Einzug',
 				'Schickt der neuen Person die wichtigsten Regeln schriftlich: Putzplan, Kostenverteilung, Ruhezeiten, Müll. Klärt die Schlüsselübergabe und die Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG ManaWG nutzt, schickt ihr einen Einladungslink oder Code. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand sofort, neue Ausgaben werden ab dann mit ihr geteilt.',
+			],
+			[
+				'Vorsicht bei unseriösen Anfragen',
+				'Auf WG-Portalen melden sich immer wieder Betrüger. Typisch sind Nachrichten von Personen, die angeblich im Ausland sind, das Zimmer ohne Besichtigung nehmen wollen und eine Überweisung über einen höheren Betrag ankündigen, von dem ihr den Rest zurückzahlen sollt. Gebt keine Kontodaten oder Ausweiskopien heraus, bevor ihr die Person gesehen habt, mindestens per Videocall, und zahlt nie Geld zurück, das noch nicht sicher auf eurem Konto ist.',
+			],
+			[
+				'Zeitplan für die Suche',
+				'Sechs bis acht Wochen vorher: Vertrag klären, Preis und Einzugsdatum festlegen\nFünf bis sechs Wochen vorher: Anzeige mit Fotos online stellen\nVier Wochen vorher: Casting-Termine an zwei, drei Abenden bündeln\nDrei Wochen vorher: gemeinsam entscheiden, zusagen und allen anderen absagen\nEinzugstag: Schlüssel, Wohnungsgeberbestätigung, Einladung in die WG-App',
 			],
 		],
 		fragen: [
@@ -894,6 +906,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Braucht man für einen neuen Mitbewohner die Erlaubnis des Vermieters?',
 				'Bei Untermiete in der Regel ja. Haben alle Mitbewohner einen eigenen Vertrag mit dem Vermieter, regelt er den Wechsel meist selbst. Maßgeblich ist euer Mietvertrag.',
+			],
+			[
+				'Wie lange dauert es, einen Mitbewohner zu finden?',
+				'Das hängt von Stadt, Preis und Jahreszeit ab. Plant mindestens vier bis sechs Wochen ein. Zum Semesterbeginn melden sich in Hochschulstädten meist mehr Interessenten als im Sommer oder um den Jahreswechsel.',
 			],
 		],
 	},
@@ -925,8 +941,16 @@ export const RATGEBER: Record<string, Thema> = {
 				'Läuft der Internetvertrag, der Stromvertrag oder der Rundfunkbeitrag auf euren Namen, muss jemand aus der WG übernehmen oder der Vertrag umgestellt werden. Sprecht das früh ab. In Deutschland meldet ihr euch innerhalb von zwei Wochen am neuen Wohnort an. Eine eigene Abmeldung ist nur nötig, wenn ihr ins Ausland zieht oder keine neue Wohnung in Deutschland bezieht. Denkt auch an einen Nachsendeauftrag für die Post.',
 			],
 			[
+				'Zwischenmiete statt Auszug',
+				'Wer nur für ein Auslandssemester oder ein Praktikum weg ist, muss nicht ausziehen. Mit Erlaubnis des Vermieters oder Hauptmieters lässt sich das Zimmer für diese Zeit untervermieten. Klärt vorher schriftlich Zeitraum, Miete, Nebenkosten und was mit euren Möbeln passiert. Für die Abrechnung in der WG zählt in dieser Zeit die Zwischenmieterin oder der Zwischenmieter als Mitbewohner.',
+			],
+			[
 				'Übergabe',
 				'Räumt Zimmer und eure Fächer in Küche und Bad vollständig. Streicht das Zimmer, falls der Vertrag das vorsieht. Macht eine Übergabe mit Fotos und gebt alle Schlüssel zurück. Erledigt eure letzte Runde im Putzplan, bevor ihr geht. In ManaWG verlasst ihr die WG zum Schluss selbst über die Einstellungen.',
+			],
+			[
+				'Die Checkliste zum Abhaken',
+				'1. Vertrag prüfen und fristgerecht schriftlich kündigen\n2. WG früh informieren und bei der Nachmietersuche helfen\n3. Strom, Internet und Rundfunkbeitrag umstellen, falls sie auf euch laufen\n4. Offene Beträge ausgleichen, bis der Saldo bei null steht\n5. Gemeinsame Anschaffungen aufteilen oder auszahlen lassen\n6. Absprache zur nächsten Nebenkostenabrechnung treffen\n7. Zimmer räumen, Übergabe mit Fotos, Schlüssel zurückgeben\n8. Innerhalb von zwei Wochen am neuen Wohnort anmelden, Nachsendeauftrag einrichten',
 			],
 		],
 		fragen: [
@@ -941,6 +965,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Was passiert mit offenen WG-Kosten beim Auszug?',
 				'Offene Beträge sollten vor dem Auszug ausgeglichen werden. Eine App wie ManaWG zeigt den Saldo und schlägt die nötigen Überweisungen vor.',
+			],
+			[
+				'Wann bekomme ich die Kaution nach dem Auszug zurück?',
+				'Nach einer angemessenen Prüfzeit, die oft einige Monate dauert. Steht noch eine Nebenkostenabrechnung aus, darf ein angemessener Teil bis dahin einbehalten werden.',
 			],
 		],
 	},
