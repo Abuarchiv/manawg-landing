@@ -90,6 +90,26 @@ export function glSichtbar(
 	}
 }
 
+let soft: Promise<boolean> | null = null;
+
+/**
+ * Läuft WebGL2 nur per Software (SwiftShader, llvmpipe)? Dann rechnen Shader auf dem Hauptprozessor und blockieren die Seite.
+ * Geprüft in einem Worker: der erste Kontext baut den GPU-Kanal auf (ohne Grafikchip Sekunden), das hält dort nicht den Hauptthread an.
+ */
+export function glSoftware(): Promise<boolean> {
+	soft ??= new Promise((res) => {
+		if (typeof Worker !== 'function' || typeof OffscreenCanvas !== 'function') return res(false);
+		const w = new Worker('/gl-probe.js');
+		const fertig = (r: unknown) => {
+			res(/swiftshader|llvmpipe|softpipe|software|basic render/i.test(String(r)));
+			w.terminate();
+		};
+		w.onmessage = (e) => fertig(e.data);
+		w.onerror = () => fertig('');
+	});
+	return soft;
+}
+
 /** Backing auf CSS-Größe x dpr setzen. Gibt true zurück, wenn sich die Größe geändert hat. */
 export function sizeBacking(cv: HTMLCanvasElement, W: number, H: number, dpr: number): boolean {
 	const w = Math.max(1, Math.round(W * dpr));

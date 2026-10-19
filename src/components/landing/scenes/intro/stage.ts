@@ -5,14 +5,22 @@
 // CSS-Variablen und data-phase an #final und ruft die Teilrenderer auf. Die Variablen werden JEDES
 // Bild gesetzt, auch wenn nichts gezeichnet wird, damit nach Sprüngen nichts stehen bleibt.
 
-import { type Fit, dprFor, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
+import {
+	type Fit,
+	dprFor,
+	fitBox,
+	glSoftware,
+	isTouch,
+	observe,
+	sizeBacking,
+} from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
 import { cl, ss } from '../../core/math';
 import * as hand from '../ende/hand';
 import { kamera } from '../ende/kamera';
 import * as flut from './flut';
 import { createHero } from './hero';
-import { type MarkeLage, createMarke } from './marke';
+import { type Marke, type MarkeLage, createMarke } from './marke';
 import { zeichneSterne } from './sterne';
 import type { BuehnenKontext, BuehnenZeiger, HeroMarken, Loch } from './types';
 import * as wohnung from './wohnung';
@@ -84,7 +92,13 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 	const nurIntro = [...root.querySelectorAll<HTMLElement>('[data-nur-intro]')];
 	const hero = createHero(cvHero);
 	const cvMa = q('marke');
-	const marke = cvMa ? createMarke(cvMa) : null;
+	// Kontext erst nach der Worker-Prüfung (dann steht der GPU-Kanal); ohne Grafikchip keine Marke, wie ohne WebGL2
+	let marke: Marke | null = null;
+	let weg = false;
+	if (cvMa)
+		glSoftware().then((sw) => {
+			if (!weg && !sw) marke = createMarke(cvMa);
+		});
 
 	let W = buehne.clientWidth;
 	let H = buehne.clientHeight;
@@ -474,6 +488,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			window.removeEventListener('pointerup', onUp);
 			window.removeEventListener('pointercancel', onUp);
 			hero.destroy();
+			weg = true;
 			marke?.destroy();
 			if (live.stage === api) live.stage = null;
 		},

@@ -6,7 +6,7 @@
 // der CSS-Größe des Canvas (nicht mehr fest 1280 x 800), im Hochformat wird der Bildausschnitt
 // gerahmt (uZ), die Ausgabe läuft über einen Offscreen-Canvas in das sichtbare 2D-Canvas.
 
-import { glSichtbar } from '../../core/canvas';
+import { glSichtbar, glSoftware } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import type { BuehnenKontext, HeroMarken } from './types';
 
@@ -320,7 +320,15 @@ export function createHero(cv: HTMLCanvasElement) {
 			if (!everOk || G.fails >= 3) G.noGL = true;
 		}
 	};
-	fresh();
+	// Ohne Grafikchip rechnet der Berg-Shader auf dem Hauptprozessor (Sekunden je Bild): dann gleich der Halbton-Fallback
+	let geprueft = false;
+	let weg = false;
+	glSoftware().then((sw) => {
+		geprueft = true;
+		if (weg) return;
+		if (sw) G.noGL = true;
+		else fresh();
+	});
 
 	// Halbton-Fallback ohne WebGL2: das Zeichen als Punktraster mit nachlaufendem Licht.
 	const tone = (c: BuehnenKontext) => {
@@ -387,6 +395,7 @@ export function createHero(cv: HTMLCanvasElement) {
 
 	// Ein Bild. Gibt true zurück, wenn gezeichnet wurde.
 	const frame = (c: BuehnenKontext, h: HeroMarken): boolean => {
+		if (!geprueft) return false;
 		if (G.noGL) {
 			tone(c);
 			return true;
@@ -539,6 +548,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			return G.noGL;
 		},
 		destroy() {
+			weg = true;
 			G.gl?.getExtension('WEBGL_lose_context')?.loseContext();
 		},
 	};
