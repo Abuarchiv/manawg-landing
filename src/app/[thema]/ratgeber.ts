@@ -166,7 +166,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'2. Die richtige Vertragsform wählen',
-				'In einer WG gibt es drei übliche Konstellationen. Beim gemeinsamen Hauptmietvertrag unterschreiben alle und haften gemeinsam für die ganze Miete; ausziehen kann eine Person nur mit Zustimmung von Vermieter und Mitbewohnern. Beim Untermietvertrag mietet eine Person die Wohnung und vermietet Zimmer weiter; sie trägt das Risiko, braucht dafür die Erlaubnis des Vermieters und hat mehr Einfluss bei Nachmietern. Bei Einzelmietverträgen hat jede Person einen eigenen Vertrag über ihr Zimmer mit dem Vermieter. Welche Form passt, hängt davon ab, wie fest die WG ist. Im Zweifel hilft ein Mieterverein.',
+				'In einer WG gibt es drei übliche Konstellationen. Beim gemeinsamen Hauptmietvertrag unterschreiben alle und haften gemeinsam für die ganze Miete; ausziehen kann eine Person nur mit Zustimmung von Vermieter und Mitbewohnern. Beim Untermietvertrag mietet eine Person die Wohnung und vermietet Zimmer weiter; sie trägt das Risiko, braucht dafür die Erlaubnis des Vermieters und hat mehr Einfluss bei Nachmietern. Bei Einzelmietverträgen hat jede Person einen eigenen Vertrag über ihr Zimmer mit dem Vermieter. Welche Form passt, hängt davon ab, wie fest die WG ist; die Unterschiede stehen im Ratgeber zum [WG-Mietvertrag](/wg-mietvertrag). Im Zweifel hilft ein Mieterverein.',
 			],
 			[
 				'3. Kaution und Übergabe festhalten',
@@ -221,6 +221,65 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Ist ManaWG für neue WGs geeignet?',
 				'Ja. Eine Person erstellt die WG und teilt den Einladungslink, die anderen sind sofort dabei. Die App ist kostenlos und braucht keine Installation aus dem App Store.',
+			],
+		],
+	},
+	'wg-mietvertrag': {
+		link: 'WG-Mietvertrag',
+		stand: '2026-10-19',
+		erschienen: '2026-10-19',
+		titel: 'WG-Mietvertrag: Hauptmiete, Untermiete, Einzelvertrag | ManaWG',
+		beschreibung:
+			'Welcher Mietvertrag passt zur WG? Gemeinsamer Hauptmietvertrag, Untermiete oder Einzelverträge im Vergleich: Haftung, Kündigung, Mieterwechsel und Kaution.',
+		h1: 'Der WG-Mietvertrag: drei Modelle im Vergleich',
+		einleitung:
+			'Wer in einer WG wohnt, hat nicht automatisch dieselben Rechte wie die Mitbewohner. Entscheidend ist, wie der Mietvertrag aufgebaut ist: ob alle gemeinsam unterschreiben, eine Person untervermietet oder jede Person einen eigenen Vertrag hat. Davon hängt ab, wer für die Miete haftet, wer kündigen kann und wie ein Wechsel abläuft. Diese Seite gibt einen Überblick und ersetzt keine Rechtsberatung. Bei konkreten Fragen helfen Mietervereine.',
+		abschnitte: [
+			[
+				'Modell 1: Gemeinsamer Hauptmietvertrag',
+				'Alle Mitbewohner unterschreiben einen Vertrag mit dem Vermieter. Jede Person hat damit dieselben Rechte, aber alle haften gemeinsam für die ganze Miete: Zahlt eine Person nicht, kann der Vermieter den vollen Betrag von jeder anderen verlangen. Kündigen können in der Regel nur alle gemeinsam. Will eine Person ausziehen, braucht der Wechsel die Zustimmung des Vermieters und der übrigen Mieter. Manche Vermieter nehmen dafür eine Klausel auf, die Mieterwechsel in der WG ausdrücklich erlaubt. Achtet beim Unterschreiben darauf, ob es sie gibt.',
+			],
+			[
+				'Modell 2: Hauptmieter mit Untermietern',
+				'Eine Person mietet die Wohnung und vermietet einzelne Zimmer weiter. Für die Untervermietung braucht sie die Erlaubnis des Vermieters. Der Hauptmieter haftet dem Vermieter gegenüber allein für die ganze Miete und trägt damit das Risiko, wenn ein Zimmer leer steht oder jemand nicht zahlt. Dafür entscheidet er mit, wer einzieht. Untermieter haben einen Vertrag nur mit dem Hauptmieter. Wohnen sie in einem möblierten Zimmer in dessen Wohnung, gelten oft kürzere Kündigungsfristen und ein geringerer Kündigungsschutz als bei einer normalen Mietwohnung.',
+			],
+			[
+				'Modell 3: Einzelmietverträge',
+				'Jede Person schließt einen eigenen Vertrag mit dem Vermieter über ihr Zimmer und die Mitbenutzung von Küche und Bad. Das ist bei Studentenwohnheimen und gewerblich vermieteten WGs üblich. Niemand haftet für die Miete der anderen, und wer auszieht, kündigt nur den eigenen Vertrag. Den Nachfolger sucht dafür meist der Vermieter aus, die WG hat dabei oft wenig Mitsprache.',
+			],
+			[
+				'Die drei Modelle im Überblick',
+				'Haftung für die Miete: Hauptmietvertrag alle gemeinsam, Untermiete der Hauptmieter, Einzelvertrag jede Person für sich\nKündigung: Hauptmietvertrag nur gemeinsam, Untermiete der eigene Vertrag mit dem Hauptmieter, Einzelvertrag der eigene Vertrag\nNeue Mitbewohner: Hauptmietvertrag mit Zustimmung von Vermieter und WG, Untermiete wählt der Hauptmieter mit Erlaubnis des Vermieters, Einzelvertrag wählt der Vermieter\nRisiko bei Leerstand: Hauptmietvertrag alle, Untermiete der Hauptmieter, Einzelvertrag der Vermieter',
+			],
+			[
+				'Kaution in der WG',
+				'Die Kaution darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Beim gemeinsamen Hauptmietvertrag zahlt die WG sie gemeinsam. Haltet fest, wer welchen Anteil eingezahlt hat, denn bei einem Wechsel zahlt meist der Nachfolger seinen Anteil an die ausziehende Person, während die Kaution beim Vermieter bleibt. Bei Untermiete zahlt ihr die Kaution an den Hauptmieter.',
+			],
+			[
+				'Was in den Vertrag gehören sollte',
+				'1. Wer Mieter ist, mit vollem Namen\n2. Welche Räume zur alleinigen Nutzung gehören und welche gemeinsam genutzt werden\n3. Miete und Nebenkosten, getrennt ausgewiesen\n4. Höhe der Kaution\n5. Ob Untervermietung oder Mieterwechsel erlaubt ist\n6. Kündigungsfristen und gegebenenfalls Befristung\n7. Welche Möbel mitvermietet sind',
+			],
+			[
+				'Welches Modell passt?',
+				'Für eine feste WG unter Freunden, die lange zusammen wohnen will, passt der gemeinsame Hauptmietvertrag mit einer Klausel für Mieterwechsel. Wechseln die Mitbewohner oft, etwa in Studentenstädten, ist Untermiete flexibler, belastet aber den Hauptmieter. Einzelverträge sind am bequemsten, geben der WG aber am wenigsten Einfluss darauf, wer einzieht. Wie ihr danach Miete, Nebenkosten und Einkäufe aufteilt, steht unter [WG-Kosten aufteilen](/wg-kosten-aufteilen), alles Weitere für den Start in der [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
+			],
+		],
+		fragen: [
+			[
+				'Welcher Mietvertrag ist für eine WG am besten?',
+				'Das hängt davon ab, wie fest die WG ist. Ein gemeinsamer Hauptmietvertrag gibt allen dieselben Rechte, macht Wechsel aber umständlich. Untermiete und Einzelverträge sind flexibler.',
+			],
+			[
+				'Haften in einer WG alle für die Miete?',
+				'Beim gemeinsamen Hauptmietvertrag ja: Der Vermieter kann die ganze Miete von jeder Person verlangen. Bei Untermiete haftet nur der Hauptmieter, bei Einzelverträgen jede Person für ihr Zimmer.',
+			],
+			[
+				'Brauche ich für die Untervermietung eines WG-Zimmers die Erlaubnis des Vermieters?',
+				'Ja, Untervermietung braucht die Erlaubnis des Vermieters. Unter bestimmten Voraussetzungen besteht ein Anspruch darauf, etwa wenn nach Vertragsschluss ein berechtigtes Interesse entstanden ist.',
+			],
+			[
+				'Kann ein Mitbewohner allein aus dem gemeinsamen Mietvertrag kündigen?',
+				'In der Regel nicht. Beim gemeinsamen Hauptmietvertrag müssen alle Mieter gemeinsam kündigen. Ein Wechsel einzelner Personen braucht die Zustimmung des Vermieters.',
 			],
 		],
 	},

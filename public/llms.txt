@@ -49,6 +49,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Einkaufen in der WG](https://manawg.com/wg-einkauf-organisieren)
 - [Mitbewohner finden](https://manawg.com/mitbewohner-finden): WG-Anzeige, Auswahl, Vermieter
 - [WG-Casting: Fragen](https://manawg.com/wg-casting-fragen): Ablauf und Fragenliste
+- [WG-Mietvertrag](https://manawg.com/wg-mietvertrag): Hauptmiete, Untermiete, Einzelverträge, Haftung, Kaution
 - [Streit in der WG lösen](https://manawg.com/wg-streit-loesen): Putzen, Lärm, Geld
 - [Auszug aus der WG](https://manawg.com/wg-auszug-checkliste): Kündigung, Nachmieter, Kaution, Abrechnung
 

@@ -22,6 +22,7 @@ export const GRUPPEN: Array<{ name: string; slugs: string[] }> = [
 			'putzplan-vorlage',
 			'wg-einkauf-organisieren',
 			'wg-gruenden-checkliste',
+			'wg-mietvertrag',
 			'mitbewohner-finden',
 			'wg-casting-fragen',
 			'wg-einzug-checkliste',
