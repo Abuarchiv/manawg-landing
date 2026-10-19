@@ -18,7 +18,9 @@ export function GET() {
 			`Quelle: ${base}/${slug} (Stand ${t.stand})`,
 			...(gruppeVon(slug)?.name === 'Vergleiche' ? [VERGLEICHS_HINWEIS] : []),
 			t.einleitung,
-			...t.abschnitte.map(([kopf, text]) => `## ${kopf}\n\n${text}`),
+			...t.abschnitte.map(
+				([kopf, text]) => `## ${kopf}\n\n${text.replaceAll('](/', `](${base}/`)}`,
+			),
 			...(slug === 'putzplan-vorlage'
 				? [
 						`## Vier-Wochen-Rotation für vier Personen\n\nVier-Wochen-Rotation: jede Woche rückt jede Person eine Aufgabe weiter.\n\nA, B, C und D stehen für vier Beispielpersonen.\n\n${putzplanVorlageMarkdown()}\n\nQuelle: ${base}/putzplan-vorlage · CSV-Download: ${base}/putzplan-vorlage.csv`,

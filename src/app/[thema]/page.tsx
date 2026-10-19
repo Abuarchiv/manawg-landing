@@ -10,6 +10,19 @@ import { THEMEN } from './themen';
 
 export const dynamicParams = false;
 
+// Verweise im Fließtext als [Wort](/pfad): Ratgeber zeigen im Text aufeinander, nicht nur über die Liste am Ende.
+const mitLinks = (text: string) =>
+	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((teil) => {
+		const m = /^\[([^\]]+)\]\((\/[a-z0-9-]*)\)$/.exec(teil);
+		return m?.[1] && m[2] ? (
+			<Link key={m[2]} href={m[2]}>
+				{m[1]}
+			</Link>
+		) : (
+			teil
+		);
+	});
+
 /** Google verlangt Datum mit Uhrzeit und Zeitzone (Rich Results Test: „Zeitzone fehlt“). */
 const zeitpunkt = (tag: string) => `${tag}T00:00:00+00:00`;
 
@@ -205,12 +218,12 @@ export default async function ThemaPage({ params }: Props) {
 							{text.includes('\n') ? (
 								<ol className="m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)] flex flex-col gap-2">
 									{text.split('\n').map((zeile) => (
-										<li key={zeile}>{zeile.replace(/^\d+\.\s*/, '')}</li>
+										<li key={zeile}>{mitLinks(zeile.replace(/^\d+\.\s*/, ''))}</li>
 									))}
 								</ol>
 							) : (
 								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
-									{text}
+									{mitLinks(text)}
 								</p>
 							)}
 						</section>
