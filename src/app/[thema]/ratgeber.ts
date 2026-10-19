@@ -52,7 +52,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Welche Kosten in einer WG anfallen',
-				'Es gibt drei Gruppen. Erstens die festen Kosten, die jeden Monat gleich sind: Miete, Nebenkosten-Vorauszahlung, Internet, Strom. Zweitens die gemeinsamen laufenden Ausgaben wie Spülmittel, Klopapier, Putzmittel und gemeinsame Lebensmittel. Drittens Einmaliges, etwa ein neuer Staubsauger oder die Küchenausstattung. Wer die drei Gruppen trennt, streitet seltener, weil für jede eine eigene Regel gelten kann.',
+				'Es gibt drei Gruppen. Erstens die festen Kosten, die jeden Monat gleich sind: Miete, Nebenkosten-Vorauszahlung, Internet, Strom. Zweitens die gemeinsamen laufenden Ausgaben für die [Haushaltskasse](/wg-haushaltskasse) wie Spülmittel, Klopapier, Putzmittel und gemeinsame Lebensmittel. Drittens Einmaliges, etwa ein neuer Staubsauger oder die Küchenausstattung. Wer die drei Gruppen trennt, streitet seltener, weil für jede eine eigene Regel gelten kann.',
 			],
 			[
 				'Modell 1: Alles gleich teilen',
@@ -68,7 +68,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Ausgleichen ohne Überweisungschaos',
-				'Wenn jeder mal für alle zahlt, entstehen Schulden in alle Richtungen. Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit möglichst wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt.',
+				'Wenn jeder mal für alle zahlt, entstehen [Schulden in alle Richtungen](/schulden-mitbewohner). Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit möglichst wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt.',
 			],
 			[
 				'Regeln, die Streit vermeiden',
@@ -620,7 +620,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Weg 3: Ausgaben erfassen und ausgleichen',
-				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein. Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In ManaWG teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt.',
+				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein, zum Beispiel direkt nach dem Einkauf von der [gemeinsamen Einkaufsliste](/wg-einkauf-organisieren). Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In ManaWG teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt.',
 			],
 			[
 				'Beispielrechnung',
@@ -628,7 +628,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Regeln für jede Kasse',
-				'Legt fest, was hineingehört und was nicht. Setzt eine Grenze, ab der vorher gefragt wird, etwa 30 oder 50 Euro. Bestimmt einen festen Tag für den Ausgleich, zum Beispiel den Monatsersten. Und klärt, was beim Auszug passiert: Offene Beträge werden vor dem Auszug beglichen, gemeinsame Anschaffungen bleiben in der WG oder werden abgelöst. In ManaWG kommt am Monatsanfang eine Abrechnung per Mail mit Summen je Kategorie und den Überweisungsvorschlägen, jede Person kann sie abschalten.',
+				'Legt fest, was hineingehört und was nicht. Setzt eine Grenze, ab der vorher gefragt wird, etwa 30 oder 50 Euro. Bestimmt einen festen Tag für den Ausgleich, zum Beispiel den Monatsersten. Und klärt, was beim [Auszug](/wg-auszug-checkliste) passiert: Offene Beträge werden vor dem Auszug beglichen, gemeinsame Anschaffungen bleiben in der WG oder werden abgelöst. In ManaWG kommt am Monatsanfang eine Abrechnung per Mail mit Summen je Kategorie und den Überweisungsvorschlägen, jede Person kann sie abschalten.',
 			],
 		],
 		fragen: [
@@ -659,7 +659,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Vor dem Einzug: Vertrag und Formalien',
-				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen Untermietvertrag mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution und danach, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden Regeln für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
+				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen Untermietvertrag mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution und danach, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden [Regeln](/wg-regeln) für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
 			],
 			[
 				'Am Einzugstag',
@@ -667,15 +667,19 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'In der ersten Woche',
-				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den Putzplan ein und fragt, wie die Rotation funktioniert. Wenn die WG ManaWG nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
+				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den [Putzplan](/putzplan-erstellen) ein und fragt, wie die Rotation funktioniert. Wenn die WG ManaWG nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
 			],
 			[
 				'Geld von Anfang an klären',
-				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt und wie ihr euren Anteil zahlt. Der Rundfunkbeitrag wird pro Wohnung nur einmal fällig, also nicht von jedem einzeln. Klärt, ob es eine gemeinsame Haushaltskasse gibt und ob bereits vorhandene Dinge wie Waschmaschine oder Küchengeräte abgelöst werden sollen. In ManaWG seht ihr nach dem Beitritt Fixkosten, Ausgaben und Salden der WG, neue Ausgaben werden ab dann mit euch geteilt.',
+				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt und wie ihr euren Anteil zahlt. Der Rundfunkbeitrag wird pro Wohnung nur einmal fällig, also nicht von jedem einzeln. Klärt, ob es eine gemeinsame [Haushaltskasse](/wg-haushaltskasse) gibt und ob bereits vorhandene Dinge wie Waschmaschine oder Küchengeräte abgelöst werden sollen. In ManaWG seht ihr nach dem Beitritt Fixkosten, Ausgaben und Salden der WG, neue Ausgaben werden ab dann mit euch geteilt.',
 			],
 			[
 				'Gewohnheiten abgleichen',
 				'Sprecht früh an, was euch wichtig ist: Schlafenszeiten, Gäste über Nacht, Rauchen, Tiere, Lautstärke, gemeinsames Kochen. Kleine Unterschiede lassen sich besprechen, solange sie früh auf dem Tisch liegen. Wer nach drei Monaten zum ersten Mal sagt, dass ihn etwas stört, hat es schwerer. Was die WG vereinbart, könnt ihr auf der Pinnwand festhalten, damit es nicht nur im Gruppenchat untergeht.',
+			],
+			[
+				'Was ins WG-Zimmer mitkommt',
+				'Bettzeug, Handtücher und eigene Hygieneartikel\nTeller, Tasse und Besteck, falls die Küche knapp ausgestattet ist\nVerlängerungskabel und Mehrfachstecker\nEin eigenes Fach für Vorräte, beschriftet\nAusweis und Wohnungsgeberbestätigung für die Anmeldung',
 			],
 			[
 				'Nach dem ersten Monat',
@@ -710,11 +714,11 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Putzplan bei Abwesenheit',
-				'Wer nicht da ist, kann nicht putzen. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In ManaWG tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
+				'Wer nicht da ist, kann nicht putzen. Auch der beste [Putzplan](/putzplan-erstellen) braucht dafür eine Regel. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In ManaWG tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
 			],
 			[
 				'Miete und Fixkosten',
-				'Die Miete läuft weiter, auch wenn das Zimmer leer steht. Bei Fixkosten wie Internet zahlen in der Regel alle weiter, weil der Vertrag unabhängig von der Nutzung kostet. Bei verbrauchsabhängigen Kosten wie Strom, Heizung oder gemeinsamen Lebensmitteln kann man vereinbaren, dass Abwesende weniger zahlen. Das lohnt sich vor allem bei längeren Zeiträumen. Für zwei Wochen Urlaub ist eine Sonderregel meist mehr Aufwand als Ersparnis.',
+				'Die Miete läuft weiter, auch wenn das Zimmer leer steht. Bei Fixkosten wie Internet zahlen in der Regel alle weiter, weil der Vertrag unabhängig von der Nutzung kostet. Bei [verbrauchsabhängigen Kosten](/wg-nebenkosten) wie Strom, Heizung oder gemeinsamen Lebensmitteln kann man vereinbaren, dass Abwesende weniger zahlen. Das lohnt sich vor allem bei längeren Zeiträumen. Für zwei Wochen Urlaub ist eine Sonderregel meist mehr Aufwand als Ersparnis.',
 			],
 			[
 				'Gemeinsame Ausgaben während der Abwesenheit',
@@ -722,7 +726,11 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Längere Abwesenheit: Praktikum und Auslandssemester',
-				'Bei mehreren Monaten stellt sich die Frage nach einer Zwischenmiete. Ob das erlaubt ist, hängt vom Mietvertrag ab, meist muss der Vermieter zustimmen. Klärt in der WG, ob alle mit der Person einverstanden sind, denn sie lebt in dieser Zeit mit euch. Die Zwischenmieterin oder der Zwischenmieter kann der WG in ManaWG beitreten und übernimmt für die Zeit Aufgaben und Kosten. Danach tritt sie wieder aus.',
+				'Bei mehreren Monaten stellt sich die Frage nach einer Zwischenmiete, ähnlich wie beim [Auszug](/wg-auszug-checkliste). Ob das erlaubt ist, hängt vom Mietvertrag ab, meist muss der Vermieter zustimmen. Klärt in der WG, ob alle mit der Person einverstanden sind, denn sie lebt in dieser Zeit mit euch. Die Zwischenmieterin oder der Zwischenmieter kann der WG in ManaWG beitreten und übernimmt für die Zeit Aufgaben und Kosten. Danach tritt sie wieder aus.',
+			],
+			[
+				'Beispiel: Auslandssemester ohne Zwischenmiete',
+				'Eine Viererwohnung zahlt 120 Euro Strom im Monat, eine Person ist fünf Monate im Ausland und vermietet nicht unter. Die WG vereinbart, dass die abwesende Person in dieser Zeit nur ein Viertel ihres Stromanteils trägt: 7,50 statt 30 Euro. Die übrigen 22,50 Euro teilen sich die drei anderen, je 7,50 Euro mehr. Miete und Internet zahlt sie weiter voll, weil diese Kosten unabhängig von der Nutzung anfallen.',
 			],
 			[
 				'Absprachen vor der Reise',
@@ -776,8 +784,12 @@ export const RATGEBER: Record<string, Thema> = {
 				'Niemand mag es, wegen 4,50 Euro nachzufragen. Ein fester Ausgleichstag, etwa am Monatsersten, nimmt die Peinlichkeit heraus: Dann wird ausgeglichen, egal wie hoch der Betrag ist. ManaWG schickt am Monatsanfang eine Abrechnung per Mail mit den Überweisungsvorschlägen. Jede Person kann diese Mail abschalten.',
 			],
 			[
+				'Wenn jemand mit offenen Beträgen auszieht',
+				'Beim Auszug ist der einfachste Moment, alles zu klären, und der letzte, an dem alle noch in einer Wohnung sind. Bringt den Saldo der ausziehenden Person vor dem letzten Tag auf null. Steht noch eine Nebenkostenabrechnung aus, vereinbart schriftlich, wie Nachzahlung oder Guthaben später verteilt werden, und tauscht Kontaktdaten aus. Wer danach erst hinterherschreibt, wartet oft lange.',
+			],
+			[
 				'Wenn jemand nicht zahlt',
-				'Sprecht es sachlich und unter vier Augen an, nennt den Betrag und einen Termin. Hilft das nicht, bringt es in die WG-Runde, ohne die Person bloßzustellen. Klärt, ob eine Ratenzahlung hilft, wenn das Geld gerade knapp ist. Rechtliche Schritte sind bei kleinen Beträgen selten sinnvoll und belasten das Zusammenleben mehr als der offene Betrag.',
+				'Sprecht es sachlich und unter vier Augen an, nennt den Betrag und einen Termin. Tipps für solche Gespräche stehen unter [Streit in der WG lösen](/wg-streit-loesen). Hilft das nicht, bringt es in die WG-Runde, ohne die Person bloßzustellen. Klärt, ob eine Ratenzahlung hilft, wenn das Geld gerade knapp ist. Rechtliche Schritte sind bei kleinen Beträgen selten sinnvoll und belasten das Zusammenleben mehr als der offene Betrag.',
 			],
 		],
 		fragen: [
@@ -792,6 +804,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Überweist ManaWG Geld automatisch?',
 				'Nein. ManaWG berechnet Vorschläge, ihr überweist selbst und markiert Beträge als bezahlt.',
+			],
+			[
+				'Was passiert mit Schulden, wenn ein Mitbewohner auszieht?',
+				'Offene Beträge sollten vor dem Auszug ausgeglichen sein. Für eine spätere Nebenkostenabrechnung vereinbart ihr vorher, wie Nachzahlung oder Guthaben verteilt werden.',
 			],
 		],
 	},
@@ -808,7 +824,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Ablauf für die WG',
-				'Ladet nicht zu viele Leute auf einmal ein. Einzeltermine von 20 bis 30 Minuten mit etwas Puffer funktionieren besser als ein Gruppencasting, bei dem die Lautesten gewinnen. Es sollten möglichst alle Mitbewohner dabei sein, denn wer nicht mitentscheidet, fühlt sich später übergangen. Zeigt die Wohnung ehrlich, auch das kleine Bad und die volle Küche. Und legt vorher fest, worauf es euch ankommt, damit die Entscheidung nicht nur am Bauchgefühl hängt.',
+				'Ladet nicht zu viele Leute auf einmal ein. Wie ihr Bewerbungen sammelt und vorsortiert, steht unter [Mitbewohner finden](/mitbewohner-finden). Einzeltermine von 20 bis 30 Minuten mit etwas Puffer funktionieren besser als ein Gruppencasting, bei dem die Lautesten gewinnen. Es sollten möglichst alle Mitbewohner dabei sein, denn wer nicht mitentscheidet, fühlt sich später übergangen. Zeigt die Wohnung ehrlich, auch das kleine Bad und die volle Küche. Und legt vorher fest, worauf es euch ankommt, damit die Entscheidung nicht nur am Bauchgefühl hängt.',
 			],
 			[
 				'Fragen zum Alltag',
@@ -820,11 +836,19 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Fragen zu Geld und Gemeinsamem',
-				'Wie stellst du dir das mit gemeinsamen Einkäufen vor, alles teilen oder jeder für sich? Wie sollen Kosten wie Internet und Putzmittel aufgeteilt werden? Erzählt dabei offen, wie eure WG es bisher macht, zum Beispiel mit einer App wie ManaWG, in der jede Ausgabe eingetragen und am Monatsende ausgeglichen wird. Wer schon beim Casting weiß, wie abgerechnet wird, hat später keine Überraschungen.',
+				'Wie stellst du dir das mit gemeinsamen Einkäufen vor, alles teilen oder jeder für sich? Wie sollen Kosten wie Internet und Putzmittel aufgeteilt werden? Erzählt dabei offen, wie eure WG es bisher macht, zum Beispiel mit einer App wie ManaWG, in der jede Ausgabe eingetragen und am Monatsende ausgeglichen wird. Wer schon beim Casting weiß, wie [abgerechnet](/wg-kosten-aufteilen) wird, hat später keine Überraschungen.',
 			],
 			[
 				'Fragen zu Gästen, Lautstärke und Erwartungen',
 				'Wie oft hast du Besuch, und übernachtet der auch mal länger? Feierst du gern zu Hause? Rauchst du, hast du Haustiere oder planst welche? Suchst du eher eine Zweck-WG oder Anschluss und gemeinsame Abende? Gerade die letzte Frage wird oft vergessen, dabei ist sie einer der häufigsten Gründe, warum es später nicht passt.',
+			],
+			[
+				'Fragenliste zum Übernehmen',
+				'1. Wie sieht ein normaler Tag bei dir aus?\n2. Wann stehst du auf, wann gehst du schlafen?\n3. Kochst du gern, allein oder mit anderen?\n4. Was bedeutet für dich eine saubere Küche?\n5. Hast du schon mit einem Putzplan gelebt, und wie lief das?\n6. Einkäufe teilen oder jeder für sich?\n7. Wie oft hast du Besuch, auch über Nacht?\n8. Rauchst du, hast du Haustiere oder planst welche?\n9. Suchst du eher eine Zweck-WG oder gemeinsame Abende?\n10. Wie lange möchtest du ungefähr hier wohnen?',
+			],
+			[
+				'Nach dem Casting entscheiden',
+				'Setzt euch direkt nach dem letzten Termin zusammen, solange die Eindrücke frisch sind. Geht die Punkte durch, die ihr vorher festgelegt habt, und fragt euch ehrlich, mit wem ihr an einem verregneten Sonntag in der Küche sitzen wollt. Sagt der gewählten Person schnell zu und den anderen höflich ab. Wer nichts hört, wartet unnötig und sucht nicht weiter.',
 			],
 			[
 				'Tipps für Bewerberinnen und Bewerber',
@@ -835,6 +859,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Welche Fragen stellt man beim WG-Casting?',
 				'Fragen zum Tagesrhythmus, zu Ordnung und Putzen, zum Umgang mit Geld und Einkäufen, zu Gästen und Lautstärke und dazu, ob jemand eine Zweck-WG oder gemeinsame Abende sucht.',
+			],
+			[
+				'Wie entscheidet die WG nach dem Casting?',
+				'Direkt nach den Terminen gemeinsam, anhand vorher festgelegter Punkte. Allen Bewerbern sollte zeitnah zu- oder abgesagt werden.',
 			],
 			[
 				'Wie lange dauert ein WG-Casting?',
@@ -989,19 +1017,19 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Streit ums Putzen',
-				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein Putzplan mit fester Rotation nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. In ManaWG wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
+				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein [Putzplan mit fester Rotation](/putzplan-erstellen) nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. In ManaWG wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
 			],
 			[
 				'Streit um Lärm und Gäste',
-				'Hier helfen Regeln, die alle vorher vereinbart haben: Ruhezeiten unter der Woche, Ankündigung von Partys, wie lange Gäste bleiben dürfen. Was einmal gemeinsam festgelegt ist, muss nicht jedes Mal neu verhandelt werden. Haltet Beschlüsse schriftlich fest, etwa auf der Pinnwand in ManaWG, damit sich später niemand auf ein anderes Gedächtnis beruft.',
+				'Hier helfen [Regeln, die alle vorher vereinbart haben](/wg-regeln): Ruhezeiten unter der Woche, Ankündigung von Partys, wie lange Gäste bleiben dürfen. Was einmal gemeinsam festgelegt ist, muss nicht jedes Mal neu verhandelt werden. Haltet Beschlüsse schriftlich fest, etwa auf der Pinnwand in ManaWG, damit sich später niemand auf ein anderes Gedächtnis beruft.',
 			],
 			[
 				'Streit ums Geld',
-				'Geldstreit entsteht fast immer aus Unübersichtlichkeit: Wer hat was bezahlt, wer schuldet wem? Tragt Ausgaben sofort ein und gleicht zu einem festen Termin aus. Eine App, die Salden rechnet und Überweisungen vorschlägt, ersetzt Erinnerungen an Einzelbeträge. Klärt außerdem vorher, was gemeinsam gekauft wird und ab welchem Betrag gefragt werden muss.',
+				'Geldstreit entsteht fast immer aus Unübersichtlichkeit: Wer hat was bezahlt, wer schuldet wem? Tragt Ausgaben sofort ein und gleicht zu einem festen Termin aus. Eine App, die Salden rechnet und Überweisungen vorschlägt, ersetzt Erinnerungen an Einzelbeträge. Wie das mit wenigen Überweisungen geht, zeigt der Ratgeber zu [Schulden unter Mitbewohnern](/schulden-mitbewohner). Klärt außerdem vorher, was gemeinsam gekauft wird und ab welchem Betrag gefragt werden muss.',
 			],
 			[
 				'Die WG-Runde',
-				'Ein regelmäßiges kurzes Treffen, etwa einmal im Monat, gibt allen einen festen Ort für Themen. Jede Person darf etwas einbringen, Entscheidungen werden festgehalten. Wenn es trotz Gesprächen nicht besser wird, ist es kein Scheitern zu überlegen, ob die Konstellation passt. Manchmal ist ein Auszug die fairste Lösung für alle.',
+				'Ein regelmäßiges kurzes Treffen, etwa einmal im Monat, gibt allen einen festen Ort für Themen. Jede Person darf etwas einbringen, Entscheidungen werden festgehalten. Wenn es trotz Gesprächen nicht besser wird, ist es kein Scheitern zu überlegen, ob die Konstellation passt. Manchmal ist ein [Auszug](/wg-auszug-checkliste) die fairste Lösung für alle.',
 			],
 		],
 		fragen: [
