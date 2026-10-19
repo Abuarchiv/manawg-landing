@@ -77,7 +77,11 @@ const nextConfig: NextConfig = {
 			// Schriften ändern sich nie unter gleichem Namen: ein Jahr fest. Neue Schriftdatei = neuer Dateiname.
 			{
 				source: '/fonts/:path*',
-				headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+				headers: [
+					{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+					// Google hatte die Schriftdateien als „Seiten“ im Index-Bericht; sie sollen nie in die Suche.
+					{ key: 'X-Robots-Tag', value: 'noindex' },
+				],
 			},
 			// Demo-Dateien ohne Hash im Namen: immer per ETag prüfen, damit index.html, demo.js und app.css zusammenpassen.
 			{

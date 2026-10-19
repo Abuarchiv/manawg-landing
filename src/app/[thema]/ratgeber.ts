@@ -190,15 +190,19 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-regeln': {
 		link: 'WG-Regeln',
-		stand: '2026-10-11',
+		stand: '2026-10-19',
 		erschienen: '2026-10-11',
-		titel: 'WG-Regeln: Beispiele für Haushalt, Ruhe und Besuch | ManaWG',
+		titel: 'WG-Regeln: Vorlage und Beispiele zum Übernehmen | ManaWG',
 		beschreibung:
-			'Welche Regeln sinnvoll sind und wie ihr sie festhaltet: Ruhezeiten, Besuch, Putzen, gemeinsame Kasse und Umgang mit Konflikten, mit Formulierungsbeispielen.',
+			'WG-Regeln als Vorlage: zehn Regeln zum Übernehmen für Ruhezeiten, Besuch, Putzen, Kühlschrank und gemeinsame Kasse, dazu Tipps, wie ihr sie festhaltet.',
 		h1: 'WG-Regeln, die wirklich funktionieren',
 		einleitung:
-			'Viele WGs haben entweder gar keine Regeln oder einen langen Katalog, an den sich niemand hält. Gute Regeln sind kurz, konkret und von allen beschlossen. Hier sind die Bereiche, die sich zu klären lohnen, mit Beispielen.',
+			'Viele WGs haben entweder gar keine Regeln oder einen langen Katalog, an den sich niemand hält. Gute Regeln sind kurz, konkret und von allen beschlossen. Unten steht eine Vorlage mit zehn Regeln, die ihr übernehmen und anpassen könnt, danach die Bereiche im Einzelnen.',
 		abschnitte: [
+			[
+				'Vorlage: zehn WG-Regeln zum Übernehmen',
+				'1. Unter der Woche ist ab 22 Uhr Ruhe, am Wochenende ab Mitternacht.\n2. Partys werden mindestens einen Tag vorher angekündigt.\n3. Übernachtungsgäste sind willkommen, wer länger als drei Nächte bleibt, wird vorher abgesprochen.\n4. Geschirr wird am selben Tag gespült oder in die Spülmaschine geräumt.\n5. Der Putzplan rotiert wöchentlich, wer verreist ist, wird übersprungen und holt nichts nach.\n6. Jede Person hat ein eigenes Fach im Kühlschrank, Fremdes wird nur nach Frage gegessen.\n7. Putzmittel, Klopapier und Spülmittel zahlen alle gemeinsam, private Lebensmittel jede Person selbst.\n8. Anschaffungen über 30 Euro für die WG werden vorher abgesprochen.\n9. Ausgaben werden sofort eingetragen und am Monatsersten ausgeglichen.\n10. Einmal im Monat gibt es eine kurze WG-Runde, in der Regeln angepasst werden können.',
+			],
 			[
 				'Ruhezeiten und Lärm',
 				'Legt feste Zeiten fest, zu denen Ruhe herrscht, zum Beispiel unter der Woche ab 22 Uhr. Dazu gehört die Absprache, dass Feiern angekündigt werden. Eine Faustregel: Wer feiert, sagt es mindestens einen Tag vorher und nimmt Rücksicht auf Mitbewohner mit Prüfung oder Frühschicht.',
@@ -232,6 +236,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Wo hält man WG-Regeln fest?',
 				'Dort, wo sie alle sehen: ausgedruckt in der Küche oder auf einer digitalen Pinnwand wie in ManaWG.',
+			],
+			[
+				'Gibt es eine Vorlage für WG-Regeln?',
+				'Ja, oben auf dieser Seite stehen zehn Regeln zu Ruhezeiten, Besuch, Putzen, Kühlschrank und Geld. Übernehmt nur, was zu eurer WG passt, und passt die Zahlen an.',
 			],
 		],
 	},

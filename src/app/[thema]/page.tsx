@@ -197,9 +197,18 @@ export default async function ThemaPage({ params }: Props) {
 							<h2 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
 								{kopf}
 							</h2>
-							<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
-								{text}
-							</p>
+							{/* Mehrzeiliger Text ("1. …\n2. …") wird als nummerierte Liste gesetzt, etwa für Vorlagen. */}
+							{text.includes('\n') ? (
+								<ol className="m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)] flex flex-col gap-2">
+									{text.split('\n').map((zeile) => (
+										<li key={zeile}>{zeile.replace(/^\d+\.\s*/, '')}</li>
+									))}
+								</ol>
+							) : (
+								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
+									{text}
+								</p>
+							)}
 						</section>
 					))}
 				</div>
