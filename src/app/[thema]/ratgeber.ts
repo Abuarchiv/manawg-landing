@@ -256,12 +256,32 @@ export const RATGEBER: Record<string, Thema> = {
 				'Definiert, was gemeinsam bezahlt wird (Putzmittel, Klopapier, Gewürze) und was nicht. Legt fest, wie ausgeglichen wird. Mit einer gemeinsamen Einkaufsliste weiß jeder, was fehlt, und doppelte Einkäufe entfallen.',
 			],
 			[
+				'Bad, Küche und Gemeinschaftsräume',
+				'Morgens wird das Bad schnell knapp. Wer früh raus muss, bekommt ein festes Zeitfenster, alle anderen duschen davor oder danach. In der Küche gilt: Wer kocht, räumt danach auf, und die Arbeitsfläche ist frei für die nächste Person. Im Wohnzimmer bleibt nichts Privates dauerhaft liegen, sonst wird der Raum zum Abstellraum.',
+			],
+			[
+				'Rauchen, Haustiere und Instrumente',
+				'Diese drei Punkte sorgen für den meisten Ärger, wenn sie vorher nicht besprochen sind. Klärt, ob in der Wohnung oder nur auf dem Balkon geraucht wird, ob Haustiere erlaubt sind (der Mietvertrag kann hier Grenzen setzen) und zu welchen Zeiten geübt werden darf. Am besten fragt ihr das schon beim WG-Casting.',
+			],
+			[
+				'Regeln für neue Mitbewohner',
+				'Wer neu einzieht, kennt die gewachsenen Absprachen nicht. Zeigt die Regeln vor dem Einzug, nicht erst beim ersten Streit, und fragt, ob etwas davon nicht passt. Nach einem Monat lohnt eine kurze Runde: Was ist ungewohnt, was soll sich ändern? So fühlen sich neue Leute als Teil der WG und nicht als Gast mit Pflichten.',
+			],
+			[
 				'Wie ihr Regeln festhaltet',
 				'Schreibt sie an einen Ort, den alle sehen. In ManaWG eignet sich die Pinnwand: Beschlüsse und Ankündigungen bleiben dort stehen, statt im Chatverlauf zu verschwinden. Ein Beschluss gilt, wenn alle zugestimmt haben, und lässt sich in der monatlichen WG-Runde anpassen.',
 			],
 			[
 				'Konflikte ansprechen',
 				'Sprecht Probleme früh und sachlich an: konkretes Verhalten, konkrete Auswirkung, konkreter Wunsch. „Du lässt oft Geschirr stehen, das stört mich, kannst du es abends spülen?“ funktioniert besser als „Du bist unordentlich“.',
+			],
+			[
+				'Wenn jemand Regeln wiederholt bricht',
+				'1. Unter vier Augen ansprechen, sachlich und konkret.\n2. In der WG-Runde gemeinsam besprechen, ob die Regel noch passt.\n3. Eine klare Folge vereinbaren, etwa dass verpasste Putzaufgaben nachgeholt werden.\n4. Hilft nichts davon, offen über einen Auszug sprechen, bevor die Stimmung ganz kippt.',
+			],
+			[
+				'Regeln, Hausordnung und Mietvertrag',
+				'WG-Regeln sind Absprachen unter Mitbewohnern. Sie ergänzen Mietvertrag und Hausordnung, ersetzen sie aber nicht. Was dort steht, etwa Ruhezeiten im Haus oder Regeln zur Tierhaltung, gilt unabhängig von euren Absprachen. Prüft deshalb vorher, was der Vertrag schon festlegt.',
 			],
 		],
 		fragen: [
@@ -277,11 +297,19 @@ export const RATGEBER: Record<string, Thema> = {
 				'Gibt es eine Vorlage für WG-Regeln?',
 				'Ja, oben auf dieser Seite stehen zehn Regeln zu Ruhezeiten, Besuch, Putzen, Kühlschrank und Geld. Übernehmt nur, was zu eurer WG passt, und passt die Zahlen an.',
 			],
+			[
+				'Sind WG-Regeln rechtlich verbindlich?',
+				'In der Regel nicht. Es sind Absprachen unter Mitbewohnern. Verbindlich sind Mietvertrag und Hausordnung, die WG-Regeln ergänzen sie im Alltag.',
+			],
+			[
+				'Was tun, wenn sich jemand nicht an die WG-Regeln hält?',
+				'Erst unter vier Augen ansprechen, dann in der WG-Runde. Vereinbart eine klare Folge, zum Beispiel, dass verpasste Aufgaben nachgeholt werden.',
+			],
 		],
 	},
 	'wg-nebenkosten': {
 		link: 'WG-Nebenkosten',
-		stand: '2026-10-11',
+		stand: '2026-10-19',
 		erschienen: '2026-10-11',
 		titel: 'WG-Nebenkosten, Strom und Internet fair aufteilen | ManaWG',
 		beschreibung:
@@ -293,6 +321,14 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Nebenkosten: Vorauszahlung und Abrechnung',
 				'Die Nebenkosten bezahlt ihr in der Regel als monatliche Vorauszahlung, im Folgejahr kommt die Abrechnung des Vermieters. Sie kann zu einer Nachzahlung oder einem Guthaben führen. Verteilt diese so wie die Vorauszahlung, und zwar unter denjenigen, die im Abrechnungszeitraum in der WG gewohnt haben. Zieht jemand zwischendurch aus oder ein, rechnet ihr anteilig nach Monaten.',
+			],
+			[
+				'Beispiel: Nachzahlung bei Wechsel in der WG',
+				'Die Abrechnung für das Vorjahr ergibt 360 Euro Nachzahlung. A und B haben das ganze Jahr in der WG gewohnt, C ist nach acht Monaten ausgezogen, D für die letzten vier Monate eingezogen. Zusammen sind das 12 + 12 + 8 + 4 = 36 Personenmonate, also 10 Euro pro Monat: A und B zahlen je 120 Euro, C 80 Euro und D 40 Euro. Ein Guthaben verteilt ihr genauso.',
+			],
+			[
+				'Nach Köpfen oder nach Zimmergröße?',
+				'Nach Köpfen ist am einfachsten und üblich, wenn die Zimmer ähnlich groß sind. Unterscheiden sie sich deutlich, teilt ihr nach Fläche. Beispiel: Zimmer mit 20, 16 und 14 Quadratmetern ergeben Anteile von 40, 32 und 28 Prozent. Bei 300 Euro Nebenkosten zahlen die drei 120, 96 und 84 Euro. Viele WGs mischen auch: Heizung nach Fläche, alles andere nach Köpfen.',
 			],
 			[
 				'Strom und Gas',
@@ -310,11 +346,19 @@ export const RATGEBER: Record<string, Thema> = {
 				'Monatsabrechnung als Überblick',
 				'Eine Monatsübersicht zeigt, was insgesamt ausgegeben wurde und wer wem etwas schuldet. ManaWG erstellt sie automatisch: Gesamtsumme, Ausgaben je Kategorie und Überweisungsvorschläge. Am Monatsanfang kommt sie per Mail, das kann jede Person abschalten.',
 			],
+			[
+				'Bei Auszug an die Abrechnung denken',
+				'Die Nebenkostenabrechnung kommt oft erst Monate nach einem Auszug. Vereinbart deshalb beim Auszug, wie die ausziehende Person ihren Anteil an einer späteren Nachzahlung trägt oder ein Guthaben bekommt, und tauscht Kontaktdaten aus. Manche WGs behalten dafür einen kleinen Betrag ein, bis die Abrechnung da ist.',
+			],
 		],
 		fragen: [
 			[
 				'Wie werden Nebenkosten in der WG aufgeteilt?',
 				'Meist wie die Miete, also nach Köpfen oder Zimmergröße. Nachzahlungen verteilt ihr unter denen, die im Abrechnungszeitraum in der WG wohnten.',
+			],
+			[
+				'Wer zahlt die Nachzahlung, wenn jemand ausgezogen ist?',
+				'Alle, die im Abrechnungszeitraum in der WG gewohnt haben, anteilig nach Monaten. Die ausgezogene Person zahlt also für die Monate, in denen sie da war.',
 			],
 			[
 				'Wer zahlt den Rundfunkbeitrag in der WG?',
