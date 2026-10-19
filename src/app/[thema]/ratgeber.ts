@@ -283,6 +283,65 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 		],
 	},
+	'wg-zwischenmiete': {
+		link: 'Zwischenmiete',
+		stand: '2026-10-19',
+		erschienen: '2026-10-19',
+		titel: 'Zwischenmiete in der WG: Ablauf, Vertrag, Kosten | ManaWG',
+		beschreibung:
+			'WG-Zimmer zwischenvermieten für Auslandssemester oder Praktikum: Erlaubnis des Vermieters, Zwischenmietvertrag, Miete, Kaution, Anmeldung und Übergabe.',
+		h1: 'Zwischenmiete in der WG',
+		einleitung:
+			'Ein Auslandssemester, ein Praktikum in einer anderen Stadt oder ein paar Monate auf Reisen: Wer das WG-Zimmer behalten will, aber keine Miete für ein leeres Zimmer zahlen möchte, sucht eine Zwischenmiete. Damit das für alle gut geht, braucht es die Erlaubnis des Vermieters, einen klaren Vertrag und die Zustimmung der Mitbewohner. Diese Seite gibt einen Überblick und ersetzt keine Rechtsberatung.',
+		abschnitte: [
+			[
+				'Erst fragen: Vermieter und WG',
+				'Eine Zwischenmiete ist rechtlich eine Untervermietung und braucht die Erlaubnis des Vermieters, am besten schriftlich. Wer nach Vertragsschluss ein berechtigtes Interesse hat, etwa wegen eines befristeten Auslandsaufenthalts, hat unter bestimmten Voraussetzungen einen Anspruch darauf. Genauso wichtig sind die Mitbewohner: Sie leben monatelang mit der neuen Person zusammen und sollten bei der Auswahl mitentscheiden.',
+			],
+			[
+				'Den Zwischenmieter finden',
+				'Zwischenmieter suchen oft kurzfristig und für feste Zeiträume, etwa Austauschstudierende oder Praktikanten. Gebt in der Anzeige genau an, von wann bis wann das Zimmer frei ist, was es warm kostet und was im Zimmer bleibt. Ein kurzes Kennenlernen mit der WG, notfalls per Videocall, verhindert böse Überraschungen. Wie ihr Bewerbungen sortiert und auswählt, steht unter [Mitbewohner finden](/mitbewohner-finden).',
+			],
+			[
+				'Der Zwischenmietvertrag',
+				'1. Namen von Hauptmieter oder Mieter und Zwischenmieter\n2. Genauer Zeitraum mit Anfangs- und Enddatum\n3. Miete inklusive Nebenkosten, Internet und Rundfunkanteil\n4. Kaution und wann sie zurückgezahlt wird\n5. Welche Möbel und Gegenstände im Zimmer bleiben\n6. Dass die Regeln der WG gelten, etwa Putzplan und Ruhezeiten\n7. Übergabe mit Protokoll und Fotos zu Beginn und am Ende',
+			],
+			[
+				'Miete und Kaution',
+				'Üblich ist, dass der Zwischenmieter die Miete für das Zimmer übernimmt, also den Anteil an Kaltmiete, Nebenkosten, Strom und Internet. Ihr selbst zahlt an Vermieter oder WG weiter wie bisher und bekommt das Geld vom Zwischenmieter. Eine Kaution von ein bis zwei Monatsmieten schützt euch vor Schäden und offenen Beträgen. Wer möbliert vermietet, darf dafür einen angemessenen Aufschlag nehmen, ein Gewinn auf Kosten des Zwischenmieters ist aber nicht der Sinn.',
+			],
+			[
+				'Anmeldung und Formalitäten',
+				'Wer bereits in Deutschland gemeldet ist und nicht länger als sechs Monate bleibt, muss sich für die Zwischenmiete in der Regel nicht ummelden. Bei längeren Zeiträumen oder bei Zuzug aus dem Ausland ist eine Anmeldung innerhalb von zwei Wochen nötig, mit einer Wohnungsgeberbestätigung. Ihr selbst bleibt während eurer Abwesenheit normalerweise unter der WG-Adresse gemeldet. Denkt an einen Nachsendeauftrag oder bittet die WG, eure Post zu sammeln.',
+			],
+			[
+				'Im WG-Alltag',
+				'Für die Zeit der Zwischenmiete ist die neue Person ein vollwertiges WG-Mitglied: Sie steht im Putzplan, zahlt bei gemeinsamen Einkäufen mit und hält sich an die Regeln. In ManaWG tritt sie der WG per Einladungslink bei und verlässt sie am Ende wieder selbst. Ausgaben werden in dieser Zeit mit ihr geteilt, nicht mit euch. Vor dem Auszug sollte ihr Saldo auf null stehen.',
+			],
+			[
+				'Rückkehr und Übergabe',
+				'Macht am Ende eine Übergabe mit dem Protokoll vom Anfang. Prüft Zimmer und Inventar, gleicht offene Beträge aus und zahlt die Kaution zurück, wenn alles in Ordnung ist. Plant ein paar Tage Puffer zwischen Auszug des Zwischenmieters und eurer Rückkehr ein, falls sich ein Termin verschiebt. Wer wegen der Abwesenheit noch Fragen zu Putzplan und Kosten hat, findet sie unter [Urlaub und Abwesenheit in der WG](/wg-abwesenheit-urlaub).',
+			],
+		],
+		fragen: [
+			[
+				'Brauche ich für eine Zwischenmiete die Erlaubnis des Vermieters?',
+				'Ja. Zwischenmiete ist Untervermietung und braucht die Erlaubnis des Vermieters. Bei einem befristeten Auslandsaufenthalt besteht unter bestimmten Voraussetzungen ein Anspruch darauf.',
+			],
+			[
+				'Muss sich ein Zwischenmieter anmelden?',
+				'Wer schon in Deutschland gemeldet ist und höchstens sechs Monate bleibt, in der Regel nicht. Bei längeren Aufenthalten oder Zuzug aus dem Ausland ist eine Anmeldung innerhalb von zwei Wochen nötig.',
+			],
+			[
+				'Wie viel Kaution nimmt man bei einer Zwischenmiete?',
+				'Üblich sind ein bis zwei Monatsmieten. Sie wird nach der Übergabe am Ende zurückgezahlt, wenn keine Schäden oder offenen Beträge da sind.',
+			],
+			[
+				'Darf ich bei der Zwischenmiete mehr verlangen, als ich selbst zahle?',
+				'Ein angemessener Aufschlag für mitvermietete Möbel ist üblich. Deutlich mehr zu verlangen, ist unfair gegenüber dem Zwischenmieter und kann Ärger mit dem Vermieter bringen.',
+			],
+		],
+	},
 	'wg-regeln': {
 		link: 'WG-Regeln',
 		stand: '2026-10-19',
@@ -785,7 +844,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Längere Abwesenheit: Praktikum und Auslandssemester',
-				'Bei mehreren Monaten stellt sich die Frage nach einer Zwischenmiete, ähnlich wie beim [Auszug](/wg-auszug-checkliste). Ob das erlaubt ist, hängt vom Mietvertrag ab, meist muss der Vermieter zustimmen. Klärt in der WG, ob alle mit der Person einverstanden sind, denn sie lebt in dieser Zeit mit euch. Die Zwischenmieterin oder der Zwischenmieter kann der WG in ManaWG beitreten und übernimmt für die Zeit Aufgaben und Kosten. Danach tritt sie wieder aus.',
+				'Bei mehreren Monaten stellt sich die Frage nach einer [Zwischenmiete](/wg-zwischenmiete). Ob das erlaubt ist, hängt vom Mietvertrag ab, meist muss der Vermieter zustimmen. Klärt in der WG, ob alle mit der Person einverstanden sind, denn sie lebt in dieser Zeit mit euch. Die Zwischenmieterin oder der Zwischenmieter kann der WG in ManaWG beitreten und übernimmt für die Zeit Aufgaben und Kosten. Danach tritt sie wieder aus.',
 			],
 			[
 				'Beispiel: Auslandssemester ohne Zwischenmiete',
@@ -1025,7 +1084,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Zwischenmiete statt Auszug',
-				'Wer nur für ein Auslandssemester oder ein Praktikum weg ist, muss nicht ausziehen. Mit Erlaubnis des Vermieters oder Hauptmieters lässt sich das Zimmer für diese Zeit untervermieten. Klärt vorher schriftlich Zeitraum, Miete, Nebenkosten und was mit euren Möbeln passiert. Für die Abrechnung in der WG zählt in dieser Zeit die Zwischenmieterin oder der Zwischenmieter als Mitbewohner.',
+				'Wer nur für ein Auslandssemester oder ein Praktikum weg ist, muss nicht ausziehen. Mit Erlaubnis des Vermieters oder Hauptmieters lässt sich das Zimmer für diese Zeit [untervermieten](/wg-zwischenmiete). Klärt vorher schriftlich Zeitraum, Miete, Nebenkosten und was mit euren Möbeln passiert. Für die Abrechnung in der WG zählt in dieser Zeit die Zwischenmieterin oder der Zwischenmieter als Mitbewohner.',
 			],
 			[
 				'Übergabe',

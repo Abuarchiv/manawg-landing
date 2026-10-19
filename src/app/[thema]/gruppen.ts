@@ -29,6 +29,7 @@ export const GRUPPEN: Array<{ name: string; slugs: string[] }> = [
 			'wg-regeln',
 			'wg-streit-loesen',
 			'wg-abwesenheit-urlaub',
+			'wg-zwischenmiete',
 			'wg-auszug-checkliste',
 		],
 	},
