@@ -151,7 +151,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-gruenden-checkliste': {
 		link: 'WG gründen',
-		stand: '2026-10-19',
+		stand: '2026-10-20',
 		erschienen: '2026-10-11',
 		titel: 'WG gründen: Checkliste von Mietvertrag bis Putzplan | ManaWG',
 		beschreibung:
@@ -174,7 +174,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'4. Anmelden und Verträge abschließen',
-				'Nach dem Einzug muss sich jede Person innerhalb von zwei Wochen beim Bürgeramt anmelden. Dafür braucht es eine Wohnungsgeberbestätigung, die der Vermieter ausstellt, bei Untermiete der Hauptmieter. Strom und Internet laufen meist auf eine Person, die Kosten teilt ihr. Der Rundfunkbeitrag fällt einmal pro Wohnung an, nicht pro Person: Eine Person meldet sich an, die anderen geben deren Beitragsnummer an. Jede Person sollte eine eigene Haftpflichtversicherung haben und prüfen, ob ihre Hausratversicherung eine WG abdeckt.',
+				'Nach dem Einzug muss sich jede Person innerhalb von zwei Wochen beim Bürgeramt anmelden. Dafür braucht es eine [Wohnungsgeberbestätigung](/wg-anmeldung), die der Vermieter ausstellt, bei Untermiete der Hauptmieter. Strom und Internet laufen meist auf eine Person, die Kosten teilt ihr. Der Rundfunkbeitrag fällt einmal pro Wohnung an, nicht pro Person: Eine Person meldet sich an, die anderen geben deren Beitragsnummer an. Jede Person sollte eine eigene Haftpflichtversicherung haben und prüfen, ob ihre Hausratversicherung eine WG abdeckt.',
 			],
 			[
 				'5. Geld verbindlich regeln',
@@ -226,7 +226,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-mietvertrag': {
 		link: 'WG-Mietvertrag',
-		stand: '2026-10-19',
+		stand: '2026-10-20',
 		erschienen: '2026-10-19',
 		titel: 'WG-Mietvertrag: Hauptmiete, Untermiete, Einzelvertrag | ManaWG',
 		beschreibung:
@@ -237,7 +237,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Modell 1: Gemeinsamer Hauptmietvertrag',
-				'Alle Mitbewohner unterschreiben einen Vertrag mit dem Vermieter. Jede Person hat damit dieselben Rechte, aber alle haften gemeinsam für die ganze Miete: Zahlt eine Person nicht, kann der Vermieter den vollen Betrag von jeder anderen verlangen. Kündigen können in der Regel nur alle gemeinsam. Will eine Person ausziehen, braucht der Wechsel die Zustimmung des Vermieters und der übrigen Mieter. Manche Vermieter nehmen dafür eine Klausel auf, die Mieterwechsel in der WG ausdrücklich erlaubt. Achtet beim Unterschreiben darauf, ob es sie gibt.',
+				'Alle Mitbewohner unterschreiben einen Vertrag mit dem Vermieter. Jede Person hat damit dieselben Rechte, aber alle haften gemeinsam für die ganze Miete: Zahlt eine Person nicht, kann der Vermieter den vollen Betrag von jeder anderen verlangen. Kündigen können in der Regel nur alle gemeinsam, und [einen Mitbewohner kündigen](/mitbewohner-kuendigen) kann niemand. Will eine Person ausziehen, braucht der Wechsel die Zustimmung des Vermieters und der übrigen Mieter. Manche Vermieter nehmen dafür eine Klausel auf, die Mieterwechsel in der WG ausdrücklich erlaubt. Achtet beim Unterschreiben darauf, ob es sie gibt.',
 			],
 			[
 				'Modell 2: Hauptmieter mit Untermietern',
@@ -285,7 +285,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-zwischenmiete': {
 		link: 'Zwischenmiete',
-		stand: '2026-10-19',
+		stand: '2026-10-20',
 		erschienen: '2026-10-19',
 		titel: 'Zwischenmiete in der WG: Ablauf, Vertrag, Kosten | ManaWG',
 		beschreibung:
@@ -312,7 +312,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Anmeldung und Formalitäten',
-				'Wer bereits in Deutschland gemeldet ist und nicht länger als sechs Monate bleibt, muss sich für die Zwischenmiete in der Regel nicht ummelden. Bei längeren Zeiträumen oder bei Zuzug aus dem Ausland ist eine Anmeldung innerhalb von zwei Wochen nötig, mit einer Wohnungsgeberbestätigung. Ihr selbst bleibt während eurer Abwesenheit normalerweise unter der WG-Adresse gemeldet. Denkt an einen Nachsendeauftrag oder bittet die WG, eure Post zu sammeln.',
+				'Wer bereits in Deutschland gemeldet ist und nicht länger als sechs Monate bleibt, muss sich für die Zwischenmiete in der Regel nicht ummelden. Bleibt die Person länger, muss sie sich innerhalb von zwei Wochen nach Ablauf der sechs Monate [anmelden](/wg-anmeldung), wer sonst im Ausland wohnt, schon nach drei Monaten. Dafür stellt ihr als Hauptmieter die Wohnungsgeberbestätigung aus. Ihr selbst bleibt während eurer Abwesenheit normalerweise unter der WG-Adresse gemeldet. Denkt an einen Nachsendeauftrag oder bittet die WG, eure Post zu sammeln.',
 			],
 			[
 				'Im WG-Alltag',
@@ -330,7 +330,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Muss sich ein Zwischenmieter anmelden?',
-				'Wer schon in Deutschland gemeldet ist und höchstens sechs Monate bleibt, in der Regel nicht. Bei längeren Aufenthalten oder Zuzug aus dem Ausland ist eine Anmeldung innerhalb von zwei Wochen nötig.',
+				'Wer schon in Deutschland gemeldet ist und höchstens sechs Monate bleibt, in der Regel nicht. Wer sonst im Ausland wohnt, muss sich nach drei Monaten anmelden.',
 			],
 			[
 				'Wie viel Kaution nimmt man bei einer Zwischenmiete?',
@@ -766,7 +766,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
-		stand: '2026-10-19',
+		stand: '2026-10-20',
 		erschienen: '2026-10-11',
 		titel: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		beschreibung:
@@ -797,7 +797,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Was ins WG-Zimmer mitkommt',
-				'Bettzeug, Handtücher und eigene Hygieneartikel\nTeller, Tasse und Besteck, falls die Küche knapp ausgestattet ist\nVerlängerungskabel und Mehrfachstecker\nEin eigenes Fach für Vorräte, beschriftet\nAusweis und Wohnungsgeberbestätigung für die Anmeldung',
+				'Bettzeug, Handtücher und eigene Hygieneartikel\nTeller, Tasse und Besteck, falls die Küche knapp ausgestattet ist\nVerlängerungskabel und Mehrfachstecker\nEin eigenes Fach für Vorräte, beschriftet\nAusweis und Wohnungsgeberbestätigung für die [Anmeldung](/wg-anmeldung)',
 			],
 			[
 				'Nach dem ersten Monat',
@@ -1057,7 +1057,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-auszug-checkliste': {
 		link: 'WG-Auszug',
-		stand: '2026-10-19',
+		stand: '2026-10-20',
 		erschienen: '2026-10-19',
 		titel: 'WG-Auszug: Checkliste für Kündigung und Abrechnung | ManaWG',
 		beschreibung:
@@ -1080,7 +1080,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Verträge und Behörden',
-				'Läuft der Internetvertrag, der Stromvertrag oder der Rundfunkbeitrag auf euren Namen, muss jemand aus der WG übernehmen oder der Vertrag umgestellt werden. Sprecht das früh ab. In Deutschland meldet ihr euch innerhalb von zwei Wochen am neuen Wohnort an. Eine eigene Abmeldung ist nur nötig, wenn ihr ins Ausland zieht oder keine neue Wohnung in Deutschland bezieht. Denkt auch an einen Nachsendeauftrag für die Post.',
+				'Läuft der Internetvertrag, der Stromvertrag oder der Rundfunkbeitrag auf euren Namen, muss jemand aus der WG übernehmen oder der Vertrag umgestellt werden. Sprecht das früh ab. In Deutschland meldet ihr euch innerhalb von zwei Wochen am neuen Wohnort [an](/wg-anmeldung). Eine eigene Abmeldung ist nur nötig, wenn ihr ins Ausland zieht oder keine neue Wohnung in Deutschland bezieht. Denkt auch an einen Nachsendeauftrag für die Post.',
 			],
 			[
 				'Zwischenmiete statt Auszug',
@@ -1116,7 +1116,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-streit-loesen': {
 		link: 'Streit in der WG',
-		stand: '2026-10-19',
+		stand: '2026-10-20',
 		erschienen: '2026-10-19',
 		titel: 'Streit in der WG lösen: Putzen, Lärm, Geld | ManaWG',
 		beschreibung:
@@ -1147,7 +1147,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Die WG-Runde',
-				'Ein regelmäßiges kurzes Treffen, etwa einmal im Monat, gibt allen einen festen Ort für Themen. Jede Person darf etwas einbringen, Entscheidungen werden festgehalten. Wenn es trotz Gesprächen nicht besser wird, ist es kein Scheitern zu überlegen, ob die Konstellation passt. Manchmal ist ein [Auszug](/wg-auszug-checkliste) die fairste Lösung für alle.',
+				'Ein regelmäßiges kurzes Treffen, etwa einmal im Monat, gibt allen einen festen Ort für Themen. Jede Person darf etwas einbringen, Entscheidungen werden festgehalten. Wenn es trotz Gesprächen nicht besser wird, ist es kein Scheitern zu überlegen, ob die Konstellation passt. Manchmal ist ein [Auszug](/wg-auszug-checkliste) die fairste Lösung für alle. Wer wem kündigen darf, hängt am Vertrag, siehe [Mitbewohner kündigen](/mitbewohner-kuendigen).',
 			],
 		],
 		fragen: [
@@ -1163,6 +1163,164 @@ export const RATGEBER: Record<string, Thema> = {
 				'Hilft ein Putzplan gegen Streit in der WG?',
 				'Ja, wenn er feste Rotation hat und für alle sichtbar ist. Dann ist klar, wer dran ist, und die Diskussion darüber entfällt.',
 			],
+		],
+	},
+	'mitbewohner-kuendigen': {
+		link: 'Mitbewohner kündigen',
+		stand: '2026-10-20',
+		erschienen: '2026-10-20',
+		titel: 'Mitbewohner kündigen: was in der WG erlaubt ist | ManaWG',
+		beschreibung:
+			'Kann man einen Mitbewohner rauswerfen? Was bei Untermiete, gemeinsamem Hauptmietvertrag und Einzelverträgen gilt, welche Fristen laufen und was verboten ist.',
+		h1: 'Mitbewohner kündigen: was in der WG geht',
+		einleitung:
+			'Wenn das Zusammenleben nicht mehr funktioniert, kommt schnell die Frage, ob man einen Mitbewohner einfach rauswerfen kann. Die Antwort hängt fast nur davon ab, wer mit wem einen Vertrag hat. Wer selbst Vermieter des Mitbewohners ist, kann kündigen, alle anderen nicht. Diese Seite gibt einen Überblick nach dem Bürgerlichen Gesetzbuch und ersetzt keine Rechtsberatung. Bei einem konkreten Fall helfen Mietervereine oder eine Anwältin für Mietrecht.',
+		abschnitte: [
+			[
+				'Erst klären: Wer hat welchen Vertrag?',
+				'In einer WG gibt es drei übliche Modelle: alle stehen gemeinsam im Hauptmietvertrag, eine Person ist Hauptmieter und vermietet Zimmer unter, oder jede Person hat einen eigenen Vertrag mit dem Vermieter. Nur im zweiten Fall ist ein Mitbewohner Vermieter eines anderen und kann ihm kündigen. Wie sich die Modelle sonst unterscheiden, steht im Ratgeber zum [WG-Mietvertrag](/wg-mietvertrag).',
+			],
+			[
+				'Untermiete: Der Hauptmieter kündigt',
+				'Ein Untermieter hat grundsätzlich denselben Kündigungsschutz wie jeder Mieter. Der Hauptmieter braucht dann ein berechtigtes Interesse, etwa wenn der Untermieter seine Pflichten erheblich verletzt, und muss mindestens drei Monate Frist einhalten. Wohnt der Hauptmieter selbst in der Wohnung, wird es leichter. Für ein überwiegend vom Hauptmieter möbliertes Zimmer gilt kein Kündigungsschutz, und die Kündigung ist bis zum 15. eines Monats zum Monatsende möglich, außer das Zimmer ist dauerhaft an eine Familie oder ein Paar vermietet. Ist das Zimmer leer vermietet, darf der Hauptmieter ohne Grund kündigen, die Frist verlängert sich aber um drei Monate. Im Schreiben muss dann stehen, dass er sich auf diese erleichterte Kündigung stützt.',
+			],
+			[
+				'Gemeinsamer Hauptmietvertrag: Rauswerfen geht nicht',
+				'Stehen alle im Mietvertrag, sind alle gleichberechtigte Mieter. Niemand kann einem anderen kündigen, auch nicht die Mehrheit der WG. Der Vermieter kann ebenfalls nur allen gemeinsam kündigen. Ein Wechsel klappt nur, wenn alle einverstanden sind: Die Person zieht freiwillig aus, und Vermieter und übrige Mieter vereinbaren, dass sie aus dem Vertrag entlassen wird. Will jemand selbst raus und die anderen stellen sich quer, kann im Einzelfall ein Anspruch bestehen, an einer Kündigung mitzuwirken. Das ist umstritten und ein Fall für eine Beratung.',
+			],
+			[
+				'Einzelverträge: Nur der Vermieter kann kündigen',
+				'Hat jede Person einen eigenen Vertrag, haben die Mitbewohner keine Handhabe. Kündigen kann nur der Vermieter, und auch er nur aus einem gesetzlichen Grund. Fristlos geht das zum Beispiel, wenn jemand mit zwei Monatsmieten im Rückstand ist oder den Hausfrieden nachhaltig stört. Was ihr tun könnt: Vorfälle mit Datum aufschreiben und dem Vermieter schriftlich melden.',
+			],
+			[
+				'Form und Ablauf der Kündigung',
+				'Eine Kündigung von Wohnraum muss schriftlich sein, also auf Papier mit eigenhändiger Unterschrift. E-Mail, Messenger oder ein Zettel ohne Unterschrift reichen nicht. Damit die Frist läuft, muss die Kündigung zugehen. Übergebt sie persönlich mit einer Zeugin oder schickt sie per Einwurf-Einschreiben. Nennt das Datum, zu dem das Mietverhältnis enden soll, und bei Untermiete den Grund oder die Regel, auf die ihr euch stützt.',
+			],
+			[
+				'Was verboten ist',
+				'Das Schloss austauschen, Sachen vor die Tür stellen oder Strom und Internet für ein Zimmer abklemmen ist verbotene Eigenmacht und kann strafbar sein, selbst wenn die Kündigung wirksam ist. Zieht jemand nach Ablauf der Frist nicht aus, bleibt nur die Räumungsklage beim Amtsgericht. Bei Gewalt oder Drohungen ruft ihr die Polizei. Das ist etwas anderes als ein Mietstreit.',
+			],
+			[
+				'Auf einen Blick',
+				'Untermiete, möbliertes Zimmer in der Wohnung des Hauptmieters: Kündigung ohne Grund bis zum 15. zum Monatsende\nUntermiete, leeres Zimmer in der Wohnung des Hauptmieters: Kündigung ohne Grund, Frist drei Monate länger\nUntermiete, Hauptmieter wohnt nicht selbst dort: nur mit berechtigtem Interesse\nGemeinsamer Hauptmietvertrag: kein Rauswurf durch Mitbewohner, nur Einigung\nEinzelverträge: nur der Vermieter kann kündigen, und nur mit Grund',
+			],
+			[
+				'Bevor es so weit kommt',
+				'Die meisten Konflikte lassen sich lösen, bevor jemand an Kündigung denkt. Sprecht Probleme früh an und haltet Absprachen fest, damit nicht jedes Thema neu verhandelt wird. Wie das gelingt, steht im Ratgeber [Streit in der WG lösen](/wg-streit-loesen). Geht es um Geld, hilft eine gemeinsame Übersicht, siehe [Schulden unter Mitbewohnern](/schulden-mitbewohner). Steht der Auszug fest, klärt Kaution und offene Beträge mit der [Auszugs-Checkliste](/wg-auszug-checkliste).',
+			],
+		],
+		fragen: [
+			[
+				'Kann man einen Mitbewohner aus der WG werfen?',
+				'Nur wenn ihr sein Vermieter seid, also bei Untermiete. Stehen alle im Hauptmietvertrag oder hat jede Person einen eigenen Vertrag, kann kein Mitbewohner einem anderen kündigen.',
+			],
+			[
+				'Welche Kündigungsfrist gilt für einen Untermieter in der WG?',
+				'Für ein vom Hauptmieter möbliertes Zimmer in seiner eigenen Wohnung bis zum 15. eines Monats zum Monatsende. Für ein leeres Zimmer in seiner Wohnung drei Monate länger als normal, ohne Grund. Wohnt der Hauptmieter nicht selbst dort, braucht er ein berechtigtes Interesse.',
+			],
+			[
+				'Reicht eine Kündigung per WhatsApp oder E-Mail?',
+				'Nein. Die Kündigung von Wohnraum braucht die Schriftform, also ein Schreiben mit eigenhändiger Unterschrift.',
+			],
+			[
+				'Darf ich das Schloss austauschen, wenn der Mitbewohner nicht auszieht?',
+				'Nein. Das ist verbotene Eigenmacht und kann strafbar sein. Zieht jemand trotz wirksamer Kündigung nicht aus, bleibt nur die Räumungsklage.',
+			],
+			[
+				'Kann die Mehrheit der WG einen Mitbewohner rauswählen?',
+				'Rechtlich nicht. Eine Abstimmung ersetzt keine Kündigung. Sie kann nur der Vertragspartner aussprechen, bei Untermiete der Hauptmieter, sonst der Vermieter.',
+			],
+		],
+		quellen: [
+			[
+				'§ 549 BGB, Ausnahmen vom Mieterschutz',
+				'https://www.gesetze-im-internet.de/bgb/__549.html',
+			],
+			['§ 573a BGB, erleichterte Kündigung', 'https://www.gesetze-im-internet.de/bgb/__573a.html'],
+			['§ 573c BGB, Kündigungsfristen', 'https://www.gesetze-im-internet.de/bgb/__573c.html'],
+			['§ 568 BGB, Schriftform der Kündigung', 'https://www.gesetze-im-internet.de/bgb/__568.html'],
+			['§ 543 BGB, fristlose Kündigung', 'https://www.gesetze-im-internet.de/bgb/__543.html'],
+		],
+	},
+	'wg-anmeldung': {
+		link: 'Anmeldung in der WG',
+		stand: '2026-10-20',
+		erschienen: '2026-10-20',
+		titel: 'Anmeldung in der WG: Wohnungsgeberbestätigung | ManaWG',
+		beschreibung:
+			'Anmelden im WG-Zimmer: Frist, wer die Wohnungsgeberbestätigung ausstellt, was drinstehen muss, Nebenwohnung und wann keine Anmeldung nötig ist.',
+		h1: 'Anmeldung in der WG',
+		einleitung:
+			'Wer in ein WG-Zimmer zieht, muss sich beim Bürgeramt anmelden, und dafür braucht es eine Wohnungsgeberbestätigung. Wer sie ausstellt, hängt vom Mietvertrag ab, und gerade bei Untermiete wissen viele Hauptmieter nicht, dass sie zuständig sind. Diese Seite fasst die Regeln des Bundesmeldegesetzes zusammen und ersetzt keine Rechtsberatung. Einzelheiten wie Formulare und Termine regelt eure Stadt.',
+		abschnitte: [
+			[
+				'Frist: zwei Wochen nach dem Einzug',
+				'Wer eine Wohnung bezieht, muss sich innerhalb von zwei Wochen nach dem Einzug bei der Meldebehörde anmelden, meist dem Bürgeramt. Das gilt auch für ein WG-Zimmer. In großen Städten sind Termine knapp. Bucht deshalb schon vor dem Umzug, die Frist läuft trotzdem. Viele Städte bieten die Anmeldung inzwischen auch online mit dem Personalausweis an.',
+			],
+			[
+				'Wer stellt die Wohnungsgeberbestätigung aus?',
+				'Wohnungsgeber ist, wer euch die Wohnung überlässt. Habt ihr einen eigenen Vertrag mit dem Vermieter oder steht ihr im gemeinsamen Hauptmietvertrag, ist es der Vermieter oder die Hausverwaltung. Bei Untermiete ist der Hauptmieter der Wohnungsgeber und muss die Bestätigung selbst ausstellen. Er muss den Einzug innerhalb der zwei Wochen bestätigen. Weigert er sich oder kommt sie nicht rechtzeitig, sagt ihr der Meldebehörde sofort Bescheid.',
+			],
+			[
+				'Was in der Bestätigung stehen muss',
+				'1. Name und Anschrift des Wohnungsgebers\n2. Bei Untermiete zusätzlich der Name des Eigentümers der Wohnung\n3. Das Einzugsdatum\n4. Die Anschrift der Wohnung\n5. Die Namen aller Personen, die einziehen und sich anmelden müssen',
+			],
+			[
+				'Was ihr zum Termin mitbringt',
+				'Personalausweis oder Reisepass, die Wohnungsgeberbestätigung und das ausgefüllte Anmeldeformular, falls eure Stadt eines verlangt. Wer aus dem Ausland zuzieht, braucht je nach Herkunft weitere Unterlagen, etwa einen Aufenthaltstitel. Die Anmeldung selbst ist in der Regel kostenlos.',
+			],
+			[
+				'Hauptwohnung oder Nebenwohnung',
+				'Wer noch bei den Eltern gemeldet ist, muss angeben, welche Wohnung die Hauptwohnung ist. Das ist die Wohnung, die ihr vorwiegend nutzt, für Studierende meist die WG am Studienort. Viele Städte erheben auf eine Nebenwohnung eine Zweitwohnungsteuer. Prüft das, bevor ihr die WG als Nebenwohnung meldet.',
+			],
+			[
+				'Wann keine Anmeldung nötig ist',
+				'Wer in Deutschland schon gemeldet ist und höchstens sechs Monate bleibt, muss sich für die neue Wohnung weder an- noch abmelden, zum Beispiel bei einer [Zwischenmiete](/wg-zwischenmiete) während eines Praktikums. Bleibt ihr länger, meldet ihr euch innerhalb von zwei Wochen nach Ablauf der sechs Monate an. Wer sonst im Ausland wohnt, muss sich schon nach drei Monaten anmelden.',
+			],
+			[
+				'Beim Auszug: abmelden nur in zwei Fällen',
+				'Wer innerhalb Deutschlands umzieht, meldet sich am neuen Wohnort an, die alte Adresse wird dabei automatisch abgemeldet. Abmelden müsst ihr euch nur, wenn ihr ins Ausland zieht oder eine Nebenwohnung aufgibt, ohne eine neue zu beziehen. Das geht frühestens eine Woche vor und spätestens zwei Wochen nach dem Auszug. Was beim Auszug sonst ansteht, steht in der [Auszugs-Checkliste](/wg-auszug-checkliste).',
+			],
+			[
+				'Bußgelder',
+				'Wer sich nicht oder zu spät anmeldet, begeht eine Ordnungswidrigkeit, die mit bis zu 1.000 Euro geahndet werden kann. Dasselbe gilt für einen Wohnungsgeber, der die Bestätigung nicht oder falsch ausstellt. Eine Gefälligkeitsbestätigung für jemanden, der gar nicht einzieht, kann bis zu 50.000 Euro kosten.',
+			],
+			[
+				'Nach der Anmeldung',
+				'Mit der Meldebescheinigung lassen sich Bankkonto, Rundfunkbeitrag und Verträge auf die neue Adresse umstellen. Den Rundfunkbeitrag zahlt die WG nur einmal, wie ihr ihn aufteilt, steht im Ratgeber zu [Nebenkosten](/wg-nebenkosten). Was in den ersten Tagen sonst wichtig ist, fasst die [Einzugs-Checkliste](/wg-einzug-checkliste) zusammen.',
+			],
+		],
+		fragen: [
+			[
+				'Wer stellt in der WG die Wohnungsgeberbestätigung aus?',
+				'Bei einem eigenen Vertrag oder dem gemeinsamen Hauptmietvertrag der Vermieter oder die Hausverwaltung. Bei Untermiete der Hauptmieter.',
+			],
+			[
+				'Wie lange habe ich Zeit, mich in der WG anzumelden?',
+				'Zwei Wochen ab dem Einzug. Ist kein Termin frei, bucht den nächsten möglichen und hebt die Bestätigung auf.',
+			],
+			[
+				'Muss ich mich für ein WG-Zimmer anmelden, wenn ich nur ein paar Monate bleibe?',
+				'Wer in Deutschland schon gemeldet ist und höchstens sechs Monate bleibt, nicht. Wer sonst im Ausland wohnt, muss sich nach drei Monaten anmelden.',
+			],
+			[
+				'Was passiert, wenn ich mich zu spät anmelde?',
+				'Es ist eine Ordnungswidrigkeit. Das Bußgeld kann bis zu 1.000 Euro betragen, die Höhe legt die Behörde im Einzelfall fest.',
+			],
+			[
+				'Muss ich mich beim Auszug aus der WG abmelden?',
+				'Nur wenn ihr ins Ausland zieht oder eine Nebenwohnung aufgibt. Bei einem Umzug innerhalb Deutschlands reicht die Anmeldung am neuen Ort.',
+			],
+		],
+		quellen: [
+			['§ 17 BMG, An- und Abmeldung', 'https://www.gesetze-im-internet.de/bmg/__17.html'],
+			['§ 19 BMG, Wohnungsgeberbestätigung', 'https://www.gesetze-im-internet.de/bmg/__19.html'],
+			['§ 21 BMG, Haupt- und Nebenwohnung', 'https://www.gesetze-im-internet.de/bmg/__21.html'],
+			[
+				'§ 27 BMG, Ausnahmen von der Meldepflicht',
+				'https://www.gesetze-im-internet.de/bmg/__27.html',
+			],
+			['§ 54 BMG, Bußgeldvorschriften', 'https://www.gesetze-im-internet.de/bmg/__54.html'],
 		],
 	},
 };

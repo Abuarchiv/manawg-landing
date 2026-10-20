@@ -7,13 +7,16 @@ import { THEMEN } from '../[thema]/themen';
 
 const titel = 'WG-Ratgeber: Geld, Putzplan, Regeln, Ein- und Auszug | ManaWG';
 const beschreibung =
-	'Alle Ratgeber für das Leben in der WG: Kosten aufteilen, Putzplan, WG-Regeln, Streit, Mietvertrag, Zwischenmiete, Einzug und Auszug. Kostenlos und ohne Anmeldung.';
+	'Alle Ratgeber für das Leben in der WG: Kosten aufteilen, Putzplan, WG-Regeln, Streit, Mietvertrag, Kündigung, Anmeldung, Einzug und Auszug. Kostenlos.';
 
 // Themen der Übersicht; was hier fehlt, landet unter „Weitere“, damit kein Ratgeber verschwindet.
 const THEMENKREISE: Array<[string, string[]]> = [
 	['Geld', ['wg-kosten-aufteilen', 'wg-nebenkosten', 'wg-haushaltskasse', 'schulden-mitbewohner']],
 	['Haushalt', ['putzplan-erstellen', 'putzplan-vorlage', 'wg-einkauf-organisieren']],
-	['Zusammenleben', ['wg-regeln', 'wg-streit-loesen', 'wg-abwesenheit-urlaub']],
+	[
+		'Zusammenleben',
+		['wg-regeln', 'wg-streit-loesen', 'mitbewohner-kuendigen', 'wg-abwesenheit-urlaub'],
+	],
 	[
 		'Gründen, Ein- und Auszug',
 		[
@@ -22,6 +25,7 @@ const THEMENKREISE: Array<[string, string[]]> = [
 			'mitbewohner-finden',
 			'wg-casting-fragen',
 			'wg-einzug-checkliste',
+			'wg-anmeldung',
 			'wg-zwischenmiete',
 			'wg-auszug-checkliste',
 		],
@@ -113,7 +117,7 @@ export default function RatgeberPage() {
 			</nav>
 
 			<div className={`${rand} flex-1`}>
-				<h1 className="font-[family-name:'Inter_Tight'] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch]">
+				<h1 className="font-[family-name:'Inter_Tight'] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] hyphens-auto break-words">
 					Ratgeber für das Leben in der WG
 				</h1>
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">

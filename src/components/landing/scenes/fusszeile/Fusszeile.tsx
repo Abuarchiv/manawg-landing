@@ -49,6 +49,9 @@ export function Fusszeile() {
 							{THEMEN[slug]?.link}
 						</a>
 					))}
+					<a href="/ratgeber" className="fuss-link">
+						Ratgeber
+					</a>
 				</div>
 				<div className={s.spalte}>
 					<span className={s.kopf}>Konto</span>
