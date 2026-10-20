@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function AgbPage() {
 	return (
 		<main id="main" tabIndex={-1} className="min-h-screen flex flex-col focus:outline-none">
-			<div className="flex-1 max-w-2xl mx-auto w-full px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
+			<div className="flex-1 max-w-2xl mx-auto w-full box-border px-4 pt-[max(2rem,env(safe-area-inset-top))] pb-4">
 				<Link
 					href="/"
 					prefetch={false}
