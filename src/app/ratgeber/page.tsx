@@ -11,7 +11,16 @@ const beschreibung =
 
 // Themen der Übersicht; was hier fehlt, landet unter „Weitere“, damit kein Ratgeber verschwindet.
 const THEMENKREISE: Array<[string, string[]]> = [
-	['Geld', ['wg-kosten-aufteilen', 'wg-nebenkosten', 'wg-haushaltskasse', 'schulden-mitbewohner']],
+	[
+		'Geld',
+		[
+			'wg-kosten-aufteilen',
+			'wg-nebenkosten',
+			'wg-haushaltskasse',
+			'schulden-mitbewohner',
+			'splitwise-splid-wechseln',
+		],
+	],
 	['Haushalt', ['putzplan-erstellen', 'putzplan-vorlage', 'wg-einkauf-organisieren']],
 	[
 		'Zusammenleben',

@@ -73,6 +73,16 @@ const nextConfig: NextConfig = {
 				'/apple-touch-icon.png',
 				'/hand/:path*',
 				'/install/:path*',
+				'/hero/:path*',
+				'/himmel/:path*',
+				'/manawg-mark-weiss-80.webp',
+				'/manawg-mark-weiss.png',
+				'/favicon-16.png',
+				'/favicon-32.png',
+				'/favicon-48.png',
+				'/favicon-96.png',
+				'/favicon-192.png',
+				'/icon-192.png',
 			].map((source) => ({ source, headers: [{ key: 'Cache-Control', value: publicCache }] })),
 			// Schriften ändern sich nie unter gleichem Namen: ein Jahr fest. Neue Schriftdatei = neuer Dateiname.
 			{

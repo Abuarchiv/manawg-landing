@@ -64,7 +64,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Modell 3: Jeder zahlt, was er verursacht',
-				'Für Einkäufe und Einzelnes passt es oft besser, nur die Beteiligten zahlen zu lassen. Wer Bier für den eigenen Geburtstag kauft, teilt diese Ausgabe nicht mit der ganzen WG. In [ManaWG](/wg-kasse) legt ihr bei jeder Ausgabe fest, wer beteiligt ist, und teilt gleichmäßig oder mit eigenen Beträgen pro Person. Die Anteile ergeben immer genau den Betrag.',
+				'Für Einkäufe und Einzelnes passt es oft besser, nur die Beteiligten zahlen zu lassen. Wer Bier für den eigenen Geburtstag kauft, teilt diese Ausgabe nicht mit der ganzen WG. In der [WG-Kasse von ManaWG](/wg-kasse) legt ihr bei jeder Ausgabe fest, wer beteiligt ist, und teilt gleichmäßig oder mit eigenen Beträgen pro Person. Die Anteile ergeben immer genau den Betrag.',
 			],
 			[
 				'Ausgleichen ohne Überweisungschaos',
@@ -94,7 +94,7 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'Putzplan erstellen',
 		stand: '2026-10-19',
 		erschienen: '2026-10-11',
-		titel: 'WG-Putzplan erstellen: Wochenplan, Regeln, Beispiele',
+		titel: 'Putzplan erstellen: Wochenplan, Regeln, Beispiele | ManaWG',
 		beschreibung:
 			'Putzplan selbst erstellen: Aufgaben, Zeitaufwand, Wochenplan, faire Rotation und Umgang mit Abwesenheit. Mit Beispiel für vier Personen.',
 		h1: 'Putzplan für die WG erstellen',
@@ -107,7 +107,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Schritt 2: Rhythmus und Verteilung festlegen',
-				'Zwei Wege funktionieren. Entweder hat jede Person ein festes Gebiet, das ist einfach, wird aber ungerecht, wenn eine Aufgabe unbeliebt ist. Oder die Aufgaben rotieren, sodass jede Person jede Aufgabe im Wechsel übernimmt. Rotation ist fairer, braucht aber jemanden, der den Überblick hält. Genau das kann eine App übernehmen: In [ManaWG](/putzplan) wiederholt ihr Aufgaben in Tagen oder Monaten, und die App bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist.',
+				'Zwei Wege funktionieren. Entweder hat jede Person ein festes Gebiet, das ist einfach, wird aber ungerecht, wenn eine Aufgabe unbeliebt ist. Oder die Aufgaben rotieren, sodass jede Person jede Aufgabe im Wechsel übernimmt. Rotation ist fairer, braucht aber jemanden, der den Überblick hält. Genau das kann eine App übernehmen: Mit dem [Putzplan von ManaWG](/putzplan) wiederholt ihr Aufgaben in Tagen oder Monaten, und die App bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist.',
 			],
 			[
 				'Schritt 3: Abwesenheit und Ausnahmen regeln',
@@ -151,7 +151,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-gruenden-checkliste': {
 		link: 'WG gründen',
-		stand: '2026-10-20',
+		stand: '2026-10-21',
 		erschienen: '2026-10-11',
 		titel: 'WG gründen: Checkliste von Mietvertrag bis Putzplan | ManaWG',
 		beschreibung:
@@ -178,7 +178,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'5. Geld verbindlich regeln',
-				'Legt fest, wie die Miete aufgeteilt wird ([gleich oder nach Zimmergröße](/wg-kosten-aufteilen)), wer welche Verträge führt und was ihr gemeinsam kauft. Wer zahlt, sollte das Geld zuverlässig zurückbekommen, ohne jedes Mal nachfragen zu müssen. Mit [ManaWG](/wg-app) legt ihr Miete, Strom und Internet einmal als Fixkosten an und erfasst gemeinsame Einkäufe laufend. Die App zeigt Salden und Ausgleichsvorschläge, ihr überweist selbst.',
+				'Legt fest, wie die Miete aufgeteilt wird ([gleich oder nach Zimmergröße](/wg-kosten-aufteilen)), wer welche Verträge führt und was ihr gemeinsam kauft. Wer zahlt, sollte das Geld zuverlässig zurückbekommen, ohne jedes Mal nachfragen zu müssen. Mit der [WG-App ManaWG](/wg-app) legt ihr Miete, Strom und Internet einmal als Fixkosten an und erfasst gemeinsame Einkäufe laufend. Die App zeigt Salden und Ausgleichsvorschläge, ihr überweist selbst.',
 			],
 			[
 				'6. Erstausstattung absprechen',
@@ -194,7 +194,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'9. Einen Termin für die WG-Runde festlegen',
-				'Einmal im Monat eine halbe Stunde reicht: Geld ausgleichen, Termine besprechen, Dinge ansprechen, die stören. Wer regelmäßig redet, muss selten eskalieren.',
+				'Einmal im Monat eine halbe Stunde reicht. Ihr gleicht die Salden in der [WG-Kasse](/wg-kasse) aus; die Monatsabrechnung von ManaWG kommt am Monatsanfang per Mail und zeigt Summen je Kategorie und Überweisungsvorschläge. Dazu besprecht ihr Termine im gemeinsamen Kalender und klärt, ob eine eurer Regeln angepasst werden muss. Beschlüsse haltet ihr auf der Pinnwand fest, damit sie nicht im Chatverlauf verschwinden. Wie ihr Konflikte ansprecht, steht unter [Streit in der WG lösen](/wg-streit-loesen). Wer regelmäßig redet, muss selten eskalieren.',
 			],
 			[
 				'Die Checkliste zum Abhaken',
@@ -235,7 +235,7 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'WG-Mietvertrag',
 		stand: '2026-10-20',
 		erschienen: '2026-10-19',
-		titel: 'WG-Mietvertrag: Hauptmiete, Untermiete, Einzelvertrag',
+		titel: 'WG-Mietvertrag: Haupt-, Untermiete, Einzelvertrag | ManaWG',
 		beschreibung:
 			'Welcher Mietvertrag passt zur WG? Gemeinsamer Hauptmietvertrag, Untermiete oder Einzelverträge im Vergleich: Haftung, Kündigung, Mieterwechsel und Kaution.',
 		h1: 'Der WG-Mietvertrag: drei Modelle im Vergleich',
@@ -338,7 +338,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Im WG-Alltag',
-				'Für die Zeit der Zwischenmiete ist die neue Person ein vollwertiges WG-Mitglied: Sie steht im Putzplan, zahlt bei gemeinsamen Einkäufen mit und hält sich an die Regeln. In [ManaWG](/wg-app) tritt sie der WG per Einladungslink bei und verlässt sie am Ende wieder selbst. Ausgaben werden in dieser Zeit mit ihr geteilt, nicht mit euch. Vor dem Auszug sollte ihr Saldo auf null stehen.',
+				'Für die Zeit der Zwischenmiete ist die neue Person ein vollwertiges WG-Mitglied: Sie steht im Putzplan, zahlt bei gemeinsamen Einkäufen mit und hält sich an die Regeln. In der [WG-App ManaWG](/wg-app) tritt sie der WG per Einladungslink bei und verlässt sie am Ende wieder selbst. Ausgaben werden in dieser Zeit mit ihr geteilt, nicht mit euch. Vor dem Auszug sollte ihr Saldo auf null stehen.',
 			],
 			[
 				'Rückkehr und Übergabe',
@@ -381,7 +381,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-regeln': {
 		link: 'WG-Regeln',
-		stand: '2026-10-19',
+		stand: '2026-10-21',
 		erschienen: '2026-10-11',
 		titel: 'WG-Regeln: Vorlage und Beispiele zum Übernehmen | ManaWG',
 		beschreibung:
@@ -408,7 +408,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Gemeinsame Kasse und Einkauf',
-				'Definiert, was gemeinsam bezahlt wird (Putzmittel, Klopapier, Gewürze) und was nicht. Legt fest, wie ausgeglichen wird. Mit einer gemeinsamen Einkaufsliste weiß jeder, was fehlt, und doppelte Einkäufe entfallen.',
+				'Definiert, was gemeinsam bezahlt wird (Putzmittel, Klopapier, Gewürze) und was nicht. Legt fest, wie ausgeglichen wird: Wie eine gemeinsame Kasse geführt werden kann, steht im Ratgeber [WG-Haushaltskasse](/wg-haushaltskasse), die Aufteilung der Kosten unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen). Mit einer gemeinsamen [Einkaufsliste](/wg-einkauf-organisieren) weiß jeder, was fehlt, und doppelte Einkäufe entfallen.',
 			],
 			[
 				'Bad, Küche und Gemeinschaftsräume',
@@ -424,7 +424,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Wie ihr Regeln festhaltet',
-				'Schreibt sie an einen Ort, den alle sehen. In [ManaWG](/wg-app) eignet sich die Pinnwand: Beschlüsse und Ankündigungen bleiben dort stehen, statt im Chatverlauf zu verschwinden. Ein Beschluss gilt, wenn alle zugestimmt haben, und lässt sich in der monatlichen WG-Runde anpassen.',
+				'Schreibt sie an einen Ort, den alle sehen. In [ManaWG als WG-App](/wg-app) eignet sich die Pinnwand: Beschlüsse und Ankündigungen bleiben dort stehen, statt im Chatverlauf zu verschwinden. Ein Beschluss gilt, wenn alle zugestimmt haben, und lässt sich in der monatlichen WG-Runde anpassen.',
 			],
 			[
 				'Konflikte ansprechen',
@@ -491,7 +491,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Internet und Streaming',
-				'Internet teilt ihr gleichmäßig. Bei Streaming-Abos klärt, wer sie nutzt: Wenn nur zwei von vier Personen schauen, zahlen auch nur diese. In [ManaWG](/wg-kasse) wählt ihr bei jeder Ausgabe aus, wer beteiligt ist, und legt wiederkehrende Kosten als Fixkosten an.',
+				'Internet teilt ihr gleichmäßig. Bei Streaming-Abos klärt, wer sie nutzt: Wenn nur zwei von vier Personen schauen, zahlen auch nur diese. In der [WG-Kasse von ManaWG](/wg-kasse) wählt ihr bei jeder Ausgabe aus, wer beteiligt ist, und legt wiederkehrende Kosten als Fixkosten an.',
 			],
 			[
 				'Rundfunkbeitrag',
@@ -527,7 +527,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-einkauf-organisieren': {
 		link: 'WG-Einkauf organisieren',
-		stand: '2026-10-19',
+		stand: '2026-10-21',
 		erschienen: '2026-10-11',
 		titel: 'Einkaufen in der WG: gemeinsam oder getrennt? | ManaWG',
 		beschreibung:
@@ -542,7 +542,11 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Modell 2: Gemeinsamer Grundbedarf',
-				'Grundnahrungsmittel wie Öl, Nudeln, Reis, Gewürze und Getränke gehören allen, der Rest ist privat. Dafür braucht ihr eine Liste, in die jeder einträgt, was fehlt. In [ManaWG](/einkaufsliste) gibt es eine gemeinsame Einkaufsliste: Wer einkauft, hakt ab und kann den Einkauf danach direkt als Ausgabe erfassen.',
+				'Grundnahrungsmittel wie Öl, Nudeln, Reis, Gewürze und Getränke gehören allen, der Rest ist privat. Dafür braucht ihr eine Liste, in die jeder einträgt, was fehlt. Die [Einkaufsliste von ManaWG](/einkaufsliste) ist gemeinsam: Wer einkauft, hakt ab und kann den Einkauf danach direkt als Ausgabe erfassen.',
+			],
+			[
+				'Beispiel: Grundbedarf in einer Vierer-WG',
+				'Lena, Tom, Sara und Ben teilen sich den Grundbedarf: Putzmittel, Klopapier, Müllbeutel und Spülmaschinentabs. In diesem Monat kauft Lena Putzmittel und Klopapier für 20 Euro, Tom Müllbeutel für 12 Euro und Sara Spülmaschinentabs für 16 Euro. Ben kauft diesmal nichts. Zusammen sind das 48 Euro, jeder Anteil beträgt 12 Euro. Lena hat 8 Euro zu viel gezahlt, Sara 4 Euro, Tom genau seinen Anteil, Ben fehlen 12 Euro. Er überweist 8 Euro an Lena und 4 Euro an Sara, mehr Überweisungen braucht es nicht. Die Beträge sind ausgedachte Beispiele. In der App trägt jede Person ihren Einkauf als Ausgabe ein und wählt alle vier als Beteiligte, den Saldo und die Ausgleiche zeigt ManaWG an.',
 			],
 			[
 				'Modell 3: Gemeinsam kochen und einkaufen',
@@ -590,7 +594,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'beste-wg-app': {
 		link: 'Beste WG-App',
-		stand: '2026-10-14',
+		stand: '2026-10-21',
 		erschienen: '2026-10-11',
 		titel: 'Die beste WG-App finden: 7 Kriterien im Vergleich | ManaWG',
 		beschreibung:
@@ -608,11 +612,11 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'1. Was kostet die App wirklich?',
-				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. [ManaWG](/wg-app) ist kostenlos, ohne Werbung und ohne Bezahlstufe.',
+				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. Die [kostenlose WG-App ManaWG](/wg-app) kommt ohne Werbung und ohne Bezahlstufe aus. Splitwise Pro nennt laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Splid nennt auf seiner deutschen Seite über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium, unter anderem ohne Werbung und mit Verläufen. ManaWG ist kostenlos und werbefrei und verbindet Kasse, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat, rechnet aber nur in Euro, nur auf Deutsch und für höchstens 20 aktive Mitglieder pro WG. Tarife und Funktionen ändern sich, prüft den aktuellen Stand deshalb bei den Anbietern selbst.',
 			],
 			[
 				'2. Deckt sie Geld und Haushalt ab?',
-				'Reine Ausgaben-Apps lösen das Geldproblem, Haushalts-Apps organisieren Aufgaben. Wollt ihr alles an einem Ort, braucht ihr eine App mit Kasse, Putzplan und Einkaufsliste, zum Beispiel ManaWG.',
+				'Reine Ausgaben-Apps lösen das Geldproblem, Haushalts-Apps organisieren Aufgaben. Wollt ihr Geld und Haushalt wirklich an einem Ort regeln, braucht ihr eine App mit Kasse, Putzplan und Einkaufsliste, zum Beispiel ManaWG. ManaWG deckt beides ab: Ausgaben, Fixkosten und Monatsabrechnung auf der einen Seite, Putzplan mit Abwesenheiten, Einkaufsliste mit Vorräten, Kalender, Pinnwand und Chat auf der anderen.',
 			],
 			[
 				'3. Wie gut ist die Kasse?',
@@ -632,7 +636,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'7. Wie leicht ist der Umstieg?',
-				'Wer Daten aus [Splitwise](/splitwise-alternative) oder [Splid](/splid-alternative) bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau. Ausführliche Vergleiche findet ihr unter Splitwise-Alternative, Splid-Alternative, Flatastic-Alternative und OurHome-Alternative.',
+				'Wer Daten aus Splitwise oder Splid bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ausführliche Vergleiche findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative), [Flatastic-Alternative](/flatastic-alternative) und [OurHome-Alternative](/ourhome-alternative).',
 			],
 		],
 		fragen: [
@@ -707,7 +711,7 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'Putzplan-Vorlage',
 		stand: '2026-10-19',
 		erschienen: '2026-10-11',
-		titel: 'Putzplan Vorlage für die WG: Beispiel zum Übernehmen',
+		titel: 'Putzplan-Vorlage für die WG zum Übernehmen | ManaWG',
 		beschreibung:
 			'Putzplan-Vorlage für 4 Personen als CSV-Download: Aufgaben, Rhythmus und Vier-Wochen-Rotation zum Übernehmen, mit Hinweisen für 3 und 5 Personen.',
 		h1: 'Putzplan-Vorlage für die WG',
@@ -728,7 +732,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Warum der Zettel scheitert',
-				'Ausgedruckte Pläne rotieren nicht von selbst, werden nicht aktualisiert und erinnern niemanden. Nach ein paar Wochen weiß keiner mehr, wer dran ist. Eine App löst das: In [ManaWG](/putzplan) legt ihr Aufgaben mit Rhythmus an, die App zeigt, wer als Nächstes dran ist, überspringt Abwesende und erinnert per Push an fällige Aufgaben.',
+				'Ausgedruckte Pläne rotieren nicht von selbst, werden nicht aktualisiert und erinnern niemanden. Nach ein paar Wochen weiß keiner mehr, wer dran ist. Eine App löst das: In [ManaWG als Putzplan-App](/putzplan) legt ihr Aufgaben mit Rhythmus an, die App zeigt, wer als Nächstes dran ist, überspringt Abwesende und erinnert per Push an fällige Aufgaben.',
 			],
 			[
 				'Digital starten in zwei Minuten',
@@ -775,7 +779,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Weg 3: Ausgaben erfassen und ausgleichen',
-				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein, zum Beispiel direkt nach dem Einkauf von der [gemeinsamen Einkaufsliste](/wg-einkauf-organisieren). Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In [ManaWG](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt.',
+				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein, zum Beispiel direkt nach dem Einkauf von der [gemeinsamen Einkaufsliste](/wg-einkauf-organisieren). Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In [ManaWG als WG-Kasse](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt. Wer bisher Splitwise oder Splid nutzt, übernimmt die Altdaten per CSV-Import, siehe [Umstieg](/splitwise-splid-wechseln).',
 			],
 			[
 				'Beispielrechnung',
@@ -803,7 +807,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
-		stand: '2026-10-20',
+		stand: '2026-10-21',
 		erschienen: '2026-10-11',
 		titel: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		beschreibung:
@@ -814,7 +818,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Vor dem Einzug: Vertrag und Formalien',
-				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen Untermietvertrag mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution und danach, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden [Regeln](/wg-regeln) für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
+				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen Untermietvertrag mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution: Sie darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Fragt außerdem, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden [Regeln](/wg-regeln) für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
 			],
 			[
 				'Am Einzugstag',
@@ -822,7 +826,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'In der ersten Woche',
-				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den [Putzplan](/putzplan-erstellen) ein und fragt, wie die Rotation funktioniert. Wenn die WG [ManaWG](/wg-app) nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
+				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den [Putzplan](/putzplan-erstellen) ein und fragt, wie die Rotation funktioniert. Wenn die WG [ManaWG als WG-App](/wg-app) nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
 			],
 			[
 				'Geld von Anfang an klären',
@@ -877,7 +881,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Putzplan bei Abwesenheit',
-				'Wer nicht da ist, kann nicht putzen. Auch der beste [Putzplan](/putzplan-erstellen) braucht dafür eine Regel. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In [ManaWG](/putzplan) tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
+				'Wer nicht da ist, kann nicht putzen. Auch der beste [Putzplan](/putzplan-erstellen) braucht dafür eine Regel. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In [ManaWG als Putzplan-App](/putzplan) tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
 			],
 			[
 				'Miete und Fixkosten',
@@ -919,7 +923,7 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'Schulden in der WG',
 		stand: '2026-10-19',
 		erschienen: '2026-10-11',
-		titel: 'Schulden unter Mitbewohnern ausgleichen ohne Streit',
+		titel: 'Schulden unter Mitbewohnern ausgleichen | ManaWG',
 		beschreibung:
 			'Mitbewohner schuldet dir Geld? So behaltet ihr den Überblick, sprecht es an und gleicht Schulden in der WG mit wenigen Überweisungen aus. Mit Beispiel.',
 		h1: 'Schulden unter Mitbewohnern ausgleichen',
@@ -932,7 +936,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Sofort erfassen',
-				'Tragt jede Ausgabe direkt ein, solange der Beleg da ist. In [ManaWG](/wg-kasse) seht ihr jederzeit den Saldo pro Person. Die Anteile ergeben immer genau den Betrag. Bei gleichmäßiger Teilung wandert ein übrig bleibender Cent von Buchung zu Buchung weiter, damit nicht immer dieselbe Person ihn trägt.',
+				'Tragt jede Ausgabe direkt ein, solange der Beleg da ist. In [ManaWG als WG-Kasse](/wg-kasse) seht ihr jederzeit den Saldo pro Person. Die Anteile ergeben immer genau den Betrag. Bei gleichmäßiger Teilung wandert ein übrig bleibender Cent von Buchung zu Buchung weiter, damit nicht immer dieselbe Person ihn trägt.',
 			],
 			[
 				'Ausgleichen mit wenigen Überweisungen',
@@ -978,7 +982,7 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'WG-Casting',
 		stand: '2026-10-19',
 		erschienen: '2026-10-19',
-		titel: 'WG-Casting: Fragen, Ablauf und Tipps für beide Seiten',
+		titel: 'WG-Casting: Fragen, Ablauf und Tipps | ManaWG',
 		beschreibung:
 			'Gute Fragen fürs WG-Casting: Alltag, Geld, Putzen, Gäste. Wie die WG das Casting plant und wie Bewerber sich vorbereiten, mit Fragenliste zum Übernehmen.',
 		h1: 'WG-Casting: die richtigen Fragen',
@@ -999,7 +1003,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Fragen zu Geld und Gemeinsamem',
-				'Wie stellst du dir das mit gemeinsamen Einkäufen vor, alles teilen oder jeder für sich? Wie sollen Kosten wie Internet und Putzmittel aufgeteilt werden? Erzählt dabei offen, wie eure WG es bisher macht, zum Beispiel mit einer App wie [ManaWG](/wg-app), in der jede Ausgabe eingetragen und am Monatsende ausgeglichen wird. Wer schon beim Casting weiß, wie [abgerechnet](/wg-kosten-aufteilen) wird, hat später keine Überraschungen.',
+				'Wie stellst du dir das mit gemeinsamen Einkäufen vor, alles teilen oder jeder für sich? Wie sollen Kosten wie Internet und Putzmittel aufgeteilt werden? Erzählt dabei offen, wie eure WG es bisher macht, zum Beispiel mit einer App wie [ManaWG als WG-App](/wg-app), in der jede Ausgabe eingetragen und am Monatsende ausgeglichen wird. Wer schon beim Casting weiß, wie [abgerechnet](/wg-kosten-aufteilen) wird, hat später keine Überraschungen.',
 			],
 			[
 				'Fragen zu Gästen, Lautstärke und Erwartungen',
@@ -1041,7 +1045,7 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'Mitbewohner finden',
 		stand: '2026-10-19',
 		erschienen: '2026-10-19',
-		titel: 'Mitbewohner finden: WG-Anzeige schreiben und auswählen',
+		titel: 'Mitbewohner finden: WG-Anzeige schreiben | ManaWG',
 		beschreibung:
 			'So findet ihr einen neuen Mitbewohner: Wo ihr die WG-Anzeige schaltet, was hineingehört, wie ihr auswählt und was vor dem Einzug geklärt sein sollte.',
 		h1: 'Neuen Mitbewohner finden',
@@ -1070,7 +1074,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Vor dem Einzug',
-				'Schickt der neuen Person die wichtigsten [Regeln](/wg-regeln) schriftlich: Putzplan, Kostenverteilung, Ruhezeiten, Müll. Klärt die Schlüsselübergabe und die Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG [ManaWG](/wg-app) nutzt, schickt ihr einen Einladungslink oder Code. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand sofort, neue Ausgaben werden ab dann mit ihr geteilt.',
+				'Schickt der neuen Person die wichtigsten [Regeln](/wg-regeln) schriftlich: Putzplan, Kostenverteilung, Ruhezeiten, Müll. Klärt die Schlüsselübergabe und die Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG [ManaWG als WG-App](/wg-app) nutzt, schickt ihr einen Einladungslink oder Code. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand sofort, neue Ausgaben werden ab dann mit ihr geteilt.',
 			],
 			[
 				'Vorsicht bei unseriösen Anfragen',
@@ -1121,7 +1125,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Geld: offene Beträge und Kaution',
-				'Gleicht alle offenen Beträge vor dem Auszug aus, solange alle noch erreichbar sind. In [ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Wenn der Saldo auf null steht, ist alles erledigt. Klärt außerdem, was mit gemeinsamen Anschaffungen passiert: Bleibt der Staubsauger in der WG, und zahlen die anderen euren Anteil? Die Kaution bekommt ihr vom Vermieter oder Hauptmieter zurück. Die Prüfung kann einige Monate dauern, vor allem wenn noch eine [Nebenkostenabrechnung](/wg-nebenkosten) aussteht.',
+				'Gleicht alle offenen Beträge vor dem Auszug aus, solange alle noch erreichbar sind. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Wenn der Saldo auf null steht, ist alles erledigt. Klärt außerdem, was mit gemeinsamen Anschaffungen passiert: Bleibt der Staubsauger in der WG, und zahlen die anderen euren Anteil? Die Kaution bekommt ihr vom Vermieter oder Hauptmieter zurück. Die Prüfung kann einige Monate dauern, vor allem wenn noch eine [Nebenkostenabrechnung](/wg-nebenkosten) aussteht.',
 			],
 			[
 				'Verträge und Behörden',
@@ -1188,7 +1192,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Streit ums Putzen',
-				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein [Putzplan mit fester Rotation](/putzplan-erstellen) nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. In [ManaWG](/wg-app) wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
+				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein [Putzplan mit fester Rotation](/putzplan-erstellen) nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. In der [WG-App ManaWG](/wg-app) wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
 			],
 			[
 				'Streit um Lärm und Gäste',
@@ -1374,6 +1378,69 @@ export const RATGEBER: Record<string, Thema> = {
 				'https://www.gesetze-im-internet.de/bmg/__27.html',
 			],
 			['§ 54 BMG, Bußgeldvorschriften', 'https://www.gesetze-im-internet.de/bmg/__54.html'],
+		],
+	},
+	'splitwise-splid-wechseln': {
+		link: 'Von Splitwise oder Splid wechseln',
+		stand: '2026-10-21',
+		erschienen: '2026-10-21',
+		titel: 'Von Splitwise oder Splid wechseln: CSV-Import | ManaWG',
+		beschreibung:
+			'Splitwise- oder Splid-Ausgaben in die WG-Kasse übernehmen: CSV-Datei hochladen, Vorschau prüfen, Namen zuordnen, Import bei Bedarf rückgängig machen.',
+		h1: 'Von Splitwise oder Splid zu ManaWG wechseln',
+		einleitung:
+			'Wenn die WG ihre Ausgaben bisher in Splitwise oder Splid geführt hat, muss beim Wechsel nichts von vorn beginnen. Liegen die Ausgaben als CSV-Datei vor, übernimmt ManaWG sie in die WG-Kasse. Ihr seht vorher eine Vorschau und könnt den Import danach rückgängig machen. Diese Anleitung zeigt den Ablauf und nennt die Grenzen.',
+		abschnitte: [
+			[
+				'Was ihr vorher braucht',
+				'1. Eine CSV-Datei mit den Ausgaben aus Splitwise oder Splid. Den Export bietet jeweils der Anbieter an, die Menüs ändern sich, schaut deshalb dort nach.\n2. Eine WG in ManaWG, in der alle Mitbewohner schon Mitglied sind. Die Namen aus der Datei ordnet ihr später den Mitgliedern zu.\n3. Wer die Historie anderer Mitglieder importiert, braucht Admin-Rechte in der WG.\n4. Nur Euro-Beträge: ManaWG rechnet ausschließlich in Euro.',
+			],
+			[
+				'Der Import in vier Schritten',
+				'1. Öffnet in eurer WG den Import und wählt die Quelle: Splitwise CSV oder Splid CSV.\n2. Wählt die CSV-Datei aus oder fügt ihren Inhalt ein.\n3. Prüft die Vorschau mit allen erkannten Zeilen und ordnet die Namen aus der Datei euren WG-Mitgliedern zu. Vorgeschlagene Zuordnungen markiert die App, bitte kontrolliert sie.\n4. Bestätigt den Import. Erst jetzt wird gespeichert.',
+			],
+			[
+				'Namen zuordnen und Zeilen abwählen',
+				'In der Datei stehen die Namen, die ihr in Splitwise oder Splid vergeben habt. ManaWG schlägt passende Mitglieder vor, offene Namen müsst ihr selbst zuordnen. In der Vorschau wählt ihr einzelne Zeilen ab, die nicht übernommen werden sollen, etwa Ausgaben, die schon in der Kasse stehen.',
+			],
+			[
+				'Was nicht übernommen wird',
+				'Zeilen in anderen Währungen lehnt ManaWG einzeln ab, ebenso Zeilen mit ungültigem Datum, ungültigem Betrag oder ohne Beteiligte. Der Rest wird übernommen, die abgelehnten Einträge listet das Ergebnis mit Grund auf. Wer Ausgaben in Fremdwährung hatte, legt diese bei Bedarf von Hand neu an.',
+			],
+			[
+				'Nur Screenshots statt Datei?',
+				'Liegt keine CSV-Datei vor, wählt ihr als Quelle Screenshot. ManaWG liest ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung im Browser und zeigt das Ergebnis zum Korrigieren. Erkannt werden nur Eurobeträge, und das Lesen kann bis zu 30 Sekunden dauern. Eine CSV-Datei ist genauer und der bessere Weg, wenn es sie gibt.',
+			],
+			[
+				'Import rückgängig machen',
+				'Jeder Import steht im Importverlauf. Falls etwas nicht stimmt, macht ihn der Mitbewohner, der ihn gestartet hat, oder ein Admin rückgängig. Das geht nicht mehr, sobald einzelne Anteile des Imports schon als bezahlt markiert sind. Dann entfernt ihr falsche Ausgaben einzeln. Prüft die Vorschau also gründlich, bevor ihr bestätigt.',
+			],
+			[
+				'Nach dem Wechsel',
+				'Ab jetzt läuft alles in der [WG-Kasse](/wg-kasse): Ausgaben teilen, Salden sehen, Ausgleiche mit wenigen Überweisungen vorschlagen lassen, Fixkosten und Monatsabrechnung. Offene Salden aus dem alten System gleicht ihr am besten aus, bevor ihr wechselt, oder ihr übernehmt sie per Import. Wie ihr Schulden fair ausgleicht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner). Einen Vergleich der Apps findet ihr unter [Splitwise-Alternative](/splitwise-alternative) und [Splid-Alternative](/splid-alternative).',
+			],
+		],
+		fragen: [
+			[
+				'Kann ich Splitwise-Ausgaben in ManaWG importieren?',
+				'Ja, falls sie als CSV-Datei vorliegen. Ihr wählt im Import die Quelle Splitwise CSV, prüft die Vorschau und bestätigt. Übernommen werden nur Euro-Zeilen.',
+			],
+			[
+				'Kann ich Splid-Ausgaben in ManaWG importieren?',
+				'Ja, über die Quelle Splid CSV. Der Ablauf ist derselbe wie bei Splitwise: Datei auswählen, Vorschau prüfen, Namen zuordnen, bestätigen.',
+			],
+			[
+				'Kann ich einen Import rückgängig machen?',
+				'Ja, im Importverlauf, durch die Person, die importiert hat, oder einen Admin. Sind einzelne Anteile schon als bezahlt markiert, entfernt ihr falsche Ausgaben einzeln.',
+			],
+			[
+				'Was passiert mit Ausgaben in anderen Währungen?',
+				'ManaWG rechnet nur in Euro. Zeilen in anderen Währungen werden einzeln abgelehnt und im Ergebnis aufgelistet, der Rest wird übernommen.',
+			],
+			[
+				'Gibt es einen Import aus Flatastic oder OurHome?',
+				'Nein, einen direkten Import gibt es nur für Splitwise- und Splid-CSV sowie für Fotos von Ausgabenlisten.',
+			],
 		],
 	},
 };

@@ -24,6 +24,7 @@ export function middleware(req: NextRequest): NextResponse {
 
 export const config = {
 	matcher: [
-		'/((?!wg|api|neu|offline|\\.well-known|wg-assets|_next/static|_next/image|favicon.ico|manifest.json|sw.js|.*\\..*).*)',
+		// Segmentgenau: /wg-app, /wg-kasse usw. sind eigene Seiten und bekommen die CSP; nur /wg, /api, /neu, /offline samt Unterpfaden nicht.
+		'/((?!(?:wg|api|neu|offline)(?:/|$)|\\.well-known|wg-assets|_next/static|_next/image|favicon.ico|manifest.json|sw.js|.*\\..*).*)',
 	],
 };

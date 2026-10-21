@@ -98,8 +98,10 @@ export default async function ThemaPage({ params }: Props) {
 		author: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/ueber-manawg` },
 		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/` },
 		isPartOf: { '@id': webseiteId },
-		// Produktseiten handeln von der App; Rechts- und Alltagsratgeber nicht.
-		...(gruppeVon(thema)?.name !== 'Ratgeber' ? { about: { '@id': ids.app } } : {}),
+		// Produktseiten und die Umstiegsanleitung handeln von der App; Rechts- und Alltagsratgeber nicht.
+		...(gruppeVon(thema)?.name !== 'Ratgeber' || thema === 'splitwise-splid-wechseln'
+			? { about: { '@id': ids.app } }
+			: {}),
 		...(quellen.length > 0 ? { citation: quellen.map(([, url]) => url) } : {}),
 	};
 

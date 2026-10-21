@@ -168,7 +168,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Umzug aus Splitwise oder Splid',
-				'Falls eure bisherigen Abrechnungen als CSV-Datei vorliegen, übernehmt ihr sie per Import in eurer WG. Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren.',
+				'Falls eure bisherigen Abrechnungen als CSV-Datei vorliegen, übernehmt ihr sie per Import in eurer WG, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren.',
 			],
 			[
 				'Was ManaWG nicht ist',
@@ -286,7 +286,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'CSV-Import, falls eure Daten als Datei vorliegen',
-				'Falls eure Splitwise-Ausgaben als CSV-Datei vorliegen, öffnet ihr den Import eurer WG und wählt die Quelle. Vor dem Speichern seht ihr eine Vorschau mit allen erkannten Zeilen. Danach steht der Import im Verlauf und lässt sich rückgängig machen, falls etwas nicht stimmt. Ihr prüft also vorher und könnt hinterher zurück. Die Historie anderer Mitglieder importieren dürfen nur WG-Admins.',
+				'Falls eure Splitwise-Ausgaben als CSV-Datei vorliegen, öffnet ihr den Import eurer WG und wählt die Quelle. Vor dem Speichern seht ihr eine Vorschau mit allen erkannten Zeilen. Danach steht der Import im Verlauf und lässt sich rückgängig machen, falls etwas nicht stimmt. Ihr prüft also vorher und könnt hinterher zurück. Die Schritte stehen in der Anleitung zum [Umstieg](/splitwise-splid-wechseln). Die Historie anderer Mitglieder importieren dürfen nur WG-Admins.',
 			],
 			[
 				'Nur Euro',
@@ -349,7 +349,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Umzug per CSV-Import',
-				'Falls eure Splid-Ausgaben als CSV-Datei vorliegen, ladet ihr sie unter Import in eurer WG hoch. Ihr seht erst eine Vorschau, bevor etwas gespeichert wird, und könnt den Import im Verlauf wieder rückgängig machen. Übernommen werden nur Euro-Zeilen, andere Währungen lehnt ManaWG einzeln ab. Fremde Historie importieren dürfen nur WG-Admins. Wer nur Screenshots hat, liest ein Foto einer Ausgabenliste ein und korrigiert es vor dem Speichern.',
+				'Falls eure Splid-Ausgaben als CSV-Datei vorliegen, ladet ihr sie unter Import in eurer WG hoch. Ihr seht erst eine Vorschau, bevor etwas gespeichert wird, und könnt den Import im Verlauf wieder rückgängig machen. Übernommen werden nur Euro-Zeilen, andere Währungen lehnt ManaWG einzeln ab. Fremde Historie importieren dürfen nur WG-Admins. Wer nur Screenshots hat, liest ein Foto einer Ausgabenliste ein und korrigiert es vor dem Speichern. Die Anleitung zum [Umstieg](/splitwise-splid-wechseln) führt durch alle Schritte.',
 			],
 			[
 				'Aufteilen und ausgleichen',
@@ -413,7 +413,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'WG-Kasse und Umstieg',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, lassen sie sich mit Vorschau importieren. Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an.',
+				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, lassen sie sich mit Vorschau importieren, siehe [Umstieg](/splitwise-splid-wechseln). Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an.',
 			],
 			[
 				'Einkauf, Pinnwand und Chat',
@@ -509,19 +509,23 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	faq: {
 		link: 'Häufige Fragen',
-		stand: '2026-10-14',
+		stand: '2026-10-21',
 		erschienen: '2026-10-09',
 		titel: 'Häufige Fragen zu ManaWG, der WG-App',
 		beschreibung:
-			'Antworten zu ManaWG: Kosten, Installation, Einladung, Ausgaben teilen, Putzplan, Abwesenheiten und Import aus Splitwise oder Splid.',
+			'Antworten zu ManaWG: Kosten, Installation, Einladung, Ausgaben teilen, Putzplan, Abwesenheiten, Währung, Datenort und Import aus Splitwise oder Splid.',
 		h1: 'Fragen und Antworten',
-		einleitung: 'Das Wichtigste zu ManaWG, der kostenlosen App für Wohngemeinschaften.',
+		einleitung:
+			'Das Wichtigste zu ManaWG, der kostenlosen App für Wohngemeinschaften: Kosten, Installation, Einladung, Geld, Putzplan, Abwesenheiten, Währung, Datenort und Import.',
 		abschnitte: [],
 		fragen: [
-			['Was kostet ManaWG?', 'Nichts. ManaWG ist kostenlos.'],
+			[
+				'Was kostet ManaWG?',
+				'Nichts. ManaWG ist kostenlos, ohne Werbung und ohne Bezahlstufe. Eine WG fasst bis zu 20 aktive Mitglieder.',
+			],
 			[
 				'Brauche ich einen App Store?',
-				'Nein. ManaWG läuft im Browser unter app.manawg.com. Auf dem Handy könnt ihr die App auf den Home-Bildschirm legen.',
+				'Nein. ManaWG ist eine Web-App und läuft im Browser unter app.manawg.com. Auf dem Handy könnt ihr die App auf den Home-Bildschirm legen. Push-Meldungen schaltet ihr je Bereich ein oder aus.',
 			],
 			[
 				'Wie kommen meine Mitbewohner in die WG?',
@@ -529,15 +533,15 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie werden Ausgaben aufgeteilt?',
-				'Gleichmäßig auf die Beteiligten oder mit eigenen Beträgen pro Person. ManaWG zeigt, wer wem wie viel schuldet.',
+				'Bei jeder Ausgabe wählt ihr, wer beteiligt ist, und teilt gleichmäßig oder mit eigenen Beträgen pro Person, auf den Cent genau. ManaWG zeigt den Saldo pro Person und schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Überwiesen wird außerhalb der App, ihr markiert den Betrag danach als bezahlt.',
 			],
 			[
 				'Wie funktioniert der Putzplan?',
-				'Aufgaben haben einen Rhythmus und rotieren fair weiter. ManaWG zeigt, wer als Nächstes dran ist.',
+				'Jede Aufgabe hat einen Rhythmus in Tagen oder Monaten und rotiert reihum weiter. ManaWG bestimmt die nächste zuständige Person anhand überfälliger Aufgaben und zeigt, wer als Nächstes dran ist. Punkte oder Belohnungen gibt es nicht.',
 			],
 			[
 				'Was passiert, wenn jemand verreist ist?',
-				'Abwesenheiten werden eingetragen. In der Zeit wird die Person beim Putzplan übersprungen.',
+				'Mitglieder tragen einen Abwesenheitszeitraum ein, zum Beispiel für einen Urlaub. Wer abwesend ist, wird bei der Rotation des Putzplans übersprungen.',
 			],
 			[
 				'Kann ich Daten aus Splitwise oder Splid mitnehmen?',
@@ -546,6 +550,30 @@ export const THEMEN: Record<string, Thema> = {
 			[
 				'Was gibt es außer Geld und Putzen?',
 				'Eine gemeinsame Einkaufsliste mit Vorräten, Fixkosten, einen Kalender, den ihr auch abonnieren könnt, eine Pinnwand und einen Chat.',
+			],
+			[
+				'Wie melde ich mich an?',
+				'Mit Google oder mit E-Mail und Passwort. Beitreten geht per Einladungslink oder Code, den euch ein Mitbewohner schickt.',
+			],
+			[
+				'Funktioniert ManaWG mit anderen Währungen?',
+				'Nein. ManaWG rechnet nur in Euro, ohne Wechselkurse. Wer auf Reisen in mehreren Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
+			],
+			[
+				'Überweist ManaWG Geld automatisch?',
+				'Nein. ManaWG berechnet Vorschläge, ihr überweist selbst außerhalb der App und markiert Beträge als bezahlt. Eine Bankanbindung gibt es nicht.',
+			],
+			[
+				'Wo liegen meine Daten?',
+				'Die Datenbank liegt bei Supabase in Frankfurt am Main (EU). Für den E-Mail-Versand wird Resend (USA) eingesetzt. Welche Daten an wen gehen, steht in der Datenschutzerklärung.',
+			],
+			[
+				'Wer steckt hinter ManaWG?',
+				'Betreiber ist Abubakar Abditube. ManaWG wird privat und nicht-kommerziell betrieben, Kontakt: info@manawg.com.',
+			],
+			[
+				'Hat ManaWG etwas mit WireGuard zu tun?',
+				'Nein. WireGuard ist ein VPN-Protokoll. ManaWG steht für Wohngemeinschaft (WG) und ist eine Haushalts-App.',
 			],
 		],
 	},

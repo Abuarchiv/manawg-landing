@@ -21,13 +21,13 @@ export default function robots(): MetadataRoute.Robots {
 					'CCBot',
 				],
 				allow: ['/'],
-				disallow: ['/wg/', '/api/', '/offline'],
+				disallow: ['/api/'],
 			},
 			{
 				userAgent: '*',
 				allow: ['/'],
-				// /wg, /api und /offline leiten nur auf app.manawg.com weiter (next.config.ts).
-				disallow: ['/wg/', '/api/', '/offline'],
+				// /wg, /neu und /offline bleiben crawlbar, damit die 308-Weiterleitungen (next.config.ts) gesehen werden.
+				disallow: ['/api/'],
 			},
 		],
 		sitemap: `${appUrl}/sitemap.xml`,

@@ -18,6 +18,7 @@ export const GRUPPEN: Array<{ name: string; slugs: string[] }> = [
 			'wg-nebenkosten',
 			'wg-haushaltskasse',
 			'schulden-mitbewohner',
+			'splitwise-splid-wechseln',
 			'putzplan-erstellen',
 			'putzplan-vorlage',
 			'wg-einkauf-organisieren',
@@ -47,6 +48,7 @@ export const VERGLEICHS_HINWEIS =
 /** Funktionsseite je Ratgeber: Ratgeber und Funktion verweisen in „Weiterlesen“ aufeinander (Themen-Cluster). */
 export const FUNKTION_ZU_RATGEBER: Record<string, string[]> = {
 	'wg-kasse': [
+		'splitwise-splid-wechseln',
 		'wg-kosten-aufteilen',
 		'wg-haushaltskasse',
 		'wg-nebenkosten',
