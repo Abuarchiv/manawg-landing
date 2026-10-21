@@ -40,7 +40,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	return {
 		title: t.titel,
 		description: t.beschreibung,
-		alternates: { canonical: `/${thema}` },
+		// alternates ersetzt das Layout-Objekt komplett (kein tiefes Merge), daher der Feed auch hier.
+		alternates: { canonical: `/${thema}`, types: { 'application/atom+xml': '/feed.xml' } },
 		openGraph: {
 			title: t.titel,
 			description: t.beschreibung,
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			type: 'article',
 			publishedTime: zeitpunkt(t.erschienen),
 			modifiedTime: zeitpunkt(t.stand),
-			images: [`/${thema}/opengraph-image`],
+			images: [{ url: `/${thema}/opengraph-image`, width: 1200, height: 630, alt: t.h1 }],
 		},
 		twitter: { title: t.titel, description: t.beschreibung, images: [`/${thema}/opengraph-image`] },
 	};
@@ -94,9 +95,11 @@ export default async function ThemaPage({ params }: Props) {
 		dateModified: zeitpunkt(t.stand),
 		mainEntityOfPage: `${site}/${thema}`,
 		// Name und URL direkt mit, damit der Artikel auch ohne aufgelöste @id vollständig ist (Rich Results Test).
-		author: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/` },
+		author: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/ueber-manawg` },
 		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/` },
 		isPartOf: { '@id': webseiteId },
+		// Produktseiten handeln von der App; Rechts- und Alltagsratgeber nicht.
+		...(gruppeVon(thema)?.name !== 'Ratgeber' ? { about: { '@id': ids.app } } : {}),
 		...(quellen.length > 0 ? { citation: quellen.map(([, url]) => url) } : {}),
 	};
 

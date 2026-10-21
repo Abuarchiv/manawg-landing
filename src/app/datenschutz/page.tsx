@@ -8,6 +8,17 @@ export const metadata: Metadata = {
 	description:
 		'Welche Daten ManaWG verarbeitet, an wen sie übermittelt werden, wie lange sie gespeichert bleiben und welche Rechte du hast.',
 	alternates: { canonical: '/datenschutz' },
+	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
+	openGraph: {
+		title: 'Datenschutzerklärung von ManaWG',
+		description:
+			'Welche Daten ManaWG verarbeitet, an wen sie übermittelt werden, wie lange sie gespeichert bleiben und welche Rechte du hast.',
+		url: '/datenschutz',
+		siteName: 'ManaWG',
+		locale: 'de_DE',
+		type: 'website',
+		images: ['/og.png?v=2'],
+	},
 };
 
 export default function DatenschutzPage() {

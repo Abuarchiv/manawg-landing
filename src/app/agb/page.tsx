@@ -8,6 +8,17 @@ export const metadata: Metadata = {
 	description:
 		'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung.',
 	alternates: { canonical: '/agb' },
+	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
+	openGraph: {
+		title: 'Nutzungsbedingungen von ManaWG',
+		description:
+			'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung.',
+		url: '/agb',
+		siteName: 'ManaWG',
+		locale: 'de_DE',
+		type: 'website',
+		images: ['/og.png?v=2'],
+	},
 };
 
 export default function AgbPage() {

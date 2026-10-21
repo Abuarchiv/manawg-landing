@@ -17,7 +17,7 @@ const faqSchema = {
 const softwareApplicationSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'SoftwareApplication',
-	'@id': `${APP_ORIGIN}/#app`,
+	'@id': schemaIds().app,
 	name: 'ManaWG',
 	publisher: { '@id': schemaIds().organisation },
 	description:
@@ -29,6 +29,7 @@ const softwareApplicationSchema = {
 	featureList: ['Ausgaben teilen', 'Einkaufsliste', 'Putzplan', 'Pinnwand', 'Kalender', 'Chat'],
 	isAccessibleForFree: true,
 	browserRequirements: 'Aktueller Browser, installierbar als PWA',
+	screenshot: { '@type': 'ImageObject', url: `${schemaIds().site}/app-demo/start.webp` },
 	offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
 };
 

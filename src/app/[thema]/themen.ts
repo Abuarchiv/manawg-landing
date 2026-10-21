@@ -219,7 +219,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Vorräte statt Notizen im Kopf',
-				'Für Dinge, die nie ausgehen sollen, führt ihr Vorräte mit Name, Menge, Einheit und Schwellwert. Wer etwas verbraucht, trägt es ein, ManaWG führt ein Verbrauchslog. „Schnell nachkaufen“ schlägt fast leere Vorräte vor und solche, die in den letzten 30 Tagen oft verbraucht wurden. So steht der Nachschub auf dem Zettel, bevor die letzte Packung leer ist.',
+				'Für Dinge, die nie ausgehen sollen, führt ihr Vorräte mit Name, Menge, Einheit und Schwellwert. Wer etwas verbraucht, trägt es ein, ManaWG führt ein Verbrauchslog. „Schnell nachfüllen“ schlägt fast leere Vorräte vor und solche, die in den letzten 30 Tagen oft verbraucht wurden. So steht der Nachschub auf dem Zettel, bevor die letzte Packung leer ist.',
 			],
 			[
 				'Vom Einkauf zur Ausgabe',
@@ -253,7 +253,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie funktionieren die Vorräte?',
-				'Ihr legt Vorräte mit Menge, Einheit und Schwellwert an und tragt den Verbrauch ein. „Schnell nachkaufen“ schlägt fast leere und oft verbrauchte Vorräte zum Nachkaufen vor.',
+				'Ihr legt Vorräte mit Menge, Einheit und Schwellwert an und tragt den Verbrauch ein. „Schnell nachfüllen“ schlägt fast leere und oft verbrauchte Vorräte zum Nachkaufen vor.',
 			],
 		],
 	},
@@ -417,7 +417,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Einkauf, Pinnwand und Chat',
-				'Die Einkaufsliste erkennt Duplikate und schlägt nach dem Abhaken vor, den Einkauf direkt als Ausgabe zu erfassen. Vorräte zeigen eine Menge und einen Schwellwert, und „Schnell nachkaufen“ schlägt fast Leeres vor. Die Pinnwand sammelt Infos und Entscheidungen der WG, im Chat antwortet ihr, reagiert mit Emojis und erwähnt Mitbewohner mit @.',
+				'Die Einkaufsliste erkennt Duplikate und schlägt nach dem Abhaken vor, den Einkauf direkt als Ausgabe zu erfassen. Vorräte zeigen eine Menge und einen Schwellwert, und „Schnell nachfüllen“ schlägt fast Leeres vor. Die Pinnwand sammelt Infos und Entscheidungen der WG, im Chat antwortet ihr, reagiert mit Emojis und erwähnt Mitbewohner mit @.',
 			],
 			[
 				'Was ManaWG nicht kann',

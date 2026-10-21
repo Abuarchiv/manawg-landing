@@ -40,7 +40,7 @@ const kreise =
 export const metadata: Metadata = {
 	title: titel,
 	description: beschreibung,
-	alternates: { canonical: '/ratgeber' },
+	alternates: { canonical: '/ratgeber', types: { 'application/atom+xml': '/feed.xml' } },
 	openGraph: {
 		title: titel,
 		description: beschreibung,

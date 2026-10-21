@@ -39,9 +39,9 @@ const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
 // the install land on the landing page, which is why the two were split.
 //
 // Old app paths still REDIRECT rather than 404, so existing links and
-// bookmarks keep working. They are 307 (temporary) on purpose while the new
-// origin settles; make them permanent once app.manawg.com is confirmed
-// stable, because a 308 is cached hard by browsers and painful to walk back.
+// bookmarks keep working. They are 308 (permanent) since 2026-10-21:
+// app.manawg.com has been the stable origin since the split, and a permanent
+// redirect lets search engines drop the old URLs instead of re-checking them.
 // The origin itself lives in src/lib/app-origin.ts so the redirects, the
 // sitemap and the in-page CTAs cannot drift apart.
 
@@ -96,10 +96,10 @@ const nextConfig: NextConfig = {
 	},
 	async redirects() {
 		return [
-			{ source: '/wg', destination: `${APP_ORIGIN}/wg`, permanent: false },
-			{ source: '/wg/:path*', destination: `${APP_ORIGIN}/wg/:path*`, permanent: false },
-			{ source: '/neu', destination: `${APP_ORIGIN}/neu`, permanent: false },
-			{ source: '/offline', destination: `${APP_ORIGIN}/offline`, permanent: false },
+			{ source: '/wg', destination: `${APP_ORIGIN}/neu`, permanent: true },
+			{ source: '/wg/:path*', destination: `${APP_ORIGIN}/wg/:path*`, permanent: true },
+			{ source: '/neu', destination: `${APP_ORIGIN}/neu`, permanent: true },
+			{ source: '/offline', destination: `${APP_ORIGIN}/offline`, permanent: true },
 		];
 	},
 	async rewrites() {

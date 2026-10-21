@@ -8,6 +8,17 @@ export const metadata: Metadata = {
 	description:
 		'Impressum von ManaWG, der kostenlosen WG-App: wer die App betreibt und wie ihr bei Fragen zur App und zu dieser Website Kontakt aufnehmt.',
 	alternates: { canonical: '/impressum' },
+	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
+	openGraph: {
+		title: 'Impressum von ManaWG',
+		description:
+			'Impressum von ManaWG, der kostenlosen WG-App: wer die App betreibt und wie ihr bei Fragen zur App und zu dieser Website Kontakt aufnehmt.',
+		url: '/impressum',
+		siteName: 'ManaWG',
+		locale: 'de_DE',
+		type: 'website',
+		images: ['/og.png?v=2'],
+	},
 };
 
 export default function ImpressumPage() {

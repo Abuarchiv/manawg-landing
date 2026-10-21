@@ -6,7 +6,7 @@ import './globals.css';
 const appUrl = getAppUrl();
 const ids = schemaIds();
 
-const title = 'ManaWG, die WG-App: Ausgaben, Einkauf und Putzplan für eure WG';
+const title = 'ManaWG, die WG-App: Ausgaben, Einkauf, Putzplan für eure WG';
 const description =
 	'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die App ist kostenlos und läuft im Browser.';
 
