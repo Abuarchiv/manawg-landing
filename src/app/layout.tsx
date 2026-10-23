@@ -6,9 +6,9 @@ import './globals.css';
 const appUrl = getAppUrl();
 const ids = schemaIds();
 
-const title = 'ManaWG, die WG-App: Ausgaben, Einkauf, Putzplan für eure WG';
+const title = 'Kostenlose WG-App: Ausgaben, Putzplan & Einkauf | ManaWG';
 const description =
-	'Mit ManaWG teilt ihr Ausgaben, organisiert Einkäufe und verteilt Aufgaben im Putzplan. Die App ist kostenlos und läuft im Browser.';
+	'Die kostenlose, werbefreie WG-App auf Deutsch: Ausgaben teilen, Putzplan organisieren und gemeinsam einkaufen. Für eure WG im Browser – ohne App-Store.';
 
 const organizationSchema = {
 	'@context': 'https://schema.org',
@@ -27,7 +27,7 @@ const organizationSchema = {
 		availableLanguage: 'de',
 	},
 	// Verknüpft die Marke mit ihren offiziellen Profilen (Abgrenzung zu gleichnamigen WireGuard-Projekten).
-	sameAs: ['https://github.com/Abuarchiv/manawg-landing', 'https://app.manawg.com'],
+	sameAs: ['https://github.com/Abuarchiv/manawg-landing'],
 };
 
 const webSiteSchema = {

@@ -95,8 +95,8 @@ export default async function ThemaPage({ params }: Props) {
 		dateModified: zeitpunkt(t.stand),
 		mainEntityOfPage: `${site}/${thema}`,
 		// Name und URL direkt mit, damit der Artikel auch ohne aufgelöste @id vollständig ist (Rich Results Test).
-		author: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/ueber-manawg` },
-		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: `${site}/` },
+		author: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: site },
+		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: site },
 		isPartOf: { '@id': webseiteId },
 		// Produktseiten und die Umstiegsanleitung handeln von der App; Rechts- und Alltagsratgeber nicht.
 		...(gruppeVon(thema)?.name !== 'Ratgeber' || thema === 'splitwise-splid-wechseln'
