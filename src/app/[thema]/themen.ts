@@ -23,7 +23,7 @@ export interface Thema {
 export const THEMEN: Record<string, Thema> = {
 	'wg-app': {
 		link: 'WG-App',
-		stand: '2026-10-14',
+		stand: '2026-10-23',
 		erschienen: '2026-10-10',
 		titel: 'WG App: Organisation für die ganze WG | ManaWG',
 		beschreibung:
@@ -38,7 +38,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Ausgaben teilen und Schulden ausgleichen',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person und ordnet sie einer von sechs Kategorien zu, etwa Lebensmittel oder Wohnen und Nebenkosten. Die Anteile ergeben immer genau den Betrag. ManaWG schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr markiert sie als bezahlt, die App überweist selbst nichts. Wer für jemand anderen erfasst, trägt dabei selbst einen Anteil.',
+				'[Gemeinsame Ausgaben](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person und ordnet sie einer von sechs Kategorien zu, etwa Lebensmittel oder Wohnen und Nebenkosten. Die Anteile ergeben immer genau den Betrag. ManaWG schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr markiert sie als bezahlt, die App überweist selbst nichts. Wer für jemand anderen erfasst, trägt dabei selbst einen Anteil.',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',
@@ -46,7 +46,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Putzplan, Einkauf und Vorräte',
-				'Der Putzplan wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird übersprungen. Auf der Einkaufsliste hakt ihr ab und könnt den Einkauf danach als Ausgabe erfassen. Die Vorräte zeigen, was knapp wird, und schlagen vor, was ihr nachkaufen solltet. Erinnerungen an fällige Aufgaben kommen als Push.',
+				'Der [Putzplan](/putzplan) wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird übersprungen. Auf der [gemeinsamen Einkaufsliste](/einkaufsliste) hakt ihr ab und könnt den Einkauf danach als Ausgabe erfassen. Die Vorräte zeigen, was knapp wird, und schlagen vor, was ihr nachkaufen solltet. Erinnerungen an fällige Aufgaben kommen als Push.',
 			],
 			[
 				'Kalender, Pinnwand und Chat',
@@ -55,6 +55,10 @@ export const THEMEN: Record<string, Thema> = {
 			[
 				'Für wen ManaWG gedacht ist',
 				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Code oder Link, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen.',
+			],
+			[
+				'So startet eure WG',
+				'Eine Person meldet sich mit Google oder E-Mail und Passwort an, erstellt die WG und teilt den Einladungslink. Die anderen melden sich ebenfalls an und treten über den Link bei. Fangt mit einem konkreten Alltagsproblem an: Erfasst die [erste gemeinsame Ausgabe](/wg-kasse) oder legt eine wiederkehrende Putzaufgabe an. So nutzt ihr die App direkt zusammen, statt erst alle Bereiche einzurichten.',
 			],
 		],
 		fragen: [
@@ -78,7 +82,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	putzplan: {
 		link: 'WG Putzplan App',
-		stand: '2026-10-10',
+		stand: '2026-10-23',
 		erschienen: '2026-10-09',
 		titel: 'WG Putzplan App: fair, mit Rotation | ManaWG',
 		beschreibung:
@@ -105,7 +109,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Vorlage oder App',
-				'Eine Vorlage als Tabelle oder PDF ist ein guter Anfang, wenn eure WG klein und die Woche planbar ist. Sie rechnet aber nicht weiter und kennt keine Abwesenheit, jede Änderung tragt ihr selbst ein. Wer die Reihenfolge nicht dauernd pflegen will, ist mit einer App besser bedient, die Zuständigkeit und Termine selbst fortschreibt.',
+				'Eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) ist ein guter Anfang, wenn eure WG klein und die Woche planbar ist. Sie rechnet aber nicht weiter und kennt keine Abwesenheit, jede Änderung tragt ihr selbst ein. Wer die Reihenfolge nicht dauernd pflegen will, ist mit einer App besser bedient, die Zuständigkeit und Termine selbst fortschreibt. Wie ihr Aufgaben, Rhythmus und Zuständigkeiten festlegt, zeigt die [Anleitung zum Putzplan-Erstellen](/putzplan-erstellen).',
 			],
 			[
 				'Einrichten und Umfang',
@@ -137,7 +141,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'wg-kasse': {
 		link: 'WG-Kasse',
-		stand: '2026-10-14',
+		stand: '2026-10-23',
 		erschienen: '2026-10-09',
 		titel: 'WG Kasse App: Ausgaben teilen, Abrechnung | ManaWG',
 		beschreibung:
@@ -149,6 +153,10 @@ export const THEMEN: Record<string, Thema> = {
 			[
 				'Ausgaben teilen in der WG',
 				'Ihr erfasst Betrag, Bezahler und Beteiligte und wählt eine von sechs Kategorien, etwa Lebensmittel oder Haushalt. Geteilt wird gleichmäßig oder mit eigenen Beträgen pro Person. ManaWG rechnet in ganzen Cent: Bei gleicher Teilung unterscheiden sich die Anteile höchstens um einen Cent, die Summe stimmt immer exakt. Ein Foto vom Beleg hängt ihr direkt an die Ausgabe.',
+			],
+			[
+				'Rechenbeispiel: 120 Euro für drei Personen',
+				'Ein fiktives Beispiel: Lea bezahlt 90 Euro für gemeinsame Lebensmittel, Jona 30 Euro für Haushaltsbedarf und Lina noch nichts. Beide Einkäufe werden gleichmäßig auf alle drei verteilt. Zusammen sind das 120 Euro, also 40 Euro pro Person. Lea hat 50 Euro mehr bezahlt als ihren Anteil, Jona fehlen 10 Euro und Lina 40 Euro. Zum Ausgleich zahlt Jona 10 Euro an Lea und Lina 40 Euro an Lea. Diese Zahlungen erledigt ihr außerhalb der App und markiert sie anschließend als bezahlt. Weitere Beispiele und Regeln für unterschiedliche Anteile findet ihr im Ratgeber [WG-Kosten aufteilen](/wg-kosten-aufteilen).',
 			],
 			[
 				'Ausgleich mit wenigen Überweisungen',
@@ -200,7 +208,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	einkaufsliste: {
 		link: 'Einkaufsliste',
-		stand: '2026-10-10',
+		stand: '2026-10-23',
 		erschienen: '2026-10-09',
 		titel: 'Gemeinsame Einkaufsliste App für die WG | ManaWG',
 		beschreibung:
@@ -211,7 +219,7 @@ export const THEMEN: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Alle schreiben mit',
-				'Jede Person in der WG trägt ein, was fehlt, auf Wunsch mit Menge wie „2 Packungen“ oder „1 kg“. Wer einkaufen geht, hakt Artikel ab, und alle anderen sehen den Stand. ManaWG merkt sich, wer abgehakt hat, und erkennt Duplikate, bevor derselbe Artikel zweimal auf der Liste steht. Die Liste gehört der WG, nicht einer einzelnen Person.',
+				'Jede Person in der WG trägt ein, was fehlt, auf Wunsch mit Menge wie „2 Packungen“ oder „1 kg“. Wer einkaufen geht, hakt Artikel ab, und alle anderen sehen den Stand. ManaWG merkt sich, wer abgehakt hat, und erkennt Duplikate, bevor derselbe Artikel zweimal auf der Liste steht. Die Liste gehört der WG, nicht einer einzelnen Person. Welche Einkäufe ihr gemeinsam plant und was privat bleibt, klärt ihr mit der Anleitung [WG-Einkauf organisieren](/wg-einkauf-organisieren).',
 			],
 			[
 				'Vorschläge und Aufräumen',
@@ -223,7 +231,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Vom Einkauf zur Ausgabe',
-				'Nach dem Abhaken erscheint bei der Person, die gerade gekauft hat, ein Hinweis, die Artikel direkt als Ausgabe zu erfassen. Er gilt 12 Stunden. Die Ausgabe landet in der WG-Kasse, bekommt die Kategorie Lebensmittel oder Haushalt, und ein Belegfoto könnt ihr anhängen. So muss später niemand rekonstruieren, was im Einkaufswagen lag.',
+				'Nach dem Abhaken erscheint bei der Person, die gerade gekauft hat, ein Hinweis, die Artikel direkt als Ausgabe zu erfassen. Er gilt 12 Stunden. Die Ausgabe landet in der [WG-Kasse](/wg-kasse), bekommt die Kategorie Lebensmittel oder Haushalt, und ein Belegfoto könnt ihr anhängen. So muss später niemand rekonstruieren, was im Einkaufswagen lag.',
 			],
 			[
 				'Aufteilen ohne Rundungsstreit',
