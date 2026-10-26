@@ -26,7 +26,10 @@ export function GET() {
 			`# ${t.h1}`,
 			`Quelle: ${base}/${slug} (Stand ${t.stand})`,
 			...(gruppeVon(slug)?.name === 'Vergleiche' ? [VERGLEICHS_HINWEIS] : []),
-			t.einleitung,
+			[
+				t.einleitung,
+				...(t.tabellen ?? []).filter((tab) => tab.nach === 'einleitung').map(markdownTabelle),
+			].join('\n\n'),
 			...t.abschnitte.map(([kopf, text]) => {
 				const tabellen = (t.tabellen ?? []).filter((tab) => tab.nach === kopf).map(markdownTabelle);
 				return [`## ${kopf}\n\n${text.replaceAll('](/', `](${base}/`)}`, ...tabellen].join('\n\n');

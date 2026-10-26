@@ -260,6 +260,15 @@ export default async function ThemaPage({ params }: Props) {
 				</p>
 				{istVergleich && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{hinweis}</p>}
 
+				{/* Tabellen mit nach: 'einleitung' stehen direkt unter dem Einleitungstext. */}
+				{t.tabellen
+					?.filter((tab) => tab.nach === 'einleitung')
+					.map((tab) => (
+						<div key={tab.titel} className="mt-10 md:mt-16">
+							<Tabelle t={tab} />
+						</div>
+					))}
+
 				{t.abschnitte.length >= 4 && (
 					<nav aria-labelledby="inhalt" className={`${linie} mt-20 md:mt-32 pt-10`}>
 						<h2 id="inhalt" className={`${mono} m-0 mb-6 font-normal`}>

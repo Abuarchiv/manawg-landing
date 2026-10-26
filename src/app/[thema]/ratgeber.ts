@@ -978,47 +978,122 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-casting-fragen': {
 		link: 'WG-Casting',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-19',
-		titel: 'WG-Casting: Fragen, Ablauf und Tipps | ManaWG',
+		titel: 'WG-Casting Fragen: 48 Fragen für WG und Bewerber | ManaWG',
 		beschreibung:
-			'Gute Fragen fürs WG-Casting: Alltag, Geld, Putzen, Gäste. Wie die WG das Casting plant und wie Bewerber sich vorbereiten, mit Fragenliste zum Übernehmen.',
-		h1: 'WG-Casting: die richtigen Fragen',
+			'Fragen fürs WG-Casting, sortiert nach Alltag, Putzen, Geld und Besuch. Dazu Fragen der Bewerber an die WG, ein Bewertungsbogen und Mustertexte.',
+		h1: 'WG-Casting Fragen: Was WG und Bewerber klären sollten',
 		einleitung:
-			'Beim WG-Casting entscheidet sich in zwanzig Minuten, ob ihr die nächsten Jahre gut zusammenlebt. Beide Seiten prüfen einander: die WG die neue Person, die Bewerberin oder der Bewerber die WG. Mit den richtigen Fragen erfahrt ihr, was wirklich zählt, und nicht nur, wer am sympathischsten wirkt.',
+			'Beim WG-Casting entscheidet sich in zwanzig Minuten, ob ihr die nächsten Jahre gut zusammenlebt. Beide Seiten prüfen einander: die WG die neue Person, die Bewerberin oder der Bewerber die WG. Mit den richtigen Fragen erfahrt ihr, was wirklich zählt, und nicht nur, wer am sympathischsten wirkt. Kurz gesagt: Plant pro Termin 20 bis 30 Minuten, führt Einzeltermine und entscheidet erst danach, getrennt von den Bewerbern.',
 		abschnitte: [
 			[
-				'Ablauf für die WG',
-				'Ladet nicht zu viele Leute auf einmal ein. Wie ihr Bewerbungen sammelt und vorsortiert, steht unter [Mitbewohner finden](/mitbewohner-finden). Einzeltermine von 20 bis 30 Minuten mit etwas Puffer funktionieren besser als ein Gruppencasting, bei dem die Lautesten gewinnen. Es sollten möglichst alle Mitbewohner dabei sein, denn wer nicht mitentscheidet, fühlt sich später übergangen. Zeigt die Wohnung ehrlich, auch das kleine Bad und die volle Küche. Und legt vorher fest, worauf es euch ankommt, damit die Entscheidung nicht nur am Bauchgefühl hängt.',
+				'Die zehn wichtigsten Fragen',
+				'1. Wie sieht ein normaler Tag bei dir aus?\n2. Wann stehst du auf, wann gehst du schlafen?\n3. Kochst du gern, allein oder mit anderen?\n4. Was bedeutet für dich eine saubere Küche?\n5. Hast du schon mit einem Putzplan gelebt, und wie lief das?\n6. Einkäufe teilen oder jeder für sich?\n7. Wie oft hast du Besuch, auch über Nacht?\n8. Rauchst du, hast du Haustiere oder planst welche?\n9. Suchst du eher eine Zweck-WG oder gemeinsame Abende?\n10. Wie lange möchtest du ungefähr hier wohnen?',
 			],
 			[
-				'Fragen zum Alltag',
-				'Wie sieht ein normaler Tag bei dir aus, wann stehst du auf, wann gehst du schlafen? Kochst du gern, und isst du lieber allein oder mit anderen? Wie oft bist du am Wochenende zu Hause? Arbeitest oder lernst du viel von zu Hause aus? Diese Fragen zeigen, ob sich Rhythmen ergänzen oder ständig kollidieren, etwa wenn zwei Personen gleichzeitig ins Bad müssen.',
+				'Fragen zu Alltag und Rhythmus',
+				'Arbeitest oder lernst du viel von zu Hause aus, und brauchst du dafür Ruhe?\nBist du eher Frühaufsteher oder Nachtmensch?\nWie lange brauchst du morgens im Bad?\nIsst du lieber allein oder mit anderen?\nWie oft bist du am Wochenende zu Hause?\nWie viel Zeit möchtest du mit den Mitbewohnern verbringen?',
 			],
 			[
 				'Fragen zu Ordnung und Putzen',
-				'Was bedeutet für dich sauber? Wie oft sollte das Bad geputzt werden? Hast du schon mit einem Putzplan gelebt, und wie lief das? Was stört dich in einer Küche am meisten? Ehrliche Antworten sind hier wichtiger als die erwartete. Wer zugibt, eher unordentlich zu sein, aber feste Aufgaben zuverlässig erledigt, passt oft besser als jemand, der Perfektion verspricht.',
+				'Wie oft sollte das Bad geputzt werden?\nWas stört dich in einer Küche am meisten?\nSpülst du sofort oder am nächsten Tag?\nWie gehst du damit um, wenn eine Aufgabe liegen bleibt?\nÜbernimmst du lieber feste Aufgaben oder wechselst du reihum?\nWer soll dich erinnern, wenn du dran bist, und wie?\nEhrliche Antworten sind hier wichtiger als die erwarteten: Wer zugibt, eher unordentlich zu sein, aber feste Aufgaben zuverlässig erledigt, passt oft besser als jemand, der Perfektion verspricht.',
 			],
 			[
-				'Fragen zu Geld und Gemeinsamem',
-				'Wie stellst du dir das mit gemeinsamen Einkäufen vor, alles teilen oder jeder für sich? Wie sollen Kosten wie Internet und Putzmittel aufgeteilt werden? Erzählt dabei offen, wie eure WG es bisher macht, zum Beispiel mit einer App wie [ManaWG als WG-App](/wg-app), in der jede Ausgabe eingetragen und am Monatsende ausgeglichen wird. Wer schon beim Casting weiß, wie [abgerechnet](/wg-kosten-aufteilen) wird, hat später keine Überraschungen.',
+				'Fragen zu Geld und Einkauf',
+				'Gibt es Dinge, die du auf keinen Fall teilen möchtest?\nWie sollen Internet, Strom und Putzmittel aufgeteilt werden?\nWürdest du Ausgaben in einer gemeinsamen [WG-Kasse](/wg-kasse) eintragen und am Monatsende ausgleichen?\nWas kaufst du für alle mit, und was kaufst du für dich?\nBeim Grundbedarf wie Spülmittel und Klopapier: Zahlt ihr aus einer Kasse oder reihum?\nSagst du Bescheid, wenn es mal eng wird?\nErzählt dabei offen, wie eure WG bisher abrechnet, siehe [WG-Kosten aufteilen](/wg-kosten-aufteilen). Wer schon beim Casting weiß, wie abgerechnet wird, hat später keine Überraschungen.',
 			],
 			[
-				'Fragen zu Gästen, Lautstärke und Erwartungen',
-				'Wie oft hast du Besuch, und übernachtet der auch mal länger? Feierst du gern zu Hause? Rauchst du, hast du Haustiere oder planst welche? Suchst du eher eine Zweck-WG oder Anschluss und gemeinsame Abende? Gerade die letzte Frage wird oft vergessen, dabei ist sie einer der häufigsten Gründe, warum es später nicht passt.',
+				'Fragen zu Besuch, Partner und Feiern',
+				'Wie lange darf Besuch bleiben, bevor man vorher fragt?\nHast du eine Partnerin oder einen Partner, die oder der oft hier wäre?\nFeierst du gern zu Hause?\nAb wann soll unter der Woche Ruhe sein?\nWie sagst du Bescheid, wenn du Gäste oder eine Feier planst?\nWas ist für dich laut, was noch normal?',
 			],
 			[
-				'Fragenliste zum Übernehmen',
-				'1. Wie sieht ein normaler Tag bei dir aus?\n2. Wann stehst du auf, wann gehst du schlafen?\n3. Kochst du gern, allein oder mit anderen?\n4. Was bedeutet für dich eine saubere Küche?\n5. Hast du schon mit einem Putzplan gelebt, und wie lief das?\n6. Einkäufe teilen oder jeder für sich?\n7. Wie oft hast du Besuch, auch über Nacht?\n8. Rauchst du, hast du Haustiere oder planst welche?\n9. Suchst du eher eine Zweck-WG oder gemeinsame Abende?\n10. Wie lange möchtest du ungefähr hier wohnen?',
+				'Rauchen, Haustiere, Instrumente',
+				'Darf in der Wohnung geraucht werden, oder nur auf dem Balkon?\nWelche Haustiere hast du oder planst du, und wer kümmert sich im Urlaub?\nSpielst du ein Instrument, und wann übst du?\nStört dich Rauch oder Tiergeruch in den Gemeinschaftsräumen?\nDiese Punkte sorgen für den meisten Ärger, wenn sie vorher nicht besprochen sind. Der Mietvertrag kann Haustieren Grenzen setzen, klärt das vorher.',
+			],
+			[
+				'Fragen von Bewerbern an die WG',
+				'Warum wird das Zimmer frei?\nGibt es einen eigenen Mietvertrag oder einen Untermietvertrag, und wer ist Hauptmieter?\nWie hoch ist die Warmmiete, und was ist darin enthalten?\nWie hoch ist die Kaution?\nWelche Kündigungsfrist gilt?\nWer entscheidet über die Auswahl, und bis wann bekomme ich Bescheid?\nWie lange wollen die anderen noch in der WG wohnen?\nWie läuft der Putzplan?\nGibt es eine gemeinsame Kasse, und wie werden Ausgaben geteilt?\nWie viel unternimmt die WG gemeinsam?\nWas zu Vertragsarten und Kaution gehört, steht im Ratgeber [WG-Mietvertrag](/wg-mietvertrag).',
+			],
+			[
+				'Fragen, die nicht ins Casting gehören',
+				'Fragen nach Herkunft, Religion, Gesundheit, Schwangerschaft oder Kinderwunsch und sexueller Orientierung sind übergriffig und sagen nichts darüber, ob jemand in den Alltag der WG passt.\nWer so etwas freiwillig erzählt, darf das. Ihr fragt aber nicht danach und bewertet es nicht.\nFragt stattdessen nach dem, was im Alltag zählt: Ruhezeiten, Essgewohnheiten, Besuch und wie lange jemand bleiben möchte.\nHöflich absagen geht kurz und ehrlich: „Danke für das Gespräch. Wir haben uns für jemand anderen entschieden, weil der Alltag besser passt. Wir wünschen dir viel Erfolg bei der Suche.“',
+			],
+			[
+				'Ablauf für die WG',
+				'Ladet nicht zu viele Leute auf einmal ein. Wie ihr Bewerbungen sammelt und vorsortiert, steht unter [Mitbewohner finden](/mitbewohner-finden). Einzeltermine mit etwas Puffer funktionieren besser als ein Gruppencasting, bei dem die Lautesten gewinnen. Es sollten möglichst alle Mitbewohner dabei sein, denn wer nicht mitentscheidet, fühlt sich später übergangen. Zeigt die Wohnung ehrlich, auch das kleine Bad und die volle Küche. Und legt vorher fest, worauf es euch ankommt, damit die Entscheidung nicht nur am Bauchgefühl hängt.',
+			],
+			[
+				'Video-Casting und Betrug',
+				'Ist ein Treffen vor Ort nicht möglich, etwa bei einem Umzug aus dem Ausland, geht auch ein Video-Gespräch, bei dem die WG die Wohnung zeigt. Kein Geld vor Vertrag und Besichtigung: Wer Kaution oder Miete überweisen soll, bevor er die Wohnung gesehen und einen Vertrag in der Hand hat, sollte abbrechen. Mehr zur Suche und zu Warnzeichen steht unter [Mitbewohner finden](/mitbewohner-finden).',
 			],
 			[
 				'Nach dem Casting entscheiden',
 				'Setzt euch direkt nach dem letzten Termin zusammen, solange die Eindrücke frisch sind. Geht die Punkte durch, die ihr vorher festgelegt habt, und fragt euch ehrlich, mit wem ihr an einem verregneten Sonntag in der Küche sitzen wollt. Sagt der gewählten Person schnell zu und den anderen höflich ab. Wer nichts hört, wartet unnötig und sucht nicht weiter.',
 			],
-			[
-				'Tipps für Bewerberinnen und Bewerber',
-				'Stellt selbst Fragen, das zeigt Interesse und schützt euch vor einer falschen Wahl. Fragt, warum das Zimmer frei wird, wie Kosten verteilt werden, ob es einen Putzplan gibt und wie oft die WG gemeinsam etwas unternimmt. Fragt nach der Warmmiete und den Nebenkosten und danach, ob es einen eigenen Mietvertrag oder einen Untermietvertrag gibt. Und seid ehrlich: Eine WG, in die ihr nur mit einer geschönten Version von euch passt, wird auf Dauer anstrengend.',
-			],
+		],
+		tabellen: [
+			{
+				nach: 'Die zehn wichtigsten Fragen',
+				titel: 'Typische Fragen und was dahintersteckt',
+				kopf: ['Frage', 'Was die WG wissen will', 'Eine ehrliche Antwort'],
+				zeilen: [
+					[
+						'Wie sieht ein normaler Tag bei dir aus?',
+						'Ob sich Rhythmen vertragen und wer wann das Bad braucht.',
+						'„Unter der Woche bin ich tagsüber unterwegs und abends meist zu Hause. Am Wochenende schlafe ich gern aus.“',
+					],
+					[
+						'Wie hältst du es mit dem Putzen?',
+						'Ob du Aufgaben zuverlässig übernimmst, ohne dass man dich erinnern muss.',
+						'„Ich bin kein Ordnungsfanatiker, aber meine Aufgaben mache ich zu festen Zeiten. Ein Putzplan hilft mir dabei.“',
+					],
+					[
+						'Wie oft hast du Besuch?',
+						'Ob die Wohnung für alle ein Rückzugsort bleibt.',
+						'„Gelegentlich kommen Freunde vorbei. Übernachtungen sage ich vorher an.“',
+					],
+					[
+						'Feierst du gern zu Hause?',
+						'Wie laut und wie spät es werden kann.',
+						'„Ab und zu gern, aber ich frage vorher in der Gruppe und achte auf die Ruhezeiten.“',
+					],
+					[
+						'Wie stellst du dir das mit dem Geld vor?',
+						'Ob Einkäufe und Fixkosten ohne Streit laufen.',
+						'„Fixkosten teile ich gleich auf, persönliche Einkäufe bezahle ich selbst. Was ich schulde, gleiche ich zügig aus.“',
+					],
+					[
+						'Wie lange möchtest du bleiben?',
+						'Ob ihr bald wieder suchen müsst.',
+						'„Ich plane erst einmal ein paar Jahre, wegen Studium oder Job. Ändert sich etwas, sage ich es früh.“',
+					],
+					[
+						'Rauchst du, hast du Haustiere?',
+						'Ob es Konflikte um Geruch, Lärm oder Mietvertrag gibt.',
+						'„Ich rauche nicht und habe keine Tiere. Falls sich das ändert, spreche ich es vorher mit euch ab.“',
+					],
+					[
+						'Warum möchtest du zu uns?',
+						'Ob du die WG kennst oder nur irgendein Zimmer suchst.',
+						'„Mir gefällt, dass ihr gemeinsam kocht und trotzdem Ruhe lasst. So eine WG suche ich.“',
+					],
+				],
+			},
+			{
+				nach: 'Nach dem Casting entscheiden',
+				titel: 'Bewertungsbogen',
+				kopf: ['Kriterium', 'Person A', 'Person B', 'Person C'],
+				zeilen: [
+					['Rhythmus passt', '', '', ''],
+					['Ordnung ähnlich', '', '', ''],
+					['Geldvorstellung', '', '', ''],
+					['Erwartung an die WG', '', '', ''],
+					['Bauchgefühl', '', '', ''],
+				],
+				hinweis:
+					'Skala von 1 (passt gar nicht) bis 5 (passt sehr gut). Jede Person füllt den Bogen direkt nach dem Termin für sich aus, danach vergleicht ihr.',
+			},
 		],
 		fragen: [
 			[
@@ -1034,8 +1109,12 @@ export const RATGEBER: Record<string, Thema> = {
 				'Üblich sind 20 bis 30 Minuten pro Person. Das reicht für eine Wohnungsführung und ein Gespräch, ohne dass es für beide Seiten zu anstrengend wird.',
 			],
 			[
-				'Was sollte ich als Bewerber beim WG-Casting fragen?',
-				'Warum das Zimmer frei wird, wie Miete und Nebenkosten aufgeteilt werden, ob es einen eigenen Mietvertrag gibt, wie der Putzplan funktioniert und wie viel die WG gemeinsam unternimmt.',
+				'Was frage ich als Bewerber beim WG-Casting?',
+				'Warum das Zimmer frei wird, ob es einen eigenen Mietvertrag oder Untermiete gibt, wie hoch Warmmiete und Kaution sind, wie der Putzplan funktioniert, wie Ausgaben geteilt werden und wie lange die anderen bleiben wollen.',
+			],
+			[
+				'Welche Fragen sind beim WG-Casting tabu?',
+				'Fragen nach Herkunft, Religion, Gesundheit, Schwangerschaft oder Kinderwunsch und sexueller Orientierung. Sie sagen nichts über das Zusammenleben aus. Fragt stattdessen nach Alltag, Ruhezeiten, Besuch und Geld.',
 			],
 		],
 	},
@@ -1222,12 +1301,12 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'mitbewohner-kuendigen': {
 		link: 'Mitbewohner kündigen',
-		stand: '2026-10-20',
+		stand: '2026-10-27',
 		erschienen: '2026-10-20',
-		titel: 'Mitbewohner kündigen: was in der WG erlaubt ist | ManaWG',
+		titel: 'Mitbewohner kündigen: Fristen je nach Vertrag | ManaWG',
 		beschreibung:
-			'Kann man einen Mitbewohner rauswerfen? Was bei Untermiete, gemeinsamem Hauptmietvertrag und Einzelverträgen gilt, welche Fristen laufen und was verboten ist.',
-		h1: 'Mitbewohner kündigen: was in der WG geht',
+			'Kann man einen Mitbewohner kündigen? Antwort je nach Vertrag: Untermiete, gemeinsamer Hauptmietvertrag oder Einzelverträge. Mit Fristen und Muster fürs Kündigungsschreiben.',
+		h1: 'Mitbewohner kündigen: was je nach Vertrag geht',
 		einleitung:
 			'Wenn das Zusammenleben nicht mehr funktioniert, kommt schnell die Frage, ob man einen Mitbewohner einfach rauswerfen kann. Die Antwort hängt fast nur davon ab, wer mit wem einen Vertrag hat. Wer selbst Vermieter des Mitbewohners ist, kann kündigen, alle anderen nicht. Diese Seite gibt einen Überblick nach dem Bürgerlichen Gesetzbuch und ersetzt keine Rechtsberatung. Bei einem konkreten Fall helfen Mietervereine oder eine Anwältin für Mietrecht.',
 		abschnitte: [
@@ -1256,13 +1335,60 @@ export const RATGEBER: Record<string, Thema> = {
 				'Das Schloss austauschen, Sachen vor die Tür stellen oder Strom und Internet für ein Zimmer abklemmen ist verbotene Eigenmacht und kann strafbar sein, selbst wenn die Kündigung wirksam ist. Zieht jemand nach Ablauf der Frist nicht aus, bleibt nur die Räumungsklage beim Amtsgericht. Bei Gewalt oder Drohungen ruft ihr die Polizei. Das ist etwas anderes als ein Mietstreit.',
 			],
 			[
-				'Auf einen Blick',
-				'Untermiete, möbliertes Zimmer in der Wohnung des Hauptmieters: Kündigung ohne Grund bis zum 15. zum Monatsende\nUntermiete, leeres Zimmer in der Wohnung des Hauptmieters: Kündigung ohne Grund, Frist drei Monate länger\nUntermiete, Hauptmieter wohnt nicht selbst dort: nur mit berechtigtem Interesse\nGemeinsamer Hauptmietvertrag: kein Rauswurf durch Mitbewohner, nur Einigung\nEinzelverträge: nur der Vermieter kann kündigen, und nur mit Grund',
+				'Muster: Kündigung eines Untermieters',
+				'Absender: Name und Anschrift des Hauptmieters\nEmpfänger: Name des Untermieters und Anschrift der Wohnung\nDatum: Ort und Tag des Schreibens\nText: „Hiermit kündige ich das Untermietverhältnis über das Zimmer … zum …“\nGrundlage: Hinweis auf § 573a BGB oder § 549 Abs. 2 Nr. 2 BGB, je nach Fall\nUnterschrift: eigenhändig\nSchriftform: eigenhändig unterschrieben, nicht per Mail oder WhatsApp (§ 568 BGB).',
+			],
+			[
+				'Wenn der Mitbewohner nicht ausziehen will',
+				'Sprecht zuerst miteinander, am besten mit konkreten Vorfällen statt Vorwürfen, und haltet fest, was ihr vereinbart.\nBei Untermiete kündigt der Hauptmieter nach den Regeln oben. Zieht die Person danach nicht aus, bleibt nur die Räumungsklage beim Amtsgericht.\nBeim gemeinsamen Hauptmietvertrag hilft nur eine Einigung: Die Person zieht freiwillig aus, und Vermieter und alle übrigen Mieter vereinbaren, dass sie aus dem Vertrag entlassen wird (Aufhebungsvereinbarung).\nMietervereine und Anwälte für Mietrecht klären den Einzelfall.',
+			],
+			[
+				'Mitbewohner ohne Mietvertrag',
+				'Ein Zimmer, das gegen Miete überlassen wird, ist auch ohne Papier ein Mietvertrag. Der Vermieter schuldet die Überlassung, der Mieter die vereinbarte Miete (§ 535 BGB). Das Gesetz verlangt die Schriftform nur für Verträge über mehr als ein Jahr, und auch dann ist der Vertrag ohne sie nicht unwirksam, sondern gilt als unbefristet (§ 550 BGB). Für die Kündigung gelten deshalb dieselben Regeln wie oben.',
 			],
 			[
 				'Bevor es so weit kommt',
 				'Die meisten Konflikte lassen sich lösen, bevor jemand an Kündigung denkt. Sprecht Probleme früh an und haltet Absprachen fest, damit nicht jedes Thema neu verhandelt wird. Wie das gelingt, steht im Ratgeber [Streit in der WG lösen](/wg-streit-loesen). Geht es um Geld, hilft eine gemeinsame Übersicht, siehe [Schulden unter Mitbewohnern](/schulden-mitbewohner). Steht der Auszug fest, klärt Kaution und offene Beträge mit der [Auszugs-Checkliste](/wg-auszug-checkliste).',
 			],
+		],
+		tabellen: [
+			{
+				nach: 'einleitung',
+				titel: 'Mitbewohner kündigen: Auf einen Blick',
+				kopf: ['Vertrag', 'Wer darf kündigen', 'Frist', 'Grund nötig?'],
+				zeilen: [
+					[
+						'Untermiete, möbliertes Zimmer in der Wohnung des Hauptmieters',
+						'Hauptmieter',
+						'bis zum 15. zum Monatsende',
+						'Nein (§ 549 Abs. 2 Nr. 2 BGB)',
+					],
+					[
+						'Untermiete, leeres Zimmer in der Wohnung des Hauptmieters',
+						'Hauptmieter',
+						'drei Monate länger als normal',
+						'Nein (§ 573a BGB)',
+					],
+					[
+						'Untermiete, Hauptmieter wohnt nicht selbst dort',
+						'Hauptmieter',
+						'mindestens drei Monate',
+						'Ja, berechtigtes Interesse',
+					],
+					[
+						'Gemeinsamer Hauptmietvertrag',
+						'Kein Mitbewohner, der Vermieter nur allen gemeinsam',
+						'entfällt, nur Einigung',
+						'entfällt',
+					],
+					[
+						'Einzelverträge',
+						'Nur der Vermieter',
+						'je nach Grund, fristlos nur bei schweren Gründen',
+						'Ja, gesetzlicher Grund',
+					],
+				],
+			},
 		],
 		fragen: [
 			[
@@ -1294,17 +1420,19 @@ export const RATGEBER: Record<string, Thema> = {
 			['§ 573a BGB, erleichterte Kündigung', 'https://www.gesetze-im-internet.de/bgb/__573a.html'],
 			['§ 573c BGB, Kündigungsfristen', 'https://www.gesetze-im-internet.de/bgb/__573c.html'],
 			['§ 568 BGB, Schriftform der Kündigung', 'https://www.gesetze-im-internet.de/bgb/__568.html'],
+			['§ 535 BGB, Inhalt des Mietvertrags', 'https://www.gesetze-im-internet.de/bgb/__535.html'],
+			['§ 550 BGB, Form des Mietvertrags', 'https://www.gesetze-im-internet.de/bgb/__550.html'],
 			['§ 543 BGB, fristlose Kündigung', 'https://www.gesetze-im-internet.de/bgb/__543.html'],
 		],
 	},
 	'wg-anmeldung': {
 		link: 'Anmeldung in der WG',
-		stand: '2026-10-20',
+		stand: '2026-10-27',
 		erschienen: '2026-10-20',
-		titel: 'Anmeldung in der WG: Wohnungsgeberbestätigung | ManaWG',
+		titel: 'Anmeldung in der WG: Frist, Bestätigung, Muster | ManaWG',
 		beschreibung:
-			'Anmelden im WG-Zimmer: Frist, wer die Wohnungsgeberbestätigung ausstellt, was drinstehen muss, Nebenwohnung und wann keine Anmeldung nötig ist.',
-		h1: 'Anmeldung in der WG',
+			'WG-Zimmer anmelden: zwei Wochen Frist, wer die Wohnungsgeberbestätigung ausstellt, was drinstehen muss (mit Beispiel) und was hilft, wenn sie verweigert wird.',
+		h1: 'Anmeldung in der WG: Wohnungsgeberbestätigung und Frist',
 		einleitung:
 			'Wer in ein WG-Zimmer zieht, muss sich beim Bürgeramt anmelden, und dafür braucht es eine Wohnungsgeberbestätigung. Wer sie ausstellt, hängt vom Mietvertrag ab, und gerade bei Untermiete wissen viele Hauptmieter nicht, dass sie zuständig sind. Diese Seite fasst die Regeln des Bundesmeldegesetzes zusammen und ersetzt keine Rechtsberatung. Einzelheiten wie Formulare und Termine regelt eure Stadt.',
 		abschnitte: [
@@ -1317,8 +1445,16 @@ export const RATGEBER: Record<string, Thema> = {
 				'Wohnungsgeber ist, wer euch die Wohnung überlässt. Habt ihr einen eigenen Vertrag mit dem Vermieter oder steht ihr im gemeinsamen Hauptmietvertrag, ist es der Vermieter oder die Hausverwaltung. Bei Untermiete ist der Hauptmieter der Wohnungsgeber und muss die Bestätigung selbst ausstellen. Er muss den Einzug innerhalb der zwei Wochen bestätigen. Weigert er sich oder kommt sie nicht rechtzeitig, sagt ihr der Meldebehörde sofort Bescheid.',
 			],
 			[
-				'Was in der Bestätigung stehen muss',
-				'1. Name und Anschrift des Wohnungsgebers\n2. Bei Untermiete zusätzlich der Name des Eigentümers der Wohnung\n3. Das Einzugsdatum\n4. Die Anschrift der Wohnung\n5. Die Namen aller Personen, die einziehen und sich anmelden müssen',
+				'Wenn der Hauptmieter die Bestätigung verweigert',
+				'Der Wohnungsgeber ist nach § 19 BMG verpflichtet, bei der Anmeldung mitzuwirken. Verweigert er die Bestätigung oder kommt sie nicht rechtzeitig, müsst ihr das der Meldebehörde unverzüglich mitteilen (§ 19 Abs. 2 BMG). Ein Wohnungsgeber, der den Einzug nicht, falsch oder verspätet bestätigt, begeht eine Ordnungswidrigkeit, die mit bis zu 1.000 Euro geahndet werden kann (§ 54 BMG). So geht ihr vor: Bittet den Hauptmieter schriftlich um die Bestätigung, damit ihr es belegen könnt. Setzt eine kurze Frist, die vor dem Ende der zwei Wochen liegt. Kommt nichts, informiert die Meldebehörde und fragt dort, wie ihr weiter vorgeht.',
+			],
+			[
+				'Muster: Was in der Bestätigung steht',
+				'Die Bestätigung enthält den Namen und die Anschrift des Wohnungsgebers, bei abweichendem Eigentümer auch dessen Namen, das Einzugsdatum, die Anschrift der Wohnung und die Namen der meldepflichtigen Personen (§ 19 Abs. 3 BMG). Die Tabelle zeigt ein Beispiel mit ausgedachten Angaben. Viele Städte haben eigene Formulare, die Angaben sind dieselben.',
+			],
+			[
+				'Elektronische Bestätigung',
+				'Der Wohnungsgeber kann den Einzug auch elektronisch gegenüber der Meldebehörde bestätigen (§ 19 Abs. 1 BMG). Dafür erhält er ein Zuordnungsmerkmal, das er an die meldepflichtige Person weitergibt, damit sie es bei der Anmeldung angibt (§ 19 Abs. 4 BMG). Ob eure Meldebehörde diesen Weg anbietet, erfahrt ihr bei ihr.',
 			],
 			[
 				'Was ihr zum Termin mitbringt',
@@ -1345,10 +1481,33 @@ export const RATGEBER: Record<string, Thema> = {
 				'Mit der Meldebescheinigung lassen sich Bankkonto, Rundfunkbeitrag und Verträge auf die neue Adresse umstellen. Den Rundfunkbeitrag zahlt die WG nur einmal, wie ihr ihn aufteilt, steht im Ratgeber zu [Nebenkosten](/wg-nebenkosten). Was in den ersten Tagen sonst wichtig ist, fasst die [Einzugs-Checkliste](/wg-einzug-checkliste) zusammen.',
 			],
 		],
+		tabellen: [
+			{
+				nach: 'Muster: Was in der Bestätigung steht',
+				titel: 'Beispiel einer Wohnungsgeberbestätigung',
+				kopf: ['Feld', 'Beispiel'],
+				zeilen: [
+					[
+						'Name und Anschrift des Wohnungsgebers',
+						'Erika Beispiel, Musterweg 1, 12345 Musterstadt',
+					],
+					['Name des Eigentümers, falls abweichend', 'Max Muster'],
+					['Einzugsdatum', '01.11.2026'],
+					['Anschrift der Wohnung', 'Musterweg 1, 2. Obergeschoss links, 12345 Musterstadt'],
+					['Namen der meldepflichtigen Personen', 'Jonas Probe'],
+				],
+				hinweis:
+					'Ausgedachte Angaben zur Veranschaulichung. Maßgeblich ist das Formular eurer Stadt.',
+			},
+		],
 		fragen: [
 			[
 				'Wer stellt in der WG die Wohnungsgeberbestätigung aus?',
 				'Bei einem eigenen Vertrag oder dem gemeinsamen Hauptmietvertrag der Vermieter oder die Hausverwaltung. Bei Untermiete der Hauptmieter.',
+			],
+			[
+				'Was tun, wenn der Hauptmieter nicht unterschreibt?',
+				'Bittet ihn schriftlich um die Bestätigung und setzt eine kurze Frist. Kommt sie nicht rechtzeitig, teilt ihr das der Meldebehörde unverzüglich mit.',
 			],
 			[
 				'Wie lange habe ich Zeit, mich in der WG anzumelden?',
