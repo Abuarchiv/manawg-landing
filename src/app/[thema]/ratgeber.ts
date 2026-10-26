@@ -212,9 +212,9 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'WG gründen',
 		stand: '2026-10-27',
 		erschienen: '2026-10-11',
-		titel: 'WG gründen: Checkliste von Mietvertrag bis Putzplan | ManaWG',
+		titel: 'WG gründen: Checkliste in 9 Schritten | ManaWG',
 		beschreibung:
-			'WG gründen Schritt für Schritt: Mietvertrag, Kaution, Anmeldung, Strom und Internet, Kosten aufteilen und Regeln festlegen. Mit Checkliste zum Abhaken.',
+			'WG gründen Schritt für Schritt: Gruppe finden, Vertragsform wählen, Kaution teilen, anmelden, Kosten und Regeln festlegen. Mit Checkliste zum Abhaken.',
 		h1: 'WG gründen: die Checkliste',
 		einleitung:
 			'Eine neue WG fängt oft mit Begeisterung an und endet mit Streit über Dinge, die niemand besprochen hat. Diese Checkliste führt durch die Fragen, die vor und kurz nach dem Einzug geklärt sein sollten: vom Mietvertrag über Anmeldung und Verträge bis zu Geld, Putzplan und Regeln. Sie ersetzt keine Rechtsberatung, besonders nicht bei Mietverträgen.',
@@ -281,6 +281,34 @@ export const RATGEBER: Record<string, Thema> = {
 				'Ist ManaWG für neue WGs geeignet?',
 				'Ja. Eine Person erstellt die WG und teilt den Einladungslink, die anderen sind sofort dabei. Die App ist kostenlos und braucht keine Installation aus dem App Store.',
 			],
+		],
+		tabellen: [
+			{
+				nach: '2. Die richtige Vertragsform wählen',
+				titel: 'Drei Vertragsmodelle',
+				kopf: ['Modell', 'Haftung', 'Auszug', 'Kündigung'],
+				zeilen: [
+					[
+						'Gemeinsamer Hauptmietvertrag',
+						'alle gemeinsam für die ganze Miete',
+						'nur mit Zustimmung von Vermieter und Mitbewohnern',
+						'in der Regel nur alle gemeinsam',
+					],
+					[
+						'Untermiete',
+						'der Hauptmieter allein',
+						'Nachfolger wählt der Hauptmieter, mit Erlaubnis des Vermieters',
+						'eigener Vertrag mit dem Hauptmieter',
+					],
+					[
+						'Einzelmietvertrag',
+						'jede Person für ihr Zimmer',
+						'Nachfolger wählt meist der Vermieter',
+						'eigener Vertrag',
+					],
+				],
+				hinweis: 'Mehr dazu im Ratgeber WG-Mietvertrag.',
+			},
 		],
 		quellen: [
 			[
@@ -442,9 +470,9 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'WG-Regeln',
 		stand: '2026-10-27',
 		erschienen: '2026-10-11',
-		titel: 'WG-Regeln: Vorlage und Beispiele zum Übernehmen | ManaWG',
+		titel: 'WG-Regeln: 10 Regeln als Vorlage zum Übernehmen | ManaWG',
 		beschreibung:
-			'WG-Regeln als Vorlage: zehn Regeln zum Übernehmen für Ruhezeiten, Besuch, Putzen, Kühlschrank und gemeinsame Kasse, dazu Tipps, wie ihr sie festhaltet.',
+			'Zehn WG-Regeln als Vorlage für Ruhezeiten, Besuch, Putzen, Kühlschrank und Geld, plus Tipps, wie ihr Verstöße ansprecht.',
 		h1: 'WG-Regeln, die wirklich funktionieren',
 		einleitung:
 			'Viele WGs haben entweder gar keine Regeln oder einen langen Katalog, an den sich niemand hält. Gute Regeln sind kurz, konkret und von allen beschlossen. Unten steht eine Vorlage mit zehn Regeln, die ihr übernehmen und anpassen könnt, danach die Bereiche im Einzelnen.',
@@ -472,6 +500,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Bad, Küche und Gemeinschaftsräume',
 				'Morgens wird das Bad schnell knapp. Wer früh raus muss, bekommt ein festes Zeitfenster, alle anderen duschen davor oder danach. In der Küche gilt: Wer kocht, räumt danach auf, und die Arbeitsfläche ist frei für die nächste Person. Im Wohnzimmer bleibt nichts Privates dauerhaft liegen, sonst wird der Raum zum Abstellraum.',
+			],
+			[
+				'Regeln für Kühlschrank und Spülmaschine',
+				'Kühlschrank: Jede Person hat ein eigenes Fach, für Gemeinsames gibt es ein weiteres. Fremdes wird nur nach Frage gegessen.\nKühlschrank: Alle zwei Wochen wird gemeinsam durchgesehen und Abgelaufenes entsorgt, zum Beispiel als wiederkehrende Putzaufgabe.\nSpülmaschine: Sauberes Geschirr wird gleich ausgeräumt, benutztes kommt in die Maschine statt über Nacht in die Spüle.\nSpülmaschine: Tabs und Klarspüler zahlen alle gemeinsam, wer den letzten nimmt, setzt ihn auf die Einkaufsliste.',
 			],
 			[
 				'Rauchen, Haustiere und Instrumente',
@@ -523,7 +555,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-nebenkosten': {
 		link: 'WG-Nebenkosten',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'WG-Nebenkosten, Strom und Internet fair aufteilen | ManaWG',
 		beschreibung:
@@ -534,7 +566,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Nebenkosten: Vorauszahlung und Abrechnung',
-				'Die Nebenkosten bezahlt ihr in der Regel als monatliche Vorauszahlung, im Folgejahr kommt die Abrechnung des Vermieters. Sie kann zu einer Nachzahlung oder einem Guthaben führen. Verteilt diese so wie die Vorauszahlung, und zwar unter denjenigen, die im Abrechnungszeitraum in der WG gewohnt haben. Zieht jemand zwischendurch aus oder ein, rechnet ihr anteilig nach Monaten.',
+				'Die Nebenkosten bezahlt ihr in der Regel als monatliche Vorauszahlung, im Folgejahr kommt die Abrechnung des Vermieters, spätestens zwölf Monate nach Ende des Abrechnungszeitraums. Kommt sie später, kann der Vermieter in der Regel keine Nachzahlung mehr verlangen. Sie kann zu einer Nachzahlung oder einem Guthaben führen. Verteilt diese so wie die Vorauszahlung, und zwar unter denjenigen, die im Abrechnungszeitraum in der WG gewohnt haben. Zieht jemand zwischendurch aus oder ein, rechnet ihr anteilig nach Monaten.',
 			],
 			[
 				'Beispiel: Nachzahlung bei Wechsel in der WG',
@@ -582,6 +614,13 @@ export const RATGEBER: Record<string, Thema> = {
 				'Kann ich wiederkehrende Kosten automatisch buchen?',
 				'Ja. In ManaWG legt ihr Miete, Internet oder Strom als Fixkosten an. Sie werden im Rhythmus ganzer Monate automatisch als Ausgabe gebucht.',
 			],
+		],
+		quellen: [
+			[
+				'§ 556 BGB, Vereinbarungen über Betriebskosten',
+				'https://www.gesetze-im-internet.de/bgb/__556.html',
+			],
+			['Rundfunkbeitrag, ein Beitrag je Wohnung', 'https://www.rundfunkbeitrag.de/'],
 		],
 	},
 	'wg-einkauf-organisieren': {
@@ -1029,7 +1068,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'schulden-mitbewohner': {
 		link: 'Schulden in der WG',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'Schulden unter Mitbewohnern ausgleichen | ManaWG',
 		beschreibung:
@@ -1063,6 +1102,10 @@ export const RATGEBER: Record<string, Thema> = {
 				'Beim Auszug ist der einfachste Moment, alles zu klären, und der letzte, an dem alle noch in einer Wohnung sind. Bringt den Saldo der ausziehenden Person vor dem letzten Tag auf null. Steht noch eine Nebenkostenabrechnung aus, vereinbart schriftlich, wie Nachzahlung oder Guthaben später verteilt werden, und tauscht Kontaktdaten aus. Wer danach erst hinterherschreibt, wartet oft lange.',
 			],
 			[
+				'Wenn alle gemeinsam haften',
+				'Bei einem gemeinsamen Hauptmietvertrag kann der Vermieter die ganze Miete von jeder Person verlangen, auch wenn andere nicht zahlen (§ 421 BGB). Wer mehr als seinen Anteil gezahlt hat, kann sich den Rest von den Mitbewohnern zurückholen. Im Zweifel gilt dabei Gleichheit: Jeder trägt denselben Anteil, solange nichts anderes vereinbart ist (§ 426 BGB). Haltet vorher schriftlich fest, wie ihr teilt, falls es nicht gleich sein soll.',
+			],
+			[
 				'Wenn jemand nicht zahlt',
 				'Sprecht es sachlich und unter vier Augen an, nennt den Betrag und einen Termin. Tipps für solche Gespräche stehen unter [Streit in der WG lösen](/wg-streit-loesen). Hilft das nicht, bringt es in die WG-Runde, ohne die Person bloßzustellen. Klärt, ob eine Ratenzahlung hilft, wenn das Geld gerade knapp ist. Rechtliche Schritte sind bei kleinen Beträgen selten sinnvoll und belasten das Zusammenleben mehr als der offene Betrag.',
 			],
@@ -1083,6 +1126,13 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Was passiert mit Schulden, wenn ein Mitbewohner auszieht?',
 				'Offene Beträge sollten vor dem Auszug ausgeglichen sein. Für eine spätere Nebenkostenabrechnung vereinbart ihr vorher, wie Nachzahlung oder Guthaben verteilt werden.',
+			],
+		],
+		quellen: [
+			['§ 421 BGB, Gesamtschuldner', 'https://www.gesetze-im-internet.de/bgb/__421.html'],
+			[
+				'§ 426 BGB, Ausgleichungspflicht, Forderungsübergang',
+				'https://www.gesetze-im-internet.de/bgb/__426.html',
 			],
 		],
 	},
@@ -1230,12 +1280,12 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'mitbewohner-finden': {
 		link: 'Mitbewohner finden',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-19',
-		titel: 'Mitbewohner finden: WG-Anzeige schreiben | ManaWG',
+		titel: 'WG-Anzeige aufgeben und Mitbewohner finden | ManaWG',
 		beschreibung:
-			'So findet ihr einen neuen Mitbewohner: Wo ihr die WG-Anzeige schaltet, was hineingehört, wie ihr auswählt und was vor dem Einzug geklärt sein sollte.',
-		h1: 'Neuen Mitbewohner finden',
+			'So gebt ihr eine WG-Anzeige auf: wo inserieren, Anzeigentitel mit Beispielen, die wichtigsten Angaben und ein Mustertext zum Anpassen.',
+		h1: 'Mitbewohner finden: WG-Anzeige schreiben und aufgeben',
 		einleitung:
 			'Ein Zimmer wird frei, und in wenigen Wochen soll jemand Neues einziehen. Damit es passt, kommt es auf eine ehrliche Anzeige, eine gute Auswahl und klare Absprachen vor dem Einzug an. Hier steht der Ablauf von der Anzeige bis zum ersten gemeinsamen Monat.',
 		abschnitte: [
@@ -1244,12 +1294,16 @@ export const RATGEBER: Record<string, Thema> = {
 				'Bevor ihr sucht, klärt, wer den Mietvertrag mit dem Vermieter hat. Ist die WG über Untermiete organisiert, braucht ihr für eine neue Person in der Regel die Erlaubnis des Vermieters. Haben alle einen eigenen Vertrag, regelt der Vermieter den Wechsel oft selbst. Legt außerdem fest, ab wann das Zimmer frei ist, was es warm kostet und ob Möbel übernommen werden sollen.',
 			],
 			[
-				'Wo ihr die Anzeige schaltet',
-				'Für Studenten-WGs sind WG-Portale wie WG-Gesucht der übliche Weg, dazu kommen Gruppen der Hochschule, Aushänge beim Studierendenwerk und Kleinanzeigen. Für Berufstätige lohnen sich zusätzlich Aushänge beim Arbeitgeber und das eigene Umfeld. Wer persönlich empfohlen wird, passt nicht automatisch besser, aber ihr wisst schneller, woran ihr seid.',
+				'Wo ihr die Anzeige aufgebt',
+				'WG-Gesucht: das gängige Portal für WG-Zimmer, besonders in Hochschulstädten\nImmoScout24: hat eine eigene Rubrik für WG-Zimmer\nAushang an der Hochschule und beim Studierendenwerk\nGruppen der Hochschule und Kleinanzeigen\nFür Berufstätige: Aushang beim Arbeitgeber und das eigene Umfeld',
 			],
 			[
 				'Was in eine gute WG-Anzeige gehört',
 				'Die Fakten zuerst: Größe des Zimmers, Warmmiete mit allen Nebenkosten, Einzugsdatum, Befristung, Lage und Verkehrsanbindung. Dann die WG selbst: Wie viele Personen, welches Alter, was macht ihr, wie viel Gemeinsames gibt es? Gute Fotos von Zimmer, Küche und Bad bei Tageslicht. Und ein ehrlicher Satz dazu, wie ihr Haushalt und Geld organisiert, etwa mit Putzplan und gemeinsamer Abrechnung in einer App. Das filtert Bewerber, die etwas ganz anderes suchen.',
+			],
+			[
+				'Der Anzeigentitel: Formel und Beispiele',
+				'Der Titel entscheidet, ob jemand die Anzeige öffnet. Nennt in dieser Reihenfolge Zimmergröße, Lage, Warmmiete und Einzugsdatum. Drei Beispiele: „16 m² in Dreier-WG, Leipzig-Connewitz, 420 Euro warm, ab 1.12.“, „12 m² Zimmer nahe der Uni, Göttingen, 340 Euro warm, ab sofort“, „20 m² mit Balkon, Köln-Ehrenfeld, 560 Euro warm, ab 1.3., befristet bis August“. Lasst Floskeln wie „tolle Lage“ weg, die Zahlen überzeugen mehr.',
 			],
 			[
 				'Beispiel für eine WG-Anzeige',
@@ -1289,6 +1343,10 @@ export const RATGEBER: Record<string, Thema> = {
 				'Wie lange dauert es, einen Mitbewohner zu finden?',
 				'Das hängt von Stadt, Preis und Jahreszeit ab. Plant mindestens vier bis sechs Wochen ein. Zum Semesterbeginn melden sich in Hochschulstädten meist mehr Interessenten als im Sommer oder um den Jahreswechsel.',
 			],
+		],
+		quellen: [
+			['WG-Gesucht, Portal für WG-Zimmer', 'https://www.wg-gesucht.de/'],
+			['ImmoScout24, WG-Zimmer', 'https://www.immobilienscout24.de/wohnen/wg-zimmer.html'],
 		],
 	},
 	'wg-auszug-checkliste': {

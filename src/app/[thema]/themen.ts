@@ -34,7 +34,7 @@ export const THEMEN: Record<string, Thema> = {
 		link: 'WG-App',
 		stand: '2026-10-27',
 		erschienen: '2026-10-10',
-		titel: 'WG App: Organisation für die ganze WG | ManaWG',
+		titel: 'WG-App kostenlos: Ausgaben, Putzplan, Einkauf | ManaWG',
 		beschreibung:
 			'ManaWG ist die kostenlose WG-App auf Deutsch: Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand für Studenten-WGs und Zweck-WGs.',
 		h1: 'Die WG-App für Geld, Putzen, Einkauf und Termine',
