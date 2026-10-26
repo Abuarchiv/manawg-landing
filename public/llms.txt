@@ -28,6 +28,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Einkaufsliste](https://manawg.com/einkaufsliste)
 - [Splitwise-Alternative](https://manawg.com/splitwise-alternative)
 - [Flatastic-Alternative](https://manawg.com/flatastic-alternative)
+- [Tricount-Alternative](https://manawg.com/tricount-alternative)
 - [Splid-Alternative](https://manawg.com/splid-alternative)
 - [OurHome-Alternative](https://manawg.com/ourhome-alternative)
 - [Häufige Fragen](https://manawg.com/faq)

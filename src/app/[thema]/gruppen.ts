@@ -1,4 +1,6 @@
 // Gliederung der Themenseiten für Breadcrumb, "Weiterlesen" und Fußzeile.
+import type { Thema } from './themen';
+
 export const GRUPPEN: Array<{ name: string; slugs: string[] }> = [
 	{ name: 'Funktionen', slugs: ['wg-app', 'putzplan', 'wg-kasse', 'einkaufsliste'] },
 	{
@@ -8,6 +10,7 @@ export const GRUPPEN: Array<{ name: string; slugs: string[] }> = [
 			'splitwise-alternative',
 			'splid-alternative',
 			'flatastic-alternative',
+			'tricount-alternative',
 			'ourhome-alternative',
 		],
 	},
@@ -82,4 +85,41 @@ export function verwandte(slug: string): string[] {
 	const rest = (GRUPPEN[2]?.slugs ?? []).filter((s) => s !== slug && !eigene.includes(s));
 	const cluster = FUNKTION_ZU_RATGEBER[slug] ?? [funktionVon(slug)].filter((s) => s !== undefined);
 	return [...new Set([...cluster, ...eigene, ...rest])].slice(0, 3);
+}
+
+/** Zeilen und ManaWG-Spalte der Vergleichstabellen; Zellen zu ManaWG nur aus der App belegt. */
+export const VERGLEICH_ZEILEN = [
+	'Ausgaben teilen',
+	'Putzplan',
+	'Einkaufsliste',
+	'Kalender',
+	'Chat',
+	'Währungen',
+	'Preis',
+];
+export const VERGLEICH_MANAWG = [
+	'gleich oder mit eigenen Beträgen, Fixkosten, Monatsabrechnung',
+	'mit Rotation, Abwesenheit und Erinnerung',
+	'mit Vorräten',
+	'mit Kalender-Abo',
+	'Chat und Pinnwand',
+	'nur Euro',
+	'kostenlos, ohne Werbung',
+];
+/** Alles, was die Quellen der Seite nicht belegen, steht so in der Tabelle. */
+export const NG = 'nicht geprüft';
+
+/** Tabelle ManaWG gegen einen Anbieter; `zellen` folgt VERGLEICH_ZEILEN, Fehlendes wird „nicht geprüft“. */
+export function vergleichsTabelle(
+	anbieter: string,
+	zellen: string[],
+	hinweis: string,
+): NonNullable<Thema['tabellen']>[number] {
+	return {
+		nach: 'einleitung',
+		titel: `ManaWG und ${anbieter} im Vergleich`,
+		kopf: ['Merkmal', 'ManaWG', anbieter],
+		zeilen: VERGLEICH_ZEILEN.map((z, i) => [z, VERGLEICH_MANAWG[i] ?? NG, zellen[i] ?? NG]),
+		hinweis,
+	};
 }

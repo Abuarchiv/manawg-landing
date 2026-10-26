@@ -3,6 +3,7 @@
 import type { Thema } from './themen';
 
 // Die reinen Funktionen liegen in einer kleinen Datei, damit der Generator nicht alle Ratgebertexte lädt.
+import { NG, VERGLEICH_MANAWG, VERGLEICH_ZEILEN } from './gruppen';
 import { putzplanRotation, tabelleAlsCsv } from './putzplan-rotation';
 
 const AUFGABEN_VIER = ['Bad', 'Küche', 'Böden', 'Müll und Flur'];
@@ -694,9 +695,9 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'Beste WG-App',
 		stand: '2026-10-21',
 		erschienen: '2026-10-11',
-		titel: 'Die beste WG-App finden: 7 Kriterien im Vergleich | ManaWG',
+		titel: 'Beste WG-App: Vergleich mit Tabelle | ManaWG',
 		beschreibung:
-			'Welche WG-App passt zu euch? Sieben Kriterien von Kosten über Putzplan bis Datenschutz, dazu Vergleiche mit Splitwise, Splid und Flatastic.',
+			'Welche WG-App passt zu euch? Vergleich nach Ausgaben, Putzplan, Einkauf, Kalender und Preis: ManaWG, Flatastic, Splitwise, Splid, Tricount und OurHome.',
 		h1: 'Die beste WG-App: 7 Kriterien für die Auswahl',
 		einleitung:
 			'Es gibt viele Apps für Wohngemeinschaften, und keine ist für jede WG die beste. Manche rechnen nur Geld, andere organisieren nur den Haushalt. Diese Seite ist kein unabhängiges Ranking, sondern die Sicht des Anbieters ManaWG. Mit diesen sieben Kriterien findet ihr die App, die zu eurem Alltag passt, bevor ihr alle Mitbewohner zum Umstieg bewegt.',
@@ -705,7 +706,49 @@ export const RATGEBER: Record<string, Thema> = {
 			['Splid auf Deutsch', 'https://splid.app/german'],
 			['Flatastic', 'https://www.flatastic-app.com/'],
 			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
+			['Tricount Funktionen', 'https://tricount.com/expense-tracker-features'],
+			[
+				'Tricount im App Store',
+				'https://apps.apple.com/de/app/tricount-ausgaben-teilen/id349866256',
+			],
 			['Was ist ManaWG?', 'https://manawg.com/ueber-manawg'],
+		],
+		tabellen: [
+			{
+				nach: 'einleitung',
+				titel: 'WG-Apps im Vergleich',
+				kopf: ['Merkmal', 'Flatastic', 'ManaWG', 'OurHome', 'Splid', 'Splitwise', 'Tricount'],
+				// Spalten alphabetisch, damit die Tabelle keine Rangfolge nahelegt.
+				zeilen: VERGLEICH_ZEILEN.map((z, i) => [
+					z,
+					...[
+						[
+							'Finanzen laut Anbieter',
+							'Aufgaben laut Anbieter',
+							'Einkäufe laut Anbieter',
+							NG,
+							'Pinnwand laut Anbieter, Chat nicht geprüft',
+							NG,
+							'Premium kostenpflichtig laut Anbieter',
+						],
+						VERGLEICH_MANAWG,
+						[],
+						['ja, in Gruppen', NG, NG, NG, NG, 'über 150 laut Anbieter', NG],
+						[
+							'ja',
+							NG,
+							NG,
+							NG,
+							NG,
+							'Umrechnung im Pro-Tarif laut Anbieter',
+							'Pro-Tarif laut Anbieter',
+						],
+						['ja', NG, NG, NG, NG, 'mehrere Währungen laut Anbieter', 'kostenlos laut Anbieter'],
+					].map((spalte) => spalte[i] ?? NG),
+				]),
+				hinweis:
+					'Angaben zu anderen Anbietern laut deren Seiten, Stand 14. Oktober 2026 (Tricount: 27. Oktober 2026). Was die Quellen nicht belegen, steht als „nicht geprüft“ da. Die Spalten sind alphabetisch sortiert, kein Ranking.',
+			},
 		],
 		abschnitte: [
 			[
@@ -734,7 +777,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'7. Wie leicht ist der Umstieg?',
-				'Wer Daten aus Splitwise oder Splid bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ausführliche Vergleiche findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative), [Flatastic-Alternative](/flatastic-alternative) und [OurHome-Alternative](/ourhome-alternative).',
+				'Wer Daten aus Splitwise oder Splid bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ausführliche Vergleiche findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative), [Flatastic-Alternative](/flatastic-alternative), [Tricount-Alternative](/tricount-alternative) und [OurHome-Alternative](/ourhome-alternative).',
 			],
 		],
 		fragen: [

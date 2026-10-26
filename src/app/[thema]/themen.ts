@@ -1,5 +1,6 @@
 // Themenseiten für Suchanfragen, die die Startseite allein nicht abdeckt.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
+import { NG, vergleichsTabelle } from './gruppen';
 import { RATGEBER } from './ratgeber';
 
 export interface Thema {
@@ -300,6 +301,21 @@ export const THEMEN: Record<string, Thema> = {
 			['Splitwise Pro', 'https://www.splitwise.com/pro'],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],
 		],
+		tabellen: [
+			vergleichsTabelle(
+				'Splitwise',
+				[
+					'ja',
+					NG,
+					NG,
+					NG,
+					NG,
+					'Umrechnung im Pro-Tarif laut Anbieter',
+					'Pro-Tarif laut Anbieter; Umfang der kostenlosen Version nicht geprüft',
+				],
+				'Angaben zu Splitwise laut Pro-Seite des Anbieters, Stand 14. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
+			),
+		],
 		abschnitte: [
 			[
 				'Was Splitwise Pro laut Anbieter enthält',
@@ -363,6 +379,13 @@ export const THEMEN: Record<string, Thema> = {
 			['Splid auf Deutsch', 'https://splid.app/german'],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],
 		],
+		tabellen: [
+			vergleichsTabelle(
+				'Splid',
+				['ja, in Gruppen', NG, NG, NG, NG, 'über 150 laut Anbieter', NG],
+				'Angaben zu Splid laut deutscher Seite des Anbieters, Stand 14. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
+			),
+		],
 		abschnitte: [
 			[
 				'Was Splid laut Anbieter kann',
@@ -419,13 +442,28 @@ export const THEMEN: Record<string, Thema> = {
 		titel: 'Flatastic-Alternative ohne Werbung und Premium | ManaWG',
 		beschreibung:
 			'ManaWG ist eine kostenlose Flatastic-Alternative für WGs: Putzplan, WG-Kasse, Einkauf, Kalender und Chat, ohne Werbung und ohne Premium-Stufe.',
-		h1: 'Eine WG-App ohne Werbung und ohne Premium',
+		h1: 'Flatastic-Alternative: WG-App ohne Werbung und Premium',
 		einleitung:
 			'Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium unter anderem ohne Werbung und mit Verläufen. Den aktuellen Stand prüft ihr am besten selbst bei Flatastic. ManaWG ist kostenlos und kommt ohne Werbung und ohne Bezahlstufe aus.',
 		quellen: [
 			['Flatastic', 'https://www.flatastic-app.com/'],
 			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],
+		],
+		tabellen: [
+			vergleichsTabelle(
+				'Flatastic',
+				[
+					'Finanzen laut Anbieter',
+					'Aufgaben laut Anbieter',
+					'Einkäufe laut Anbieter',
+					NG,
+					'Pinnwand laut Anbieter, Chat nicht geprüft',
+					NG,
+					'Premium kostenpflichtig laut Anbieter; Umfang der kostenlosen Version nicht geprüft',
+				],
+				'Angaben zu Flatastic laut Seiten des Anbieters, Stand 14. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
+			),
 		],
 		abschnitte: [
 			[
@@ -476,6 +514,80 @@ export const THEMEN: Record<string, Thema> = {
 			],
 		],
 	},
+	'tricount-alternative': {
+		link: 'Tricount-Alternative',
+		stand: '2026-10-27',
+		erschienen: '2026-10-27',
+		titel: 'Tricount-Alternative für WG und Paar | ManaWG',
+		beschreibung:
+			'Tricount rechnet mit mehreren Währungen und passt zu Reisen. Für die WG mit Miete, Fixkosten und Putzplan passt ManaWG: kostenlos, im Browser, mit Monatsabrechnung.',
+		h1: 'Tricount-Alternative für WG und feste Gruppen',
+		einleitung:
+			'Tricount teilt Ausgaben in Gruppen und rechnet laut Anbieter mit mehreren Währungen. Wer dauerhaft zusammenwohnt, braucht dazu meist Miete, Fixkosten und einen Putzplan. ManaWG verbindet das in einer kostenlosen Web-App auf Deutsch. Die Angaben zu Tricount stammen von den verlinkten Seiten des Anbieters und von bunq, abgerufen am 27. Oktober 2026.',
+		quellen: [
+			['Tricount Funktionen', 'https://tricount.com/expense-tracker-features'],
+			[
+				'Tricount im App Store',
+				'https://apps.apple.com/de/app/tricount-ausgaben-teilen/id349866256',
+			],
+			[
+				'bunq: Tricount',
+				'https://press.bunq.com/246591-von-roadtrips-bis-reisekosten-tricount-app-zahlt-satte-16-4-milliarden-euro-an-gruppenausgaben-im-jahr-2024/',
+			],
+			['ManaWG WG-App', 'https://manawg.com/wg-app'],
+		],
+		tabellen: [
+			vergleichsTabelle(
+				'Tricount',
+				['ja', NG, NG, NG, NG, 'mehrere Währungen laut Anbieter', 'kostenlos laut Anbieter'],
+				'Angaben zu Tricount laut Funktionsseite und App-Store-Eintrag des Anbieters, abgerufen am 27. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
+			),
+		],
+		abschnitte: [
+			[
+				'Was Tricount gut kann',
+				'Laut Anbieter ist Tricount kostenlos und rechnet mit mehreren Währungen. Ausgaben lassen sich ohne Netz erfassen und später synchronisieren. Tricount gehört seit 2022 zu bunq, und eine bunq-Karte lässt sich mit Tricount koppeln. Tarife und Funktionen ändern sich, prüft den aktuellen Stand bei Tricount selbst.',
+			],
+			[
+				'Wann ihr bei Tricount bleiben solltet',
+				'Für Reisen mit Fremdwährung ist Tricount die bessere Wahl, denn ManaWG rechnet nur in Euro. Das Gleiche gilt, wenn ihr Ausgaben oft ohne Netz erfassen wollt oder eine Gruppe mit mehr als 20 Personen abrechnet. Auch wer nur eine einzelne Reise teilt, braucht weder Fixkosten noch Putzplan.',
+			],
+			[
+				'Wann ManaWG besser passt',
+				'Ihr wohnt dauerhaft zusammen und teilt Ausgaben jeden Monat.\nMiete, Internet und Strom legt ihr einmal als Fixkosten an, im Rhythmus ganzer Monate. ManaWG bucht sie automatisch.\nDie Monatsabrechnung zeigt Gesamtsumme, Ausgaben je Kategorie und Überweisungsvorschläge mit möglichst wenigen Zahlungen.\nAn offene Beträge könnt ihr die Schuldner erinnern, mit Abkühlzeit gegen Dauerpiepen.\nPutzplan, Einkaufsliste und Kalender stehen in derselben App, dazu Pinnwand und Chat.',
+			],
+			[
+				'Ehrliche Grenzen',
+				'Beträge nur in Euro, Zeilen in anderen Währungen lehnt der Import einzeln ab.\nManaWG läuft im Browser und lässt sich auf den Home-Bildschirm legen. Eine native App im Store gibt es nicht.\nEine WG fasst höchstens 20 aktive Mitglieder.\nKeine Bankanbindung: Ihr überweist selbst und markiert Beträge danach als bezahlt.\nKein Import aus Tricount: Der Import liest nur CSV-Dateien aus Splitwise und Splid sowie Bildschirmfotos von Ausgabenlisten.',
+			],
+			[
+				'Umstieg von Tricount',
+				'Gleicht offene Beträge am besten in Tricount aus und startet in ManaWG ohne Altlasten. Wollt ihr den Stand übernehmen, lest ihr ein Bildschirmfoto der Ausgabenliste im Import ein. ManaWG zeigt eine Vorschau zum Korrigieren und erkennt nur Eurobeträge. Oder eine Person trägt die offenen Salden einmal als Ausgabe mit eigenen Beträgen pro Person ein. Wie ein Import abläuft, steht in der Anleitung zum [Umstieg](/splitwise-splid-wechseln).',
+			],
+		],
+		fragen: [
+			[
+				'Kann ich Daten aus Tricount in ManaWG importieren?',
+				'Nicht direkt. Der Import kennt CSV-Dateien aus Splitwise und Splid sowie Bildschirmfotos von Ausgabenlisten, die per Texterkennung gelesen und vor dem Speichern korrigiert werden. Einen Tricount-Import gibt es nicht.',
+			],
+			[
+				'Kann ManaWG Fremdwährungen?',
+				'Nein. ManaWG rechnet nur in Euro und kennt keine Wechselkurse. Für Reisen mit mehreren Währungen passt Tricount besser.',
+			],
+			[
+				'Was kostet ManaWG?',
+				'Nichts. Es gibt keine Werbung und keine Bezahlstufe. Alle Funktionen stehen jeder WG offen.',
+			],
+			[
+				'Gibt es ManaWG im App Store?',
+				'Nein. ManaWG läuft im Browser unter app.manawg.com und lässt sich auf iPhone und Android auf den Home-Bildschirm legen.',
+			],
+			[
+				'Für wie viele Personen eignet sich ManaWG?',
+				'Eine WG fasst bis zu 20 aktive Mitglieder. Ausgezogene Mitglieder zählen nicht mit, ihre Historie bleibt erhalten.',
+			],
+		],
+	},
 	'ourhome-alternative': {
 		link: 'OurHome-Alternative',
 		stand: '2026-10-14',
@@ -487,6 +599,13 @@ export const THEMEN: Record<string, Thema> = {
 		einleitung:
 			'Ob und in welchem Umfang OurHome aktuell verfügbar ist, haben wir nicht verifiziert (Stand 14. Oktober 2026), prüft das selbst. Im Folgenden beschreiben wir nur, wie ManaWG Putzplan und Kasse für WGs löst.',
 		quellen: [['ManaWG WG-App', 'https://manawg.com/wg-app']],
+		tabellen: [
+			vergleichsTabelle(
+				'OurHome',
+				[NG, NG, NG, NG, NG, NG, NG],
+				'Zu OurHome liegt keine geprüfte Quelle vor, deshalb steht dort überall „nicht geprüft“. Die ManaWG-Spalte stammt aus der App.',
+			),
+		],
 		abschnitte: [
 			[
 				'Fairness statt Punkte',
