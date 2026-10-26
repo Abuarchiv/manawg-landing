@@ -162,9 +162,11 @@ export default async function ThemaPage({ params }: Props) {
 		inLanguage: 'de-DE',
 		datePublished: zeitpunkt(t.erschienen),
 		dateModified: zeitpunkt(t.stand),
-		mainEntityOfPage: `${site}/${thema}`,
+		mainEntityOfPage: { '@type': 'WebPage', '@id': `${site}/${thema}` },
+		isAccessibleForFree: true,
+		// Autor ist der Betreiber (Name steht im Impressum); Herausgeber bleibt die Organisation.
+		author: { '@type': 'Person', name: 'Abubakar Abditube', url: `${site}/ueber-manawg` },
 		// Name und URL direkt mit, damit der Artikel auch ohne aufgelöste @id vollständig ist (Rich Results Test).
-		author: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: site },
 		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: site },
 		isPartOf: { '@id': webseiteId },
 		// Produktseiten und die Umstiegsanleitung handeln von der App; Rechts- und Alltagsratgeber nicht.
@@ -193,12 +195,16 @@ export default async function ThemaPage({ params }: Props) {
 		],
 	};
 
-	const aktualisiert = new Intl.DateTimeFormat('de-DE', {
-		timeZone: 'UTC',
-		day: 'numeric',
-		month: 'long',
-		year: 'numeric',
-	}).format(new Date(`${t.stand}T00:00:00Z`));
+	// Die FAQ-Seite heißt selbst „Häufige Fragen“; dort bleibt es bei diesem Titel.
+	const fragenKopf = t.link.startsWith('Häufige Fragen') ? t.link : `Häufige Fragen zu ${t.link}`;
+	const datum = (tag: string) =>
+		new Intl.DateTimeFormat('de-DE', {
+			timeZone: 'UTC',
+			day: 'numeric',
+			month: 'long',
+			year: 'numeric',
+		}).format(new Date(`${tag}T00:00:00Z`));
+	const aktualisiert = datum(t.stand);
 
 	// Anbietervergleich: Hinweis vom Anbieter, oberhalb des Inhalts.
 	const istVergleich = gruppeVon(thema)?.name === 'Vergleiche';
@@ -256,7 +262,8 @@ export default async function ThemaPage({ params }: Props) {
 					{t.einleitung}
 				</p>
 				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
-					Von <Link href="/ueber-manawg">ManaWG</Link> · Aktualisiert am{' '}
+					Von <Link href="/ueber-manawg">Abubakar Abditube (ManaWG)</Link> · Veröffentlicht am{' '}
+					<time dateTime={t.erschienen}>{datum(t.erschienen)}</time> · Aktualisiert am{' '}
 					<time dateTime={t.stand}>{aktualisiert}</time>
 				</p>
 				{thema === 'putzplan-vorlage' && (
@@ -287,10 +294,10 @@ export default async function ThemaPage({ params }: Props) {
 							Inhalt
 						</h2>
 						<ol className="list-none m-0 p-0">
-							{[...t.abschnitte.map(([kopf]) => kopf), ...(t.fragen ? ['Fragen'] : [])].map(
+							{[...t.abschnitte.map(([kopf]) => kopf), ...(t.fragen ? [fragenKopf] : [])].map(
 								(kopf) => (
 									<li key={kopf} className={`${linie} py-3`}>
-										<a href={`#${kopf === 'Fragen' ? 'fragen' : slug(kopf)}`}>{kopf}</a>
+										<a href={`#${kopf === fragenKopf ? 'fragen' : slug(kopf)}`}>{kopf}</a>
 									</li>
 								),
 							)}
@@ -344,7 +351,7 @@ export default async function ThemaPage({ params }: Props) {
 				{t.fragen && (
 					<section aria-labelledby="fragen" className={`${linie} pt-10 md:pt-14`}>
 						<h2 id="fragen" className={`${mono} m-0 mb-8 font-normal`}>
-							Fragen
+							{fragenKopf}
 						</h2>
 						{t.fragen.map(([frage, antwort]) => (
 							<div
@@ -376,6 +383,16 @@ export default async function ThemaPage({ params }: Props) {
 							))}
 						</ul>
 					</section>
+				)}
+
+				{istRatgeber && (
+					<aside aria-label="Über diesen Ratgeber" className={`${linie} pt-10 md:pt-14`}>
+						<p className={`${mono} m-0`}>
+							Geschrieben vom Betreiber von ManaWG. Wir prüfen die Seite bei Änderungen der
+							Rechtslage oder der App. Fehler gefunden? Schreibt an{' '}
+							<a href="mailto:info@manawg.com">info@manawg.com</a>.
+						</p>
+					</aside>
 				)}
 
 				<div
