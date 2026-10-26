@@ -3,26 +3,94 @@ import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Fragment } from 'react';
 import { preload } from 'react-dom';
 import { VERGLEICHS_HINWEIS, gruppeVon, verwandte } from './gruppen';
 import { Fuss, Kopf, mono, rand } from './rahmen';
-import { PUTZPLAN_VORLAGE } from './ratgeber';
 import { THEMEN } from './themen';
+import type { Thema } from './themen';
 
 export const dynamicParams = false;
 
+// Anker-ID aus einer Überschrift (Umlaute umschrieben), für Inhaltsverzeichnis und Sprunglinks.
+const slug = (s: string) =>
+	s
+		.toLowerCase()
+		.replace(/ä/g, 'ae')
+		.replace(/ö/g, 'oe')
+		.replace(/ü/g, 'ue')
+		.replace(/ß/g, 'ss')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '');
+
 // Verweise im Fließtext als [Wort](/pfad): Ratgeber zeigen im Text aufeinander, nicht nur über die Liste am Ende.
 const mitLinks = (text: string) =>
-	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((teil) => {
+	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((teil, i) => {
 		const m = /^\[([^\]]+)\]\((\/[a-z0-9-]*)\)$/.exec(teil);
 		return m?.[1] && m[2] ? (
-			<Link key={m[2]} href={m[2]}>
+			<Link key={`${i}-${m[2]}`} href={m[2]}>
 				{m[1]}
 			</Link>
 		) : (
 			teil
 		);
 	});
+
+const zelle = 'px-3 py-2 border-b border-white/10';
+
+type TabelleDaten = NonNullable<Thema['tabellen']>[number];
+
+// Tabelle als Daten: scrollbare, beschriftete Region mit Spaltenköpfen und Zeilenkopf in der ersten Spalte.
+function Tabelle({ t, children }: { t: TabelleDaten; children?: React.ReactNode }) {
+	const id = `tabelle-${slug(t.titel)}`;
+	return (
+		<section aria-labelledby={id} className="linie pt-10 md:pt-14">
+			<h2 id={id} className={`${mono} m-0 mb-8 font-normal`}>
+				{t.titel}
+			</h2>
+			<div
+				className="min-w-0 overflow-x-auto"
+				// biome-ignore lint/a11y/useSemanticElements: scrollbare Tabelle braucht beschriftete Region statt Section
+				role="region"
+				aria-label={t.titel}
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollbare Region muss per Tastatur erreichbar sein
+				tabIndex={0}
+			>
+				<table className="w-full min-w-[540px] border-collapse text-left">
+					<caption className="sr-only">{t.titel}</caption>
+					<thead>
+						<tr>
+							{t.kopf.map((k) => (
+								<th key={k} scope="col" className={`${zelle} text-left font-normal`}>
+									{k}
+								</th>
+							))}
+						</tr>
+					</thead>
+					<tbody>
+						{t.zeilen.map((zeile) => (
+							<tr key={zeile.join('|')}>
+								{zeile.map((feld, j) =>
+									j === 0 ? (
+										<th key={feld} scope="row" className={`${zelle} text-left font-normal`}>
+											{feld}
+										</th>
+									) : (
+										<td key={j} className={zelle}>
+											{feld}
+										</td>
+									),
+								)}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			{t.hinweis && <p className={`${mono} mt-4 mb-0`}>{t.hinweis}</p>}
+			{children}
+		</section>
+	);
+}
 
 /** Google verlangt Datum mit Uhrzeit und Zeitzone (Rich Results Test: „Zeitzone fehlt“). */
 const zeitpunkt = (tag: string) => `${tag}T00:00:00+00:00`;
@@ -192,94 +260,69 @@ export default async function ThemaPage({ params }: Props) {
 				</p>
 				{istVergleich && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{hinweis}</p>}
 
-				<div className="mt-20 md:mt-32">
-					{t.abschnitte.map(([kopf, text]) => (
-						<section
-							key={kopf}
-							className={`${linie} py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8`}
-						>
-							<h2 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
-								{kopf}
-							</h2>
-							{/* Mehrzeiliger Text ("1. …\n2. …") wird als nummerierte Liste gesetzt, etwa für Vorlagen. */}
-							{text.includes('\n') ? (
-								<ol className="m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)] flex flex-col gap-2">
-									{text.split('\n').map((zeile) => (
-										<li key={zeile}>{mitLinks(zeile.replace(/^\d+\.\s*/, ''))}</li>
-									))}
-								</ol>
-							) : (
-								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
-									{mitLinks(text)}
-								</p>
-							)}
-						</section>
-					))}
-				</div>
-
-				{thema === 'putzplan-vorlage' && (
-					<section aria-labelledby="vorlage-tabelle" className={`${linie} pt-10 md:pt-14`}>
-						<h2 id="vorlage-tabelle" className={`${mono} m-0 mb-8 font-normal`}>
-							Vorlage: Vier-Wochen-Rotation für vier Personen
+				{t.abschnitte.length >= 4 && (
+					<nav aria-labelledby="inhalt" className={`${linie} mt-20 md:mt-32 pt-10`}>
+						<h2 id="inhalt" className={`${mono} m-0 mb-6 font-normal`}>
+							Inhalt
 						</h2>
-						<div
-							className="min-w-0 overflow-x-auto"
-							// biome-ignore lint/a11y/useSemanticElements: scrollbare Tabelle braucht beschriftete Region statt Section
-							role="region"
-							aria-labelledby="vorlage-tabelle"
-							// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollbare Region muss per Tastatur erreichbar sein
-							tabIndex={0}
-						>
-							<table className="w-full min-w-[540px] border-collapse text-left">
-								<caption className={`${mono} mb-4 text-left`}>
-									Vier-Wochen-Rotation: jede Woche rückt jede Person eine Aufgabe weiter
-								</caption>
-								<thead>
-									<tr>
-										<th
-											scope="col"
-											className="px-3 py-2 text-left font-normal border-b border-white/10"
-										>
-											Woche
-										</th>
-										{PUTZPLAN_VORLAGE.aufgaben.map((aufgabe) => (
-											<th
-												key={aufgabe}
-												scope="col"
-												className="px-3 py-2 text-left font-normal border-b border-white/10"
-											>
-												{aufgabe}
-											</th>
-										))}
-									</tr>
-								</thead>
-								<tbody>
-									{PUTZPLAN_VORLAGE.wochen.map((woche, i) => (
-										<tr key={`woche-${i + 1}`}>
-											<th
-												scope="row"
-												className="px-3 py-2 text-left font-normal border-b border-white/10"
-											>
-												Woche {i + 1}
-											</th>
-											{woche.map((person, j) => (
-												<td key={`${i}-${j}`} className="px-3 py-2 border-b border-white/10">
-													{person}
-												</td>
-											))}
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-						<p className={`${mono} mt-4 mb-0`}>A, B, C und D stehen für vier Beispielpersonen.</p>
-						<p className={`${mono} mt-4 mb-0`}>
-							<a href="/putzplan-vorlage.csv" download>
-								Vorlage als CSV herunterladen
-							</a>
-						</p>
-					</section>
+						<ol className="list-none m-0 p-0">
+							{[...t.abschnitte.map(([kopf]) => kopf), ...(t.fragen ? ['Fragen'] : [])].map(
+								(kopf) => (
+									<li key={kopf} className={`${linie} py-3`}>
+										<a href={`#${kopf === 'Fragen' ? 'fragen' : slug(kopf)}`}>{kopf}</a>
+									</li>
+								),
+							)}
+						</ol>
+					</nav>
 				)}
+
+				<div className={t.abschnitte.length >= 4 ? 'mt-10 md:mt-16' : 'mt-20 md:mt-32'}>
+					{t.abschnitte.map(([kopf, text]) => {
+						// Nur Zeilen, die alle mit "1. " beginnen, sind eine Nummerierung; sonst eine Aufzählung.
+						const zeilen = text.split('\n');
+						const nummeriert = zeilen.length > 1 && zeilen.every((z) => /^\d+\.\s/.test(z));
+						const Liste = nummeriert ? 'ol' : 'ul';
+						return (
+							<Fragment key={kopf}>
+								<section
+									id={slug(kopf)}
+									className={`${linie} py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8 scroll-mt-6`}
+								>
+									<h2 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
+										{kopf}
+									</h2>
+									{zeilen.length > 1 ? (
+										<Liste
+											className={`m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)] flex flex-col gap-2 ${nummeriert ? '' : 'list-disc'}`}
+										>
+											{zeilen.map((zeile) => (
+												<li key={zeile}>{mitLinks(zeile.replace(/^\d+\.\s*/, ''))}</li>
+											))}
+										</Liste>
+									) : (
+										<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
+											{mitLinks(text)}
+										</p>
+									)}
+								</section>
+								{t.tabellen
+									?.filter((tab) => tab.nach === kopf)
+									.map((tab) => (
+										<Tabelle key={tab.titel} t={tab}>
+											{thema === 'putzplan-vorlage' && (
+												<p className={`${mono} mt-4 mb-0`}>
+													<a href="/putzplan-vorlage.csv" download>
+														Vorlage als CSV herunterladen
+													</a>
+												</p>
+											)}
+										</Tabelle>
+									))}
+							</Fragment>
+						);
+					})}
+				</div>
 
 				{t.fragen && (
 					<section aria-labelledby="fragen" className={`${linie} pt-10 md:pt-14`}>
@@ -287,7 +330,11 @@ export default async function ThemaPage({ params }: Props) {
 							Fragen
 						</h2>
 						{t.fragen.map(([frage, antwort]) => (
-							<div key={frage} className={`${linie} py-8 md:grid md:grid-cols-12 md:gap-8`}>
+							<div
+								key={frage}
+								id={slug(frage)}
+								className={`${linie} py-8 scroll-mt-6 md:grid md:grid-cols-12 md:gap-8`}
+							>
 								<h3 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
 									{frage}
 								</h3>
@@ -336,19 +383,19 @@ export default async function ThemaPage({ params }: Props) {
 						Weiterlesen
 					</h2>
 					<ul className="list-none m-0 p-0">
-						{verwandte(thema).map((slug) => {
-							const v = THEMEN[slug];
+						{verwandte(thema).map((vs) => {
+							const v = THEMEN[vs];
 							if (!v) return null;
 							return (
-								<li key={slug} className={`${linie}`}>
+								<li key={vs} className={`${linie}`}>
 									<Link
-										href={`/${slug}`}
+										href={`/${vs}`}
 										className="group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-6 no-underline"
 									>
 										<span className="font-[family-name:'Inter_Tight'] font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
 											{v.h1}
 										</span>
-										<span className={mono}>{gruppeVon(slug)?.name}</span>
+										<span className={mono}>{gruppeVon(vs)?.name}</span>
 									</Link>
 								</li>
 							);

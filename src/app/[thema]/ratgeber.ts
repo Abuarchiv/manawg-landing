@@ -26,18 +26,6 @@ export function putzplanVorlageCsv(): string {
 	return `\uFEFF${zeilen.map((zeile) => zeile.map(csvFeld).join(';')).join('\r\n')}\r\n`;
 }
 
-const mdZelle = (wert: string): string => wert.replace(/\|/g, '\\|');
-
-/** Dieselben Vorlagendaten als Markdown-Tabelle (gleiche Werte wie HTML und CSV). */
-export function putzplanVorlageMarkdown(): string {
-	const kopf = ['Woche', ...PUTZPLAN_VORLAGE.aufgaben].map(mdZelle);
-	const zeilen = PUTZPLAN_VORLAGE.wochen.map((woche, i) =>
-		[`Woche ${i + 1}`, ...woche].map(mdZelle),
-	);
-	const trenner = kopf.map(() => '---');
-	return [kopf, trenner, ...zeilen].map((zeile) => `| ${zeile.join(' | ')} |`).join('\n');
-}
-
 export const RATGEBER: Record<string, Thema> = {
 	'wg-kosten-aufteilen': {
 		link: 'WG-Kosten aufteilen',
@@ -738,6 +726,16 @@ export const RATGEBER: Record<string, Thema> = {
 				'Digital starten in zwei Minuten',
 				'WG in ManaWG erstellen, Einladungslink an die Mitbewohner schicken (sie melden sich mit Google oder E-Mail an und treten per Link bei), die Aufgaben aus der Liste oben als Putzplan anlegen. Fertig, ohne App Store und kostenlos.',
 			],
+		],
+		tabellen: [
+			{
+				nach: 'Digital starten in zwei Minuten',
+				titel: 'Vorlage: Vier-Wochen-Rotation für vier Personen',
+				kopf: ['Woche', ...PUTZPLAN_VORLAGE.aufgaben],
+				zeilen: PUTZPLAN_VORLAGE.wochen.map((woche, i) => [`Woche ${i + 1}`, ...woche]),
+				hinweis:
+					'Jede Woche rückt jede Person eine Aufgabe weiter. A, B, C und D stehen für vier Beispielpersonen.',
+			},
 		],
 		fragen: [
 			[

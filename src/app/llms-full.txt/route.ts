@@ -1,10 +1,19 @@
 import { appUrl } from '@/lib/app-origin';
 import { getAppUrl } from '@/lib/app-url';
 import { VERGLEICHS_HINWEIS, gruppeVon } from '../[thema]/gruppen';
-import { putzplanVorlageMarkdown } from '../[thema]/ratgeber';
 import { THEMEN } from '../[thema]/themen';
+import type { Thema } from '../[thema]/themen';
 
 export const dynamic = 'force-static';
+
+const zelle = (wert: string) => wert.replace(/\|/g, '\\|');
+
+// Tabelle aus den Themendaten als Markdown, mit Titel und Fußnote.
+function markdownTabelle({ titel, kopf, zeilen, hinweis }: NonNullable<Thema['tabellen']>[number]) {
+	const reihe = (felder: string[]) => `| ${felder.map(zelle).join(' | ')} |`;
+	const tabelle = [reihe(kopf), reihe(kopf.map(() => '---')), ...zeilen.map(reihe)].join('\n');
+	return `### ${titel}\n\n${tabelle}${hinweis ? `\n\n${hinweis}` : ''}`;
+}
 
 // Alle Themen- und Ratgeberseiten als ein Markdown-Text, damit KI-Systeme den Inhalt ohne Crawl lesen können.
 export function GET() {
@@ -18,14 +27,10 @@ export function GET() {
 			`Quelle: ${base}/${slug} (Stand ${t.stand})`,
 			...(gruppeVon(slug)?.name === 'Vergleiche' ? [VERGLEICHS_HINWEIS] : []),
 			t.einleitung,
-			...t.abschnitte.map(
-				([kopf, text]) => `## ${kopf}\n\n${text.replaceAll('](/', `](${base}/`)}`,
-			),
-			...(slug === 'putzplan-vorlage'
-				? [
-						`## Vier-Wochen-Rotation für vier Personen\n\nVier-Wochen-Rotation: jede Woche rückt jede Person eine Aufgabe weiter.\n\nA, B, C und D stehen für vier Beispielpersonen.\n\n${putzplanVorlageMarkdown()}\n\nQuelle: ${base}/putzplan-vorlage · CSV-Download: ${base}/putzplan-vorlage.csv`,
-					]
-				: []),
+			...t.abschnitte.map(([kopf, text]) => {
+				const tabellen = (t.tabellen ?? []).filter((tab) => tab.nach === kopf).map(markdownTabelle);
+				return [`## ${kopf}\n\n${text.replaceAll('](/', `](${base}/`)}`, ...tabellen].join('\n\n');
+			}),
 			...(t.fragen ? ['## Häufige Fragen', ...t.fragen.map(([f, a]) => `**${f}**\n\n${a}`)] : []),
 			...(quellen.length > 0
 				? [`## Quellen\n\n${quellen.map(([name, url]) => `- ${name}: ${url}`).join('\n')}`]

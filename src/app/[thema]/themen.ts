@@ -10,6 +10,15 @@ export interface Thema {
 	h1: string;
 	einleitung: string;
 	abschnitte: Array<[string, string]>;
+	/** Tabellen als Daten; `nach` ist die Abschnittsüberschrift, hinter der die Tabelle steht. */
+	tabellen?: Array<{
+		nach: string;
+		titel: string;
+		kopf: string[];
+		zeilen: string[][];
+		/** Fußnote unter der Tabelle. */
+		hinweis?: string;
+	}>;
 	/** Wird zusätzlich als FAQPage-JSON-LD ausgegeben. */
 	fragen?: Array<[string, string]>;
 	/** Letzte inhaltliche Änderung (ISO-Datum), für lastmod in der Sitemap. */
