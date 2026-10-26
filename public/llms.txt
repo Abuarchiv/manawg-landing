@@ -40,7 +40,9 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Putzplan erstellen](https://manawg.com/putzplan-erstellen): Aufgaben, Rotation, Abwesenheit
 - [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste)
 - [WG-Regeln](https://manawg.com/wg-regeln): Ruhezeiten, Besuch, Haushalt
+- [WG-Miete nach Zimmergröße aufteilen](https://manawg.com/wg-miete-rechner): Rechner, Formel, Beispiel
 - [Nebenkosten, Strom und Internet](https://manawg.com/wg-nebenkosten)
+- [Rundfunkbeitrag in der WG](https://manawg.com/rundfunkbeitrag-wg): ein Beitrag pro Wohnung, Abmeldung, Teilen
 - [Putzplan-Vorlage](https://manawg.com/putzplan-vorlage): Vorlage für 4 Personen ([CSV-Download](https://manawg.com/putzplan-vorlage.csv))
 - [WG-Haushaltskasse](https://manawg.com/wg-haushaltskasse)
 - [Einzug in die WG](https://manawg.com/wg-einzug-checkliste)

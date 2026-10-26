@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
 import { preload } from 'react-dom';
+import MieteRechner from './MieteRechner';
 import PutzplanGenerator from './PutzplanGenerator';
 import { VERGLEICHS_HINWEIS, gruppeVon, verwandte } from './gruppen';
 import { Fuss, Kopf, mono, rand } from './rahmen';
@@ -334,6 +335,7 @@ export default async function ThemaPage({ params }: Props) {
 								{thema === 'putzplan-vorlage' && kopf.startsWith('Putzplan-Generator') && (
 									<PutzplanGenerator />
 								)}
+								{thema === 'wg-miete-rechner' && kopf === 'Rechner' && <MieteRechner />}
 							</Fragment>
 						);
 					})}

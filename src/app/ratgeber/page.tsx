@@ -15,7 +15,9 @@ const THEMENKREISE: Array<[string, string[]]> = [
 		'Geld',
 		[
 			'wg-kosten-aufteilen',
+			'wg-miete-rechner',
 			'wg-nebenkosten',
+			'rundfunkbeitrag-wg',
 			'wg-haushaltskasse',
 			'schulden-mitbewohner',
 			'splitwise-splid-wechseln',

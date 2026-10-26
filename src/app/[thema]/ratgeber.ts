@@ -42,7 +42,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Modell 2: Miete nach Zimmergröße, Rest gleich',
-				'Bei sehr unterschiedlichen Zimmern ist ein gleicher Mietanteil selten fair. Üblich ist, die Kaltmiete nach Quadratmetern zu verteilen und Gemeinschaftskosten wie Internet und Strom gleich zu teilen. Beispiel: Ein Zimmer mit 20 m² in einer Wohnung mit 80 m² Gesamtfläche trägt 25 Prozent der Miete. Gemeinschaftsflächen wie Küche und Bad rechnet ihr dabei nach Köpfen oder anteilig zu den Zimmern dazu. Wichtig ist, dass alle die Rechnung gesehen und zugestimmt haben.',
+				'Bei sehr unterschiedlichen Zimmern ist ein gleicher Mietanteil selten fair. Üblich ist, die Kaltmiete nach Quadratmetern zu verteilen und Gemeinschaftskosten wie Internet und Strom gleich zu teilen. Beispiel: Ein Zimmer mit 20 m² in einer Wohnung mit 80 m² Gesamtfläche trägt 25 Prozent der Miete. Gemeinschaftsflächen wie Küche und Bad rechnet ihr dabei nach Köpfen oder anteilig zu den Zimmern dazu, der [Mietrechner](/wg-miete-rechner) übernimmt das. Wichtig ist, dass alle die Rechnung gesehen und zugestimmt haben.',
 			],
 			[
 				'Modell 3: Jeder zahlt, was er verursacht',
@@ -234,11 +234,11 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'4. Anmelden und Verträge abschließen',
-				'Nach dem Einzug muss sich jede Person innerhalb von zwei Wochen beim Bürgeramt anmelden. Dafür braucht es eine [Wohnungsgeberbestätigung](/wg-anmeldung), die der Vermieter ausstellt, bei Untermiete der Hauptmieter. Strom und Internet laufen meist auf eine Person, die Kosten teilt ihr. Der Rundfunkbeitrag fällt einmal pro Wohnung an, nicht pro Person: Eine Person meldet sich an, die anderen geben deren Beitragsnummer an. Jede Person sollte eine eigene Haftpflichtversicherung haben und prüfen, ob ihre Hausratversicherung eine WG abdeckt.',
+				'Nach dem Einzug muss sich jede Person innerhalb von zwei Wochen beim Bürgeramt anmelden. Dafür braucht es eine [Wohnungsgeberbestätigung](/wg-anmeldung), die der Vermieter ausstellt, bei Untermiete der Hauptmieter. Strom und Internet laufen meist auf eine Person, die Kosten teilt ihr. Der [Rundfunkbeitrag](/rundfunkbeitrag-wg) fällt einmal pro Wohnung an, nicht pro Person: Eine Person meldet sich an, die anderen geben deren Beitragsnummer an. Jede Person sollte eine eigene Haftpflichtversicherung haben und prüfen, ob ihre Hausratversicherung eine WG abdeckt.',
 			],
 			[
 				'5. Geld verbindlich regeln',
-				'Legt fest, wie die Miete aufgeteilt wird ([gleich oder nach Zimmergröße](/wg-kosten-aufteilen)), wer welche Verträge führt und was ihr gemeinsam kauft. Wer zahlt, sollte das Geld zuverlässig zurückbekommen, ohne jedes Mal nachfragen zu müssen. Mit der [WG-App ManaWG](/wg-app) legt ihr Miete, Strom und Internet einmal als Fixkosten an und erfasst gemeinsame Einkäufe laufend. Die App zeigt Salden und Ausgleichsvorschläge, ihr überweist selbst.',
+				'Legt fest, wie die Miete aufgeteilt wird ([gleich oder nach Zimmergröße](/wg-kosten-aufteilen), der [Mietrechner](/wg-miete-rechner) rechnet es vor), wer welche Verträge führt und was ihr gemeinsam kauft. Wer zahlt, sollte das Geld zuverlässig zurückbekommen, ohne jedes Mal nachfragen zu müssen. Mit der [WG-App ManaWG](/wg-app) legt ihr Miete, Strom und Internet einmal als Fixkosten an und erfasst gemeinsame Einkäufe laufend. Die App zeigt Salden und Ausgleichsvorschläge, ihr überweist selbst.',
 			],
 			[
 				'6. Erstausstattung absprechen',
@@ -587,7 +587,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Rundfunkbeitrag',
-				'Der Rundfunkbeitrag wird pro Wohnung erhoben, nicht pro Person. In einer WG zahlt ihn daher nur eine Person, und die Kosten werden unter allen aufgeteilt. Beachtet, dass sich Regelungen ändern können, und prüft die aktuelle Lage beim Beitragsservice.',
+				'Der Rundfunkbeitrag wird pro Wohnung erhoben, nicht pro Person. In einer WG zahlt ihn daher nur eine Person, und die Kosten werden unter allen aufgeteilt. Beachtet, dass sich Regelungen ändern können, und prüft die aktuelle Lage beim Beitragsservice. Mehr dazu steht im Ratgeber [Rundfunkbeitrag in der WG](/rundfunkbeitrag-wg).',
 			],
 			[
 				'Monatsabrechnung als Überblick',
@@ -1417,7 +1417,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Verträge und Behörden',
-				'Läuft der Internetvertrag, der Stromvertrag oder der Rundfunkbeitrag auf euren Namen, muss jemand aus der WG übernehmen oder der Vertrag umgestellt werden. Sprecht das früh ab. In Deutschland meldet ihr euch innerhalb von zwei Wochen am neuen Wohnort [an](/wg-anmeldung). Eine eigene Abmeldung ist nur nötig, wenn ihr ins Ausland zieht oder keine neue Wohnung in Deutschland bezieht. Denkt auch an einen Nachsendeauftrag für die Post.',
+				'Läuft der Internetvertrag, der Stromvertrag oder der [Rundfunkbeitrag](/rundfunkbeitrag-wg) auf euren Namen, muss jemand aus der WG übernehmen oder der Vertrag umgestellt werden. Sprecht das früh ab. In Deutschland meldet ihr euch innerhalb von zwei Wochen am neuen Wohnort [an](/wg-anmeldung). Eine eigene Abmeldung ist nur nötig, wenn ihr ins Ausland zieht oder keine neue Wohnung in Deutschland bezieht. Denkt auch an einen Nachsendeauftrag für die Post.',
 			],
 			[
 				'Zwischenmiete statt Auszug',
@@ -1689,7 +1689,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Nach der Anmeldung',
-				'Mit der Meldebescheinigung lassen sich Bankkonto, Rundfunkbeitrag und Verträge auf die neue Adresse umstellen. Den Rundfunkbeitrag zahlt die WG nur einmal, wie ihr ihn aufteilt, steht im Ratgeber zu [Nebenkosten](/wg-nebenkosten). Was in den ersten Tagen sonst wichtig ist, fasst die [Einzugs-Checkliste](/wg-einzug-checkliste) zusammen.',
+				'Mit der Meldebescheinigung lassen sich Bankkonto, Rundfunkbeitrag und Verträge auf die neue Adresse umstellen. Den Rundfunkbeitrag zahlt die WG nur einmal, wie ihr ihn aufteilt, steht im Ratgeber zum [Rundfunkbeitrag in der WG](/rundfunkbeitrag-wg). Was in den ersten Tagen sonst wichtig ist, fasst die [Einzugs-Checkliste](/wg-einzug-checkliste) zusammen.',
 			],
 		],
 		tabellen: [

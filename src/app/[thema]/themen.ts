@@ -2,6 +2,7 @@
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
 import { NG, vergleichsTabelle } from './gruppen';
 import { RATGEBER } from './ratgeber';
+import { RATGEBER_GELD } from './ratgeber-geld';
 
 export interface Thema {
 	/** Kurzer Linktext für Querverweise. */
@@ -726,4 +727,5 @@ export const THEMEN: Record<string, Thema> = {
 		],
 	},
 	...RATGEBER,
+	...RATGEBER_GELD,
 };

@@ -18,7 +18,9 @@ export const GRUPPEN: Array<{ name: string; slugs: string[] }> = [
 		name: 'Ratgeber',
 		slugs: [
 			'wg-kosten-aufteilen',
+			'wg-miete-rechner',
 			'wg-nebenkosten',
+			'rundfunkbeitrag-wg',
 			'wg-haushaltskasse',
 			'schulden-mitbewohner',
 			'splitwise-splid-wechseln',
@@ -56,6 +58,8 @@ export const FUNKTION_ZU_RATGEBER: Record<string, string[]> = {
 		'wg-haushaltskasse',
 		'wg-nebenkosten',
 		'schulden-mitbewohner',
+		'wg-miete-rechner',
+		'rundfunkbeitrag-wg',
 	],
 	putzplan: ['putzplan-erstellen', 'putzplan-vorlage', 'wg-abwesenheit-urlaub'],
 	einkaufsliste: ['wg-einkauf-organisieren'],
