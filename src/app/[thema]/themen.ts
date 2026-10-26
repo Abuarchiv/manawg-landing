@@ -32,7 +32,7 @@ export interface Thema {
 export const THEMEN: Record<string, Thema> = {
 	'wg-app': {
 		link: 'WG-App',
-		stand: '2026-10-23',
+		stand: '2026-10-27',
 		erschienen: '2026-10-10',
 		titel: 'WG App: Organisation für die ganze WG | ManaWG',
 		beschreibung:
@@ -55,7 +55,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Putzplan, Einkauf und Vorräte',
-				'Der [Putzplan](/putzplan) wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird übersprungen. Auf der [gemeinsamen Einkaufsliste](/einkaufsliste) hakt ihr ab und könnt den Einkauf danach als Ausgabe erfassen. Die Vorräte zeigen, was knapp wird, und schlagen vor, was ihr nachkaufen solltet. Erinnerungen an fällige Aufgaben kommen als Push.',
+				'Die [Putzplan-App](/putzplan) wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird übersprungen. Auf der [gemeinsamen Einkaufsliste](/einkaufsliste) hakt ihr ab und könnt den Einkauf danach als Ausgabe erfassen. Die Vorräte zeigen, was knapp wird, und schlagen vor, was ihr nachkaufen solltet. Erinnerungen an fällige Aufgaben kommen als Push.',
 			],
 			[
 				'Kalender, Pinnwand und Chat',
@@ -91,14 +91,14 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	putzplan: {
 		link: 'WG Putzplan App',
-		stand: '2026-10-23',
+		stand: '2026-10-27',
 		erschienen: '2026-10-09',
 		titel: 'WG Putzplan App: fair, mit Rotation | ManaWG',
 		beschreibung:
-			'Kostenlose WG Putzplan App statt Vorlage zum Ausdrucken: Aufgaben wiederholen sich, rotieren fair weiter und überspringen Abwesende.',
+			'Kostenlose WG Putzplan App: Aufgaben wiederholen sich im festen Rhythmus, die App verteilt fair, überspringt Abwesende und erinnert, wer dran ist.',
 		h1: 'WG Putzplan App: Aufgaben, Rotation und Abwesenheit',
 		einleitung:
-			'Eine Putzplan Vorlage zum Ausdrucken hängt schnell veraltet am Kühlschrank: Jemand ist im Urlaub, jemand tauscht, und am Ende weiß niemand, wer dran ist. In ManaWG legt ihr Aufgaben einmal an. Die App rechnet Termine, Zuständigkeit und Abwesenheit selbst aus.',
+			'Ihr legt die Aufgaben einmal an, ManaWG rechnet Termine, Zuständigkeit und Abwesenheit selbst aus. Kostenlos und im Browser, ohne Zettel am Kühlschrank, der schnell veraltet.',
 		abschnitte: [
 			[
 				'Aufgaben mit festem Rhythmus',
@@ -118,7 +118,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Vorlage oder App',
-				'Eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) ist ein guter Anfang, wenn eure WG klein und die Woche planbar ist. Sie rechnet aber nicht weiter und kennt keine Abwesenheit, jede Änderung tragt ihr selbst ein. Wer die Reihenfolge nicht dauernd pflegen will, ist mit einer App besser bedient, die Zuständigkeit und Termine selbst fortschreibt. Wie ihr Aufgaben, Rhythmus und Zuständigkeiten festlegt, zeigt die [Anleitung zum Putzplan-Erstellen](/putzplan-erstellen).',
+				'Eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) ist ein guter Anfang, wenn eure WG klein und die Woche planbar ist. Sie rechnet aber nicht weiter und kennt keine Abwesenheit, jede Änderung tragt ihr selbst ein. Wer die Reihenfolge nicht dauernd pflegen will, ist mit einer App besser bedient, die Zuständigkeit und Termine selbst fortschreibt. Wie ihr Aufgaben, Rhythmus und Zuständigkeiten festlegt, zeigt die Anleitung [Putzplan erstellen](/putzplan-erstellen).',
 			],
 			[
 				'Einrichten und Umfang',
@@ -127,8 +127,8 @@ export const THEMEN: Record<string, Thema> = {
 		],
 		fragen: [
 			[
-				'Brauche ich noch eine Putzplan Vorlage?',
-				'Nein, ihr legt die Aufgaben direkt in der App an. Wiederholung, Zuständigkeit und Erledigungshistorie sind eingebaut. Eine ausgedruckte Vorlage hält nur fest, was ihr von Hand einträgt, und rechnet nicht von selbst weiter.',
+				'Was ist der Unterschied zwischen Putzplan-App und Vorlage?',
+				'Eine Vorlage zum Ausdrucken hält nur fest, was ihr von Hand einträgt, und rechnet nicht von selbst weiter. In der App legt ihr die Aufgaben direkt an, Wiederholung, Zuständigkeit und Erledigungshistorie sind eingebaut. Die ausgedruckte Variante gibt es auf der Seite Putzplan-Vorlage.',
 			],
 			[
 				'Wie funktioniert die faire Rotation?',
@@ -146,6 +146,18 @@ export const THEMEN: Record<string, Thema> = {
 				'Gibt es die App im App Store?',
 				'Nein, ManaWG ist keine native App. Ihr installiert sie als PWA über den Browser, unter iOS und Firefox mit manuellen Schritten, und könnt Push-Benachrichtigungen je Bereich einstellen.',
 			],
+		],
+		tabellen: [
+			{
+				nach: 'Vorlage oder App',
+				titel: 'Vorlage zum Ausdrucken und ManaWG im Vergleich',
+				kopf: ['Merkmal', 'Vorlage zum Ausdrucken', 'ManaWG'],
+				zeilen: [
+					['Rotation', 'von Hand', 'automatisch'],
+					['Abwesenheit', 'selbst eintragen', 'wird übersprungen'],
+					['Erinnerung', 'keine', 'Erinnerung an die Zuständigen'],
+				],
+			},
 		],
 	},
 	'wg-kasse': {

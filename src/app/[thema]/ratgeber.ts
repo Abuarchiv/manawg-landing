@@ -80,66 +80,144 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'putzplan-erstellen': {
 		link: 'Putzplan erstellen',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
-		titel: 'Putzplan erstellen: Wochenplan, Regeln, Beispiele | ManaWG',
+		titel: 'Putzplan erstellen: Anleitung, Tabelle, Wochenplan | ManaWG',
 		beschreibung:
-			'Putzplan selbst erstellen: Aufgaben, Zeitaufwand, Wochenplan, faire Rotation und Umgang mit Abwesenheit. Mit Beispiel für vier Personen.',
-		h1: 'Putzplan für die WG erstellen',
+			'Putzplan selber erstellen in 5 Schritten: Aufgaben nach Raum und Rhythmus, Wochenplan als Tabelle, faire Verteilung für Haushalt und WG. Mit Beispiel.',
+		h1: 'Putzplan erstellen: Schritt für Schritt für Haushalt und WG',
 		einleitung:
-			'Ein Putzplan scheitert selten an der Faulheit, sondern an unklaren Aufgaben und an Plänen, die niemand pflegt. Hier steht, wie ihr Aufgaben zuschneidet, fair verteilt und dafür sorgt, dass der Plan im Alltag funktioniert.',
+			'Ein Putzplan scheitert selten an der Faulheit, sondern an unklaren Aufgaben und an Plänen, die niemand pflegt. In fünf Schritten kommt ihr zu einem Plan für Haushalt oder WG: Aufgaben nach Räumen sammeln, Aufwand schätzen, auf die Woche verteilen, fair zuteilen und sichtbar machen. Alle Zahlen und Tage sind Beispiele, die ihr an eure Wohnung anpasst.',
 		abschnitte: [
 			[
-				'Schritt 1: Aufgaben auflisten',
-				'Schreibt alles auf, was regelmäßig anfällt, und trennt nach Häufigkeit. Wöchentlich sind meist Bad, Küche, Boden saugen und wischen sowie Müll. Alle zwei Wochen Kühlschrank und Flur. Monatlich Backofen, Fenster und Vorräte prüfen. Je konkreter die Aufgabe, desto weniger Diskussion: „Bad putzen“ ist besser als „Hygiene“. Legt fest, was dazugehört, etwa Waschbecken, Dusche, WC und Boden.',
+				'In fünf Schritten zum Putzplan',
+				'1. Aufgaben nach Räumen sammeln\n2. Aufwand schätzen\n3. Auf die Woche verteilen\n4. Fest oder rotierend verteilen\n5. Sichtbar machen und pflegen',
 			],
 			[
-				'Schritt 2: Rhythmus und Verteilung festlegen',
-				'Zwei Wege funktionieren. Entweder hat jede Person ein festes Gebiet, das ist einfach, wird aber ungerecht, wenn eine Aufgabe unbeliebt ist. Oder die Aufgaben rotieren, sodass jede Person jede Aufgabe im Wechsel übernimmt. Rotation ist fairer, braucht aber jemanden, der den Überblick hält. Genau das kann eine App übernehmen: Mit dem [Putzplan von ManaWG](/putzplan) wiederholt ihr Aufgaben in Tagen oder Monaten, und die App bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist.',
+				'Schritt 1: Aufgaben nach Räumen sammeln',
+				'Schreibt auf, was regelmäßig anfällt, und ordnet es den Räumen zu. Je konkreter die Aufgabe, desto weniger Diskussion: „Bad putzen“ ist besser als „Hygiene“. Legt fest, was dazugehört, etwa Waschbecken, Dusche, WC und Boden. Jede Aufgabe bekommt einen Rhythmus: täglich, wöchentlich, alle 14 Tage oder monatlich. Die Tabelle zeigt ein Beispiel für eine typische WG-Wohnung, streicht darin, was bei euch nicht anfällt.',
 			],
 			[
-				'Schritt 3: Abwesenheit und Ausnahmen regeln',
-				'Pläne brechen, wenn jemand im Urlaub ist oder am Semesterende nicht da. Legt vorab fest, dass [Abwesende](/wg-abwesenheit-urlaub) übersprungen werden und danach nicht doppelt nachholen müssen. In ManaWG tragt ihr eine Abwesenheit ein, die Person wird in dieser Zeit beim Putzplan übersprungen. Für Gäste und Besuch gilt: Wer sie einlädt, sorgt dafür, dass die Gemeinschaftsräume sauber bleiben.',
+				'Kühlschrank und Spülmaschine',
+				'Diese beiden Ecken der Küche fallen gern durch, weil sie keinem gehören. Gebt ihnen eigene Zeilen im Plan. Der Kühlschrank wird alle zwei Wochen durchgesehen: Abgelaufenes entsorgen, Fächer abwischen. Die Spülmaschine wird täglich ausgeräumt und ab und zu am Sieb gereinigt. Wer dabei merkt, dass etwas fehlt, trägt es ein: In ManaWG zeigen die Vorräte, was knapp wird, und schlagen vor, was ihr nachkaufen solltet, mehr dazu bei der [gemeinsamen Einkaufsliste](/einkaufsliste).',
 			],
 			[
-				'Schritt 4: Erinnern statt kontrollieren',
-				'Niemand will der Aufpasser sein. Sinnvoller sind automatische Erinnerungen an fällige Aufgaben. In ManaWG kommen sie als Push-Meldung an die zugewiesene Person, erledigte Aufgaben haken alle sichtbar ab. So gibt es keine Nachfragen im Gruppenchat, und niemand muss Verantwortung einfordern.',
+				'Schritt 2: Aufwand schätzen',
+				'Fair heißt nicht, dass alle gleich viele Aufgaben haben, sondern ungefähr gleich viel Zeit putzen. Schätzt die Zeiten für eure Wohnung einmal gemeinsam, dann gibt es später weniger Streit über ungleiche Lasten. Wer den Müll übernimmt, kann deshalb zusätzlich den Flur oder den Kühlschrank bekommen. Die Tabelle nennt grobe Richtwerte als Ausgangspunkt.',
 			],
 			[
-				'Beispielverteilung für vier Personen',
-				'Vier Aufgaben, vier Personen, jede Woche eine Position weiter: Bad, Küche, Boden und Müll/Flur. Nach vier Wochen hat jede Person jede Aufgabe einmal gemacht. Alle zwei Wochen kommen Kühlschrank und Backofen dazu, monatlich die Fenster. Wichtig: Der Plan muss für alle sichtbar sein, am besten dort, wo ohnehin jeder täglich hinschaut.',
+				'Schritt 3: Auf die Woche verteilen',
+				'Verteilt die Aufgaben so auf die Tage, dass nicht alles am Wochenende landet. Lasst einen Tag pro Woche frei: Er dient als Puffer für Verschobenes, und niemand muss an diesem Tag putzen. Die Tabelle zeigt einen Wochenplan als Beispiel, den ihr an eure Termine anpasst.',
 			],
 			[
-				'Aufgaben nach Aufwand gewichten',
-				'Fair heißt nicht, dass alle gleich viele Aufgaben haben, sondern ungefähr gleich viel Zeit putzen. Grobe Richtwerte für eine typische WG-Wohnung: Bad gründlich 30 bis 45 Minuten, Küche 20 bis 30 Minuten, Böden saugen und wischen 30 bis 40 Minuten, Müll und Pfand 10 Minuten. Wer den Müll übernimmt, kann deshalb zusätzlich den Flur oder den Kühlschrank bekommen. Schätzt die Zeiten für eure Wohnung einmal gemeinsam, dann gibt es später weniger Streit über ungleiche Lasten.',
+				'Schritt 4: Fest oder rotierend verteilen',
+				'Es gibt drei Wege, die Aufgaben auf Personen zu verteilen. Die Tabelle stellt sie gegenüber. Eine fertige Vier-Wochen-Rotation für vier Personen steht in der [Putzplan-Vorlage](/putzplan-vorlage).',
 			],
 			[
-				'Ein Wochen-Putzplan als Beispiel',
-				'Montag: Müll, Altpapier und Pfand rausbringen\nDienstag: Küche (Herd, Arbeitsflächen, Spüle, Boden)\nMittwoch: Bad (Waschbecken, Dusche, WC, Spiegel, Boden)\nDonnerstag: Böden in Flur und Wohnzimmer saugen\nFreitag: Kühlschrank durchsehen, Abgelaufenes entsorgen\nWochenende: Böden wischen, Handtücher und Lappen waschen',
+				'Schritt 5: Sichtbar machen und pflegen',
+				'Der Plan muss für alle sichtbar sein, am besten dort, wo ohnehin jeder täglich hinschaut: als Aushang an Küchentür oder Kühlschrank, als Tabelle in einer geteilten Datei oder in einer App. Pflegt ihn regelmäßig. Zieht jemand aus oder passen Aufgaben nicht mehr, besprecht das in der WG-Runde und ändert den Plan. Niemand will der Aufpasser sein, deshalb helfen Erinnerungen mehr als Kontrolle.',
 			],
+			[
+				'Besonderheiten in der WG',
+				'Abwesenheit: Wer verreist ist, wird übersprungen und holt danach nicht alles doppelt nach, mehr unter [Urlaub und Abwesenheit](/wg-abwesenheit-urlaub)\nGäste: Wer Besuch einlädt, sorgt dafür, dass die Gemeinschaftsräume sauber bleiben\nStreit: Hält sich jemand nicht an den Plan, sprecht sachlich an, was konkret nicht gemacht wurde, und bewertet nicht die Person, mehr unter [Streit lösen](/wg-streit-loesen)',
+			],
+			[
+				'Fertig statt selbst bauen',
+				'Die [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) gibt es als Tabelle und als CSV-Download. Sie enthält eine Vier-Wochen-Rotation für vier Personen mit Hinweisen für drei und fünf.\nDie [Putzplan-App](/putzplan) von ManaWG wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Abwesende werden übersprungen, und an fällige zugewiesene Aufgaben erinnert ManaWG per Push.',
+			],
+		],
+		tabellen: [
+			{
+				nach: 'Schritt 1: Aufgaben nach Räumen sammeln',
+				titel: 'Beispiel: Aufgaben nach Räumen und Rhythmus',
+				kopf: ['Raum', 'Aufgabe', 'Rhythmus'],
+				zeilen: [
+					['Küche', 'Herd, Arbeitsflächen, Spüle, Boden', 'wöchentlich'],
+					['Küche', 'Spülmaschine ausräumen', 'täglich'],
+					['Küche', 'Kühlschrank durchsehen', '14-tägig'],
+					['Küche', 'Backofen reinigen', 'monatlich'],
+					['Bad', 'Waschbecken, Dusche, WC, Spiegel, Boden', 'wöchentlich'],
+					['Flur', 'Boden saugen oder wischen', '14-tägig'],
+					['Wohnzimmer', 'Boden saugen, Oberflächen abwischen', 'wöchentlich'],
+					['Wohnzimmer', 'Fenster putzen', 'monatlich'],
+					['Müll', 'Restmüll, Altpapier und Pfand wegbringen', 'wöchentlich'],
+				],
+			},
+			{
+				nach: 'Schritt 2: Aufwand schätzen',
+				titel: 'Zeitaufwand je Aufgabe',
+				kopf: ['Aufgabe', 'Richtwert'],
+				zeilen: [
+					['Bad gründlich', '30 bis 45 Minuten'],
+					['Küche', '20 bis 30 Minuten'],
+					['Böden saugen und wischen', '30 bis 40 Minuten'],
+					['Müll und Pfand', '10 Minuten'],
+				],
+				hinweis: 'Grobe Richtwerte, keine Messung.',
+			},
+			{
+				nach: 'Schritt 3: Auf die Woche verteilen',
+				titel: 'Beispiel: Wochen-Putzplan',
+				kopf: ['Tag', 'Aufgabe', 'Was dazugehört'],
+				zeilen: [
+					['Montag', 'Müll', 'Müll, Altpapier und Pfand rausbringen'],
+					['Dienstag', 'Küche', 'Herd, Arbeitsflächen, Spüle, Boden'],
+					['Mittwoch', 'Bad', 'Waschbecken, Dusche, WC, Spiegel, Boden'],
+					['Donnerstag', 'Böden', 'Flur und Wohnzimmer saugen'],
+					['Freitag', 'Kühlschrank', 'durchsehen, Abgelaufenes entsorgen'],
+					['Samstag', 'Böden und Wäsche', 'Böden wischen, Handtücher und Lappen waschen'],
+					['Sonntag', 'frei', 'Puffer für Verschobenes'],
+				],
+			},
+			{
+				nach: 'Schritt 4: Fest oder rotierend verteilen',
+				titel: 'Drei Wege der Verteilung',
+				kopf: ['Weg', 'Vorteil', 'Nachteil'],
+				zeilen: [
+					[
+						'Feste Gebiete',
+						'einfach, jede Person weiß, was ihres ist',
+						'ungerecht, wenn eine Aufgabe unbeliebt ist',
+					],
+					[
+						'Rotation',
+						'fairer, jede Person macht jede Aufgabe im Wechsel',
+						'braucht jemanden, der den Überblick hält',
+					],
+					[
+						'Punktesystem',
+						'Aufgaben zählen nach Aufwand',
+						'mehr Rechnerei, die Punkte müssen gepflegt werden',
+					],
+				],
+			},
 		],
 		fragen: [
 			[
-				'Wie oft sollte man in der WG putzen?',
-				'Bad und Küche wöchentlich, Böden wöchentlich oder alle zwei Wochen, Müll nach Bedarf. Seltener anfallende Aufgaben wie Backofen und Fenster monatlich oder quartalsweise.',
-			],
-			[
-				'Was tun, wenn sich jemand nicht an den Putzplan hält?',
-				'Zuerst sachlich ansprechen, was konkret nicht gemacht wurde, nicht die Person bewerten. Hilft das nicht, sprecht in der WG-Runde über Regeln und Folgen, zum Beispiel, dass nicht erledigte Aufgaben nachgeholt werden.',
+				'Was gehört in einen Putzplan?',
+				'Eine Liste der Aufgaben nach Räumen, ein Rhythmus je Aufgabe, eine Zuständigkeit und eine Regel für Abwesenheit. Je konkreter die Aufgabe beschrieben ist, desto weniger Diskussion gibt es.',
 			],
 			[
 				'Wie erstelle ich einen Wochen-Putzplan?',
-				'Aufgaben auflisten, nach Häufigkeit sortieren und auf Wochentage verteilen. Danach festlegen, wer welche Aufgabe übernimmt und wie oft gewechselt wird, meist wöchentlich.',
+				'Aufgaben auflisten, nach Häufigkeit sortieren und auf Wochentage verteilen, einen Tag pro Woche lasst ihr frei. Danach legt ihr fest, wer welche Aufgabe übernimmt und wie oft gewechselt wird, meist wöchentlich.',
 			],
 			[
-				'Gibt es eine Putzplan-App für die WG?',
+				'Wie verteile ich Aufgaben fair?',
+				'Nach Zeitaufwand, nicht nach der Zahl der Aufgaben. Schätzt die Zeiten gemeinsam, und lasst die Aufgaben rotieren, damit niemand dauerhaft beim unbeliebten Bad bleibt. Wer eine kurze Aufgabe wie den Müll hat, bekommt eine zweite dazu.',
+			],
+			[
+				'Wie oft sollte man welche Räume putzen?',
+				'Bad, Küche, Wohnzimmer und Müll wöchentlich, Flur und Kühlschrank alle 14 Tage, Backofen und Fenster monatlich. Die Spülmaschine wird täglich ausgeräumt. Das sind Beispiele, passt den Rhythmus an eure Wohnung an.',
+			],
+			[
+				'Gibt es eine Putzplan-App?',
 				'Ja, ManaWG enthält einen Putzplan mit Rhythmus, fairer Rotation, Abwesenheiten und Erinnerungen. Die App ist kostenlos und läuft im Browser.',
 			],
 		],
 	},
 	'wg-gruenden-checkliste': {
 		link: 'WG gründen',
-		stand: '2026-10-21',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'WG gründen: Checkliste von Mietvertrag bis Putzplan | ManaWG',
 		beschreibung:
@@ -174,7 +252,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'7. Haushalt und Putzplan organisieren',
-				'Einigt euch auf einen [Putzplan](/putzplan-erstellen) mit konkreten Aufgaben und festen Zyklen, etwa Bad wöchentlich, Küche wöchentlich, Flur alle zwei Wochen, Müll nach Bedarf. Eine gemeinsame Einkaufsliste für Dinge, die alle brauchen, verhindert, dass drei Leute Spülmittel kaufen und niemand Klopapier. Beides lässt sich in ManaWG teilen, ohne dass jemand die Liste per Hand pflegen muss.',
+				'Einigt euch auf einen Putzplan mit konkreten Aufgaben und festen Zyklen, etwa Bad wöchentlich, Küche wöchentlich, Flur alle zwei Wochen, Müll nach Bedarf. Die Anleitung [Putzplan erstellen](/putzplan-erstellen) zeigt, wie das geht, und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) hilft beim Start. Eine gemeinsame Einkaufsliste für Dinge, die alle brauchen, verhindert, dass drei Leute Spülmittel kaufen und niemand Klopapier. Beides lässt sich in ManaWG teilen, ohne dass jemand die Liste per Hand pflegen muss.',
 			],
 			[
 				'8. Regeln festhalten',
@@ -369,7 +447,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-regeln': {
 		link: 'WG-Regeln',
-		stand: '2026-10-21',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'WG-Regeln: Vorlage und Beispiele zum Übernehmen | ManaWG',
 		beschreibung:
@@ -392,7 +470,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Haushalt und Sauberkeit',
-				'Haltet fest, wer wann welche Aufgabe übernimmt, und was „sauber“ bedeutet. Ein [Putzplan mit Rotation](/putzplan-erstellen) und Erinnerungen ersetzt Diskussionen. Geschirr gehört nicht über Nacht in die Spüle, Gemeinschaftsräume bleiben nutzbar: solche Mini-Regeln verhindern die meisten Konflikte.',
+				'Haltet fest, wer wann welche Aufgabe übernimmt, und was „sauber“ bedeutet. Ein Putzplan mit Rotation und Erinnerungen ersetzt Diskussionen. Wie er entsteht, steht unter [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) ist ein guter Anfang. Geschirr gehört nicht über Nacht in die Spüle, Gemeinschaftsräume bleiben nutzbar: solche Mini-Regeln verhindern die meisten Konflikte.',
 			],
 			[
 				'Gemeinsame Kasse und Einkauf',
@@ -697,7 +775,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'putzplan-vorlage': {
 		link: 'Putzplan-Vorlage',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'Putzplan-Vorlage für die WG zum Übernehmen | ManaWG',
 		beschreibung:
@@ -708,7 +786,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Die Aufgabenliste',
-				'Wöchentlich: Bad (Waschbecken, Dusche, WC, Boden), Küche (Herd, Arbeitsflächen, Spüle, Boden), Flur und Wohnzimmer saugen oder wischen, Müll und Pfand wegbringen. Alle zwei Wochen: Kühlschrank aufräumen, Spiegel und Oberflächen. Monatlich: Backofen, Fenster oder Balkon, Vorräte prüfen. Passt die Liste an eure Wohnung an und streicht, was bei euch nicht anfällt.',
+				'Wöchentlich: Bad (Waschbecken, Dusche, WC, Boden), Küche (Herd, Arbeitsflächen, Spüle, Boden), Flur und Wohnzimmer saugen oder wischen, Müll und Pfand wegbringen. Alle zwei Wochen: Kühlschrank aufräumen, Spiegel und Oberflächen. Monatlich: Backofen, Fenster oder Balkon, Vorräte prüfen. Passt die Liste an eure Wohnung an und streicht, was bei euch nicht anfällt. Wie ihr eigene Aufgaben und Rhythmen aufbaut, steht in der Anleitung [Putzplan erstellen](/putzplan-erstellen).',
 			],
 			[
 				'Vorlage für drei Personen',
@@ -747,8 +825,8 @@ export const RATGEBER: Record<string, Thema> = {
 				'Üblich ist ein wöchentlicher Wechsel. So macht jede Person jede Aufgabe regelmäßig und niemand bleibt dauerhaft beim unbeliebten Bad.',
 			],
 			[
-				'Wie erstelle ich einen Putzplan selber?',
-				'Nehmt die Aufgabenliste oben, streicht, was bei euch nicht anfällt, und tragt die Namen in die Vier-Wochen-Rotation unten ein. Bei drei oder fünf Personen passt ihr die Zahl der Wochenaufgaben an die Zahl der Personen an.',
+				'Wie passe ich die Vorlage an drei oder fünf Personen an?',
+				'Bei drei Personen rotieren drei Wochenaufgaben, Bad, Küche sowie Boden und Müll zusammen. Bei fünf kommt Wohnzimmer oder Balkon als eigene Aufgabe hinzu. Tragt die Namen in die Vier-Wochen-Rotation ein und passt die Zahl der Wochenaufgaben an die Zahl der Personen an.',
 			],
 		],
 	},
@@ -805,7 +883,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
-		stand: '2026-10-21',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		beschreibung:
@@ -824,7 +902,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'In der ersten Woche',
-				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den [Putzplan](/putzplan-erstellen) ein und fragt, wie die Rotation funktioniert. Wenn die WG [ManaWG als WG-App](/wg-app) nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
+				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den Putzplan ein und fragt, wie die Rotation funktioniert. Gibt es noch keinen, hilft die Anleitung [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) spart den Anfang. Wenn die WG [ManaWG als WG-App](/wg-app) nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
 			],
 			[
 				'Geld von Anfang an klären',
@@ -868,7 +946,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-abwesenheit-urlaub': {
 		link: 'WG im Urlaub',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'WG und Urlaub: Putzplan und Kosten bei Abwesenheit | ManaWG',
 		beschreibung:
@@ -879,7 +957,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Putzplan bei Abwesenheit',
-				'Wer nicht da ist, kann nicht putzen. Auch der beste [Putzplan](/putzplan-erstellen) braucht dafür eine Regel. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In [ManaWG als Putzplan-App](/putzplan) tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
+				'Wer nicht da ist, kann nicht putzen. Beim [Putzplan erstellen](/putzplan-erstellen) gehört dafür eine Regel dazu. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In [ManaWG als Putzplan-App](/putzplan) tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
 			],
 			[
 				'Miete und Fixkosten',
@@ -1250,7 +1328,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-streit-loesen': {
 		link: 'Streit in der WG',
-		stand: '2026-10-20',
+		stand: '2026-10-27',
 		erschienen: '2026-10-19',
 		titel: 'Streit in der WG lösen: Putzen, Lärm, Geld | ManaWG',
 		beschreibung:
@@ -1269,7 +1347,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Streit ums Putzen',
-				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein [Putzplan mit fester Rotation](/putzplan-erstellen) nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. In der [WG-App ManaWG](/wg-app) wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
+				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein Putzplan mit fester Rotation nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. Wie er entsteht, zeigt [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) hilft beim Start. In der [WG-App ManaWG](/wg-app) wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
 			],
 			[
 				'Streit um Lärm und Gäste',
