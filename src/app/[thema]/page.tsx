@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
 import { preload } from 'react-dom';
+import PutzplanGenerator from './PutzplanGenerator';
 import { VERGLEICHS_HINWEIS, gruppeVon, verwandte } from './gruppen';
 import { Fuss, Kopf, mono, rand } from './rahmen';
 import { THEMEN } from './themen';
@@ -41,7 +42,7 @@ const zelle = 'px-3 py-2 border-b border-white/10';
 type TabelleDaten = NonNullable<Thema['tabellen']>[number];
 
 // Tabelle als Daten: scrollbare, beschriftete Region mit Spaltenköpfen und Zeilenkopf in der ersten Spalte.
-function Tabelle({ t, children }: { t: TabelleDaten; children?: React.ReactNode }) {
+function Tabelle({ t }: { t: TabelleDaten }) {
 	const id = `tabelle-${slug(t.titel)}`;
 	return (
 		<section aria-labelledby={id} className="linie pt-10 md:pt-14">
@@ -87,7 +88,6 @@ function Tabelle({ t, children }: { t: TabelleDaten; children?: React.ReactNode 
 				</table>
 			</div>
 			{t.hinweis && <p className={`${mono} mt-4 mb-0`}>{t.hinweis}</p>}
-			{children}
 		</section>
 	);
 }
@@ -258,6 +258,17 @@ export default async function ThemaPage({ params }: Props) {
 					Von <Link href="/ueber-manawg">ManaWG</Link> · Aktualisiert am{' '}
 					<time dateTime={t.stand}>{aktualisiert}</time>
 				</p>
+				{thema === 'putzplan-vorlage' && (
+					<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
+						<a href="/putzplan-vorlage.csv" download>
+							Als CSV herunterladen
+						</a>{' '}
+						·{' '}
+						<a href="#putzplan-generator-namen-eintragen-plan-drucken">
+							Drucken / als PDF speichern
+						</a>
+					</p>
+				)}
 				{istVergleich && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{hinweis}</p>}
 
 				{/* Tabellen mit nach: 'einleitung' stehen direkt unter dem Einleitungstext. */}
@@ -318,16 +329,11 @@ export default async function ThemaPage({ params }: Props) {
 								{t.tabellen
 									?.filter((tab) => tab.nach === kopf)
 									.map((tab) => (
-										<Tabelle key={tab.titel} t={tab}>
-											{thema === 'putzplan-vorlage' && (
-												<p className={`${mono} mt-4 mb-0`}>
-													<a href="/putzplan-vorlage.csv" download>
-														Vorlage als CSV herunterladen
-													</a>
-												</p>
-											)}
-										</Tabelle>
+										<Tabelle key={tab.titel} t={tab} />
 									))}
+								{thema === 'putzplan-vorlage' && kopf.startsWith('Putzplan-Generator') && (
+									<PutzplanGenerator />
+								)}
 							</Fragment>
 						);
 					})}

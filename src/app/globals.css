@@ -71,3 +71,39 @@ a:hover {
 	border: 0 solid rgba(250, 250, 250, 0.14);
 	border-top-width: 1px;
 }
+
+/* Druck der Themenseiten: A4 quer, schwarz auf weiß, ohne Kopf, Fuß, Navigation und Buttons */
+@media print {
+	@page {
+		size: A4 landscape;
+		margin: 12mm;
+	}
+	html,
+	body,
+	.thema {
+		background: #fff !important;
+		color: #000 !important;
+		min-height: 0 !important;
+	}
+	.thema header,
+	.thema footer,
+	.thema nav,
+	.thema button,
+	.thema .druck-aus {
+		display: none !important;
+	}
+	.thema a {
+		color: #000 !important;
+		text-decoration: none;
+	}
+	.thema :is(p, h1, h2, h3, th, td, caption, li) {
+		color: #000 !important;
+	}
+	.thema :is(th, td) {
+		border-color: #000 !important;
+	}
+	/* Nach Klick auf „Drucken“ bleibt nur der erzeugte Plan stehen. */
+	body.plan-drucken .thema *:not(.plan-druck, .plan-druck *, :has(.plan-druck)) {
+		display: none !important;
+	}
+}

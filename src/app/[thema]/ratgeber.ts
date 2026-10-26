@@ -2,28 +2,21 @@
 // ManaWG-Funktionen nur nennen, wenn es sie in manawg-app wirklich gibt (siehe themen.ts).
 import type { Thema } from './themen';
 
-/** Einzige Quelle der Vier-Wochen-Rotation: HTML-Tabelle, CSV und Markdown lesen hier. */
-export const PUTZPLAN_VORLAGE = {
-	aufgaben: ['Bad', 'Küche', 'Böden', 'Müll und Flur'],
-	/** Vier Wochen, je Woche eine Person pro Aufgabe (zyklisch rotiert, A wandert Bad->Küche->Böden->Müll/Flur). */
-	wochen: [
-		['A', 'B', 'C', 'D'],
-		['D', 'A', 'B', 'C'],
-		['C', 'D', 'A', 'B'],
-		['B', 'C', 'D', 'A'],
-	],
-} as const;
+// Die reinen Funktionen liegen in einer kleinen Datei, damit der Generator nicht alle Ratgebertexte lädt.
+import { putzplanRotation, tabelleAlsCsv } from './putzplan-rotation';
 
-const csvFeld = (wert: string): string =>
-	/[;"\r\n]/.test(wert) ? `"${wert.replace(/"/g, '""')}"` : wert;
+const AUFGABEN_VIER = ['Bad', 'Küche', 'Böden', 'Müll und Flur'];
+const AUFGABEN_DREI = ['Bad', 'Küche', 'Böden und Müll'];
+const AUFGABEN_FUENF = [...AUFGABEN_VIER, 'Wohnzimmer und Balkon'];
 
-/** Dieselben Vorlagendaten als CSV (Semikolon, CRLF, BOM vorn). Statisch, keine Nutzereingaben. */
+/** Einzige Quelle der Vorlagen: HTML-Tabellen, CSV und Markdown lesen hier. A bis E stehen für Beispielpersonen. */
+export const PUTZPLAN_VORLAGE = putzplanRotation(['A', 'B', 'C', 'D'], AUFGABEN_VIER);
+const VORLAGE_DREI = putzplanRotation(['A', 'B', 'C'], AUFGABEN_DREI);
+const VORLAGE_FUENF = putzplanRotation(['A', 'B', 'C', 'D', 'E'], AUFGABEN_FUENF);
+
+/** Dieselben Vorlagendaten als CSV. Statisch, keine Nutzereingaben. */
 export function putzplanVorlageCsv(): string {
-	const zeilen = [
-		['Woche', ...PUTZPLAN_VORLAGE.aufgaben],
-		...PUTZPLAN_VORLAGE.wochen.map((woche, i) => [`Woche ${i + 1}`, ...woche]),
-	];
-	return `\uFEFF${zeilen.map((zeile) => zeile.map(csvFeld).join(';')).join('\r\n')}\r\n`;
+	return tabelleAlsCsv(PUTZPLAN_VORLAGE.kopf, PUTZPLAN_VORLAGE.zeilen);
 }
 
 export const RATGEBER: Record<string, Thema> = {
@@ -123,7 +116,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Fertig statt selbst bauen',
-				'Die [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) gibt es als Tabelle und als CSV-Download. Sie enthält eine Vier-Wochen-Rotation für vier Personen mit Hinweisen für drei und fünf.\nDie [Putzplan-App](/putzplan) von ManaWG wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Abwesende werden übersprungen, und an fällige zugewiesene Aufgaben erinnert ManaWG per Push.',
+				'Die [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) gibt es als Tabelle und als CSV-Download. Sie enthält fertige Rotationen für drei, vier und fünf Personen und einen Generator für eure Namen.\nDie [Putzplan-App](/putzplan) von ManaWG wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Abwesende werden übersprungen, und an fällige zugewiesene Aufgaben erinnert ManaWG per Push.',
 			],
 		],
 		tabellen: [
@@ -777,48 +770,83 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'Putzplan-Vorlage',
 		stand: '2026-10-27',
 		erschienen: '2026-10-11',
-		titel: 'Putzplan-Vorlage für die WG zum Übernehmen | ManaWG',
+		titel: 'WG-Putzplan Vorlage zum Ausdrucken: PDF & CSV | ManaWG',
 		beschreibung:
-			'Putzplan-Vorlage für 4 Personen als CSV-Download: Aufgaben, Rhythmus und Vier-Wochen-Rotation zum Übernehmen, mit Hinweisen für 3 und 5 Personen.',
-		h1: 'Putzplan-Vorlage für die WG',
+			'Kostenlose WG-Putzplan Vorlage für 3, 4 und 5 Personen: Rotationstabelle, Aufgaben mit Rhythmus, Generator mit euren Namen, als PDF drucken oder als CSV bearbeiten.',
+		h1: 'WG-Putzplan Vorlage zum Ausdrucken und Anpassen',
 		einleitung:
-			'Eine Vorlage spart die Diskussion am Anfang. Hier steht eine Aufgabenliste mit Rhythmus, die ihr direkt übernehmen und an eure Wohnung anpassen könnt, und wie ihr sie ohne Ausdrucken pflegt.',
+			'Hier steht eine fertige Rotation für drei, vier und fünf Personen, kostenlos und ohne Konto. Im Generator tragt ihr eure Namen ein und druckt den Plan als PDF oder ladet ihn als CSV herunter.',
 		abschnitte: [
 			[
-				'Die Aufgabenliste',
-				'Wöchentlich: Bad (Waschbecken, Dusche, WC, Boden), Küche (Herd, Arbeitsflächen, Spüle, Boden), Flur und Wohnzimmer saugen oder wischen, Müll und Pfand wegbringen. Alle zwei Wochen: Kühlschrank aufräumen, Spiegel und Oberflächen. Monatlich: Backofen, Fenster oder Balkon, Vorräte prüfen. Passt die Liste an eure Wohnung an und streicht, was bei euch nicht anfällt. Wie ihr eigene Aufgaben und Rhythmen aufbaut, steht in der Anleitung [Putzplan erstellen](/putzplan-erstellen).',
+				'Vorlage für vier Personen',
+				'Bei vier Personen rotieren Bad, Küche, Böden sowie Müll und Flur. Jede Woche rückt jede Person eine Aufgabe weiter, nach vier Wochen hatte jede alles einmal. A bis D stehen für eure vier Namen.',
 			],
 			[
-				'Vorlage für drei Personen',
-				'Drei Wochenaufgaben im Wechsel: Bad, Küche, Boden und Müll zusammen. Jede Woche rückt jede Person eine Aufgabe weiter, nach drei Wochen hatte jeder alles einmal. Monatsaufgaben verteilt ihr reihum, jede Person nimmt einen Monat.',
+				'Putzplan-Generator: Namen eintragen, Plan drucken',
+				'Tragt zwei bis sechs Namen ein, wählt die Aufgaben und die Zahl der Wochen, und der Plan steht da. Er lässt sich drucken, auch als PDF speichern, oder als CSV herunterladen. Nichts wird gespeichert, ihr braucht kein Konto. Der Generator rotiert der Reihe nach. Die App verteilt zusätzlich nach überfälligen Aufgaben und überspringt Abwesende.',
 			],
 			[
-				'Vorlage für vier und fünf Personen',
-				'Bei vier Personen rotieren Bad, Küche, Böden sowie Müll und Flur (siehe Vorlage unten): Jede Woche rückt jede Person eine Aufgabe weiter, nach vier Wochen hatte jede alles einmal. Bei fünf kommt Wohnzimmer oder Balkon als eigene Aufgabe hinzu. Wer verreist, wird übersprungen und holt nichts doppelt nach.',
+				'Vorlage für drei und fünf Personen',
+				'Bei drei Personen rotieren drei Aufgaben. Jede Woche rückt jede Person eine Aufgabe weiter, nach drei Wochen hatte jede jede Aufgabe einmal. Bei fünf Personen kommen Wohnzimmer und Balkon als eigene Aufgabe hinzu, die Rotation dauert dann fünf Wochen.',
 			],
 			[
-				'Warum der Zettel scheitert',
-				'Ausgedruckte Pläne rotieren nicht von selbst, werden nicht aktualisiert und erinnern niemanden. Nach ein paar Wochen weiß keiner mehr, wer dran ist. Eine App löst das: In [ManaWG als Putzplan-App](/putzplan) legt ihr Aufgaben mit Rhythmus an, die App zeigt, wer als Nächstes dran ist, überspringt Abwesende und erinnert per Push an fällige Aufgaben.',
+				'Aufgaben mit Rhythmus',
+				'Die Wochenaufgaben stehen in der Rotation. Alles, was seltener anfällt, verteilt ihr extra. Streicht, was bei euch nicht vorkommt. Wie ihr eigene Aufgaben und Rhythmen aufbaut, steht in der Anleitung [Putzplan erstellen](/putzplan-erstellen).',
 			],
 			[
-				'Digital starten in zwei Minuten',
-				'WG in ManaWG erstellen, Einladungslink an die Mitbewohner schicken (sie melden sich mit Google oder E-Mail an und treten per Link bei), die Aufgaben aus der Liste oben als Putzplan anlegen. Fertig, ohne App Store und kostenlos.',
+				'So setzt ihr die Rotation ein',
+				'Aushang: Hängt den Plan dort auf, wo ihn alle täglich sehen, etwa an der Küchentür oder am Kühlschrank\nWeiterrücken: Legt einen festen Wochentag fest, an dem die neue Woche beginnt, und rückt dann jede Person eine Aufgabe weiter\nTauschregel: Wer in einer Woche nicht kann, tauscht Aufgabe gegen Aufgabe mit einer Person und sagt es vorher in der WG\nMonatsaufgaben: Verteilt sie reihum, jede Person nimmt einen Monat',
+			],
+			[
+				'Wann der Zettel nicht reicht',
+				'Ein ausgedruckter Plan rotiert nicht von selbst und erinnert niemanden. Wer verreist ist, muss von Hand getauscht werden. Die [WG Putzplan App](/putzplan) von ManaWG legt Aufgaben mit Rhythmus an, zeigt, wer als Nächstes dran ist, überspringt Abwesende und erinnert per Push an fällige Aufgaben. Dafür erstellt ihr eine WG, schickt den Einladungslink und legt die Aufgaben an, kostenlos und im Browser.',
 			],
 		],
 		tabellen: [
 			{
-				nach: 'Digital starten in zwei Minuten',
+				nach: 'Vorlage für vier Personen',
 				titel: 'Vorlage: Vier-Wochen-Rotation für vier Personen',
-				kopf: ['Woche', ...PUTZPLAN_VORLAGE.aufgaben],
-				zeilen: PUTZPLAN_VORLAGE.wochen.map((woche, i) => [`Woche ${i + 1}`, ...woche]),
-				hinweis:
-					'Jede Woche rückt jede Person eine Aufgabe weiter. A, B, C und D stehen für vier Beispielpersonen.',
+				...PUTZPLAN_VORLAGE,
+				hinweis: 'A, B, C und D stehen für vier Beispielpersonen.',
+			},
+			{
+				nach: 'Vorlage für drei und fünf Personen',
+				titel: 'Vorlage: Drei-Wochen-Rotation für drei Personen',
+				...VORLAGE_DREI,
+				hinweis: 'A, B und C stehen für drei Beispielpersonen.',
+			},
+			{
+				nach: 'Vorlage für drei und fünf Personen',
+				titel: 'Vorlage: Fünf-Wochen-Rotation für fünf Personen',
+				...VORLAGE_FUENF,
+				hinweis: 'A bis E stehen für fünf Beispielpersonen.',
+			},
+			{
+				nach: 'Aufgaben mit Rhythmus',
+				titel: 'Aufgaben mit Rhythmus',
+				kopf: ['Aufgabe', 'Rhythmus', 'Was dazugehört'],
+				zeilen: [
+					['Bad', 'wöchentlich', 'Waschbecken, Dusche, WC, Boden'],
+					['Küche', 'wöchentlich', 'Herd, Arbeitsflächen, Spüle, Boden'],
+					['Böden', 'wöchentlich', 'Wohnzimmer und Gemeinschaftsflächen saugen oder wischen'],
+					['Müll und Flur', 'wöchentlich', 'Müll und Pfand wegbringen, Flur saugen oder wischen'],
+					[
+						'Wohnzimmer und Balkon',
+						'wöchentlich',
+						'Aufräumen, Oberflächen abwischen, Balkon fegen',
+					],
+					['Kühlschrank', 'alle zwei Wochen', 'Aufräumen, Abgelaufenes entsorgen'],
+					['Spiegel und Oberflächen', 'alle zwei Wochen', 'Spiegel, Oberflächen abwischen'],
+					['Backofen', 'monatlich', 'Innenraum reinigen'],
+					['Fenster oder Balkon', 'monatlich', 'Fenster putzen, Balkon fegen'],
+					['Vorräte', 'monatlich', 'Gemeinsame Vorräte prüfen'],
+				],
 			},
 		],
 		fragen: [
 			[
 				'Gibt es eine kostenlose Putzplan-Vorlage für die WG?',
-				'Ja, die Aufgabenliste und die Verteilung auf dieser Seite lassen sich direkt übernehmen. Wer nichts ausdrucken will, nutzt den Putzplan in ManaWG.',
+				'Ja. Diese Seite hat fertige Rotationen für drei, vier und fünf Personen und einen Generator, in den ihr eure Namen eintragt. Der Plan ist kostenlos, ihr braucht kein Konto, und nichts wird gespeichert. Wer nichts ausdrucken will, nutzt den Putzplan in ManaWG.',
 			],
 			[
 				'Wie oft wechseln die Aufgaben?',
@@ -826,7 +854,11 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Wie passe ich die Vorlage an drei oder fünf Personen an?',
-				'Bei drei Personen rotieren drei Wochenaufgaben, Bad, Küche sowie Boden und Müll zusammen. Bei fünf kommt Wohnzimmer oder Balkon als eigene Aufgabe hinzu. Tragt die Namen in die Vier-Wochen-Rotation ein und passt die Zahl der Wochenaufgaben an die Zahl der Personen an.',
+				'Für drei und fünf Personen stehen fertige Tabellen auf dieser Seite. Bei drei rotieren Bad, Küche sowie Böden und Müll, bei fünf kommen Wohnzimmer und Balkon hinzu. Im Generator wählt ihr Namen und Aufgaben selbst, die Zahl der Wochen ist 4 oder 8.',
+			],
+			[
+				'PDF oder CSV, was nehme ich?',
+				'Für den Aushang nehmt ihr den Druck: Im Druckdialog des Browsers lässt sich der Plan auch als PDF speichern. Die CSV-Datei ist für alle, die den Plan in einem Tabellenprogramm weiterbearbeiten oder in einer geteilten Datei pflegen wollen.',
 			],
 		],
 	},
