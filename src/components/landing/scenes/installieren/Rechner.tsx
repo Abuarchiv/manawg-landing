@@ -90,7 +90,7 @@ export function Rechner() {
 					ManaWG installieren
 				</div>
 				<div className={s.dk_dlg} data-k="dk-dlg">
-					<h4>App installieren</h4>
+					<div className={s.dk_dlg_t}>App installieren</div>
 					<div className={s.dk_zeile}>
 						<img loading="lazy" src={ICON} alt="" width="40" height="40" />
 						<div>

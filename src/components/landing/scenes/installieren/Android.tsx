@@ -219,10 +219,10 @@ export function Android() {
 
 				{/* Sheet „Installieren und Verknüpfung erstellen“ */}
 				<div className={s.and_sheet} data-k="and-sheet">
-					<h4>
+					<div className={s.and_sheet_t}>
 						Installieren und Verknüpfung <br />
 						erstellen
-					</h4>
+					</div>
 					<div className={s.and_srow} style={{ top: 84, height: 64 }}>
 						<span className={s.and_sicon}>
 							<img loading="lazy" src={ICON} alt="" width="40" height="40" />
@@ -246,7 +246,7 @@ export function Android() {
 
 				{/* Dialog „App installieren“ */}
 				<div className={s.and_dlg} data-k="and-dlg">
-					<h4>App installieren</h4>
+					<div className={s.and_dlg_t}>App installieren</div>
 					<div className={s.and_dzeile}>
 						<img loading="lazy" src={ICON} alt="" width="48" height="48" />
 						<div>

@@ -15,6 +15,7 @@ import { live } from './scenes/intro/stage';
 import { Koerper } from './scenes/koerper/Koerper';
 import { SoGehts } from './scenes/sogehts/SoGehts';
 import { Tiefe } from './scenes/tiefe/Tiefe';
+import { Ueberblick } from './scenes/ueberblick/Ueberblick';
 import { Hinweise } from './shell/Hinweise';
 import { Kopf } from './shell/Kopf';
 import { KopfMaske } from './shell/KopfMaske';
@@ -91,6 +92,7 @@ export function Landing() {
 				<Tiefe />
 				<Bereiche />
 				<Installieren />
+				<Ueberblick />
 				<Fragen />
 				<Finale />
 				<Fusszeile />

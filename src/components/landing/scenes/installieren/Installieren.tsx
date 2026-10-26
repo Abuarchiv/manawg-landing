@@ -245,7 +245,7 @@ export function Installieren() {
 					App installieren
 				</a>
 			</div>
-			<div aria-hidden="true" className={s.buehne} ref={buRef}>
+			<div aria-hidden="true" inert className={s.buehne} ref={buRef}>
 				<div className={s.skala} ref={skRef}>
 					<div ref={frRef} data-ins="frame" data-tab={inst} className={s.rahmen}>
 						<div data-ins="screen" className={s.schirm}>

@@ -19,7 +19,7 @@ export function Fragen() {
 			)}
 		>
 			<h2 id="fragen-titel" className="label" style={css('margin:0')}>
-				<span aria-hidden="true">[ 08 ] </span>FRAGEN
+				<span aria-hidden="true">[ 09 ] </span>FRAGEN
 			</h2>
 			<div style={css('display:flex;flex-direction:column;border-bottom:1px solid var(--haar)')}>
 				{FRAGEN.map((q, i) => (

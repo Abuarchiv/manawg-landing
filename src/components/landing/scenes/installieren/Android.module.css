@@ -254,7 +254,7 @@
 	background: #f9f8ff;
 	display: none;
 }
-.and_sheet h4 {
+.and_sheet_t {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -334,7 +334,7 @@
 	display: none;
 	color: #1b1b1f;
 }
-.and_dlg h4 {
+.and_dlg_t {
 	position: absolute;
 	left: 24px;
 	top: 22px;

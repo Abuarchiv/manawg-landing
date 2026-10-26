@@ -1,0 +1,64 @@
+.sektion {
+	position: relative;
+	background: #0a0a0a;
+	color: #fafafa;
+	padding: var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-48);
+}
+.titel {
+	margin: 0;
+}
+.raster {
+	display: grid;
+	grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+	gap: var(--sp-48);
+	border-top: 1px solid var(--haar);
+	padding-top: var(--sp-28);
+}
+.h2 {
+	margin: 0;
+	font-family: "Inter Tight", sans-serif;
+	font-weight: 600;
+	font-size: var(--t-32);
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	overflow-wrap: break-word;
+	text-wrap: balance;
+}
+.text {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	max-width: var(--w-640);
+}
+.text p {
+	margin: 0;
+	font-size: var(--t-17);
+	line-height: 1.5;
+	color: rgba(250, 250, 250, 0.72);
+}
+.text a {
+	color: #fafafa;
+	text-decoration: underline;
+	text-decoration-color: rgba(250, 250, 250, 0.4);
+	text-underline-offset: 3px;
+}
+.text a:focus-visible {
+	outline: 2px solid #fafafa;
+	outline-offset: 3px;
+}
+@media (hover: hover) {
+	.text a:hover {
+		text-decoration-color: #fafafa;
+	}
+}
+
+/* Hochformat: Überschrift über dem Text */
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+	.raster {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--sp-24);
+	}
+}

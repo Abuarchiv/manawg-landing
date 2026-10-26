@@ -26,8 +26,8 @@ const organizationSchema = {
 		email: 'info@manawg.com',
 		availableLanguage: 'de',
 	},
-	// Verknüpft die Marke mit ihren offiziellen Profilen (Abgrenzung zu gleichnamigen WireGuard-Projekten).
-	sameAs: ['https://github.com/Abuarchiv/manawg-landing'],
+	// Betreiber laut Impressum
+	founder: { '@type': 'Person', name: 'Abubakar Abditube' },
 };
 
 const webSiteSchema = {
@@ -45,7 +45,6 @@ export const metadata: Metadata = {
 	metadataBase: new URL(appUrl),
 	title,
 	description,
-	keywords: ['WG', 'Wohngemeinschaft', 'Ausgaben teilen', 'Putzplan', 'WG-App'],
 	authors: [{ name: 'ManaWG' }],
 	applicationName: 'ManaWG',
 	alternates: { canonical: '/', types: { 'application/atom+xml': '/feed.xml' } },

@@ -4,8 +4,15 @@ import { appUrl } from '@/lib/app-origin';
 import { css } from '../../core/dc';
 import s from './Fusszeile.module.css';
 
-// Nur die Funktionsseiten und der Vergleich. Die Ratgeber erreicht man über die Fußzeile der Themenseiten und die Sitemap.
-const FUSS_THEMEN = [...(GRUPPEN[0]?.slugs ?? []), 'beste-wg-app'];
+// Die Funktionsseiten, der Vergleich und die meistgesuchten Ratgeber. Alle weiteren erreicht man über /ratgeber.
+const FUSS_THEMEN = [
+	...(GRUPPEN[0]?.slugs ?? []),
+	'beste-wg-app',
+	'putzplan-erstellen',
+	'wg-casting-fragen',
+	'wg-anmeldung',
+	'faq',
+];
 
 export function Fusszeile() {
 	return (
