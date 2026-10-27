@@ -223,8 +223,6 @@ export interface Tipp {
 	cy: number;
 	demo?: boolean;
 	slow?: boolean;
-	/** Tipp aus der Scroll-Choreografie (Phone.tsx): zählt nicht zur Vorführung, wird nie verworfen. */
-	scroll?: boolean;
 }
 
 /** Vorführung: n = schon getippte Ziele (0 Haushalt, 1 Start), seit = Beginn der Untätigkeit. */

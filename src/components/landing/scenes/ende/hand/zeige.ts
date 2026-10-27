@@ -186,7 +186,12 @@ function tippen(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung): v
 				st.contactT = now;
 				st.host?.dispatchEvent(new CustomEvent('hand:kontakt', { detail: { x: q.cx, y: q.cy } }));
 			}
-			st.pending = { x: e.mx, y: e.my, t0: now, cx: r0.left + c.m.x, cy: r0.top + c.m.y };
+			// Die Spitze steht schon am Zeiger: der Klick geht sofort in die App, die Hand drückt nur mit
+			st.tap = [e.mx, e.my];
+			st.contactT = now;
+			st.host?.dispatchEvent(
+				new CustomEvent('hand:kontakt', { detail: { x: r0.left + c.m.x, y: r0.top + c.m.y } }),
+			);
 		}
 	}
 }
@@ -204,7 +209,7 @@ function vorfuehren(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung
 	if (document.activeElement?.tagName === 'IFRAME') dm.off = true;
 	if (dm.off || c.reduced || e.touch || isTouch() || !c.endOn || dm.n >= 2) {
 		if (!c.endOn) dm.seit = null;
-		if (dm.off && st.pending?.demo && !st.pending.scroll) st.pending = null;
+		if (dm.off && st.pending?.demo) st.pending = null;
 	} else {
 		dm.seit ??= now;
 		if (!st.pending && now - dm.seit > 2.5 && now >= dm.next) {
@@ -217,25 +222,18 @@ function vorfuehren(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung
 
 /** Wohin die Zeigehand zieht: anstehender Tipp, Zeiger über dem Glas oder Parkplatz. */
 function zielWaehlen(st: HandZustand, c: HandKontext, e: Eingabe): Ziel {
-	const { now } = c;
 	const pend = st.pending;
 	// Nach dem Kontakt zieht sich die Hand nach 0,35 s zurück, damit das Ergebnis des Tipps zu sehen ist
-	const zurueck = !pend && st.contactT > 0 && now - st.contactT > 0.35 && now - st.contactT < 1.6;
-	const folgt =
-		!zurueck &&
-		c.endOn &&
-		!e.touch &&
-		c.m.in &&
-		aufGlas(e.mx, e.my) &&
-		now - (c.m.moveT ?? -9) < 1.4;
+	// Über dem Glas klebt die Fingerspitze am Zeiger, solange er dort ist (kein Rückzug, kein Zeitlimit)
+	const folgt = c.endOn && !e.touch && c.m.in && aufGlas(e.mx, e.my);
 	let tg: readonly [number, number] = st.park;
 	let k = 7;
-	if (pend) {
-		tg = [pend.x, pend.y];
-		k = pend.slow ? 4 : 16;
-	} else if (folgt) {
+	if (folgt) {
 		tg = [e.mx, e.my];
-		k = 16;
+		k = Number.POSITIVE_INFINITY;
+	} else if (pend) {
+		tg = [pend.x, pend.y];
+		k = pend.slow ? 9 : 40;
 	}
 	return { tg, k, folgt, pend };
 }
@@ -257,17 +255,18 @@ function bewegen(
 	st.park = [940, parkY];
 	if (!st.ht) st.ht = { x: st.park[0], y: st.park[1] };
 	const ht = st.ht;
-	const kk = 1 - Math.exp(-z.k * Math.min(dt, 0.05));
+	// k = unendlich: ohne Nachziehen genau am Zeiger (die Spitze ersetzt den Mauszeiger)
+	const kk = Number.isFinite(z.k) ? 1 - Math.exp(-z.k * Math.min(dt, 0.05)) : 1;
 	ht.x += (z.tg[0] - ht.x) * kk;
 	ht.y += (z.tg[1] - ht.y) * kk;
 	const pend = z.pend;
 	// Berührung: die Spitze ist angekommen (oder 0,3 s sind um), jetzt Druck, Ring und Klick
 	if (
 		pend &&
-		(Math.hypot(ht.x - pend.x, ht.y - pend.y) < 8 || now - pend.t0 > (pend.slow ? 2.2 : 0.3))
+		(Math.hypot(ht.x - pend.x, ht.y - pend.y) < 8 || now - pend.t0 > (pend.slow ? 0.9 : 0.12))
 	) {
 		st.pending = null;
-		if (pend.demo && !pend.scroll) {
+		if (pend.demo) {
 			dm.n++;
 			dm.next = now + 3;
 			if (dm.n >= 2) demoGetan(true);
@@ -279,7 +278,7 @@ function bewegen(
 		);
 	}
 	const lt = st.lt;
-	const kl = 1 - Math.exp(-10 * Math.min(dt, 0.05));
+	const kl = 1 - Math.exp(-24 * Math.min(dt, 0.05));
 	lt.x += (lg[0] - lt.x) * kl;
 	lt.y += (lg[1] - lt.y) * kl;
 	return ht;
@@ -343,28 +342,8 @@ function werteBauen(
  * Ein Bild der Zeigehand-Steuerung (Reihenfolge wie im Ablauf): Tipp, Vorführung, Ziel, Bewegung, Cursor, Werte.
  * br: Atmen dieses Bildes.
  */
-/** Die zuletzt gezeichnete Zeigehand mit ihrer Zeigerlage (für scrollTipp). */
-let aktiv: { st: HandZustand; obj: ObjFn; now: number; endOn: boolean; touch: boolean } | null =
-	null;
-
-/**
- * Scroll-Choreografie (Phone.tsx): die Zeigehand tippt die Tab-Taste name an, der Klick geht über hand:kontakt in
- * die App. Gibt false zurück, wenn gerade keine Zeigehand läuft (Touch, reduzierte Bewegung, Ende nicht im Bild);
- * dann schaltet Phone.tsx die App direkt um. Die Vorführung bei Untätigkeit ist danach aus.
- */
-export function scrollTipp(name: string): boolean {
-	const a = aktiv;
-	if (!a || !a.endOn || a.touch || isTouch()) return false;
-	const z = demoZiel(a.st, name, a.obj);
-	if (!z) return false;
-	if (a.st.demo) a.st.demo.off = true;
-	a.st.pending = { ...z, t0: a.now, demo: true, slow: true, scroll: true };
-	return true;
-}
-
 export function zeigeSchritt(st: HandZustand, c: HandKontext, cam: Fit, br: Atmen): Zeichenwerte {
 	const obj = objektRaum(cam, br);
-	aktiv = { st, obj, now: c.now, endOn: c.endOn && !c.reduced, touch: c.m.type === 'touch' };
 	const [mx, my] = obj(c.m.x, c.m.y);
 	const touch = c.m.type === 'touch';
 	const e: Eingabe = { obj, mx, my, touch };

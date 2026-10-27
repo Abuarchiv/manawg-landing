@@ -7,7 +7,6 @@ import { cl } from '../../core/math';
 import { live } from '../intro/stage';
 import s from './Phone.module.css';
 import { datumsZeilen } from './datum';
-import { scrollTipp } from './hand';
 
 // Das Handy der Ende-Szene mit der echten ManaWG-App: ein gleich-originiges iframe auf
 // /app-demo/index.html (Standalone-DOM und CSS der App, Zustandsautomat in demo.js). Hülle und Geometrie
@@ -148,8 +147,9 @@ export function Phone() {
 			const erst = stufe < 0;
 			stufe = neu;
 			if (erst && neu === 0) return;
-			const [name, id] = TABS[neu] ?? TABS[0];
-			if (!scrollTipp(name)) demo.enter('-', id);
+			// Der Scroll schaltet sofort um (kein Anfahren der Zeigehand: das wirkte verzögert)
+			const [, id] = TABS[neu] ?? TABS[0];
+			demo.enter('-', id);
 		});
 		return off;
 	}, [bereit, benutzt]);
@@ -218,7 +218,11 @@ export function Phone() {
 					)}
 				>
 					{/* Standbild: derselbe Zustand und dieselben Insets wie das iframe, liegt darunter und bleibt bis zum Laden stehen */}
-					<div className={s.flaeche} style={{ opacity: bereit ? 0 : 1 }} aria-hidden="true">
+					<div
+						className={s.flaeche}
+						style={{ opacity: bereit ? 0 : 'calc(1 - var(--app-aus, 0))' }}
+						aria-hidden="true"
+					>
 						<img
 							src={bild}
 							alt=""
@@ -280,7 +284,8 @@ export function Phone() {
 								}
 								requestAnimationFrame(() => requestAnimationFrame(() => setBereit(true)));
 							}}
-							style={{ border: 0, background: '#0A0A0A' }}
+							// Übergang: die App zerfällt in Zeichen (scenes/zerfall setzt --app-aus)
+							style={{ border: 0, background: '#0A0A0A', opacity: 'calc(1 - var(--app-aus, 0))' }}
 						/>
 					)}
 					<Statusleiste />

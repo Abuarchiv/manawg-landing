@@ -46,9 +46,17 @@ interface ZifferOptionen {
 	gl?: number;
 }
 
-function baue(s: ZifferState, txt: string, cs: number) {
-	const W = Math.max(1, Math.round(s.W));
-	const H = Math.max(1, Math.round(s.H));
+/** Eine Zelle des Rasters in Ruhe: Lage in CSS-px und Ton (0 Rand, 2 innen). */
+export interface RasterZelle {
+	x: number;
+	y: number;
+	ton: 0 | 2;
+}
+
+/** Zellen einer Ziffer auf der Fläche W x H (CSS-px) mit Zelle cs. Rein, auch für den Übergang (scenes/zerfall). */
+export function raster(txt: string, W0: number, H0: number, cs: number): RasterZelle[] {
+	const W = Math.max(1, Math.round(W0));
+	const H = Math.max(1, Math.round(H0));
 	const fs = H * 1.28; // Ziffernhöhe (0,73 em) füllt rund 94 % der Fläche
 	const cols = Math.ceil(W / cs);
 	const rows = Math.ceil(H / cs);
@@ -56,7 +64,7 @@ function baue(s: ZifferState, txt: string, cs: number) {
 	oc.width = cols;
 	oc.height = rows;
 	const o = oc.getContext('2d');
-	if (!o) return;
+	if (!o) return [];
 	o.fillStyle = '#000';
 	// Die Form kommt aus Inter Tight (ohne den Punkt in der Null der Mono-Schrift), gefüllt wird mit Mono-Zeichen
 	o.font = `600 ${fs / cs}px "Inter Tight", sans-serif`;
@@ -65,9 +73,7 @@ function baue(s: ZifferState, txt: string, cs: number) {
 	const d = o.getImageData(0, 0, cols, rows).data;
 	const on = new Uint8Array(cols * rows);
 	for (let q = 0; q < on.length; q++) on[q] = (d[q * 4 + 3] ?? 0) > 110 ? 1 : 0;
-	const old = s.cells;
-	s.cells = [];
-	let k = 0;
+	const aus: RasterZelle[] = [];
 	for (let q = 0; q < on.length; q++)
 		if (on[q]) {
 			const a = q % cols;
@@ -79,17 +85,30 @@ function baue(s: ZifferState, txt: string, cs: number) {
 					const y = b + dj;
 					if ((di || dj) && x >= 0 && y >= 0 && x < cols && y < rows && on[y * cols + x]) n++;
 				}
-			const p = old[k++];
-			s.cells.push({
-				x: a * cs,
-				y: b * cs,
-				ton: n >= 8 ? 2 : 0,
-				ox: s.reduced ? 0 : p ? p.x + p.ox - a * cs : (hsh(q, 1) - 0.5) * 160,
-				oy: s.reduced ? 0 : p ? p.y + p.oy - b * cs : (hsh(q, 2) - 0.5) * 160,
-				vx: 0,
-				vy: 0,
-			});
+			aus.push({ x: a * cs, y: b * cs, ton: n >= 8 ? 2 : 0 });
 		}
+	return aus;
+}
+
+/** Zellgröße und Glyphe je Modus (hoch etwas feiner). */
+export const zifferMasse = (hoch: boolean): { cs: number; gl: number } =>
+	hoch ? { cs: 6, gl: 7 } : { cs: 7, gl: 8 };
+
+/** Solange der Übergang aus dem Handy läuft, zeichnet er die Ziffern (scenes/zerfall), die Ziffern selbst ruhen. */
+export const uebergang = { verdeckt: false };
+
+function baue(s: ZifferState, txt: string, cs: number) {
+	const old = s.cells;
+	s.cells = raster(txt, s.W, s.H, cs).map((z, k) => {
+		const p = old[k];
+		return {
+			...z,
+			ox: s.reduced ? 0 : p ? p.x + p.ox - z.x : (hsh(k, 1) - 0.5) * 160,
+			oy: s.reduced ? 0 : p ? p.y + p.oy - z.y : (hsh(k, 2) - 0.5) * 160,
+			vx: 0,
+			vy: 0,
+		};
+	});
 }
 
 // Zeichenblatt: die acht Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
@@ -134,13 +153,20 @@ export function registerZiffer(
 		},
 		frame(s, _t, dt) {
 			// Hochformat: etwas feineres Raster (Zelle 6, Glyph 7), die Ziffer bleibt eine Form
-			const cs = s.mode === 'hoch' ? 6 : cs0;
-			const gl = s.mode === 'hoch' ? 7 : gl0;
+			const cs = s.mode === 'hoch' ? zifferMasse(true).cs : cs0;
+			const gl = s.mode === 'hoch' ? zifferMasse(true).gl : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
 			if (s.key !== key) {
 				s.key = key;
 				baue(s, text, cs);
 				s.dirty = true;
+			}
+			// Der Übergang zeichnet die Ziffer: hier leer lassen und in Ruhelage halten, damit sie beim Übergeben steht
+			if (uebergang.verdeckt) {
+				for (const c of s.cells) c.ox = c.oy = c.vx = c.vy = 0;
+				if (!s.dirty) s.ctx?.clearRect(0, 0, s.cv?.width ?? 0, s.cv?.height ?? 0);
+				s.dirty = true;
+				return;
 			}
 			const R = 110;
 			let moving = false;

@@ -14,6 +14,7 @@ import { live } from './scenes/intro/stage';
 import { Koerper } from './scenes/koerper/Koerper';
 import { SoGehts } from './scenes/sogehts/SoGehts';
 import { Tiefe } from './scenes/tiefe/Tiefe';
+import { Zerfall } from './scenes/zerfall/Zerfall';
 import { Hinweise } from './shell/Hinweise';
 import { Kopf } from './shell/Kopf';
 import { KopfMaske } from './shell/KopfMaske';
@@ -93,6 +94,7 @@ export function Landing() {
 				<Finale />
 				<Fusszeile />
 			</main>
+			<Zerfall />
 			<Lader />
 		</div>
 	);

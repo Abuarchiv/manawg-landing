@@ -1,15 +1,6 @@
-/* Übergang zwischen Ende und "So geht's": ASCII-Zeichen, die sich zu den drei Ziffern zusammenziehen. Nur Canvas
-   auf Schwarz, die Höhe folgt dem Bildschirm. */
+/* Raum für den Übergang Handy → So geht's (scenes/zerfall): schwarz, gut vier Fünftel der Bildschirmhöhe. */
 .band {
 	position: relative;
-	height: clamp(190px, 34svh, 330px);
+	height: 80lvh;
 	background: #0a0a0a;
-	overflow: hidden;
-}
-.cv {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	display: block;
 }
