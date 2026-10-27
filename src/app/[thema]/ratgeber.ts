@@ -782,7 +782,7 @@ export const RATGEBER: Record<string, Thema> = {
 			['Splid auf Deutsch', 'https://splid.app/german'],
 			['Flatastic', 'https://www.flatastic-app.com/'],
 			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
-			['Tricount Funktionen', 'https://tricount.com/expense-tracker-features'],
+			['Tricount Funktionen', 'https://tricount.com/features'],
 			[
 				'Tricount im App Store',
 				'https://apps.apple.com/de/app/tricount-ausgaben-teilen/id349866256',
@@ -942,7 +942,7 @@ export const RATGEBER: Record<string, Thema> = {
 		erschienen: '2026-10-11',
 		titel: 'WG-Putzplan Vorlage zum Ausdrucken: PDF & CSV | ManaWG',
 		beschreibung:
-			'Kostenlose WG-Putzplan Vorlage für 3, 4 und 5 Personen: Rotationstabelle, Aufgaben mit Rhythmus, Generator mit euren Namen, als PDF drucken oder als CSV bearbeiten.',
+			'Kostenlose WG-Putzplan Vorlage für 3, 4 und 5 Personen: Rotationstabelle, Aufgaben mit Rhythmus, Generator mit euren Namen, als PDF drucken oder als CSV.',
 		h1: 'WG-Putzplan Vorlage zum Ausdrucken und Anpassen',
 		einleitung:
 			'Hier steht eine fertige Rotation für drei, vier und fünf Personen, kostenlos und ohne Konto. Im Generator tragt ihr eure Namen ein und druckt den Plan als PDF oder ladet ihn als CSV herunter.',
@@ -1484,7 +1484,7 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'WG-Auszug',
 		stand: '2026-10-27',
 		erschienen: '2026-10-19',
-		titel: 'WG-Auszug: Checkliste für Kündigung und Abrechnung | ManaWG',
+		titel: 'WG-Auszug: Checkliste für Kündigung und Kaution | ManaWG',
 		beschreibung:
 			'Checkliste für den Auszug aus der WG: Kündigung, Nachmieter, Kaution, offene Kosten, Rundfunkbeitrag, Ummeldung und Übergabe ohne Streit.',
 		h1: 'Auszug aus der WG: die Checkliste',
@@ -1604,7 +1604,7 @@ export const RATGEBER: Record<string, Thema> = {
 		erschienen: '2026-10-20',
 		titel: 'Mitbewohner kündigen: Fristen je nach Vertrag | ManaWG',
 		beschreibung:
-			'Kann man einen Mitbewohner kündigen? Antwort je nach Vertrag: Untermiete, gemeinsamer Hauptmietvertrag oder Einzelverträge. Mit Fristen und Muster fürs Kündigungsschreiben.',
+			'Kann man einen Mitbewohner kündigen? Antwort je nach Vertrag: Untermiete, gemeinsamer Hauptmietvertrag oder Einzelverträge. Mit Fristen und Kündigungsmuster.',
 		h1: 'Mitbewohner kündigen: was je nach Vertrag geht',
 		einleitung:
 			'Wenn das Zusammenleben nicht mehr funktioniert, kommt schnell die Frage, ob man einen Mitbewohner einfach rauswerfen kann. Die Antwort hängt fast nur davon ab, wer mit wem einen Vertrag hat. Wer selbst Vermieter des Mitbewohners ist, kann kündigen, alle anderen nicht. Diese Seite gibt einen Überblick nach dem Bürgerlichen Gesetzbuch und ersetzt keine Rechtsberatung. Bei einem konkreten Fall helfen Mietervereine oder eine Anwältin für Mietrecht.',

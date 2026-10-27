@@ -388,11 +388,11 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'splid-alternative': {
 		link: 'Splid-Alternative',
-		stand: '2026-10-14',
+		stand: '2026-10-27',
 		erschienen: '2026-10-10',
 		titel: 'Splid Alternative mit Putzplan und Einkaufsliste | ManaWG',
 		beschreibung:
-			'ManaWG ist eine kostenlose Splid Alternative für WGs: Ausgaben teilen plus Putzplan, Einkaufsliste und Fixkosten.',
+			'ManaWG ist eine kostenlose Splid Alternative für WGs: Ausgaben teilen plus Putzplan, Einkaufsliste, Fixkosten und Monatsabrechnung, ohne Werbung.',
 		h1: 'Eine Splid Alternative mit Putzplan und Einkaufsliste',
 		einleitung:
 			'Splid teilt Ausgaben in Gruppen und nennt auf seiner deutschen Seite unter anderem über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Für eine WG reicht eine reine Kasse oft nicht lange, denn der Haushalt besteht aus mehr als Rechnungen. ManaWG verbindet die Kasse mit dem Rest.',
@@ -565,14 +565,14 @@ export const THEMEN: Record<string, Thema> = {
 		link: 'Tricount-Alternative',
 		stand: '2026-10-27',
 		erschienen: '2026-10-27',
-		titel: 'Tricount-Alternative für WG und Paar | ManaWG',
+		titel: 'Tricount-Alternative für WG und feste Gruppen | ManaWG',
 		beschreibung:
-			'Tricount rechnet mit mehreren Währungen und passt zu Reisen. Für die WG mit Miete, Fixkosten und Putzplan passt ManaWG: kostenlos, im Browser, mit Monatsabrechnung.',
+			'Tricount rechnet mit mehreren Währungen und passt zu Reisen. Für die WG mit Miete, Fixkosten und Putzplan passt ManaWG: kostenlos, im Browser, mit Abrechnung.',
 		h1: 'Tricount-Alternative für WG und feste Gruppen',
 		einleitung:
 			'Tricount teilt Ausgaben in Gruppen und rechnet laut Anbieter mit mehreren Währungen. Wer dauerhaft zusammenwohnt, braucht dazu meist Miete, Fixkosten und einen Putzplan. ManaWG verbindet das in einer kostenlosen Web-App auf Deutsch. Die Angaben zu Tricount stammen von den verlinkten Seiten des Anbieters und von bunq, abgerufen am 27. Oktober 2026.',
 		quellen: [
-			['Tricount Funktionen', 'https://tricount.com/expense-tracker-features'],
+			['Tricount Funktionen', 'https://tricount.com/features'],
 			[
 				'Tricount im App Store',
 				'https://apps.apple.com/de/app/tricount-ausgaben-teilen/id349866256',
