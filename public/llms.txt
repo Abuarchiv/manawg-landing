@@ -37,26 +37,26 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 
 - [Alle Ratgeber im Überblick](https://manawg.com/ratgeber): Geld, Haushalt, Zusammenleben, Gründen, Ein- und Auszug
 - [WG-Kosten fair aufteilen](https://manawg.com/wg-kosten-aufteilen): Miete, Nebenkosten, Internet, drei Modelle
-- [Putzplan erstellen](https://manawg.com/putzplan-erstellen): Generator, fünf Schritte, Wochenplan, Verteilung
-- [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste)
-- [WG-Regeln](https://manawg.com/wg-regeln): Ruhezeiten, Besuch, Haushalt
+- [Putzplan erstellen](https://manawg.com/putzplan-erstellen): Generator, fünf Schritte, Wochenplan, Rhythmus, Punktesystem
+- [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste): Reihenfolge, Budget, Vertragsform, Kaution, Startkosten
+- [WG-Regeln](https://manawg.com/wg-regeln): Vorlage, Aushang zum Ausfüllen, Folgen bei Verstößen
 - [WG-Miete nach Zimmergröße aufteilen](https://manawg.com/wg-miete-rechner): Rechner, Formel, Beispiel
 - [Nebenkosten, Strom und Internet](https://manawg.com/wg-nebenkosten)
 - [Rundfunkbeitrag in der WG](https://manawg.com/rundfunkbeitrag-wg): ein Beitrag pro Wohnung, Abmeldung, Teilen
-- [Putzplan-Vorlage](https://manawg.com/putzplan-vorlage): Vorlage für 4 Personen ([CSV-Download](https://manawg.com/putzplan-vorlage.csv))
+- [Putzplan-Vorlage](https://manawg.com/putzplan-vorlage): Vorlagen für 2 bis 5 Personen, CSV für Excel ([CSV-Download](https://manawg.com/putzplan-vorlage.csv))
 - [WG-Haushaltskasse](https://manawg.com/wg-haushaltskasse)
 - [Einzug in die WG](https://manawg.com/wg-einzug-checkliste)
 - [Urlaub und Abwesenheit](https://manawg.com/wg-abwesenheit-urlaub)
-- [Schulden unter Mitbewohnern](https://manawg.com/schulden-mitbewohner)
+- [Schulden unter Mitbewohnern](https://manawg.com/schulden-mitbewohner): Ausgleich, geliehenes Geld, Mahnung, Verjährung
 - [Von Splitwise oder Splid wechseln](https://manawg.com/splitwise-splid-wechseln): CSV-Import, Vorschau, Namen zuordnen, rückgängig
 - [Splitwise kostenlos](https://manawg.com/splitwise-kostenlos): Tageslimit laut Splitwise-Hilfe, Pro, Alternativen
 - [Was ist ManaWG? Fakten](https://manawg.com/ueber-manawg)
 - [Beste WG-App: 7 Kriterien](https://manawg.com/beste-wg-app)
 - [Einkaufen in der WG](https://manawg.com/wg-einkauf-organisieren)
-- [Mitbewohner finden](https://manawg.com/mitbewohner-finden): WG-Anzeige, Auswahl, Vermieter
-- [WG-Casting: Fragen](https://manawg.com/wg-casting-fragen): Ablauf und Fragenliste
+- [Mitbewohner finden](https://manawg.com/mitbewohner-finden): WG-Anzeige, WG-Gesucht-Konto, Pflichtangaben, Fehler
+- [WG-Casting: Fragen](https://manawg.com/wg-casting-fragen): Ablauf, Fragenliste, Mustertexte für Zu- und Absage
 - [WG-Mietvertrag](https://manawg.com/wg-mietvertrag): Mietgemeinschaft, Untermiete, Einzelverträge, Haftung, Kaution, Muster-Checkliste
-- [Mitbewohner kündigen](https://manawg.com/mitbewohner-kuendigen): Untermiete, Hauptmietvertrag, Einzelverträge, Fristen, Schriftform
+- [Mitbewohner kündigen](https://manawg.com/mitbewohner-kuendigen): Untermiete, Hauptmietvertrag, Einzelverträge, ohne Mietvertrag, Fristen, Schriftform
 - [Anmeldung in der WG](https://manawg.com/wg-anmeldung): Wohnungsgeberbestätigung, Frist, Haupt- und Nebenwohnung, Abmeldung
 - [Zwischenmiete in der WG](https://manawg.com/wg-zwischenmiete): Erlaubnis, Vertrag, Miete, Kaution, Anmeldung
 - [Streit in der WG lösen](https://manawg.com/wg-streit-loesen): Putzen, Lärm, Geld

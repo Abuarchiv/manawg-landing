@@ -38,7 +38,7 @@ export const THEMEN: Record<string, Thema> = {
 		erschienen: '2026-10-10',
 		titel: 'WG-App kostenlos: Ausgaben, Putzplan, Einkauf | ManaWG',
 		beschreibung:
-			'ManaWG ist die kostenlose WG-App auf Deutsch: Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand für Studenten-WGs und Zweck-WGs.',
+			'ManaWG ist die kostenlose WG-App für den Alltag, keine Zimmersuche: Ausgaben, Putzplan, Einkaufsliste, Kalender und Chat im Browser, ohne App Store.',
 		h1: 'Die WG-App für Geld, Putzen, Einkauf und Termine',
 		einleitung:
 			'Ein Zettel am Kühlschrank und eine WhatsApp-Gruppe, in der Wichtiges untergeht: So läuft der Alltag in vielen WGs. ManaWG bündelt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand in einer kostenlosen App auf Deutsch.',
@@ -46,6 +46,10 @@ export const THEMEN: Record<string, Thema> = {
 			[
 				'Warum eine App statt Zettel und WhatsApp',
 				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Das spart Nachfragen und Streit darüber, wer was zugesagt hatte. Welche Kriterien bei der Wahl zählen, zeigt die Seite [WG-Apps im Vergleich](/beste-wg-app).',
+			],
+			[
+				'Zimmersuche oder Alltag: was eine WG-App ist',
+				'Unter „WG-App“ suchen manche ein Portal für Zimmer und Mitbewohner, andere eine App für den Alltag in einer bestehenden WG. ManaWG gehört zur zweiten Art: Ihr teilt Ausgaben, führt Putzplan und Einkaufsliste, plant Termine und sprecht euch ab. Zimmer oder Mitbewohner vermittelt ManaWG nicht. Für die Suche helfen [Mitbewohner finden](/mitbewohner-finden) und die [WG-Casting-Fragen](/wg-casting-fragen), wie ihr eine WG aufsetzt, zeigt die [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
 			],
 			[
 				'Ausgaben teilen und Schulden ausgleichen',
@@ -65,7 +69,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Für wen ManaWG gedacht ist',
-				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Code oder Link, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen. ManaWG hilft nicht bei der Zimmersuche, sondern organisiert den Alltag, wenn die WG steht. Für die Suche helfen [Mitbewohner finden](/mitbewohner-finden) und die [WG-Casting-Fragen](/wg-casting-fragen), wie ihr eine WG aufsetzt, zeigt die [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
+				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Code oder Link, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen.',
 			],
 			[
 				'So startet eure WG',
@@ -83,6 +87,51 @@ export const THEMEN: Record<string, Thema> = {
 				'Daten und Abrechnung mitnehmen',
 				'Jedes Mitglied kann die Daten der WG in den Einstellungen unter Daten herunterladen: komplett als JSON oder einzelne Bereiche als CSV, zum Beispiel Ausgaben, Fixkosten, Einkauf, Putzplan, Vorräte, Termine, Pinnwand oder Chat. Die Monatsabrechnung blättert ihr Monat für Monat durch und druckt sie über „Als PDF“ oder speichert sie als PDF.',
 			],
+		],
+		tabellen: [
+			{
+				nach: 'einleitung',
+				titel: 'Was die WG-App ManaWG abdeckt',
+				kopf: ['Bereich', 'Das könnt ihr', 'Grenzen'],
+				zeilen: [
+					[
+						'Ausgaben',
+						'gleichmäßig oder mit eigenen Eurobeträgen teilen, Fixkosten automatisch buchen, Überweisungsvorschläge, Monatsabrechnung als PDF',
+						'nur Euro, keine Prozentanteile, ihr überweist selbst',
+					],
+					[
+						'Putzplan',
+						'Wiederholung in Tagen oder Monaten, Verteilung nach Auslastung, Vorschau „Nächste:r“, Abwesenheiten, Push-Erinnerung',
+						'keine feste Reihenfolge, keine Punkte',
+					],
+					[
+						'Einkauf',
+						'gemeinsame Liste, Vorräte, Einkauf als Ausgabe übernehmen',
+						'Einträge ohne Netz werden später gesendet',
+					],
+					[
+						'Kalender',
+						'Serientermine, Abo in Apple oder Google Kalender, Push am Vortag',
+						'Abo nur in eine Richtung',
+					],
+					[
+						'Chat und Pinnwand',
+						'Antworten, Reaktionen, Erwähnungen, Ankündigungen und Entscheidungen',
+						'Push je Bereich abschaltbar',
+					],
+					[
+						'Daten',
+						'Import aus Splitwise- und Splid-CSV oder per Screenshot, Export als JSON und CSV',
+						'kein Import aus Tricount oder Flatastic',
+					],
+					[
+						'Zugang',
+						'im Browser, auf dem Home-Bildschirm installierbar, Beitritt per Code oder Link',
+						'kein App Store, nur Deutsch, bis zu 20 aktive Mitglieder',
+					],
+				],
+				hinweis: 'Angaben aus der App, Stand 27. Oktober 2026.',
+			},
 		],
 		fragen: [
 			[
@@ -109,18 +158,26 @@ export const THEMEN: Record<string, Thema> = {
 				'Kann ich unsere WG-Daten exportieren?',
 				'Ja. Jedes Mitglied lädt die Daten der WG in den Einstellungen unter Daten herunter, komplett als JSON oder einzelne Bereiche als CSV, etwa Ausgaben, Fixkosten, Einkauf oder Putzplan. Die Monatsabrechnung lässt sich über „Als PDF“ drucken oder als PDF speichern.',
 			],
+			[
+				'Ist ManaWG eine App für die Zimmersuche?',
+				'Nein. ManaWG vermittelt weder Zimmer noch Mitbewohner, sondern organisiert eine WG, die schon besteht. Für die Suche helfen [Mitbewohner finden](/mitbewohner-finden) und die [WG-Casting-Fragen](/wg-casting-fragen).',
+			],
+			[
+				'Kann ich ManaWG am Laptop nutzen?',
+				'Ja. ManaWG läuft im Browser unter app.manawg.com, am Laptop genauso wie am Handy. Auf beiden lässt es sich auch als App installieren.',
+			],
 		],
 	},
 	putzplan: {
 		link: 'WG Putzplan App',
 		stand: '2026-10-27',
 		erschienen: '2026-10-09',
-		titel: 'WG Putzplan App: fair, mit Rotation | ManaWG',
+		titel: 'WG Putzplan App: fair verteilt, kostenlos | ManaWG',
 		beschreibung:
 			'Kostenlose WG Putzplan App: Aufgaben wiederholen sich im festen Rhythmus, die App verteilt fair, überspringt Abwesende und erinnert, wer dran ist.',
-		h1: 'WG Putzplan App: Aufgaben, Rotation und Abwesenheit',
+		h1: 'WG Putzplan App: Aufgaben, faire Verteilung und Abwesenheit',
 		einleitung:
-			'Ihr legt die Aufgaben einmal an, ManaWG rechnet Termine, Zuständigkeit und Abwesenheit selbst aus. Kostenlos und im Browser, ohne Zettel am Kühlschrank, der schnell veraltet.',
+			'Ihr legt die Aufgaben einmal an, ManaWG rechnet Termine, Zuständigkeit und Abwesenheit selbst aus. Kostenlos und im Browser, ohne Zettel am Kühlschrank, der schnell veraltet. Wer einen Plan zum Ausdrucken sucht, findet ihn in der [Putzplan-Vorlage](/putzplan-vorlage), die Schritte zum eigenen Plan stehen unter [Putzplan erstellen](/putzplan-erstellen).',
 		abschnitte: [
 			[
 				'Aufgaben mit festem Rhythmus',
@@ -558,6 +615,14 @@ export const THEMEN: Record<string, Thema> = {
 			[
 				'Wie genau lassen sich Erinnerungen einstellen?',
 				'Push-Benachrichtigungen schaltet jedes Mitglied pro Bereich einzeln ab, etwa für Putzplan, Ausgaben oder Chat. Der tägliche Digest und die Monatsabrechnung per Mail haben einen Abmeldelink.',
+			],
+			[
+				'Ist Flatastic kostenlos?',
+				'Laut Anbieter ist Flatastic kostenlos nutzbar und bietet ein kostenpflichtiges Premium. Die Premium-Seite nennt unter anderem den Verzicht auf Werbung, den Verlauf des Putzplans, frühere Budgetauswertungen, Bilder an Ausgaben und den CSV-Export der Finanzeinträge (abgerufen am 27. Oktober 2026). ManaWG hat keine Bezahlstufe.',
+			],
+			[
+				'Hat Flatastic ein Punktesystem fürs Putzen?',
+				'Laut Startseite des Anbieters ja, ein Punktesystem soll alle bei der Stange halten (abgerufen am 27. Oktober 2026). In ManaWG gibt es keine Punkte: Der Putzplan verteilt Aufgaben nach Auslastung und zeigt vorab, wer als Nächstes dran ist. Mehr auf der Seite [WG Putzplan App](/putzplan).',
 			],
 		],
 	},
