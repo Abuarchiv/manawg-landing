@@ -213,52 +213,64 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'WG gründen',
 		stand: '2026-10-27',
 		erschienen: '2026-10-11',
-		titel: 'WG gründen: Checkliste in 9 Schritten | ManaWG',
+		titel: 'WG gründen: Checkliste mit Kaution und Vertrag | ManaWG',
 		beschreibung:
-			'WG gründen Schritt für Schritt: Gruppe finden, Vertragsform wählen, Kaution teilen, anmelden, Kosten und Regeln festlegen. Mit Checkliste zum Abhaken.',
+			'WG gründen Schritt für Schritt: Mitbewohner und Wohnung finden, Vertragsform wählen, Kaution berechnen, WG-Vereinbarung, Anmeldung und Kosten. Mit Checkliste.',
 		h1: 'WG gründen: die Checkliste',
 		einleitung:
-			'Eine neue WG fängt oft mit Begeisterung an und endet mit Streit über Dinge, die niemand besprochen hat. Diese Checkliste führt durch die Fragen, die vor und kurz nach dem Einzug geklärt sein sollten: vom Mietvertrag über Anmeldung und Verträge bis zu Geld, Putzplan und Regeln. Sie ersetzt keine Rechtsberatung, besonders nicht bei Mietverträgen.',
+			'Eine neue WG fängt oft mit Begeisterung an und endet mit Streit über Dinge, die niemand besprochen hat. Diese Checkliste zur WG-Gründung führt durch die Fragen, die vor und kurz nach dem Einzug geklärt sein sollten: vom Mietvertrag über Anmeldung und Verträge bis zu Geld, Putzplan und Regeln. Sie ersetzt keine Rechtsberatung, besonders nicht bei Mietverträgen.',
 		abschnitte: [
 			[
 				'1. Passende Mitbewohner finden',
 				'Entscheidend ist weniger, ob ihr beste Freunde seid, als ob ihr ähnliche Vorstellungen vom Zusammenleben habt. Sprecht über Ruhezeiten, Besuch, Sauberkeit, Rauchen, Haustiere und darüber, ob ihr eine Zweck-WG oder gemeinsame Abende sucht. Wie ihr passende Leute findet und auswählt, steht unter [Mitbewohner finden](/mitbewohner-finden). Klärt auch, wie lange jede Person ungefähr bleiben will: Eine WG, in der alle zwei Jahre planen, funktioniert anders als eine mit Zwischenmietern.',
 			],
 			[
-				'2. Die richtige Vertragsform wählen',
+				'2. Wohnung suchen und gemeinsam bewerben',
+				'Sucht ihr als Gruppe, tretet gegenüber Vermietern geschlossen auf. Bereitet einen kurzen WG-Steckbrief vor: wer ihr seid, wie lange ihr bleiben wollt und welche Vertragsform ihr euch vorstellt. Häufig verlangen Vermieter von jeder Person eine Schufa-Auskunft, einen Einkommensnachweis und eine Mietschuldenfreiheitsbescheinigung; fragt vorher, was sie brauchen. Bei der Besichtigung fragt ihr nach der Zahl der Bäder, nach den Zählern für Strom und Gas und danach, ob der Vermieter einen gemeinsamen Vertrag, Einzelverträge oder Untermiete zulässt.',
+			],
+			[
+				'3. Die richtige Vertragsform wählen',
 				'In einer WG gibt es drei übliche Konstellationen. Beim gemeinsamen Hauptmietvertrag unterschreiben alle und haften gemeinsam für die ganze Miete; ausziehen kann eine Person nur mit Zustimmung von Vermieter und Mitbewohnern. Beim Untermietvertrag mietet eine Person die Wohnung und vermietet Zimmer weiter; sie trägt das Risiko, braucht dafür die Erlaubnis des Vermieters und hat mehr Einfluss bei Nachmietern. Bei Einzelmietverträgen hat jede Person einen eigenen Vertrag über ihr Zimmer mit dem Vermieter. Welche Form passt, hängt davon ab, wie fest die WG ist; die Unterschiede stehen im Ratgeber zum [WG-Mietvertrag](/wg-mietvertrag). Im Zweifel hilft ein Mieterverein.',
 			],
 			[
-				'3. Kaution und Übergabe festhalten',
+				'4. Kaution und Übergabe festhalten',
 				'Die Kaution darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Haltet fest, wer welchen Anteil eingezahlt hat, damit bei einem Auszug klar ist, wem was zusteht. Bei der Wohnungsübergabe gehört jedes Zimmer ins Übergabeprotokoll, am besten mit Fotos von Schäden und den Zählerständen für Strom, Gas und Wasser.',
 			],
 			[
-				'4. Anmelden und Verträge abschließen',
+				'5. Eine WG-Vereinbarung unter euch',
+				'Neben dem Mietvertrag lohnt sich eine kurze Vereinbarung nur unter euch. Sie regelt, was der Vertrag mit dem Vermieter offenlässt: Mietanteile je Zimmer, Nebenkosten, Strom und Internet, Putzplan, gemeinsame Kasse, Gäste und Ruhezeiten und was beim Auszug gilt, etwa wie früh jemand Bescheid sagt und wer bei der Suche nach einem Nachfolger hilft. Die Vereinbarung ist eine Absprache unter Mitbewohnern, am Mietvertrag ändert sie nichts. Ein kurzes Muster: „Wir, [Namen], wohnen ab [Datum] in [Adresse]. Miete: [Aufteilung]. Fixkosten: [Liste]. Putzplan: [Rhythmus]. Gäste: [Regel]. Wer auszieht, sagt es [Zahl] Wochen vorher und hilft bei der Suche nach einem Nachfolger. Nach drei Monaten sprechen wir die Vereinbarung neu durch.“ Vorschläge für einzelne Regeln stehen bei den [WG-Regeln](/wg-regeln). In ManaWG haltet ihr die Vereinbarung als Pinnwand-Beitrag der Art Entscheidung fest, die anderen antworten mit „Passt“.',
+			],
+			[
+				'6. Anmelden und Verträge abschließen',
 				'Nach dem Einzug muss sich jede Person innerhalb von zwei Wochen beim Bürgeramt anmelden. Dafür braucht es eine [Wohnungsgeberbestätigung](/wg-anmeldung), die der Vermieter ausstellt, bei Untermiete der Hauptmieter. Strom und Internet laufen meist auf eine Person, die Kosten teilt ihr. Der [Rundfunkbeitrag](/rundfunkbeitrag-wg) fällt einmal pro Wohnung an, nicht pro Person: Eine Person meldet sich an, die anderen geben deren Beitragsnummer an. Jede Person sollte eine eigene Haftpflichtversicherung haben und prüfen, ob ihre Hausratversicherung eine WG abdeckt.',
 			],
 			[
-				'5. Geld verbindlich regeln',
+				'7. Geld verbindlich regeln',
 				'Legt fest, wie die Miete aufgeteilt wird ([gleich oder nach Zimmergröße](/wg-kosten-aufteilen), der [Mietrechner](/wg-miete-rechner) rechnet es vor), wer welche Verträge führt und was ihr gemeinsam kauft. Wer zahlt, sollte das Geld zuverlässig zurückbekommen, ohne jedes Mal nachfragen zu müssen. Mit der [WG-App ManaWG](/wg-app) legt ihr Miete, Strom und Internet einmal als Fixkosten an und erfasst gemeinsame Einkäufe laufend. Die App zeigt Salden und Ausgleichsvorschläge, ihr überweist selbst.',
 			],
 			[
-				'6. Erstausstattung absprechen',
+				'8. Erstausstattung absprechen',
 				'Klärt, was gemeinsam angeschafft wird (Waschmaschine, Staubsauger, Küchengeräte, Putzmittel) und wem es gehört, wenn jemand auszieht. Bei teuren Dingen hilft eine einfache Notiz, wer wie viel bezahlt hat. Viele WGs kaufen Grundausstattung gemeinsam und den Rest bringt jede Person selbst mit.',
 			],
 			[
-				'7. Haushalt und Putzplan organisieren',
+				'9. Haushalt und Putzplan organisieren',
 				'Einigt euch auf einen Putzplan mit konkreten Aufgaben und festen Zyklen, etwa Bad wöchentlich, Küche wöchentlich, Flur alle zwei Wochen, Müll nach Bedarf. Die Anleitung [Putzplan erstellen](/putzplan-erstellen) zeigt, wie das geht, und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) hilft beim Start. Eine gemeinsame Einkaufsliste für Dinge, die alle brauchen, verhindert, dass drei Leute Spülmittel kaufen und niemand Klopapier. Beides lässt sich in ManaWG teilen, ohne dass jemand die Liste per Hand pflegen muss.',
 			],
 			[
-				'8. Regeln festhalten',
+				'10. Regeln festhalten',
 				'Haltet die wichtigsten Absprachen schriftlich fest, etwa Ruhezeiten, Umgang mit Besuch und Übernachtungsgästen, Gemeinschaftsräume und Vorgehen bei Streit. Eine Vorlage zum Übernehmen steht bei den [WG-Regeln](/wg-regeln). Es geht nicht um Paragrafen, sondern darum, dass später niemand sagen kann, davon habe er nichts gewusst. Die Pinnwand in ManaWG eignet sich dafür, weil Beschlüsse dort sichtbar bleiben und nicht im Chat untergehen.',
 			],
 			[
-				'9. Einen Termin für die WG-Runde festlegen',
+				'11. Einen Termin für die WG-Runde festlegen',
 				'Einmal im Monat eine halbe Stunde reicht. Ihr gleicht die Salden in der [WG-Kasse](/wg-kasse) aus; die Monatsabrechnung von ManaWG kommt am Monatsanfang per Mail und zeigt Summen je Kategorie und Überweisungsvorschläge. Dazu besprecht ihr Termine im gemeinsamen Kalender und klärt, ob eine eurer Regeln angepasst werden muss. Beschlüsse haltet ihr auf der Pinnwand fest, damit sie nicht im Chatverlauf verschwinden. Wie ihr Konflikte ansprecht, steht unter [Streit in der WG lösen](/wg-streit-loesen). Wer regelmäßig redet, muss selten eskalieren.',
 			],
 			[
+				'Wenn jemand auszieht oder nicht zahlt',
+				'Beim gemeinsamen Hauptmietvertrag haftet jede Person dem Vermieter gegenüber für die ganze Miete, und ausziehen kann jemand nur mit Zustimmung von Vermieter und Mitbewohnern (siehe Tabelle oben). Bei Untermiete trägt der Hauptmieter das Risiko, wenn ein Zimmer leer steht. Entsteht nach Vertragsschluss ein berechtigtes Interesse, einen Teil der Wohnung unterzuvermieten, kann der Mieter unter bestimmten Voraussetzungen die Erlaubnis verlangen (§ 553 Abs. 1 BGB). Zahlt jemand nicht, sprecht es früh an und klärt, wie ihr Beträge ausgleicht. Mehr dazu unter [Schulden unter Mitbewohnern](/schulden-mitbewohner), [Mitbewohner kündigen](/mitbewohner-kuendigen) und [Zwischenmiete in der WG](/wg-zwischenmiete).',
+			],
+			[
 				'Die Checkliste zum Abhaken',
-				'1. Mitbewohner gefunden und Erwartungen besprochen\n2. Vertragsform gewählt und Mietvertrag unterschrieben\n3. Kaution gezahlt, Anteile notiert\n4. Übergabeprotokoll mit Fotos und Zählerständen\n5. Alle innerhalb von zwei Wochen angemeldet\n6. Strom, Internet und Rundfunkbeitrag auf eine Person, Kosten geteilt\n7. Haftpflicht- und Hausratversicherung geprüft\n8. Mietaufteilung und Fixkosten festgelegt\n9. Erstausstattung abgesprochen\n10. Putzplan, Einkaufsliste und Regeln eingerichtet',
+				'1. Mitbewohner gefunden und Erwartungen besprochen\n2. Unterlagen für die Bewerbung je Person bereit\n3. Vertragsform gewählt und Mietvertrag unterschrieben\n4. Kaution gezahlt, Anteile notiert\n5. Übergabeprotokoll mit Fotos und Zählerständen\n6. WG-Vereinbarung aufgeschrieben und von allen bestätigt\n7. Alle innerhalb von zwei Wochen angemeldet\n8. Strom, Internet und Rundfunkbeitrag auf eine Person, Kosten geteilt\n9. Haftpflicht- und Hausratversicherung geprüft\n10. Mietaufteilung und Fixkosten festgelegt\n11. Erstausstattung abgesprochen\n12. Putzplan, Einkaufsliste und Regeln eingerichtet',
 			],
 		],
 		fragen: [
@@ -269,6 +281,14 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Welcher Mietvertrag ist für eine WG am besten?',
 				'Das hängt davon ab, wie fest die WG ist. Ein gemeinsamer Hauptmietvertrag gibt allen dieselben Rechte, macht aber den Auszug Einzelner umständlich. Untermiet- und Einzelmietverträge sind flexibler, wenn Mitbewohner öfter wechseln.',
+			],
+			[
+				'Wie hoch darf die Kaution in einer WG sein?',
+				'Höchstens drei Monatsmieten ohne Betriebskosten, zahlbar in drei gleichen Monatsraten (§ 551 BGB). Bei 1.200 € Kaltmiete sind das höchstens 3.600 €, bei vier Personen und gleicher Aufteilung 900 € pro Person.',
+			],
+			[
+				'Braucht eine WG eine eigene Vereinbarung?',
+				'Vorgeschrieben ist sie nicht. Sie hält fest, was der Mietvertrag nicht regelt: Mietanteile, Kosten, Putzen, Gäste und den Auszug. Am Mietvertrag ändert sie nichts.',
 			],
 			[
 				'Muss jeder in der WG Rundfunkbeitrag zahlen?',
@@ -285,7 +305,23 @@ export const RATGEBER: Record<string, Thema> = {
 		],
 		tabellen: [
 			{
-				nach: '2. Die richtige Vertragsform wählen',
+				nach: '4. Kaution und Übergabe festhalten',
+				titel: 'Beispiel: Kaution bei 1.200 € Kaltmiete und vier Personen',
+				kopf: ['Position', 'Betrag', 'Grundlage'],
+				zeilen: [
+					['Höchstbetrag: drei Monatsmieten ohne Betriebskosten', '3.600 €', '§ 551 Abs. 1 BGB'],
+					['Anteil je Person bei gleicher Aufteilung', '900 €', 'eure Absprache'],
+					[
+						'Zahlung in drei Monatsraten',
+						'1.200 € je Rate, 300 € je Person',
+						'§ 551 Abs. 2 BGB: erste Rate zu Beginn des Mietverhältnisses, die beiden weiteren mit den folgenden Mieten',
+					],
+				],
+				hinweis:
+					'Rechenbeispiel für eine Kaution in Geld. Bei Einzelmietverträgen gilt die Grenze für jeden Vertrag, bei Untermiete für den Untermietvertrag.',
+			},
+			{
+				nach: '3. Die richtige Vertragsform wählen',
 				titel: 'Drei Vertragsmodelle',
 				kopf: ['Modell', 'Haftung', 'Auszug', 'Kündigung'],
 				zeilen: [
@@ -317,6 +353,10 @@ export const RATGEBER: Record<string, Thema> = {
 				'https://www.gesetze-im-internet.de/bgb/__551.html',
 			],
 			['§ 17 BMG, An- und Abmeldung', 'https://www.gesetze-im-internet.de/bmg/__17.html'],
+			[
+				'§ 553 BGB, Gestattung der Gebrauchsüberlassung an Dritte',
+				'https://www.gesetze-im-internet.de/bgb/__553.html',
+			],
 		],
 	},
 	'wg-mietvertrag': {
@@ -473,10 +513,42 @@ export const RATGEBER: Record<string, Thema> = {
 		erschienen: '2026-10-11',
 		titel: 'WG-Regeln: 10 Regeln als Vorlage zum Übernehmen | ManaWG',
 		beschreibung:
-			'Zehn WG-Regeln als Vorlage für Ruhezeiten, Besuch, Putzen, Kühlschrank und Geld, plus Tipps, wie ihr Verstöße ansprecht.',
+			'Zehn WG-Regeln als Vorlage für Ruhezeiten, Besuch, Putzen, Kühlschrank und Geld, mit Spielraum je Regel, Testphase und Tipps, wie ihr Verstöße ansprecht.',
 		h1: 'WG-Regeln, die wirklich funktionieren',
 		einleitung:
 			'Viele WGs haben entweder gar keine Regeln oder einen langen Katalog, an den sich niemand hält. Gute Regeln sind kurz, konkret und von allen beschlossen. Unten steht eine Vorlage mit zehn Regeln, die ihr übernehmen und anpassen könnt, danach die Bereiche im Einzelnen.',
+		tabellen: [
+			{
+				nach: 'Vorlage: zehn WG-Regeln zum Übernehmen',
+				titel: 'Regeln mit Spielraum',
+				kopf: ['Bereich', 'Standard aus der Vorlage', 'Spielraum'],
+				zeilen: [
+					[
+						'Ruhezeiten',
+						'unter der Woche ab 22 Uhr, am Wochenende ab Mitternacht',
+						'Feiern einen Tag vorher ankündigen, Endzeit absprechen',
+					],
+					[
+						'Besuch',
+						'Übernachtungsgäste willkommen, ab der vierten Nacht vorher absprechen',
+						'in Prüfungsphasen gilt eine Leise-Zeit nach Absprache',
+					],
+					[
+						'Geschirr',
+						'am selben Tag spülen oder einräumen',
+						'nach einem Abend mit Gästen am nächsten Morgen',
+					],
+					[
+						'Kühlschrank',
+						'ein eigenes Fach je Person',
+						'Gemeinsames im extra Fach, Fremdes nur nach Frage',
+					],
+					['Anschaffungen', 'über 30 Euro vorher absprechen', 'Betrag an euer Budget anpassen'],
+				],
+				hinweis:
+					'Die Werte sind Beispiele, keine Vorschrift. Mietvertrag und Hausordnung gehen vor.',
+			},
+		],
 		abschnitte: [
 			[
 				'Vorlage: zehn WG-Regeln zum Übernehmen',
@@ -515,8 +587,12 @@ export const RATGEBER: Record<string, Thema> = {
 				'Wer neu einzieht, kennt die gewachsenen Absprachen nicht. Zeigt die Regeln vor dem Einzug, nicht erst beim ersten Streit, und fragt, ob etwas davon nicht passt. Nach einem Monat lohnt eine kurze Runde: Was ist ungewohnt, was soll sich ändern? So fühlen sich neue Leute als Teil der WG und nicht als Gast mit Pflichten.',
 			],
 			[
+				'Testphase und Überprüfung',
+				'Beschließt Regeln nicht für immer. Vereinbart eine Testphase von vier Wochen und einen festen Termin, an dem ihr besprecht, was nicht funktioniert hat. Danach reicht die monatliche WG-Runde, wie sie Regel 10 der Vorlage vorsieht. Schreibt unter die Vorlage, ab wann sie gilt und bis wann die Testphase läuft.',
+			],
+			[
 				'Wie ihr Regeln festhaltet',
-				'Schreibt sie an einen Ort, den alle sehen. In [ManaWG als WG-App](/wg-app) eignet sich die Pinnwand: Beschlüsse und Ankündigungen bleiben dort stehen, statt im Chatverlauf zu verschwinden. Ein Beschluss gilt, wenn alle zugestimmt haben, und lässt sich in der monatlichen WG-Runde anpassen.',
+				'Schreibt sie an einen Ort, den alle sehen. In [ManaWG als WG-App](/wg-app) eignet sich die Pinnwand. Sie kennt die Beitragsarten Info, Frage, Problem, Bitte und Entscheidung. Haltet eine Regel als Entscheidung fest; die Karte bittet die anderen um ein „Passt“. Wichtige Beiträge könnt ihr fixieren und geklärte Fragen als geklärt markieren. Ein Beschluss gilt, wenn alle zugestimmt haben, und lässt sich in der monatlichen WG-Runde anpassen.',
 			],
 			[
 				'Konflikte ansprechen',
@@ -693,7 +769,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'beste-wg-app': {
 		link: 'Beste WG-App',
-		stand: '2026-10-21',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'Beste WG-App: Vergleich mit Tabelle | ManaWG',
 		beschreibung:
@@ -779,6 +855,10 @@ export const RATGEBER: Record<string, Thema> = {
 				'7. Wie leicht ist der Umstieg?',
 				'Wer Daten aus Splitwise oder Splid bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ausführliche Vergleiche findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative), [Flatastic-Alternative](/flatastic-alternative), [Tricount-Alternative](/tricount-alternative) und [OurHome-Alternative](/ourhome-alternative).',
 			],
+			[
+				'Welche App passt zu welcher WG?',
+				'Ihr teilt vor allem Geld, auch auf Reisen und in mehreren Währungen: Splid nennt über 150 Währungen, Tricount mehrere Währungen, Splitwise die Umrechnung im Pro-Tarif, jeweils laut Anbieter. ManaWG rechnet nur in Euro.\nIhr wollt Geld, Putzplan, Einkauf, Kalender und Pinnwand in einer deutschsprachigen App ohne Abo und ohne App Store: dafür ist ManaWG gebaut.\nIhr wollt Punkte oder Belohnungen fürs Putzen: Das bietet ManaWG nicht, der Putzplan verteilt nach Auslastung.\nIhr habt alte Ausgaben aus Splitwise oder Splid als CSV-Datei: ManaWG übernimmt sie mit Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln).\nIhr seid mehr als 20 Personen: Eine WG in ManaWG fasst höchstens 20 aktive Mitglieder.',
+			],
 		],
 		fragen: [
 			[
@@ -792,6 +872,14 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Welche App eignet sich für Reisen mit mehreren Währungen?',
 				'Dafür ist eine Ausgaben-App mit Wechselkursen besser geeignet. ManaWG rechnet nur in Euro und ist für den WG-Alltag gedacht.',
+			],
+			[
+				'Wo liegen die Daten von ManaWG?',
+				'Die Datenbank liegt bei Supabase in Frankfurt am Main (EU). Für den E-Mail-Versand wird Resend (USA) eingesetzt. Welche Daten an wen gehen, steht in der Datenschutzerklärung.',
+			],
+			[
+				'Gibt es eine WG-App ohne App Store?',
+				'Ja, zum Beispiel ManaWG: Die Web-App läuft im Browser unter app.manawg.com und lässt sich auf den Home-Bildschirm legen.',
 			],
 		],
 	},

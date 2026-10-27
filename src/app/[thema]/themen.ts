@@ -65,11 +65,23 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Für wen ManaWG gedacht ist',
-				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Code oder Link, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen.',
+				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Code oder Link, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen. ManaWG hilft nicht bei der Zimmersuche, sondern organisiert den Alltag, wenn die WG steht. Für die Suche helfen [Mitbewohner finden](/mitbewohner-finden) und die [WG-Casting-Fragen](/wg-casting-fragen), wie ihr eine WG aufsetzt, zeigt die [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
 			],
 			[
 				'So startet eure WG',
 				'Eine Person meldet sich mit Google oder E-Mail und Passwort an, erstellt die WG und teilt den Einladungslink. Die anderen melden sich ebenfalls an und treten über den Link bei. Fangt mit einem konkreten Alltagsproblem an: Erfasst die [erste gemeinsame Ausgabe](/wg-kasse) oder legt eine wiederkehrende Putzaufgabe an. So nutzt ihr die App direkt zusammen, statt erst alle Bereiche einzurichten.',
+			],
+			[
+				'ManaWG installieren: iPhone, Android, Desktop',
+				'iPhone: In Safari auf Teilen tippen, „Zum Home-Bildschirm“ wählen und oben rechts auf Hinzufügen tippen. Danach ManaWG vom Home-Bildschirm öffnen und einmal anmelden.\nAndroid: In Chrome im Menü „App installieren“ oder „Zum Startbildschirm“ wählen und bestätigen.\nDesktop: In der Adressleiste auf Installieren klicken oder im Menü „ManaWG installieren“ wählen.',
+			],
+			[
+				'Auch ohne Netz',
+				'Fehlt unterwegs das Netz, speichert ManaWG neue Einträge auf dem Gerät und sendet sie, sobald ihr wieder online seid. Das gilt für Einkaufseinträge, Abwesenheiten, neue und erledigte Putzaufgaben, Ausgaben und Fixkosten. In den Einstellungen seht ihr, wie viele Aktionen noch warten. Nach etwa sieben Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt.',
+			],
+			[
+				'Daten und Abrechnung mitnehmen',
+				'Jedes Mitglied kann die Daten der WG in den Einstellungen unter Daten herunterladen: komplett als JSON oder einzelne Bereiche als CSV, zum Beispiel Ausgaben, Fixkosten, Einkauf, Putzplan, Vorräte, Termine, Pinnwand oder Chat. Die Monatsabrechnung blättert ihr Monat für Monat durch und druckt sie über „Als PDF“ oder speichert sie als PDF.',
 			],
 		],
 		fragen: [
@@ -88,6 +100,14 @@ export const THEMEN: Record<string, Thema> = {
 			[
 				'Kann ich von Splitwise oder Splid wechseln?',
 				'Ja, per CSV-Import mit Vorschau und Rückgängig-Funktion. Übernommen werden Zeilen in Euro, andere Währungen lehnt ManaWG zeilenweise ab, ohne den ganzen Import zu stoppen.',
+			],
+			[
+				'Funktioniert ManaWG ohne Internet?',
+				'Teilweise. Fehlt unterwegs das Netz, speichert ManaWG neue Einträge auf dem Gerät und sendet sie, sobald ihr wieder online seid: Einkaufseinträge, Abwesenheiten, neue und erledigte Putzaufgaben, Ausgaben und Fixkosten. Nach etwa sieben Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt.',
+			],
+			[
+				'Kann ich unsere WG-Daten exportieren?',
+				'Ja. Jedes Mitglied lädt die Daten der WG in den Einstellungen unter Daten herunter, komplett als JSON oder einzelne Bereiche als CSV, etwa Ausgaben, Fixkosten, Einkauf oder Putzplan. Die Monatsabrechnung lässt sich über „Als PDF“ drucken oder als PDF speichern.',
 			],
 		],
 	},
@@ -438,7 +458,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'flatastic-alternative': {
 		link: 'Flatastic-Alternative',
-		stand: '2026-10-14',
+		stand: '2026-10-27',
 		erschienen: '2026-10-10',
 		titel: 'Flatastic-Alternative ohne Werbung und Premium | ManaWG',
 		beschreibung:
@@ -465,11 +485,37 @@ export const THEMEN: Record<string, Thema> = {
 				],
 				'Angaben zu Flatastic laut Seiten des Anbieters, Stand 14. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
 			),
+			{
+				nach: 'Was Flatastic Premium freischaltet',
+				titel: 'Flatastic Premium und ManaWG',
+				kopf: ['Funktion', 'Flatastic laut Anbieter', 'ManaWG'],
+				zeilen: [
+					['Werbung', 'ohne Werbung mit Premium', 'keine Werbung'],
+					['Putzplan-Verlauf', 'Premium', 'Historie jeder Erledigung'],
+					[
+						'Frühere Abrechnungen',
+						'Premium (Archiv der Budgetauswertungen)',
+						'Monatsabrechnung, Monate blätterbar, Druck als PDF',
+					],
+					[
+						'Export',
+						'CSV der Finanzeinträge mit Premium',
+						'JSON und CSV je Bereich für jedes Mitglied',
+					],
+					['Bilder an Ausgaben', 'Premium', 'Foto am Beleg, wird angehängt, nicht ausgewertet'],
+				],
+				hinweis:
+					'Angaben zu Flatastic laut Premium-Seite des Anbieters, Stand 27. Oktober 2026. Nicht Belegtes steht als „nicht geprüft“ da.',
+			},
 		],
 		abschnitte: [
 			[
 				'Kostenlos, ohne Werbung, ohne Premium',
 				'ManaWG zeigt keine Werbung und kennt keine Bezahlstufe: Jede WG nutzt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Ob ihr zu zweit oder zu zehnt seid, ändert daran nichts, solange die WG in das Limit von 20 aktiven Mitgliedern passt. Ausgezogene Personen zählen nicht mit, ihre Historie bleibt erhalten.',
+			],
+			[
+				'Was Flatastic Premium freischaltet',
+				'Flatastic ist kostenlos nutzbar und bietet ein kostenpflichtiges Premium. Die Premium-Seite des Anbieters nennt unter anderem den Verzicht auf Werbung, den Verlauf des Putzplans, Zugriff auf frühere Budgetauswertungen im Archiv, Bilder an Ausgaben und einen CSV-Export der Finanzeinträge (abgerufen am 27. Oktober 2026). Preise nennen wir nicht, sie ändern sich; ihr findet sie beim Anbieter. In ManaWG sind alle Bereiche ohne Bezahlstufe offen.',
 			],
 			[
 				'Erinnerungen, die ihr selbst steuert',
