@@ -414,7 +414,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kasse plus Haushalt in einer App',
-				'ManaWG verbindet die Kasse mit dem Rest: Aufgaben wiederholen sich in Tagen oder Monaten und rotieren auf die nächste Person, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht. Wie die Kasse arbeitet, zeigt die Seite [WG Kasse App](/wg-kasse). Wie der Putzplan rotiert, steht bei der [WG Putzplan App](/putzplan).',
+				'ManaWG verbindet die Kasse mit dem Rest: Aufgaben wiederholen sich in Tagen oder Monaten und gehen fair an die Person mit der geringsten Auslastung, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht. Wie die Kasse arbeitet, zeigt die Seite [WG Kasse App](/wg-kasse). Wie der Putzplan Aufgaben verteilt, steht bei der [WG Putzplan App](/putzplan).',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',
