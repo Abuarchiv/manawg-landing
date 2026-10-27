@@ -49,6 +49,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Urlaub und Abwesenheit](https://manawg.com/wg-abwesenheit-urlaub)
 - [Schulden unter Mitbewohnern](https://manawg.com/schulden-mitbewohner)
 - [Von Splitwise oder Splid wechseln](https://manawg.com/splitwise-splid-wechseln): CSV-Import, Vorschau, Namen zuordnen, rückgängig
+- [Splitwise kostenlos](https://manawg.com/splitwise-kostenlos): Tageslimit laut Splitwise-Hilfe, Pro, Alternativen
 - [Was ist ManaWG? Fakten](https://manawg.com/ueber-manawg)
 - [Beste WG-App: 7 Kriterien](https://manawg.com/beste-wg-app)
 - [Einkaufen in der WG](https://manawg.com/wg-einkauf-organisieren)

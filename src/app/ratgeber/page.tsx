@@ -21,6 +21,7 @@ const THEMENKREISE: Array<[string, string[]]> = [
 			'wg-haushaltskasse',
 			'schulden-mitbewohner',
 			'splitwise-splid-wechseln',
+			'splitwise-kostenlos',
 		],
 	],
 	['Haushalt', ['putzplan-erstellen', 'putzplan-vorlage', 'wg-einkauf-organisieren']],

@@ -317,7 +317,7 @@ export const THEMEN: Record<string, Thema> = {
 			'ManaWG ist eine kostenlose Splitwise-Alternative für WGs: keine Werbung, keine Bezahlstufe, dazu Putzplan, Einkaufsliste und CSV-Import.',
 		h1: 'Eine Splitwise-Alternative ohne Paywall und Werbung',
 		einleitung:
-			'Splitwise teilt Ausgaben zuverlässig und bietet mit Splitwise Pro laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, Belegscan und Währungsumrechnung. Was die kostenlose Version heute genau umfasst, legen wir hier nicht dar, prüft das bei Splitwise selbst. ManaWG kostet nichts, zeigt keine Werbung und kennt keine Bezahlstufe. Dazu kommen Putzplan, Einkaufsliste und Kalender.',
+			'Splitwise teilt Ausgaben zuverlässig und bietet mit Splitwise Pro laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, Belegscan und Währungsumrechnung. Was die kostenlose Version umfasst, steht unter [Splitwise kostenlos](/splitwise-kostenlos). ManaWG kostet nichts, zeigt keine Werbung und kennt keine Bezahlstufe. Dazu kommen Putzplan, Einkaufsliste und Kalender.',
 		quellen: [
 			['Splitwise Pro', 'https://www.splitwise.com/pro'],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],

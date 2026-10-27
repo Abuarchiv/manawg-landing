@@ -1,5 +1,6 @@
 // Ratgeber rund ums Geld in der WG; wird in themen.ts eingebunden.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
+import { NG } from './gruppen.ts';
 import { euro, mieteAnteile } from './miete-rechner.ts';
 import type { Thema } from './themen';
 
@@ -14,6 +15,9 @@ const summe = (a: number[]) => euro(a.reduce((s, x) => s + x, 0));
 // Rundfunkbeitrag je Wohnung laut rundfunkbeitrag.de (Stand 27.10.2026), in Cent.
 const RUNDFUNK_MONAT_CENT = 1836;
 const RUNDFUNK_QUARTAL_CENT = RUNDFUNK_MONAT_CENT * 3;
+
+// Kostenlose Ausgaben pro Tag laut Splitwise-Hilfe (kb.splitwise.com/pro/what-is-splitwise-pro, Stand 27.10.2026).
+const SPLITWISE_TAGESLIMIT = 4;
 
 export const RATGEBER_GELD: Record<string, Thema> = {
 	'wg-miete-rechner': {
@@ -183,6 +187,73 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 				'https://www.gesetze-bayern.de/Content/Document/RBeitrStV-7',
 			],
 			['AO § 44 Gesamtschuldner', 'https://www.gesetze-im-internet.de/ao_1977/__44.html'],
+		],
+	},
+	'splitwise-kostenlos': {
+		link: 'Splitwise kostenlos',
+		stand: '2026-10-27',
+		erschienen: '2026-10-27',
+		titel: 'Splitwise kostenlos: Tageslimit und Pro | ManaWG',
+		beschreibung:
+			'Wie viele Ausgaben erlaubt Splitwise kostenlos pro Tag? Das Limit laut Splitwise-Hilfe, was Pro ergänzt und welche Wege es für WGs mit vielen Einträgen gibt.',
+		h1: 'Splitwise kostenlos: Wie viele Ausgaben sind erlaubt?',
+		einleitung:
+			'Splitwise lässt sich kostenlos nutzen, begrenzt in der kostenlosen Version aber die Zahl neuer Ausgaben pro Tag. Hier steht, was die Hilfeseite von Splitwise dazu sagt, was Pro ergänzt und was ihr tun könnt, wenn das Limit eure WG bremst. Die Angaben stammen von der verlinkten Hilfeseite, abgerufen am 27. Oktober 2026.',
+		abschnitte: [
+			[
+				'Kurz gesagt',
+				`Laut Splitwise-Hilfe können kostenlose Nutzer ${SPLITWISE_TAGESLIMIT} Ausgaben pro Tag eintragen (Stand 27. Oktober 2026). Andere Seiten nennen teils andere Zahlen; maßgeblich ist die Hilfeseite von Splitwise.`,
+			],
+			[
+				'Was Splitwise Pro ergänzt',
+				'Pro hebt laut Splitwise das Tageslimit auf und ergänzt weitere Funktionen, die die Tabelle zeigt. Den aktuellen Preis nennt Splitwise auf der Pro-Seite.',
+			],
+			[
+				'Wann das Limit in der WG stört',
+				'Wer jeden Einkauf gleich einträgt, kommt in einer WG schnell auf mehrere Einträge am Tag, etwa nach einem Großeinkauf mit getrennten Belegen. Ob das Limit für euch zählt, hängt davon ab, wie oft ihr eintragt.',
+			],
+			[
+				'Was ihr tun könnt',
+				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Sie rechnet nur in Euro, ist nur auf Deutsch und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative).',
+			],
+		],
+		tabellen: [
+			{
+				nach: 'Was Splitwise Pro ergänzt',
+				titel: 'Splitwise Pro laut Hilfeseite',
+				kopf: ['Funktion', 'kostenlos', 'Pro'],
+				zeilen: [
+					['Ausgaben', `bis zu ${SPLITWISE_TAGESLIMIT} pro Tag`, 'unbegrenzt'],
+					['Transaktionsimport (nur ausgewählte Länder)', NG, 'enthalten'],
+					['Suche', NG, 'enthalten'],
+					['Währungsumrechnung', NG, 'enthalten'],
+					['Belegscan und Aufteilung nach Positionen', NG, 'enthalten'],
+					['Diagramme', NG, 'enthalten'],
+					['Standardaufteilungen', NG, 'enthalten'],
+				],
+				hinweis: 'Quelle: Splitwise-Hilfe, abgerufen am 27. Oktober 2026.',
+			},
+		],
+		fragen: [
+			[
+				'Ist Splitwise noch kostenlos?',
+				`Ja, mit Grenzen: laut Splitwise-Hilfe ${SPLITWISE_TAGESLIMIT} Ausgaben pro Tag in der kostenlosen Version.`,
+			],
+			[
+				'Wie viele Ausgaben pro Tag erlaubt Splitwise kostenlos?',
+				`Laut Splitwise-Hilfe ${SPLITWISE_TAGESLIMIT}, Stand 27. Oktober 2026.`,
+			],
+			[
+				'Kann ich meine Splitwise-Daten mitnehmen?',
+				'Liegen eure Ausgaben als CSV-Datei vor, importiert ManaWG sie mit Vorschau. Übernommen werden Beträge in Euro.',
+			],
+		],
+		quellen: [
+			[
+				'Splitwise-Hilfe: What is Splitwise Pro?',
+				'https://kb.splitwise.com/pro/what-is-splitwise-pro',
+			],
+			['Splitwise Pro', 'https://www.splitwise.com/pro'],
 		],
 	},
 };
