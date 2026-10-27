@@ -223,7 +223,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Was ManaWG nicht ist',
-				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, komplett auf Deutsch und rechnet nur in Euro. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung. Neben der Kasse gehören Putzplan, Einkauf und Kalender zur [WG-App](/wg-app).',
+				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, komplett auf Deutsch und rechnet nur in Euro. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung. Was die App außer der Kasse bietet, steht unter [WG-App kostenlos](/wg-app).',
 			],
 		],
 		fragen: [
@@ -414,7 +414,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kasse plus Haushalt in einer App',
-				'ManaWG verbindet die Kasse mit dem Rest: Aufgaben wiederholen sich in Tagen oder Monaten und rotieren auf die nächste Person, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht. Wie die Kasse arbeitet, zeigt die [WG Kasse App](/wg-kasse), wie der Putzplan rotiert, die [Putzplan-App](/putzplan).',
+				'ManaWG verbindet die Kasse mit dem Rest: Aufgaben wiederholen sich in Tagen oder Monaten und rotieren auf die nächste Person, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht. Wie die Kasse arbeitet, zeigt die Seite [WG Kasse App](/wg-kasse). Wie der Putzplan rotiert, steht bei der [WG Putzplan App](/putzplan).',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',
@@ -523,7 +523,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Putzplan mit fairer Rotation',
-				'Aufgaben wiederholen sich im Rhythmus von Tagen oder Monaten. Beim Erledigen bestimmt ManaWG nach Auslastung, wer als Nächstes zuständig ist. Wer abwesend ist, wird dabei übergangen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Monatsintervalle bleiben kalendertreu, gerechnet wird nach Berliner Zeit. Erledigte Aufgaben landen in der Historie. Mehr dazu steht auf der Seite [Putzplan für die WG](/putzplan).',
+				'Aufgaben wiederholen sich im Rhythmus von Tagen oder Monaten. Beim Erledigen bestimmt ManaWG nach Auslastung, wer als Nächstes zuständig ist. Wer abwesend ist, wird dabei übergangen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Monatsintervalle bleiben kalendertreu, gerechnet wird nach Berliner Zeit. Erledigte Aufgaben landen in der Historie. Mehr dazu steht auf der Seite [WG Putzplan App](/putzplan).',
 			],
 			[
 				'WG-Kasse und Umstieg',
