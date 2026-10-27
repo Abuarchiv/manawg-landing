@@ -27,14 +27,19 @@ export function GET() {
 			`Quelle: ${base}/${slug} (Stand ${t.stand})`,
 			...(gruppeVon(slug)?.name === 'Vergleiche' ? [VERGLEICHS_HINWEIS] : []),
 			[
-				t.einleitung,
+				t.einleitung.replaceAll('](/', `](${base}/`),
 				...(t.tabellen ?? []).filter((tab) => tab.nach === 'einleitung').map(markdownTabelle),
 			].join('\n\n'),
 			...t.abschnitte.map(([kopf, text]) => {
 				const tabellen = (t.tabellen ?? []).filter((tab) => tab.nach === kopf).map(markdownTabelle);
 				return [`## ${kopf}\n\n${text.replaceAll('](/', `](${base}/`)}`, ...tabellen].join('\n\n');
 			}),
-			...(t.fragen ? ['## Häufige Fragen', ...t.fragen.map(([f, a]) => `**${f}**\n\n${a}`)] : []),
+			...(t.fragen
+				? [
+						'## Häufige Fragen',
+						...t.fragen.map(([f, a]) => `**${f}**\n\n${a.replaceAll('](/', `](${base}/`)}`),
+					]
+				: []),
 			...(quellen.length > 0
 				? [`## Quellen\n\n${quellen.map(([name, url]) => `- ${name}: ${url}`).join('\n')}`]
 				: []),

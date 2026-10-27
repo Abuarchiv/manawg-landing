@@ -25,6 +25,9 @@ const slug = (s: string) =>
 		.replace(/[^a-z0-9]+/g, '-')
 		.replace(/^-|-$/g, '');
 
+// Markdown-Verweise für Maschinentext (Schema) wieder auf das Linkwort reduzieren.
+const ohneLinks = (text: string) => text.replace(/\[([^\]]+)\]\(\/[a-z0-9-]*\)/g, '$1');
+
 // Verweise im Fließtext als [Wort](/pfad): Ratgeber zeigen im Text aufeinander, nicht nur über die Liste am Ende.
 const mitLinks = (text: string) =>
 	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((teil, i) => {
@@ -139,7 +142,7 @@ export default async function ThemaPage({ params }: Props) {
 		mainEntity: t.fragen.map(([frage, antwort]) => ({
 			'@type': 'Question',
 			name: frage,
-			acceptedAnswer: { '@type': 'Answer', text: antwort },
+			acceptedAnswer: { '@type': 'Answer', text: ohneLinks(antwort) },
 		})),
 	};
 
@@ -259,7 +262,7 @@ export default async function ThemaPage({ params }: Props) {
 					{t.h1}
 				</h1>
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
-					{t.einleitung}
+					{mitLinks(t.einleitung)}
 				</p>
 				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
 					Von <Link href="/ueber-manawg">Abubakar Abditube (ManaWG)</Link> · Veröffentlicht am{' '}
@@ -363,7 +366,7 @@ export default async function ThemaPage({ params }: Props) {
 									{frage}
 								</h3>
 								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-[var(--text-2)]">
-									{antwort}
+									{mitLinks(antwort)}
 								</p>
 							</div>
 						))}

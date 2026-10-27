@@ -134,7 +134,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie funktioniert die faire Rotation?',
-				'Beim Erledigen einer Aufgabe wählt ManaWG die nächste zuständige Person anhand der Zahl überfälliger Aufgaben je Mitglied. In der Oberfläche seht ihr diese Vorhersage vorab als „Nächste:r“.',
+				'Beim Erledigen einer Aufgabe wählt ManaWG die Person mit der geringsten Auslastung. Gezählt werden zugewiesene Aufgaben, offene Termine und überfällige Aufgaben; wer abwesend ist, wird übergangen. In der Oberfläche seht ihr diese Vorhersage vorab als „Nächste:r“.',
 			],
 			[
 				'Was passiert, wenn jemand im Urlaub ist?',
@@ -591,7 +591,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'ourhome-alternative': {
 		link: 'OurHome-Alternative',
-		stand: '2026-10-14',
+		stand: '2026-10-27',
 		erschienen: '2026-10-10',
 		titel: 'OurHome-Alternative für WGs, kostenlos | ManaWG',
 		beschreibung:
@@ -636,7 +636,7 @@ export const THEMEN: Record<string, Thema> = {
 		fragen: [
 			[
 				'Gibt es in ManaWG Punkte oder Belohnungen?',
-				'Nein. ManaWG verteilt Aufgaben nach der Zahl überfälliger Aufgaben je Person und berücksichtigt Abwesenheiten. Punkte oder Belohnungen gibt es nicht.',
+				'Nein. ManaWG verteilt Aufgaben nach Auslastung: Je Person zählen zugewiesene Aufgaben, offene Termine und überfällige Aufgaben, Abwesenheiten werden berücksichtigt. Punkte oder Belohnungen gibt es nicht.',
 			],
 			[
 				'Kostet ManaWG etwas?',
@@ -658,14 +658,14 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	faq: {
 		link: 'Häufige Fragen',
-		stand: '2026-10-21',
+		stand: '2026-10-27',
 		erschienen: '2026-10-09',
-		titel: 'Häufige Fragen zu ManaWG, der WG-App',
+		titel: 'Häufige Fragen zu ManaWG: Kosten, Anmeldung, Datenort',
 		beschreibung:
-			'Antworten zu ManaWG: Kosten, Installation, Einladung, Ausgaben teilen, Putzplan, Abwesenheiten, Währung, Datenort und Import aus Splitwise oder Splid.',
-		h1: 'Fragen und Antworten',
+			'Ist ManaWG kostenlos? Gibt es die WG-App im App Store? Antworten zu Anmeldung, Putzplan, Export, Datenort in Frankfurt und Import aus Splitwise oder Splid.',
+		h1: 'Häufige Fragen zu ManaWG',
 		einleitung:
-			'Das Wichtigste zu ManaWG, der kostenlosen App für Wohngemeinschaften: Kosten, Installation, Einladung, Geld, Putzplan, Abwesenheiten, Währung, Datenort und Import.',
+			'Das Wichtigste zu ManaWG, der kostenlosen [WG-App](/wg-app) für Wohngemeinschaften: Kosten, Installation, Einladung, Geld, Putzplan, Abwesenheiten, Währung, Datenort und Import.',
 		abschnitte: [],
 		fragen: [
 			[
@@ -674,7 +674,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Brauche ich einen App Store?',
-				'Nein. ManaWG ist eine Web-App und läuft im Browser unter app.manawg.com. Auf dem Handy könnt ihr die App auf den Home-Bildschirm legen. Push-Meldungen schaltet ihr je Bereich ein oder aus.',
+				'Nein. ManaWG ist eine [Web-App](/wg-app) und läuft im Browser unter app.manawg.com. Auf dem Handy könnt ihr die App auf den Home-Bildschirm legen. Push-Meldungen schaltet ihr je Bereich ein oder aus.',
 			],
 			[
 				'Wie kommen meine Mitbewohner in die WG?',
@@ -682,11 +682,11 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie werden Ausgaben aufgeteilt?',
-				'Bei jeder Ausgabe wählt ihr, wer beteiligt ist, und teilt gleichmäßig oder mit eigenen Beträgen pro Person, auf den Cent genau. ManaWG zeigt den Saldo pro Person und schlägt Ausgleiche mit wenigen Überweisungen vor. Überwiesen wird außerhalb der App, ihr markiert den Betrag danach als bezahlt.',
+				'Bei jeder Ausgabe wählt ihr, wer beteiligt ist, und teilt gleichmäßig oder mit eigenen Beträgen pro Person, auf den Cent genau. Die [WG-Kasse](/wg-kasse) zeigt den Saldo pro Person und schlägt Ausgleiche mit wenigen Überweisungen vor. Überwiesen wird außerhalb der App, ihr markiert den Betrag danach als bezahlt.',
 			],
 			[
 				'Wie funktioniert der Putzplan?',
-				'Jede Aufgabe hat einen Rhythmus in Tagen oder Monaten und rotiert reihum weiter. ManaWG bestimmt die nächste zuständige Person anhand überfälliger Aufgaben und zeigt, wer als Nächstes dran ist. Punkte oder Belohnungen gibt es nicht.',
+				'Im [Putzplan](/putzplan) hat jede Aufgabe einen Rhythmus in Tagen oder Monaten. Beim Erledigen wählt ManaWG die Person mit der geringsten Auslastung; gezählt werden zugewiesene Aufgaben, offene Termine und überfällige Aufgaben. Wer abwesend ist, wird übergangen. Punkte oder Belohnungen gibt es nicht.',
 			],
 			[
 				'Was passiert, wenn jemand verreist ist?',
@@ -694,11 +694,11 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kann ich Daten aus Splitwise oder Splid mitnehmen?',
-				'Falls eure Daten als CSV-Datei vorliegen: per CSV-Import mit Vorschau. Beim Import lässt sich auch ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen und vor dem Speichern korrigieren; ein Foto am einzelnen Beleg wird nur angehängt, nicht ausgewertet.',
+				'Falls eure Daten als CSV-Datei vorliegen: per [CSV-Import mit Vorschau](/splitwise-splid-wechseln). Beim Import lässt sich auch ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen und vor dem Speichern korrigieren; ein Foto am einzelnen Beleg wird nur angehängt, nicht ausgewertet.',
 			],
 			[
 				'Was gibt es außer Geld und Putzen?',
-				'Eine gemeinsame Einkaufsliste mit Vorräten, Fixkosten, einen Kalender, den ihr auch abonnieren könnt, eine Pinnwand und einen Chat.',
+				'Eine [gemeinsame Einkaufsliste](/einkaufsliste) mit Vorräten, Fixkosten, einen Kalender, den ihr auch abonnieren könnt, eine Pinnwand und einen Chat.',
 			],
 			[
 				'Wie melde ich mich an?',
@@ -706,7 +706,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Funktioniert ManaWG mit anderen Währungen?',
-				'Nein. ManaWG rechnet nur in Euro, ohne Wechselkurse. Wer auf Reisen in mehreren Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
+				'Nein. ManaWG rechnet nur in Euro, ohne Wechselkurse. Wer auf Reisen in mehreren Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben. Worauf es bei der Wahl einer App ankommt, steht unter [Beste WG-App](/beste-wg-app).',
 			],
 			[
 				'Überweist ManaWG Geld automatisch?',
@@ -717,8 +717,24 @@ export const THEMEN: Record<string, Thema> = {
 				'Die Datenbank liegt bei Supabase in Frankfurt am Main (EU). Für den E-Mail-Versand wird Resend (USA) eingesetzt. Welche Daten an wen gehen, steht in der Datenschutzerklärung.',
 			],
 			[
+				'Funktioniert ManaWG ohne Internet?',
+				'Teilweise. Fehlt unterwegs das Netz, speichert ManaWG neue Einträge auf dem Gerät und sendet sie, sobald ihr wieder online seid: Einkaufseinträge, Abwesenheiten, neue und erledigte Putzaufgaben, Ausgaben und Fixkosten. Nach etwa sieben Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt.',
+			],
+			[
+				'Kann ich unsere WG-Daten exportieren?',
+				'Ja. Jedes Mitglied lädt die Daten der WG in den Einstellungen unter Daten herunter, komplett als JSON oder einzelne Bereiche als CSV, etwa Ausgaben, Fixkosten, Einkauf oder Putzplan. Die Monatsabrechnung lässt sich über „Als PDF“ drucken oder als PDF speichern.',
+			],
+			[
+				'Wie erinnere ich Mitbewohner ans Bezahlen?',
+				'Auf der Seite Mahnungen gibt es einen Erinnern-Knopf. Für dieselben zwei Personen geht höchstens alle 48 Stunden eine Erinnerung raus.',
+			],
+			[
+				'Wie installiere ich ManaWG auf dem iPhone?',
+				'In Safari app.manawg.com öffnen, auf Teilen tippen, „Zum Home-Bildschirm“ wählen und oben rechts auf Hinzufügen tippen. Danach ManaWG vom Home-Bildschirm öffnen und einmal anmelden.',
+			],
+			[
 				'Wer steckt hinter ManaWG?',
-				'Betreiber ist Abubakar Abditube. ManaWG wird privat und nicht-kommerziell betrieben, Kontakt: info@manawg.com.',
+				'Betreiber ist Abubakar Abditube, mehr unter [Über ManaWG](/ueber-manawg). ManaWG wird privat und nicht-kommerziell betrieben, Kontakt: info@manawg.com.',
 			],
 			[
 				'Hat ManaWG etwas mit WireGuard zu tun?',
