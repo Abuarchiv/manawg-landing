@@ -26,7 +26,7 @@ export function Kopf() {
 					height={346}
 					className="h-5 w-auto"
 				/>
-				<span className="font-[family-name:'Inter_Tight'] text-[17px] font-semibold tracking-[-0.03em]">
+				<span className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] text-[17px] font-semibold tracking-[-0.03em]">
 					ManaWG
 				</span>
 			</Link>
@@ -49,13 +49,20 @@ export function Fuss({ aktiv }: { aktiv?: string }) {
 				{GRUPPEN.map((g) => (
 					<nav key={g.name} aria-label={g.name}>
 						<p className={`${mono} m-0 mb-4`}>
-							{g.name === 'Ratgeber' ? <Link href="/ratgeber">Ratgeber</Link> : g.name}
+							{g.name === 'Ratgeber' ? (
+								<Link href="/ratgeber" prefetch={false}>
+									Ratgeber
+								</Link>
+							) : (
+								g.name
+							)}
 						</p>
 						<ul className="list-none m-0 p-0 flex flex-col">
 							{g.slugs.map((slug) => (
 								<li key={slug}>
 									<Link
 										href={`/${slug}`}
+										prefetch={false}
 										aria-current={slug === aktiv ? 'page' : undefined}
 										className="inline-block py-[7px] text-[14px] text-[var(--text-2)] no-underline hover:text-[#fafafa] aria-[current=page]:text-[#fafafa]"
 									>
@@ -69,9 +76,15 @@ export function Fuss({ aktiv }: { aktiv?: string }) {
 			</div>
 			<p className={`${mono} mt-12 mb-0 flex flex-wrap gap-x-5`}>
 				<span>ManaWG, 2026</span>
-				<Link href="/impressum">Impressum</Link>
-				<Link href="/datenschutz">Datenschutz</Link>
-				<Link href="/agb">AGB</Link>
+				<Link href="/impressum" prefetch={false}>
+					Impressum
+				</Link>
+				<Link href="/datenschutz" prefetch={false}>
+					Datenschutz
+				</Link>
+				<Link href="/agb" prefetch={false}>
+					AGB
+				</Link>
 			</p>
 		</footer>
 	);

@@ -83,7 +83,7 @@
 	position: relative;
 	background: #0a0a0a;
 	color: #fafafa;
-	font-family: Inter, system-ui, sans-serif;
+	font-family: Inter, "Inter Fallback", system-ui, sans-serif;
 	overflow-x: clip;
 }
 #final [data-sec]:focus {
@@ -112,7 +112,7 @@
 	height: calc(var(--cta-h) + 12px);
 	margin-block: -6px;
 	padding: 6px 0;
-	font-family: "JetBrains Mono", monospace;
+	font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
 	font-size: var(--cta-fs);
 	font-weight: 500;
 	line-height: 1;
@@ -195,7 +195,7 @@
 	font-size: var(--cta-gross-fs);
 }
 .label {
-	font-family: "JetBrains Mono", monospace;
+	font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
 	font-size: var(--t-label);
 	font-weight: 500;
 	letter-spacing: 0.1em;
@@ -221,7 +221,7 @@
 	padding: var(--sp-26) 0 0;
 	min-height: 44px;
 	cursor: pointer;
-	font-family: "Inter Tight", sans-serif;
+	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
 	font-weight: 600;
 	font-size: var(--t-32);
 	letter-spacing: -0.03em;

@@ -51,7 +51,7 @@
 }
 .titel {
 	margin: 0;
-	font-family: "Inter Tight", sans-serif;
+	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
 	font-weight: 600;
 	font-size: var(--titel-fs);
 	line-height: 0.88;

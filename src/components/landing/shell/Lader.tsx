@@ -123,7 +123,7 @@ export function Lader() {
 				<span
 					data-count="1"
 					style={css(
-						"font-family:'JetBrains Mono',monospace;font-size:var(--t-176);font-weight:500;line-height:0.9;letter-spacing:-0.05em",
+						"font-family:'JetBrains Mono','JetBrains Mono Fallback',monospace;font-size:var(--t-176);font-weight:500;line-height:0.9;letter-spacing:-0.05em",
 					)}
 				>
 					000

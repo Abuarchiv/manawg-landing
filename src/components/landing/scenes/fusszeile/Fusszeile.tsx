@@ -29,7 +29,7 @@ export function Fusszeile() {
 						/>
 						<span
 							style={css(
-								"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-19);letter-spacing:-0.03em",
+								"font-family:'Inter Tight','Inter Tight Fallback',sans-serif;font-weight:600;font-size:var(--t-19);letter-spacing:-0.03em",
 							)}
 						>
 							ManaWG

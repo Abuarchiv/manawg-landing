@@ -42,6 +42,9 @@ export default function Page() {
 		<>
 			{/* biome-ignore lint/security/noDangerouslySetInnerHtml: statische Zeichenkette, kein Nutzerinhalt */}
 			<script dangerouslySetInnerHTML={{ __html: MODUS }} />
+			{/* hero.ts holt die Fotos per fetch(); der Preload startet den Download schon beim HTML-Parsen (crossOrigin wie bei fetch) */}
+			<link rel="preload" as="fetch" href="/hero/berg.webp" crossOrigin="anonymous" />
+			<link rel="preload" as="fetch" href="/hero/berg-maske.webp" crossOrigin="anonymous" />
 			<noscript
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: statische Zeichenkette, kein Nutzerinhalt
 				dangerouslySetInnerHTML={{

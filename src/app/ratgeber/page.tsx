@@ -129,7 +129,7 @@ export default function RatgeberPage() {
 			</nav>
 
 			<div className={`${rand} flex-1`}>
-				<h1 className="font-[family-name:'Inter_Tight'] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] hyphens-auto break-words">
+				<h1 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] hyphens-auto break-words">
 					Ratgeber für das Leben in der WG
 				</h1>
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
@@ -141,7 +141,7 @@ export default function RatgeberPage() {
 				<div className="mt-20 md:mt-32">
 					{kreise.map(([name, liste]) => (
 						<section key={name} className="linie py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8">
-							<h2 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
+							<h2 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
 								{name}
 							</h2>
 							<ul className="list-none m-0 p-0 md:col-start-6 md:col-span-7 flex flex-col">
@@ -152,7 +152,8 @@ export default function RatgeberPage() {
 										<li key={slug} className="py-4 first:pt-0">
 											<Link
 												href={`/${slug}`}
-												className="font-[family-name:'Inter_Tight'] font-semibold text-[19px] leading-[1.25] tracking-[-0.02em] no-underline hover:text-[var(--text-2)]"
+												prefetch={false}
+												className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[19px] leading-[1.25] tracking-[-0.02em] no-underline hover:text-[var(--text-2)]"
 											>
 												{t.h1}
 											</Link>

@@ -19,7 +19,7 @@
 }
 .titel {
 	margin: 0;
-	font-family: "Inter Tight", sans-serif;
+	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
 	font-weight: 600;
 	font-size: var(--t-72);
 	line-height: 0.95;
@@ -87,7 +87,7 @@
 	opacity: 1;
 }
 .nr {
-	font-family: "JetBrains Mono", monospace;
+	font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
 	font-size: 13px;
 }
 .zeile {

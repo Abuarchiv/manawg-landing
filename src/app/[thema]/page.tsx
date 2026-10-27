@@ -270,7 +270,7 @@ export default async function ThemaPage({ params }: Props) {
 			</nav>
 
 			<div className={`${rand} flex-1`}>
-				<h1 className="font-[family-name:'Inter_Tight'] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] hyphens-auto break-words">
+				<h1 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] hyphens-auto break-words">
 					{t.h1}
 				</h1>
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
@@ -332,7 +332,7 @@ export default async function ThemaPage({ params }: Props) {
 									id={slug(kopf)}
 									className={`${linie} py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8 scroll-mt-6`}
 								>
-									<h2 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
+									<h2 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
 										{kopf}
 									</h2>
 									{zeilen.length > 1 ? (
@@ -374,7 +374,7 @@ export default async function ThemaPage({ params }: Props) {
 								id={slug(frage)}
 								className={`${linie} py-8 scroll-mt-6 md:grid md:grid-cols-12 md:gap-8`}
 							>
-								<h3 className="font-[family-name:'Inter_Tight'] font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
+								<h3 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
 									{frage}
 								</h3>
 								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-[var(--text-2)]">
@@ -413,7 +413,7 @@ export default async function ThemaPage({ params }: Props) {
 				<div
 					className={`${linie} mt-16 md:mt-24 pt-14 md:pt-20 md:grid md:grid-cols-12 md:gap-8 items-end`}
 				>
-					<p className="m-0 md:col-span-7 font-[family-name:'Inter_Tight'] font-semibold text-[clamp(30px,4.4vw,64px)] leading-[1] tracking-[-0.045em]">
+					<p className="m-0 md:col-span-7 font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[clamp(30px,4.4vw,64px)] leading-[1] tracking-[-0.045em]">
 						Eure WG, an einem Ort.
 					</p>
 					<div className="mt-8 md:mt-0 md:col-start-9 md:col-span-4">
@@ -439,9 +439,10 @@ export default async function ThemaPage({ params }: Props) {
 								<li key={vs} className={`${linie}`}>
 									<Link
 										href={`/${vs}`}
+										prefetch={false}
 										className="group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-6 no-underline"
 									>
-										<span className="font-[family-name:'Inter_Tight'] font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
+										<span className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
 											{v.h1}
 										</span>{' '}
 										<span className={mono}>{gruppeVon(vs)?.name}</span>

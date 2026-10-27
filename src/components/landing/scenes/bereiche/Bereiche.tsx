@@ -73,7 +73,7 @@ export function Bereiche() {
 				<h2
 					id="bereiche-titel"
 					style={css(
-						"margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-64);line-height:0.95;letter-spacing:-0.04em;overflow-wrap:break-word",
+						"margin:0;font-family:'Inter Tight','Inter Tight Fallback',sans-serif;font-weight:600;font-size:var(--t-64);line-height:0.95;letter-spacing:-0.04em;overflow-wrap:break-word",
 					)}
 				>
 					Acht Orte.
@@ -103,7 +103,7 @@ export function Bereiche() {
 				<span className="label">{`${String(sel + 1).padStart(2, '0')} · ${pl[0].toUpperCase()}`}</span>
 				<span
 					style={css(
-						"font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-32);line-height:1.1;letter-spacing:-0.03em",
+						"font-family:'Inter Tight','Inter Tight Fallback',sans-serif;font-weight:600;font-size:var(--t-32);line-height:1.1;letter-spacing:-0.03em",
 					)}
 				>
 					{pl[1]}
@@ -118,7 +118,9 @@ export function Bereiche() {
 						<span style={css('font-size:12px;color:#737373')}>{pl[3]}</span>
 					</div>
 					<span
-						style={css("font-family:'JetBrains Mono',monospace;font-size:14px;white-space:nowrap")}
+						style={css(
+							"font-family:'JetBrains Mono','JetBrains Mono Fallback',monospace;font-size:14px;white-space:nowrap",
+						)}
 					>
 						{pl[4]}
 					</span>

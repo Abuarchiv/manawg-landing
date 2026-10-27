@@ -59,7 +59,7 @@ export function Tiefe() {
 							</span>
 							<h3
 								style={css(
-									"margin:0;font-family:'Inter Tight',sans-serif;font-weight:600;font-size:var(--t-44);line-height:inherit;letter-spacing:-0.03em;overflow-wrap:break-word",
+									"margin:0;font-family:'Inter Tight','Inter Tight Fallback',sans-serif;font-weight:600;font-size:var(--t-44);line-height:inherit;letter-spacing:-0.03em;overflow-wrap:break-word",
 								)}
 							>
 								{w.text}

@@ -107,7 +107,7 @@ export default function PutzplanGenerator() {
 			<div className="md:col-span-12 min-w-0 plan-druck" aria-live="polite">
 				{plan ? (
 					<>
-						<h3 className="m-0 mb-4 font-[family-name:'Inter_Tight'] font-semibold text-[20px]">
+						<h3 className="m-0 mb-4 font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[20px]">
 							WG-Putzplan für {wochen} Wochen
 						</h3>
 						<div className="overflow-x-auto">

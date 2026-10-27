@@ -6,8 +6,8 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
-				mono: ['"JetBrains Mono"', 'monospace'],
+				sans: ['Inter', '"Inter Fallback"', 'system-ui', 'sans-serif'],
+				mono: ['"JetBrains Mono"', '"JetBrains Mono Fallback"', 'monospace'],
 			},
 		},
 	},
