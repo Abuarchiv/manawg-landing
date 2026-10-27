@@ -144,7 +144,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Einrichten und Umfang',
-				'Eine WG hat einen Share-Code. Mitglieder treten per Code oder Link bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und nur auf Deutsch. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand.',
+				'Eine WG hat einen Share-Code. Mitglieder treten per Code oder Link bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und nur auf Deutsch. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor.',
 			],
 		],
 		fragen: [
@@ -219,11 +219,11 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Umzug aus Splitwise oder Splid',
-				'Falls eure bisherigen Abrechnungen als CSV-Datei vorliegen, übernehmt ihr sie per Import in eurer WG, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren.',
+				'Falls eure bisherigen Abrechnungen als CSV-Datei vorliegen, übernehmt ihr sie per Import in eurer WG, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren. Wer von Tricount kommt, findet die Unterschiede unter [Tricount-Alternative](/tricount-alternative).',
 			],
 			[
 				'Was ManaWG nicht ist',
-				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, komplett auf Deutsch und rechnet nur in Euro. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung.',
+				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, komplett auf Deutsch und rechnet nur in Euro. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung. Neben der Kasse gehören Putzplan, Einkauf und Kalender zur [WG-App](/wg-app).',
 			],
 		],
 		fragen: [
@@ -282,7 +282,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Im Supermarkt auch ohne gutes Netz',
-				'ManaWG läuft im Browser unter app.manawg.com und lässt sich ohne App Store auf den Home-Bildschirm legen. Fehlt unterwegs das Netz, merkt die App Aktionen lokal und sendet sie später nach. Nach 7 Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt. Push-Meldungen für Einkauf und Vorräte schaltet jede Person selbst ein oder aus.',
+				'ManaWG läuft im Browser unter app.manawg.com und lässt sich ohne App Store auf den Home-Bildschirm legen. Fehlt unterwegs das Netz, merkt die App Aktionen lokal und sendet sie später nach. Nach 7 Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt. Push-Meldungen für Einkauf und Vorräte schaltet jede Person selbst ein oder aus. Was die App sonst noch kann, steht auf der Seite [ManaWG als WG-App](/wg-app).',
 			],
 		],
 		fragen: [
@@ -414,7 +414,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kasse plus Haushalt in einer App',
-				'ManaWG verbindet die Kasse mit dem Rest: Aufgaben wiederholen sich in Tagen oder Monaten und rotieren auf die nächste Person, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht.',
+				'ManaWG verbindet die Kasse mit dem Rest: Aufgaben wiederholen sich in Tagen oder Monaten und rotieren auf die nächste Person, die Einkaufsliste sieht jeder auf dem Handy, und Fixkosten werden automatisch als Ausgabe gebucht. Zusätzlich gibt es Vorräte, Kalender, Pinnwand und Chat, falls ihr sie braucht. Wie die Kasse arbeitet, zeigt die [WG Kasse App](/wg-kasse), wie der Putzplan rotiert, die [Putzplan-App](/putzplan).',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',
@@ -523,11 +523,11 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Putzplan mit fairer Rotation',
-				'Aufgaben wiederholen sich im Rhythmus von Tagen oder Monaten. Beim Erledigen bestimmt ManaWG nach Auslastung, wer als Nächstes zuständig ist. Wer abwesend ist, wird dabei übergangen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Monatsintervalle bleiben kalendertreu, gerechnet wird nach Berliner Zeit. Erledigte Aufgaben landen in der Historie.',
+				'Aufgaben wiederholen sich im Rhythmus von Tagen oder Monaten. Beim Erledigen bestimmt ManaWG nach Auslastung, wer als Nächstes zuständig ist. Wer abwesend ist, wird dabei übergangen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Monatsintervalle bleiben kalendertreu, gerechnet wird nach Berliner Zeit. Erledigte Aufgaben landen in der Historie. Mehr dazu steht auf der Seite [Putzplan für die WG](/putzplan).',
 			],
 			[
 				'WG-Kasse und Umstieg',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, lassen sie sich mit Vorschau importieren, siehe [Umstieg](/splitwise-splid-wechseln). Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an.',
+				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, lassen sie sich mit Vorschau importieren, siehe [Umstieg](/splitwise-splid-wechseln). Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an. Die Kasse im Überblick beschreibt die Seite [WG Kasse App](/wg-kasse).',
 			],
 			[
 				'Einkauf, Pinnwand und Chat',
