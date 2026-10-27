@@ -37,7 +37,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 
 - [Alle Ratgeber im Überblick](https://manawg.com/ratgeber): Geld, Haushalt, Zusammenleben, Gründen, Ein- und Auszug
 - [WG-Kosten fair aufteilen](https://manawg.com/wg-kosten-aufteilen): Miete, Nebenkosten, Internet, drei Modelle
-- [Putzplan erstellen](https://manawg.com/putzplan-erstellen): Aufgaben, Rotation, Abwesenheit
+- [Putzplan erstellen](https://manawg.com/putzplan-erstellen): Generator, fünf Schritte, Wochenplan, Verteilung
 - [WG gründen: Checkliste](https://manawg.com/wg-gruenden-checkliste)
 - [WG-Regeln](https://manawg.com/wg-regeln): Ruhezeiten, Besuch, Haushalt
 - [WG-Miete nach Zimmergröße aufteilen](https://manawg.com/wg-miete-rechner): Rechner, Formel, Beispiel
@@ -55,11 +55,12 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Einkaufen in der WG](https://manawg.com/wg-einkauf-organisieren)
 - [Mitbewohner finden](https://manawg.com/mitbewohner-finden): WG-Anzeige, Auswahl, Vermieter
 - [WG-Casting: Fragen](https://manawg.com/wg-casting-fragen): Ablauf und Fragenliste
-- [WG-Mietvertrag](https://manawg.com/wg-mietvertrag): Hauptmiete, Untermiete, Einzelverträge, Haftung, Kaution
+- [WG-Mietvertrag](https://manawg.com/wg-mietvertrag): Mietgemeinschaft, Untermiete, Einzelverträge, Haftung, Kaution, Muster-Checkliste
 - [Mitbewohner kündigen](https://manawg.com/mitbewohner-kuendigen): Untermiete, Hauptmietvertrag, Einzelverträge, Fristen, Schriftform
 - [Anmeldung in der WG](https://manawg.com/wg-anmeldung): Wohnungsgeberbestätigung, Frist, Haupt- und Nebenwohnung, Abmeldung
 - [Zwischenmiete in der WG](https://manawg.com/wg-zwischenmiete): Erlaubnis, Vertrag, Miete, Kaution, Anmeldung
 - [Streit in der WG lösen](https://manawg.com/wg-streit-loesen): Putzen, Lärm, Geld
+- [WG-Zimmer kündigen](https://manawg.com/wg-zimmer-kuendigen): Fristen, Beispiele mit Datum, Muster, Nachmieter, gemeinsamer Vertrag
 - [Auszug aus der WG](https://manawg.com/wg-auszug-checkliste): Kündigung, Nachmieter, Kaution, Abrechnung
 
 Alle Seiten als ein Text: https://manawg.com/llms-full.txt

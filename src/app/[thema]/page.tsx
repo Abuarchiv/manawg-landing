@@ -354,9 +354,8 @@ export default async function ThemaPage({ params }: Props) {
 									.map((tab) => (
 										<Tabelle key={tab.titel} t={tab} />
 									))}
-								{thema === 'putzplan-vorlage' && kopf.startsWith('Putzplan-Generator') && (
-									<PutzplanGenerator />
-								)}
+								{(thema === 'putzplan-vorlage' || thema === 'putzplan-erstellen') &&
+									kopf.startsWith('Putzplan-Generator') && <PutzplanGenerator />}
 								{thema === 'wg-miete-rechner' && kopf === 'Rechner' && <MieteRechner />}
 							</Fragment>
 						);

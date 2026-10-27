@@ -76,9 +76,9 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'Putzplan erstellen',
 		stand: '2026-10-27',
 		erschienen: '2026-10-11',
-		titel: 'Putzplan erstellen: Anleitung, Tabelle, Wochenplan | ManaWG',
+		titel: 'Putzplan erstellen: Generator, Wochenplan, Tipps | ManaWG',
 		beschreibung:
-			'Putzplan selber erstellen in 5 Schritten: Aufgaben nach Raum und Rhythmus, Wochenplan als Tabelle, faire Verteilung für Haushalt und WG. Mit Beispiel.',
+			'Putzplan selber erstellen: kostenloser Generator für eure Namen, 5 Schritte mit Aufgaben nach Raum und Rhythmus, Wochenplan als Tabelle und faire Verteilung.',
 		h1: 'Putzplan erstellen: Schritt für Schritt für Haushalt und WG',
 		einleitung:
 			'Ein Putzplan scheitert selten an der Faulheit, sondern an unklaren Aufgaben und an Plänen, die niemand pflegt. In fünf Schritten kommt ihr zu einem Plan für Haushalt oder WG: Aufgaben nach Räumen sammeln, Aufwand schätzen, auf die Woche verteilen, fair zuteilen und sichtbar machen. Alle Zahlen und Tage sind Beispiele, die ihr an eure Wohnung anpasst.',
@@ -86,6 +86,10 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'In fünf Schritten zum Putzplan',
 				'1. Aufgaben nach Räumen sammeln\n2. Aufwand schätzen\n3. Auf die Woche verteilen\n4. Fest oder rotierend verteilen\n5. Sichtbar machen und pflegen',
+			],
+			[
+				'Putzplan-Generator: in einer Minute zum Plan',
+				'Wer nicht bei null anfangen will, tragt zwei bis sechs Namen ein, wählt die Aufgaben und die Zahl der Wochen. Der Generator verteilt die Aufgaben im Wechsel, jede Woche rückt jede Person eine Aufgabe weiter. Den Plan könnt ihr drucken, als PDF speichern oder als CSV herunterladen. Nichts wird gespeichert, ihr braucht kein Konto. Eigene Aufgaben und Rhythmen ergänzt ihr mit den Schritten unten.',
 			],
 			[
 				'Schritt 1: Aufgaben nach Räumen sammeln',
@@ -204,8 +208,12 @@ export const RATGEBER: Record<string, Thema> = {
 				'Bad, Küche, Wohnzimmer und Müll wöchentlich, Flur und Kühlschrank alle 14 Tage, Backofen und Fenster monatlich. Die Spülmaschine wird täglich ausgeräumt. Das sind Beispiele, passt den Rhythmus an eure Wohnung an.',
 			],
 			[
+				'Kann ich einen Putzplan online erstellen?',
+				'Ja, mit dem Generator auf dieser Seite. Namen eintragen, Aufgaben und Wochen wählen, dann drucken oder als CSV speichern. Ohne Konto und ohne Speicherung.',
+			],
+			[
 				'Gibt es eine Putzplan-App?',
-				'Ja, ManaWG enthält einen Putzplan mit Rhythmus, fairer Rotation, Abwesenheiten und Erinnerungen. Die App ist kostenlos und läuft im Browser.',
+				'Ja, ManaWG enthält einen Putzplan mit Rhythmus, Verteilung nach Auslastung, Abwesenheiten und Erinnerungen. Die App ist kostenlos und läuft im Browser.',
 			],
 		],
 	},
@@ -363,16 +371,16 @@ export const RATGEBER: Record<string, Thema> = {
 		link: 'WG-Mietvertrag',
 		stand: '2026-10-27',
 		erschienen: '2026-10-19',
-		titel: 'WG-Mietvertrag: Haupt-, Untermiete, Einzelvertrag | ManaWG',
+		titel: 'WG-Mietvertrag: 3 Modelle und Muster-Checkliste | ManaWG',
 		beschreibung:
-			'Welcher Mietvertrag passt zur WG? Gemeinsamer Hauptmietvertrag, Untermiete oder Einzelverträge im Vergleich: Haftung, Kündigung, Mieterwechsel und Kaution.',
+			'Welcher Mietvertrag passt zur WG? Mietgemeinschaft, Untermiete oder Einzelverträge im Vergleich, mit Muster-Checkliste für den Untermietvertrag und Kaution.',
 		h1: 'Der WG-Mietvertrag: drei Modelle im Vergleich',
 		einleitung:
 			'Wer in einer WG wohnt, hat nicht automatisch dieselben Rechte wie die Mitbewohner. Entscheidend ist, wie der Mietvertrag aufgebaut ist: ob alle gemeinsam unterschreiben, eine Person untervermietet oder jede Person einen eigenen Vertrag hat. Davon hängt ab, wer für die Miete haftet, wer kündigen kann und wie ein Wechsel abläuft. Diese Seite gibt einen Überblick und ersetzt keine Rechtsberatung. Bei konkreten Fragen helfen Mietervereine.',
 		abschnitte: [
 			[
-				'Modell 1: Gemeinsamer Hauptmietvertrag',
-				'Alle Mitbewohner unterschreiben einen Vertrag mit dem Vermieter. Jede Person hat damit dieselben Rechte, aber alle haften gemeinsam für die ganze Miete: Zahlt eine Person nicht, kann der Vermieter den vollen Betrag von jeder anderen verlangen. Kündigen können in der Regel nur alle gemeinsam, und [einen Mitbewohner kündigen](/mitbewohner-kuendigen) kann niemand. Will eine Person ausziehen, braucht der Wechsel die Zustimmung des Vermieters und der übrigen Mieter. Manche Vermieter nehmen dafür eine Klausel auf, die Mieterwechsel in der WG ausdrücklich erlaubt. Achtet beim Unterschreiben darauf, ob es sie gibt.',
+				'Modell 1: Gemeinsamer Hauptmietvertrag (Mietgemeinschaft)',
+				'Alle Mitbewohner unterschreiben einen Vertrag mit dem Vermieter, man spricht dann von einer Mietgemeinschaft. Jede Person hat damit dieselben Rechte, aber alle haften gemeinsam für die ganze Miete: Zahlt eine Person nicht, kann der Vermieter den vollen Betrag von jeder anderen verlangen. Kündigen können in der Regel nur alle gemeinsam, und [einen Mitbewohner kündigen](/mitbewohner-kuendigen) kann niemand. Will eine Person ausziehen, braucht der Wechsel die Zustimmung des Vermieters und der übrigen Mieter. Manche Vermieter nehmen dafür eine Klausel auf, die Mieterwechsel in der WG ausdrücklich erlaubt. Achtet beim Unterschreiben darauf, ob es sie gibt.',
 			],
 			[
 				'Modell 2: Hauptmieter mit Untermietern',
@@ -395,9 +403,34 @@ export const RATGEBER: Record<string, Thema> = {
 				'1. Wer Mieter ist, mit vollem Namen\n2. Welche Räume zur alleinigen Nutzung gehören und welche gemeinsam genutzt werden\n3. Miete und Nebenkosten, getrennt ausgewiesen\n4. Höhe der Kaution\n5. Ob Untervermietung oder Mieterwechsel erlaubt ist\n6. Kündigungsfristen und gegebenenfalls Befristung\n7. Welche Möbel mitvermietet sind',
 			],
 			[
+				'Muster-Checkliste für den Untermietvertrag',
+				'Ein fertiges Vertragsmuster passt selten genau auf eure WG. Die Tabelle zeigt, welche Punkte ein Untermietvertrag für ein WG-Zimmer regeln sollte, jeweils mit einer Beispielangabe zum Anpassen. Ob das Zimmer möbliert ist und der Hauptmieter selbst dort wohnt, entscheidet über die Kündigungsfrist. Welche Fristen gelten, wenn ihr später auszieht, steht unter [WG-Zimmer kündigen](/wg-zimmer-kuendigen).',
+			],
+			[
 				'Welches Modell passt?',
 				'Für eine feste WG unter Freunden, die lange zusammen wohnen will, passt der gemeinsame Hauptmietvertrag mit einer Klausel für Mieterwechsel. Wechseln die Mitbewohner oft, etwa in Studentenstädten, ist Untermiete flexibler, belastet aber den Hauptmieter. Einzelverträge sind am bequemsten, geben der WG aber am wenigsten Einfluss darauf, wer einzieht. Wie ihr danach Miete, Nebenkosten und Einkäufe aufteilt, steht unter [WG-Kosten aufteilen](/wg-kosten-aufteilen), alles Weitere für den Start in der [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
 			],
+		],
+		tabellen: [
+			{
+				nach: 'Muster-Checkliste für den Untermietvertrag',
+				titel: 'Untermietvertrag für ein WG-Zimmer: Punkte mit Beispiel',
+				kopf: ['Punkt', 'Beispielangabe'],
+				zeilen: [
+					['Vertragsparteien', 'Name und Anschrift von Hauptmieter und Untermieter'],
+					['Mietsache', 'Zimmer 2 mit 14 m², Mitbenutzung von Küche, Bad und Flur'],
+					['Möbel', 'möbliert mit Bett, Schrank und Schreibtisch, oder unmöbliert'],
+					['Miete', '350 € im Monat, davon 80 € Vorauszahlung für Nebenkosten'],
+					['Fälligkeit', 'spätestens am dritten Werktag des Monats'],
+					['Kaution', 'Betrag, höchstens drei Monatsmieten ohne Nebenkosten'],
+					['Beginn und Dauer', 'ab 1. März, unbefristet oder mit Enddatum'],
+					['Kündigung', 'gesetzliche Fristen nach § 573c BGB'],
+					['Erlaubnis des Vermieters', 'Kopie der Erlaubnis zur Untervermietung als Anlage'],
+					['WG-Regeln', 'Hausordnung und WG-Regeln als Anlage'],
+					['Unterschriften', 'eigenhändig von beiden Seiten, mit Ort und Datum'],
+				],
+				hinweis: 'Beispielangaben zum Anpassen, kein geprüftes Vertragsmuster.',
+			},
 		],
 		fragen: [
 			[
@@ -415,6 +448,15 @@ export const RATGEBER: Record<string, Thema> = {
 			[
 				'Kann ein Mitbewohner allein aus dem gemeinsamen Mietvertrag kündigen?',
 				'In der Regel nicht. Beim gemeinsamen Hauptmietvertrag müssen alle Mieter gemeinsam kündigen. Ein Wechsel einzelner Personen braucht die Zustimmung des Vermieters.',
+			],
+
+			[
+				'Was ist eine Mietgemeinschaft?',
+				'So heißt es, wenn mehrere Personen gemeinsam einen Mietvertrag über eine Wohnung unterschreiben. Alle sind gleichberechtigte Mieter und haften zusammen für die ganze Miete.',
+			],
+			[
+				'Was ist ein Nebenmieter?',
+				'Meist ist damit eine Person gemeint, die neben anderen im Hauptmietvertrag steht, also ein Mitmieter. Manche benutzen das Wort auch für Untermieter. Entscheidend ist, wer den Vertrag mit wem unterschrieben hat.',
 			],
 		],
 		quellen: [
@@ -1493,7 +1535,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Kündigung und Fristen',
-				'Prüft zuerst euren [Vertrag](/wg-mietvertrag). Bei einem unbefristeten Mietvertrag gilt für Mieter meist eine Kündigungsfrist von drei Monaten. Bei einem möblierten Zimmer in der Wohnung des Hauptmieters können kürzere Fristen gelten. Kündigt schriftlich und sagt der WG möglichst früh Bescheid, auch wenn ihr formal noch Zeit habt. Die anderen brauchen Wochen, um jemanden zu finden.',
+				'Prüft zuerst euren [Vertrag](/wg-mietvertrag). Bei einem unbefristeten Mietvertrag gilt für Mieter meist eine Kündigungsfrist von drei Monaten. Bei einem möblierten Zimmer in der Wohnung des Hauptmieters können kürzere Fristen gelten. Beispiele mit Datum und ein Muster stehen unter [WG-Zimmer kündigen](/wg-zimmer-kuendigen). Kündigt schriftlich und sagt der WG möglichst früh Bescheid, auch wenn ihr formal noch Zeit habt. Die anderen brauchen Wochen, um jemanden zu finden.',
 			],
 			[
 				'Nachmieter finden',
@@ -1611,7 +1653,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Erst klären: Wer hat welchen Vertrag?',
-				'In einer WG gibt es drei übliche Modelle: alle stehen gemeinsam im Hauptmietvertrag, eine Person ist Hauptmieter und vermietet Zimmer unter, oder jede Person hat einen eigenen Vertrag mit dem Vermieter. Nur im zweiten Fall ist ein Mitbewohner Vermieter eines anderen und kann ihm kündigen. Wie sich die Modelle sonst unterscheiden, steht im Ratgeber zum [WG-Mietvertrag](/wg-mietvertrag).',
+				'In einer WG gibt es drei übliche Modelle: alle stehen gemeinsam im Hauptmietvertrag, eine Person ist Hauptmieter und vermietet Zimmer unter, oder jede Person hat einen eigenen Vertrag mit dem Vermieter. Nur im zweiten Fall ist ein Mitbewohner Vermieter eines anderen und kann ihm kündigen. Wollt ihr selbst ausziehen, lest [WG-Zimmer kündigen](/wg-zimmer-kuendigen). Wie sich die Modelle sonst unterscheiden, steht im Ratgeber zum [WG-Mietvertrag](/wg-mietvertrag).',
 			],
 			[
 				'Untermiete: Der Hauptmieter kündigt',
@@ -1722,6 +1764,131 @@ export const RATGEBER: Record<string, Thema> = {
 			['§ 535 BGB, Inhalt des Mietvertrags', 'https://www.gesetze-im-internet.de/bgb/__535.html'],
 			['§ 550 BGB, Form des Mietvertrags', 'https://www.gesetze-im-internet.de/bgb/__550.html'],
 			['§ 543 BGB, fristlose Kündigung', 'https://www.gesetze-im-internet.de/bgb/__543.html'],
+		],
+	},
+	'wg-zimmer-kuendigen': {
+		link: 'WG-Zimmer kündigen',
+		stand: '2026-10-27',
+		erschienen: '2026-10-27',
+		titel: 'WG-Zimmer kündigen: Fristen, Muster, Nachmieter | ManaWG',
+		beschreibung:
+			'WG-Zimmer kündigen: Kündigungsfrist je nach Vertrag, Beispiele mit Datum, Muster zum Anpassen, Nachmieter, gemeinsamer Mietvertrag und was danach kommt.',
+		h1: 'WG-Zimmer kündigen: Fristen und Muster',
+		einleitung:
+			'Ihr wollt aus der WG ausziehen und fragt euch, wann ihr kündigen müsst und an wen. Das hängt davon ab, mit wem ihr den Vertrag habt und ob das Zimmer möbliert in der Wohnung des Hauptmieters liegt. Hier stehen die Fristen nach dem Bürgerlichen Gesetzbuch, Beispiele mit Datum und ein Muster. Die Seite gibt einen Überblick und ersetzt keine Rechtsberatung. Bei einem konkreten Fall helfen Mietervereine.',
+		abschnitte: [
+			[
+				'Erst den Vertrag ansehen',
+				'In einer WG gibt es drei übliche Modelle: Alle stehen gemeinsam im Hauptmietvertrag, ihr wohnt zur Untermiete bei einem Hauptmieter, oder ihr habt einen eigenen Vertrag mit dem Vermieter. Bei Untermiete kündigt ihr beim Hauptmieter, beim Einzelvertrag beim Vermieter. Beim gemeinsamen Vertrag könnt ihr nicht allein kündigen. Die Modelle im Detail stehen unter [WG-Mietvertrag](/wg-mietvertrag). Gibt es keinen schriftlichen Vertrag, besteht trotzdem einer, sobald ihr gegen Miete wohnt (§ 535 BGB). Dann gelten dieselben Fristen.',
+			],
+			[
+				'Die normale Frist: knapp drei Monate',
+				'Für einen unbefristeten Vertrag gilt: Geht die Kündigung spätestens am dritten Werktag eines Monats zu, endet das Mietverhältnis mit Ablauf des übernächsten Monats (§ 573c Abs. 1 BGB). Wer bis zum dritten Werktag im März kündigt, ist also Ende Mai raus. Für euch als Mieter bleibt die Frist gleich, egal wie lange ihr schon dort wohnt. Länger wird sie nur für die Seite, die vermietet. Kürzere Fristen zu euren Gunsten darf der Vertrag vorsehen, längere nicht (§ 573c Abs. 4 BGB).',
+			],
+			[
+				'Möbliertes Zimmer beim Hauptmieter: bis zum 15.',
+				'Wohnt der Hauptmieter selbst in der Wohnung und hat er euer Zimmer überwiegend möbliert, gilt eine kurze Frist: Kündigung bis zum 15. eines Monats zum Ende desselben Monats (§ 573c Abs. 3 BGB). Das gilt nicht, wenn ihr dort dauerhaft mit Familie oder Partner lebt (§ 549 Abs. 2 Nr. 2 BGB). Die kurze Frist gilt für beide Seiten. Auch der Hauptmieter kann euch dann so kündigen, mehr dazu unter [Mitbewohner kündigen](/mitbewohner-kuendigen).',
+			],
+			[
+				'Gemeinsamer Hauptmietvertrag: allein geht es nicht',
+				'Stehen alle im Vertrag, kann ihn nur die ganze WG gemeinsam kündigen. Eine Kündigung von euch allein ist unwirksam. Wollt ihr raus und die anderen bleiben, braucht ihr eine Vereinbarung mit dem Vermieter und allen Mitmietern, dass ihr aus dem Vertrag entlassen werdet. Meist zieht dafür jemand Neues in den Vertrag ein. Sprecht das früh an, denn bis zur Einigung haftet ihr weiter für die ganze Miete mit.',
+			],
+			[
+				'Befristung, Kündigungsausschluss und Sonderkündigung',
+				'Ist der Vertrag befristet oder die Kündigung für eine bestimmte Zeit ausgeschlossen, endet er in der Regel erst zum vereinbarten Termin. Ob eine solche Klausel wirksam ist, klärt im Zweifel eine Beratung. Einen Ausweg gibt es: Verweigert der Vermieter euch die Erlaubnis, das Zimmer unterzuvermieten, dürft ihr außerordentlich mit der gesetzlichen Frist kündigen, sofern in der Person des Untermieters kein wichtiger Grund dagegen spricht (§ 540 Abs. 1 BGB). Wer nur ein paar Monate weg ist, kann statt zu kündigen [zur Zwischenmiete](/wg-zwischenmiete) vermieten.',
+			],
+			[
+				'Nachmieter: kein Anspruch, aber oft der schnellste Weg',
+				'Einen allgemeinen Anspruch, mit einem Nachmieter früher aus dem Vertrag zu kommen, gibt es nicht. Steht eine Nachmieterklausel im Vertrag, gilt sie. In der Praxis lassen sich Vermieter und Hauptmieter oft darauf ein, wenn ihr eine passende Person mitbringt. Helft der WG bei [Anzeige und Auswahl](/mitbewohner-finden), am besten mit einem gemeinsamen [WG-Casting](/wg-casting-fragen). Haltet eine Einigung über den früheren Auszug schriftlich fest.',
+			],
+			[
+				'So muss die Kündigung aussehen',
+				'Eine Kündigung von Wohnraum muss schriftlich sein, also auf Papier mit eigenhändiger Unterschrift (§ 568 Abs. 1 BGB). E-Mail, Messenger oder ein Foto des Schreibens reichen nicht. Die Frist läuft erst, wenn die Kündigung zugeht. Übergebt sie persönlich vor einer Zeugin oder schickt sie per Einwurf-Einschreiben und plant ein paar Tage Puffer vor dem dritten Werktag oder dem 15. ein. Einen Grund müsst ihr als Mieter nicht nennen.',
+			],
+			[
+				'Muster: Kündigung eines WG-Zimmers',
+				'Absender: euer Name und eure Anschrift in der WG\nEmpfänger: Hauptmieter bei Untermiete, sonst der Vermieter, mit Anschrift\nDatum: Ort und Tag des Schreibens\nBetreff: Kündigung des Mietverhältnisses über das Zimmer in der Wohnung …\nText: „Hiermit kündige ich das Mietverhältnis über das Zimmer … fristgerecht zum …, hilfsweise zum nächstmöglichen Termin.“\nBitte: Bestätigung der Kündigung, Termin für die Übergabe und Rückzahlung der Kaution auf das Konto …\nUnterschrift: eigenhändig, bei mehreren Personen im Vertrag von allen',
+			],
+			[
+				'Nach der Kündigung',
+				'Sagt der WG Bescheid, sobald die Kündigung raus ist, auch wenn ihr formal noch Zeit habt. Gleicht offene Beträge vor dem Auszug aus. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Läuft der [Rundfunkbeitrag](/rundfunkbeitrag-wg) auf euch, muss jemand übernehmen. Am neuen Wohnort meldet ihr euch innerhalb von zwei Wochen [an](/wg-anmeldung). Übergabe, Kaution und alle weiteren Punkte stehen in der [Auszugs-Checkliste](/wg-auszug-checkliste).',
+			],
+		],
+		tabellen: [
+			{
+				nach: 'einleitung',
+				titel: 'WG-Zimmer kündigen: Fristen auf einen Blick',
+				kopf: ['Vertrag', 'Frist für euch', 'Hinweis'],
+				zeilen: [
+					[
+						'Untermiete oder Einzelvertrag, unbefristet',
+						'Zugang bis zum dritten Werktag eines Monats, Ende mit Ablauf des übernächsten Monats',
+						'§ 573c Abs. 1 BGB, unabhängig von der Wohndauer',
+					],
+					[
+						'Möbliertes Zimmer in der Wohnung, in der der Hauptmieter selbst wohnt',
+						'bis zum 15. eines Monats zum Monatsende',
+						'§ 573c Abs. 3 BGB, nicht bei dauerhaftem Zusammenleben mit Familie oder Partner',
+					],
+					[
+						'Gemeinsamer Hauptmietvertrag',
+						'allein keine Kündigung möglich',
+						'nur alle gemeinsam oder Entlassung aus dem Vertrag per Vereinbarung',
+					],
+					[
+						'Befristeter Vertrag oder Kündigungsausschluss',
+						'in der Regel erst zum vereinbarten Termin',
+						'Sonderkündigung, wenn die Untervermietung ohne wichtigen Grund verweigert wird (§ 540 BGB)',
+					],
+				],
+			},
+			{
+				nach: 'Möbliertes Zimmer beim Hauptmieter: bis zum 15.',
+				titel: 'Beispiele: Wann endet der Vertrag?',
+				kopf: ['Kündigung geht zu', 'Unbefristet, normale Frist', 'Möbliert beim Hauptmieter'],
+				zeilen: [
+					['am zweiten Werktag im März', '31. Mai', '31. März'],
+					['am 10. März', '30. Juni', '31. März'],
+					['am 20. März', '30. Juni', '30. April'],
+				],
+				hinweis:
+					'Maßgeblich ist der Tag, an dem die Kündigung zugeht, nicht der Tag, an dem ihr sie abschickt.',
+			},
+		],
+		fragen: [
+			[
+				'Wie lange ist die Kündigungsfrist für ein WG-Zimmer?',
+				'Bei einem unbefristeten Vertrag knapp drei Monate: Kündigung bis zum dritten Werktag eines Monats zum Ablauf des übernächsten Monats. Für ein möbliertes Zimmer in der Wohnung, in der der Hauptmieter selbst wohnt, bis zum 15. eines Monats zum Monatsende.',
+			],
+			[
+				'Kann ich aus einem gemeinsamen WG-Mietvertrag allein kündigen?',
+				'Nein. Den gemeinsamen Vertrag können nur alle Mieter zusammen kündigen. Wer allein raus will, braucht eine Vereinbarung mit dem Vermieter und den Mitmietern.',
+			],
+			[
+				'Muss ich einen Nachmieter suchen, um früher rauszukommen?',
+				'Ohne Nachmieterklausel im Vertrag habt ihr keinen Anspruch, mit einem Nachmieter früher rauszukommen. Viele Vermieter und Hauptmieter lassen sich aber darauf ein, wenn ihr eine passende Person mitbringt.',
+			],
+			[
+				'Kann ich mein WG-Zimmer per E-Mail oder WhatsApp kündigen?',
+				'Nein. Die Kündigung von Wohnraum braucht die Schriftform, also ein Schreiben mit eigenhändiger Unterschrift, das dem Empfänger zugeht.',
+			],
+			[
+				'Gilt die Kündigungsfrist auch ohne schriftlichen Mietvertrag?',
+				'Ja. Wer gegen Miete in einem Zimmer wohnt, hat auch ohne Papier einen Mietvertrag, und es gelten die gesetzlichen Fristen.',
+			],
+		],
+		quellen: [
+			['§ 573c BGB, Kündigungsfristen', 'https://www.gesetze-im-internet.de/bgb/__573c.html'],
+			[
+				'§ 549 BGB, Ausnahmen vom Mieterschutz',
+				'https://www.gesetze-im-internet.de/bgb/__549.html',
+			],
+			['§ 568 BGB, Schriftform der Kündigung', 'https://www.gesetze-im-internet.de/bgb/__568.html'],
+			[
+				'§ 540 BGB, Gebrauchsüberlassung an Dritte',
+				'https://www.gesetze-im-internet.de/bgb/__540.html',
+			],
+			['§ 535 BGB, Inhalt des Mietvertrags', 'https://www.gesetze-im-internet.de/bgb/__535.html'],
 		],
 	},
 	'wg-anmeldung': {

@@ -39,6 +39,7 @@ const THEMENKREISE: Array<[string, string[]]> = [
 			'wg-einzug-checkliste',
 			'wg-anmeldung',
 			'wg-zwischenmiete',
+			'wg-zimmer-kuendigen',
 			'wg-auszug-checkliste',
 		],
 	],
