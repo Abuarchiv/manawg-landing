@@ -5,7 +5,7 @@ import { GRUPPEN } from '../[thema]/gruppen';
 import { Fuss, Kopf, mono, rand } from '../[thema]/rahmen';
 import { THEMEN } from '../[thema]/themen';
 
-const titel = 'WG-Ratgeber: Geld, Putzplan, Regeln, Ein- und Auszug | ManaWG';
+const titel = 'WG-Ratgeber: Geld, Putzplan, Regeln, Einzug, Auszug | ManaWG';
 const beschreibung =
 	'Alle Ratgeber für das Leben in der WG: Kosten aufteilen, Putzplan, WG-Regeln, Streit, Mietvertrag, Kündigung, Anmeldung, Einzug und Auszug. Kostenlos.';
 

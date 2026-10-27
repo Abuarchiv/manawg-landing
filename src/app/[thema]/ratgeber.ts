@@ -1741,7 +1741,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Wer stellt die Wohnungsgeberbestätigung aus?',
-				'Wohnungsgeber ist, wer euch die Wohnung überlässt. Habt ihr einen eigenen Vertrag mit dem Vermieter oder steht ihr im gemeinsamen Hauptmietvertrag, ist es der Vermieter oder die Hausverwaltung. Bei [Untermiete](/wg-mietvertrag) ist der Hauptmieter der Wohnungsgeber und muss die Bestätigung selbst ausstellen. Er muss den Einzug innerhalb der zwei Wochen bestätigen. Weigert er sich oder kommt sie nicht rechtzeitig, sagt ihr der Meldebehörde sofort Bescheid.',
+				'Wohnungsgeber ist, wer euch die Wohnung überlässt. Habt ihr einen eigenen Vertrag mit dem Vermieter oder steht ihr im gemeinsamen Hauptmietvertrag, ist es der Vermieter oder die Hausverwaltung. Bei [Untermiete](/wg-mietvertrag) ist der Hauptmieter der Wohnungsgeber und muss die Bestätigung selbst ausstellen. Er muss den Einzug innerhalb der zwei Wochen bestätigen. Weigert er sich oder kommt die Bestätigung nicht rechtzeitig, sagt ihr der Meldebehörde unverzüglich Bescheid.',
 			],
 			[
 				'Wenn der Hauptmieter die Bestätigung verweigert',

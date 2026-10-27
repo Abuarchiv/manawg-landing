@@ -6,13 +6,13 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'Nutzungsbedingungen von ManaWG',
 	description:
-		'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung.',
+		'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung der Daten.',
 	alternates: { canonical: '/agb' },
 	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
 	openGraph: {
 		title: 'Nutzungsbedingungen von ManaWG',
 		description:
-			'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung.',
+			'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung der Daten.',
 		url: '/agb',
 		siteName: 'ManaWG',
 		locale: 'de_DE',

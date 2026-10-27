@@ -128,7 +128,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Rotation nach Fairness',
-				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die Person mit der geringsten Auslastung. Gezählt werden zugewiesene Aufgaben, offene Termine und überfällige Aufgaben. Dieselbe Vorhersage zeigt die App vorab als „Nächste:r“ an, ihr wisst also im Voraus, wer als Nächstes dran ist.',
+				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben, überfällige zählen stärker. Dieselbe Vorhersage zeigt die App vorab als „Nächste:r“ an, ihr wisst also im Voraus, wer als Nächstes dran ist.',
 			],
 			[
 				'Abwesenheit eintragen',
@@ -154,7 +154,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie funktioniert die faire Rotation?',
-				'Beim Erledigen einer Aufgabe wählt ManaWG die Person mit der geringsten Auslastung. Gezählt werden zugewiesene Aufgaben, offene Termine und überfällige Aufgaben; wer abwesend ist, wird übergangen. In der Oberfläche seht ihr diese Vorhersage vorab als „Nächste:r“.',
+				'Beim Erledigen einer Aufgabe wählt ManaWG die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben (überfällige zählen stärker); wer abwesend ist, wird übergangen. In der Oberfläche seht ihr diese Vorhersage vorab als „Nächste:r“.',
 			],
 			[
 				'Was passiert, wenn jemand im Urlaub ist?',
@@ -656,7 +656,7 @@ export const THEMEN: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Fairness statt Punkte',
-				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene Aufgaben, offene Termine und Überfälliges. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
+				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene und überfällige Aufgaben, Überfälliges zählt stärker. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
 			],
 			[
 				'Putzplan mit festem Rhythmus',
@@ -682,7 +682,7 @@ export const THEMEN: Record<string, Thema> = {
 		fragen: [
 			[
 				'Gibt es in ManaWG Punkte oder Belohnungen?',
-				'Nein. ManaWG verteilt Aufgaben nach Auslastung: Je Person zählen zugewiesene Aufgaben, offene Termine und überfällige Aufgaben, Abwesenheiten werden berücksichtigt. Punkte oder Belohnungen gibt es nicht.',
+				'Nein. ManaWG verteilt Aufgaben nach Auslastung: Je Person zählen zugewiesene und überfällige Aufgaben, Abwesenheiten werden berücksichtigt. Punkte oder Belohnungen gibt es nicht.',
 			],
 			[
 				'Kostet ManaWG etwas?',
@@ -732,7 +732,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie funktioniert der Putzplan?',
-				'Im [Putzplan](/putzplan) hat jede Aufgabe einen Rhythmus in Tagen oder Monaten. Beim Erledigen wählt ManaWG die Person mit der geringsten Auslastung; gezählt werden zugewiesene Aufgaben, offene Termine und überfällige Aufgaben. Wer abwesend ist, wird übergangen. Punkte oder Belohnungen gibt es nicht.',
+				'Im [Putzplan](/putzplan) hat jede Aufgabe einen Rhythmus in Tagen oder Monaten. Beim Erledigen wählt ManaWG die Person mit der geringsten Auslastung; gezählt werden zugewiesene und überfällige Aufgaben. Wer abwesend ist, wird übergangen. Punkte oder Belohnungen gibt es nicht.',
 			],
 			[
 				'Was passiert, wenn jemand verreist ist?',

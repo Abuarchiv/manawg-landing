@@ -43,9 +43,9 @@ export function Ueberblick() {
 					</p>
 					<p>
 						Kalender, Pinnwand und Chat halten Termine und Absprachen an einem Ort. Antworten auf
-						häufige Fragen stehen in den <a href="/faq">Fragen zu ManaWG</a>, den Vergleich mit
-						anderen Apps unter <a href="/beste-wg-app">beste WG-App</a>, Tipps zu Mietvertrag,
-						WG-Casting und Putzplan in den <a href="/ratgeber">WG-Ratgebern</a>.
+						häufige Fragen stehen in den <a href="/faq">Fragen zu ManaWG</a>. Den Vergleich mit
+						anderen Apps findet ihr unter <a href="/beste-wg-app">beste WG-App</a>, Tipps zu
+						Mietvertrag, WG-Casting und Putzplan in den <a href="/ratgeber">WG-Ratgebern</a>.
 					</p>
 				</div>
 			</div>

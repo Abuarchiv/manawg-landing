@@ -1,6 +1,5 @@
 // Ratgeber rund ums Geld in der WG; wird in themen.ts eingebunden.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
-import { NG } from './gruppen.ts';
 import { euro, mieteAnteile } from './miete-rechner.ts';
 import type { Thema } from './themen';
 
@@ -224,12 +223,16 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 				kopf: ['Funktion', 'kostenlos', 'Pro'],
 				zeilen: [
 					['Ausgaben', `bis zu ${SPLITWISE_TAGESLIMIT} pro Tag`, 'unbegrenzt'],
-					['Transaktionsimport (nur ausgewählte Länder)', NG, 'enthalten'],
-					['Suche', NG, 'enthalten'],
-					['Währungsumrechnung', NG, 'enthalten'],
-					['Belegscan und Aufteilung nach Positionen', NG, 'enthalten'],
-					['Diagramme', NG, 'enthalten'],
-					['Standardaufteilungen', NG, 'enthalten'],
+					[
+						'Transaktionsimport (nur ausgewählte Länder)',
+						'als Pro-Funktion aufgeführt',
+						'enthalten',
+					],
+					['Suche', 'als Pro-Funktion aufgeführt', 'enthalten'],
+					['Währungsumrechnung', 'nur mit Pro', 'enthalten'],
+					['Belegscan und Aufteilung nach Positionen', 'nur mit Pro', 'enthalten'],
+					['Diagramme', 'als Pro-Funktion aufgeführt', 'enthalten'],
+					['Standardaufteilungen', 'als Pro-Funktion aufgeführt', 'enthalten'],
 				],
 				hinweis: 'Quelle: Splitwise-Hilfe, abgerufen am 27. Oktober 2026.',
 			},
