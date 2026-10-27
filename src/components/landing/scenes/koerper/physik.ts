@@ -4,7 +4,6 @@
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { AB, hsh, ss } from '../../core/math';
-import { PL } from '../bereiche/orte';
 
 // Maßstab der Kugeln im Szenenraum: quer groß (die Wolke füllt etwa zwei Drittel der Breite), hoch passt sie in die Boxbreite 600
 const S_QUER = 1.5;
@@ -12,6 +11,17 @@ const S_HOCH = 1.28;
 const sOf = (s: SceneState): number => (s.mode === 'hoch' ? S_HOCH : S_QUER);
 const st = 3; // feiner Halbton (Zellen 3 statt 6 px)
 const NAME = 11; // Namen auf den Kugeln: Mono 11 px (hoch 10 px), Versalien mit Laufweite, ohne Platte
+// Die acht Bereiche der App, je Kugel einer
+const NAMEN = [
+	'Ausgaben',
+	'Einkauf',
+	'Putzen',
+	'Pinnwand',
+	'Fixkosten',
+	'Vorräte',
+	'Kalender',
+	'Chat',
+];
 const REACH = 22; // Trefferrand um jeden Körper in CSS-px (Touch)
 
 /** Ein Körper: Lage (x, y), Lage im Schritt davor (px, py, Verlet), Radius r, Ruhelage im Ring (hx, hy), Name n. */
@@ -293,7 +303,7 @@ export function registerKoerper(cv: HTMLCanvasElement, api: KoerperApi = {}) {
 				r: c[2] * S_QUER * 0.98,
 				hx: 0,
 				hy: 0,
-				n: PL[i]?.[0].toUpperCase() ?? '',
+				n: NAMEN[i]?.toUpperCase() ?? '',
 				sp: new Map(),
 			}));
 			api.wurf = () => {

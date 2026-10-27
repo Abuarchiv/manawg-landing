@@ -51,8 +51,6 @@ export interface BuehnenKontext {
 	/** Zerfall der Hände beim Wegscrollen der Ende-Ebene (0..1, bei reduzierter Bewegung 0). */
 	zer: number;
 	endOn: boolean;
-	/** Deckung der Flut (flut.deckung). */
-	cover: number;
 	stageTop: number;
 	visible: boolean;
 	/** Geglättete Scrollgeschwindigkeit der Seite (CSS-px/s, positiv nach unten). */

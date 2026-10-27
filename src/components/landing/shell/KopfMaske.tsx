@@ -4,9 +4,8 @@ import { useEffect, useRef } from 'react';
 
 // Inhalt im Kopfband ausblenden: Läuft Text unter Logo und Knopf durch, deckt dieser Verlauf in der Farbe des
 // Abschnitts das Band (Kopfunterkante plus 28 px weicher Auslauf). Er wirkt nur, solange das Band im Inhalt
-// liegt (So geht's, Körper, Bereiche, Installieren, Fragen, Finale), nie über den Szenen aus Flut, Wohnung und Tiefe.
-// Bereiche in jedem Format: Überschrift und Ortskarte laufen beim Verlassen der Szene unter das Band.
-const IDS = ['flutband', 'so-gehts', 'koerper', 'bereiche', 'installieren', 'fragen', 'finale'];
+// liegt (So geht's, Körper, Installieren, Fragen, Finale), nie über den Szenen aus Flut, Wohnung und Tiefe.
+const IDS = ['flutband', 'so-gehts', 'koerper', 'installieren', 'fragen', 'finale'];
 // Hochformat: auch Tiefe, dort läuft sonst das Wortbild unter dem festen Kopf durch
 const IDS_HOCH = [...IDS, 'funktionen'];
 
@@ -26,13 +25,7 @@ export function KopfMaske() {
 				if (!s) continue;
 				const r = s.getBoundingClientRect();
 				const d = Math.min(r.bottom, band) - Math.max(r.top, 0);
-				let e = Math.min(1, Math.max(0, d / band));
-				// Bereiche: steht die Szene still, liegen Label und Titel unter dem Kopfband und müssen voll lesbar sein.
-				// Gedeckt wird erst, wenn der Titel (nicht der Abschnittsrand) ins Band läuft.
-				if (id === 'bereiche' && e > 0) {
-					const t = s.querySelector('[data-titel]')?.getBoundingClientRect();
-					if (t) e = Math.min(e, Math.max(0, (band + 6 - t.top) / 24));
-				}
+				const e = Math.min(1, Math.max(0, d / band));
 				v = Math.max(v, e);
 			}
 			// Hochformat, Ende-Ebene der Intro: läuft die Bühne nach oben weg, schiebt sich das Handy unter das Band

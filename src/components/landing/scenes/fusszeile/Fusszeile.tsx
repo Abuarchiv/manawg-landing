@@ -1,41 +1,16 @@
-import { GRUPPEN } from '@/app/[thema]/gruppen';
-import { THEMEN } from '@/app/[thema]/themen';
 import { appUrl } from '@/lib/app-origin';
 import { css } from '../../core/dc';
 import s from './Fusszeile.module.css';
 
-// Die Funktionsseiten, der Vergleich und die meistgesuchten Ratgeber. Alle weiteren erreicht man über /ratgeber.
-const FUSS_THEMEN = [
-	...(GRUPPEN[0]?.slugs ?? []),
-	'beste-wg-app',
-	'putzplan-erstellen',
-	'wg-casting-fragen',
-	'wg-anmeldung',
-	'faq',
-];
-
+// Kurz gehalten: alle Themenseiten erreicht man über /ratgeber und die Sitemap.
 export function Fusszeile() {
 	return (
 		<footer id="fusszeile" data-sec="fusszeile" tabIndex={-1} className={s.fuss}>
 			<div className={s.raster}>
 				<div className={s.marke}>
-					<div style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
-						<img
-							src="/manawg-mark-weiss-80.webp"
-							alt=""
-							width={416}
-							height={346}
-							style={css('height:20px;width:auto')}
-						/>
-						<span
-							style={css(
-								"font-family:'Inter Tight','Inter Tight Fallback',sans-serif;font-weight:600;font-size:var(--t-19);letter-spacing:-0.03em",
-							)}
-						>
-							ManaWG
-						</span>
-					</div>
-					<span style={css('font-size:var(--t-14);opacity:0.72')}>Die App für den WG-Alltag.</span>
+					<span style={css('font-size:var(--t-14);opacity:0.72')}>
+						ManaWG, die App für den WG-Alltag.
+					</span>
 					<span className="label" style={css('margin-top:var(--sp-32)')}>
 						© 2026 MANAWG
 					</span>
@@ -51,11 +26,6 @@ export function Fusszeile() {
 					<a href="#fragen" className="fuss-link">
 						Fragen
 					</a>
-					{FUSS_THEMEN.map((slug) => (
-						<a key={slug} href={`/${slug}`} className="fuss-link">
-							{THEMEN[slug]?.link}
-						</a>
-					))}
 					<a href="/ratgeber" className="fuss-link">
 						Ratgeber
 					</a>

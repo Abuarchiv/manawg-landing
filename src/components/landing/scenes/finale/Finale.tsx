@@ -56,9 +56,9 @@ export function Finale() {
 			<div className={s.inhalt}>
 				<div className={s.block}>
 					<h2 id="finale-titel" className={s.titel}>
-						Alltag
+						Zieht
 						<br />
-						teilen.
+						ein.
 					</h2>
 					<div data-knoepfe="1" className={s.knoepfe}>
 						<a

@@ -188,7 +188,7 @@ export function Installieren() {
 			className={s.sektion}
 		>
 			<div className={s.text}>
-				<span className="label">[ 07 ] INSTALLIEREN</span>
+				<span className="label">[ 06 ] INSTALLIEREN</span>
 				<h2 id="installieren-titel" className={s.titel}>
 					Auf den <br />
 					<span className={s.nowrap}>Home-Bildschirm.</span>

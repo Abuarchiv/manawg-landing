@@ -9,7 +9,7 @@ import { createStage } from './stage';
 import { INTRO_SCREENS, unwarp } from './zeitachse';
 
 // Intro: eine Sticky-Bühne in voller Fenstergröße (100lvh) über (1 + INTRO_SCREENS) Bildschirmhöhen.
-// Ebenen von unten nach oben: Berg und Zeichen (Hero), Wohnung, Flut, sicherer Kasten mit Titel und
+// Ebenen von unten nach oben: Berg und Zeichen (Hero), Wohnung, sicherer Kasten mit Titel und
 // Raumkarten (100svh), Ende-Ebene. Die Ende-Ebene scrollt mit der Bühne natürlich weg.
 
 const FLAECHE = 'position:absolute;inset:0;width:100%;height:100%;display:block';
@@ -56,11 +56,6 @@ export function Intro() {
 					aria-hidden="true"
 					style={css(`${FLAECHE};opacity:var(--f,0)`)}
 				/>
-				<canvas
-					data-intro="flut"
-					aria-hidden="true"
-					style={css(`${FLAECHE};pointer-events:none`)}
-				/>
 				<div
 					data-safe="1"
 					style={css('position:absolute;left:0;right:0;top:0;height:100svh;pointer-events:none')}
@@ -69,7 +64,7 @@ export function Intro() {
 					<Raeume />
 				</div>
 				<Ende />
-				{/* Die Marke als Signatur-Objekt (marke.ts): nur so groß wie sie selbst, über Flut und Ende-Ebene,
+				{/* Die Marke als Signatur-Objekt (marke.ts): nur so groß wie sie selbst, über Wohnung und Ende-Ebene,
 				    damit sie am Schluss sichtbar ins Handy fällt */}
 				<canvas
 					data-intro="marke"

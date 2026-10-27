@@ -324,6 +324,12 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	const x1 = (W - tx) / f;
 	const y1 = (H - ty) / f;
 	const sp = cl((c.P - 0.62) / 0.28);
+	// Aufbau am Scroll: erst ziehen sich die Wände, dann füllen sich die Böden im Bayer-Raster, zuletzt kommen
+	// Bewohner und Beschriftungen. Zur Ende-Ebene baut sich die Wohnung in umgekehrter Reihenfolge ab.
+	const bau = c.reduced ? 1 : cl((c.P - 0.578) / 0.1) * (1 - cl((c.P - 0.885) / 0.05));
+	const bauWand = cl(bau / 0.55);
+	const bauBoden = cl((bau - 0.3) / 0.55);
+	const bauRest = cl((bau - 0.75) / 0.25);
 	// Zeiger in Szenenkoordinaten, der Lichtkegel läuft nach
 	if (m.in) {
 		const k = lag(0.25, c.dt ?? 0.016);
@@ -377,8 +383,9 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 					const dm = Math.hypot(pt[0] - mx, pt[1] - my);
 					if (dm < FL) I += 0.8 * (1 - dm / FL) ** 2;
 				}
-				if (I > (BAYER[(gy & 3) * 4 + (gx & 3)] ?? 0) / 16 + 0.02)
-					ctx.fillRect(pt[0], pt[1], 1.6, 1.6);
+				const bay = (BAYER[(gy & 3) * 4 + (gx & 3)] ?? 0) / 16;
+				if (bay >= bauBoden) continue;
+				if (I > bay + 0.02) ctx.fillRect(pt[0], pt[1], 1.6, 1.6);
 			}
 	});
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
@@ -410,11 +417,16 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		pp.y += (pp.ty - pp.y) * kp;
 	});
 	const HW = 1.1;
-	for (const wl of WALLS) {
+	for (const [k, wl] of WALLS.entries()) {
+		// jede Wand zieht sich versetzt von ihrem Anfang aus, die Höhe wächst mit
+		const w = ss(cl(bauWand * 1.6 - (k / WALLS.length) * 0.6));
+		if (w <= 0) continue;
+		const ex = wl[0] + (wl[2] - wl[0]) * w;
+		const ey = wl[1] + (wl[3] - wl[1]) * w;
 		const a = P(wl[0], wl[1], 0);
-		const b = P(wl[2], wl[3], 0);
-		const a2 = P(wl[0], wl[1], HW);
-		const b2 = P(wl[2], wl[3], HW);
+		const b = P(ex, ey, 0);
+		const a2 = P(wl[0], wl[1], HW * w);
+		const b2 = P(ex, ey, HW * w);
 		ctx.globalAlpha = 0.92;
 		ctx.fillStyle = '#0A0A0A';
 		ctx.beginPath();
@@ -447,7 +459,8 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		const r = pp.rel * u * 0.5;
 		const sx = tx + pt[0] * f;
 		const sy = ty + pt[1] * f;
-		const ba = blende(`a${k}`, { x0: sx - r * f, x1: sx + r * f, y0: sy - r * f, y1: sy + r * f });
+		const ba =
+			bauRest * blende(`a${k}`, { x0: sx - r * f, x1: sx + r * f, y0: sy - r * f, y1: sy + r * f });
 		ctx.globalAlpha = ba;
 		ctx.fillStyle = '#FAFAFA';
 		ctx.beginPath();
@@ -532,7 +545,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	ctx.lineWidth = 3;
 	for (const it of items) {
 		if (it.aus || !it.rect) continue;
-		it.a *= blende(`l${it.text}`, it.rect);
+		it.a *= bauRest * blende(`l${it.text}`, it.rect);
 		if (it.a < 0.01) continue;
 		ctx.font = mono(it.size);
 		ctx.globalAlpha = it.a;

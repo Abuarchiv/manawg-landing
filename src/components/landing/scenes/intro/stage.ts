@@ -18,7 +18,6 @@ import { loop, onFrame } from '../../core/loop';
 import { cl, ss } from '../../core/math';
 import * as hand from '../ende/hand';
 import { kamera } from '../ende/kamera';
-import * as flut from './flut';
 import { createHero } from './hero';
 import { type Marke, type MarkeLage, createMarke } from './marke';
 import { zeichneSterne } from './sterne';
@@ -80,7 +79,6 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 	const q = (k: string) => buehne.querySelector<HTMLCanvasElement>(`[data-intro="${k}"]`);
 	const cvHero = braucht(q('hero'), 'hero');
 	const cvWo = braucht(q('wohnung'), 'wohnung');
-	const cvFl = braucht(q('flut'), 'flut');
 	const safe = braucht(buehne.querySelector<HTMLElement>('[data-safe]'), '[data-safe]');
 	const cvStars = buehne.querySelector<HTMLCanvasElement>('canvas[data-sterne]');
 	const hb = buehne.querySelector<HTMLCanvasElement>('[data-hand="back"]');
@@ -160,7 +158,6 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		endA: 0,
 		zer: 0,
 		endOn: false,
-		cover: 0,
 		stageTop: 0,
 		visible: false,
 		sv: 0,
@@ -196,7 +193,6 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		fit = fitBox(W, safeH, 1280, 800, 1.25);
 		cam = kamera(W, H, safeH, loop.mode);
 		sizeBacking(cvWo, W, H, dpr);
-		sizeBacking(cvFl, W, H, dpr);
 		measureLoecher();
 	};
 	const stops = [observe(buehne, resize), observe(safe, resize)];
@@ -399,7 +395,6 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		const dive = ss((P - 0.48) / 0.12);
 		const fpA = ss((P - 0.58) / 0.05);
 		const endA = ss((P - 0.9) / 0.05);
-		const cover = flut.deckung(P);
 		const karten = wohnung.karten(P);
 		st.P = P;
 		st.s = s;
@@ -430,7 +425,6 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			// Zerfall der Hände: beginnt, sobald die Bühne nach oben weggeschoben wird (rb.top < 0), Rückwärts setzt zusammen
 			c.zer = loop.reduced ? 0 : ss(cl(-rb.top / (0.6 * H)));
 			c.endOn = st.endOn;
-			c.cover = cover;
 			c.stageTop = rb.top;
 			c.visible = true;
 			c.loecher = loecher;
@@ -458,8 +452,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 			}
 			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);
-			const mr = marke && !loop.reduced ? marke.frame(markeLage(P, t), H, dpr, t, st.sm) : null;
-			flut.draw(cvFl, c, mr ? [...loecher, { ...mr, art: 'marke' }] : loecher);
+			if (marke && !loop.reduced) marke.frame(markeLage(P, t), H, dpr, t, st.sm);
 			if (P > 0.3 && !st.handsLoaded) {
 				st.handsLoaded = true;
 				hand.laden();
