@@ -103,7 +103,7 @@ export const VERGLEICH_ZEILEN = [
 ];
 export const VERGLEICH_MANAWG = [
 	'gleich oder mit eigenen Beträgen, Fixkosten, Monatsabrechnung',
-	'mit Rotation, Abwesenheit und Erinnerung',
+	'mit fairer Verteilung, Abwesenheit und Erinnerung',
 	'mit Vorräten',
 	'mit Kalender-Abo',
 	'Chat und Pinnwand',

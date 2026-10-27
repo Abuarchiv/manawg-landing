@@ -74,7 +74,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 		fragen: [
 			[
 				'Wie teilt man die Miete in der WG fair auf?',
-				'Am verbreitetsten ist die Aufteilung nach Zimmergröße: Wer mehr Fläche hat, zahlt mehr. Sind die Zimmer gleich groß, ist ein gleicher Anteil fair. Gemeinsam genutzte Räume rechnet ihr gleichmäßig auf alle Personen um, wie im Rechner oben.',
+				'Eine gängige Möglichkeit ist die Aufteilung nach Zimmergröße: Wer mehr Fläche hat, zahlt mehr. Sind die Zimmer gleich groß, ist ein gleicher Anteil fair. Gemeinsam genutzte Räume rechnet ihr gleichmäßig auf alle Personen um, wie im Rechner oben.',
 			],
 			[
 				'Zählt die Gemeinschaftsfläche mit?',
@@ -103,11 +103,11 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 			],
 			[
 				'Mitbewohner zahlt bereits: so meldet ihr euch ab',
-				'Zahlt in eurer WG schon jemand, braucht ihr kein eigenes Beitragskonto. Meldet in diesem Fall euer Konto ab und gebt dabei Name und Beitragsnummer der Person an, die den Beitrag zahlt. Fragt sie also zuerst nach ihrer Beitragsnummer. Eure eigene steht auf den Schreiben des Beitragsservice, etwa auf der Anmeldebestätigung oder dem Kontoauszug, und hat neun Stellen. Die Abmeldung läuft über das Formular „Wohnung abmelden“ auf rundfunkbeitrag.de. Reagiert auf Briefe des Beitragsservice, damit für dieselbe Wohnung kein zweites Konto stehen bleibt.',
+				'Zahlt in eurer WG schon jemand, braucht ihr kein eigenes Beitragskonto. Meldet in diesem Fall euer Konto ab. Haltet dafür am besten Name und Beitragsnummer der Person bereit, die den Beitrag zahlt, und fragt sie zuerst danach. Eure eigene steht auf den Schreiben des Beitragsservice, etwa auf der Anmeldebestätigung oder dem Kontoauszug, und hat neun Stellen. Die Abmeldung läuft über das Formular „Wohnung abmelden“ auf rundfunkbeitrag.de und ist nur unter bestimmten Voraussetzungen möglich. Welche Angaben das Formular verlangt, seht ihr dort. Reagiert auf Briefe des Beitragsservice, damit für dieselbe Wohnung kein zweites Konto stehen bleibt.',
 			],
 			[
 				'Den Beitrag teilen',
-				`Der Beitrag beträgt ${euro(RUNDFUNK_MONAT_CENT)} im Monat je Wohnung. Gezahlt wird alle drei Monate, also ${euro(RUNDFUNK_QUARTAL_CENT)} im Quartal. Die Tabelle zeigt den Betrag bei gleichem Anteil für alle (Stand 27. Oktober 2026, laut rundfunkbeitrag.de). Ändert sich der Beitrag, rechnet ihr neu. Den aktuellen Betrag findet ihr auf rundfunkbeitrag.de.`,
+				`Der Beitrag beträgt ${euro(RUNDFUNK_MONAT_CENT)} im Monat je Wohnung. Üblich ist die Zahlung für drei Monate, also ${euro(RUNDFUNK_QUARTAL_CENT)} im Quartal. Auf Wunsch geht es auch halbjährlich (${euro(RUNDFUNK_MONAT_CENT * 6)}) oder jährlich (${euro(RUNDFUNK_MONAT_CENT * 12)}) im Voraus. Die Tabelle zeigt den Betrag bei gleichem Anteil für alle (Stand 27. Oktober 2026, laut rundfunkbeitrag.de). Ändert sich der Beitrag, rechnet ihr neu. Den aktuellen Betrag findet ihr auf rundfunkbeitrag.de.`,
 			],
 			[
 				'Wer haftet',
@@ -142,7 +142,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 		fragen: [
 			[
 				'Muss jeder in der WG Rundfunkbeitrag zahlen?',
-				'Nein. Der Rundfunkbeitrag fällt einmal pro Wohnung an. Eine Person zahlt, die anderen melden sich mit deren Beitragsnummer ab, und die WG teilt den Betrag unter sich.',
+				'Nein. Der Rundfunkbeitrag fällt einmal pro Wohnung an. Eine Person zahlt, die anderen melden sich ab, und die WG teilt den Betrag unter sich.',
 			],
 			[
 				'Wie hoch ist der Rundfunkbeitrag pro Person in der WG?',
@@ -150,7 +150,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 			],
 			[
 				'Wie melde ich mich ab, wenn mein Mitbewohner zahlt?',
-				'Über das Formular „Wohnung abmelden“ auf rundfunkbeitrag.de. Ihr braucht eure eigene Beitragsnummer sowie Name und Beitragsnummer der Person, die den Beitrag für die Wohnung zahlt.',
+				'Über das Formular „Wohnung abmelden“ auf rundfunkbeitrag.de. Ihr braucht eure eigene Beitragsnummer, und die Abmeldung ist nur unter bestimmten Voraussetzungen möglich. Haltet außerdem Name und Beitragsnummer der zahlenden Person bereit, welche Angaben das Formular verlangt, seht ihr dort.',
 			],
 			[
 				'Wer haftet, wenn der Beitrag nicht bezahlt wird?',

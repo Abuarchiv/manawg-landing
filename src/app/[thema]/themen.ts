@@ -49,7 +49,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Ausgaben teilen und Schulden ausgleichen',
-				'[Gemeinsame Ausgaben](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person und ordnet sie einer von sechs Kategorien zu, etwa Lebensmittel oder Wohnen und Nebenkosten. Die Anteile ergeben immer genau den Betrag. ManaWG schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr markiert sie als bezahlt, die App überweist selbst nichts. Wer für jemand anderen erfasst, trägt dabei selbst einen Anteil.',
+				'[Gemeinsame Ausgaben](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person und ordnet sie einer von sechs Kategorien zu, etwa Lebensmittel oder Wohnen und Nebenkosten. Die Anteile ergeben immer genau den Betrag. ManaWG schlägt Ausgleiche mit wenigen Überweisungen vor. Ihr markiert sie als bezahlt, die App überweist selbst nichts. Wer für jemand anderen erfasst, trägt dabei selbst einen Anteil.',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',
@@ -57,7 +57,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Putzplan, Einkauf und Vorräte',
-				'Die [Putzplan-App](/putzplan) wiederholt Aufgaben in Tagen oder Monaten und bestimmt anhand überfälliger Aufgaben, wer als Nächstes dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird übersprungen. Auf der [gemeinsamen Einkaufsliste](/einkaufsliste) hakt ihr ab und könnt den Einkauf danach als Ausgabe erfassen. Die Vorräte zeigen, was knapp wird, und schlagen vor, was ihr nachkaufen solltet. Erinnerungen an fällige Aufgaben kommen als Push.',
+				'Die [Putzplan-App](/putzplan) wiederholt Aufgaben in Tagen oder Monaten und bestimmt nach der Auslastung, wer als Nächstes dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Auf der [gemeinsamen Einkaufsliste](/einkaufsliste) hakt ihr ab und könnt den Einkauf danach als Ausgabe erfassen. Die Vorräte zeigen, was knapp wird, und schlagen vor, was ihr nachkaufen solltet. Erinnerungen an fällige Aufgaben kommen als Push.',
 			],
 			[
 				'Kalender, Pinnwand und Chat',
@@ -108,11 +108,11 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Rotation nach Fairness',
-				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die nächste zuständige Person anhand der Zahl überfälliger Aufgaben je Mitglied. Dieselbe Vorhersage zeigt die App vorab als „Nächste:r“ an, ihr wisst also im Voraus, wer als Nächstes dran ist.',
+				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die Person mit der geringsten Auslastung. Gezählt werden zugewiesene Aufgaben, offene Termine und überfällige Aufgaben. Dieselbe Vorhersage zeigt die App vorab als „Nächste:r“ an, ihr wisst also im Voraus, wer als Nächstes dran ist.',
 			],
 			[
 				'Abwesenheit eintragen',
-				'Urlaub, Praktikum, Heimatbesuch: Mitglieder tragen Zeiträume mit Grund ein. Wer abwesend ist, wird bei der Rotation übersprungen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Niemand muss dafür Aufgaben von Hand tauschen oder im Gruppenchat nachfragen, wer einspringt. Sobald der Zeitraum endet, gilt die Person nicht mehr als abwesend.',
+				'Urlaub, Praktikum, Heimatbesuch: Mitglieder tragen Zeiträume mit Grund ein. Wer abwesend ist, wird bei der nächsten Zuweisung übergangen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Schon zugewiesene Aufgaben verteilt die App nicht um. Sie markiert sie als abwesend, und jemand anderes kann sie mit „Ich übernehme“ übernehmen. Sobald der Zeitraum endet, gilt die Person nicht mehr als abwesend.',
 			],
 			[
 				'Erinnerung aufs Handy',
@@ -138,7 +138,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Was passiert, wenn jemand im Urlaub ist?',
-				'Die Person trägt den Zeitraum als Abwesenheit ein. In dieser Zeit wird sie bei der Rotation übersprungen. Die App zeigt an, wie viele Personen wegen Abwesenheit ausgelassen werden.',
+				'Die Person trägt den Zeitraum als Abwesenheit ein. Bei der nächsten Zuweisung nach dem Erledigen einer Aufgabe wird sie übergangen. Schon zugewiesene Aufgaben bleiben bei ihr und sind als abwesend markiert. Die App zeigt an, wie viele Personen wegen Abwesenheit ausgelassen werden.',
 			],
 			[
 				'Kostet die WG Putzplan App etwas?',
@@ -155,8 +155,8 @@ export const THEMEN: Record<string, Thema> = {
 				titel: 'Vorlage zum Ausdrucken und ManaWG im Vergleich',
 				kopf: ['Merkmal', 'Vorlage zum Ausdrucken', 'ManaWG'],
 				zeilen: [
-					['Rotation', 'von Hand', 'automatisch'],
-					['Abwesenheit', 'selbst eintragen', 'wird übersprungen'],
+					['Verteilung', 'von Hand', 'nach Auslastung'],
+					['Abwesenheit', 'selbst eintragen', 'wird bei der Zuweisung übergangen'],
 					['Erinnerung', 'keine', 'Erinnerung an die Zuständigen'],
 				],
 			},
@@ -183,7 +183,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Ausgleich mit wenigen Überweisungen',
-				'ManaWG berechnet für jede Person den Saldo und schlägt Zahlungen vor, mit denen die WG mit möglichst wenigen Überweisungen quitt ist. Das spart Aufwand. Überwiesen wird außerhalb der App, per Bank oder bar. Danach markiert ihr einen Anteil oder mehrere gemeinsam als bezahlt. Eine Bankanbindung gibt es nicht, auch kein SEPA.',
+				'ManaWG berechnet für jede Person den Saldo und schlägt Zahlungen vor, mit denen die WG mit wenigen Überweisungen quitt ist. Das spart Aufwand. Überwiesen wird außerhalb der App, per Bank oder bar. Danach markiert ihr einen Anteil oder mehrere gemeinsam als bezahlt. Eine Bankanbindung gibt es nicht, auch kein SEPA.',
 			],
 			[
 				'Fixkosten automatisch buchen',
@@ -406,7 +406,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Aufteilen und ausgleichen',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person. Die Cent gehen exakt auf. ManaWG schlägt vor, wer wem wie viel überweist, mit möglichst wenigen Zahlungen. Die Überweisung selbst macht ihr außerhalb der App und markiert den Betrag danach als bezahlt. Eine Erinnerung an Offenes gibt es auch, mit Abkühlzeit, damit niemand genervt wird.',
+				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person. Die Cent gehen exakt auf. ManaWG schlägt vor, wer wem wie viel überweist, mit wenigen Zahlungen. Die Überweisung selbst macht ihr außerhalb der App und markiert den Betrag danach als bezahlt. Eine Erinnerung an Offenes gibt es auch, mit Abkühlzeit, damit niemand genervt wird.',
 			],
 			[
 				'Grenzen von ManaWG',
@@ -477,7 +477,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Putzplan mit fairer Rotation',
-				'Aufgaben wiederholen sich im Rhythmus von Tagen oder Monaten. Beim Erledigen bestimmt ManaWG anhand der überfälligen Aufgaben je Mitglied, wer als Nächstes zuständig ist. Wer abwesend ist, wird übersprungen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Monatsintervalle bleiben kalendertreu, gerechnet wird nach Berliner Zeit. Erledigte Aufgaben landen in der Historie.',
+				'Aufgaben wiederholen sich im Rhythmus von Tagen oder Monaten. Beim Erledigen bestimmt ManaWG nach Auslastung, wer als Nächstes zuständig ist. Wer abwesend ist, wird dabei übergangen, und die App nennt, wie viele Personen deshalb ausgelassen werden. Monatsintervalle bleiben kalendertreu, gerechnet wird nach Berliner Zeit. Erledigte Aufgaben landen in der Historie.',
 			],
 			[
 				'WG-Kasse und Umstieg',
@@ -551,11 +551,11 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wann ihr bei Tricount bleiben solltet',
-				'Für Reisen mit Fremdwährung ist Tricount die bessere Wahl, denn ManaWG rechnet nur in Euro. Das Gleiche gilt, wenn ihr Ausgaben oft ohne Netz erfassen wollt oder eine Gruppe mit mehr als 20 Personen abrechnet. Auch wer nur eine einzelne Reise teilt, braucht weder Fixkosten noch Putzplan.',
+				'Für Reisen mit Fremdwährung ist Tricount die bessere Wahl, denn ManaWG rechnet nur in Euro. Das Gleiche gilt, wenn ihr eine Gruppe mit mehr als 20 Personen abrechnet. Auch wer nur eine einzelne Reise teilt, braucht weder Fixkosten noch Putzplan.',
 			],
 			[
 				'Wann ManaWG besser passt',
-				'Ihr wohnt dauerhaft zusammen und teilt Ausgaben jeden Monat.\nMiete, Internet und Strom legt ihr einmal als Fixkosten an, im Rhythmus ganzer Monate. ManaWG bucht sie automatisch.\nDie Monatsabrechnung zeigt Gesamtsumme, Ausgaben je Kategorie und Überweisungsvorschläge mit möglichst wenigen Zahlungen.\nAn offene Beträge könnt ihr die Schuldner erinnern, mit Abkühlzeit gegen Dauerpiepen.\nPutzplan, Einkaufsliste und Kalender stehen in derselben App, dazu Pinnwand und Chat.',
+				'Ihr wohnt dauerhaft zusammen und teilt Ausgaben jeden Monat.\nMiete, Internet und Strom legt ihr einmal als Fixkosten an, im Rhythmus ganzer Monate. ManaWG bucht sie automatisch.\nDie Monatsabrechnung zeigt Gesamtsumme, Ausgaben je Kategorie und Überweisungsvorschläge mit wenigen Zahlungen.\nAn offene Beträge könnt ihr die Schuldner erinnern, mit Abkühlzeit gegen Dauerpiepen.\nPutzplan, Einkaufsliste und Kalender stehen in derselben App, dazu Pinnwand und Chat.',
 			],
 			[
 				'Ehrliche Grenzen',
@@ -563,7 +563,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Umstieg von Tricount',
-				'Gleicht offene Beträge am besten in Tricount aus und startet in ManaWG ohne Altlasten. Wollt ihr den Stand übernehmen, lest ihr ein Bildschirmfoto der Ausgabenliste im Import ein. ManaWG zeigt eine Vorschau zum Korrigieren und erkennt nur Eurobeträge. Oder eine Person trägt die offenen Salden einmal als Ausgabe mit eigenen Beträgen pro Person ein. Wie ein Import abläuft, steht in der Anleitung zum [Umstieg](/splitwise-splid-wechseln).',
+				'Gleicht offene Beträge am besten in Tricount aus und startet in ManaWG ohne Altlasten. Wollt ihr den Stand übernehmen, lest ihr ein Bildschirmfoto der Ausgabenliste im Import ein. ManaWG zeigt eine Vorschau zum Korrigieren und erkennt nur Eurobeträge. Oder jemand trägt für jede Person, die noch Geld bekommt, eine Ausgabe mit ihr als Zahlerin ein und teilt sie von Hand auf die Schuldner auf. Wie ein Import abläuft, steht in der Anleitung zum [Umstieg](/splitwise-splid-wechseln).',
 			],
 		],
 		fragen: [
@@ -610,7 +610,7 @@ export const THEMEN: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Fairness statt Punkte',
-				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade die wenigsten überfälligen Aufgaben hat, und schlägt diese Person als Nächste vor. Wer schon viel Überfälliges hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der Rotation übersprungen. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins.',
+				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene Aufgaben, offene Termine und Überfälliges. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins.',
 			],
 			[
 				'Putzplan mit festem Rhythmus',
@@ -618,7 +618,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kasse und Putzplan in einer App',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person. ManaWG rechnet in Cent, die Anteile ergeben immer genau den Betrag. Jede Ausgabe bekommt eine von sechs Kategorien, etwa Lebensmittel oder Haushalt. Die App zeigt Salden und schlägt Überweisungen vor, damit möglichst wenige nötig sind. Bezahlt markiert ihr per Hand, ManaWG selbst überweist kein Geld.',
+				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person. ManaWG rechnet in Cent, die Anteile ergeben immer genau den Betrag. Jede Ausgabe bekommt eine von sechs Kategorien, etwa Lebensmittel oder Haushalt. Die App zeigt Salden und schlägt Überweisungen vor, damit wenige nötig sind. Bezahlt markiert ihr per Hand, ManaWG selbst überweist kein Geld.',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',
@@ -682,7 +682,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie werden Ausgaben aufgeteilt?',
-				'Bei jeder Ausgabe wählt ihr, wer beteiligt ist, und teilt gleichmäßig oder mit eigenen Beträgen pro Person, auf den Cent genau. ManaWG zeigt den Saldo pro Person und schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Überwiesen wird außerhalb der App, ihr markiert den Betrag danach als bezahlt.',
+				'Bei jeder Ausgabe wählt ihr, wer beteiligt ist, und teilt gleichmäßig oder mit eigenen Beträgen pro Person, auf den Cent genau. ManaWG zeigt den Saldo pro Person und schlägt Ausgleiche mit wenigen Überweisungen vor. Überwiesen wird außerhalb der App, ihr markiert den Betrag danach als bezahlt.',
 			],
 			[
 				'Wie funktioniert der Putzplan?',
@@ -690,7 +690,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Was passiert, wenn jemand verreist ist?',
-				'Mitglieder tragen einen Abwesenheitszeitraum ein, zum Beispiel für einen Urlaub. Wer abwesend ist, wird bei der Rotation des Putzplans übersprungen.',
+				'Mitglieder tragen einen Abwesenheitszeitraum ein, zum Beispiel für einen Urlaub. Wer abwesend ist, wird bei der nächsten Zuweisung im Putzplan übergangen.',
 			],
 			[
 				'Kann ich Daten aus Splitwise oder Splid mitnehmen?',

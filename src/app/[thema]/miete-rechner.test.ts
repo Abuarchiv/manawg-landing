@@ -1,7 +1,7 @@
 // Lauf: pnpm test (Node-Testrunner, kein Framework)
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { euro, mieteAnteile } from './miete-rechner.ts';
+import { euro, mieteAnteile, zahl } from './miete-rechner.ts';
 
 test('900 Euro bei 12, 18 und 24 m² ohne Gemeinschaftsfläche', () => {
 	assert.deepEqual(mieteAnteile(90000, [12, 18, 24], 0), [20000, 30000, 40000]);
@@ -29,4 +29,13 @@ test('Summe entspricht immer der Miete, Rest geht an die größten Nachkommaante
 test('Euro-Format mit Komma und festem Leerzeichen', () => {
 	assert.equal(euro(22500), '225,00 €');
 	assert.equal(euro(33334), '333,34 €');
+});
+
+test('Eingabe mit Tausenderpunkt und Komma', () => {
+	assert.equal(zahl('1.200'), 1200);
+	assert.equal(zahl('1.200,50'), 1200.5);
+	assert.equal(zahl('900,5'), 900.5);
+	assert.equal(zahl('12.5'), 12.5);
+	assert.equal(zahl('1.234.567'), 1234567);
+	assert.equal(zahl('abc'), 0);
 });

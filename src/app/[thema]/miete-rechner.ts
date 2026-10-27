@@ -20,3 +20,14 @@ export function mieteAnteile(mieteCent: number, zimmer: number[], gemeinschaft: 
 /** Cent als Euro-Text mit Komma, z. B. 22500 wird zu "225,00 €". */
 export const euro = (cent: number): string =>
 	`${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2 }).format(cent / 100)} €`;
+
+/**
+ * Zahl in deutscher Schreibweise: Punkte vor drei Ziffern sind Tausendertrenner ("1.200" ist 1200),
+ * ein Komma ist das Dezimalzeichen. Leer oder ungültig ergibt 0.
+ */
+export function zahl(s: string): number {
+	const t = s.trim();
+	const klar = /,|^\d{1,3}(\.\d{3})+$/.test(t) ? t.replace(/\./g, '').replace(',', '.') : t;
+	const x = Number.parseFloat(klar);
+	return Number.isFinite(x) && x > 0 ? x : 0;
+}

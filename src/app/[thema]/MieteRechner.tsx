@@ -1,19 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { euro, mieteAnteile } from './miete-rechner';
+import { euro, mieteAnteile, zahl } from './miete-rechner';
 
 const feld = 'min-h-[44px] px-3 rounded border border-white/20 bg-transparent text-[#fafafa]';
 const knopf =
 	'inline-flex items-center justify-center min-h-[44px] px-6 rounded-full border border-white/20 bg-transparent text-[#fafafa] cursor-pointer hover:bg-white/10 transition-colors disabled:opacity-40';
 const zelle = 'px-3 py-2 border-b border-white/10';
 const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
-
-// Zahl mit Komma oder Punkt; leer oder ungültig ergibt 0.
-const zahl = (s: string) => {
-	const x = Number.parseFloat(s.replace(',', '.'));
-	return Number.isFinite(x) && x > 0 ? x : 0;
-};
 
 // Ohne Speicherung und Konto: Eingaben und Ergebnis leben nur im Browser.
 export default function MieteRechner() {

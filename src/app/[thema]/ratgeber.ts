@@ -42,7 +42,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Modell 2: Miete nach Zimmergröße, Rest gleich',
-				'Bei sehr unterschiedlichen Zimmern ist ein gleicher Mietanteil selten fair. Üblich ist, die Kaltmiete nach Quadratmetern zu verteilen und Gemeinschaftskosten wie Internet und Strom gleich zu teilen. Beispiel: Ein Zimmer mit 20 m² in einer Wohnung mit 80 m² Gesamtfläche trägt 25 Prozent der Miete. Gemeinschaftsflächen wie Küche und Bad rechnet ihr dabei nach Köpfen oder anteilig zu den Zimmern dazu, der [Mietrechner](/wg-miete-rechner) übernimmt das. Wichtig ist, dass alle die Rechnung gesehen und zugestimmt haben.',
+				'Bei sehr unterschiedlichen Zimmern ist ein gleicher Mietanteil selten fair. Eine gängige Möglichkeit ist, die Miete nach Quadratmetern zu verteilen und Gemeinschaftskosten wie Internet und Strom gleich zu teilen. Beispiel: Ein Zimmer mit 20 m² in einer Wohnung mit 80 m² Gesamtfläche trägt 25 Prozent der Miete. Gemeinschaftsflächen wie Küche und Bad rechnet ihr dabei nach Köpfen oder anteilig zu den Zimmern dazu, der [Mietrechner](/wg-miete-rechner) übernimmt das. Wichtig ist, dass alle die Rechnung gesehen und zugestimmt haben.',
 			],
 			[
 				'Modell 3: Jeder zahlt, was er verursacht',
@@ -50,7 +50,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Ausgleichen ohne Überweisungschaos',
-				'Wenn jeder mal für alle zahlt, entstehen [Schulden in alle Richtungen](/schulden-mitbewohner). Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit möglichst wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt.',
+				'Wenn jeder mal für alle zahlt, entstehen [Schulden in alle Richtungen](/schulden-mitbewohner). Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt.',
 			],
 			[
 				'Regeln, die Streit vermeiden',
@@ -60,7 +60,7 @@ export const RATGEBER: Record<string, Thema> = {
 		fragen: [
 			[
 				'Wie teilt man die Miete in einer WG fair auf?',
-				'Am verbreitetsten ist die Aufteilung der Kaltmiete nach Zimmergröße, mit gleichen Anteilen für Gemeinschaftskosten wie Internet und Strom. Bei gleich großen Zimmern ist auch ein gleicher Anteil für alle fair.',
+				'Eine gängige Möglichkeit ist die Aufteilung der Miete nach Zimmergröße, mit gleichen Anteilen für Gemeinschaftskosten wie Internet und Strom. Bei gleich großen Zimmern ist auch ein gleicher Anteil für alle fair.',
 			],
 			[
 				'Wer zahlt Internet und Strom in der WG?',
@@ -272,7 +272,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Muss jeder in der WG Rundfunkbeitrag zahlen?',
-				'Nein. Der Rundfunkbeitrag fällt einmal pro Wohnung an. Eine Person zahlt, die anderen melden sich mit deren Beitragsnummer ab, und die WG teilt den Betrag.',
+				'Nein. Der Rundfunkbeitrag fällt einmal pro Wohnung an. Eine Person zahlt, die anderen melden sich ab, und die WG teilt den Betrag.',
 			],
 			[
 				'Wie organisiert man Geld in einer neuen WG?',
@@ -765,7 +765,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'4. Wie fair ist der Putzplan?',
-				'Entscheidend sind faire Rotation, Wiederholung in Tagen oder Monaten, Umgang mit Abwesenheit und Erinnerungen. Ein Punktesystem motiviert manche WGs, andere empfinden es als Gängelung. ManaWG rotiert nach überfälligen Aufgaben und kommt ohne Punkte aus.',
+				'Entscheidend sind faire Rotation, Wiederholung in Tagen oder Monaten, Umgang mit Abwesenheit und Erinnerungen. Ein Punktesystem motiviert manche WGs, andere empfinden es als Gängelung. ManaWG verteilt nach Auslastung und kommt ohne Punkte aus.',
 			],
 			[
 				'5. Müssen alle eine App installieren?',
@@ -813,7 +813,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Kurzfassung',
-				'ManaWG (auch Mana WG) ist eine Haushalts-App für Wohngemeinschaften. Mitbewohner teilen Ausgaben und gleichen Salden mit möglichst wenigen Überweisungen aus, führen eine gemeinsame Einkaufsliste, organisieren einen rotierenden Putzplan und halten Absprachen an einer Pinnwand fest. Die App ist kostenlos, werbefrei und läuft im Browser unter app.manawg.com.',
+				'ManaWG (auch Mana WG) ist eine Haushalts-App für Wohngemeinschaften. Mitbewohner teilen Ausgaben und gleichen Salden mit wenigen Überweisungen aus, führen eine gemeinsame Einkaufsliste, organisieren einen rotierenden Putzplan und halten Absprachen an einer Pinnwand fest. Die App ist kostenlos, werbefrei und läuft im Browser unter app.manawg.com.',
 			],
 			[
 				'Fakten auf einen Blick',
@@ -969,7 +969,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Weg 3: Ausgaben erfassen und ausgleichen',
-				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein, zum Beispiel direkt nach dem Einkauf von der [gemeinsamen Einkaufsliste](/wg-einkauf-organisieren). Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In [ManaWG als WG-Kasse](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit möglichst wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt. Wer bisher Splitwise oder Splid nutzt, übernimmt die Altdaten per CSV-Import, siehe [Umstieg](/splitwise-splid-wechseln).',
+				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein, zum Beispiel direkt nach dem Einkauf von der [gemeinsamen Einkaufsliste](/wg-einkauf-organisieren). Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In [ManaWG als WG-Kasse](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt. Wer bisher Splitwise oder Splid nutzt, übernimmt die Altdaten per CSV-Import, siehe [Umstieg](/splitwise-splid-wechseln).',
 			],
 			[
 				'Beispielrechnung',
@@ -1071,7 +1071,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Putzplan bei Abwesenheit',
-				'Wer nicht da ist, kann nicht putzen. Beim [Putzplan erstellen](/putzplan-erstellen) gehört dafür eine Regel dazu. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In [ManaWG als Putzplan-App](/putzplan) tragt ihr eine Abwesenheit mit Zeitraum ein. Die Person wird in dieser Zeit beim Putzplan übersprungen, und die Aufgabe geht an die Nächste in der Reihe.',
+				'Wer nicht da ist, kann nicht putzen. Beim [Putzplan erstellen](/putzplan-erstellen) gehört dafür eine Regel dazu. Üblich ist, dass Abwesende übersprungen werden und danach nicht alles nachholen müssen. Manche WGs vereinbaren, dass vor einer längeren Reise die eigene Aufgabe noch erledigt wird, damit niemand ein ungeputztes Bad übernimmt. In [ManaWG als Putzplan-App](/putzplan) tragt ihr eine Abwesenheit mit Zeitraum ein. Beim Erledigen einer Aufgabe wird die Person dann bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei ihr, die App markiert sie als abwesend, und jemand anderes kann sie übernehmen.',
 			],
 			[
 				'Miete und Fixkosten',
@@ -1130,7 +1130,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Ausgleichen mit wenigen Überweisungen',
-				'Wenn mehrere Personen einander Geld schulden, lassen sich die Salden verrechnen. Statt dass jeder jedem einzeln etwas überweist, reichen meist wenige Zahlungen. ManaWG schlägt Überweisungen vor, die mit möglichst wenigen Zahlungen alles ausgleichen. Überwiesen wird außerhalb der App, ihr markiert nur als bezahlt.',
+				'Wenn mehrere Personen einander Geld schulden, lassen sich die Salden verrechnen. Statt dass jeder jedem einzeln etwas überweist, reichen meist wenige Zahlungen. ManaWG schlägt Überweisungen vor, die mit wenigen Zahlungen alles ausgleichen. Überwiesen wird außerhalb der App, ihr markiert nur als bezahlt.',
 			],
 			[
 				'Beispiel mit vier Personen',
@@ -1535,7 +1535,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Einzelverträge: Nur der Vermieter kann kündigen',
-				'Hat jede Person einen eigenen Vertrag, haben die Mitbewohner keine Handhabe. Kündigen kann nur der Vermieter, und auch er nur aus einem gesetzlichen Grund. Fristlos geht das zum Beispiel, wenn jemand mit zwei Monatsmieten im Rückstand ist oder den Hausfrieden nachhaltig stört. Was ihr tun könnt: Vorfälle mit Datum aufschreiben und dem Vermieter schriftlich melden.',
+				'Hat jede Person einen eigenen Vertrag, haben die Mitbewohner keine Handhabe. Kündigen kann nur der Vermieter, und auch er in der Regel nur aus einem gesetzlichen Grund. Ausnahme sind Zimmer in Studenten- und Jugendwohnheimen, dort gilt der Schutz durch das berechtigte Interesse nicht (§ 549 Abs. 3 BGB). Fristlos geht das zum Beispiel, wenn jemand mit zwei Monatsmieten im Rückstand ist oder den Hausfrieden nachhaltig stört. Was ihr tun könnt: Vorfälle mit Datum aufschreiben und dem Vermieter schriftlich melden.',
 			],
 			[
 				'Form und Ablauf der Kündigung',
@@ -1555,7 +1555,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Mitbewohner ohne Mietvertrag',
-				'Ein Zimmer, das gegen Miete überlassen wird, ist auch ohne Papier ein Mietvertrag. Der Vermieter schuldet die Überlassung, der Mieter die vereinbarte Miete (§ 535 BGB). Das Gesetz verlangt die Schriftform nur für Verträge über mehr als ein Jahr, und auch dann ist der Vertrag ohne sie nicht unwirksam, sondern gilt als unbefristet (§ 550 BGB). Für die Kündigung gelten deshalb dieselben Regeln wie oben.',
+				'Ein Zimmer, das gegen Miete überlassen wird, ist auch ohne Papier ein Mietvertrag. Der Vermieter schuldet die Überlassung, der Mieter die vereinbarte Miete (§ 535 BGB). Das Gesetz verlangt die Schriftform nur für Verträge über mehr als ein Jahr, und auch dann ist der Vertrag ohne sie nicht unwirksam, sondern gilt als unbefristet (§ 550 BGB). Gekündigt werden kann dann aber frühestens zum Ablauf eines Jahres nach Überlassung des Wohnraums. Danach gelten für die Kündigung die Regeln oben.',
 			],
 			[
 				'Bevor es so weit kommt',
@@ -1569,9 +1569,9 @@ export const RATGEBER: Record<string, Thema> = {
 				kopf: ['Vertrag', 'Wer darf kündigen', 'Frist', 'Grund nötig?'],
 				zeilen: [
 					[
-						'Untermiete, möbliertes Zimmer in der Wohnung des Hauptmieters',
+						'Untermiete, vom Hauptmieter überwiegend möbliertes Zimmer in seiner Wohnung, Mieter ohne Familie oder Partner dort',
 						'Hauptmieter',
-						'bis zum 15. zum Monatsende',
+						'bis zum 15. zum Monatsende (§ 573c Abs. 3 BGB)',
 						'Nein (§ 549 Abs. 2 Nr. 2 BGB)',
 					],
 					[
@@ -1596,7 +1596,7 @@ export const RATGEBER: Record<string, Thema> = {
 						'Einzelverträge',
 						'Nur der Vermieter',
 						'je nach Grund, fristlos nur bei schweren Gründen',
-						'Ja, gesetzlicher Grund',
+						'In der Regel ja, gesetzlicher Grund (nicht im Studentenwohnheim)',
 					],
 				],
 			},
@@ -1608,7 +1608,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Welche Kündigungsfrist gilt für einen Untermieter in der WG?',
-				'Für ein vom Hauptmieter möbliertes Zimmer in seiner eigenen Wohnung bis zum 15. eines Monats zum Monatsende. Für ein leeres Zimmer in seiner Wohnung drei Monate länger als normal, ohne Grund. Wohnt der Hauptmieter nicht selbst dort, braucht er ein berechtigtes Interesse.',
+				'Für ein vom Hauptmieter überwiegend möbliertes Zimmer in seiner eigenen Wohnung, in dem der Mieter nicht dauerhaft mit Familie oder Partner lebt, bis zum 15. eines Monats zum Monatsende (§ 573c Abs. 3 BGB). Für ein leeres Zimmer in seiner Wohnung drei Monate länger als normal, ohne Grund. Wohnt der Hauptmieter nicht selbst dort, braucht er ein berechtigtes Interesse.',
 			],
 			[
 				'Reicht eine Kündigung per WhatsApp oder E-Mail?',
