@@ -3,8 +3,8 @@
 import type { Thema } from './themen';
 
 // Die reinen Funktionen liegen in einer kleinen Datei, damit der Generator nicht alle Ratgebertexte lädt.
-import { NG, VERGLEICH_MANAWG, VERGLEICH_ZEILEN } from './gruppen';
-import { putzplanRotation, tabelleAlsCsv } from './putzplan-rotation';
+import { NG, VERGLEICH_MANAWG, VERGLEICH_ZEILEN } from './gruppen.ts';
+import { putzplanRotation, tabelleAlsCsv } from './putzplan-rotation.ts';
 
 const AUFGABEN_VIER = ['Bad', 'Küche', 'Böden', 'Müll und Flur'];
 const AUFGABEN_DREI = ['Bad', 'Küche', 'Böden und Müll'];
@@ -23,7 +23,7 @@ export function putzplanVorlageCsv(): string {
 export const RATGEBER: Record<string, Thema> = {
 	'wg-kosten-aufteilen': {
 		link: 'WG-Kosten aufteilen',
-		stand: '2026-10-11',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'WG-Kosten fair aufteilen: drei Modelle mit Beispiel | ManaWG',
 		beschreibung:
@@ -42,7 +42,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Modell 2: Miete nach Zimmergröße, Rest gleich',
-				'Bei sehr unterschiedlichen Zimmern ist ein gleicher Mietanteil selten fair. Eine gängige Möglichkeit ist, die Miete nach Quadratmetern zu verteilen und Gemeinschaftskosten wie Internet und Strom gleich zu teilen. Beispiel: Ein Zimmer mit 20 m² in einer Wohnung mit 80 m² Gesamtfläche trägt 25 Prozent der Miete. Gemeinschaftsflächen wie Küche und Bad rechnet ihr dabei nach Köpfen oder anteilig zu den Zimmern dazu, der [Mietrechner](/wg-miete-rechner) übernimmt das. Wichtig ist, dass alle die Rechnung gesehen und zugestimmt haben.',
+				'Bei sehr unterschiedlichen Zimmern ist ein gleicher Mietanteil selten fair. Eine gängige Möglichkeit ist, die Miete nach Quadratmetern zu verteilen und Gemeinschaftskosten wie Internet und Strom gleich zu teilen. Beispiel: Ein Zimmer mit 20 m² in einer Wohnung mit 80 m² Gesamtfläche trägt 25 Prozent der Miete. Gemeinschaftsflächen wie Küche und Bad rechnet ihr dabei nach Köpfen oder anteilig zu den Zimmern dazu. Wie das geht, zeigt [WG-Miete nach Zimmergröße aufteilen](/wg-miete-rechner) mit Rechner. Wichtig ist, dass alle die Rechnung gesehen und zugestimmt haben.',
 			],
 			[
 				'Modell 3: Jeder zahlt, was er verursacht',
@@ -321,7 +321,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-mietvertrag': {
 		link: 'WG-Mietvertrag',
-		stand: '2026-10-20',
+		stand: '2026-10-27',
 		erschienen: '2026-10-19',
 		titel: 'WG-Mietvertrag: Haupt-, Untermiete, Einzelvertrag | ManaWG',
 		beschreibung:
@@ -336,7 +336,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Modell 2: Hauptmieter mit Untermietern',
-				'Eine Person mietet die Wohnung und vermietet einzelne Zimmer weiter. Für die Untervermietung braucht sie die Erlaubnis des Vermieters. Der Hauptmieter haftet dem Vermieter gegenüber allein für die ganze Miete und trägt damit das Risiko, wenn ein Zimmer leer steht oder jemand nicht zahlt. Dafür entscheidet er mit, wer einzieht. Untermieter haben einen Vertrag nur mit dem Hauptmieter. Wohnen sie in einem möblierten Zimmer in dessen Wohnung, gelten oft kürzere Kündigungsfristen und ein geringerer Kündigungsschutz als bei einer normalen Mietwohnung.',
+				'Eine Person mietet die Wohnung und vermietet einzelne Zimmer weiter. Für die Untervermietung braucht sie die Erlaubnis des Vermieters. Für eine befristete Untervermietung steht der Ablauf unter [Zwischenmiete in der WG](/wg-zwischenmiete). Der Hauptmieter haftet dem Vermieter gegenüber allein für die ganze Miete und trägt damit das Risiko, wenn ein Zimmer leer steht oder jemand nicht zahlt. Dafür entscheidet er mit, wer einzieht. Untermieter haben einen Vertrag nur mit dem Hauptmieter. Wohnen sie in einem möblierten Zimmer in dessen Wohnung, gelten oft kürzere Kündigungsfristen und ein geringerer Kündigungsschutz als bei einer normalen Mietwohnung.',
 			],
 			[
 				'Modell 3: Einzelmietverträge',
@@ -395,7 +395,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-zwischenmiete': {
 		link: 'Zwischenmiete',
-		stand: '2026-10-20',
+		stand: '2026-10-27',
 		erschienen: '2026-10-19',
 		titel: 'Zwischenmiete in der WG: Ablauf, Vertrag, Kosten | ManaWG',
 		beschreibung:
@@ -406,7 +406,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Erst fragen: Vermieter und WG',
-				'Eine Zwischenmiete ist rechtlich eine Untervermietung und braucht die Erlaubnis des Vermieters, am besten schriftlich. Wer nach Vertragsschluss ein berechtigtes Interesse hat, etwa wegen eines befristeten Auslandsaufenthalts, hat unter bestimmten Voraussetzungen einen Anspruch darauf. Genauso wichtig sind die Mitbewohner: Sie leben monatelang mit der neuen Person zusammen und sollten bei der Auswahl mitentscheiden.',
+				'Eine Zwischenmiete ist rechtlich eine [Untervermietung](/wg-mietvertrag) und braucht die Erlaubnis des Vermieters, am besten schriftlich. Wer nach Vertragsschluss ein berechtigtes Interesse hat, etwa wegen eines befristeten Auslandsaufenthalts, hat unter bestimmten Voraussetzungen einen Anspruch darauf. Genauso wichtig sind die Mitbewohner: Sie leben monatelang mit der neuen Person zusammen und sollten bei der Auswahl mitentscheiden.',
 			],
 			[
 				'Den Zwischenmieter finden',
@@ -575,7 +575,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Nach Köpfen oder nach Zimmergröße?',
-				'Nach Köpfen ist am einfachsten und üblich, wenn die Zimmer ähnlich groß sind. Unterscheiden sie sich deutlich, teilt ihr nach Fläche. Beispiel: Zimmer mit 20, 16 und 14 Quadratmetern ergeben Anteile von 40, 32 und 28 Prozent. Bei 300 Euro Nebenkosten zahlen die drei 120, 96 und 84 Euro. Viele WGs mischen auch: Heizung nach Fläche, alles andere nach Köpfen.',
+				'Nach Köpfen ist am einfachsten und üblich, wenn die Zimmer ähnlich groß sind. Unterscheiden sie sich deutlich, teilt ihr nach Fläche. Beispiel: Zimmer mit 20, 16 und 14 Quadratmetern ergeben Anteile von 40, 32 und 28 Prozent. Bei 300 Euro Nebenkosten zahlen die drei 120, 96 und 84 Euro. Viele WGs mischen auch: Heizung nach Fläche, alles andere nach Köpfen. Wie ihr die Miete selbst nach Zimmergröße teilt, rechnet der [WG-Miete-Rechner](/wg-miete-rechner) vor.',
 			],
 			[
 				'Strom und Gas',
@@ -946,7 +946,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-haushaltskasse': {
 		link: 'WG-Haushaltskasse',
-		stand: '2026-10-19',
+		stand: '2026-10-27',
 		erschienen: '2026-10-11',
 		titel: 'WG-Haushaltskasse: Bargeld, Konto oder App? | ManaWG',
 		beschreibung:
@@ -969,7 +969,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Weg 3: Ausgaben erfassen und ausgleichen',
-				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein, zum Beispiel direkt nach dem Einkauf von der [gemeinsamen Einkaufsliste](/wg-einkauf-organisieren). Am Monatsende zeigen die Salden, wer wem etwas schuldet. Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In [ManaWG als WG-Kasse](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt. Wer bisher Splitwise oder Splid nutzt, übernimmt die Altdaten per CSV-Import, siehe [Umstieg](/splitwise-splid-wechseln).',
+				'Statt Geld vorzuhalten, zahlt jeder, was gerade fehlt, und trägt den Betrag ein, zum Beispiel direkt nach dem Einkauf von der [gemeinsamen Einkaufsliste](/wg-einkauf-organisieren). Am Monatsende zeigen die Salden, wer wem etwas schuldet. Wie ihr offene Salden fair ausgleicht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner). Es gibt keinen Bestand, den jemand verwalten muss, und niemand streckt dauerhaft Geld vor. In [ManaWG als WG-Kasse](/wg-kasse) teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person, ordnet jede Ausgabe einer Kategorie zu und seht, wofür das Geld geht. Die App schlägt Ausgleiche mit wenigen Überweisungen vor. Ihr überweist selbst und markiert als bezahlt. Wer bisher Splitwise oder Splid nutzt, übernimmt die Altdaten per CSV-Import, siehe [Umstieg](/splitwise-splid-wechseln).',
 			],
 			[
 				'Beispielrechnung',
@@ -1008,7 +1008,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Vor dem Einzug: Vertrag und Formalien',
-				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen Untermietvertrag mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution: Sie darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Fragt außerdem, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden [Regeln](/wg-regeln) für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
+				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen [Untermietvertrag](/wg-mietvertrag) mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution: Sie darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Fragt außerdem, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden [Regeln](/wg-regeln) für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
 			],
 			[
 				'Am Einzugstag',
@@ -1020,7 +1020,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Geld von Anfang an klären',
-				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt und wie ihr euren Anteil zahlt. Der Rundfunkbeitrag wird pro Wohnung nur einmal fällig, also nicht von jedem einzeln. Klärt, ob es eine gemeinsame [Haushaltskasse](/wg-haushaltskasse) gibt und ob bereits vorhandene Dinge wie Waschmaschine oder Küchengeräte abgelöst werden sollen. In ManaWG seht ihr nach dem Beitritt Fixkosten, Ausgaben und Salden der WG, neue Ausgaben werden ab dann mit euch geteilt.',
+				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt und wie ihr euren Anteil zahlt. Der [Rundfunkbeitrag in der WG](/rundfunkbeitrag-wg) wird pro Wohnung nur einmal fällig, also nicht von jedem einzeln. Klärt, ob es eine gemeinsame [Haushaltskasse](/wg-haushaltskasse) gibt und ob bereits vorhandene Dinge wie Waschmaschine oder Küchengeräte abgelöst werden sollen. In ManaWG seht ihr nach dem Beitritt Fixkosten, Ausgaben und Salden der WG, neue Ausgaben werden ab dann mit euch geteilt.',
 			],
 			[
 				'Gewohnheiten abgleichen',
@@ -1142,11 +1142,11 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Wenn jemand mit offenen Beträgen auszieht',
-				'Beim Auszug ist der einfachste Moment, alles zu klären, und der letzte, an dem alle noch in einer Wohnung sind. Bringt den Saldo der ausziehenden Person vor dem letzten Tag auf null. Steht noch eine Nebenkostenabrechnung aus, vereinbart schriftlich, wie Nachzahlung oder Guthaben später verteilt werden, und tauscht Kontaktdaten aus. Wer danach erst hinterherschreibt, wartet oft lange.',
+				'Beim [Auszug](/wg-auszug-checkliste) ist der einfachste Moment, alles zu klären, und der letzte, an dem alle noch in einer Wohnung sind. Bringt den Saldo der ausziehenden Person vor dem letzten Tag auf null. Steht noch eine [Nebenkostenabrechnung](/wg-nebenkosten) aus, vereinbart schriftlich, wie Nachzahlung oder Guthaben später verteilt werden, und tauscht Kontaktdaten aus. Wer danach erst hinterherschreibt, wartet oft lange.',
 			],
 			[
 				'Wenn alle gemeinsam haften',
-				'Bei einem gemeinsamen Hauptmietvertrag kann der Vermieter die ganze Miete von jeder Person verlangen, auch wenn andere nicht zahlen (§ 421 BGB). Wer mehr als seinen Anteil gezahlt hat, kann sich den Rest von den Mitbewohnern zurückholen. Im Zweifel gilt dabei Gleichheit: Jeder trägt denselben Anteil, solange nichts anderes vereinbart ist (§ 426 BGB). Haltet vorher schriftlich fest, wie ihr teilt, falls es nicht gleich sein soll.',
+				'Bei einem gemeinsamen [Hauptmietvertrag](/wg-mietvertrag) kann der Vermieter die ganze Miete von jeder Person verlangen, auch wenn andere nicht zahlen (§ 421 BGB). Wer mehr als seinen Anteil gezahlt hat, kann sich den Rest von den Mitbewohnern zurückholen. Im Zweifel gilt dabei Gleichheit: Jeder trägt denselben Anteil, solange nichts anderes vereinbart ist (§ 426 BGB). Haltet vorher schriftlich fest, wie ihr teilt, falls es nicht gleich sein soll.',
 			],
 			[
 				'Wenn jemand nicht zahlt',
@@ -1394,7 +1394,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'wg-auszug-checkliste': {
 		link: 'WG-Auszug',
-		stand: '2026-10-20',
+		stand: '2026-10-27',
 		erschienen: '2026-10-19',
 		titel: 'WG-Auszug: Checkliste für Kündigung und Abrechnung | ManaWG',
 		beschreibung:
@@ -1405,7 +1405,7 @@ export const RATGEBER: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Kündigung und Fristen',
-				'Prüft zuerst euren Vertrag. Bei einem unbefristeten Mietvertrag gilt für Mieter meist eine Kündigungsfrist von drei Monaten. Bei einem möblierten Zimmer in der Wohnung des Hauptmieters können kürzere Fristen gelten. Kündigt schriftlich und sagt der WG möglichst früh Bescheid, auch wenn ihr formal noch Zeit habt. Die anderen brauchen Wochen, um jemanden zu finden.',
+				'Prüft zuerst euren [Vertrag](/wg-mietvertrag). Bei einem unbefristeten Mietvertrag gilt für Mieter meist eine Kündigungsfrist von drei Monaten. Bei einem möblierten Zimmer in der Wohnung des Hauptmieters können kürzere Fristen gelten. Kündigt schriftlich und sagt der WG möglichst früh Bescheid, auch wenn ihr formal noch Zeit habt. Die anderen brauchen Wochen, um jemanden zu finden.',
 			],
 			[
 				'Nachmieter finden',
@@ -1653,7 +1653,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Wer stellt die Wohnungsgeberbestätigung aus?',
-				'Wohnungsgeber ist, wer euch die Wohnung überlässt. Habt ihr einen eigenen Vertrag mit dem Vermieter oder steht ihr im gemeinsamen Hauptmietvertrag, ist es der Vermieter oder die Hausverwaltung. Bei Untermiete ist der Hauptmieter der Wohnungsgeber und muss die Bestätigung selbst ausstellen. Er muss den Einzug innerhalb der zwei Wochen bestätigen. Weigert er sich oder kommt sie nicht rechtzeitig, sagt ihr der Meldebehörde sofort Bescheid.',
+				'Wohnungsgeber ist, wer euch die Wohnung überlässt. Habt ihr einen eigenen Vertrag mit dem Vermieter oder steht ihr im gemeinsamen Hauptmietvertrag, ist es der Vermieter oder die Hausverwaltung. Bei [Untermiete](/wg-mietvertrag) ist der Hauptmieter der Wohnungsgeber und muss die Bestätigung selbst ausstellen. Er muss den Einzug innerhalb der zwei Wochen bestätigen. Weigert er sich oder kommt sie nicht rechtzeitig, sagt ihr der Meldebehörde sofort Bescheid.',
 			],
 			[
 				'Wenn der Hauptmieter die Bestätigung verweigert',
@@ -1750,7 +1750,7 @@ export const RATGEBER: Record<string, Thema> = {
 	},
 	'splitwise-splid-wechseln': {
 		link: 'Von Splitwise oder Splid wechseln',
-		stand: '2026-10-21',
+		stand: '2026-10-27',
 		erschienen: '2026-10-21',
 		titel: 'Von Splitwise oder Splid wechseln: CSV-Import | ManaWG',
 		beschreibung:
@@ -1785,7 +1785,7 @@ export const RATGEBER: Record<string, Thema> = {
 			],
 			[
 				'Nach dem Wechsel',
-				'Ab jetzt läuft alles in der [WG-Kasse](/wg-kasse): Ausgaben teilen, Salden sehen, Ausgleiche mit wenigen Überweisungen vorschlagen lassen, Fixkosten und Monatsabrechnung. Offene Salden aus dem alten System gleicht ihr am besten aus, bevor ihr wechselt, oder ihr übernehmt sie per Import. Wie ihr Schulden fair ausgleicht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner). Einen Vergleich der Apps findet ihr unter [Splitwise-Alternative](/splitwise-alternative) und [Splid-Alternative](/splid-alternative).',
+				'Ab jetzt läuft alles in der [WG-Kasse](/wg-kasse): Ausgaben teilen, Salden sehen, Ausgleiche mit wenigen Überweisungen vorschlagen lassen, Fixkosten und Monatsabrechnung. Offene Salden aus dem alten System gleicht ihr am besten aus, bevor ihr wechselt, oder ihr übernehmt sie per Import. Wie ihr Schulden fair ausgleicht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner). Einen Vergleich der Apps findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative) und [Tricount-Alternative](/tricount-alternative), alle Kriterien unter [beste WG-App](/beste-wg-app).',
 			],
 		],
 		fragen: [

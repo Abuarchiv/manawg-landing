@@ -1,6 +1,6 @@
 // Ratgeber rund ums Geld in der WG; wird in themen.ts eingebunden.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
-import { euro, mieteAnteile } from './miete-rechner';
+import { euro, mieteAnteile } from './miete-rechner.ts';
 import type { Thema } from './themen';
 
 // Beispiel der Mietseite: Werte kommen aus mieteAnteile, nicht von Hand.
@@ -33,7 +33,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 			],
 			[
 				'Die Formel mit Beispiel',
-				`Jedes Zimmer zahlt nach seiner Fläche, die Gemeinschaftsfläche wird gleichmäßig auf alle Personen verteilt. Als Formel: Anteil = Miete × (Zimmerfläche + Gemeinschaftsfläche ÷ Personenzahl) ÷ (Summe aller Zimmerflächen + Gemeinschaftsfläche). Beispiel: ${euro(BEISPIEL_MIETE_CENT)} Miete, drei Zimmer mit 12, 18 und 24 m² und ${BEISPIEL_GEMEINSCHAFT} m² Gemeinschaftsfläche. Jedes Zimmer bekommt 6 m² dazu und zählt dann 18, 24 und 30 m², zusammen 72 m². Auf den Cent wird so gerundet, dass die Anteile genau die Miete ergeben.`,
+				`Jedes Zimmer zahlt nach seiner Fläche, die Gemeinschaftsfläche wird gleichmäßig auf alle Personen verteilt. Als Formel: Anteil = Miete × (Zimmerfläche + Gemeinschaftsfläche ÷ Personenzahl) ÷ (Summe aller Zimmerflächen + Gemeinschaftsfläche). Beispiel: ${euro(BEISPIEL_MIETE_CENT)} Miete, drei Zimmer mit 12, 18 und 24 m² und ${BEISPIEL_GEMEINSCHAFT} m² Gemeinschaftsfläche. Jedes Zimmer bekommt 6 m² dazu und zählt dann 18, 24 und 30 m², zusammen 72 m². Auf den Cent wird so gerundet, dass die Anteile genau die Miete ergeben. Andere Modelle, etwa gleiche Anteile oder gemischte Aufteilungen, stehen unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen).`,
 			],
 			[
 				'Zuschläge: Balkon, eigenes Bad, Dachschräge',
@@ -99,7 +99,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Ein Beitrag pro Wohnung',
-				'Im privaten Bereich ist nach § 2 Absatz 1 des Rundfunkbeitragsstaatsvertrags (RBStV) für jede Wohnung ein Rundfunkbeitrag zu entrichten, und zwar vom Inhaber der Wohnung. Inhaber ist jede volljährige Person, die die Wohnung selbst bewohnt (§ 2 Absatz 2). Als Inhaber wird vermutet, wer dort nach dem Melderecht gemeldet ist oder im Mietvertrag als Mieter steht. Wie viele Personen in der Wohnung leben, spielt für die Höhe laut Beitragsservice keine Rolle.',
+				'Im privaten Bereich ist nach § 2 Absatz 1 des Rundfunkbeitragsstaatsvertrags (RBStV) für jede Wohnung ein Rundfunkbeitrag zu entrichten, und zwar vom Inhaber der Wohnung. Inhaber ist jede volljährige Person, die die Wohnung selbst bewohnt (§ 2 Absatz 2). Als Inhaber wird vermutet, wer dort nach dem Melderecht gemeldet ist (siehe [Anmeldung in der WG](/wg-anmeldung)) oder im Mietvertrag als Mieter steht. Wie viele Personen in der Wohnung leben, spielt für die Höhe laut Beitragsservice keine Rolle.',
 			],
 			[
 				'Mitbewohner zahlt bereits: so meldet ihr euch ab',
@@ -107,7 +107,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 			],
 			[
 				'Den Beitrag teilen',
-				`Der Beitrag beträgt ${euro(RUNDFUNK_MONAT_CENT)} im Monat je Wohnung. Üblich ist die Zahlung für drei Monate, also ${euro(RUNDFUNK_QUARTAL_CENT)} im Quartal. Auf Wunsch geht es auch halbjährlich (${euro(RUNDFUNK_MONAT_CENT * 6)}) oder jährlich (${euro(RUNDFUNK_MONAT_CENT * 12)}) im Voraus. Die Tabelle zeigt den Betrag bei gleichem Anteil für alle (Stand 27. Oktober 2026, laut rundfunkbeitrag.de). Ändert sich der Beitrag, rechnet ihr neu. Den aktuellen Betrag findet ihr auf rundfunkbeitrag.de.`,
+				`Der Beitrag beträgt ${euro(RUNDFUNK_MONAT_CENT)} im Monat je Wohnung. Üblich ist die Zahlung für drei Monate, also ${euro(RUNDFUNK_QUARTAL_CENT)} im Quartal. Auf Wunsch geht es auch halbjährlich (${euro(RUNDFUNK_MONAT_CENT * 6)}) oder jährlich (${euro(RUNDFUNK_MONAT_CENT * 12)}) im Voraus. Die Tabelle zeigt den Betrag bei gleichem Anteil für alle (Stand 27. Oktober 2026, laut rundfunkbeitrag.de). Ändert sich der Beitrag, rechnet ihr neu. Den aktuellen Betrag findet ihr auf rundfunkbeitrag.de. Wie ihr Strom, Internet und Nachzahlungen teilt, steht unter [WG-Nebenkosten](/wg-nebenkosten).`,
 			],
 			[
 				'Wer haftet',

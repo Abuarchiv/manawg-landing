@@ -1,8 +1,8 @@
 // Themenseiten für Suchanfragen, die die Startseite allein nicht abdeckt.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
-import { NG, vergleichsTabelle } from './gruppen';
-import { RATGEBER } from './ratgeber';
-import { RATGEBER_GELD } from './ratgeber-geld';
+import { NG, vergleichsTabelle } from './gruppen.ts';
+import { RATGEBER_GELD } from './ratgeber-geld.ts';
+import { RATGEBER } from './ratgeber.ts';
 
 export interface Thema {
 	/** Kurzer Linktext für Querverweise. */
@@ -45,7 +45,7 @@ export const THEMEN: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Warum eine App statt Zettel und WhatsApp',
-				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Das spart Nachfragen und Streit darüber, wer was zugesagt hatte.',
+				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Das spart Nachfragen und Streit darüber, wer was zugesagt hatte. Welche Kriterien bei der Wahl zählen, zeigt die Seite [WG-Apps im Vergleich](/beste-wg-app).',
 			],
 			[
 				'Ausgaben teilen und Schulden ausgleichen',
@@ -164,7 +164,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'wg-kasse': {
 		link: 'WG-Kasse',
-		stand: '2026-10-23',
+		stand: '2026-10-27',
 		erschienen: '2026-10-09',
 		titel: 'WG Kasse App: Ausgaben teilen, Abrechnung | ManaWG',
 		beschreibung:
@@ -187,7 +187,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Fixkosten automatisch buchen',
-				'Miete, Strom, Internet oder Streaming legt ihr einmal als Fixkosten an. Das Intervall zählt in ganzen Monaten, zum Beispiel monatlich oder alle drei Monate. Fällige Vorlagen bucht die App täglich selbst als Ausgabe. Ein Termin am 31. rutscht im Februar auf den 28. und springt danach zurück. Eine Vorlage lässt sich pausieren. Wöchentliche Intervalle gibt es nicht.',
+				'Miete, Strom, Internet oder Streaming legt ihr einmal als Fixkosten an. Das Intervall zählt in ganzen Monaten, zum Beispiel monatlich oder alle drei Monate. Fällige Vorlagen bucht die App täglich selbst als Ausgabe. Ein Termin am 31. rutscht im Februar auf den 28. und springt danach zurück. Eine Vorlage lässt sich pausieren. Wöchentliche Intervalle gibt es nicht. Wie ihr die Miete nach Zimmergröße verteilt, rechnet der [WG-Miete-Rechner](/wg-miete-rechner) vor. Strom, Internet und Nachzahlungen behandelt der Ratgeber [WG-Nebenkosten](/wg-nebenkosten), den Rundfunk die Seite [Rundfunkbeitrag in der WG](/rundfunkbeitrag-wg).',
 			],
 			[
 				'Die Monatsabrechnung',
@@ -195,7 +195,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Erinnern ohne Streit',
-				'Auf der Seite Mahnungen löst ein Mitglied per Erinnern-Button eine Zahlungserinnerung aus. Eine Abkühlzeit begrenzt, wie oft das hintereinander möglich ist, und ein Rate-Limit bremst zu viele Anfragen. Der Saldo bleibt für alle jederzeit einsehbar, etwa in der Monatsabrechnung. Die Seite ist ein eigener Bereich der WG, neben Ausgaben, Abrechnung und Aktivität.',
+				'Auf der Seite Mahnungen löst ein Mitglied per Erinnern-Button eine Zahlungserinnerung aus. Eine Abkühlzeit begrenzt, wie oft das hintereinander möglich ist, und ein Rate-Limit bremst zu viele Anfragen. Der Saldo bleibt für alle jederzeit einsehbar, etwa in der Monatsabrechnung. Die Seite ist ein eigener Bereich der WG, neben Ausgaben, Abrechnung und Aktivität. Wie ihr offene Beträge ohne Streit ansprecht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).',
 			],
 			[
 				'Umzug aus Splitwise oder Splid',
@@ -290,7 +290,7 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'splitwise-alternative': {
 		link: 'Splitwise-Alternative',
-		stand: '2026-10-14',
+		stand: '2026-10-27',
 		erschienen: '2026-10-09',
 		titel: 'Splitwise-Alternative ohne Werbung und Paywall | ManaWG',
 		beschreibung:
@@ -340,7 +340,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Mehr als eine Kasse',
-				'Ihr teilt gleichmäßig oder mit eigenen Beträgen, legt Fixkosten wie Miete an und bekommt Überweisungsvorschläge. Dazu gibt es Monatsabrechnung, Putzplan mit fairer Rotation, Einkaufsliste mit Übernahme als Ausgabe, Kalender-Abo, Pinnwand und Chat. Das Geld überweist ihr selbst, in ManaWG markiert ihr einzelne Anteile oder alles auf einmal als bezahlt. Eine Bankanbindung gibt es nicht.',
+				'Ihr teilt gleichmäßig oder mit eigenen Beträgen, legt Fixkosten wie Miete an und bekommt Überweisungsvorschläge. Dazu gibt es Monatsabrechnung, Putzplan mit fairer Rotation, Einkaufsliste mit Übernahme als Ausgabe, Kalender-Abo, Pinnwand und Chat. Das Geld überweist ihr selbst, in ManaWG markiert ihr einzelne Anteile oder alles auf einmal als bezahlt. Eine Bankanbindung gibt es nicht. Die Kasse im Detail beschreibt die Seite [WG-Kasse](/wg-kasse), den Putzplan die Seite [WG Putzplan App](/putzplan).',
 			],
 		],
 		fragen: [
@@ -555,7 +555,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wann ManaWG besser passt',
-				'Ihr wohnt dauerhaft zusammen und teilt Ausgaben jeden Monat.\nMiete, Internet und Strom legt ihr einmal als Fixkosten an, im Rhythmus ganzer Monate. ManaWG bucht sie automatisch.\nDie Monatsabrechnung zeigt Gesamtsumme, Ausgaben je Kategorie und Überweisungsvorschläge mit wenigen Zahlungen.\nAn offene Beträge könnt ihr die Schuldner erinnern, mit Abkühlzeit gegen Dauerpiepen.\nPutzplan, Einkaufsliste und Kalender stehen in derselben App, dazu Pinnwand und Chat.',
+				'Ihr wohnt dauerhaft zusammen und teilt Ausgaben jeden Monat.\nMiete, Internet und Strom legt ihr einmal als Fixkosten an, im Rhythmus ganzer Monate. ManaWG bucht sie automatisch.\nDie Monatsabrechnung zeigt Gesamtsumme, Ausgaben je Kategorie und Überweisungsvorschläge mit wenigen Zahlungen.\nAn offene Beträge könnt ihr die Schuldner erinnern, mit Abkühlzeit gegen Dauerpiepen.\nPutzplan, Einkaufsliste und Kalender stehen in derselben App, dazu Pinnwand und Chat. Die Kasse im Detail beschreibt die Seite [WG-Kasse](/wg-kasse).',
 			],
 			[
 				'Ehrliche Grenzen',
@@ -610,7 +610,7 @@ export const THEMEN: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Fairness statt Punkte',
-				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene Aufgaben, offene Termine und Überfälliges. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins.',
+				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene Aufgaben, offene Termine und Überfälliges. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
 			],
 			[
 				'Putzplan mit festem Rhythmus',
@@ -618,7 +618,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Kasse und Putzplan in einer App',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person. ManaWG rechnet in Cent, die Anteile ergeben immer genau den Betrag. Jede Ausgabe bekommt eine von sechs Kategorien, etwa Lebensmittel oder Haushalt. Die App zeigt Salden und schlägt Überweisungen vor, damit wenige nötig sind. Bezahlt markiert ihr per Hand, ManaWG selbst überweist kein Geld.',
+				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen pro Person. ManaWG rechnet in Cent, die Anteile ergeben immer genau den Betrag. Jede Ausgabe bekommt eine von sechs Kategorien, etwa Lebensmittel oder Haushalt. Die App zeigt Salden und schlägt Überweisungen vor, damit wenige nötig sind. Bezahlt markiert ihr per Hand, ManaWG selbst überweist kein Geld. Mehr zur Abrechnung unter [WG-Kasse](/wg-kasse).',
 			],
 			[
 				'Fixkosten und Monatsabrechnung',

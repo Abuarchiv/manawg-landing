@@ -80,8 +80,40 @@ export const FUNKTION_ZU_RATGEBER: Record<string, string[]> = {
 const funktionVon = (slug: string) =>
 	Object.keys(FUNKTION_ZU_RATGEBER).find((f) => FUNKTION_ZU_RATGEBER[f]?.includes(slug));
 
+/** Feste, thematisch gewählte „Weiterlesen“-Ziele; alle anderen Seiten nehmen den Rückfall in verwandte(). */
+const WEITERLESEN: Record<string, string[]> = {
+	'wg-miete-rechner': ['wg-kasse', 'wg-kosten-aufteilen', 'wg-nebenkosten'],
+	'wg-nebenkosten': ['wg-kasse', 'wg-miete-rechner', 'rundfunkbeitrag-wg'],
+	'rundfunkbeitrag-wg': ['wg-nebenkosten', 'wg-anmeldung', 'wg-kasse'],
+	'wg-haushaltskasse': ['wg-kasse', 'wg-kosten-aufteilen', 'wg-einkauf-organisieren'],
+	'schulden-mitbewohner': ['wg-kasse', 'wg-streit-loesen', 'wg-auszug-checkliste'],
+	'splitwise-splid-wechseln': ['wg-kasse', 'splitwise-alternative', 'splid-alternative'],
+	'putzplan-vorlage': ['putzplan', 'putzplan-erstellen', 'wg-regeln'],
+	'putzplan-erstellen': ['putzplan', 'putzplan-vorlage', 'wg-regeln'],
+	'wg-einkauf-organisieren': ['einkaufsliste', 'wg-haushaltskasse', 'wg-kosten-aufteilen'],
+	'wg-mietvertrag': ['wg-gruenden-checkliste', 'wg-zwischenmiete', 'mitbewohner-kuendigen'],
+	'wg-zwischenmiete': ['wg-mietvertrag', 'wg-abwesenheit-urlaub', 'wg-auszug-checkliste'],
+	'wg-anmeldung': ['wg-einzug-checkliste', 'wg-mietvertrag', 'rundfunkbeitrag-wg'],
+	'wg-auszug-checkliste': ['wg-zwischenmiete', 'wg-anmeldung', 'schulden-mitbewohner'],
+	'wg-streit-loesen': ['wg-regeln', 'schulden-mitbewohner', 'mitbewohner-kuendigen'],
+	'mitbewohner-kuendigen': ['wg-mietvertrag', 'wg-streit-loesen', 'wg-auszug-checkliste'],
+	'wg-regeln': ['wg-app', 'wg-streit-loesen', 'wg-einzug-checkliste'],
+	'wg-casting-fragen': ['mitbewohner-finden', 'wg-regeln', 'wg-einzug-checkliste'],
+	'mitbewohner-finden': ['wg-casting-fragen', 'wg-mietvertrag', 'wg-einzug-checkliste'],
+	'wg-abwesenheit-urlaub': ['putzplan', 'wg-zwischenmiete', 'wg-nebenkosten'],
+	'splitwise-alternative': ['beste-wg-app', 'splid-alternative', 'wg-kasse'],
+	'splid-alternative': ['beste-wg-app', 'tricount-alternative', 'wg-kasse'],
+	'tricount-alternative': ['beste-wg-app', 'splitwise-alternative', 'wg-kasse'],
+	'flatastic-alternative': ['beste-wg-app', 'ourhome-alternative', 'putzplan'],
+	'ourhome-alternative': ['beste-wg-app', 'flatastic-alternative', 'putzplan'],
+	faq: ['wg-app', 'wg-kasse', 'putzplan'],
+	'ueber-manawg': ['faq', 'wg-app', 'beste-wg-app'],
+};
+
 /** Drei verwandte Seiten: Ratgeber zuerst die passende Funktionsseite, Funktionen zuerst ihre Ratgeber, dann die eigene Gruppe. */
 export function verwandte(slug: string): string[] {
+	const w = WEITERLESEN[slug];
+	if (w) return w;
 	const g = gruppeVon(slug);
 	if (!g) return [];
 	const i = g.slugs.indexOf(slug);

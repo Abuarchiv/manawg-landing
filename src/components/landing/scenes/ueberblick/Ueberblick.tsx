@@ -20,10 +20,10 @@ export function Ueberblick() {
 				</h2>
 				<div className={s.text}>
 					<p>
-						ManaWG ist eine kostenlose WG-App auf Deutsch. Sie läuft im Browser und lässt sich wie
-						eine App auf den Startbildschirm legen. Sie bündelt, was in einer Wohngemeinschaft sonst
-						auf Zettel, Tabellen und den Gruppenchat verteilt ist: Geld, Putzen, Einkauf, Termine
-						und Absprachen.
+						ManaWG ist eine kostenlose <a href="/wg-app">WG-App</a> auf Deutsch. Sie läuft im
+						Browser und lässt sich wie eine App auf den Startbildschirm legen. Sie bündelt, was in
+						einer Wohngemeinschaft sonst auf Zettel, Tabellen und den Gruppenchat verteilt ist:
+						Geld, Putzen, Einkauf, Termine und Absprachen.
 					</p>
 					<p>
 						In der <a href="/wg-kasse">WG-Kasse</a> tragt ihr Ausgaben ein und teilt sie gleich oder
@@ -43,7 +43,8 @@ export function Ueberblick() {
 					</p>
 					<p>
 						Kalender, Pinnwand und Chat halten Termine und Absprachen an einem Ort. Antworten auf
-						häufige Fragen stehen in den <a href="/faq">Fragen zu ManaWG</a>, Tipps zu Mietvertrag,
+						häufige Fragen stehen in den <a href="/faq">Fragen zu ManaWG</a>, den Vergleich mit
+						anderen Apps unter <a href="/beste-wg-app">beste WG-App</a>, Tipps zu Mietvertrag,
 						WG-Casting und Putzplan in den <a href="/ratgeber">WG-Ratgebern</a>.
 					</p>
 				</div>

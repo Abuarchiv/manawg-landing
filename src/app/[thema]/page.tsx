@@ -179,19 +179,28 @@ export default async function ThemaPage({ params }: Props) {
 		...(quellen.length > 0 ? { citation: quellen.map(([, url]) => url) } : {}),
 	};
 
-	// Ratgeber hängen unter der Übersicht /ratgeber (dreistufige Brotkrume).
+	// Ratgeber hängen unter /ratgeber, Vergleiche unter /beste-wg-app, Funktionen unter /wg-app (dreistufige Brotkrume).
 	const istRatgeber = gruppeVon(thema)?.name === 'Ratgeber';
+	const gruppe = gruppeVon(thema)?.name;
+	const eltern: [string, string] | null =
+		gruppe === 'Ratgeber'
+			? ['Ratgeber', '/ratgeber']
+			: gruppe === 'Vergleiche' && thema !== 'beste-wg-app'
+				? ['Beste WG-App', '/beste-wg-app']
+				: gruppe === 'Funktionen' && thema !== 'wg-app'
+					? ['WG-App', '/wg-app']
+					: null;
 	const breadcrumb = {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
 		itemListElement: [
 			{ '@type': 'ListItem', position: 1, name: 'ManaWG', item: `${site}/` },
-			...(istRatgeber
-				? [{ '@type': 'ListItem', position: 2, name: 'Ratgeber', item: `${site}/ratgeber` }]
+			...(eltern
+				? [{ '@type': 'ListItem', position: 2, name: eltern[0], item: `${site}${eltern[1]}` }]
 				: []),
 			{
 				'@type': 'ListItem',
-				position: istRatgeber ? 3 : 2,
+				position: eltern ? 3 : 2,
 				name: t.link,
 				item: `${site}/${thema}`,
 			},
@@ -248,9 +257,12 @@ export default async function ThemaPage({ params }: Props) {
 							ManaWG
 						</Link>
 					</li>
-					{istRatgeber && (
+					{eltern && (
 						<li>
-							/ <Link href="/ratgeber">Ratgeber</Link>
+							/{' '}
+							<Link href={eltern[1]} prefetch={false}>
+								{eltern[0]}
+							</Link>
 						</li>
 					)}
 					<li aria-current="page">/ {t.link}</li>
@@ -431,7 +443,7 @@ export default async function ThemaPage({ params }: Props) {
 									>
 										<span className="font-[family-name:'Inter_Tight'] font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
 											{v.h1}
-										</span>
+										</span>{' '}
 										<span className={mono}>{gruppeVon(vs)?.name}</span>
 									</Link>
 								</li>
