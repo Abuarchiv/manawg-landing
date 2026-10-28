@@ -122,6 +122,13 @@
 			const sub = M.flags.filter((f) => rel.includes(f) && set.includes(f)).join('+') || '-';
 			n = { ...base, p: base.v ? base.p : (M.pg[`${rt}|${sub}`] ?? base.p) };
 		}
+		// Endzustand der Aufnahme (Tiefe erreicht, keine eigenen Kanten): Bedienung wie der Zustand des letzten Schritts, sonst wie die Route
+		if (n.v && !n.x && !n.o && !Object.keys(n.e).length) {
+			const rt = id.split('|')[0];
+			const alt = `${rt}|${id.split('>').pop()}`;
+			const x = alt !== id && M.nodes['-'][alt] ? alt : `${rt}|`;
+			if (x !== id) n = { ...n, x };
+		}
 		if (n.x) n = { ...n, e: { ...(node(w, n.x)?.e ?? {}), ...n.e } }; // Zustand direkt nach einer Änderung: Bedienung wie die Route
 		return n;
 	};

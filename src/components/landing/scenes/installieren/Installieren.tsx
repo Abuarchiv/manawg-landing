@@ -56,9 +56,9 @@ const WEGE: { name: string; schritte: string[] }[] = [
 	},
 ];
 const BILDER = {
-	'--b-ios': '/install/seite-ios-gast.webp',
-	'--b-and': '/install/seite-android-gast.webp',
-	'--b-app': '/install/app-start.webp',
+	'--b-ios': '/install/seite-ios-gast-dunkel.webp',
+	'--b-and': '/install/seite-android-gast-dunkel.webp',
+	'--b-app': '/install/app-start-dunkel.webp',
 };
 // Rahmen des Designs: Handy 300 x 620, Rechner 600 x 400
 const RAHMEN = [
