@@ -1,6 +1,6 @@
-/* Raum für den Übergang Handy → So geht's (scenes/zerfall): schwarz, gut vier Fünftel der Bildschirmhöhe. */
+/* Raum für den Übergang Handy → So geht's (scenes/zerfall): schwarz, gut die halbe Bildschirmhöhe. */
 .band {
 	position: relative;
-	height: 80lvh;
+	height: 55lvh;
 	background: #0a0a0a;
 }

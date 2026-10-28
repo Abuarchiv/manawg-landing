@@ -154,7 +154,7 @@ const bauKey = (s: TiefeState): string => `${s.mode}${flaeche(s)}`;
 function build(s: TiefeState) {
 	const hoch = s.mode === 'hoch';
 	const k = hoch ? 0.5 : 1; // Streuung der Inseln und des Zeigerversatzes an die Boxbreite anpassen
-	const target = ((hoch ? 0.72 : 0.5) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9 (hoch: 72 % der Breite)
+	const target = ((hoch ? 0.82 : 0.5) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9 (hoch: 82 % der Breite)
 	s.isl = s.raw.map((r, i): Insel => {
 		// Querformat wie im Entwurf: Maßstab 1, Raster 5 px, Mitte der Abtast-Fläche. Hochformat: Wort an die Breite angepasst.
 		const sc = hoch ? cl(target / (r.width / 85), 0.25, 1.5) : 1;
@@ -530,8 +530,11 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			zeichnePunkte(s, nb, { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm });
 			// Am Ende der Fahrt scrollt die Bühne nach oben weg: Wortzeile und Tiefenzähler blenden dabei aus, sonst
 			// fährt der letzte Satz über den Titel der nächsten Szene
-			const aus = 1 - cl(-s.el.getBoundingClientRect().top / (0.3 * s.H));
+			const oben = -s.el.getBoundingClientRect().top;
+			const aus = 1 - cl(oben / (0.12 * s.H));
 			if (s.dep) s.dep.style.opacity = aus.toFixed(3);
+			// Wortbild langsamer: sonst steht beim Zurückscrollen das letzte Wort über „Installieren“
+			ctx.canvas.style.opacity = (1 - cl(oben / (0.4 * s.H))).toFixed(3);
 			s.caps.forEach((el, i) => {
 				const ky = el.getBoundingClientRect().top - kopfUnten;
 				const op = ((zonen[i]?.w ?? 0) * cl(ky / 28) * aus).toFixed(3);

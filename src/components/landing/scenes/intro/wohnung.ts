@@ -73,13 +73,12 @@ const PEOC = [
  */
 export function karten(P: number): number[] {
 	const fpA = ss((P - 0.58) / 0.05);
-	const endA = ss((P - 0.9) / 0.05);
 	const fs = cl((P - 0.62) / 0.28) * 5;
 	return [0, 1, 2, 3].map((j) => {
 		const d = Math.abs(fs - (j + 1));
-		// die letzte Karte (Pinnwand & Chat) bleibt, bis die Wohnung wegzoomt (endA); sie ist wie die Fläche bei
-		// endA 0,5 weg, erst danach blenden Titel und Handy der Ende-Ebene ein (Ende.module.css): nie Text über Text
-		if (j === 3 && fs > 4) return fpA * (1 - cl(endA * 2));
+		// die letzte Karte (Pinnwand & Chat) bleibt während der Fahrt zur Übersicht und geht mit deren Ende (P 0,9),
+		// sonst stünde sie grau über der sich auflösenden Wohnung; Titel und Handy der Ende-Ebene kommen danach
+		if (j === 3 && fs > 4) return fpA * (1 - ss((P - 0.87) / 0.03));
 		return fpA * ss((0.5 - d) / 0.25);
 	});
 }
