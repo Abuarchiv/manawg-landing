@@ -189,6 +189,10 @@
 		const nav = app.querySelector('nav[data-app-chrome]');
 		const shell = app.querySelector('[style*="--app-nav-height"]');
 		if (nav && shell) shell.style.setProperty('--app-nav-height', `${nav.offsetHeight}px`);
+		// Der Chat misst seine Höhe in der App per Skript (bis zur Tableiste); die Aufnahme hat sie ohne Insets fest
+		// eingetragen, sonst läge die Eingabezeile hinter der Tableiste
+		const chat = app.querySelector('[data-chat-frame]');
+		if (chat && nav) chat.style.height = `${nav.getBoundingClientRect().top - chat.getBoundingClientRect().top}px`;
 		document.body.setAttribute('style', n.b || '');
 		const next = [];
 		[...app.querySelectorAll('nav')].forEach((nv, i) => {
