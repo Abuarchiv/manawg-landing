@@ -2,7 +2,7 @@
 
 import { glSichtbar } from '../../../core/canvas';
 import type { Fit } from '../../../core/canvas';
-import { loop, qa } from '../../../core/loop';
+import { qa } from '../../../core/loop';
 import { atlanten, divArray, tileArray } from './atlas';
 import { STEP } from './konstanten';
 import { VS, fsSrc } from './shader';
@@ -107,8 +107,6 @@ const uniformTabelle = (f: (name: string) => WebGLUniformLocation | null): Unifo
 		uCell0: f('uCell0'),
 		uCellN: f('uCellN'),
 		uZer: f('uZer'),
-		uVar: f('uVar'),
-		uGly: f('uGly'),
 	};
 };
 
@@ -123,18 +121,7 @@ function frisch(
 	gl: WebGL2RenderingContext,
 ): Pick<
 	Ebene,
-	| 'dead'
-	| 'ready'
-	| 'stage'
-	| 'zeile'
-	| 'last'
-	| 'prs'
-	| 'cells'
-	| 'ext'
-	| 'u'
-	| 'vao'
-	| 'gly'
-	| 'glyFv'
+	'dead' | 'ready' | 'stage' | 'zeile' | 'last' | 'prs' | 'cells' | 'ext' | 'u' | 'vao'
 > {
 	const vao = gl.createVertexArray();
 	if (!vao) throw new Error('hand: Vertex-Array nicht erzeugt');
@@ -149,8 +136,6 @@ function frisch(
 		ext: gl.getExtension('KHR_parallel_shader_compile'),
 		u: [leereOrte(), leereOrte()],
 		vao,
-		gly: null,
-		glyFv: -1,
 	};
 }
 
@@ -248,9 +233,6 @@ function setUniforms(
 	gl.uniform2i(u.uCell0, cells.i0, cells.j0);
 	gl.uniform2i(u.uCellN, cells.cw, cells.ch);
 	gl.uniform1f(u.uZer, S.zer);
-	// Varianten: A/C Stichlinien im Abstand von 3,4 CSS-px, B Zeichenzellen 7 CSS-px breit (beides in Bühnen-px)
-	const v = loop.v === 'b' ? 2 : loop.v ? 1 : 0;
-	gl.uniform2f(u.uVar, v, (v === 2 ? 7 : 3.4) / cam.f);
 }
 
 function initProgram(L: Ebene, k: 0 | 1): void {
@@ -265,7 +247,6 @@ function initProgram(L: Ebene, k: 0 | 1): void {
 	gl.uniform1i(u.uTH, 0);
 	gl.uniform1i(u.uTP, 1);
 	gl.uniform1i(u.uTone, 2);
-	gl.uniform1i(u.uGly, 3);
 	gl.uniform4fv(u.uHT, tileArray(mh));
 	gl.uniform4fv(u.uPT, tileArray(mp));
 	gl.uniform1fv(u.uDiv, divArray(mh));
@@ -357,35 +338,7 @@ export function readyStep(L: Ebene): boolean {
 		gl.disable(gl.BLEND);
 		L.ready = true;
 	}
-	if (loop.v === 'b' && L.glyFv !== loop.fv) zeichenBlatt(L);
 	return true;
-}
-
-// Variante B: Rampe als Zeichenblatt (zehn Glyphen à 48 x 70 px) auf Einheit 3
-const RAMPE = ' .:-=+*#%@';
-function zeichenBlatt(L: Ebene): void {
-	const { gl } = L;
-	const cv = document.createElement('canvas');
-	cv.width = 48 * RAMPE.length;
-	cv.height = 70;
-	const g = cv.getContext('2d');
-	if (!g) return;
-	g.font = '500 60px "JetBrains Mono", monospace';
-	g.textAlign = 'center';
-	g.textBaseline = 'middle';
-	g.fillStyle = '#fff';
-	for (let i = 0; i < RAMPE.length; i++) g.fillText(RAMPE[i] ?? '', 48 * i + 24, 37);
-	L.gly ??= gl.createTexture();
-	gl.activeTexture(gl.TEXTURE3);
-	gl.bindTexture(gl.TEXTURE_2D, L.gly);
-	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, cv);
-	gl.generateMipmap(gl.TEXTURE_2D);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	gl.activeTexture(gl.TEXTURE2);
-	L.glyFv = loop.fv;
 }
 
 /** Zeichnet eine Ebene in zwei Durchgängen (Ton je Zelle, dann Punkte). false, solange sie nicht bereit ist. */

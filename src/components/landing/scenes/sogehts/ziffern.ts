@@ -211,32 +211,6 @@ export function registerZiffer(
 			const dpr = s.dpr;
 			ctx.globalAlpha = 1;
 			const tq = Math.floor(loop.now / 0.09);
-			if (loop.v === 'a') {
-				// Variante A: jede Zelle ein Stichelzug unter 45°, Nachbarn schließen zu durchgehenden Linien. Der Rand
-				// trägt breite Züge, der Körper Haarlinien; ausgelenkte Zellen drehen ihren Zug in die Flugrichtung.
-				ctx.strokeStyle = '#FAFAFA';
-				ctx.lineCap = 'butt';
-				const h = (cs / 2) * dpr;
-				for (const breit of [true, false]) {
-					ctx.lineWidth = (breit ? 1.7 : 0.7) * dpr;
-					ctx.globalAlpha = breit ? 1 : 0.6;
-					ctx.beginPath();
-					for (const c of s.cells) {
-						if ((c.ton === 0) !== breit) continue;
-						const mx = (c.x + c.ox + cs / 2) * dpr;
-						const my = (c.y + c.oy + cs / 2) * dpr;
-						const sp = Math.hypot(c.vx, c.vy);
-						const k = Math.min(1, sp / 2);
-						const ux = 1 - k + (k * c.vx) / (sp || 1);
-						const uy = -(1 - k) + (k * c.vy) / (sp || 1);
-						ctx.moveTo(mx - ux * h, my - uy * h);
-						ctx.lineTo(mx + ux * h, my + uy * h);
-					}
-					ctx.stroke();
-				}
-				ctx.globalAlpha = 1;
-				return;
-			}
 			for (const c of s.cells) {
 				const dx = Math.round((c.x + c.ox + cs / 2) * dpr - z / 2);
 				const dy = Math.round((c.y + c.oy + cs / 2) * dpr - z / 2);

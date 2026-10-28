@@ -161,8 +161,6 @@ export interface Uniforms {
 	uCell0: WebGLUniformLocation | null;
 	uCellN: WebGLUniformLocation | null;
 	uZer: WebGLUniformLocation | null;
-	uVar: WebGLUniformLocation | null;
-	uGly: WebGLUniformLocation | null;
 }
 
 /** Zellraster des ersten Durchgangs: Zielgröße, Textur und Framebuffer. */
@@ -207,9 +205,6 @@ export interface Ebene {
 	vao: WebGLVertexArrayObject;
 	th: WebGLTexture | null;
 	tp: WebGLTexture | null;
-	/** Variante B: Zeichenblatt (Einheit 3) und der Schriftstand, mit dem es gebaut wurde. */
-	gly: WebGLTexture | null;
-	glyFv: number;
 	tq: TimerQuery | null;
 	pend: WebGLQuery[];
 	gpuMs: number[];
