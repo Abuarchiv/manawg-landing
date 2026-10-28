@@ -365,6 +365,14 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 		// Staub wird nie zum großen Symbol: ab etwa 6 Einheiten blendet er aus
 		if (!word) al *= cl((9 - sz) / 3);
 		if (al <= 0.01) continue;
+		if (loop.v === 'a') {
+			// Variante A: jeder Punkt ein waagrechter Stichelzug, Nachbarn im Wort schließen zur Linienschraffur wie
+			// gestochene Schrift auf einer Banknote; nah wird der Zug breiter statt zum Zeichen
+			const l = (hoch ? Math.max(1.5, sz * 0.7) : sz * 0.45) * f;
+			ctx.globalAlpha = al;
+			ctx.fillRect(X - l, Y, l * 2, Math.max(0.6, l * 0.28));
+			continue;
+		}
 		if (sz < 6) {
 			// Punkt: Quadrat der Kantenlänge 0,55 x sz; im Hochformat mit Mindestgröße
 			const side = hoch ? Math.max(word ? 1 : 1.5 * s.fl, sz * 0.8 * f) : sz * 0.55 * f;
