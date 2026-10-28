@@ -54,7 +54,9 @@ export function Intro() {
 				<canvas
 					data-intro="wohnung"
 					aria-hidden="true"
-					style={css(`${FLAECHE};opacity:var(--f,0)`)}
+					style={css(
+						`${FLAECHE};opacity:var(--f,0);clip-path:circle(calc(var(--por,1) * 90vmax) at 50% 50%)`,
+					)}
 				/>
 				<div
 					data-safe="1"

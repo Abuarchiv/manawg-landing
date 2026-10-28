@@ -326,7 +326,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	const sp = cl((c.P - 0.62) / 0.28);
 	// Aufbau am Scroll: erst ziehen sich die Wände, dann füllen sich die Böden im Bayer-Raster, zuletzt kommen
 	// Bewohner und Beschriftungen. Zur Ende-Ebene baut sich die Wohnung in umgekehrter Reihenfolge ab.
-	const bau = c.reduced ? 1 : cl((c.P - 0.578) / 0.1) * (1 - cl((c.P - 0.885) / 0.05));
+	const bau = c.reduced ? 1 : cl((c.P - 0.54) / 0.09) * (1 - cl((c.P - 0.885) / 0.05));
 	const bauWand = cl(bau / 0.55);
 	const bauBoden = cl((bau - 0.3) / 0.55);
 	const bauRest = cl((bau - 0.75) / 0.25);

@@ -261,6 +261,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 	const setzeStil = (
 		P: number,
 		fpA: number,
+		por: number,
 		endA: number,
 		karten: number[],
 		rb: DOMRect,
@@ -273,7 +274,9 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		if (P > 0.55 && root.dataset.nah !== '1') root.dataset.nah = '1';
 		setVar('--g', (1 - fpA).toFixed(3));
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
-		setVar('--f', (fpA * (1 - cl(endA * 2))).toFixed(3));
+		setVar('--f', (Math.max(fpA, cl(por * 8)) * (1 - cl(endA * 2))).toFixed(3));
+		// Portal: die Wohnung öffnet sich als Kreis im Loch des Organs, kein schwarzes Bild zwischen Tauchgang und Wohnung
+		setVar('--por', por.toFixed(3));
 		setVar('--e', endA.toFixed(3));
 		// Raumkarten am Scroll geführt wie im Entwurf (Kurve und Überlappfreiheit: wohnung.karten)
 		for (const [j, k] of karten.entries()) {
@@ -350,12 +353,13 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		const zoom = ss((P - 0.22) / 0.2);
 		const dive = ss((P - 0.48) / 0.12);
 		const fpA = ss((P - 0.58) / 0.05);
+		const por = loop.reduced ? 1 : ss((P - 0.54) / 0.06);
 		const endA = ss((P - 0.9) / 0.05);
 		const karten = wohnung.karten(P);
 		st.P = P;
 		st.s = s;
 
-		setzeStil(P, fpA, endA, karten, rb, visible);
+		setzeStil(P, fpA, por, endA, karten, rb, visible);
 		st.endOn = endA > 0.6 && rb.bottom > 0.625 * H;
 		passeAufloesung(raw);
 
@@ -407,7 +411,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 				heroDrawn = hero.frame(c, hm);
 			}
 			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
-			if (fpA > 0.001 && endA < 0.999) wohnung.draw(cvWo, c);
+			if ((fpA > 0.001 || por > 0.001) && endA < 0.999) wohnung.draw(cvWo, c);
 			if (P > 0.3 && !st.handsLoaded) {
 				st.handsLoaded = true;
 				hand.laden();
