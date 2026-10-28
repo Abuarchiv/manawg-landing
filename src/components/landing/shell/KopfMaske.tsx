@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { onLies } from '../core/loop';
 
 // Inhalt im Kopfband ausblenden: Läuft Text unter Logo und Knopf durch, deckt dieser Verlauf in der Farbe des
 // Abschnitts das Band (Kopfunterkante plus 28 px weicher Auslauf). Er wirkt nur, solange das Band im Inhalt
@@ -14,9 +15,10 @@ export function KopfMaske() {
 	useEffect(() => {
 		const el = ref.current as HTMLDivElement;
 		const kopf = document.querySelector('[data-kopf]') as HTMLElement | null;
-		let raf = 0;
+		// Liest in der Lesephase der Bildschleife: als eigener rAF nach den Szenen erzwang jedes Lesen ein Layout
+		let h = '';
+		let o = '';
 		const rechne = () => {
-			raf = 0;
 			const band = (kopf?.getBoundingClientRect().bottom ?? 64) + 10;
 			let v = 0;
 			const hoch = document.getElementById('final')?.dataset.mode === 'hoch';
@@ -33,20 +35,14 @@ export function KopfMaske() {
 				const b = document.querySelector('[data-buehne]');
 				if (b) v = Math.max(v, Math.min(1, Math.max(0, -b.getBoundingClientRect().top / 24)));
 			}
-			el.style.height = `${band + 28}px`;
-			el.style.opacity = v.toFixed(3);
-		};
-		const an = () => {
-			if (!raf) raf = requestAnimationFrame(rechne);
+			// nur geänderte Werte schreiben
+			const hn = `${band + 28}px`;
+			const on = v.toFixed(3);
+			if (hn !== h) el.style.height = h = hn;
+			if (on !== o) el.style.opacity = o = on;
 		};
 		rechne();
-		addEventListener('scroll', an, { passive: true });
-		addEventListener('resize', an);
-		return () => {
-			removeEventListener('scroll', an);
-			removeEventListener('resize', an);
-			cancelAnimationFrame(raf);
-		};
+		return onLies(rechne);
 	}, []);
 	return (
 		<div

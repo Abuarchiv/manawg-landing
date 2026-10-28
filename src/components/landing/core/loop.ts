@@ -136,6 +136,11 @@ export interface SceneDef<S extends SceneState = SceneState> {
 	 * bis es true meldet. Ohne warm zeichnet die Szene stattdessen einmal unsichtbar (frame).
 	 */
 	warm?(s: S): boolean;
+	/**
+	 * Weitere DOM-Lagen lesen (sichtbare Szenen, in der gemeinsamen Lesephase vor allen frame-Aufrufen): einzeln in
+	 * frame gelesen erzwingt jedes Lesen nach den Stil-Schreibern davor eine eigene Layout-Berechnung.
+	 */
+	lies?(s: S): void;
 	resize?(s: S): void;
 	ownsTouch?(s: S, e: TouchEvent): boolean;
 	onDown?(s: S): void;
@@ -156,6 +161,7 @@ interface Anmeldung<S extends SceneState = SceneState> {
 
 const scenes = new Set<Anmeldung>();
 const subs = new Set<BildFn>();
+const leser = new Set<() => void>(); // siehe onLies
 const vorn = new Set<BildFn>(); // vor den anderen Abonnenten und den Szenen (Lenis setzt hier die Scrollposition)
 let raf = 0;
 let last = 0;
@@ -329,12 +335,22 @@ function tick() {
 		lastDpr = window.devicePixelRatio;
 		refresh();
 	}
+	const mess = qa.spitzen as Spitze[] | undefined;
+	let m0 = mess ? performance.now() : 0;
+	const teile: [string, number][] = [];
+	const merk = (n: string) => {
+		if (!mess) return;
+		const m1 = performance.now();
+		if (m1 - m0 > 0.5) teile.push([n, Math.round((m1 - m0) * 10) / 10]);
+		m0 = m1;
+	};
 	for (const fn of vorn) {
 		try {
 			fn(loop.t, loop.dt, now, raw);
 		} catch (e) {
 			report('vorn', e);
 		}
+		merk(`vorn:${fn.name || '?'}`);
 	}
 	for (const fn of subs) {
 		try {
@@ -342,12 +358,18 @@ function tick() {
 		} catch (e) {
 			report('bühne', e);
 		}
+		merk(`sub:${fn.name || '?'}`);
 	}
 	warmFrei = true;
 	// Lagen aller Szenen gesammelt lesen, bevor eine Szene Stile schreibt: einzeln dazwischen gelesen erzwang
 	// jedes Lesen eine eigene Stilberechnung der Seite
 	const lagen = new Map<Anmeldung, DOMRect>();
-	for (const r of scenes) lagen.set(r, r.s.el.getBoundingClientRect());
+	for (const r of scenes) {
+		const rc = r.s.el.getBoundingClientRect();
+		lagen.set(r, rc);
+		if (r.def.lies && rc.bottom > 0 && rc.top < loop.vh) r.def.lies(r.s);
+	}
+	for (const fn of leser) fn();
 	for (const r of scenes) {
 		const rc = lagen.get(r) ?? r.s.el.getBoundingClientRect();
 		try {
@@ -355,7 +377,18 @@ function tick() {
 		} catch (e) {
 			report(`szene ${r.def.name ?? ''}`, e);
 		}
+		merk(r.def.name ?? '?');
 	}
+	if (mess) {
+		const sum = teile.reduce((t, x) => t + x[1], 0);
+		if (sum > 6) mess.push({ y: Math.round(sy), ms: Math.round(sum), teile });
+	}
+}
+/** Messhaken: Bilder mit mehr als 6 ms Rechenzeit, aufgeteilt nach Szene (qa.spitzen = [] setzt ihn scharf). */
+interface Spitze {
+	y: number;
+	ms: number;
+	teile: [string, number][];
 }
 
 // Greift ein Zeigerereignis ab, dessen Geste einer Szene gehört (Körper greifen, Planet ziehen).
@@ -418,6 +451,15 @@ export function onFrame(fn: BildFn, zuerst = false): () => void {
 	const set = zuerst ? vorn : subs;
 	set.add(fn);
 	return () => set.delete(fn);
+}
+
+/**
+ * Leser: läuft je Bild in der gemeinsamen Lesephase (nach den Lagen der Szenen, vor ihren frame-Aufrufen). Für
+ * DOM-Lesen außerhalb der Szenen, das sonst nach den Stil-Schreibern ein eigenes Layout erzwingt.
+ */
+export function onLies(fn: () => void): () => void {
+	leser.add(fn);
+	return () => leser.delete(fn);
 }
 
 /**

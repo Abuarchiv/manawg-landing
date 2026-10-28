@@ -4,7 +4,7 @@
 // Tiefe 9 auf 40 bis 50 % der Breite und passen so in jedes Format). Gezeichnet wird in CSS-px.
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
-import { cl, hsh, lag, lerp, ss } from '../../core/math';
+import { cl, cs, hsh, lag, lerp, sn, ss } from '../../core/math';
 
 const MONO = '"JetBrains Mono", monospace';
 const TT = '"Inter Tight", sans-serif';
@@ -114,6 +114,8 @@ interface TiefeState extends SceneState {
 	zonen: Zone[];
 	/** Klemmung je Insel, build legt sie an. */
 	klemm: Klemmung[];
+	/** DOM-Lagen aus lies (Viewport-Pixel): Kopfunterkante, Canvas oben, Abschnitt oben und Höhe, Etiketten oben. */
+	lage: { kopf: number; el: number; sec: number; secH: number; caps: number[] };
 }
 
 // Wort aus der Schrift abtasten (wie im Entwurf: Schrift 200 px auf 1600 x 270, Grundlinie 0,82). Die Maske
@@ -308,8 +310,8 @@ function curl(x: number, y: number, fase: number) {
 	const b = 0.77 * y - fase;
 	const c = 1.7 * x - 0.9 * fase + 2;
 	const d = 1.9 * y + 1.1 * fase;
-	cvx = 0.77 * Math.sin(a) * Math.cos(b) + 0.76 * Math.sin(c) * Math.cos(d);
-	cvy = -0.7 * Math.cos(a) * Math.sin(b) - 0.68 * Math.cos(c) * Math.sin(d);
+	cvx = 0.77 * sn(a) * cs(b) + 0.76 * sn(c) * cs(d);
+	cvy = -0.7 * cs(a) * sn(b) - 0.68 * cs(c) * sn(d);
 }
 
 // Lage eines Wortpunkts im Fluss: u = Ankunft (0 im Tunnel, 1 in der Wortform), o = Abflug (0 im Wort, 1 weit voraus
@@ -341,8 +343,8 @@ function fluss(q: Punkt, I: Insel, N: Insel, u: number, o: number, fase: number,
 	} else if (zeit > 0) {
 		// Atmen: kleine Welle über das Wort, je Punkt leicht versetzt
 		const w = zeit * 1.5 + x * 1.7 + y * 1.1 + q[9] * 2.5;
-		x += 0.028 * Math.sin(w);
-		y += 0.028 * Math.cos(w * 1.3);
+		x += 0.028 * sn(w);
+		y += 0.028 * cs(w * 1.3);
 	}
 	ox = x;
 	oy = y;
@@ -554,8 +556,28 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			s.dep = wurzel.querySelector<HTMLElement>('[data-depth]');
 			s.hint = wurzel.querySelector<HTMLElement>('[data-hint]');
 			s.kopf = document.querySelector<HTMLElement>('[data-kopf]');
+			s.lage = { kopf: 0, el: 0, sec: 0, secH: 1, caps: s.caps.map(() => 0) };
 		},
 		warm: bereite,
+		lies(s) {
+			const L = s.lage;
+			L.kopf = s.kopf ? s.kopf.getBoundingClientRect().bottom : 0;
+			L.el = s.el.getBoundingClientRect().top;
+			const r = sec.getBoundingClientRect();
+			L.sec = r.top;
+			L.secH = r.height;
+			// Etiketten: Lage und Ausschlusszone (DOM-Rechteck plus 28 px)
+			s.caps.forEach((el, i) => {
+				L.caps[i] = el.getBoundingClientRect().top;
+				const z = s.zonen[i];
+				if (!z) return;
+				const b = el.offsetParent;
+				z.x0 = el.offsetLeft - 28;
+				z.x1 = el.offsetLeft + el.offsetWidth + 28;
+				z.y0 = el.offsetTop - 28;
+				z.y1 = (b ? b.clientHeight : s.H) + 28;
+			});
+		},
 		frame(s, t, dt) {
 			const ctx = s.ctx;
 			if (!ctx) return;
@@ -563,10 +585,9 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			const { f, cx, cy } = s;
 			// Beim Hinausscrollen läuft die Szene unter den fixen Kopf: Wortbild und Zeile blenden über den obersten
 			// 28 px unter dem Kopfband aus (Kopfunterkante in Canvas-Koordinaten)
-			const kopfUnten = s.kopf ? s.kopf.getBoundingClientRect().bottom : 0;
-			const kopfY = kopfUnten - s.el.getBoundingClientRect().top;
-			const r = sec.getBoundingClientRect();
-			const sp = cl(-r.top / Math.max(1, r.height - s.H));
+			const L = s.lage;
+			const kopfY = L.kopf - L.el;
+			const sp = cl(-L.sec / Math.max(1, L.secH - s.H));
 			// Mit reduzierter Bewegung folgt die Kamera dem Scroll ohne Nachlauf
 			if (s.reduced) s.dp = sp;
 			else s.dp = Math.abs(sp - s.dp) < 1e-5 ? sp : s.dp + (sp - s.dp) * lag(0.1, dt);
@@ -642,20 +663,11 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			const rep = pv.a > 0.01 ? pv.a : 0;
 			const plat = Math.max(...s.isl.map((I) => plateauOf(I.z - camZ)));
 			const rad = 120 * (1 - 0.5 * plat);
-			// Unterzeilen: Deckkraft und Rechteck (Ausschlusszone der Partikel)
+			// Unterzeilen: Deckkraft (das Rechteck der Ausschlusszone liest lies)
 			const zonen = s.zonen;
-			s.caps.forEach((el, i) => {
+			zonen.forEach((z, i) => {
 				const I = s.isl[i];
-				const z = zonen[i];
-				if (!I || !z) return;
-				z.w = plateauOf(I.z - camZ);
-				if (z.w >= 0.02) {
-					const b = el.offsetParent;
-					z.x0 = el.offsetLeft - 28;
-					z.x1 = el.offsetLeft + el.offsetWidth + 28;
-					z.y0 = el.offsetTop - 28;
-					z.y1 = (b ? b.clientHeight : s.H) + 28;
-				}
+				z.w = I ? plateauOf(I.z - camZ) : 0;
 			});
 			const klemm = s.klemm;
 			klemmen(s, klemm, camZ, camX);
@@ -675,17 +687,15 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			});
 			// Am Ende der Fahrt scrollt die Bühne nach oben weg: Wortzeile und Tiefenzähler blenden dabei aus, sonst
 			// fährt der letzte Satz über den Titel der nächsten Szene
-			// erst alle Lagen lesen, dann nur geänderte Werte schreiben: jedes Schreiben macht das Layout ungültig,
-			// ein Lesen danach erzwingt eine neue Berechnung
-			const oben = -s.el.getBoundingClientRect().top;
-			const kys = s.caps.map((el) => el.getBoundingClientRect().top - kopfUnten);
+			// Lagen stammen aus lies, hier nur geänderte Werte schreiben
+			const oben = -L.el;
 			const aus = 1 - cl(oben / (0.12 * s.H));
 			// ganzes Etikett „TIEFE 000“, nicht nur die Zahl
 			if (s.dep?.parentElement) stil(s.dep.parentElement, 'opacity', aus.toFixed(3));
 			// Wortbild langsamer: sonst steht beim Zurückscrollen das letzte Wort über „Installieren“
 			stil(ctx.canvas, 'opacity', (1 - cl(oben / (0.4 * s.H))).toFixed(3));
 			s.caps.forEach((el, i) => {
-				const op = ((zonen[i]?.w ?? 0) * cl((kys[i] ?? 0) / 28) * aus).toFixed(3);
+				const op = ((zonen[i]?.w ?? 0) * cl(((L.caps[i] ?? 0) - L.kopf) / 28) * aus).toFixed(3);
 				stil(el, 'opacity', op);
 				stil(el, '--k', op); // Leitlinie zeichnet mit der Deckkraft (landing.css .leit)
 			});

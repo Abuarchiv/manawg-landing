@@ -11,6 +11,20 @@ export const lerp = (a: number, b: number, t: number): number => a + (b - a) * t
 export const lag = (k: number, dt: number): number => 1 - (1 - k) ** (dt * 60);
 export const ease = (x: number): number => 1 - (1 - cl(x)) ** 4;
 
+// Sinus und Kosinus aus einer Tabelle (4096 Stützstellen, linear, Fehler unter 1e-6), gut doppelt so schnell wie
+// Math.sin in Schleifen über tausende Punkte je Bild (Strömungsfeld der Tiefe).
+const SN = 4096;
+const SK = SN / (2 * Math.PI);
+const STAB = new Float64Array(SN + 1).map((_, i) => Math.sin(i / SK));
+export const sn = (v: number): number => {
+	let t = v * SK;
+	t -= Math.floor(t / SN) * SN;
+	const i = t | 0;
+	const a = STAB[i] as number;
+	return a + ((STAB[i + 1] as number) - a) * (t - i);
+};
+export const cs = (v: number): number => sn(v + Math.PI / 2);
+
 // 4x4-Bayer-Matrix für das Dithering der Halbton-Flächen.
 export const BAYER: readonly number[] = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 

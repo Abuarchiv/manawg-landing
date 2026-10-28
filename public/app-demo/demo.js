@@ -186,22 +186,33 @@
 		}
 	};
 
+	const masse = new Map(); // gemessene Höhen (Tableiste je Fenstergröße, Chat je Fenstergröße und Seite)
 	const setPage = (n, morph) => {
 		// Tabbar und SubNav bleiben in der App stehen, nur der aktive Eintrag wechselt (120 ms bzw. 150 ms Hintergrund).
 		// Beim Austausch der Seite starten die neuen Einträge im alten Zustand und gleiten in den neuen.
 		const old = morph ? [...app.querySelectorAll('nav')].map((nv) => [...nv.querySelectorAll('a')].map((a) => [a.className, a.getAttribute('aria-current')])) : [];
+		// Fenstergröße vor dem Austausch lesen, solange das Layout noch gültig ist
+		const vp = `${innerWidth}x${innerHeight}`;
 		app.innerHTML = tpl(`p-${n.p}`);
 		prep(app);
 		gridFix(app);
 		// Wie die App: die Tableiste misst sich selbst (mit Inset unten 84 px statt der aufgenommenen 57 px), damit Inhalt
-		// und Eingabezeile des Chats über ihr enden statt dahinter
+		// und Eingabezeile des Chats über ihr enden statt dahinter. Gemessen wird nur einmal je Fenstergröße (und Seite):
+		// jedes Messen direkt nach dem Austausch erzwang ein eigenes Layout, beim Scrollen der Landing ein Ruckler.
 		const nav = app.querySelector('nav[data-app-chrome]');
 		const shell = app.querySelector('[style*="--app-nav-height"]');
-		if (nav && shell) shell.style.setProperty('--app-nav-height', `${nav.offsetHeight}px`);
+		if (nav && shell) {
+			if (!masse.has(vp)) masse.set(vp, nav.offsetHeight);
+			shell.style.setProperty('--app-nav-height', `${masse.get(vp)}px`);
+		}
 		// Der Chat misst seine Höhe in der App per Skript (bis zur Tableiste); die Aufnahme hat sie ohne Insets fest
 		// eingetragen, sonst läge die Eingabezeile hinter der Tableiste
 		const chat = app.querySelector('[data-chat-frame]');
-		if (chat && nav) chat.style.height = `${nav.getBoundingClientRect().top - chat.getBoundingClientRect().top}px`;
+		const ck = `${vp}|${n.p}`;
+		if (chat && nav) {
+			if (!masse.has(ck)) masse.set(ck, nav.getBoundingClientRect().top - chat.getBoundingClientRect().top);
+			chat.style.height = `${masse.get(ck)}px`;
+		}
 		document.body.setAttribute('style', n.b || '');
 		const next = [];
 		[...app.querySelectorAll('nav')].forEach((nv, i) => {
@@ -285,6 +296,7 @@
 	};
 
 	const wechsel = (n, prev, w, opts, pageChanged, morph) => {
+		const y0 = scrollY; // vor dem Austausch lesen: danach erzwingt das Lesen ein Layout
 		if (pageChanged) setPage(n, morph);
 		else document.body.setAttribute('style', n.b || '');
 		const wasOver = !!st.over;
@@ -299,10 +311,17 @@
 		else root.style.removeProperty('--thumb-action-space');
 		focusKey(n);
 		if (n.a) st.timer = setTimeout(() => enter(w, n.a[1]), n.a[0]);
-		if (pageChanged) window.scrollTo(0, 0);
-		// Der Chat steht wie in der App am Ende des Verlaufs (die Aufnahme speichert keine Scrollposition)
+		if (pageChanged && y0) window.scrollTo(0, 0);
+		// Der Chat steht wie in der App am Ende des Verlaufs (die Aufnahme speichert keine Scrollposition). Gesetzt wird
+		// nach dem nächsten Layout, vor dem Malen (ResizeObserver): sofort gesetzt erzwang es ein eigenes Layout.
 		const vp = app.querySelector('[data-slot="message-scroller-viewport"]');
-		if (vp) vp.scrollTop = vp.scrollHeight;
+		if (vp) {
+			const ro = new ResizeObserver(() => {
+				ro.disconnect();
+				vp.scrollTop = vp.scrollHeight;
+			});
+			ro.observe(vp);
+		}
 		document.dispatchEvent(new CustomEvent('demo:state', { detail: { w, id: st.id } }));
 		return true;
 	};
