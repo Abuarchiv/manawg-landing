@@ -7,8 +7,8 @@
 // gerahmt (uZ), die Ausgabe läuft über einen Offscreen-Canvas in das sichtbare 2D-Canvas.
 
 import { glSichtbar, glSoftware } from '../../core/canvas';
-import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import { loop } from '../../core/loop';
+import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import type { BuehnenKontext, HeroMarken } from './types';
 
 const VS = `#version 300 es
@@ -156,7 +156,20 @@ type SzeneU =
 	| 'uFoto'
 	| 'uAb'
 	| 'uQ';
-type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad' | 'uV' | 'uG' | 'uLod' | 'uZc';
+type PostU =
+	| 'uT'
+	| 'uR'
+	| 'uS'
+	| 'uD'
+	| 'uL'
+	| 'uMx'
+	| 'uSt'
+	| 'uHo'
+	| 'uPad'
+	| 'uV'
+	| 'uG'
+	| 'uLod'
+	| 'uZc';
 
 /** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
 interface HeroGL {
@@ -285,7 +298,11 @@ export function createHero(cv: HTMLCanvasElement) {
 			],
 			'scene',
 		);
-		G.Pp = prog(POST, ['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad', 'uV', 'uG', 'uLod', 'uZc'], 'post');
+		G.Pp = prog(
+			POST,
+			['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad', 'uV', 'uG', 'uLod', 'uZc'],
+			'post',
+		);
 		gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 		gl.enableVertexAttribArray(0);
