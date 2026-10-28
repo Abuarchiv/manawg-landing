@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import './landing.css';
+import { startEntschluesseln } from './core/entschluesseln';
 import { loop, modeOf, qa, setMode, start } from './core/loop';
 import { initScroll, sectionBox } from './core/scroll';
 import { Finale } from './scenes/finale/Finale';
@@ -56,12 +57,14 @@ export function Landing() {
 		};
 		let stopScroll = () => {};
 		let stop = () => {};
+		let stopSchrift = () => {};
 		// Erst nach dem ersten Bild starten: der Titel steht dann sofort, die Engine blockiert LCP nicht.
 		const id = requestAnimationFrame(() => {
 			applyMode();
 			window.addEventListener('resize', applyMode);
 			stopScroll = initScroll(root);
 			stop = start();
+			stopSchrift = startEntschluesseln(root);
 			if (new URLSearchParams(location.search).get('qa') === '1') qaHaken(root);
 		});
 		return () => {
@@ -69,6 +72,7 @@ export function Landing() {
 			window.removeEventListener('resize', applyMode);
 			stopScroll();
 			stop();
+			stopSchrift();
 			window.__landing = undefined;
 		};
 	}, []);

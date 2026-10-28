@@ -25,7 +25,7 @@ export function SoGehts() {
 			aria-labelledby="so-gehts-titel"
 			className={s.sektion}
 		>
-			<h2 id="so-gehts-titel" className={`label ${s.titel}`}>
+			<h2 id="so-gehts-titel" className={`label ${s.titel}`} data-entschluesseln="">
 				<span aria-hidden="true">[ 05 ] </span>SO GEHT’S
 			</h2>
 			<div className={s.raster}>

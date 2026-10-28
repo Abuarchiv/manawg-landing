@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
+import { ZEICHEN } from '../../core/entschluesseln';
 import { FRAGEN } from './fragenDaten';
 
 // Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
 // Die Höhe läuft über grid-template-rows (landing.css .faq-antwort), nur eine Antwort ist offen.
 
-const ZEICHEN = '#%&*+=/<>|01';
 const KOPF = 10; // Breite der Entschlüsselungs-Front in Zeichen
 
 /** Antwort entschlüsselt sich beim Öffnen von vorn nach hinten; der Rest bleibt unsichtbar reserviert, damit nichts umbricht. */
@@ -60,7 +60,7 @@ export function Fragen() {
 				'position:relative;background:#0A0A0A;color:#FAFAFA;padding:var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);display:flex;flex-direction:column;gap:var(--sp-48)',
 			)}
 		>
-			<h2 id="fragen-titel" className="label" style={css('margin:0')}>
+			<h2 id="fragen-titel" className="label" style={css('margin:0')} data-entschluesseln="">
 				<span aria-hidden="true">[ 07 ] </span>FRAGEN
 			</h2>
 			<div style={css('display:flex;flex-direction:column;border-bottom:1px solid var(--haar)')}>

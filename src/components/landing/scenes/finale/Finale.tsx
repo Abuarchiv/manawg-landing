@@ -55,7 +55,7 @@ export function Finale() {
 			</div>
 			<div className={s.inhalt}>
 				<div className={s.block}>
-					<h2 id="finale-titel" className={s.titel}>
+					<h2 id="finale-titel" className={s.titel} data-entschluesseln="">
 						Zieht
 						<br />
 						ein.
