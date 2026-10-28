@@ -141,6 +141,29 @@ interface WohnungsZustand {
 
 const states = new WeakMap<HTMLCanvasElement, WohnungsZustand>();
 
+// Variante B: Zeichenblatt der Bodenrampe (7 x 11 CSS-px je Zelle), je Pixelfaktor und Schriftstand
+const RAMPE_B = ' .:-=+*#%@';
+let blattB: { cv: HTMLCanvasElement; zw: number; zh: number; key: string } | null = null;
+function zeichenBlatt(dpr: number) {
+	const key = `${dpr}|${loop.fv}`;
+	if (blattB?.key === key) return blattB;
+	const zw = Math.ceil(7 * dpr);
+	const zh = Math.ceil(11 * dpr);
+	const cv = document.createElement('canvas');
+	cv.width = zw * RAMPE_B.length;
+	cv.height = zh;
+	const g = cv.getContext('2d');
+	if (g) {
+		g.font = `500 ${10 * dpr}px "JetBrains Mono", monospace`;
+		g.textAlign = 'center';
+		g.textBaseline = 'middle';
+		g.fillStyle = '#FAFAFA';
+		for (let i = 0; i < RAMPE_B.length; i++) g.fillText(RAMPE_B[i] ?? '', zw * i + zw / 2, zh / 2);
+	}
+	blattB = { cv, zw, zh, key };
+	return blattB;
+}
+
 // Zeichen-Maße für Beschriftungen
 const widths = new Map<string, number>();
 function breite(ctx: CanvasRenderingContext2D, font: string, text: string): number {
@@ -376,33 +399,131 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	// Bodenpunkte: tausende je Bild, daher P(x, y, 0) ausgeschrieben (ohne Array je Punkt) und das Bayer-Raster zuerst
 	const ku = 0.866 * u;
 	const kv = 0.5 * u;
-	ROOMS.forEach((r, ri) => {
-		const x = r[1];
-		const y = r[2];
-		const w = r[3];
-		const hh = r[4];
-		const base = 0.06 + 0.8 * (lit[ri] ?? 0);
-		for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++) {
-			const dy = yy - cy;
-			const zeile = (gy & 3) * 4;
-			for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
-				const bay = (BAYER[zeile + (gx & 3)] ?? 0) / 16;
-				if (bay >= bauBoden) continue;
-				const dx = xx - cx;
-				const px = ox + (dx - dy) * ku;
-				const py = oy + (dx + dy) * kv;
-				if (px < x0 - 4 || py < y0 - 4 || px > x1 || py > y1) continue;
-				let I = base;
-				if (m.in) {
-					const ddx = px - mx;
-					const ddy = py - my;
-					const d2 = ddx * ddx + ddy * ddy;
-					if (d2 < FL * FL) I += 0.8 * (1 - Math.sqrt(d2) / FL) ** 2;
+	const lichtAn = (px: number, py: number, I: number) => {
+		if (!m.in) return I;
+		const ddx = px - mx;
+		const ddy = py - my;
+		const d2 = ddx * ddx + ddy * ddy;
+		return d2 < FL * FL ? I + 0.8 * (1 - Math.sqrt(d2) / FL) ** 2 : I;
+	};
+	if (loop.v === 'a' || loop.v === 'c') {
+		// Variante A/C: Böden als Kupferstich. Jede Gitterzeile wird zu einer Linie entlang der Raumachse, die mit
+		// dem Ton anschwillt; helle Stellen bekommen die Kreuzlage. Beim Aufbau zieht der Stichel die Linien von
+		// der Wand aus, jede Zeile etwas versetzt.
+		ctx.beginPath();
+		const sx = ku * stp * 0.5;
+		const sy = kv * stp * 0.5;
+		for (const [ri, r] of ROOMS.entries()) {
+			const x = r[1];
+			const y = r[2];
+			const w = r[3];
+			const hh = r[4];
+			const base = 0.06 + 0.8 * (lit[ri] ?? 0);
+			for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++) {
+				const dy = yy - cy;
+				const zug = bauBoden * 1.35 - ((gy * 5) % 7) * 0.05;
+				for (let xx = x + stp / 2; xx < x + w; xx += stp) {
+					if ((xx - x) / w > zug) break;
+					const dx = xx - cx;
+					const px = ox + (dx - dy) * ku;
+					const py = oy + (dx + dy) * kv;
+					if (px < x0 - 8 || py < y0 - 8 || px > x1 + 8 || py > y1 + 8) continue;
+					const I = Math.min(1.3, lichtAn(px, py, base));
+					const h = 0.1 + 0.6 * I;
+					ctx.moveTo(px - sx, py - sy - h);
+					ctx.lineTo(px + sx, py + sy - h);
+					ctx.lineTo(px + sx, py + sy + h);
+					ctx.lineTo(px - sx, py - sy + h);
+					if (I > 0.72) {
+						const k = (I - 0.72) * 0.7;
+						ctx.moveTo(px + sx - k, py - sy);
+						ctx.lineTo(px - sx - k, py + sy);
+						ctx.lineTo(px - sx + k, py + sy);
+						ctx.lineTo(px + sx + k, py - sy);
+					}
 				}
-				if (I > bay + 0.02) ctx.fillRect(px, py, 1.6, 1.6);
 			}
 		}
-	});
+		ctx.fill();
+	} else if (loop.v === 'b') {
+		// Variante B: Böden aus Zeichen in einem festen Bildschirmraster (wie ein Terminal), der Ton wählt die Glyphe
+		const bl = zeichenBlatt(dpr);
+		const CW = 7;
+		const CH = 11;
+		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		for (const [ri, r] of ROOMS.entries()) {
+			const x = r[1];
+			const y = r[2];
+			const w = r[3];
+			const hh = r[4];
+			const base = 0.06 + 0.8 * (lit[ri] ?? 0);
+			let bx0 = Number.POSITIVE_INFINITY;
+			let bx1 = Number.NEGATIVE_INFINITY;
+			let by0 = Number.POSITIVE_INFINITY;
+			let by1 = Number.NEGATIVE_INFINITY;
+			for (const [ex, ey] of [
+				[x, y],
+				[x + w, y],
+				[x, y + hh],
+				[x + w, y + hh],
+			] as const) {
+				const p = P(ex, ey, 0);
+				bx0 = Math.min(bx0, tx + p[0] * f);
+				bx1 = Math.max(bx1, tx + p[0] * f);
+				by0 = Math.min(by0, ty + p[1] * f);
+				by1 = Math.max(by1, ty + p[1] * f);
+			}
+			bx0 = Math.max(bx0, 0);
+			by0 = Math.max(by0, 0);
+			bx1 = Math.min(bx1, W);
+			by1 = Math.min(by1, H);
+			for (let Y = Math.floor(by0 / CH) * CH; Y < by1; Y += CH) {
+				const row = Math.round(Y / CH);
+				for (let X = Math.floor(bx0 / CW) * CW; X < bx1; X += CW) {
+					const col = Math.round(X / CW);
+					if ((BAYER[(row & 3) * 4 + (col & 3)] ?? 0) / 16 >= bauBoden) continue;
+					const px = (X + CW / 2 - tx) / f;
+					const py = (Y + CH / 2 - ty) / f;
+					const a = (px - ox) / ku;
+					const b = (py - oy) / kv;
+					const xx = (a + b) / 2 + cx;
+					const yy = (b - a) / 2 + cy;
+					if (xx < x || xx > x + w || yy < y || yy > y + hh) continue;
+					const gi = Math.min(RAMPE_B.length - 1, Math.floor(lichtAn(px, py, base) * 8.5 + 0.6));
+					if (gi <= 0) continue;
+					ctx.drawImage(bl.cv, gi * bl.zw, 0, bl.zw, bl.zh, X, Y, CW, CH);
+				}
+			}
+		}
+		ctx.setTransform(dpr * f, 0, 0, dpr * f, dpr * tx, dpr * ty);
+	} else
+		ROOMS.forEach((r, ri) => {
+			const x = r[1];
+			const y = r[2];
+			const w = r[3];
+			const hh = r[4];
+			const base = 0.06 + 0.8 * (lit[ri] ?? 0);
+			for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++) {
+				const dy = yy - cy;
+				const zeile = (gy & 3) * 4;
+				for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
+					const bay = (BAYER[zeile + (gx & 3)] ?? 0) / 16;
+					if (bay >= bauBoden) continue;
+					const dx = xx - cx;
+					const px = ox + (dx - dy) * ku;
+					const py = oy + (dx + dy) * kv;
+					if (px < x0 - 4 || py < y0 - 4 || px > x1 || py > y1) continue;
+					let I = base;
+					if (m.in) {
+						const ddx = px - mx;
+						const ddy = py - my;
+						const d2 = ddx * ddx + ddy * ddy;
+						if (d2 < FL * FL) I += 0.8 * (1 - Math.sqrt(d2) / FL) ** 2;
+					}
+					if (I > bay + 0.02) ctx.fillRect(px, py, 1.6, 1.6);
+				}
+			}
+		});
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
 	if (!st.pp)
 		st.pp = PEOC.map(([name, rel], k) => ({
@@ -570,6 +691,16 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 			schrift = fo;
 		}
 		ctx.globalAlpha = it.a;
+		// Varianten: die Beschriftung stanzt ihr Feld aus dem Boden aus, statt nur eine Kontur zu tragen
+		if (loop.v) {
+			ctx.fillStyle = '#0A0A0A';
+			ctx.fillRect(
+				it.rect.x0 - 3,
+				it.rect.y0 - 2,
+				it.rect.x1 - it.rect.x0 + 6,
+				it.rect.y1 - it.rect.y0 + 4,
+			);
+		}
 		ctx.strokeStyle = 'rgba(10,10,10,0.9)';
 		ctx.strokeText(it.text, it.x, it.y);
 		ctx.fillStyle = '#FAFAFA';
