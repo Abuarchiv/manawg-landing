@@ -501,13 +501,32 @@
 			const o = { bubbles: true, cancelable: false, composed: true, clientX: r.left + e.clientX * s, clientY: r.top + e.clientY * s, pointerType: e.pointerType || 'mouse', pointerId: e.pointerId || 1, isPrimary: true, buttons: e.buttons, button: e.button };
 			fe.dispatchEvent(new (window.parent.PointerEvent || PointerEvent)(type, o));
 		};
-		for (const t of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel']) addEventListener(t, (e) => send(t, e), { passive: true, capture: true });
+		// Maus und Stift meldet Phone.tsx (als direkt markiert); hier nur Touch, sonst käme jeder Klick doppelt an die Bühne
+		for (const t of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel']) addEventListener(t, (e) => { if (e.pointerType === 'touch') send(t, e); }, { passive: true, capture: true });
 		document.addEventListener('pointerleave', (e) => send('pointerleave', e));
 		root.addEventListener('mouseleave', (e) => send('pointerleave', e));
-		// Rad: der Bildschirm der App scrollt nicht, die Seite der Landing schon
+		// Rad: nach dem ersten Klick in die App scrollt erst die App (die Liste unter dem Zeiger oder der Bildschirm),
+		// an ihrem Rand und vor dem Klick die Seite der Landing. Verlässt der Zeiger das Handy, scrollt wieder die Seite.
 		// Gleitet die Seite (html.lenis), geht das Rad als Rad-Ereignis an die Landing, damit es wie daneben weich läuft.
+		let bedient = false;
+		addEventListener('pointerdown', (e) => { if (e.pointerType !== 'touch') bedient = true; }, { capture: true, passive: true });
+		root.addEventListener('mouseleave', () => { bedient = false; });
+		const scroller = (t) => {
+			for (let el = t instanceof Element ? t : null; el && el !== document.body; el = el.parentElement) {
+				const oy = getComputedStyle(el).overflowY;
+				if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 1) return el;
+			}
+			return document.scrollingElement;
+		};
 		addEventListener('wheel', (e) => {
 			e.preventDefault();
+			const el = scroller(e.target);
+			const dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+			const max = el.scrollHeight - el.clientHeight;
+			if (bedient && !e.ctrlKey && (dy > 0 ? el.scrollTop < max - 0.5 : el.scrollTop > 0.5)) {
+				el.scrollBy({ top: dy, behavior: Math.abs(dy) >= 50 ? 'smooth' : 'instant' });
+				return;
+			}
 			const P = window.parent;
 			if (P.document.documentElement.classList.contains('lenis')) P.dispatchEvent(new P.WheelEvent('wheel', { deltaX: e.deltaX, deltaY: e.deltaY, deltaMode: e.deltaMode, ctrlKey: e.ctrlKey, cancelable: true, bubbles: true }));
 			else P.scrollBy({ left: e.deltaX, top: e.deltaY, behavior: 'instant' });
