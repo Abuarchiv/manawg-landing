@@ -143,7 +143,13 @@ const states = new WeakMap<HTMLCanvasElement, WohnungsZustand>();
 
 // Variante B: Zeichenblatt der Bodenrampe (7 x 11 CSS-px je Zelle), je Pixelfaktor und Schriftstand
 const RAMPE_B = ' .:-=+*#%@';
-let blattB: { cv: HTMLCanvasElement; zw: number; zh: number; key: string } | null = null;
+let blattB: {
+	cv: HTMLCanvasElement;
+	zw: number;
+	zh: number;
+	key: string;
+	muster: (CanvasPattern | null)[];
+} | null = null;
 function zeichenBlatt(dpr: number) {
 	const key = `${dpr}|${loop.fv}`;
 	if (blattB?.key === key) return blattB;
@@ -160,8 +166,23 @@ function zeichenBlatt(dpr: number) {
 		g.fillStyle = '#FAFAFA';
 		for (let i = 0; i < RAMPE_B.length; i++) g.fillText(RAMPE_B[i] ?? '', zw * i + zw / 2, zh / 2);
 	}
-	blattB = { cv, zw, zh, key };
+	blattB = { cv, zw, zh, key, muster: [] };
 	return blattB;
+}
+
+/** Muster je Glyphe (eine Zelle, wiederholt im CSS-px-Raster ab 0, 0): ganze Böden in einem Füllaufruf. */
+function muster(ctx: CanvasRenderingContext2D, bl: NonNullable<typeof blattB>, gi: number) {
+	let m = bl.muster[gi];
+	if (m === undefined) {
+		const t = document.createElement('canvas');
+		t.width = bl.zw;
+		t.height = bl.zh;
+		t.getContext('2d')?.drawImage(bl.cv, gi * bl.zw, 0, bl.zw, bl.zh, 0, 0, bl.zw, bl.zh);
+		m = ctx.createPattern(t, 'repeat');
+		m?.setTransform(new DOMMatrix().scale(7 / bl.zw, 11 / bl.zh));
+		bl.muster[gi] = m;
+	}
+	return m;
 }
 
 // Zeichen-Maße für Beschriftungen
@@ -451,12 +472,47 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		const CW = 7;
 		const CH = 11;
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		const gOf = (I: number) => Math.min(RAMPE_B.length - 1, Math.floor(I * 8.5 + 0.6));
 		for (const [ri, r] of ROOMS.entries()) {
 			const x = r[1];
 			const y = r[2];
 			const w = r[3];
 			const hh = r[4];
 			const base = 0.06 + 0.8 * (lit[ri] ?? 0);
+			if (bauBoden >= 1) {
+				// Fertiger Boden: Fläche mit dem Muster der Grundglyphe füllen, der Lichtkegel legt je hellere Stufe
+				// einen kleineren Kreis darüber (Ringe statt Zellen: ein paar Füllaufrufe statt tausender Bilder)
+				const ecken = [P(x, y, 0), P(x + w, y, 0), P(x + w, y + hh, 0), P(x, y + hh, 0)];
+				const boden = new Path2D();
+				for (const [k, e] of ecken.entries())
+					k
+						? boden.lineTo(tx + e[0] * f, ty + e[1] * f)
+						: boden.moveTo(tx + e[0] * f, ty + e[1] * f);
+				boden.closePath();
+				const g0 = gOf(base);
+				const m0 = g0 > 0 ? muster(ctx, bl, g0) : null;
+				if (m0) {
+					ctx.fillStyle = m0;
+					ctx.fill(boden);
+				}
+				if (m.in) {
+					ctx.save();
+					ctx.clip(boden);
+					for (let g = g0 + 1; g < RAMPE_B.length; g++) {
+						const r0 = FL * (1 - Math.sqrt(Math.max(0, (g - 0.6) / 8.5 - base) / 0.8));
+						if (r0 <= 0) break;
+						const kreis = new Path2D();
+						kreis.arc(tx + mx * f, ty + my * f, r0 * f, 0, 6.2832);
+						ctx.fillStyle = '#0A0A0A';
+						ctx.fill(kreis);
+						const mg = muster(ctx, bl, g);
+						if (mg) ctx.fillStyle = mg;
+						ctx.fill(kreis);
+					}
+					ctx.restore();
+				}
+				continue;
+			}
 			let bx0 = Number.POSITIVE_INFINITY;
 			let bx1 = Number.NEGATIVE_INFINITY;
 			let by0 = Number.POSITIVE_INFINITY;
@@ -489,7 +545,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 					const xx = (a + b) / 2 + cx;
 					const yy = (b - a) / 2 + cy;
 					if (xx < x || xx > x + w || yy < y || yy > y + hh) continue;
-					const gi = Math.min(RAMPE_B.length - 1, Math.floor(lichtAn(px, py, base) * 8.5 + 0.6));
+					const gi = gOf(lichtAn(px, py, base));
 					if (gi <= 0) continue;
 					ctx.drawImage(bl.cv, gi * bl.zw, 0, bl.zw, bl.zh, X, Y, CW, CH);
 				}

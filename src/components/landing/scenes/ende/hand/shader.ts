@@ -295,10 +295,10 @@ void main(){
   float thr = float((by & 1) * 12 + (by >> 1) * 3 + (1 - 2 * (by & 1)) * 8 * (bx & 1) + (1 - 2 * (by >> 1)) * 2 * (bx >> 1)) / 16. + .035;
   float c = 0.;
   if (uVar.x > 1.5 && !istStaub) {
-    // B: Zeichenzellen (Breite uVar.y, Höhe 1,45-fach), Ton aus vier Proben je Zelle wählt die Glyphe der Rampe
+    // B: Zeichenzellen (Breite uVar.y, Höhe 1,45-fach), Ton in der Zellmitte wählt die Glyphe der Rampe
     vec2 gz = vec2(uVar.y, uVar.y * 1.45);
     vec2 gc = (floor(S / gz) + .5) * gz;
-    float tg = (tonB(gc + gz * vec2(-.25, -.25)) + tonB(gc + gz * vec2(.25, -.25)) + tonB(gc + gz * vec2(-.25, .25)) + tonB(gc + gz * vec2(.25, .25))) * .25;
+    float tg = tonB(gc);
     float id = min(floor(tg * 10.5), 9.);
     vec2 lu = fract(S / gz);
     c = id < .5 ? 0. : smoothstep(.15, .55, texture(uGly, vec2((id + lu.x) / 10., lu.y)).r);
