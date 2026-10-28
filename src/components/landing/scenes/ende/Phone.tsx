@@ -31,7 +31,11 @@ const TABS = [
 
 /** Zustandsautomat der App im iframe (app-demo/demo.js). */
 interface Demo {
-	enter: (w: string, id: string, opts?: { force?: boolean; instant?: boolean }) => boolean;
+	enter: (
+		w: string,
+		id: string,
+		opts?: { force?: boolean; instant?: boolean; vt?: boolean },
+	) => boolean;
 	state: () => { w: string; id: string };
 }
 
@@ -149,7 +153,7 @@ export function Phone() {
 			if (erst && neu === 0) return;
 			// Der Scroll schaltet sofort um (kein Anfahren der Zeigehand: das wirkte verzögert)
 			const [, id] = TABS[neu] ?? TABS[0];
-			demo.enter('-', id);
+			demo.enter('-', id, { vt: false });
 		});
 		return off;
 	}, [bereit, benutzt]);

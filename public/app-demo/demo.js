@@ -12,6 +12,8 @@
 	const root = document.documentElement;
 	const app = document.getElementById('app');
 	const layer = document.getElementById('layer');
+	// Übergang zwischen Seiten: kurzes Überblenden mit der Kurve der App
+	document.head.insertAdjacentHTML('beforeend', '<style>::view-transition-old(root),::view-transition-new(root){animation-duration:200ms;animation-timing-function:cubic-bezier(.2,0,0,1)}</style>');
 
 	// ---------------------------------------------------------------- Uhr und Datum
 	// Feste Uhr Di, 06.10.2026 17:43 Europe/Berlin (Zeitpunkt der Originalaufnahmen, REF.md §Zeiten): alle Datums- und
@@ -264,7 +266,19 @@
 		st.w = w;
 		st.id = id;
 		const pageChanged = !prev || prev.p !== n.p || opts.force;
-		if (pageChanged) setPage(n, !!prev && !opts.instant && !opts.force);
+		const morph = !!prev && !opts.instant && !opts.force;
+		// Seitenwechsel blenden weich über (View Transition, 200 ms wie ein Tabwechsel der App), statt hart zu springen.
+		// Der Browser hält dabei ein Bild der alten Seite, der Aufbau der neuen läuft im selben Zug. Nur bei eigenen Tipps:
+		// beim Scrollen schaltet die Landing ohne Überblendung um (vt: false), das Standbild kostet sonst ein Bild.
+		if (pageChanged && morph && opts.vt !== false && document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			document.startViewTransition(() => wechsel(n, prev, w, opts, pageChanged, morph));
+			return true;
+		}
+		return wechsel(n, prev, w, opts, pageChanged, morph);
+	};
+
+	const wechsel = (n, prev, w, opts, pageChanged, morph) => {
+		if (pageChanged) setPage(n, morph);
 		else document.body.setAttribute('style', n.b || '');
 		const wasOver = !!st.over;
 		if (prev && prev.o && prev.o !== n.o && !n.o) hideOver(opts.instant);
@@ -282,7 +296,7 @@
 		// Der Chat steht wie in der App am Ende des Verlaufs (die Aufnahme speichert keine Scrollposition)
 		const vp = app.querySelector('[data-slot="message-scroller-viewport"]');
 		if (vp) vp.scrollTop = vp.scrollHeight;
-		document.dispatchEvent(new CustomEvent('demo:state', { detail: { w, id } }));
+		document.dispatchEvent(new CustomEvent('demo:state', { detail: { w, id: st.id } }));
 		return true;
 	};
 

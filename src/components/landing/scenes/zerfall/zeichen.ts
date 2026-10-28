@@ -102,6 +102,12 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 	// Elemente einmal suchen, nicht jedes Bild (läuft auch, solange das Intro klebt)
 	let buehne: HTMLElement | null = null;
 	let zif: HTMLCanvasElement[] = [];
+	let lage = { ende: 0, hoehe: 0, zif: 0 };
+	let lageKey = '';
+	let lageZeit = -9;
+	let vorab: ReturnType<typeof quellen> = [];
+	let vorMessung = false;
+	let quelleZeit = -9;
 	const off = onFrame(() => {
 		if (!buehne?.isConnected) buehne = document.querySelector<HTMLElement>('[data-buehne="intro"]');
 		if (zif.length < ZIFFERN.length || !zif[0]?.isConnected)
@@ -109,13 +115,39 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 		if (!ctx || !buehne || zif.length < ZIFFERN.length || loop.reduced) return aus(1);
 		const H = loop.vh;
 		const W = loop.vw;
-		const bt = buehne.getBoundingClientRect().top;
-		const z0 = zif[0]?.getBoundingClientRect() ?? null;
-		if (!z0) return aus(1);
-		const T = bt >= 0 ? 0 : cl(-bt / Math.max(1, z0.top - bt - ZIEL_Y * H));
+		// Lagen im Dokument nur bei Größenwechsel und etwa einmal je Sekunde lesen: ein getBoundingClientRect in
+		// jedem Bild erzwang nach den Stil-Schreibern der Bühne eine eigene Layout-Runde (am Handy der größte Posten
+		// beim Scrollen durch das Demo-Handy). Die Bühne klebt (sticky), ihr Rand folgt aus dem Ende des Abschnitts.
+		const sy = window.scrollY;
+		const lk = `${W}x${H}`;
+		if (lk !== lageKey || loop.now - lageZeit > 1) {
+			const sec = buehne.parentElement?.getBoundingClientRect();
+			const z = zif[0]?.getBoundingClientRect();
+			if (!sec || !z) return aus(1);
+			lage = { ende: sec.bottom + sy, hoehe: buehne.offsetHeight, zif: z.top + sy };
+			lageKey = lk;
+			lageZeit = loop.now;
+		}
+		const bt = Math.min(0, lage.ende - sy - lage.hoehe);
+		const T = bt >= 0 ? 0 : cl(-bt / Math.max(1, lage.zif - sy - bt - ZIEL_Y * H));
 		const neu = war <= 0;
 		war = T;
-		if (T <= 0 || T >= 1) return aus(T);
+		if (T <= 0) {
+			// Kurz vor dem Übergang die Quellen in einer Leerlaufpause messen (alle Rechtecke der App kosten am Handy
+			// ein ganzes Bild), dann startet der Zerfall ohne Hänger
+			if (lage.ende - sy - lage.hoehe < H && !vorMessung && loop.now - quelleZeit > 0.6) {
+				vorMessung = true;
+				const mess = () => {
+					vorMessung = false;
+					vorab = quellen(document.querySelector<HTMLIFrameElement>('iframe[title="ManaWG-App"]'));
+					quelleZeit = loop.now;
+				};
+				if ('requestIdleCallback' in window) window.requestIdleCallback(mess, { timeout: 500 });
+				else setTimeout(mess, 50);
+			}
+			return aus(T);
+		}
+		if (T >= 1) return aus(T);
 
 		const hoch = loop.mode === 'hoch';
 		const { cs, gl } = zifferMasse(hoch);
@@ -124,7 +156,7 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 		const k = `${W}x${H}|${loop.fv}|${zif.map((c) => `${c.clientWidth}x${c.clientHeight}`).join()}`;
 		if (neu || k !== key) {
 			key = k;
-			const q = quellen(fr);
+			const q = vorab.length ? vorab : quellen(fr);
 			const summe = q.reduce((a, b) => a + b.g, 0);
 			teile = [];
 			zif.forEach((c, zi) => {
