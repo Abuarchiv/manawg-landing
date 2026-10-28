@@ -1,11 +1,53 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
 import { FRAGEN } from './fragenDaten';
 
 // Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
 // Die Höhe läuft über grid-template-rows (landing.css .faq-antwort), nur eine Antwort ist offen.
+
+const ZEICHEN = '#%&*+=/<>|01';
+const KOPF = 10; // Breite der Entschlüsselungs-Front in Zeichen
+
+/** Antwort entschlüsselt sich beim Öffnen von vorn nach hinten; der Rest bleibt unsichtbar reserviert, damit nichts umbricht. */
+function Antwort({ text, an }: { text: string; an: boolean }) {
+	const [k, setK] = useState(text.length);
+	const erst = useRef(true);
+	useEffect(() => {
+		// beim ersten Rendern (erste Frage offen) und bei reduzierter Bewegung steht der Text sofort
+		if (erst.current || !an || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			erst.current = false;
+			setK(text.length);
+			return;
+		}
+		let raf = 0;
+		const t0 = performance.now();
+		const f = (now: number) => {
+			const n = Math.min(text.length, Math.round(((now - t0) / 650) * text.length));
+			setK(n);
+			if (n < text.length) raf = requestAnimationFrame(f);
+		};
+		setK(0);
+		raf = requestAnimationFrame(f);
+		return () => cancelAnimationFrame(raf);
+	}, [an, text]);
+	if (k >= text.length) return <p>{text}</p>;
+	const kopf = [...text.slice(k, k + KOPF)]
+		.map((c) => (c === ' ' ? c : ZEICHEN[Math.floor(Math.random() * ZEICHEN.length)]))
+		.join('');
+	return (
+		<p>
+			<span className="faq-sr">{text}</span>
+			<span aria-hidden="true">
+				{text.slice(0, k)}
+				<span className="faq-kopf">{kopf}</span>
+				<span style={css('visibility:hidden')}>{text.slice(k + KOPF)}</span>
+			</span>
+		</p>
+	);
+}
+
 export function Fragen() {
 	const [offen, setOffen] = useState(0);
 	return (
@@ -33,7 +75,12 @@ export function Fragen() {
 								aria-controls={`faq-antwort-${i}`}
 								onClick={() => setOffen((o) => (o === i ? -1 : i))}
 							>
-								<span>{q[0]}</span>
+								<span>
+									<span className="label faq-nr" aria-hidden="true">
+										{String(i + 1).padStart(2, '0')}
+									</span>
+									{q[0]}
+								</span>
 								<span className="faq-marke" aria-hidden="true">
 									<i />
 									<i />
@@ -47,7 +94,7 @@ export function Fragen() {
 							data-offen={offen === i}
 						>
 							<div className="faq-innen">
-								<p>{q[1]}</p>
+								<Antwort text={q[1]} an={offen === i} />
 							</div>
 						</section>
 					</div>

@@ -281,6 +281,23 @@
 	min-height: 0;
 	overflow: hidden;
 }
+.faq-nr {
+	display: inline-block;
+	min-width: 3.2em;
+	vertical-align: 0.5em;
+}
+.faq-kopf {
+	font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+	opacity: 0.6;
+}
+.faq-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
 .faq-innen p {
 	margin: 0;
 	padding-top: var(--sp-14);
