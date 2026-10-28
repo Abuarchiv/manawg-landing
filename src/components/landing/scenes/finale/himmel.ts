@@ -1,5 +1,5 @@
 // Der Himmel hinter dem Finale: ein Kupferstich-Wolkenhimmel in Graustufen mit der Marke als Wolke. Himmel, Wolke und
-// Masken sind die Ebenen des Wolken-Loaders (landing-konzept/wolke). Ohne Vorhang und ohne Scroll-Öffnung, er steht still.
+// Masken sind die Ebenen des Wolken-Loaders (landing-konzept/wolke). Ohne Vorhang und ohne Scroll-Öffnung; die Wolken quellen langsam, der Zeiger ist Wind.
 
 import { dprFor } from '../../core/canvas';
 import { type SceneState, loop, register } from '../../core/loop';
@@ -14,6 +14,7 @@ uniform sampler2D uSkyQ, uSkyH, uFein, uGrob;
 uniform float uHoch, uDprH;
 uniform vec2 uRes, uCC;
 uniform float uT, uOpen, uCS;
+uniform vec3 uZg; // Zeiger in uv und Stärke: Wind, der die Wolken teilt
 uniform vec4 uTxt; // Textfeld in uv (x0, y0, x1, y1), dort bleibt der Himmel ruhig und dunkler
 out vec4 o;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -29,7 +30,14 @@ void main(){
   float texA = uHoch > .5 ? .5625 : 1.7778;
   vec2 sc = vec2(min(asp / texA, 1.), min(texA / asp, 1.));
   vec2 suv = vec2((uv.x - .5) * sc.x + .5, uv.y * sc.y);
-  suv += (vec2(fbm(suv * 3. + uT * .03), fbm(suv * 3. + 4.1 - uT * .03)) - .5) * .006;
+  // Wolken quellen: zweistufig verzerrtes Feld, oben schneller als in den Bänken unten. Der Zeiger ist Wind: er schiebt
+  // die Striche um sich herum auseinander, wie ein Loch, das in die Wolkendecke gedrückt wird.
+  vec2 q = vec2(fbm(suv * 2.2 + vec2(uT * .035, 0.)), fbm(suv * 2.2 + vec2(5.2, -uT * .03)));
+  vec2 qw = vec2(fbm(suv * 4. + q * 1.7 + uT * .05), fbm(suv * 4. + q * 1.7 + 3.3 - uT * .04)) - .5;
+  suv += qw * (.009 + .012 * uv.y);
+  vec2 zd = (uv - uZg.xy) * vec2(asp, 1.); float zr = dot(zd, zd);
+  vec2 wind = zd / (sqrt(zr) + .02) * exp(-zr * 14.) * .032 * uZg.z;
+  suv -= wind * vec2(sc.x / asp, sc.y);
   float L = uHoch > .5 ? texture(uSkyH, suv).r : texture(uSkyQ, suv).r;
   float zug = smoothstep(.05, .85, uOpen);
   float th = 1.05 - zug * 1.1;
@@ -41,7 +49,7 @@ void main(){
   cuv = mat2(cos(rot), -sin(rot), sin(rot), cos(rot)) * (cuv - .5) * (1. + .015 * sin(uT * .7)) + .5;
   float inside = step(0., cuv.x) * step(cuv.x, 1.) * step(0., cuv.y) * step(cuv.y, 1.);
   vec2 w = vec2(fbm(cuv * 3. + uT * .22), fbm(cuv * 3. + 7.3 - uT * .2)) - .5;
-  vec2 duv = cuv + w * (.07 * (1. - c) + .02);
+  vec2 duv = cuv + w * (.07 * (1. - c) + .02) - wind * .7 / uCS;
   float sil = mix(texture(uGrob, duv).r, texture(uFein, duv).r, c);
   float n = fbm(duv * 7. + vec2(uT * .25, -uT * .16));
   float thm = mix(.95, .3, c);
@@ -74,6 +82,8 @@ interface HimmelState extends SceneState {
 	g: Gl | null;
 	bereit: boolean;
 	offen: number;
+	/** geglätteter Zeiger in uv und Stärke */
+	zg: [number, number, number];
 }
 
 function programm(gl: WebGL2RenderingContext): WebGLProgram | null {
@@ -177,6 +187,7 @@ export function registerHimmel(
 			s.g = null;
 			s.bereit = false;
 			s.offen = 0;
+			s.zg = [0.5, 0.5, 0];
 			laden(s).catch(() => {});
 		},
 		frame(s) {
@@ -209,6 +220,16 @@ export function registerHimmel(
 				gl.uniform2f(u('uCC'), 0.72, unten + (1 - unten) * 0.55);
 				gl.uniform1f(u('uCS'), 0.62);
 			}
+			// Zeiger als Wind; ohne Zeiger (Handy) zieht eine langsame Böe über den Himmel
+			const t = loop.t;
+			const da = s.m.in && !s.reduced;
+			const zx = da ? s.m.px / s.W : 0.5 + 0.38 * Math.sin(t * 0.13);
+			const zy = da ? 1 - s.m.py / s.H : 0.32 + 0.14 * Math.sin(t * 0.21 + 1.3);
+			const k = 1 - Math.exp(-loop.dt * 4);
+			s.zg[0] += (zx - s.zg[0]) * k;
+			s.zg[1] += (zy - s.zg[1]) * k;
+			s.zg[2] += ((s.reduced ? 0 : da ? 1 : 0.55) - s.zg[2]) * k;
+			gl.uniform3f(u('uZg'), s.zg[0], s.zg[1], s.zg[2]);
 			const tf = textFeld(sec, r0);
 			if (tf) gl.uniform4f(u('uTxt'), tf[0] / s.W, 1 - tf[3] / s.H, tf[2] / s.W, 1 - tf[1] / s.H);
 			else gl.uniform4f(u('uTxt'), 0, 0, 0, 0);
