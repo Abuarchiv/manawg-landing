@@ -7,20 +7,23 @@
 import { loop, qa } from '../../core/loop';
 import { BAYER, cl, lag, lerp, ss } from '../../core/math';
 import type { BuehnenKontext } from './types';
+import { wohnungsZeichen } from './wohnung-gl';
 
 const mono = (px: number) => `500 ${px}px "JetBrains Mono", monospace`;
 
 /** Raum im Raster: Name, x, y, Breite, Tiefe, Zeile. */
 type Raum = readonly [name: string, x: number, y: number, w: number, d: number, zeile: string];
 
+// Raster = halbe Meter der Blender-Wohnung (landing-konzept/wohnung-iso, Böden Boden_*)
 const ROOMS = [
-	['KÜCHE', 0, 0, 8, 6, 'Einkäufe · Vorräte'],
-	['BAD', 8, 0, 5, 6, 'Putzplan'],
-	['ZIMMER · JONA', 13, 0, 7, 6, ''],
-	['FLUR', 0, 6, 20, 3, 'Pinnwand · Chat'],
-	['WOHNZIMMER', 0, 9, 9, 7, 'Ausgaben · Fixkosten'],
-	['ZIMMER · LEA', 9, 9, 5, 7, ''],
-	['ZIMMER · LINA', 14, 9, 6, 7, ''],
+	['KÜCHE', 0, 0, 8, 7.2, 'Einkäufe · Vorräte'],
+	['BAD', 18, 0, 6, 7.2, 'Putzplan'],
+	['ZIMMER · JONA', 12, 10, 6, 6.4, ''],
+	['FLUR', 0, 7.2, 24, 2.8, 'Pinnwand · Chat'],
+	['WOHNZIMMER', 8, 0, 10, 7.2, 'Ausgaben · Fixkosten'],
+	['ZIMMER · LEA', 0, 10, 6, 6.4, ''],
+	['ZIMMER · LINA', 18, 10, 6, 6.4, ''],
+	['ZIMMER · MIKA', 6, 10, 6, 6.4, ''],
 ] as const satisfies readonly Raum[];
 
 /** Blickpunkt: Mitte im Raster (cx, cy), Maßstab u, Ursprung der Projektion (ox, oy), Raum (-1 = keiner). */
@@ -34,12 +37,12 @@ interface Blick {
 }
 
 const STOPS: readonly Blick[] = [
-	{ cx: 10, cy: 8, u: 34, ox: 760, oy: 450, room: -1 },
-	{ cx: 4, cy: 3, u: 62, ox: 840, oy: 420, room: 0 },
-	{ cx: 4.5, cy: 12.5, u: 52, ox: 840, oy: 420, room: 4 },
-	{ cx: 10.5, cy: 3, u: 80, ox: 840, oy: 420, room: 1 },
-	{ cx: 10, cy: 7.5, u: 48, ox: 840, oy: 420, room: 3 },
-	{ cx: 10, cy: 8, u: 24, ox: 640, oy: 300, room: -1 },
+	{ cx: 12, cy: 8.2, u: 30, ox: 760, oy: 450, room: -1 },
+	{ cx: 4, cy: 3.6, u: 58, ox: 840, oy: 420, room: 0 },
+	{ cx: 13, cy: 3.6, u: 46, ox: 840, oy: 420, room: 4 },
+	{ cx: 21, cy: 3.6, u: 64, ox: 840, oy: 420, room: 1 },
+	{ cx: 12, cy: 8.6, u: 42, ox: 840, oy: 420, room: 3 },
+	{ cx: 12, cy: 8.2, u: 21, ox: 640, oy: 300, room: -1 },
 ];
 /** Wand: Anfang (x, y) und Ende (x, y) im Raster. */
 type Wand = [number, number, number, number];
@@ -364,45 +367,62 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		return cl(v);
 	});
 	const focus = lit.indexOf(Math.max(...lit));
-	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-	ctx.fillStyle = '#0A0A0A';
-	ctx.fillRect(0, 0, W, H);
-	ctx.setTransform(dpr * f, 0, 0, dpr * f, dpr * tx, dpr * ty);
 	const mx = st.sm.x;
 	const my = st.sm.y;
 	const FL = 210;
+	// Blender-Schnitt als Zeichen (wohnung-gl.ts); bis er geladen ist, Punktböden und Linienwände wie bisher
+	const bild = wohnungsZeichen({
+		W,
+		H,
+		dpr,
+		ku: f * u,
+		x0: tx + f * (ox - (cx - cy) * 0.866 * u),
+		y0: ty + f * (oy - (cx + cy) * 0.5 * u),
+		bau,
+		raeume: ROOMS.map((r) => [r[1], r[2], r[3], r[4]] as const),
+		licht: lit,
+		zeiger: m.in ? [tx + mx * f, ty + my * f, FL * f] : [0, 0, 0],
+	});
+	ctx.setTransform(1, 0, 0, 1, 0, 0);
+	if (bild) ctx.drawImage(bild, 0, 0);
+	else {
+		ctx.fillStyle = '#0A0A0A';
+		ctx.fillRect(0, 0, cv.width, cv.height);
+	}
+	ctx.setTransform(dpr * f, 0, 0, dpr * f, dpr * tx, dpr * ty);
 	const stp = Math.max(0.12, 5.5 / u);
 	ctx.fillStyle = '#FAFAFA';
 	// Bodenpunkte: tausende je Bild, daher P(x, y, 0) ausgeschrieben (ohne Array je Punkt) und das Bayer-Raster zuerst
 	const ku = 0.866 * u;
 	const kv = 0.5 * u;
-	ROOMS.forEach((r, ri) => {
-		const x = r[1];
-		const y = r[2];
-		const w = r[3];
-		const hh = r[4];
-		const base = 0.06 + 0.8 * (lit[ri] ?? 0);
-		for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++) {
-			const dy = yy - cy;
-			const zeile = (gy & 3) * 4;
-			for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
-				const bay = (BAYER[zeile + (gx & 3)] ?? 0) / 16;
-				if (bay >= bauBoden) continue;
-				const dx = xx - cx;
-				const px = ox + (dx - dy) * ku;
-				const py = oy + (dx + dy) * kv;
-				if (px < x0 - 4 || py < y0 - 4 || px > x1 || py > y1) continue;
-				let I = base;
-				if (m.in) {
-					const ddx = px - mx;
-					const ddy = py - my;
-					const d2 = ddx * ddx + ddy * ddy;
-					if (d2 < FL * FL) I += 0.8 * (1 - Math.sqrt(d2) / FL) ** 2;
+	if (!bild)
+		ROOMS.forEach((r, ri) => {
+			const x = r[1];
+			const y = r[2];
+			const w = r[3];
+			const hh = r[4];
+			const base = 0.06 + 0.8 * (lit[ri] ?? 0);
+			for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++) {
+				const dy = yy - cy;
+				const zeile = (gy & 3) * 4;
+				for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
+					const bay = (BAYER[zeile + (gx & 3)] ?? 0) / 16;
+					if (bay >= bauBoden) continue;
+					const dx = xx - cx;
+					const px = ox + (dx - dy) * ku;
+					const py = oy + (dx + dy) * kv;
+					if (px < x0 - 4 || py < y0 - 4 || px > x1 || py > y1) continue;
+					let I = base;
+					if (m.in) {
+						const ddx = px - mx;
+						const ddy = py - my;
+						const d2 = ddx * ddx + ddy * ddy;
+						if (d2 < FL * FL) I += 0.8 * (1 - Math.sqrt(d2) / FL) ** 2;
+					}
+					if (I > bay + 0.02) ctx.fillRect(px, py, 1.6, 1.6);
 				}
-				if (I > bay + 0.02) ctx.fillRect(px, py, 1.6, 1.6);
 			}
-		}
-	});
+		});
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
 	if (!st.pp)
 		st.pp = PEOC.map(([name, rel], k) => ({
@@ -432,42 +452,43 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		pp.y += (pp.ty - pp.y) * kp;
 	});
 	const HW = 1.1;
-	for (const [k, wl] of WALLS.entries()) {
-		// jede Wand zieht sich versetzt von ihrem Anfang aus, die Höhe wächst mit
-		const w = ss(cl(bauWand * 1.6 - (k / WALLS.length) * 0.6));
-		if (w <= 0) continue;
-		const ex = wl[0] + (wl[2] - wl[0]) * w;
-		const ey = wl[1] + (wl[3] - wl[1]) * w;
-		const a = P(wl[0], wl[1], 0);
-		const b = P(ex, ey, 0);
-		const a2 = P(wl[0], wl[1], HW * w);
-		const b2 = P(ex, ey, HW * w);
-		ctx.globalAlpha = 0.92;
-		ctx.fillStyle = '#0A0A0A';
-		ctx.beginPath();
-		ctx.moveTo(a[0], a[1]);
-		ctx.lineTo(b[0], b[1]);
-		ctx.lineTo(b2[0], b2[1]);
-		ctx.lineTo(a2[0], a2[1]);
-		ctx.closePath();
-		ctx.fill();
-		ctx.globalAlpha = 0.3;
-		ctx.strokeStyle = '#FAFAFA';
-		ctx.lineWidth = 1;
-		ctx.beginPath();
-		ctx.moveTo(a[0], a[1]);
-		ctx.lineTo(b[0], b[1]);
-		ctx.moveTo(a[0], a[1]);
-		ctx.lineTo(a2[0], a2[1]);
-		ctx.moveTo(b[0], b[1]);
-		ctx.lineTo(b2[0], b2[1]);
-		ctx.stroke();
-		ctx.globalAlpha = 0.9;
-		ctx.beginPath();
-		ctx.moveTo(a2[0], a2[1]);
-		ctx.lineTo(b2[0], b2[1]);
-		ctx.stroke();
-	}
+	if (!bild)
+		for (const [k, wl] of WALLS.entries()) {
+			// jede Wand zieht sich versetzt von ihrem Anfang aus, die Höhe wächst mit
+			const w = ss(cl(bauWand * 1.6 - (k / WALLS.length) * 0.6));
+			if (w <= 0) continue;
+			const ex = wl[0] + (wl[2] - wl[0]) * w;
+			const ey = wl[1] + (wl[3] - wl[1]) * w;
+			const a = P(wl[0], wl[1], 0);
+			const b = P(ex, ey, 0);
+			const a2 = P(wl[0], wl[1], HW * w);
+			const b2 = P(ex, ey, HW * w);
+			ctx.globalAlpha = 0.92;
+			ctx.fillStyle = '#0A0A0A';
+			ctx.beginPath();
+			ctx.moveTo(a[0], a[1]);
+			ctx.lineTo(b[0], b[1]);
+			ctx.lineTo(b2[0], b2[1]);
+			ctx.lineTo(a2[0], a2[1]);
+			ctx.closePath();
+			ctx.fill();
+			ctx.globalAlpha = 0.3;
+			ctx.strokeStyle = '#FAFAFA';
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.moveTo(a[0], a[1]);
+			ctx.lineTo(b[0], b[1]);
+			ctx.moveTo(a[0], a[1]);
+			ctx.lineTo(a2[0], a2[1]);
+			ctx.moveTo(b[0], b[1]);
+			ctx.lineTo(b2[0], b2[1]);
+			ctx.stroke();
+			ctx.globalAlpha = 0.9;
+			ctx.beginPath();
+			ctx.moveTo(a2[0], a2[1]);
+			ctx.lineTo(b2[0], b2[1]);
+			ctx.stroke();
+		}
 	ctx.globalAlpha = 1;
 	const scheiben = st.pp.map((pp, k) => {
 		const pt = P(pp.x, pp.y, 0.45);
