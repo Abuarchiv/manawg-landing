@@ -22,7 +22,7 @@ export const plan: Ablaufplan = {
 	render(t, E) {
 		// Chip „Installieren“ klappt neben dem Symbol aus (geschätzt)
 		const ce = aus(seg(t, 0.45, 0.4));
-		put(E['dk-chip'], { background: `rgba(211,227,253,${(ce * 0.95).toFixed(3)})` });
+		put(E['dk-chip'], { background: `rgba(168,199,250,${(ce * 0.24).toFixed(3)})` });
 		put(E['dk-chip-t'], {
 			maxWidth: `${(78 * ce).toFixed(1)}px`,
 			paddingLeft: `${(6 * ce).toFixed(1)}px`,

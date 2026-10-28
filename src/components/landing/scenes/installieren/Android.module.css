@@ -31,6 +31,19 @@
 	height: 48px;
 	bottom: auto;
 }
+/* Kameraloch des Pixel, mittig über der Statusleiste */
+.and_kamera {
+	z-index: 10;
+	inset: auto;
+	left: 192px;
+	top: 11px;
+	width: 27px;
+	height: 27px;
+	border-radius: 50%;
+	background: radial-gradient(circle at 40% 38%, #262626 0 22%, #000 26%);
+	box-shadow: 0 0 0 1px rgba(250, 250, 250, 0.1);
+	pointer-events: none;
+}
 .and_status {
 	height: 48px;
 	display: flex;

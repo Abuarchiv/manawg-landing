@@ -35,6 +35,19 @@
 	height: 54px;
 	bottom: auto;
 }
+/* Dynamic Island wie am Demo-Handy */
+.ios_insel {
+	z-index: 10;
+	inset: auto;
+	left: 132px;
+	top: 11px;
+	width: 126px;
+	height: 37px;
+	border-radius: 999px;
+	background: #000;
+	box-shadow: 0 0 0 1px rgba(250, 250, 250, 0.12);
+	pointer-events: none;
+}
 .ios_status {
 	height: 54px;
 	display: flex;

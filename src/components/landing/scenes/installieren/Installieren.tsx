@@ -250,6 +250,14 @@ export function Installieren() {
 			<div aria-hidden="true" inert className={s.buehne} ref={buRef}>
 				<div className={s.skala} ref={skRef}>
 					<div ref={frRef} data-ins="frame" data-tab={inst} className={s.rahmen}>
+						{/* Tasten am Gehäuse: iPhone 17 (Aktion, Lautstärke links; Seitentaste, Kamerasteuerung rechts), Pixel (rechts) */}
+						<i className={s.taste} data-t="ios-aktion" />
+						<i className={s.taste} data-t="ios-laut1" />
+						<i className={s.taste} data-t="ios-laut2" />
+						<i className={s.taste} data-t="ios-seite" />
+						<i className={s.taste} data-t="ios-kamera" />
+						<i className={s.taste} data-t="and-ein" />
+						<i className={s.taste} data-t="and-laut" />
 						<div data-ins="screen" className={s.schirm}>
 							<div className={s.geraet} hidden={inst !== 0}>
 								<Iphone />

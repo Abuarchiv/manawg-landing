@@ -286,6 +286,7 @@ export function Android() {
 			<div className={s.and_st}>
 				<Status />
 			</div>
+			<span className={s.and_kamera} />
 		</div>
 	);
 }

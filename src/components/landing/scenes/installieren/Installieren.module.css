@@ -179,11 +179,73 @@
 	box-shadow: inset 0 0 0 1px rgba(250, 250, 250, 0.35), inset 0 0 0 3px #0a0a0a, 0 50px 120px
 		rgba(0, 0, 0, 0.7), 0 0 90px rgba(250, 250, 250, 0.1);
 }
+/* Pixel: etwas weniger runde Ecken als das iPhone, sonst dasselbe Gehäuse */
+.rahmen[data-tab="1"] {
+	border-radius: 40px;
+	padding: 9px;
+}
+.rahmen[data-tab="1"] .schirm {
+	border-radius: 32px;
+}
 .rahmen[data-tab="2"] {
 	width: 600px;
 	height: 400px;
 	padding: 8px;
 	border-radius: 14px;
+	border-color: rgba(250, 250, 250, 0.18);
+	box-shadow: 0 50px 120px rgba(0, 0, 0, 0.7), 0 0 90px rgba(250, 250, 250, 0.08);
+}
+.taste {
+	position: absolute;
+	width: 3px;
+	border-radius: 2px 0 0 2px;
+	background: linear-gradient(90deg, #737373, #262626);
+	left: -3px;
+	display: none;
+}
+.taste[data-t="ios-seite"],
+.taste[data-t="ios-kamera"],
+.taste[data-t^="and-"] {
+	left: auto;
+	right: -3px;
+	border-radius: 0 2px 2px 0;
+	background: linear-gradient(270deg, #737373, #262626);
+}
+.rahmen[data-tab="0"] .taste[data-t^="ios-"],
+.rahmen[data-tab="1"] .taste[data-t^="and-"] {
+	display: block;
+}
+.taste[data-t="ios-aktion"] {
+	top: 112px;
+	height: 28px;
+}
+.taste[data-t="ios-laut1"] {
+	top: 158px;
+	height: 50px;
+}
+.taste[data-t="ios-laut2"] {
+	top: 218px;
+	height: 50px;
+}
+.taste[data-t="ios-seite"] {
+	top: 176px;
+	height: 78px;
+}
+/* Kamerasteuerung: flach im Rahmen, dunkles Saphirglas */
+.taste[data-t="ios-kamera"] {
+	top: 330px;
+	height: 44px;
+	width: 2px;
+	right: -2px;
+	background: linear-gradient(270deg, #404040, #0a0a0a);
+}
+.taste[data-t="and-ein"] {
+	top: 150px;
+	height: 52px;
+}
+.taste[data-t="and-laut"] {
+	top: 226px;
+	height: 92px;
 }
 .schirm {
 	position: relative;

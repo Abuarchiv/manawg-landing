@@ -571,6 +571,7 @@ export function Iphone() {
 			<div className={s.ios_st}>
 				<Status />
 			</div>
+			<span className={s.ios_insel} />
 		</div>
 	);
 }
