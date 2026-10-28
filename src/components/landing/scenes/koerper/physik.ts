@@ -86,6 +86,8 @@ function homes(s: KoerperState) {
 	const unten0 = Math.max(...AB.map((c) => (c[1] - 173) * S + c[2] * S * 0.98));
 	const t = s.host.querySelector<HTMLElement>('[data-titel]');
 	if (s.mode === 'hoch') {
+		// eine frühere Quer-Lage (Modus beginnt als quer, auch beim Drehen) zurücknehmen, sonst klafft über dem Titel eine Lücke
+		t?.style.removeProperty('--titel-top');
 		const tb = t ? t.offsetTop + t.offsetHeight : 0;
 		cx = s.bw / 2;
 		// Unterkante des Titels samt Abstand in Szenen-Einheiten: Ring und Decke bleiben darunter
@@ -103,7 +105,7 @@ function homes(s: KoerperState) {
 		const bis = vis - 48;
 		const gruppe = th + 36 + ringH;
 		const top = von + Math.max(0, (bis - von - gruppe) / 2);
-		t.style.top = `${Math.round(top)}px`;
+		t.style.setProperty('--titel-top', `${Math.round(top)}px`);
 		cy = (top + th + 36 + ringH / 2 - s.oy) / s.f - (oben0 + unten0) / 2;
 	}
 	s.cx = cx;
