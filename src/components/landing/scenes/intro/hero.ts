@@ -41,7 +41,7 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 `;
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
-uniform sampler2D uImg, uMsk; uniform float uFoto, uAb;
+uniform sampler2D uImg, uMsk; uniform float uFoto, uAb, uQ;
 // Berg: Kupferstich (Codex, Technik wie der Himmel des Finales) als Kamerafahrt. Bildausschnitt deckend, im Hochformat enger um den
 // Gipfel; der Blick nach oben (uLook) schiebt den Ausschnitt bis in den dunklen Himmel. Wolken ziehen leicht, der
 // Zeiger ist Licht auf dem Schnee, die Marke steht als Sonne im Himmel.
@@ -81,18 +81,36 @@ float alb = mix(rockA(p) * .5, .95, sn); float amb = .5 + .5 * n.y; v = alb * (d
   return v; }
 float omap(vec3 p){ float d = 1e5; for(int i = 0; i < 8; i++) d = smin(d, length(p - uO[i].xyz) - uO[i].w, uK); return max(d, -(length(p.xy - uH.xy) - uH.z)); }
 vec3 onrm(vec3 p){ const vec2 e = vec2(.002, -.002); return normalize(e.xyy * omap(p + e.xyy) + e.yyx * omap(p + e.yyx) + e.yxy * omap(p + e.yxy) + e.xxx * omap(p + e.xxx)); }
-float organ(vec2 uv){ vec3 ro = uC, rd = normalize(vec3(uv, -1.6)); float t = 0., md = 1e5;
+// Organ als Stich: neben dem Ton die Phase der Strichlage (Schnitte schräger Ebenen durch die Kugeln, die Striche
+// laufen um die Form) als Sinus/Kosinus, damit sie die Interpolation des kleinen Szenenpuffers übersteht. Der Abstand
+// ist nach Tiefe gestuft (uQ = Weltabstand je Tiefeneinheit für 6 px), der Anteil zur nächsten Stufe geht in Alpha.
+float organ(vec2 uv, out vec3 ph){ vec3 ro = uC, rd = normalize(vec3(uv, -1.6)); float t = 0., md = 1e5;
   for(int i = 0; i < 90; i++){ vec3 p = ro + rd * t; float d = omap(p); md = min(md, d);
 if(d < .0015){ vec3 n = onrm(p); vec3 l = normalize(vec3(uM.x * 2.4, uM.y * 2.4 + .5, 1.3)); float df = max(dot(n, l), 0.), ao = clamp(omap(p + n * .2) / .2, 0., 1.), rim = pow(1. - max(dot(n, -rd), 0.), 3.);
+  float lv = log2(t * uQ), lf = floor(lv); float a = 6.2831853 * dot(p, normalize(vec3(.18, 1., .75))) * exp2(-lf - 1.);
+  ph = vec3(sin(a), cos(a), .5 + .5 * (lv - lf));
   return clamp(df * .9 * (.45 + .55 * ao) + .05 + rim * .22, 0., 1.); }
 t += d * .9; if(t > 40.) break; }
-  return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)); }
-void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv), uMix); o = vec4(v, v, v, 1.); }`;
+  return exp(-md * 7.) * .45; }
+void main(){ vec2 uv = UV(); float v = 0.; vec3 ph = vec3(0.); if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv, ph), uMix);
+  o = vec4(v, .5 + .5 * ph.xy, ph.z); }`;
 const POST = `#version 300 es
 precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad;
-void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
+float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+// Strich mit Breite nach Ton: hell = breit bis geschlossen, dunkel = läuft spitz aus
+float strich(float f, float w, float t){ float aa = clamp(w, .02, .5) * .8; return (1. - smoothstep(.5 * t - aa, .5 * t + aa, abs(fract(f) - .5))) * smoothstep(.02, .1, t); }
+void main(){ vec2 fc = gl_FragCoord.xy; vec4 tx = texture(uT, fc / uR * uS); float vr = tx.r;
   float cs = 6. * uR.y / 800.; vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r; if(uL > .5) L = mix(clamp((L - .36) / .64, 0., 1.), L, uMx);
   float r = cs * .5 * sqrt(clamp(L, 0., 1.)) * 1.15; float vd = smoothstep(r + .7, r - .7, length(fc - c));
+  // Organ: Stichlinien in zwei Feinheiten (die feine aus der doppelten Phase), überblendet nach Tiefe (Alpha 0,5 bis 1);
+  // daneben Punktiermanier für den Schein
+  vec2 sc = tx.gb * 2. - 1.; float n2 = max(dot(sc, sc), 1e-4); float ph = atan(sc.x, sc.y) / 6.2831853;
+  vec2 ex = dFdx(sc), ey = dFdy(sc); float dw = (abs(sc.y * ex.x - sc.x * ex.y) + abs(sc.y * ey.x - sc.x * ey.y)) / (6.2831853 * n2);
+  // Je Szenentexel darf die Phase nur gut einen Viertelstrich weiterlaufen, sonst Moiré: dann grober, zuletzt Fläche
+  float tp = dw * uR.x / (uS.x * float(textureSize(uT, 0).x));
+  float tn = pow(clamp(vr, 0., 1.), 1.15); float eng = mix(strich(2. * ph, 2. * dw, tn), strich(ph, dw, tn), max(clamp(tx.a * 2. - 1., 0., 1.), smoothstep(.16, .24, tp)));
+  eng = mix(eng, tn, smoothstep(.3, .42, tp));
+  float pc = 2. * uR.y / 800.; vec2 pq = fc / pc; float pk = step(hash(floor(pq)), vr * vr * .7) * smoothstep(.5, .3, length(fract(pq) - .5)); vd = mix(pk, eng, smoothstep(.2, .45, tx.a));
   float v = mix(vr, vd, uD); if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
   if(uL > .5) v = 1. - v * .96; else v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
 
@@ -122,7 +140,8 @@ type SzeneU =
 	| 'uImg'
 	| 'uMsk'
 	| 'uFoto'
-	| 'uAb';
+	| 'uAb'
+	| 'uQ';
 type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad';
 
 /** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
@@ -243,6 +262,7 @@ export function createHero(cv: HTMLCanvasElement) {
 				'uMsk',
 				'uFoto',
 				'uAb',
+				'uQ',
 			],
 			'scene',
 		);
@@ -476,22 +496,17 @@ export function createHero(cv: HTMLCanvasElement) {
 		const hy = (O[1] ?? 0) + 23 / 110;
 		const hr = 0.2 * (1 + dive * 2.2);
 		const cz = lerp(lerp(17, 6, zoom), -2.5, dive ** 1.6);
-		const allDots = mx >= 0.999;
 		// Ausgabe in voller Backing-Auflösung, Szenenpuffer klein und adaptiv
 		const w = Math.max(1, Math.round(W * dpr));
 		const hh = Math.max(1, Math.round(H * dpr));
 		sizeTo(W, H, dpr);
-		const cs = (6 * hh) / 800;
 		// Berg-Phase (ruhiges Bild): feinerer Szenenpuffer, die Grate zeigen sonst Treppenstufen; die adaptive Stufe (ad) fängt Last ab
-		const fk = mx < 0.05 ? 0.78 : 0.42;
+		// Organ-Stich: schmale Schirme brauchen feinere Texel, sonst treppen die Striche
+		const fk = mx < 0.05 ? 0.78 : W < 700 ? 0.55 : 0.42;
 		// Foto-Berg: nur Texturzugriffe, deshalb in voller Backing-Auflösung (scharfes Gestein und Schnee)
 		const foto = G.fotoA > 0.001 && mx < 0.05;
-		const fw = allDots
-			? Math.ceil(w / cs)
-			: foto
-				? w
-				: Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
-		const fh = allDots ? Math.ceil(hh / cs) : Math.round((fw * H) / W);
+		const fw = foto ? w : Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
+		const fh = Math.round((fw * H) / W);
 		const tw = Math.min(4096, Math.max(960, w));
 		const th = Math.max(fh, Math.round((tw * hh) / w));
 		ensureTex(gl, tw, th);
@@ -527,6 +542,8 @@ export function createHero(cv: HTMLCanvasElement) {
 		}
 		gl.uniform1f(U.uFoto, G.fotoTx ? G.fotoA : 0);
 		gl.uniform1f(U.uAb, ss((look - 0.02) / 0.6));
+		// Strichabstand des Organs: auf dem Schirm 3 bis 6 px
+		gl.uniform1f(U.uQ, 6 / (1.6 * H * uz));
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		if (gcv.width < w) gcv.width = w;
