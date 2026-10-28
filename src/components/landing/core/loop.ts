@@ -33,6 +33,13 @@ import {
 /** Seitenmodus: Hochformat oder Querformat. */
 export type Modus = 'hoch' | 'quer';
 
+/** Demo-Variante aus ?v= (landing-konzept/notizen/DEMOS-ABC-2026-10-28.md): a Stich, b Zeichen, c Stich & Zeichen. */
+export type Variante = '' | 'a' | 'b' | 'c';
+const varianteAusUrl = (): Variante => {
+	const v = typeof location === 'undefined' ? '' : new URLSearchParams(location.search).get('v');
+	return v === 'a' || v === 'b' || v === 'c' ? v : '';
+};
+
 /** Bild-Abonnent der Schleife: (t, dt, now, raw). */
 export type BildFn = (t: number, dt: number, now: number, raw: number) => void;
 
@@ -49,6 +56,7 @@ interface Loop {
 	act: number;
 	vw: number;
 	vh: number;
+	v: Variante;
 }
 
 export const loop: Loop = {
@@ -66,6 +74,7 @@ export const loop: Loop = {
 	// die erzwingen nach jedem Stil-Schreiben einer anderen Szene eine neue Layout-Berechnung.
 	vw: 0,
 	vh: 0,
+	v: varianteAusUrl(),
 };
 
 /** Messhaken der Szenen für landing-konzept/werkzeuge/qa (nur lesend), hängt an window.__landing.dbg. */
