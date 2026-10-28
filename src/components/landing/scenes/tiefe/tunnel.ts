@@ -38,7 +38,17 @@ interface Insel {
 }
 
 /** Punkt der Wolke: x, y, z, Zeichen, Insel (-1 = Staub). */
-type Punkt = [x: number, y: number, z: number, zeichen: string, insel: number, nr: number];
+// streuX/streuY: Versatz im Anflug bei voller Streuung (im Bild mit sc0 skaliert), einmal beim Aufbau gerechnet
+type Punkt = [
+	x: number,
+	y: number,
+	z: number,
+	zeichen: string,
+	insel: number,
+	nr: number,
+	streuX: number,
+	streuY: number,
+];
 
 /** Ausschlusszone um eine Unterzeile (DOM-Rechteck) samt Deckkraft w. */
 interface Zone {
@@ -139,6 +149,19 @@ const rasterPts = (r: Maske, step: number, ox: number, oy: number): Pt[] => {
 	return pts;
 };
 
+// Inline-Stil nur bei geändertem Wert schreiben (jedes Schreiben macht den Stil des Elements ungültig)
+const stilAlt = new WeakMap<HTMLElement, Record<string, string>>();
+function stil(el: HTMLElement, k: string, v: string) {
+	let alt = stilAlt.get(el);
+	if (!alt) {
+		alt = {};
+		stilAlt.set(el, alt);
+	}
+	if (alt[k] === v) return;
+	alt[k] = v;
+	el.style.setProperty(k, v);
+}
+
 // Deckkraft des Untertitels aus der Tiefe dz seiner Insel. Im Entwurf ein Dreieck um dz 9 (Breite 5 nach
 // beiden Seiten); hier dieselben Grenzen, aber mit Plateau (voll für |dz - 9| <= 3,5), damit der Satz lesbar steht.
 const plateauOf = (dz: number): number => cl((5 - Math.abs(dz - 9)) / 1.5);
@@ -178,6 +201,8 @@ function build(s: TiefeState) {
 	s.P = [];
 	s.isl.forEach((I, kk) => {
 		I.pts.forEach((p, q) => {
+			const w = hsh(q, kk + 17) * Math.PI * 2;
+			const r = 0.8 + hsh(q, kk + 29) * 3.2;
 			s.P.push([
 				I.x + p[0],
 				I.y + p[1],
@@ -185,6 +210,8 @@ function build(s: TiefeState) {
 				RAMP.charAt(Math.floor(hsh(q, kk + 9) * 6)),
 				kk,
 				q,
+				Math.cos(w) * r * (hoch ? 0.5 : 1),
+				Math.sin(w) * r * 0.7,
 			]);
 		});
 	});
@@ -203,6 +230,8 @@ function build(s: TiefeState) {
 			'..:'.charAt(Math.floor(hsh(q, 4) * 3)),
 			-1,
 			q,
+			0,
+			0,
 		]);
 	s.bm = bauKey(s);
 }
@@ -280,10 +309,8 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 			// Anflug: Zeichen liegen weit vorn verstreut und laufen zwischen dz 40 und 20 zum Wort zusammen
 			const sc0 = (1 - ss(cl((40 - dz) / 20))) ** 1.4;
 			if (sc0 > 0.002) {
-				const w = hsh(q[5], q[4] + 17) * Math.PI * 2;
-				const r = (0.8 + hsh(q[5], q[4] + 29) * 3.2) * sc0;
-				x += Math.cos(w) * r * (hoch ? 0.5 : 1);
-				y += Math.sin(w) * r * 0.7;
+				x += q[6] * sc0;
+				y += q[7] * sc0;
 			}
 			if (dz < 5) {
 				const k = (5 - dz) * 0.12;
@@ -530,22 +557,30 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			zeichnePunkte(s, nb, { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm });
 			// Am Ende der Fahrt scrollt die Bühne nach oben weg: Wortzeile und Tiefenzähler blenden dabei aus, sonst
 			// fährt der letzte Satz über den Titel der nächsten Szene
+			// erst alle Lagen lesen, dann nur geänderte Werte schreiben: jedes Schreiben macht das Layout ungültig,
+			// ein Lesen danach erzwingt eine neue Berechnung
 			const oben = -s.el.getBoundingClientRect().top;
+			const kys = s.caps.map((el) => el.getBoundingClientRect().top - kopfUnten);
 			const aus = 1 - cl(oben / (0.12 * s.H));
 			// ganzes Etikett „TIEFE 000“, nicht nur die Zahl
-			if (s.dep?.parentElement) s.dep.parentElement.style.opacity = aus.toFixed(3);
+			if (s.dep?.parentElement) stil(s.dep.parentElement, 'opacity', aus.toFixed(3));
 			// Wortbild langsamer: sonst steht beim Zurückscrollen das letzte Wort über „Installieren“
-			ctx.canvas.style.opacity = (1 - cl(oben / (0.4 * s.H))).toFixed(3);
+			stil(ctx.canvas, 'opacity', (1 - cl(oben / (0.4 * s.H))).toFixed(3));
 			s.caps.forEach((el, i) => {
-				const ky = el.getBoundingClientRect().top - kopfUnten;
-				const op = ((zonen[i]?.w ?? 0) * cl(ky / 28) * aus).toFixed(3);
-				el.style.opacity = op;
-				el.style.setProperty('--k', op); // Leitlinie zeichnet mit der Deckkraft (landing.css .leit)
+				const op = ((zonen[i]?.w ?? 0) * cl((kys[i] ?? 0) / 28) * aus).toFixed(3);
+				stil(el, 'opacity', op);
+				stil(el, '--k', op); // Leitlinie zeichnet mit der Deckkraft (landing.css .leit)
 			});
 			// Hinweis „weiter scrollen“ nur am Anfang der Fahrt, danach ganz weg
-			if (s.hint) s.hint.style.opacity = (1 - ss(p / 0.06)).toFixed(3);
-			if (s.dep)
-				s.dep.textContent = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');
+			if (s.hint) stil(s.hint, 'opacity', (1 - ss(p / 0.06)).toFixed(3));
+			if (s.dep) {
+				const tiefe = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');
+				// nur die Zeichen des vorhandenen Textknotens ändern: textContent hängt jedes Bild einen neuen Knoten ein
+				const tk = s.dep.firstChild;
+				if (tk instanceof Text) {
+					if (tk.data !== tiefe) tk.data = tiefe;
+				} else s.dep.textContent = tiefe;
+			}
 		},
 	});
 }

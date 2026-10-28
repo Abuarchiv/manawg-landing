@@ -74,10 +74,12 @@ export function initScroll(root: HTMLElement): () => void {
 	const mqRed = matchMedia('(prefers-reduced-motion: reduce)');
 	const lenisAn = () => {
 		if (lenis || mqRed.matches) return;
+		// Rad und Trackpad mit Lerp statt Dauer-Kurve: die Kurve startete bei jedem Rad-Ereignis neu mit einem
+		// Geschwindigkeitssprung (Trackpads senden viele kleine Ereignisse, das stotterte). Lerp gleicht je Bild
+		// stetig und bildratenunabhängig nach. Klicks auf Abschnitts-Links behalten ihre eigene Kurve (onClick unten).
 		lenis = new Lenis({
 			autoRaf: false,
-			duration: 1.1,
-			easing: expoOut,
+			lerp: 0.1,
 			smoothWheel: true,
 			syncTouch: false,
 		});

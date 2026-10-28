@@ -34,7 +34,8 @@ export function Hinweise() {
 		run();
 	};
 	return (
-		<>
+		// display:contents: nur Träger der Variablen --p und --e (intro/stage.ts), ohne eigenen Kasten
+		<div data-hinweise="" style={css('display:contents')}>
 			<a
 				className="label hinweis"
 				aria-label="Intro überspringen"
@@ -58,6 +59,6 @@ export function Hinweise() {
 			>
 				SCROLLEN
 			</div>
-		</>
+		</div>
 	);
 }

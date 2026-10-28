@@ -373,25 +373,35 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	const FL = 210;
 	const stp = Math.max(0.12, 5.5 / u);
 	ctx.fillStyle = '#FAFAFA';
+	// Bodenpunkte: tausende je Bild, daher P(x, y, 0) ausgeschrieben (ohne Array je Punkt) und das Bayer-Raster zuerst
+	const ku = 0.866 * u;
+	const kv = 0.5 * u;
 	ROOMS.forEach((r, ri) => {
 		const x = r[1];
 		const y = r[2];
 		const w = r[3];
 		const hh = r[4];
 		const base = 0.06 + 0.8 * (lit[ri] ?? 0);
-		for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++)
+		for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++) {
+			const dy = yy - cy;
+			const zeile = (gy & 3) * 4;
 			for (let gx = 0, xx = x + stp / 2; xx < x + w; xx += stp, gx++) {
-				const pt = P(xx, yy, 0);
-				if (pt[0] < x0 - 4 || pt[1] < y0 - 4 || pt[0] > x1 || pt[1] > y1) continue;
+				const bay = (BAYER[zeile + (gx & 3)] ?? 0) / 16;
+				if (bay >= bauBoden) continue;
+				const dx = xx - cx;
+				const px = ox + (dx - dy) * ku;
+				const py = oy + (dx + dy) * kv;
+				if (px < x0 - 4 || py < y0 - 4 || px > x1 || py > y1) continue;
 				let I = base;
 				if (m.in) {
-					const dm = Math.hypot(pt[0] - mx, pt[1] - my);
-					if (dm < FL) I += 0.8 * (1 - dm / FL) ** 2;
+					const ddx = px - mx;
+					const ddy = py - my;
+					const d2 = ddx * ddx + ddy * ddy;
+					if (d2 < FL * FL) I += 0.8 * (1 - Math.sqrt(d2) / FL) ** 2;
 				}
-				const bay = (BAYER[(gy & 3) * 4 + (gx & 3)] ?? 0) / 16;
-				if (bay >= bauBoden) continue;
-				if (I > bay + 0.02) ctx.fillRect(pt[0], pt[1], 1.6, 1.6);
+				if (I > bay + 0.02) ctx.fillRect(px, py, 1.6, 1.6);
 			}
+		}
 	});
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
 	if (!st.pp)
@@ -548,11 +558,17 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	ctx.textBaseline = 'alphabetic';
 	ctx.lineJoin = 'round';
 	ctx.lineWidth = 3;
+	// ctx.font nur bei Wechsel setzen: der Setter parst den Schrift-String jedes Mal neu (teuer je Bild)
+	let schrift = '';
 	for (const it of items) {
 		if (it.aus || !it.rect) continue;
 		it.a *= bauRest * blende(`l${it.text}`, it.rect);
 		if (it.a < 0.01) continue;
-		ctx.font = mono(it.size);
+		const fo = mono(it.size);
+		if (fo !== schrift) {
+			ctx.font = fo;
+			schrift = fo;
+		}
 		ctx.globalAlpha = it.a;
 		ctx.strokeStyle = 'rgba(10,10,10,0.9)';
 		ctx.strokeText(it.text, it.x, it.y);

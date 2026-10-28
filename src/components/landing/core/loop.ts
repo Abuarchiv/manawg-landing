@@ -47,6 +47,8 @@ interface Loop {
 	mode: Modus;
 	flach: boolean;
 	act: number;
+	vw: number;
+	vh: number;
 }
 
 export const loop: Loop = {
@@ -60,6 +62,10 @@ export const loop: Loop = {
 	mode: 'quer', // 'hoch' | 'quer'
 	flach: false, // Handy quer
 	act: 0, // letzte Eingabe oder Bewegung (Sekunden, performance.now()): Scroll, Zeiger, Taste, Größenänderung
+	// Fenstergröße, einmal am Anfang jedes Bilds gelesen. In Bild-Rückrufen statt innerWidth/innerHeight nutzen:
+	// die erzwingen nach jedem Stil-Schreiben einer anderen Szene eine neue Layout-Berechnung.
+	vw: 0,
+	vh: 0,
 };
 
 /** Messhaken der Szenen für landing-konzept/werkzeuge/qa (nur lesend), hängt an window.__landing.dbg. */
@@ -210,7 +216,7 @@ function measure(r: Anmeldung, W: number, H: number) {
 	def.resize?.(s);
 }
 
-function frameScene(r: Anmeldung, t: number, dt: number) {
+function frameScene(r: Anmeldung, t: number, dt: number, rc: DOMRect) {
 	const { s, def } = r;
 	if (
 		s.cv &&
@@ -218,10 +224,9 @@ function frameScene(r: Anmeldung, t: number, dt: number) {
 		s.dpr !== dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2, s.W, s.H)
 	)
 		measure(r, s.el.clientWidth, s.el.clientHeight);
-	const rc = s.el.getBoundingClientRect();
 	// Weit weg (mehr als eine Fensterhöhe): nach FREI_NACH Sekunden Pufferspeicher freigeben, bei Annäherung neu messen
 	if (s.cv) {
-		const fern = rc.bottom < -innerHeight || rc.top > 2 * innerHeight;
+		const fern = rc.bottom < -loop.vh || rc.top > 2 * loop.vh;
 		if (!fern) {
 			r.fern = 0;
 			if (s.frei) measure(r, s.el.clientWidth, s.el.clientHeight);
@@ -235,15 +240,10 @@ function frameScene(r: Anmeldung, t: number, dt: number) {
 	}
 	// minSicht: Anteil der Fensterhöhe, ab dem eine große Fläche überhaupt gezeichnet wird (ein 50-px-Streifen
 	// einer 4-MP-Fläche kostet sonst das ganze Bild)
-	const sicht = Math.min(rc.bottom, innerHeight) - Math.max(rc.top, 0);
+	const sicht = Math.min(rc.bottom, loop.vh) - Math.max(rc.top, 0);
 	s.visible =
-		!(
-			rc.bottom < 0 ||
-			rc.top > innerHeight ||
-			rc.right < 0 ||
-			rc.left > innerWidth ||
-			rc.width < 2
-		) && sicht >= (def.minSicht ?? 0) * innerHeight;
+		!(rc.bottom < 0 || rc.top > loop.vh || rc.right < 0 || rc.left > loop.vw || rc.width < 2) &&
+		sicht >= (def.minSicht ?? 0) * loop.vh;
 	// Vorwärmen: kurz vor dem Eintritt unsichtbar aufbauen, damit der erste sichtbare Frame nicht den ganzen Aufbau
 	// trägt (Wortbild der Tiefe, Zeichenblatt und Raster der Sonne). Nicht in den ersten Sekunden.
 	if (
@@ -251,7 +251,7 @@ function frameScene(r: Anmeldung, t: number, dt: number) {
 		!r.warm &&
 		warmFrei &&
 		loop.n > 120 &&
-		rc.top < WARM_ABSTAND * innerHeight &&
+		rc.top < WARM_ABSTAND * loop.vh &&
 		rc.bottom > 0
 	) {
 		warmFrei = false;
@@ -303,6 +303,8 @@ function tick() {
 		return;
 	}
 	const now = performance.now() / 1000;
+	loop.vw = window.innerWidth;
+	loop.vh = window.innerHeight;
 	const sy = window.scrollY;
 	if (sy !== lastSy) {
 		lastSy = sy;
@@ -342,9 +344,14 @@ function tick() {
 		}
 	}
 	warmFrei = true;
+	// Lagen aller Szenen gesammelt lesen, bevor eine Szene Stile schreibt: einzeln dazwischen gelesen erzwang
+	// jedes Lesen eine eigene Stilberechnung der Seite
+	const lagen = new Map<Anmeldung, DOMRect>();
+	for (const r of scenes) lagen.set(r, r.s.el.getBoundingClientRect());
 	for (const r of scenes) {
+		const rc = lagen.get(r) ?? r.s.el.getBoundingClientRect();
 		try {
-			frameScene(r, loop.t, loop.dt);
+			frameScene(r, loop.t, loop.dt, rc);
 		} catch (e) {
 			report(`szene ${r.def.name ?? ''}`, e);
 		}

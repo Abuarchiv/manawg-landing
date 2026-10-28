@@ -200,7 +200,7 @@ export function registerHimmel(
 			gl.uniform2f(u('uRes'), w, h);
 			gl.uniform1f(u('uT'), s.reduced ? 4 : loop.t);
 			gl.uniform1f(u('uOpen'), s.offen);
-			const unten = cl((r0.bottom - innerHeight) / s.H, 0, 1); // Teil der Fläche unter dem Fensterrand
+			const unten = cl((r0.bottom - loop.vh) / s.H, 0, 1); // Teil der Fläche unter dem Fensterrand
 			if (hoch) {
 				// Hoch: fest im Abschnitt über dem Titel, scrollt mit dem Text weg (im Endbild ist oben kein Platz)
 				gl.uniform2f(u('uCC'), 0.5, 0.74);

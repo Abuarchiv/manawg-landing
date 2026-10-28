@@ -97,12 +97,16 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 		}
 	};
 
+	// Elemente einmal suchen, nicht jedes Bild (läuft auch, solange das Intro klebt)
+	let buehne: HTMLElement | null = null;
+	let zif: HTMLCanvasElement[] = [];
 	const off = onFrame(() => {
-		const buehne = document.querySelector<HTMLElement>('[data-buehne="intro"]');
-		const zif = [...document.querySelectorAll<HTMLCanvasElement>('#so-gehts canvas')];
+		if (!buehne?.isConnected) buehne = document.querySelector<HTMLElement>('[data-buehne="intro"]');
+		if (zif.length < ZIFFERN.length || !zif[0]?.isConnected)
+			zif = [...document.querySelectorAll<HTMLCanvasElement>('#so-gehts canvas')];
 		if (!ctx || !buehne || zif.length < ZIFFERN.length || loop.reduced) return aus(1);
-		const H = innerHeight;
-		const W = innerWidth;
+		const H = loop.vh;
+		const W = loop.vw;
 		const bt = buehne.getBoundingClientRect().top;
 		const z0 = zif[0]?.getBoundingClientRect() ?? null;
 		if (!z0) return aus(1);

@@ -1,5 +1,22 @@
 /* Tokens, Modi und Klassen der Landing (PLAN-V2 2.2, 2.6, 2.7).
    Regel für einen Entwurfswert d: clamp(MIN, min(d/12,8 vw, d/8 svh), MAX). Bei 1280 x 800 ergibt das genau d. */
+/* Atem der Ende-Ebene (scenes/ende/hand setzt sie jedes Bild am Handy-Träger): nicht vererbt, sonst rechnet der
+   Browser jedes Bild die Stile der ganzen Handy-Ebene neu, obwohl nur der Transform des Trägers sie liest */
+@property --ax {
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 0px;
+}
+@property --ay {
+	syntax: "<length>";
+	inherits: false;
+	initial-value: 0px;
+}
+@property --ar {
+	syntax: "<angle>";
+	inherits: false;
+	initial-value: 0deg;
+}
 :root {
 	/* Schrift */
 	--t-label: 11px; /* eine Mono-Stufe für alle Beschriftungen (nichts unter 10 px) */

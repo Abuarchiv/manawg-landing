@@ -79,6 +79,9 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 	const kopfCta = kopf?.querySelector<HTMLElement>('[data-loch="cta"]');
 	const endeTitel = buehne.querySelector<HTMLElement>('[data-ende-titel]');
 	const nurIntro = [...root.querySelectorAll<HTMLElement>('[data-nur-intro]')];
+	const hinweise = root.querySelector<HTMLElement>('[data-hinweise]');
+	const endeEl = buehne.querySelector<HTMLElement>('[data-ende]');
+	const raeumeEl = buehne.querySelector<HTMLElement>('[data-loch="text"]');
 	const hero = createHero(cvHero);
 
 	let W = buehne.clientWidth;
@@ -147,11 +150,13 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 	};
 	let syAlt = window.scrollY;
 
+	// Variablen nur an die Elemente, die sie lesen, nicht an #final oder die ganze Bühne: ein neuer Wert lässt die
+	// Stile aller Nachfahren des Trägers neu berechnen, im Intro jedes Bild.
 	const cache: Record<string, string> = {};
-	const setVar = (k: string, v: string) => {
+	const setVar = (k: string, v: string, ziele: (HTMLElement | null)[] = [buehne]) => {
 		if (cache[k] === v) return;
 		cache[k] = v;
-		root.style.setProperty(k, v);
+		for (const el of ziele) el?.style.setProperty(k, v);
 	};
 
 	const measureLoecher = () => {
@@ -266,38 +271,39 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		karten: number[],
 		rb: DOMRect,
 		visible: boolean,
+		kopfUnten: number,
+		titelTop: number,
 	): Phase => {
 		// Titel und Hinweis brauchen --p nur bis 0,09 (danach sind sie ganz weg). Weiter oben würde jeder neue Wert
 		// im Intro die Stile aller Nachfahren von #final neu berechnen (ca. 1,5 ms je Bild).
-		setVar('--p', Math.min(P, 0.1).toFixed(4));
+		setVar('--p', Math.min(P, 0.1).toFixed(4), [buehne, hinweise]);
 		// Phone.tsx lädt Standbild und App ab hier, weit vor der Ende-Ebene (der Aufbau der App-Seite dauert 20 bis 60 ms)
 		if (P > 0.55 && root.dataset.nah !== '1') root.dataset.nah = '1';
-		setVar('--g', (1 - fpA).toFixed(3));
+		setVar('--g', (1 - fpA).toFixed(3), [cvHero]);
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
-		setVar('--f', (Math.max(fpA, cl(por * 8)) * (1 - cl(endA * 2))).toFixed(3));
+		setVar('--f', (Math.max(fpA, cl(por * 8)) * (1 - cl(endA * 2))).toFixed(3), [cvWo]);
 		// Portal: die Wohnung öffnet sich als Kreis im Loch des Organs, kein schwarzes Bild zwischen Tauchgang und Wohnung
-		setVar('--por', por.toFixed(3));
-		setVar('--e', endA.toFixed(3));
+		setVar('--por', por.toFixed(3), [cvWo]);
+		setVar('--e', endA.toFixed(3), [endeEl, hinweise]);
 		// Raumkarten am Scroll geführt wie im Entwurf (Kurve und Überlappfreiheit: wohnung.karten)
 		for (const [j, k] of karten.entries()) {
 			st.kv[j] = k;
-			setVar(`--c${j}`, k.toFixed(3));
+			setVar(`--c${j}`, k.toFixed(3), [raeumeEl]);
 		}
-		const kopfUnten = kopf ? kopf.getBoundingClientRect().bottom : 0;
 		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein
 		const kopfAus = loop.mode === 'hoch' ? 0 : endA * (rb.bottom > kopfUnten ? 1 : 0);
-		setVar('--kopf-aus', kopfAus.toFixed(3));
+		setVar('--kopf-aus', kopfAus.toFixed(3), [kopf]);
 		// Hochformat: Titel und Knopf der Ende-Ebene blenden aus, sobald sie beim Hinausscrollen das Kopfband
 		// erreichen (kein Text über dem Logo); in demselben Maß kommt der Kopf-Knopf zurück
 		let titelAus = 0;
 		if (loop.mode === 'hoch' && endeTitel && endA > 0) {
-			titelAus = 1 - cl((endeTitel.getBoundingClientRect().top - kopfUnten) / 16);
+			titelAus = 1 - cl((titelTop - kopfUnten) / 16);
 		}
-		setVar('--ende-titel-aus', titelAus.toFixed(3));
+		setVar('--ende-titel-aus', titelAus.toFixed(3), [endeTitel]);
 		// Hochformat: der Kopf bleibt, aber sein Knopf geht, solange der Knopf der Ende-Ebene im Bild steht (kein Doppel)
 		const ktAus =
 			loop.mode === 'hoch' ? endA * (rb.bottom > kopfUnten ? 1 : 0) * (1 - titelAus) : 0;
-		setVar('--kopf-cta-aus', ktAus.toFixed(3));
+		setVar('--kopf-cta-aus', ktAus.toFixed(3), [kopf]);
 		if (kopfCta && kopfCta.inert !== ktAus >= 0.6) kopfCta.inert = ktAus >= 0.6;
 		if (kopf && kopf.inert !== kopfAus >= 0.6) kopf.inert = kopfAus >= 0.6;
 		const phase: Phase = rb.bottom <= 0 ? 'nach' : P >= 0.9 ? 'ende' : 'intro';
@@ -337,7 +343,10 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		if (dprFor(2, 1.5, W, H) !== dpr) resize(); // Auflösungsstufe (loop.ts) hat sich geändert
 		const rb = buehne.getBoundingClientRect();
 		const rs = sec.getBoundingClientRect();
-		const visible = rb.bottom > 0 && rb.top < innerHeight;
+		const visible = rb.bottom > 0 && rb.top < loop.vh;
+		// alle Lagen lesen, bevor setzeStil schreibt (sonst erzwingt jedes Lesen eine Stilberechnung mitten im Bild)
+		const kopfUnten = kopf ? kopf.getBoundingClientRect().bottom : 0;
+		const titelTop = endeTitel ? endeTitel.getBoundingClientRect().top : 0;
 		const s = cl(-rs.top / strecke());
 		const Pz = warp(s);
 		const P = glaette(Pz, dt, visible);
@@ -359,7 +368,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		st.P = P;
 		st.s = s;
 
-		setzeStil(P, fpA, por, endA, karten, rb, visible);
+		setzeStil(P, fpA, por, endA, karten, rb, visible, kopfUnten, titelTop);
 		st.endOn = endA > 0.6 && rb.bottom > 0.625 * H;
 		passeAufloesung(raw);
 
