@@ -76,11 +76,20 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 	let sheetKey = '';
 	let war = 0;
 	let leer = true;
-	const root = cv.closest<HTMLElement>('#final');
+	let ausWert = '';
+	// --app-aus nur am Bildschirm des Handys (Standbild und iframe), nicht an #final: eine geerbte Variable an der
+	// Wurzel ließe in jedem Bild den Stil der ganzen Szene neu berechnen. Nur bei Änderung schreiben.
+	const setzeAus = (v: string) => {
+		if (v === ausWert) return;
+		ausWert = v;
+		document
+			.querySelector('iframe[title="ManaWG-App"]')
+			?.parentElement?.style.setProperty('--app-aus', v);
+	};
 
 	const aus = (T: number) => {
 		uebergang.verdeckt = false;
-		root?.style.setProperty('--app-aus', T >= 1 ? '1' : '0');
+		setzeAus(T >= 1 ? '1' : '0');
 		if (!leer && ctx) {
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 			ctx.clearRect(0, 0, cv.width, cv.height);
@@ -154,7 +163,6 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 			});
 		}
 		uebergang.verdeckt = true;
-		root?.style.setProperty('--app-aus', ss(T / LOS).toFixed(3));
 
 		const dpr = Math.min(2, devicePixelRatio || 1);
 		if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) {
@@ -172,6 +180,8 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 		leer = false;
 		const ra = fr?.getBoundingClientRect() ?? buehne.getBoundingClientRect();
 		const zr = zif.map((c) => c.getBoundingClientRect());
+		// erst lesen, dann schreiben: sonst erzwingt das Lesen der Lagen eine zweite Layout-Runde je Bild
+		setzeAus(ss(T / LOS).toFixed(3));
 		const auf = ss(T / (LOS * 0.6)); // Zeichen erscheinen, während die App ausblendet
 		const tq = Math.floor(loop.now / 0.09);
 		for (const [i, p] of teile.entries()) {
