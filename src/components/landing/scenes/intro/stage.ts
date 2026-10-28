@@ -277,8 +277,10 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		// Titel und Hinweis brauchen --p nur bis 0,09 (danach sind sie ganz weg). Weiter oben würde jeder neue Wert
 		// im Intro die Stile aller Nachfahren von #final neu berechnen (ca. 1,5 ms je Bild).
 		setVar('--p', Math.min(P, 0.1).toFixed(4), [buehne, hinweise]);
-		// Phone.tsx lädt Standbild und App ab hier, weit vor der Ende-Ebene (der Aufbau der App-Seite dauert 20 bis 60 ms)
-		if (P > 0.55 && root.dataset.nah !== '1') root.dataset.nah = '1';
+		// Phone.tsx lädt Standbild und App ab hier, weit vor der Ende-Ebene (der Aufbau der App-Seite dauert 20 bis 60 ms):
+		// am liebsten in der ersten Scroll-Pause ab P 0,2 (der Aufbau im Scrollen ruckelt), spätestens bei P 0,55
+		if (root.dataset.nah !== '1' && (P > 0.55 || (P > 0.2 && loop.now - loop.act > 0.5)))
+			root.dataset.nah = '1';
 		setVar('--g', (1 - fpA).toFixed(3), [cvHero]);
 		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
 		setVar('--f', (Math.max(fpA, cl(por * 8)) * (1 - cl(endA * 2))).toFixed(3), [cvWo]);
