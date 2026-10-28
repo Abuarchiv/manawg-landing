@@ -96,7 +96,7 @@ t += d * .9; if(t > 40.) break; }
 void main(){ vec2 uv = UV(); float v = 0.; vec3 ph = vec3(0.); if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv, ph), uMix);
   o = vec4(v, .5 + .5 * ph.xy, ph.z); }`;
 const POST = `#version 300 es
-precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad, uV, uLod, uZc; uniform sampler2D uG;
+precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad, uV, uLod, uZc, uCz; uniform sampler2D uG;
 float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 // Strich mit Breite nach Ton: hell = breit bis geschlossen, dunkel = läuft spitz aus
 float strich(float f, float w, float t){ float aa = clamp(w, .02, .5) * .8; return (1. - smoothstep(.5 * t - aa, .5 * t + aa, abs(fract(f) - .5))) * smoothstep(.02, .1, t); }
@@ -115,7 +115,9 @@ void main(){ vec2 fc = gl_FragCoord.xy; vec4 tx = texture(uT, fc / uR * uS); flo
   float v = mix(vr, vd, uD);
   // Variante B (?v=b): alles als Zeichen. Je Zelle der mittlere Ton (vier Proben) und das Gefälle: an Kanten ein
   // Richtungszeichen (- / | \\), sonst die Rampe nach Helligkeit. Glyphen aus dem Blatt uG (14 Zeichen nebeneinander).
-  if(uV > 1.5 && uV < 2.5){ float zc = uZc; vec2 ci = floor(fc / zc), cc = (ci + .5) * zc; vec2 k = uS / uR;
+  // Variante C (uV 3): dieselben Zeichen, aber nur innerhalb einer ausgefransten Front, die mit uCz von der
+  // Bildmitte nach außen läuft: beim Abtauchen zerfällt der Stich vom Loch her in Zeichen.
+  if(uV > 1.5){ float zc = uZc; vec2 ci = floor(fc / zc), cc = (ci + .5) * zc; vec2 k = uS / uR;
     // Zellmittel aus der Mip-Stufe des Szenenpuffers (uLod = eine Zelle), Gefälle aus der nächstgröberen über drei Zellen
     // Beim Organ (uMx) bleibt der Schein leer, sonst graut die Fläche zu
     float Lc = textureLod(uT, cc * k, uLod).r; float l2 = uLod + 1.2;
@@ -125,7 +127,7 @@ void main(){ vec2 fc = gl_FragCoord.xy; vec4 tx = texture(uT, fc / uR * uS); flo
     if(gl2 > mix(.34, .26, uMx) && Lc > .2){ float e = atan(gy, gx) + 1.5707963; id = 10. + mod(floor(e / .7853982 + .5), 4.); }
     vec2 lu = fract(fc / zc); vec2 au = vec2((id + lu.x) / 14., 1. - lu.y);
     float gz = smoothstep(.08, .5, textureGrad(uG, au, vec2(1. / (zc * 14.), 0.), vec2(0., 1. / zc)).r);
-    v = gz * (id >= 10. ? .95 : .6 + .4 * Lc); } if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
+    float vz = gz * (id >= 10. ? .95 : .6 + .4 * Lc); v = uV > 2.5 ? mix(v, vz, step(length(cc - uR * .5) / uR.y * .8 + hash(ci + 3.7) * .25, uCz * 1.05)) : vz; } if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
   if(uL > .5) v = 1. - v * .96; else v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
 
 const B = new Float32Array(32);
@@ -169,7 +171,8 @@ type PostU =
 	| 'uV'
 	| 'uG'
 	| 'uLod'
-	| 'uZc';
+	| 'uZc'
+	| 'uCz';
 
 /** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
 interface HeroGL {
@@ -300,7 +303,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		);
 		G.Pp = prog(
 			POST,
-			['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad', 'uV', 'uG', 'uLod', 'uZc'],
+			['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad', 'uV', 'uG', 'uLod', 'uZc', 'uCz'],
 			'post',
 		);
 		gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
@@ -620,8 +623,10 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(Q.uL, 0);
 		gl.uniform1f(Q.uMx, mx);
 		gl.uniform1f(Q.uSt, 1);
-		gl.uniform1f(Q.uV, loop.v === 'b' ? 2 : 0);
-		if (loop.v === 'b') {
+		gl.uniform1f(Q.uV, loop.v === 'b' ? 2 : loop.v === 'c' ? 3 : 0);
+		// C: Anteil der Zeichenzellen wächst mit dem Abtauchen ins Organ
+		gl.uniform1f(Q.uCz, ss((dive - 0.15) / 0.6));
+		if (loop.v === 'b' || loop.v === 'c') {
 			// Mip-Kette des Szenenpuffers: eine Stufe mittelt genau eine Zeichenzelle
 			gl.bindTexture(gl.TEXTURE_2D, G.tx);
 			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
