@@ -43,6 +43,8 @@ uniform sampler2D uTone;
 uniform ivec2 uCell0;
 uniform ivec2 uCellN;
 uniform float uZer;    // Zerfall 0..1: die Hände lösen sich vom Rand her in Staub
+uniform vec2 uVar;     // Variante (0 Punkte, 1 Stich, 2 Zeichen), Linienabstand bzw. Zeichenbreite in Bühnen-px
+uniform sampler2D uGly;
 out vec4 o;
 
 float cl(float x){ return clamp(x, 0., 1.); }
@@ -215,6 +217,19 @@ void main(){
   o = vec4(tone, lg, 0., 1.);
 }
 #else
+// Ton einer Zelle (0 außerhalb des Rasters) und bilinear zwischen den Zellen, für Linien und Zeichen
+float tonZ(ivec2 c){
+  ivec2 t = c - uCell0;
+  if (t.x < 0 || t.y < 0 || t.x >= uCellN.x || t.y >= uCellN.y) return 0.;
+  vec2 tz = texelFetch(uTone, t, 0).rg;
+  return tz.x * (1. - ss(tz.y / .2));
+}
+float tonB(vec2 P){
+  vec2 g = P / ${STEP.toFixed(2)} - .5;
+  ivec2 b = ivec2(floor(g));
+  vec2 f = fract(g);
+  return mix(mix(tonZ(b), tonZ(b + ivec2(1, 0)), f.x), mix(tonZ(b + ivec2(0, 1)), tonZ(b + ivec2(1, 1)), f.x), f.y);
+}
 // Zeigehand: weich geglättete Silhouette (5 Abtastungen), mit Ausblenden zum Arm hin und Deckkraft
 float pointSil(vec2 S){
   if (uPS.y <= 0.) return 0.;
@@ -273,13 +288,35 @@ void main(){
   tone = max(tone, dust);
   float ink = mix(${INK}, ${INK_DARK}, gk);
   bool pt = uFront == 1 && uPS.y > 0.;
-  if (tone <= 0. && uRing.z <= 0. && !pt) { o = vec4(0.); return; }
+  if (tone <= 0. && uRing.z <= 0. && !pt && uVar.x < 1.5) { o = vec4(0.); return; }
   tone *= (1. - ${(JIT / 2).toFixed(3)}) + ${JIT.toFixed(2)} * hsh(cell);
   int bx = cell.x & 3;
   int by = cell.y & 3;
   float thr = float((by & 1) * 12 + (by >> 1) * 3 + (1 - 2 * (by & 1)) * 8 * (bx & 1) + (1 - 2 * (by >> 1)) * 2 * (bx >> 1)) / 16. + .035;
   float c = 0.;
-  if (tone > thr || tone > .8) {
+  if (uVar.x > 1.5 && !istStaub) {
+    // B: Zeichenzellen (Breite uVar.y, Höhe 1,45-fach), Ton aus vier Proben je Zelle wählt die Glyphe der Rampe
+    vec2 gz = vec2(uVar.y, uVar.y * 1.45);
+    vec2 gc = (floor(S / gz) + .5) * gz;
+    float tg = (tonB(gc + gz * vec2(-.25, -.25)) + tonB(gc + gz * vec2(.25, -.25)) + tonB(gc + gz * vec2(-.25, .25)) + tonB(gc + gz * vec2(.25, .25))) * .25;
+    float id = min(floor(tg * 10.5), 9.);
+    vec2 lu = fract(S / gz);
+    c = id < .5 ? 0. : smoothstep(.15, .55, texture(uGly, vec2((id + lu.x) / 10., lu.y)).r);
+  } else if (uVar.x > .5 && !istStaub) {
+    // A/C: Stichlinien. Der Ton gibt die Linienbreite, und er biegt die Lage mit (die Linien folgen der Form);
+    // im Licht kommt die Kreuzlage dazu. Kante an der Silhouette wie bei den Punkten.
+    float tb = tonB(S);
+    float sp = uVar.y;
+    float ph = dot(S, vec2(.53, .85)) / sp + tb * 1.1;
+    float dd = abs(fract(ph) - .5) * sp;
+    c = clamp((min(tb, 1.) * .82 * sp * .5 - dd) / px + .5, 0., 1.);
+    if (tb > .62) {
+      float d2 = abs(fract(dot(S, vec2(.85, -.53)) / sp) - .5) * sp;
+      c = max(c, clamp(((tb - .62) * 1.1 * sp * .5 - d2) / px + .5, 0., 1.));
+    }
+    float a = pixA(S);
+    c *= clamp((a - .5) / max(fwidth(a), .02) + .5, 0., 1.);
+  } else if (tone > thr || tone > .8) {
     // Punkte berühren sich nie (Kante höchstens 0,92 Zellen); im Glanzlicht (ab .8) kippt das Raster zu dunklen Löchern in heller Fläche
     float z = min(${STEP.toFixed(2)} * (.5 + .5 * min(1., tone)), ${STEP.toFixed(2)} * .92);
     vec2 dd = abs(S - C);
