@@ -34,7 +34,7 @@ interface Blick {
 }
 
 const STOPS: readonly Blick[] = [
-	{ cx: 10, cy: 8, u: 26, ox: 780, oy: 470, room: -1 },
+	{ cx: 10, cy: 8, u: 34, ox: 760, oy: 450, room: -1 },
 	{ cx: 4, cy: 3, u: 62, ox: 840, oy: 420, room: 0 },
 	{ cx: 4.5, cy: 12.5, u: 52, ox: 840, oy: 420, room: 4 },
 	{ cx: 10.5, cy: 3, u: 80, ox: 840, oy: 420, room: 1 },
@@ -314,6 +314,10 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		f = Math.min(W / HOCH_BOX.bw, bh / HOCH_BOX.bh, 1.25);
 		tx = (W - HOCH_BOX.bw * f) / 2 - HOCH_BOX.x0 * f;
 		ty = boxTop + (bh - HOCH_BOX.bh * f) / 2 - HOCH_BOX.y0 * f;
+		// Übersicht mittig im Bild, erst mit der ersten Raumkarte rückt die Wohnung unter die Textspalte
+		const mitte = c.reduced ? 0 : 1 - ss((c.P - 0.62) / 0.04);
+		ty = lerp(ty, (c.safeH - HOCH_BOX.bh * f) / 2 - HOCH_BOX.y0 * f, mitte);
+		boxTop *= 1 - mitte;
 	} else {
 		f = c.fit.f;
 		tx = c.fit.ox;
@@ -344,7 +348,9 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	if (!A || !Bs) return;
 	const cx = lerp(A.cx, Bs.cx, e);
 	const cy = lerp(A.cy, Bs.cy, e);
-	const u = Math.exp(lerp(Math.log(A.u), Math.log(Bs.u), e));
+	// Übersicht: quer bildfüllend, hoch kleiner, sonst schneidet die schmale Box die Wohnung ab
+	const uOf = (S: Blick) => (hoch && S === STOPS[0] ? 26 : S.u);
+	const u = Math.exp(lerp(Math.log(uOf(A)), Math.log(uOf(Bs)), e));
 	const ox = hoch ? HOCH_BOX.ox : lerp(A.ox, Bs.ox, e);
 	const oy = hoch ? HOCH_BOX.oy : lerp(A.oy, Bs.oy, e);
 	const P = (x: number, y: number, zz: number): [number, number] => [
