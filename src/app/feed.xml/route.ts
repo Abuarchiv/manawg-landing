@@ -1,5 +1,5 @@
 import { getAppUrl } from '@/lib/app-url';
-import { THEMEN } from '../[thema]/themen';
+import { THEMEN } from '@/topics/themen';
 
 export const dynamic = 'force-static';
 

@@ -1,4 +1,4 @@
-import { putzplanVorlageCsv } from '../[thema]/ratgeber';
+import { putzplanVorlageCsv } from '@/topics/ratgeber';
 
 export const dynamic = 'force-static';
 

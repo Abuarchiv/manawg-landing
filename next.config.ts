@@ -60,9 +60,14 @@ const nextConfig: NextConfig = {
 		return [
 			{ source: '/:path*', headers: securityHeaders },
 			{ source: '/app-demo/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
+			{ source: '/app-demo-en/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
 			// Das Demo-Dokument liegt außerhalb der Middleware (Punkt im Pfad), daher hier eine eigene CSP.
 			{
 				source: '/app-demo/index.html',
+				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
+			},
+			{
+				source: '/app-demo-en/index.html',
 				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
 			},
 			// Dateien aus public ohne Hash im Namen: einen Tag frisch, danach im Hintergrund erneuern (F-18.8).
@@ -73,6 +78,7 @@ const nextConfig: NextConfig = {
 				'/apple-touch-icon.png',
 				'/hand/:path*',
 				'/install/:path*',
+				'/install-en/:path*',
 				'/hero/:path*',
 				'/himmel/:path*',
 				'/manawg-mark-weiss-80.webp',
@@ -98,9 +104,14 @@ const nextConfig: NextConfig = {
 				source: '/app-demo/:path*',
 				headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
 			},
+			{
+				source: '/app-demo-en/:path*',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
+			},
 		];
 	},
 	experimental: {
+		globalNotFound: true,
 		optimizePackageImports: ['lucide-react', '@react-three/drei'],
 		inlineCss: true,
 	},

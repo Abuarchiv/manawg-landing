@@ -1,8 +1,8 @@
 import { appUrl } from '@/lib/app-origin';
 import { getAppUrl } from '@/lib/app-url';
-import { VERGLEICHS_HINWEIS, gruppeVon } from '../[thema]/gruppen';
-import { THEMEN } from '../[thema]/themen';
-import type { Thema } from '../[thema]/themen';
+import { VERGLEICHS_HINWEIS, gruppeVon } from '@/topics/gruppen';
+import { THEMEN } from '@/topics/themen';
+import type { Thema } from '@/topics/themen';
 
 export const dynamic = 'force-static';
 
