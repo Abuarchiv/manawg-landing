@@ -36,6 +36,8 @@ interface AblaufState extends SceneState {
 	still: number;
 	/** Aktiver Schritt, -1 = noch keiner markiert. */
 	aktiv: number;
+	/** Fortschritt im aktiven Schritt (0..1), zuletzt geschrieben. */
+	fort: number;
 	dirty: boolean;
 	frisch: boolean;
 	wasReduced: boolean;
@@ -51,6 +53,17 @@ const zeit = { n: 0, sum: 0, max: 0 };
  * Gibt { stop, sprung(i), schritte() } zurück.
  */
 export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => TabIndex) {
+	// Fortschritt im aktiven Schritt als Linie (Schrittliste) und Segment (Bildunterschrift im Hochformat)
+	const fortschritt = (s: AblaufState, pl: (typeof PLAENE)[number], t: number) => {
+		const a0 = pl.sprung[s.aktiv] ?? 0;
+		const a1 = pl.sprung[s.aktiv + 1] ?? pl.loop;
+		const f = s.reduced ? 1 : Math.min(1, Math.max(0, (t - a0) / Math.max(0.01, a1 - a0)));
+		if (Math.abs(f - s.fort) < 0.004 && f !== 1) return;
+		s.fort = f;
+		const v = f.toFixed(3);
+		s.steps[s.aktiv]?.style.setProperty('--fort', v);
+		s.kurz?.style.setProperty('--fort', v);
+	};
 	let st: AblaufState | null = null;
 	const aus = register<AblaufState>({
 		name: 'installieren',
@@ -71,6 +84,7 @@ export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => 
 			s.n = 0;
 			s.still = 0;
 			s.aktiv = -1;
+			s.fort = -1;
 			s.dirty = true;
 			s.frisch = false;
 			s.wasReduced = false;
@@ -141,14 +155,24 @@ export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => 
 				s.aktiv = a;
 				// Bildunterschrift im Hochformat: der aktive Schritt als eine Zeile unter dem Gerät
 				const z = s.steps[a]?.querySelector('[data-zeile]');
-				if (s.kurz && z) s.kurz.replaceChildren(...z.cloneNode(true).childNodes);
+				if (s.kurz && z) {
+					const nr = document.createElement('span');
+					nr.className = 'label';
+					nr.dataset.kurzNr = '';
+					nr.textContent = `0${a + 1} / 0${pl.sprung.length}`;
+					s.kurz.replaceChildren(nr, ...z.cloneNode(true).childNodes);
+					s.kurz.dataset.schritt = String(a);
+				}
 				for (const el of s.steps) {
 					const an = Number(el.getAttribute('data-istep')) === a;
 					el.toggleAttribute('data-aktiv', an);
 					if (an) el.setAttribute('aria-current', 'step');
 					else el.removeAttribute('aria-current');
+					if (!an) el.style.removeProperty('--fort');
 				}
+				s.fort = -1;
 			}
+			fortschritt(s, pl, t);
 		},
 	});
 	// Messhaken für landing-konzept/werkzeuge/qa (nur mit ?qa=1 gelesen): Uhr anhalten und setzen, Zustand je Zeit prüfen
