@@ -28,7 +28,7 @@
 	overflow: hidden;
 }
 .dk_app {
-	background: #f5f5f5;
+	background: #0a0a0a;
 	opacity: 0;
 	display: none;
 }
@@ -170,7 +170,7 @@
 	width: 820px;
 	height: 454px;
 	overflow: hidden;
-	background: #f5f5f5;
+	background: #0a0a0a;
 }
 .dk_tip {
 	position: absolute;

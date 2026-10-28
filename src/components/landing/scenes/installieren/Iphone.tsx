@@ -29,7 +29,6 @@ import {
 	ZoomIn,
 } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
-import { AppDatum } from './AppDatum';
 import s from './Iphone.module.css';
 
 const SF = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif';
@@ -258,7 +257,7 @@ export function Iphone() {
 
 			{/* Seite mit Safari-Leisten und allem, was darüber liegt */}
 			<div className={s.ios_stack} data-k="ios-stack">
-				<div style={abs({ inset: 0, background: '#fff' })} />
+				<div style={abs({ inset: 0, background: '#0a0a0a' })} />
 				<div style={scheibe(0, 490, 54)} />
 
 				<div style={scheibe(676, 844, 580)} />
@@ -563,8 +562,7 @@ export function Iphone() {
 				/>
 			</div>
 			<div className={s.ios_app_ebene} data-k="ios-app">
-				<div style={scheibe(0, 446, 54, APPSEITE)} />
-				<AppDatum left={0} top={54} />
+				<div style={scheibe(0, 699, 54, APPSEITE)} />
 				<div style={scheibe(779, 844, 753, APPSEITE)} />
 				<div className={s.ios_indikator} />
 			</div>

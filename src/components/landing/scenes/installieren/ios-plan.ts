@@ -126,7 +126,8 @@ export const plan: Ablaufplan = {
 		put(E['ios-app'], { d: t > T6 + 0.8 ? 'block' : '', o: aF });
 
 		// ---------- Statusleiste ----------
-		const hell = t < T5 + 0.18 ? 0 : t < T6 + 0.2 ? 1 : 0;
+		// die App-Seite ist dunkel: schwarze Schrift nur, solange Teilen-Blatt (Vollhöhe) und Dialog oben liegen
+		const hell = t > T3 + 0.3 && t < T5 + 0.18 ? 0 : 1;
 		put(E['ios-st-dunkel'], { o: 1 - hell });
 		put(E['ios-st-hell'], { o: hell });
 	},

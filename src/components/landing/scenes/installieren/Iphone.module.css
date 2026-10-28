@@ -135,7 +135,7 @@
 }
 
 .ios_stack {
-	background: #fff;
+	background: #0a0a0a;
 	overflow: hidden;
 	z-index: 2;
 }
@@ -643,7 +643,7 @@
 	height: auto;
 }
 .ios_app_ebene {
-	background: #fff;
+	background: #0a0a0a;
 	opacity: 0;
 	z-index: 5;
 }
