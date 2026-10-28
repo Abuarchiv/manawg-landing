@@ -532,7 +532,8 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			// fährt der letzte Satz über den Titel der nächsten Szene
 			const oben = -s.el.getBoundingClientRect().top;
 			const aus = 1 - cl(oben / (0.12 * s.H));
-			if (s.dep) s.dep.style.opacity = aus.toFixed(3);
+			// ganzes Etikett „TIEFE 000“, nicht nur die Zahl
+			if (s.dep?.parentElement) s.dep.parentElement.style.opacity = aus.toFixed(3);
 			// Wortbild langsamer: sonst steht beim Zurückscrollen das letzte Wort über „Installieren“
 			ctx.canvas.style.opacity = (1 - cl(oben / (0.4 * s.H))).toFixed(3);
 			s.caps.forEach((el, i) => {
