@@ -10,7 +10,7 @@
 	transform: scale(0.6764);
 	overflow: hidden;
 	background: #000;
-	color: #1b1b1f;
+	color: #e3e3e3;
 	font-size: 16px;
 	line-height: 1.25;
 	-webkit-font-smoothing: antialiased;
@@ -41,20 +41,17 @@
 	font-weight: 500;
 	color: #fff;
 }
-.and_st_dunkel .and_status {
-	color: #1b1b1f;
-}
 .and_home {
-	background: #0b0f18;
+	background: #0b0b0b;
 	opacity: 0;
 	overflow: hidden;
 }
 .and_wall {
 	position: absolute;
 	inset: 0;
-	filter: grayscale(1) brightness(0.7);
-	background: radial-gradient(80% 34% at 72% 14%, #7e9cc4 0%, rgba(126, 156, 196, 0) 72%),
-		linear-gradient(180deg, #3a4b69 0%, #151c2d 36%, #0b0f18 100%);
+	/* derselbe dunkle Hintergrund wie am iPhone */
+	background: radial-gradient(80% 34% at 72% 14%, #6a6a6a 0%, rgba(106, 106, 106, 0) 72%),
+		linear-gradient(180deg, #353535 0%, #141414 36%, #0b0b0b 100%);
 }
 .and_hicon {
 	position: absolute;
@@ -102,7 +99,7 @@
 	width: 343px;
 	height: 50px;
 	border-radius: 25px;
-	background: #f2f2f7;
+	background: #2b2b2d;
 	display: flex;
 	align-items: center;
 	padding-left: 20px;
@@ -119,20 +116,22 @@
 	z-index: 2;
 }
 .and_oben {
+	/* Chrome dunkel: Statusleiste und Adressleiste in einer Fläche, wie die Leiste unten */
 	position: absolute;
 	left: 0;
-	top: 48px;
+	top: 0;
 	width: 411px;
-	height: 60px;
+	height: 108px;
+	background: #1f1f1f;
 }
 .and_pille {
 	position: absolute;
 	left: 8px;
-	top: 8px;
+	top: 56px;
 	width: 395px;
 	height: 44px;
 	border-radius: 22px;
-	background: #2a2a2a;
+	background: #2f3033;
 	color: #fff;
 	display: flex;
 	align-items: center;
@@ -146,8 +145,8 @@
 	top: 800px;
 	width: 411px;
 	height: 84px;
-	background: #f3f2f7;
-	color: #1b1b1f;
+	background: #1f1f1f;
+	color: #e3e3e3;
 }
 .and_unten svg,
 .and_tabs {
@@ -158,7 +157,7 @@
 	width: 26px;
 	height: 26px;
 	box-sizing: border-box;
-	border: 2.5px solid #1b1b1f;
+	border: 2.5px solid #e3e3e3;
 	border-radius: 7px;
 	font-size: 13px;
 	font-weight: 700;
@@ -173,7 +172,7 @@
 	width: 143px;
 	height: 5px;
 	border-radius: 3px;
-	background: #1b1b1f;
+	background: #e3e3e3;
 }
 .and_scrim {
 	position: absolute;
@@ -190,8 +189,8 @@
 	width: 350px;
 	height: 725px;
 	border-radius: 28px;
-	background: #f9f8ff;
-	box-shadow: 0 6px 28px rgba(0, 0, 0, 0.28), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+	background: #282a2c;
+	box-shadow: 0 6px 28px rgba(0, 0, 0, 0.5);
 	overflow: hidden;
 	transform-origin: 100% 100%;
 	display: none;
@@ -209,11 +208,11 @@
 	width: 50px;
 	height: 50px;
 	border-radius: 25px;
-	background: #e4e1ea;
+	background: #3a3c3f;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: #1b1b1f;
+	color: #e3e3e3;
 }
 .and_liste {
 	position: absolute;
@@ -229,19 +228,19 @@
 	padding: 0 16px 0 24px;
 	font-size: 16px;
 	white-space: nowrap;
-	color: #1b1b1f;
+	color: #e3e3e3;
 }
 .and_eintrag span {
 	width: 24px;
 	display: flex;
 	justify-content: center;
-	color: #3c3b43;
+	color: #c4c7c5;
 }
 .and_trenner {
 	display: block;
 	height: 1px;
 	margin: 5px 24px;
-	background: #cac4d0;
+	background: #444746;
 }
 .and_sheet {
 	position: absolute;
@@ -251,7 +250,7 @@
 	width: 411px;
 	height: 264px;
 	border-radius: 28px 28px 0 0;
-	background: #f9f8ff;
+	background: #1f1f1f;
 	display: none;
 }
 .and_sheet_t {
@@ -270,13 +269,13 @@
 	left: 24px;
 	right: 24px;
 	border-radius: 16px;
-	background: #efedf4;
+	background: #2b2b2d;
 	display: flex;
 	align-items: center;
 	gap: 14px;
 	padding: 0 16px;
 	box-sizing: border-box;
-	color: #1b1b1f;
+	color: #e3e3e3;
 }
 .and_srow b {
 	flex: 1;
@@ -290,7 +289,7 @@
 	font-size: 14px;
 	line-height: 18px;
 	font-weight: 400;
-	color: #49454f;
+	color: #c4c7c5;
 }
 .and_sicon {
 	position: relative;
@@ -329,10 +328,10 @@
 	width: 391px;
 	height: 222px;
 	border-radius: 28px;
-	background: #faf8ff;
-	box-shadow: 0 8px 36px rgba(0, 0, 0, 0.32);
+	background: #2b2930;
+	box-shadow: 0 8px 36px rgba(0, 0, 0, 0.5);
 	display: none;
-	color: #1b1b1f;
+	color: #e6e0e9;
 }
 .and_dlg_t {
 	position: absolute;
@@ -362,7 +361,7 @@
 	padding: 0 0 5px;
 	font-size: 18px;
 	line-height: 24px;
-	border-bottom: 1px solid #1b1b1f;
+	border-bottom: 1px solid #a8c7fa;
 }
 .and_feld i {
 	position: absolute;
@@ -370,13 +369,13 @@
 	top: 1px;
 	width: 2px;
 	height: 22px;
-	background: #1b1b1f;
+	background: #a8c7fa;
 }
 .and_dzeile span {
 	display: block;
 	margin-top: 9px;
 	font-size: 14px;
-	color: #49454f;
+	color: #cac4d0;
 }
 .and_knoepfe {
 	position: absolute;
@@ -387,7 +386,7 @@
 	font-size: 14px;
 	font-weight: 500;
 	line-height: 20px;
-	color: #3e5aa6;
+	color: #a8c7fa;
 }
 .and_toast {
 	position: absolute;
@@ -399,8 +398,8 @@
 	height: 36px;
 	line-height: 36px;
 	border-radius: 18px;
-	background: #e3e6f0;
-	color: #1b1b1f;
+	background: #3c3c3f;
+	color: #e3e3e3;
 	font-size: 13px;
 	white-space: nowrap;
 	opacity: 0;

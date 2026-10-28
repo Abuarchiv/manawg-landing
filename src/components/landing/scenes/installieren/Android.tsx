@@ -283,14 +283,7 @@ export function Android() {
 			<div className={s.and_nav} data-k="and-nav">
 				<i />
 			</div>
-			<div className={s.and_st} data-k="and-st-hell">
-				<Status />
-			</div>
-			<div
-				className={`${s.and_st} ${s.and_st_dunkel}`}
-				data-k="and-st-dunkel"
-				style={{ opacity: 0 }}
-			>
+			<div className={s.and_st}>
 				<Status />
 			</div>
 		</div>

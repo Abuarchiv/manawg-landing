@@ -111,10 +111,5 @@ export const plan: Ablaufplan = {
 		put(E['and-launch-logo'], { o: seg(t, T5 + 0.25, 0.2) * (1 - seg(t, T5 + 0.75, 0.2)) });
 		put(E['and-app'], { d: t > T5 + 1.0 ? 'block' : '', o: aF });
 		put(E['and-nav'], { o: cl((t - (T5 + 0.3)) / 0.1) });
-
-		// ---------- Statusleiste: weiß, auf dem Splash dunkel ----------
-		const dunkel = t < T5 + 0.3 ? 0 : t < T5 + 1.0 ? 1 : 1 - aF;
-		put(E['and-st-hell'], { o: 1 - dunkel });
-		put(E['and-st-dunkel'], { o: dunkel });
 	},
 };

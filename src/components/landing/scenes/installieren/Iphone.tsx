@@ -50,8 +50,9 @@ const scheibe = (y0: number, y1: number, top: number, src = SEITE): CSSPropertie
 		backgroundRepeat: 'no-repeat',
 	});
 
-function Status({ hell }: { hell?: boolean }) {
-	const c = hell ? '#fff' : '#000';
+/** Statusleiste: Dunkelmodus, weiße Schrift über Seite, Blättern und Dialog. */
+function Status() {
+	const c = '#fff';
 	return (
 		<div className={s.ios_status} style={{ color: c }}>
 			<span className={s.ios_zeit}>09:41</span>
@@ -371,7 +372,7 @@ export function Iphone() {
 							<em>Safari</em>
 						</div>
 						<div>
-							<span className={s.ios_gk} style={{ background: '#fff' }}>
+							<span className={s.ios_gk} style={{ background: '#3a3a3c' }}>
 								<b className={s.ios_punkte}>•••</b>
 							</span>
 							<em>Mehr</em>
@@ -567,11 +568,8 @@ export function Iphone() {
 				<div className={s.ios_indikator} />
 			</div>
 
-			<div className={s.ios_st} data-k="ios-st-dunkel">
+			<div className={s.ios_st}>
 				<Status />
-			</div>
-			<div className={s.ios_st} data-k="ios-st-hell" style={{ opacity: 0 }}>
-				<Status hell />
 			</div>
 		</div>
 	);

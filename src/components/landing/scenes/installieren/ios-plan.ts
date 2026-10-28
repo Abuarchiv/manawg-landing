@@ -124,11 +124,5 @@ export const plan: Ablaufplan = {
 		// das Zeichen steht auf dem schwarzen Startbild und ist weg, bevor die App einblendet
 		put(E['ios-launch-logo'], { o: seg(t, T6 + 0.25, 0.25) * (1 - seg(t, T6 + 0.6, 0.2)) });
 		put(E['ios-app'], { d: t > T6 + 0.8 ? 'block' : '', o: aF });
-
-		// ---------- Statusleiste ----------
-		// die App-Seite ist dunkel: schwarze Schrift nur, solange Teilen-Blatt (Vollhöhe) und Dialog oben liegen
-		const hell = t > T3 + 0.3 && t < T5 + 0.18 ? 0 : 1;
-		put(E['ios-st-dunkel'], { o: 1 - hell });
-		put(E['ios-st-hell'], { o: hell });
 	},
 };

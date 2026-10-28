@@ -20,7 +20,7 @@
 	width: 390px;
 	height: 844px;
 	background: #000;
-	color: #000;
+	color: #fff;
 	font-size: 17px;
 	transform: translateY(-1.8px) scale(0.7128);
 }
@@ -49,17 +49,16 @@
 }
 
 .ios_home {
-	background: #2b2723;
+	background: #0b0b0b;
 	overflow: hidden;
 	opacity: 0;
 }
 .ios_wall {
 	position: absolute;
 	inset: -40px;
-	filter: grayscale(1) brightness(0.7);
-	background: radial-gradient(120% 60% at 20% 24%, #e9e1d6 0%, rgba(233, 225, 214, 0) 60%),
-		radial-gradient(90% 55% at 90% 52%, #cfc4b6 0%, rgba(207, 196, 182, 0) 62%),
-		linear-gradient(165deg, #6d6358 0%, #b8ac9d 38%, #8d8174 58%, #2f2a26 100%);
+	/* derselbe dunkle Hintergrund wie am Android-Gerät */
+	background: radial-gradient(80% 34% at 72% 14%, #6a6a6a 0%, rgba(106, 106, 106, 0) 72%),
+		linear-gradient(180deg, #353535 0%, #141414 36%, #0b0b0b 100%);
 }
 .ios_grid {
 	position: absolute;
@@ -150,8 +149,8 @@
 	top: 761px;
 	height: 50px;
 	border-radius: 25px;
-	background: rgba(246, 246, 248, 0.9);
-	box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.09), 0 2px 10px rgba(0, 0, 0, 0.06);
+	background: rgba(44, 44, 46, 0.9);
+	box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 2px 10px rgba(0, 0, 0, 0.3);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -166,14 +165,14 @@
 	padding: 0 14px;
 	font-size: 17px;
 	font-weight: 500;
-	color: #1c1c1e;
+	color: #fff;
 }
 .ios_tabs {
 	width: 20px;
 	height: 20px;
-	border: 2px solid #1c1c1e;
+	border: 2px solid #fff;
 	border-radius: 5px;
-	box-shadow: 3px -3px 0 -1px #f6f6f8, 3px -3px 0 0 #1c1c1e;
+	box-shadow: 3px -3px 0 -1px #2c2c2e, 3px -3px 0 0 #fff;
 }
 .ios_scrim {
 	position: absolute;
@@ -191,10 +190,10 @@
 	height: 520px;
 	border-radius: 48px;
 	transform-origin: 25px 496px;
-	background: rgba(246, 246, 249, 0.9);
+	background: rgba(37, 37, 39, 0.9);
 	-webkit-backdrop-filter: blur(28px) saturate(1.7);
 	backdrop-filter: blur(28px) saturate(1.7);
-	box-shadow: 0 10px 44px rgba(0, 0, 0, 0.2), inset 0 0 0 0.5px rgba(255, 255, 255, 0.7);
+	box-shadow: 0 10px 44px rgba(0, 0, 0, 0.5), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
 	overflow: hidden;
 	display: none;
 }
@@ -218,7 +217,7 @@
 	padding: 9px 14px;
 	font-size: 17px;
 	line-height: 21px;
-	color: #000;
+	color: #fff;
 }
 .ios_zeile_t {
 	flex: 1;
@@ -228,14 +227,14 @@
 	width: 26px;
 	display: flex;
 	justify-content: center;
-	color: #1c1c1e;
+	color: #fff;
 	flex-shrink: 0;
 }
 .ios_trenner {
 	display: block;
 	height: 1px;
 	margin: 6px 14px;
-	background: rgba(0, 0, 0, 0.12);
+	background: rgba(255, 255, 255, 0.12);
 }
 
 .ios_share {
@@ -246,10 +245,10 @@
 	width: 372px;
 	height: 396px;
 	border-radius: 48px;
-	background: rgba(250, 250, 252, 0.94);
+	background: rgba(30, 30, 32, 0.94);
 	-webkit-backdrop-filter: blur(30px) saturate(1.6);
 	backdrop-filter: blur(30px) saturate(1.6);
-	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22), inset 0 0 0 0.5px rgba(255, 255, 255, 0.8);
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
 	overflow: hidden;
 	display: none;
 }
@@ -267,8 +266,8 @@
 	width: 64px;
 	height: 64px;
 	border-radius: 17px;
-	background: #fff;
-	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.14);
+	background: #000;
+	box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.18);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -293,7 +292,7 @@
 	display: block;
 	font-size: 16px;
 	line-height: 21px;
-	color: #8a8a8e;
+	color: #98989f;
 }
 .ios_kopf_t em {
 	display: inline-flex;
@@ -305,8 +304,8 @@
 	font-style: normal;
 	font-size: 16px;
 	line-height: 22px;
-	color: #3c3c43;
-	background: rgba(120, 120, 128, 0.12);
+	color: rgba(235, 235, 245, 0.7);
+	background: rgba(120, 120, 128, 0.24);
 }
 .ios_x,
 .ios_x2 {
@@ -316,8 +315,8 @@
 	width: 46px;
 	height: 46px;
 	border-radius: 23px;
-	background: rgba(120, 120, 128, 0.16);
-	color: #1c1c1e;
+	background: rgba(120, 120, 128, 0.24);
+	color: #fff;
 	flex-shrink: 0;
 }
 .ios_x {
@@ -331,7 +330,7 @@
 	left: 19px;
 	right: 19px;
 	height: 1px;
-	background: rgba(0, 0, 0, 0.1);
+	background: rgba(255, 255, 255, 0.1);
 }
 .ios_reihe {
 	position: absolute;
@@ -352,7 +351,7 @@
 	font-style: normal;
 	font-size: 12.5px;
 	line-height: 15px;
-	color: #1c1c1e;
+	color: #fff;
 }
 .ios_reihe em[data-k="ios-weniger-t"] {
 	position: absolute;
@@ -382,14 +381,14 @@
 .ios_punkte {
 	font-size: 22px;
 	letter-spacing: 1px;
-	color: #6b6b70;
+	color: #fff;
 	font-weight: 700;
 	line-height: 1;
 }
 .ios_gr {
 	border-radius: 32px;
-	background: rgba(120, 120, 128, 0.14);
-	color: #1c1c1e;
+	background: rgba(120, 120, 128, 0.24);
+	color: #fff;
 }
 .ios_gr > svg + svg {
 	position: absolute;
@@ -399,7 +398,7 @@
 	left: 12px;
 	right: 12px;
 	border-radius: 24px;
-	background: rgba(120, 120, 128, 0.1);
+	background: rgba(120, 120, 128, 0.16);
 	padding: 2px 0;
 }
 .ios_gruppe .ios_zeile {
@@ -418,8 +417,8 @@
 	width: 390px;
 	height: 797px;
 	border-radius: 40px 40px 0 0;
-	background: #f2f2f7;
-	box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.22);
+	background: #1c1c1e;
+	box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.5);
 	overflow: hidden;
 	display: none;
 }
@@ -460,7 +459,7 @@
 	right: 0;
 	top: 90px;
 	height: 98px;
-	background: #fff;
+	background: #2c2c2e;
 }
 .ios_dlg_icon {
 	position: absolute;
@@ -480,14 +479,14 @@
 	align-items: center;
 	justify-content: space-between;
 	padding-right: 16px;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+	border-bottom: 1px solid rgba(84, 84, 88, 0.65);
 	font-size: 17px;
 }
 .ios_feld u {
 	width: 20px;
 	height: 20px;
 	border-radius: 10px;
-	background: #c7c7cc;
+	background: #636366;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -505,7 +504,7 @@
 	left: 90px;
 	top: 62px;
 	font-size: 17px;
-	color: #c4c4c9;
+	color: #636366;
 	white-space: nowrap;
 }
 .ios_schalter_zeile {
@@ -514,7 +513,7 @@
 	right: 0;
 	top: 222px;
 	height: 52px;
-	background: #fff;
+	background: #2c2c2e;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -547,7 +546,7 @@
 	margin: 0;
 	font-size: 13px;
 	line-height: 17px;
-	color: #8a8a8e;
+	color: #98989f;
 }
 
 .ios_kbd {
@@ -557,7 +556,7 @@
 	top: 515px;
 	width: 390px;
 	height: 329px;
-	background: #d2d5db;
+	background: #2b2b2d;
 	border-radius: 0;
 	display: none;
 	z-index: 3;
@@ -571,7 +570,7 @@
 	display: flex;
 	align-items: center;
 	font-size: 16px;
-	color: #1c1c1e;
+	color: #fff;
 }
 .ios_vorschlag span {
 	flex: 1;
@@ -591,13 +590,13 @@
 	text-align: center;
 	font-size: 25px;
 	line-height: 46px;
-	color: #000;
+	color: #fff;
 }
 .ios_taste_s {
 	height: 44px;
 	margin: 0 5px;
 	border-radius: 9px;
-	background: rgba(255, 255, 255, 0.7);
+	background: rgba(255, 255, 255, 0.16);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -609,7 +608,7 @@
 	top: 282px;
 	font-size: 25px;
 	line-height: 1;
-	color: #1c1c1e;
+	color: #fff;
 }
 .ios_indikator {
 	position: absolute;
@@ -619,7 +618,7 @@
 	width: 134px;
 	height: 5px;
 	border-radius: 3px;
-	background: #000;
+	background: #fff;
 }
 
 .ios_launch {
