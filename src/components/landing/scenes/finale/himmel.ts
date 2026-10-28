@@ -10,7 +10,8 @@ void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-
 
 const FS = `#version 300 es
 precision highp float;
-uniform sampler2D uSkyQ, uSkyH, uFein, uGrob;
+uniform sampler2D uSkyQ, uSkyH, uFein, uGrob, uGly;
+uniform vec2 uVar; // Variante B: 1 = Zeichen, Zellbreite in Gerätepixeln
 uniform float uHoch, uDprH;
 uniform vec2 uRes, uCC;
 uniform float uT, uOpen, uCS;
@@ -20,8 +21,9 @@ float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); 
 float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
   return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }
 float fbm(vec2 p){ float s = 0., a = .5; for(int i = 0; i < 5; i++){ s += a*noise(p); p *= 2.03; a *= .5; } return s; }
-void main(){
-  vec2 uv = gl_FragCoord.xy / uRes;
+// Stich (Himmel und Marke) an einem Gerätepixel fc
+float stich(vec2 fc){
+  vec2 uv = fc / uRes;
   float asp = uRes.x / uRes.y;
   // Himmel: gestochener Wolkenhimmel (Codex, Technik wie Referenz „gestochene Wolken“), deckend skaliert und unten
   // verankert, damit die Wolkenbänke am unteren Rand stehen. Die Striche erscheinen beim Öffnen nach Helligkeit:
@@ -33,7 +35,7 @@ void main(){
   float L = uHoch > .5 ? texture(uSkyH, suv).r : texture(uSkyQ, suv).r;
   float zug = smoothstep(.05, .85, uOpen);
   float th = 1.05 - zug * 1.1;
-  float sky = L * smoothstep(th, th + .18, L + hash(floor(gl_FragCoord.xy / 2.)) * .05);
+  float sky = L * smoothstep(th, th + .18, L + hash(floor(fc / 2.)) * .05);
   // Marke: exakte Silhouette aus den Masken des Loaders, gefüllt mit dem dichtesten Teil des gestochenen Wolkenhimmels
   float c = smoothstep(.35, .95, uOpen);
   vec2 cuv = (uv - uCC) * vec2(asp, 1.) / uCS + .5;
@@ -48,11 +50,25 @@ void main(){
   float m = smoothstep(thm - .08, thm + .08, sil + (n - .5) * .45 * (1. - .6 * c));
   float fill = texture(uSkyQ, vec2(.03, .03) + duv * vec2(.34, .42)).r;
   float thf = 1.05 - c * 1.1;
-  fill *= smoothstep(thf, thf + .18, fill + hash(floor(gl_FragCoord.xy / 2.) + 7.) * .05);
+  fill *= smoothstep(thf, thf + .18, fill + hash(floor(fc / 2.) + 7.) * .05);
   float a = m * inside;
   // Licht von oben: die Marke ist oben heller, unten dichter wie ein Wolkenballen
   float hell = .7 + .45 * clamp(cuv.y, 0., 1.);
-  vec3 col = vec3(mix(.035 + sky * .95, .03 + min(fill * 1.35 * hell, 1.), a));
+  return mix(.035 + sky * .95, .03 + min(fill * 1.35 * hell, 1.), a);
+}
+void main(){
+  vec2 uv = gl_FragCoord.xy / uRes;
+  vec3 col = vec3(stich(gl_FragCoord.xy));
+  if (uVar.x > .5) {
+    // B: der Stich als Zeichen. Zellmittel aus vier Proben, die Rampe ' .:-=+*#%@' wählt die Glyphe.
+    vec2 gz = vec2(uVar.y, uVar.y * 1.45);
+    vec2 c0 = (floor(gl_FragCoord.xy / gz) + .5) * gz;
+    float Lc = (stich(c0 + gz * vec2(-.25, -.25)) + stich(c0 + gz * vec2(.25, -.25)) + stich(c0 + gz * vec2(-.25, .25)) + stich(c0 + gz * vec2(.25, .25))) * .25;
+    float id = min(floor(smoothstep(.05, 1.05, Lc) * 10.5), 9.);
+    vec2 lu = fract(gl_FragCoord.xy / gz);
+    float gv = id < .5 ? 0. : smoothstep(.15, .55, texture(uGly, vec2((id + lu.x) / 10., lu.y)).r);
+    col = vec3(.035 + gv * .92);
+  }
   // Unter dem Text: Striche gedämpft, damit Weiß lesbar bleibt
   vec2 tb = smoothstep(vec2(-.15), vec2(.02), min(uv - uTxt.xy, uTxt.zw - uv));
   float tm = tb.x * tb.y;
@@ -136,6 +152,29 @@ async function laden(s: HimmelState): Promise<void> {
 		gl.uniform1i(u(namen[i] ?? ''), i);
 		img.close();
 	}
+	if (loop.v === 'b') {
+		// Variante B: Zeichenblatt der Rampe auf Einheit 4 (Canvas unten nach oben, passend zu gl_FragCoord)
+		const cvz = document.createElement('canvas');
+		cvz.width = 480;
+		cvz.height = 70;
+		const z = cvz.getContext('2d');
+		if (z) {
+			z.font = '500 60px "JetBrains Mono", monospace';
+			z.textAlign = 'center';
+			z.textBaseline = 'middle';
+			z.fillStyle = '#fff';
+			for (let i = 0; i < 10; i++) z.fillText(' .:-=+*#%@'[i] ?? '', 48 * i + 24, 37);
+		}
+		gl.activeTexture(gl.TEXTURE4);
+		gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cvz);
+		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+		gl.generateMipmap(gl.TEXTURE_2D);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.uniform1i(u('uGly'), 4);
+	}
 	// Ein Zeichenaufruf in 1 x 1 Pixel zwingt den Treiber, das Programm schon jetzt fertig zu übersetzen
 	await pause();
 	gl.viewport(0, 0, 1, 1);
@@ -200,6 +239,7 @@ export function registerHimmel(
 			gl.uniform2f(u('uRes'), w, h);
 			gl.uniform1f(u('uT'), s.reduced ? 4 : loop.t);
 			gl.uniform1f(u('uOpen'), s.offen);
+			gl.uniform2f(u('uVar'), loop.v === 'b' ? 1 : 0, 7 * dpr);
 			const unten = cl((r0.bottom - loop.vh) / s.H, 0, 1); // Teil der Fläche unter dem Fensterrand
 			if (hoch) {
 				// Hoch: fest im Abschnitt über dem Titel, scrollt mit dem Text weg (im Endbild ist oben kein Platz)
