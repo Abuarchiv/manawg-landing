@@ -11,7 +11,6 @@ import { Fusszeile } from './scenes/fusszeile/Fusszeile';
 import { Installieren } from './scenes/installieren/Installieren';
 import { Intro } from './scenes/intro/Intro';
 import { live } from './scenes/intro/stage';
-import { Koerper } from './scenes/koerper/Koerper';
 import { SoGehts } from './scenes/sogehts/SoGehts';
 import { Tiefe } from './scenes/tiefe/Tiefe';
 import { Zerfall } from './scenes/zerfall/Zerfall';
@@ -87,7 +86,6 @@ export function Landing() {
 				<Intro />
 				<FlutBand />
 				<SoGehts />
-				<Koerper />
 				<Tiefe />
 				<Installieren />
 				<Fragen />

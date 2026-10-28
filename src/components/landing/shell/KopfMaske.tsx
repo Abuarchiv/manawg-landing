@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 // Inhalt im Kopfband ausblenden: Läuft Text unter Logo und Knopf durch, deckt dieser Verlauf in der Farbe des
 // Abschnitts das Band (Kopfunterkante plus 28 px weicher Auslauf). Er wirkt nur, solange das Band im Inhalt
 // liegt (So geht's, Körper, Installieren, Fragen, Finale), nie über den Szenen aus Flut, Wohnung und Tiefe.
-const IDS = ['flutband', 'so-gehts', 'koerper', 'installieren', 'fragen', 'finale'];
+const IDS = ['flutband', 'so-gehts', 'installieren', 'fragen', 'finale'];
 // Hochformat: auch Tiefe, dort läuft sonst das Wortbild unter dem festen Kopf durch
 const IDS_HOCH = [...IDS, 'funktionen'];
 
