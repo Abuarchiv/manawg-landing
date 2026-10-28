@@ -38,7 +38,8 @@ interface Insel {
 }
 
 /** Punkt der Wolke: x, y, z, Zeichen, Insel (-1 = Staub). */
-// streuX/streuY: Versatz im Anflug bei voller Streuung (im Bild mit sc0 skaliert), einmal beim Aufbau gerechnet
+// streuX/streuY/streuZ: Startversatz im Tunnel, aus dem der Punkt in die Wortform strömt (einmal beim Aufbau gerechnet);
+// ph: Phase fürs Atmen, h: Staffelung (wer früher ankommt und früher geht)
 type Punkt = [
 	x: number,
 	y: number,
@@ -48,6 +49,9 @@ type Punkt = [
 	nr: number,
 	streuX: number,
 	streuY: number,
+	streuZ: number,
+	ph: number,
+	h: number,
 ];
 
 /** Ausschlusszone um eine Unterzeile (DOM-Rechteck) samt Deckkraft w. */
@@ -80,6 +84,7 @@ interface Stand {
 	mx: number;
 	my: number;
 	mIn: boolean;
+	zeit: number;
 }
 
 interface TiefeState extends SceneState {
@@ -165,8 +170,8 @@ function stil(el: HTMLElement, k: string, v: string) {
 // Deckkraft des Untertitels aus der Tiefe dz seiner Insel. Im Entwurf ein Dreieck um dz 9 (Breite 5 nach
 // beiden Seiten); hier dieselben Grenzen, aber mit Plateau (voll für |dz - 9| <= 3,5), damit der Satz lesbar steht.
 const plateauOf = (dz: number): number => cl((5 - Math.abs(dz - 9)) / 1.5);
-// Dichte des Worts aus seiner Tiefe, wie im Entwurf: ab dz 34 da, ab dz 22 voll, im Durchflug (dz < 1,2) weg
-const wortDichte = (dz: number): number => cl((34 - dz) / 12) * cl(dz / 1.2);
+// Dichte des Worts aus seiner Tiefe: ab dz 34 da, ab dz 22 voll, nach dem Durchflug (dz < 1) blendet der Abflug aus
+const wortDichte = (dz: number): number => cl((34 - dz) / 12) * (1 - ss((1 - dz) / 12));
 
 // Hochformat: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900), gerastert, damit nicht
 // jede Größenänderung neu baut. Querformat: feste Menge wie im Entwurf (die Bühne skaliert als Ganzes).
@@ -202,7 +207,7 @@ function build(s: TiefeState) {
 	s.isl.forEach((I, kk) => {
 		I.pts.forEach((p, q) => {
 			const w = hsh(q, kk + 17) * Math.PI * 2;
-			const r = 0.8 + hsh(q, kk + 29) * 3.2;
+			const r = 2.5 + hsh(q, kk + 29) * 8; // Start im Tunnel, weit um die Achse verteilt
 			s.P.push([
 				I.x + p[0],
 				I.y + p[1],
@@ -210,8 +215,11 @@ function build(s: TiefeState) {
 				RAMP.charAt(Math.floor(hsh(q, kk + 9) * 6)),
 				kk,
 				q,
-				Math.cos(w) * r * (hoch ? 0.5 : 1),
+				Math.cos(w) * r * (hoch ? 0.6 : 1),
 				Math.sin(w) * r * 0.7,
+				5 + hsh(q, kk + 37) * 14,
+				hsh(q, kk + 53),
+				hsh(q, kk + 41),
 			]);
 		});
 	});
@@ -230,6 +238,9 @@ function build(s: TiefeState) {
 			'..:'.charAt(Math.floor(hsh(q, 4) * 3)),
 			-1,
 			q,
+			0,
+			0,
+			0,
 			0,
 			0,
 		]);
@@ -282,6 +293,60 @@ interface Ansicht {
 	rad: number;
 	zonen: Zone[];
 	klemm: Klemmung[];
+	/** Phase des Strömungsfelds (hängt am Scroll) und Atemzeit in Sekunden (gestuft, 0 = still). */
+	fase: number;
+	zeit: number;
+}
+
+// Strömungsfeld des Schwarms: divergenzfreies Feld aus zwei Oktaven einer Stromfunktion (billiger Pseudo-Curl,
+// jeder Punkt kennt nur seine Ruhelage). Ergebnis in cvx, cvy; die Phase fase läuft mit dem Scroll, rückwärts
+// scrollen dreht die Strömung zurück.
+let cvx = 0;
+let cvy = 0;
+function curl(x: number, y: number, fase: number) {
+	const a = 0.7 * x + 1.3 * fase;
+	const b = 0.77 * y - fase;
+	const c = 1.7 * x - 0.9 * fase + 2;
+	const d = 1.9 * y + 1.1 * fase;
+	cvx = 0.77 * Math.sin(a) * Math.cos(b) + 0.76 * Math.sin(c) * Math.cos(d);
+	cvy = -0.7 * Math.cos(a) * Math.sin(b) - 0.68 * Math.cos(c) * Math.sin(d);
+}
+
+// Lage eines Wortpunkts im Fluss: u = Ankunft (0 im Tunnel, 1 in der Wortform), o = Abflug (0 im Wort, 1 weit voraus
+// zum nächsten Wort). Dazwischen krümmt das Strömungsfeld den Weg; im Wort atmet der Punkt fein.
+let ox = 0;
+let oy = 0;
+let oz = 0;
+function fluss(q: Punkt, I: Insel, N: Insel, u: number, o: number, fase: number, zeit: number) {
+	let x = q[0];
+	let y = q[1];
+	let z = q[2];
+	const e = 1 - u;
+	if (e > 0.001) {
+		const e2 = e * e;
+		x += q[6] * e2;
+		y += q[7] * e2;
+		z += q[8] * e2;
+		curl(x, y, fase);
+		const b = 12 * u * e;
+		x += cvx * b;
+		y += cvy * b;
+	} else if (o > 0.001) {
+		const o2 = o * o;
+		curl(x + 9, y, fase);
+		const b = 12 * o * (1 - o);
+		x += cvx * b + (N.x - I.x) * 0.9 * o2 + q[6] * 0.5 * o2;
+		y += cvy * b + (N.y - I.y) * 0.9 * o2 + q[7] * 0.5 * o2;
+		z += o2 * (8 + 10 * q[10]); // zieht in die Tiefe voraus, statt an der Kamera vorbeizufliegen
+	} else if (zeit > 0) {
+		// Atmen: kleine Welle über das Wort, je Punkt leicht versetzt
+		const w = zeit * 1.5 + x * 1.7 + y * 1.1 + q[9] * 2.5;
+		x += 0.028 * Math.sin(w);
+		y += 0.028 * Math.cos(w * 1.3);
+	}
+	ox = x;
+	oy = y;
+	oz = z;
 }
 
 // Alle Punkte projizieren: Punkte als Quadrate, nahe Zeichen in Eimern je Schriftstufe (8, 11, 16, 23, 32, 45 px
@@ -289,58 +354,74 @@ interface Ansicht {
 function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 	const ctx = s.ctx;
 	if (!ctx) return;
-	const { f, ox, oy, cx, cy } = s;
-	const { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm } = a;
+	const { f, ox: bx, oy: by, cx, cy } = s;
+	const { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm, fase, zeit } = a;
 	const hoch = s.mode === 'hoch';
+	const tq = Math.round(zeit * 14);
 	for (const q of s.P) {
 		let x = q[0];
 		let y = q[1];
-		const dz = q[2] - camZ;
-		if (dz < 0.25 || dz > 110) continue;
+		let dz = q[2] - camZ;
 		const word = q[4] >= 0;
 		let kx = 1;
 		let ddx = 0;
+		let u = 1;
+		let o = 0;
+		let I: Insel | undefined;
 		if (word) {
-			const I = s.isl[q[4]];
+			// Wort sichtbar von dz 34 bis weit hinter der Kamera (Abflug zieht voraus)
+			if (dz > 34 || dz < -14) continue;
+			I = s.isl[q[4]];
 			const kl = klemm[q[4]];
 			if (!I || !kl) continue;
 			kx = kl.k;
 			ddx = kl.dx;
-			// Anflug: Zeichen liegen weit vorn verstreut und laufen zwischen dz 40 und 20 zum Wort zusammen
-			const sc0 = (1 - ss(cl((40 - dz) / 20))) ** 1.4;
-			if (sc0 > 0.002) {
-				x += q[6] * sc0;
-				y += q[7] * sc0;
-			}
-			if (dz < 5) {
-				const k = (5 - dz) * 0.12;
-				x += (x - I.x) * k;
-				y += (y - I.y) * k;
-			}
+			// Ankunft zwischen dz 38 und 14 (je Punkt gestaffelt), Abflug ab dz 5,5 (ebenso)
+			u = ss((38 - dz - 8 * q[10]) / 16);
+			o = ss((5.5 + 1.5 * q[10] - dz) / 5.5);
+			fluss(q, I, s.isl[q[4] + 1] ?? I, u, o, fase, zeit);
+			x = ox;
+			y = oy;
+			dz = oz - camZ;
 			x = I.x + (x - I.x) * kx;
 		}
+		if (dz < 0.25 || dz > 110) continue;
 		const fz = F / dz;
 		const sx = cx + (x - camX) * fz + ddx;
 		const sy = cy + (y - camY) * fz;
-		let X = ox + sx * f;
-		let Y = oy + sy * f;
+		let X = bx + sx * f;
+		let Y = by + sy * f;
 		if (X < -40 || Y < -40 || X > s.W + 40 || Y > s.H + 40) continue;
-		if (rep && !(word && dz < 34)) {
+		if (rep) {
 			const dx = sx - mx;
 			const dy = sy - my;
 			const d = Math.hypot(dx, dy);
-			const R = word ? 48 : rad;
+			const R = word ? 54 : rad;
 			if (d < R) {
-				const g = (1 - d / R) * 46 * f * rep * (word ? 0.2 : 1);
-				X += (dx / (d + 0.1)) * g;
-				Y += (dy / (d + 0.1)) * g;
+				// Staub wird weggedrückt, der Schwarm eher verwirbelt (Tangente)
+				const g = (1 - d / R) * 46 * f * rep * (word ? 0.4 : 1);
+				const nx = dx / (d + 0.1);
+				const ny = dy / (d + 0.1);
+				X += nx * g * (word ? 0.4 : 1) - (word ? ny * g * 0.9 : 0);
+				Y += ny * g * (word ? 0.4 : 1) + (word ? nx * g * 0.9 : 0);
 			}
 		}
 		if (qa.nurWort != null && q[4] !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
 		// Wörter und Staub wie im Entwurf: Wort ab dz 34 da und ab 22 voll, Staub blendet in der Ferne aus
-		let al = word
-			? wortDichte(dz)
-			: cl(dz / 1.2) *
+		let al: number;
+		if (word) {
+			const d0 = q[2] - camZ;
+			// Tiefe: ferne Punkte dunkler, nahe heller; im Fluss gedämpft, in der Wortform voll; scharfes Flimmern
+			// bei wenigen Punkten je Stufe
+			al =
+				wortDichte(d0) *
+				cl((dz - 1.2) / 2.8) *
+				(0.5 + 0.5 * u * (1 - o)) *
+				(0.78 + 0.22 * cl((50 - dz) / 30));
+			if (tq && (Math.imul(q[5] + 1, 2654435761) + Math.imul(tq, 40503)) >>> 29 === 0) al *= 0.6;
+		} else
+			al =
+				cl(dz / 1.2) *
 				(hoch
 					? cl((110 - dz) / 30) *
 						cl((s.dX - Math.abs(q[0])) / 7) *
@@ -348,10 +429,9 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 						0.6
 					: cl((110 - dz) / 50) * 0.55);
 		al *= cl((Y - kopfY) / 28);
-		// Hochformat: nahe Wörter (dz < 5) ziehen beim Durchflug nach außen und blenden am Bildrand weich aus,
-		// statt hart angeschnitten zu wirken. Querformat: Zeichen fliegen unverändert aus dem Bild.
+		// Hochformat: nahe Wörter (dz < 5) blenden am Bildrand weich aus, statt hart angeschnitten zu wirken.
+		// Querformat: Zeichen fliegen unverändert aus dem Bild.
 		if (hoch && word && dz < 5) al *= cl(Math.min(X, s.W - X) / 48) * cl(Math.min(Y, s.H - Y) / 48);
-		if (word) al *= cl((dz - 1.2) / 2.8);
 		if (al <= 0.01) continue;
 		// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
 		for (const z of zonen) {
@@ -370,6 +450,23 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 			const side = hoch ? Math.max(word ? 1 : 1.5 * s.fl, sz * 0.8 * f) : sz * 0.55 * f;
 			ctx.globalAlpha = al;
 			ctx.fillRect(X, Y, side, side);
+			// Spur: im Fluss blasse Wiederholungen des Punkts auf seinem Weg (jeder vierte Punkt)
+			if (I && (q[5] & 3) === 0 && ((u > 0.03 && u < 0.97) || (o > 0.03 && o < 0.97))) {
+				const N = s.isl[q[4] + 1] ?? I;
+				for (let k = 1; k <= 2; k++) {
+					fluss(q, I, N, Math.max(0, u - 0.09 * k), Math.max(0, o - 0.09 * k), fase, zeit);
+					const d2 = oz - camZ;
+					if (d2 < 0.25) break;
+					const g2 = F / d2;
+					ctx.globalAlpha = al * (k === 1 ? 0.5 : 0.25);
+					ctx.fillRect(
+						bx + (cx + (I.x + (ox - I.x) * kx - camX) * g2 + ddx) * f + (X - (bx + sx * f)),
+						by + (cy + (oy - camY) * g2) * f + (Y - (by + sy * f)),
+						side * 0.8,
+						side * 0.8,
+					);
+				}
+			}
 		} else {
 			const e = nb[Math.min(5, Math.floor(Math.log2(sz / 6) * 2))];
 			if (e) {
@@ -448,6 +545,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 				mx: Number.NaN,
 				my: Number.NaN,
 				mIn: false,
+				zeit: 0,
 			};
 			s.nb = [0, 1, 2, 3, 4, 5].map((): Eimer => ({ xya: [], ch: [] }));
 			s.caps = [...wurzel.querySelectorAll<HTMLElement>('[data-dcap]')];
@@ -457,7 +555,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			s.kopf = document.querySelector<HTMLElement>('[data-kopf]');
 		},
 		warm: bereite,
-		frame(s, _t, dt) {
+		frame(s, t, dt) {
 			const ctx = s.ctx;
 			if (!ctx) return;
 			while (!bereite(s));
@@ -485,6 +583,10 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 					s.sm.y = s.m.y;
 				}
 			}
+			// Atmen/Flimmern: nur solange ein Wort in Ruhe steht, in 14 Schritten je Sekunde (spart Bilder);
+			// mit reduzierter Bewegung gibt es keins
+			const ruhe = !s.reduced && s.isl.some((I) => plateauOf(I.z - camZ) > 0.02);
+			const zeit = ruhe ? Math.floor(t * 14) / 14 : 0;
 			// Im Stand (gleicher Scroll, ruhender Zeiger, gleiche Größe und Schrift) bleibt das letzte Bild stehen
 			const kk = s.kk;
 			const gleich =
@@ -496,7 +598,8 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 				kk.kopfY === kopfY &&
 				kk.mx === s.m.x &&
 				kk.my === s.m.y &&
-				kk.mIn === s.m.in;
+				kk.mIn === s.m.in &&
+				kk.zeit === zeit;
 			kk.p = p;
 			kk.smx = s.sm.x;
 			kk.smy = s.sm.y;
@@ -504,6 +607,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			kk.mx = s.m.x;
 			kk.my = s.m.y;
 			kk.mIn = s.m.in;
+			kk.zeit = zeit;
 			if (gleich) return;
 			s.stale = false;
 			const I0 = s.isl[si];
@@ -554,7 +658,20 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			});
 			const klemm = s.klemm;
 			klemmen(s, klemm, camZ, camX);
-			zeichnePunkte(s, nb, { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm });
+			zeichnePunkte(s, nb, {
+				camX,
+				camY,
+				camZ,
+				kopfY,
+				mx,
+				my,
+				rep,
+				rad,
+				zonen,
+				klemm,
+				fase: camZ * 0.22,
+				zeit,
+			});
 			// Am Ende der Fahrt scrollt die Bühne nach oben weg: Wortzeile und Tiefenzähler blenden dabei aus, sonst
 			// fährt der letzte Satz über den Titel der nächsten Szene
 			// erst alle Lagen lesen, dann nur geänderte Werte schreiben: jedes Schreiben macht das Layout ungültig,
