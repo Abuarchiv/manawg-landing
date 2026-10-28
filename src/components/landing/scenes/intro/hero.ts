@@ -79,19 +79,30 @@ float alb = mix(rockA(p) * .5, .95, sn); float amb = .5 + .5 * n.y; v = alb * (d
   if(uSt < .5 && uLook < .7){ float ff = 1. - uLook / .7; for(int L2 = 0; L2 < 2; L2++){ float fl = float(L2); float sx = uv.x * (10. + fl * 6.) + T * (.05 + fl * .08) + fl * 3.7; float id = floor(sx); float fx = fract(sx) - .5; float hgt = (.1 + .12 * hash(vec2(id, fl))) * (1. + fl * .5); float base = -.36 - fl * .08; float tri = base + hgt - abs(fx) * hgt * 2.6; if(uv.y < tri){ float br = step(.5, fract((uv.y - base) * 60. + abs(fx) * 8.)); v = mix(v, .1 + .22 * br, ff); } } }
   if(abs(uSt - 4.) < .5){ for(int L3 = 0; L3 < 2; L3++){ float fl = float(L3); vec2 q = uv * vec2(1.6, 2.6) + vec2(T * (.02 + fl * .02) + fl * 4., fl * .7); float c = fbm(q) + fbm(q * 2.3) * .35; float band = smoothstep(.16, .02, abs(uv.y - (-.02 - fl * .2))); float m = smoothstep(.6, .68, c * band + .1); float fp = sin(fbm(q * 5. + c * 2.) * 90.); float tone = .82 * (.55 + .45 * step(0., fp)) * (.6 + .4 * smoothstep(.6, .9, c)); v = mix(v, tone, m * (1. - uLook)); } }
   return v; }
-float omap(vec3 p){ float d = 1e5; for(int i = 0; i < 8; i++) d = smin(d, length(p - uO[i].xyz) - uO[i].w, uK); return max(d, -(length(p.xy - uH.xy) - uH.z)); }
+// Organ: weiches Gewebe statt glatter Kugeln. Feine Falten wandern über die Haut (drei Sinus-Felder), der Zeiger
+// drückt eine Delle; Licht mit Durchschimmern (wrap), Glanzpunkt, Höhlen-Schatten und Poren, die der Halbton als
+// wechselnde Punktgrößen zeigt.
+float falte(vec3 p){ return sin(p.x * 9. + T * .7 + sin(p.y * 5. - T * .4) * 1.6) * sin(p.y * 8. - T * .5 + sin(p.z * 6.) * 1.4) * sin(p.z * 7. + p.x * 3. + T * .3); }
+float omap(vec3 p){ float d = 1e5; for(int i = 0; i < 8; i++) d = smin(d, length(p - uO[i].xyz) - uO[i].w, uK);
+  d += falte(p * 2.6) * .016 + exp(-dot(p.xy - uM * 1.6, p.xy - uM * 1.6) * 6.) * .03; return max(d, -(length(p.xy - uH.xy) - uH.z)); }
 vec3 onrm(vec3 p){ const vec2 e = vec2(.002, -.002); return normalize(e.xyy * omap(p + e.xyy) + e.yyx * omap(p + e.yyx) + e.yxy * omap(p + e.yxy) + e.xxx * omap(p + e.xxx)); }
 float organ(vec2 uv){ vec3 ro = uC, rd = normalize(vec3(uv, -1.6)); float t = 0., md = 1e5;
-  for(int i = 0; i < 90; i++){ vec3 p = ro + rd * t; float d = omap(p); md = min(md, d);
-if(d < .0015){ vec3 n = onrm(p); vec3 l = normalize(vec3(uM.x * 2.4, uM.y * 2.4 + .5, 1.3)); float df = max(dot(n, l), 0.), ao = clamp(omap(p + n * .2) / .2, 0., 1.), rim = pow(1. - max(dot(n, -rd), 0.), 3.);
-  return clamp(df * .9 * (.45 + .55 * ao) + .05 + rim * .22, 0., 1.); }
-t += d * .9; if(t > 40.) break; }
+  for(int i = 0; i < 96; i++){ vec3 p = ro + rd * t; float d = omap(p); md = min(md, d);
+if(d < .0015){ vec3 n = onrm(p); vec3 l = normalize(vec3(uM.x * 2.4 - .6, uM.y * 2.4 + .9, 1.3));
+  float wr = max((dot(n, l) + .45) / 1.45, 0.); float df = wr * wr;
+  float ao = clamp(omap(p + n * .06) / .06, 0., 1.) * .5 + clamp(omap(p + n * .22) / .22, 0., 1.) * .5;
+  float rim = pow(1. - max(dot(n, -rd), 0.), 3.); float sp = pow(max(dot(reflect(-l, n), -rd), 0.), 36.);
+  float por = .78 + .22 * nz(p.xy * 26. + p.z * 9.);
+  float hinten = pow(max(dot(n, normalize(vec3(-l.x, -l.y, -.4))), 0.), 2.) * .25; // Gegenlicht am Rand
+  return clamp(df * .85 * por * (.3 + .7 * ao) + .04 + rim * .2 + hinten + sp * .9, 0., 1.); }
+t += d * .82; if(t > 40.) break; }
   return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)); }
 void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv), uMix); o = vec4(v, v, v, 1.); }`;
+// Halbton-Zelle: im Hochformat feiner (nach der Breite), sonst trägt das Organ am Handy nur zehn Punkte.
 const POST = `#version 300 es
 precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad;
 void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
-  float cs = 6. * uR.y / 800.; vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r; if(uL > .5) L = mix(clamp((L - .36) / .64, 0., 1.), L, uMx);
+  float cs = 6. * min(uR.y, uR.x * 1.6) / 800.; vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r; if(uL > .5) L = mix(clamp((L - .36) / .64, 0., 1.), L, uMx);
   float r = cs * .5 * sqrt(clamp(L, 0., 1.)) * 1.15; float vd = smoothstep(r + .7, r - .7, length(fc - c));
   float v = mix(vr, vd, uD); if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
   if(uL > .5) v = 1. - v * .96; else v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
