@@ -376,9 +376,9 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 			if (!I || !kl) continue;
 			kx = kl.k;
 			ddx = kl.dx;
-			// Ankunft zwischen dz 38 und 14 (je Punkt gestaffelt), Abflug ab dz 5,5 (ebenso)
+			// Ankunft zwischen dz 38 und 14 (je Punkt gestaffelt), Abflug ab dz 7,5 (ebenso), bevor die Zeichen zu groß werden
 			u = ss((38 - dz - 8 * q[10]) / 16);
-			o = ss((5.5 + 1.5 * q[10] - dz) / 5.5);
+			o = ss((7.5 + 1.5 * q[10] - dz) / 6);
 			fluss(q, I, s.isl[q[4] + 1] ?? I, u, o, fase, zeit);
 			x = ox;
 			y = oy;
@@ -417,6 +417,7 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 				wortDichte(d0) *
 				cl((dz - 1.2) / 2.8) *
 				(0.5 + 0.5 * u * (1 - o)) *
+				(1 - 0.55 * o) *
 				(0.78 + 0.22 * cl((50 - dz) / 30));
 			if (tq && (Math.imul(q[5] + 1, 2654435761) + Math.imul(tq, 40503)) >>> 29 === 0) al *= 0.6;
 		} else
