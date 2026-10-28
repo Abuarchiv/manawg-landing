@@ -142,7 +142,6 @@ export interface SceneDef<S extends SceneState = SceneState> {
 	 */
 	lies?(s: S): void;
 	resize?(s: S): void;
-	ownsTouch?(s: S, e: TouchEvent): boolean;
 	onDown?(s: S): void;
 	onMove?(s: S): void;
 	onUp?(s: S, e: PointerEvent): void;
@@ -391,17 +390,6 @@ interface Spitze {
 	teile: [string, number][];
 }
 
-// Greift ein Zeigerereignis ab, dessen Geste einer Szene gehört (Körper greifen, Planet ziehen).
-// Die Szene entscheidet bei pointerdown, das kommt vor touchstart.
-function onTouchStart(e: TouchEvent) {
-	for (const r of scenes) {
-		if (r.def.ownsTouch && r.host.contains(e.target as Node | null) && r.def.ownsTouch(r.s, e)) {
-			e.preventDefault();
-			return;
-		}
-	}
-}
-
 function onUp(e: PointerEvent) {
 	for (const r of scenes) {
 		const { s, def } = r;
@@ -417,7 +405,6 @@ function hook() {
 	hooked = true;
 	window.addEventListener('pointerup', onUp);
 	window.addEventListener('pointercancel', onUp);
-	document.addEventListener('touchstart', onTouchStart, { passive: false, capture: true });
 	for (const ev of [
 		'pointermove',
 		'pointerdown',
@@ -468,7 +455,7 @@ export function onLies(fn: () => void): () => void {
  *   host    Element für die Zeiger-Listener (Standard: Elternelement)
  *   box     (W, H, safeH, mode) -> { bw, bh, align?, max? }, Bezugsbox der Komposition
  *   dprCap  Deckel des Pixelfaktors (Standard 2), touchCap: Deckel auf Touch-Geräten
- *   init, frame, resize, ownsTouch, onDown, onMove, onUp
+ *   init, frame, resize, onDown, onMove, onUp
  * Gibt die Abmeldung zurück.
  */
 export function register<S extends SceneState>(def: SceneDef<S>): () => void {

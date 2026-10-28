@@ -54,6 +54,53 @@ type Punkt = [
 	h: number,
 ];
 
+/** Die Wolke spaltenweise (je Feld ein Zahlenfeld): die Punktschleife liest so rund doppelt so schnell wie aus Tupeln. */
+interface Wolke {
+	n: number;
+	x: Float64Array;
+	y: Float64Array;
+	z: Float64Array;
+	ch: string[];
+	ins: Int32Array;
+	nr: Int32Array;
+	sx: Float64Array;
+	sy: Float64Array;
+	sz: Float64Array;
+	ph: Float64Array;
+	h: Float64Array;
+}
+const packe = (P: Punkt[]): Wolke => {
+	const n = P.length;
+	const f = () => new Float64Array(n);
+	const w: Wolke = {
+		n,
+		x: f(),
+		y: f(),
+		z: f(),
+		ch: P.map((q) => q[3]),
+		ins: new Int32Array(n),
+		nr: new Int32Array(n),
+		sx: f(),
+		sy: f(),
+		sz: f(),
+		ph: f(),
+		h: f(),
+	};
+	P.forEach((q, i) => {
+		w.x[i] = q[0];
+		w.y[i] = q[1];
+		w.z[i] = q[2];
+		w.ins[i] = q[4];
+		w.nr[i] = q[5];
+		w.sx[i] = q[6];
+		w.sy[i] = q[7];
+		w.sz[i] = q[8];
+		w.ph[i] = q[9];
+		w.h[i] = q[10];
+	});
+	return w;
+};
+
 /** Ausschlusszone um eine Unterzeile (DOM-Rechteck) samt Deckkraft w. */
 interface Zone {
 	x0: number;
@@ -100,7 +147,7 @@ interface TiefeState extends SceneState {
 	kopf: HTMLElement | null;
 	raw: Maske[];
 	isl: Insel[];
-	P: Punkt[];
+	P: Wolke;
 	k: number;
 	fl: number;
 	dX: number;
@@ -126,7 +173,8 @@ const sampleT = (word: string, px: number): Maske => {
 	const oc = document.createElement('canvas');
 	oc.width = w;
 	oc.height = h;
-	const o = oc.getContext('2d');
+	// willReadFrequently: Maske im Hauptspeicher, getImageData ohne Rücklesen von der Grafikkarte (sonst rund 30 ms je Wort)
+	const o = oc.getContext('2d', { willReadFrequently: true });
 	if (!o) throw new Error('Kein 2D-Kontext für die Wortmaske');
 	o.font = `600 ${px}px ${TT}`;
 	o.textAlign = 'center';
@@ -205,12 +253,12 @@ function build(s: TiefeState) {
 	s.k = k;
 	s.klemm = s.isl.map((): Klemmung => ({ dx: 0, k: 1 }));
 	const RAMP = '@#%@#%*';
-	s.P = [];
+	const P: Punkt[] = [];
 	s.isl.forEach((I, kk) => {
 		I.pts.forEach((p, q) => {
 			const w = hsh(q, kk + 17) * Math.PI * 2;
 			const r = 2.5 + hsh(q, kk + 29) * 8; // Start im Tunnel, weit um die Achse verteilt
-			s.P.push([
+			P.push([
 				I.x + p[0],
 				I.y + p[1],
 				I.z + (hsh(q, kk) - 0.5) * 0.6,
@@ -233,7 +281,7 @@ function build(s: TiefeState) {
 	s.dX = hoch ? 24 : 30;
 	s.dY = hoch ? 40 : 18;
 	for (let q = 0; q < nd; q++)
-		s.P.push([
+		P.push([
 			(hsh(q, 1) - 0.5) * 2 * s.dX,
 			(hsh(q, 2) - 0.5) * 2 * s.dY,
 			hsh(q, 3) * 90 - 14,
@@ -246,6 +294,7 @@ function build(s: TiefeState) {
 			0,
 			0,
 		]);
+	s.P = packe(P);
 	s.bm = bauKey(s);
 }
 
@@ -319,16 +368,25 @@ function curl(x: number, y: number, fase: number) {
 let ox = 0;
 let oy = 0;
 let oz = 0;
-function fluss(q: Punkt, I: Insel, N: Insel, u: number, o: number, fase: number, zeit: number) {
-	let x = q[0];
-	let y = q[1];
-	let z = q[2];
+function fluss(
+	w: Wolke,
+	i: number,
+	I: Insel,
+	N: Insel,
+	u: number,
+	o: number,
+	fase: number,
+	zeit: number,
+) {
+	let x = w.x[i] as number;
+	let y = w.y[i] as number;
+	let z = w.z[i] as number;
 	const e = 1 - u;
 	if (e > 0.001) {
 		const e2 = e * e;
-		x += q[6] * e2;
-		y += q[7] * e2;
-		z += q[8] * e2;
+		x += (w.sx[i] as number) * e2;
+		y += (w.sy[i] as number) * e2;
+		z += (w.sz[i] as number) * e2;
 		curl(x, y, fase);
 		const b = 12 * u * e;
 		x += cvx * b;
@@ -337,14 +395,14 @@ function fluss(q: Punkt, I: Insel, N: Insel, u: number, o: number, fase: number,
 		const o2 = o * o;
 		curl(x + 9, y, fase);
 		const b = 12 * o * (1 - o);
-		x += cvx * b + (N.x - I.x) * 0.9 * o2 + q[6] * 0.5 * o2;
-		y += cvy * b + (N.y - I.y) * 0.9 * o2 + q[7] * 0.5 * o2;
-		z += o2 * (8 + 10 * q[10]); // zieht in die Tiefe voraus, statt an der Kamera vorbeizufliegen
+		x += cvx * b + (N.x - I.x) * 0.9 * o2 + (w.sx[i] as number) * 0.5 * o2;
+		y += cvy * b + (N.y - I.y) * 0.9 * o2 + (w.sy[i] as number) * 0.5 * o2;
+		z += o2 * (8 + 10 * (w.h[i] as number)); // zieht in die Tiefe voraus, statt an der Kamera vorbeizufliegen
 	} else if (zeit > 0) {
 		// Atmen: kleine Welle über das Wort, je Punkt leicht versetzt
-		const w = zeit * 1.5 + x * 1.7 + y * 1.1 + q[9] * 2.5;
-		x += 0.028 * sn(w);
-		y += 0.028 * cs(w * 1.3);
+		const wl = zeit * 1.5 + x * 1.7 + y * 1.1 + (w.ph[i] as number) * 2.5;
+		x += 0.028 * sn(wl);
+		y += 0.028 * cs(wl * 1.3);
 	}
 	ox = x;
 	oy = y;
@@ -360,11 +418,18 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 	const { camX, camY, camZ, kopfY, mx, my, rep, rad, zonen, klemm, fase, zeit } = a;
 	const hoch = s.mode === 'hoch';
 	const tq = Math.round(zeit * 14);
-	for (const q of s.P) {
-		let x = q[0];
-		let y = q[1];
-		let dz = q[2] - camZ;
-		const word = q[4] >= 0;
+	const W = s.P;
+	for (let i = 0; i < W.n; i++) {
+		const qx = W.x[i] as number;
+		const qy = W.y[i] as number;
+		const qz = W.z[i] as number;
+		const qi = W.ins[i] as number;
+		const qn = W.nr[i] as number;
+		const qh = W.h[i] as number;
+		let x = qx;
+		let y = qy;
+		let dz = qz - camZ;
+		const word = qi >= 0;
 		let kx = 1;
 		let ddx = 0;
 		let u = 1;
@@ -373,15 +438,15 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 		if (word) {
 			// Wort sichtbar von dz 34 bis weit hinter der Kamera (Abflug zieht voraus)
 			if (dz > 34 || dz < -14) continue;
-			I = s.isl[q[4]];
-			const kl = klemm[q[4]];
+			I = s.isl[qi];
+			const kl = klemm[qi];
 			if (!I || !kl) continue;
 			kx = kl.k;
 			ddx = kl.dx;
 			// Ankunft zwischen dz 38 und 14 (je Punkt gestaffelt), Abflug ab dz 7,5 (ebenso), bevor die Zeichen zu groß werden
-			u = ss((38 - dz - 8 * q[10]) / 16);
-			o = ss((7.5 + 1.5 * q[10] - dz) / 6);
-			fluss(q, I, s.isl[q[4] + 1] ?? I, u, o, fase, zeit);
+			u = ss((38 - dz - 8 * qh) / 16);
+			o = ss((7.5 + 1.5 * qh - dz) / 6);
+			fluss(W, i, I, s.isl[qi + 1] ?? I, u, o, fase, zeit);
 			x = ox;
 			y = oy;
 			dz = oz - camZ;
@@ -408,11 +473,11 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 				Y += ny * g * (word ? 0.4 : 1) + (word ? nx * g * 0.9 : 0);
 			}
 		}
-		if (qa.nurWort != null && q[4] !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
+		if (qa.nurWort != null && qi !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
 		// Wörter und Staub wie im Entwurf: Wort ab dz 34 da und ab 22 voll, Staub blendet in der Ferne aus
 		let al: number;
 		if (word) {
-			const d0 = q[2] - camZ;
+			const d0 = qz - camZ;
 			// Tiefe: ferne Punkte dunkler, nahe heller; im Fluss gedämpft, in der Wortform voll; scharfes Flimmern
 			// bei wenigen Punkten je Stufe
 			al =
@@ -421,14 +486,14 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 				(0.5 + 0.5 * u * (1 - o)) *
 				(1 - 0.55 * o) *
 				(0.78 + 0.22 * cl((50 - dz) / 30));
-			if (tq && (Math.imul(q[5] + 1, 2654435761) + Math.imul(tq, 40503)) >>> 29 === 0) al *= 0.6;
+			if (tq && (Math.imul(qn + 1, 2654435761) + Math.imul(tq, 40503)) >>> 29 === 0) al *= 0.6;
 		} else
 			al =
 				cl(dz / 1.2) *
 				(hoch
 					? cl((110 - dz) / 30) *
-						cl((s.dX - Math.abs(q[0])) / 7) *
-						cl((s.dY - Math.abs(q[1])) / 7) *
+						cl((s.dX - Math.abs(qx)) / 7) *
+						cl((s.dY - Math.abs(qy)) / 7) *
 						0.6
 					: cl((110 - dz) / 50) * 0.55);
 		al *= cl((Y - kopfY) / 28);
@@ -454,10 +519,10 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 			ctx.globalAlpha = al;
 			ctx.fillRect(X, Y, side, side);
 			// Spur: im Fluss blasse Wiederholungen des Punkts auf seinem Weg (jeder vierte Punkt)
-			if (I && (q[5] & 3) === 0 && ((u > 0.03 && u < 0.97) || (o > 0.03 && o < 0.97))) {
-				const N = s.isl[q[4] + 1] ?? I;
+			if (I && (qn & 3) === 0 && ((u > 0.03 && u < 0.97) || (o > 0.03 && o < 0.97))) {
+				const N = s.isl[qi + 1] ?? I;
 				for (let k = 1; k <= 2; k++) {
-					fluss(q, I, N, Math.max(0, u - 0.09 * k), Math.max(0, o - 0.09 * k), fase, zeit);
+					fluss(W, i, I, N, Math.max(0, u - 0.09 * k), Math.max(0, o - 0.09 * k), fase, zeit);
 					const d2 = oz - camZ;
 					if (d2 < 0.25) break;
 					const g2 = F / d2;
@@ -474,7 +539,7 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
 			const e = nb[Math.min(5, Math.floor(Math.log2(sz / 6) * 2))];
 			if (e) {
 				e.xya.push(X, Y, al);
-				e.ch.push(q[3]);
+				e.ch.push(W.ch[i] ?? '');
 			}
 		}
 	}
@@ -537,7 +602,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			s.dp = 0;
 			s.raw = [];
 			s.isl = [];
-			s.P = [];
+			s.P = packe([]);
 			s.bm = null;
 			s.klemm = [];
 			s.kk = {

@@ -63,7 +63,7 @@ export function raster(txt: string, W0: number, H0: number, cs: number): RasterZ
 	const oc = document.createElement('canvas');
 	oc.width = cols;
 	oc.height = rows;
-	const o = oc.getContext('2d');
+	const o = oc.getContext('2d', { willReadFrequently: true }); // getImageData ohne Rücklesen von der Grafikkarte
 	if (!o) return [];
 	o.fillStyle = '#000';
 	// Die Form kommt aus Inter Tight (ohne den Punkt in der Null der Mono-Schrift), gefüllt wird mit Mono-Zeichen

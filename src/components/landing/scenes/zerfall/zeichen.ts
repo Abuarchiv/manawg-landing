@@ -202,7 +202,9 @@ export function startZerfall(cv: HTMLCanvasElement): () => void {
 		}
 		uebergang.verdeckt = true;
 
-		const dpr = Math.min(2, devicePixelRatio || 1);
+		// Höchstens 1,5-fach: die Fläche ist bildschirmgroß und tausende Zeichen fliegen schnell, bei 2-fach war die
+		// Grafikkarte auf Retina-Desktops die Grenze (44 % weniger Pixel, im Flug nicht zu sehen)
+		const dpr = Math.min(1.5, devicePixelRatio || 1);
 		if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) {
 			cv.width = Math.round(W * dpr);
 			cv.height = Math.round(H * dpr);

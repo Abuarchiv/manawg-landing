@@ -189,7 +189,7 @@ function legeTexAn(
 	return tx;
 }
 
-const STREIFEN_ZEILEN = 330; // Zeilen je Aufruf: ein ganzer Atlas (8 MP) auf einmal kostet 20 bis 30 ms
+const STREIFEN_ZEILEN = 160; // Zeilen je Aufruf: ein ganzer Atlas (8 MP) auf einmal kostet 20 bis 30 ms, 330 Zeilen noch 4 bis 5 ms je Bild
 
 /** Nächsten Streifen des Atlas in die gebundene Textur kopieren (UNPACK_SKIP_ROWS). true, wenn der Atlas komplett ist. */
 function ladeStreifen(

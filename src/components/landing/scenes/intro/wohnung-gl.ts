@@ -228,15 +228,32 @@ async function laden(): Promise<void> {
 	gl.uniform1f(u('uS'), m.S);
 	gl.uniform1f(u('uHmax'), m.hMax);
 	gl.uniform4f(u('uImg'), m.w, m.h, m.OX, m.OY);
-	zustand = { cv, gl, u, m, gly: null, fv: -1 };
+	const g: Gl = { cv, gl, u, m, gly: null, fv: -1 };
+	// Zeichenblatt und erster Zeichenaufruf (dabei übersetzt der Treiber den Shader) in einer Leerlaufpause statt im
+	// ersten sichtbaren Bild: dort kostete das beim Scrollen einen Ruckler
+	const warm = () => {
+		blatt(g);
+		// in Fenstergröße: so liegt auch der Puffer schon an
+		cv.width = Math.round(loop.vw * Math.min(2, devicePixelRatio || 1)) || 1;
+		cv.height = Math.round(loop.vh * Math.min(2, devicePixelRatio || 1)) || 1;
+		gl.viewport(0, 0, cv.width, cv.height);
+		gl.drawArrays(gl.TRIANGLES, 0, 3);
+		zustand = g;
+	};
+	if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 1000 });
+	else setTimeout(warm, 0);
+}
+
+/** Render und Shader im Hintergrund laden, bevor die Wohnung zu sehen ist (stage.ts ruft das vorab). */
+export function wohnungVorladen(): void {
+	if (gestartet) return;
+	gestartet = true;
+	laden().catch(() => {});
 }
 
 /** Zeichnet die Wohnung als Zeichen und gibt das Canvas zurück, solange Render und Shader noch laden null. */
 export function wohnungsZeichen(e: ZeichenEingabe): HTMLCanvasElement | null {
-	if (!gestartet) {
-		gestartet = true;
-		laden().catch(() => {});
-	}
+	wohnungVorladen();
 	const g = zustand;
 	if (!g) return null;
 	const { gl, u, m } = g;

@@ -187,6 +187,25 @@
 	};
 
 	const masse = new Map(); // gemessene Höhen (Tableiste je Fenstergröße, Chat je Fenstergröße und Seite)
+	// Wie die App: die Tableiste misst sich selbst (mit Inset unten 84 px statt der aufgenommenen 57 px), damit Inhalt
+	// und Eingabezeile des Chats über ihr enden statt dahinter. Gemessen wird nur einmal je Fenstergröße (und Seite):
+	// jedes Messen direkt nach dem Austausch erzwang ein eigenes Layout, beim Scrollen der Landing ein Ruckler.
+	// Der Chat misst seine Höhe in der App per Skript (bis zur Tableiste); die Aufnahme hat sie ohne Insets fest
+	// eingetragen, sonst läge die Eingabezeile hinter der Tableiste.
+	const messe = (el, p, vp) => {
+		const nav = el.querySelector('nav[data-app-chrome]');
+		const shell = el.querySelector('[style*="--app-nav-height"]');
+		if (nav && shell) {
+			if (!masse.has(vp)) masse.set(vp, nav.offsetHeight);
+			shell.style.setProperty('--app-nav-height', `${masse.get(vp)}px`);
+		}
+		const chat = el.querySelector('[data-chat-frame]');
+		const ck = `${vp}|${p}`;
+		if (chat && nav) {
+			if (!masse.has(ck)) masse.set(ck, nav.getBoundingClientRect().top - chat.getBoundingClientRect().top);
+			chat.style.height = `${masse.get(ck)}px`;
+		}
+	};
 	const setPage = (n, morph) => {
 		// Tabbar und SubNav bleiben in der App stehen, nur der aktive Eintrag wechselt (120 ms bzw. 150 ms Hintergrund).
 		// Beim Austausch der Seite starten die neuen Einträge im alten Zustand und gleiten in den neuen.
@@ -196,23 +215,7 @@
 		app.innerHTML = tpl(`p-${n.p}`);
 		prep(app);
 		gridFix(app);
-		// Wie die App: die Tableiste misst sich selbst (mit Inset unten 84 px statt der aufgenommenen 57 px), damit Inhalt
-		// und Eingabezeile des Chats über ihr enden statt dahinter. Gemessen wird nur einmal je Fenstergröße (und Seite):
-		// jedes Messen direkt nach dem Austausch erzwang ein eigenes Layout, beim Scrollen der Landing ein Ruckler.
-		const nav = app.querySelector('nav[data-app-chrome]');
-		const shell = app.querySelector('[style*="--app-nav-height"]');
-		if (nav && shell) {
-			if (!masse.has(vp)) masse.set(vp, nav.offsetHeight);
-			shell.style.setProperty('--app-nav-height', `${masse.get(vp)}px`);
-		}
-		// Der Chat misst seine Höhe in der App per Skript (bis zur Tableiste); die Aufnahme hat sie ohne Insets fest
-		// eingetragen, sonst läge die Eingabezeile hinter der Tableiste
-		const chat = app.querySelector('[data-chat-frame]');
-		const ck = `${vp}|${n.p}`;
-		if (chat && nav) {
-			if (!masse.has(ck)) masse.set(ck, nav.getBoundingClientRect().top - chat.getBoundingClientRect().top);
-			chat.style.height = `${masse.get(ck)}px`;
-		}
+		messe(app, n.p, vp);
 		document.body.setAttribute('style', n.b || '');
 		const next = [];
 		[...app.querySelectorAll('nav')].forEach((nv, i) => {
@@ -605,6 +608,32 @@
 		root.classList.add('framed');
 	}
 
+	/**
+	 * Seiten unsichtbar vorbauen (je Leerlaufpause eine): der erste Aufbau einer Seite kostet Stil- und Layout-Caches
+	 * des Browsers, beim Scrollen der Landing war das der Ruckler am ersten Tabwechsel. Danach wird verworfen.
+	 */
+	const vorwaermen = (ids) => {
+		const liste = ids.map((id) => node('-', id)?.p).filter((p, i, a) => p && a.indexOf(p) === i && p !== cur()?.p);
+		const schritt = () => {
+			const p = liste.shift();
+			if (!p) return;
+			// fast durchsichtig statt unsichtbar: so malt der Browser die Seite einmal (Schrift, Emoji, Verläufe)
+			const box = document.createElement('div');
+			box.setAttribute('aria-hidden', 'true');
+			box.inert = true;
+			box.style.cssText = `position:fixed;left:0;top:0;width:${app.clientWidth}px;height:${app.clientHeight}px;overflow:hidden;opacity:.001;pointer-events:none;z-index:-1`;
+			box.innerHTML = tpl(`p-${p}`);
+			document.body.appendChild(box);
+			messe(box, p, `${innerWidth}x${innerHeight}`);
+			requestAnimationFrame(() => requestAnimationFrame(() => {
+				box.remove();
+				later(schritt);
+			}));
+		};
+		later(schritt);
+	};
+	const later = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 3000 }) : setTimeout(fn, 200));
+
 	// ---------------------------------------------------------------- Start
 	const start = () => {
 		root.style.setProperty('--sai-top', REF ? '0px' : '47px');
@@ -614,7 +643,7 @@
 		let id = M.start;
 		if (ns && M.ref[ns]) [w, id] = M.ref[ns];
 		enter(w, id, { force: true, instant: true });
-		window.__demo = { state: () => ({ w: st.w, id: st.id }), enter, node, model: M, ref: M.ref, now: clock };
+		window.__demo = { state: () => ({ w: st.w, id: st.id }), enter, node, vorwaermen, model: M, ref: M.ref, now: clock };
 		document.documentElement.setAttribute('data-bereit', '1');
 	};
 	if (document.fonts?.ready) document.fonts.ready.then(start);

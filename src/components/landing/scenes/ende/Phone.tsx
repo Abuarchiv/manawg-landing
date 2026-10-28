@@ -37,6 +37,7 @@ interface Demo {
 		opts?: { force?: boolean; instant?: boolean; vt?: boolean },
 	) => boolean;
 	state: () => { w: string; id: string };
+	vorwaermen?: (ids: string[]) => void;
 }
 
 /** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
@@ -140,10 +141,16 @@ export function Phone() {
 	useEffect(() => {
 		if (!bereit || benutzt) return;
 		let stufe = -1;
+		let warm = false;
 		const off = onFrame(() => {
 			const st = live.stage?.state;
 			const fr = rahmen.current;
 			const demo = (fr?.contentWindow as (Window & { __demo?: Demo }) | null)?.__demo;
+			// Die Seiten der Choreografie im Leerlauf vorbauen, damit der erste Wechsel im Scroll nicht ruckelt
+			if (demo && !warm) {
+				warm = true;
+				demo.vorwaermen?.(TABS.map(([, id]) => id));
+			}
 			if (!st || !demo || !st.endOn) return;
 			const neu = Math.min(TABS.length - 1, Math.floor(cl((st.P - 0.95) / 0.05) * TABS.length));
 			if (neu === stufe) return;

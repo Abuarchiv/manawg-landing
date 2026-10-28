@@ -14,6 +14,7 @@ import { createHero } from './hero';
 import { zeichneSterne } from './sterne';
 import type { BuehnenKontext, BuehnenZeiger, HeroMarken, Loch } from './types';
 import * as wohnung from './wohnung';
+import { wohnungVorladen } from './wohnung-gl';
 import { unwarp, warp } from './zeitachse';
 
 /** Phase der Bühne (data-phase an #final): Intro, Ende-Ebene oder vorbeigescrollt. */
@@ -365,6 +366,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 		const dive = ss((P - 0.48) / 0.12);
 		const fpA = ss((P - 0.58) / 0.05);
 		const por = loop.reduced ? 1 : ss((P - 0.54) / 0.06);
+		if (P > 0.3) wohnungVorladen(); // Render und Shader laden, lange bevor die Wohnung ab P 0,54 erscheint
 		const endA = ss((P - 0.9) / 0.05);
 		const karten = wohnung.karten(P);
 		st.P = P;
