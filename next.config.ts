@@ -42,6 +42,8 @@ const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
 
 const nextConfig: NextConfig = {
 	distDir: process.env.NEXT_DIST_DIR ?? '.next',
+	// no generated AGENTS.md in the repo root on dev start
+	agentRules: false,
 	typescript: {
 		ignoreBuildErrors: false,
 		tsconfigPath: process.env.NEXT_TSCONFIG_PATH ?? 'tsconfig.json',

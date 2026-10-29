@@ -113,7 +113,7 @@ void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(
 const POST = `#version 300 es
 precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad;
 void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
-  float cs = 6. * min(uR.y, uR.x * 1.6) / 800.; vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r; if(uL > .5) L = mix(clamp((L - .36) / .64, 0., 1.), L, uMx);
+  float cs = max(3., floor(6. * min(uR.y, uR.x * 1.6) / 800. + .5)); vec2 c = (floor(fc / cs) + .5) * cs; float L = texture(uT, c / uR * uS).r; if(uL > .5) L = mix(clamp((L - .36) / .64, 0., 1.), L, uMx);
   float r = cs * .5 * sqrt(clamp(L, 0., 1.)) * 1.15; float vd = smoothstep(r + .7, r - .7, length(fc - c));
   float v = mix(vr, vd, uD); if(uSt < .5){ float tone = vr; float k8 = uR.y / 800.; float sl = (fc.y + fc.x * .22) / (3.2 * k8); float w = fwidth(sl); float th = clamp((.88 - tone) * 1.2, 0., 1.); float ln = 1. - smoothstep(th - w, th + w, abs(fract(sl) - .5) * 2.); float sd = 1. - tone; if(sd > .6){ float s2 = (fc.y - fc.x * .5) / (3. * k8); ln = max(ln, 1. - smoothstep(0., fwidth(s2) * 2., abs(fract(s2) - .5) * 2. - (1. - (sd - .6) * 2.))); } v = mix(ln, vd, uD); } float ho = 0.; for(int i = 0; i < 4; i++){ vec4 r = uHo[i]; if(r.z > r.x){ vec2 dd = max(max(r.xy - fc, fc - r.zw), 0.); ho = max(ho, 1. - smoothstep(uPad, uPad * 2., length(dd))); } } v *= 1. - ho * uMx;
   if(uL > .5) v = 1. - v * .96; else v = .04 + v * .94; o = vec4(v, v, v, 1.); }`;
@@ -490,7 +490,8 @@ export function createHero(cv: HTMLCanvasElement) {
 		const w = Math.max(1, Math.round(W * dpr));
 		const hh = Math.max(1, Math.round(H * dpr));
 		sizeTo(W, H, dpr);
-		const cs = (6 * hh) / 800;
+		// Whole device pixels like the POST cell: a fractional cell lands every other dot on a different pixel phase (moiré in flat tones)
+		const cs = Math.max(3, Math.round((6 * Math.min(hh, w * 1.6)) / 800));
 		// Mountain phase (calm image): finer scene buffer, the ridges otherwise show stair steps; the adaptive level (ad) absorbs load
 		const fk = mx < 0.05 ? 0.78 : 0.42;
 		// Photo mountain: texture reads only, hence at full backing resolution (sharp rock and snow)
