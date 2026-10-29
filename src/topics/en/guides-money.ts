@@ -157,7 +157,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		titel: 'Utilities, electricity and internet in a flat share | ManaWG',
 		beschreibung:
 			'How German flat shares split Nebenkosten, electricity, internet and the broadcasting fee: who holds the contract, how to settle up and share back payments.',
-		h1: 'Nebenkosten, electricity and internet in a flat share',
+		h1: 'Utilities, electricity and internet in a flat share',
 		einleitung:
 			'After the rent, Nebenkosten (utility and service charges such as heating, water and waste), electricity and internet are the biggest items in a flat share budget in Germany. Because usually one person holds the contract, questions come up: who pays what, and what happens with back payments? This guide covers the usual solutions.',
 		abschnitte: [
@@ -739,7 +739,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'For international applicants and English-speaking flats',
-				'Many people who are new to Germany look for rooms in English. If your flat welcomes that, say so in the ad, ideally in both languages, and name what you expect in practice: Anmeldung (address registration at the local registration office), which you will need to support, and the Wohnungsgeberbestätigung (the landlord’s confirmation of move-in that the office requires). Applicants should expect German-language messages, short viewings and quick decisions, and often a Kaution of up to three months’ Kaltmiete (rent excluding utilities). Scam messages hit international applicants especially, see the warning below.',
+				'Many people who are new to Germany look for rooms in English. If your flat welcomes that, say so in the ad, ideally in both languages, and name what you expect in practice: Anmeldung (address registration at the local registration office), which you will need to support, and the Wohnungsgeberbestätigung (the landlord’s confirmation of move-in that the office requires). Applicants should expect some German-language messages, and often a Kaution of up to three months’ Kaltmiete (rent excluding utilities). Scam messages are common in the rental market, so see the warning below.',
 			],
 			[
 				'Length, photos and common mistakes',
