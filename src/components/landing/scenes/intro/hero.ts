@@ -8,7 +8,7 @@
 
 import { glSoftware, glVisible } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
-import type { BuehnenKontext, HeroMarken } from './types';
+import type { HeroMarks, StageContext } from './types';
 
 const VS = `#version 300 es
 in vec2 a; void main(){ gl_Position = vec4(a, 0., 1.); }`;
@@ -112,12 +112,12 @@ const O = new Float32Array(32);
 const HO = new Float32Array(16);
 
 /** Gelinktes Shader-Programm mit den Orten seiner Uniforms. */
-interface Programm<K extends string> {
+interface Program<K extends string> {
 	pr: WebGLProgram;
 	U: Record<K, WebGLUniformLocation | null>;
 }
 
-type SzeneU =
+type SceneU =
 	| 'uR'
 	| 'T'
 	| 'uM'
@@ -144,20 +144,20 @@ interface HeroGL {
 	noGL: boolean;
 	fails: number;
 	chk: number;
-	leer: number;
+	blank: number;
 	tx: WebGLTexture | null;
 	fb: WebGLFramebuffer | null;
 	tw: number;
 	th: number;
-	S: Programm<SzeneU> | null;
-	Pp: Programm<PostU> | null;
+	S: Program<SceneU> | null;
+	Pp: Program<PostU> | null;
 	/** Hilfs-Canvas zum Lesen eines Pixels (willReadFrequently). */
 	pr: CanvasRenderingContext2D | null;
 	/** Foto-Berg: Bild und Maske, sobald geladen und dekodiert. */
-	foto: { img: ImageBitmap; msk: ImageBitmap } | null;
-	fotoTx: [WebGLTexture, WebGLTexture] | null;
+	photo: { img: ImageBitmap; mask: ImageBitmap } | null;
+	photoTx: [WebGLTexture, WebGLTexture] | null;
 	/** Einblendung des Fotos 0..1 (über den Rechen-Berg, falls das Bild spät kommt). */
-	fotoA: number;
+	photoA: number;
 }
 
 /**
@@ -175,7 +175,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		noGL: false,
 		fails: 0,
 		chk: 0,
-		leer: 0,
+		blank: 0,
 		tx: null,
 		fb: null,
 		tw: 0,
@@ -183,9 +183,9 @@ export function createHero(cv: HTMLCanvasElement) {
 		S: null,
 		Pp: null,
 		pr: null,
-		foto: null,
-		fotoTx: null,
-		fotoA: 0,
+		photo: null,
+		photoTx: null,
+		photoA: 0,
 	};
 	// Foto-Berg laden (Dekodieren abseits des Hauptthreads). Höchstens 2,5 s hält der Hero das erste Bild zurück,
 	// damit der Lader direkt auf das Foto öffnet; kommt es später, blendet es über den Rechen-Berg ein.
@@ -195,8 +195,8 @@ export function createHero(cv: HTMLCanvasElement) {
 			.then((r) => r.blob())
 			.then((b) => createImageBitmap(b, { imageOrientation: 'flipY' }));
 	Promise.all([bitmap('/hero/berg.webp'), bitmap('/hero/berg-maske.webp')])
-		.then(([img, msk]) => {
-			G.foto = { img, msk };
+		.then(([img, mask]) => {
+			G.photo = { img, mask };
 		})
 		.catch(() => {});
 	const fb = { x: 0, y: 0, ok: false }; // Fallback: nachlaufendes Licht
@@ -222,7 +222,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			return s;
 		};
 		const vs = sh(gl.VERTEX_SHADER, VS, 'vs');
-		const prog = <K extends string>(src: string, names: readonly K[], k: string): Programm<K> => {
+		const prog = <K extends string>(src: string, names: readonly K[], k: string): Program<K> => {
 			const pr = gl.createProgram();
 			if (!pr) throw new Error(`programm ${k}: nicht angelegt`);
 			gl.attachShader(pr, vs);
@@ -266,13 +266,13 @@ export function createHero(cv: HTMLCanvasElement) {
 		G.fb = null;
 		G.tw = 0;
 		G.th = 0;
-		G.fotoTx = null;
+		G.photoTx = null;
 		return true;
 	};
 
 	// Foto und Maske als Texturen (Maske mit Mipmaps: weiche Himmelsgewichtung über die Bias-Stufe).
-	const fotoTex = (gl: WebGL2RenderingContext) => {
-		if (G.fotoTx || !G.foto) return;
+	const photoTex = (gl: WebGL2RenderingContext) => {
+		if (G.photoTx || !G.photo) return;
 		const mk = (b: ImageBitmap, mip: boolean): WebGLTexture => {
 			const t = gl.createTexture();
 			if (!t) throw new Error('hero: Textur nicht angelegt');
@@ -289,7 +289,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			if (mip) gl.generateMipmap(gl.TEXTURE_2D);
 			return t;
 		};
-		G.fotoTx = [mk(G.foto.img, false), mk(G.foto.msk, true)];
+		G.photoTx = [mk(G.photo.img, false), mk(G.photo.mask, true)];
 	};
 
 	// Textur und Framebuffer des Szenenpuffers, bei Größenwechsel neu anlegen.
@@ -332,11 +332,11 @@ export function createHero(cv: HTMLCanvasElement) {
 		}
 	};
 	// Ohne Grafikchip rechnet der Berg-Shader auf dem Hauptprozessor (Sekunden je Bild): dann gleich der Halbton-Fallback
-	let geprueft = false;
-	let weg = false;
+	let checked = false;
+	let gone = false;
 	glSoftware().then((sw) => {
-		geprueft = true;
-		if (weg) return;
+		checked = true;
+		if (gone) return;
 		if (sw) G.noGL = true;
 		else fresh();
 	});
@@ -344,8 +344,8 @@ export function createHero(cv: HTMLCanvasElement) {
 	// Halbton-Fallback ohne WebGL2: das Zeichen als Punktraster mit nachlaufendem Licht.
 	// Abstand und Normale je Zelle hängen nur an der Größe: einmal rechnen, je Bild nur noch das Licht.
 	// Je Zelle 8 Werte: x, y, i, j, Abstand, Normale x/y samt Länge, Höhe^0,3.
-	const feld = { W: 0, H: 0, n: 0, z: new Float32Array(0) };
-	const baueFeld = (W: number, H: number, sc: number) => {
+	const field = { W: 0, H: 0, n: 0, z: new Float32Array(0) };
+	const buildField = (W: number, H: number, sc: number) => {
 		const step = 6;
 		const cx = W / 2;
 		const cy = H / 2;
@@ -369,12 +369,12 @@ export function createHero(cv: HTMLCanvasElement) {
 				}
 				z.push(x, y, i, j, d, nx, ny, hp);
 			}
-		feld.W = W;
-		feld.H = H;
-		feld.n = z.length / 8;
-		feld.z = Float32Array.from(z);
+		field.W = W;
+		field.H = H;
+		field.n = z.length / 8;
+		field.z = Float32Array.from(z);
 	};
-	const tone = (c: BuehnenKontext) => {
+	const tone = (c: StageContext) => {
 		const { W, H, t, dpr } = c;
 		const step = 6;
 		const f0 = Math.min(1.25, Math.min(W, H) / 800);
@@ -392,7 +392,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		fb.x += (tg[0] - fb.x) * kf;
 		fb.y += (tg[1] - fb.y) * kf;
 		sizeTo(c.W, c.H, dpr);
-		if (feld.W !== W || feld.H !== H) baueFeld(W, H, 1.3 * f0);
+		if (field.W !== W || field.H !== H) buildField(W, H, 1.3 * f0);
 		ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		ctx.fillStyle = '#0A0A0A';
 		ctx.fillRect(0, 0, W, H);
@@ -404,8 +404,8 @@ export function createHero(cv: HTMLCanvasElement) {
 		const ly0 = (fb.y - cy) / br + cy;
 		const L = 220 * f0;
 		const blink = Math.floor(t * 2);
-		const z = feld.z;
-		for (let k = 0; k < feld.n * 8; k += 8) {
+		const z = field.z;
+		for (let k = 0; k < field.n * 8; k += 8) {
 			const x = z[k] ?? 0;
 			const y = z[k + 1] ?? 0;
 			const d = z[k + 4] ?? 0;
@@ -438,8 +438,8 @@ export function createHero(cv: HTMLCanvasElement) {
 	};
 
 	// Ein Bild. Gibt true zurück, wenn gezeichnet wurde.
-	const frame = (c: BuehnenKontext, h: HeroMarken): boolean => {
-		if (!geprueft) return false;
+	const frame = (c: StageContext, h: HeroMarks): boolean => {
+		if (!checked) return false;
 		if (G.noGL) {
 			tone(c);
 			return true;
@@ -457,7 +457,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			return false;
 		}
 		G.lostAt = 0;
-		if (!G.foto && performance.now() - t0 < 2500) return false;
+		if (!G.photo && performance.now() - t0 < 2500) return false;
 		const { t, now, W, H } = c;
 		const dpr = c.dprHero ?? c.dpr;
 		const { split, dive, zoom, look, mx } = h;
@@ -496,10 +496,10 @@ export function createHero(cv: HTMLCanvasElement) {
 		// Berg-Phase (ruhiges Bild): feinerer Szenenpuffer, die Grate zeigen sonst Treppenstufen; die adaptive Stufe (ad) fängt Last ab
 		const fk = mx < 0.05 ? 0.78 : 0.42;
 		// Foto-Berg: nur Texturzugriffe, deshalb in voller Backing-Auflösung (scharfes Gestein und Schnee)
-		const foto = G.fotoA > 0.001 && mx < 0.05;
+		const photo = G.photoA > 0.001 && mx < 0.05;
 		const fw = allDots
 			? Math.ceil(w / cs)
-			: foto
+			: photo
 				? w
 				: Math.round(cl(fk * W * h.ad, 160, mx < 0.05 ? 1200 : 900));
 		const fh = allDots ? Math.ceil(hh / cs) : Math.round((fw * H) / W);
@@ -525,18 +525,18 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(U.uZ, uz);
 		gl.uniform3f(U.uC, lerp(0, hx, ss(dive * 1.6)), lerp(0, hy, ss(dive * 1.6)), cz);
 		gl.uniform3f(U.uH, hx, hy, hr);
-		fotoTex(gl);
-		if (G.fotoTx) {
-			G.fotoA = c.reduced ? 1 : Math.min(1, G.fotoA + c.dt / 1.8);
+		photoTex(gl);
+		if (G.photoTx) {
+			G.photoA = c.reduced ? 1 : Math.min(1, G.photoA + c.dt / 1.8);
 			gl.activeTexture(gl.TEXTURE1);
-			gl.bindTexture(gl.TEXTURE_2D, G.fotoTx[0]);
+			gl.bindTexture(gl.TEXTURE_2D, G.photoTx[0]);
 			gl.uniform1i(U.uImg, 1);
 			gl.activeTexture(gl.TEXTURE2);
-			gl.bindTexture(gl.TEXTURE_2D, G.fotoTx[1]);
+			gl.bindTexture(gl.TEXTURE_2D, G.photoTx[1]);
 			gl.uniform1i(U.uMsk, 2);
 			gl.activeTexture(gl.TEXTURE0);
 		}
-		gl.uniform1f(U.uFoto, G.fotoTx ? G.fotoA : 0);
+		gl.uniform1f(U.uFoto, G.photoTx ? G.photoA : 0);
 		gl.uniform1f(U.uAb, ss((look - 0.02) / 0.6));
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -557,8 +557,8 @@ export function createHero(cv: HTMLCanvasElement) {
 		// Löcher: Logo, Knopf und Hinweis bleiben im Halbton dunkel (Zellen im Rechteck plus 8 px), damit ihre Schrift lesbar ist
 		HO.fill(0);
 		let ho = 0;
-		for (const l of c.loecher ?? []) {
-			if (ho >= 4 || !(l.art === 'logo' || l.art === 'cta' || l.art === 'hinweis')) continue;
+		for (const l of c.holes ?? []) {
+			if (ho >= 4 || !(l.kind === 'logo' || l.kind === 'cta' || l.kind === 'hinweis')) continue;
 			HO[ho * 4] = (l.x - 8) * dpr;
 			HO[ho * 4 + 1] = hh - (l.y + l.h + 8) * dpr;
 			HO[ho * 4 + 2] = (l.x + l.w + 8) * dpr;
@@ -576,7 +576,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			G.pr ||= document.createElement('canvas').getContext('2d', { willReadFrequently: true });
 			if (G.pr) {
 				G.pr.drawImage(cv, 0, Math.floor(hh / 2), w, 2, 0, 0, 1, 1);
-				if (G.pr.getImageData(0, 0, 1, 1).data[3] === 0 && ++G.leer >= 2) G.noGL = true;
+				if (G.pr.getImageData(0, 0, 1, 1).data[3] === 0 && ++G.blank >= 2) G.noGL = true;
 			}
 		}
 		return true;
@@ -585,14 +585,14 @@ export function createHero(cv: HTMLCanvasElement) {
 	return {
 		frame,
 		/** GL-Puffer freigeben (wächst beim nächsten Bild wieder auf die nötige Größe). */
-		frei() {
+		release() {
 			if (G.cv && !G.noGL) G.cv.width = G.cv.height = 1;
 		},
 		get noGL() {
 			return G.noGL;
 		},
 		destroy() {
-			weg = true;
+			gone = true;
 			G.gl?.getExtension('WEBGL_lose_context')?.loseContext();
 		},
 	};

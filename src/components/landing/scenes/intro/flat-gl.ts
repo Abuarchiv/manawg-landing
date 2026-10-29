@@ -6,7 +6,7 @@
 import { loop } from '../../core/loop';
 
 /** Maße des Renders: S Bildpixel je Rastereinheit, Ursprung (OX, OY), Größe, Höhe der Höhenkodierung. */
-interface Masse {
+interface FlatMetrics {
 	S: number;
 	OX: number;
 	OY: number;
@@ -16,7 +16,7 @@ interface Masse {
 }
 
 /** Eingaben je Bild: Abbildung Bildpixel -> CSS-px (k, bx, by), Aufbau, Räume mit Licht, Zeiger. */
-export interface ZeichenEingabe {
+export interface GlyphInput {
 	W: number;
 	H: number;
 	dpr: number;
@@ -24,20 +24,20 @@ export interface ZeichenEingabe {
 	ku: number;
 	x0: number;
 	y0: number;
-	bau: number;
+	build: number;
 	/** Räume im Raster (x, y, w, d) und ihr Licht 0..1, höchstens acht. */
-	raeume: readonly (readonly [number, number, number, number])[];
-	licht: readonly number[];
+	rooms: readonly (readonly [number, number, number, number])[];
+	light: readonly number[];
 	/** Zeiger in CSS-px und Radius des Lichtkegels (0 = aus). */
-	zeiger: readonly [number, number, number];
+	pointer: readonly [number, number, number];
 }
 
 // Zelle in CSS-px: quer 6 x 10, Handy feiner (4,5 x 7,5), sonst wird die Übersicht zu grob
-const zelle = (W: number): [number, number] => (W < 700 ? [4.5, 7.5] : [6, 10]);
+const cellSize = (W: number): [number, number] => (W < 700 ? [4.5, 7.5] : [6, 10]);
 const ATLAS = " .:-=+*#%@~oO0|&;,/'";
 // Zeichenreihen je Klasse (Code aus meta.png) von leer nach voll, dazu die Helligkeit: Böden und Wände treten
 // zurück (Punktraster wie bisher), Möbel, Perser und Pflanzen tragen das Bild. 14 = Mauerkrone (Schnittkante).
-const RAMPEN: readonly (readonly [string, number])[] = [
+const RAMPS: readonly (readonly [string, number])[] = [
 	['', 0],
 	['  ..:', 0.5], // Dielen
 	[' ..:+', 0.55], // Fliesen
@@ -124,15 +124,15 @@ interface Gl {
 	cv: HTMLCanvasElement;
 	gl: WebGL2RenderingContext;
 	u: (n: string) => WebGLUniformLocation | null;
-	m: Masse;
-	gly: WebGLTexture | null;
+	m: FlatMetrics;
+	glyphs: WebGLTexture | null;
 	fv: number;
 }
 
-let zustand: Gl | null = null;
-let gestartet = false;
+let glState: Gl | null = null;
+let started = false;
 
-async function bild(src: string): Promise<ImageBitmap> {
+async function loadImage(src: string): Promise<ImageBitmap> {
 	const blob = await (await fetch(src)).blob();
 	return createImageBitmap(blob, { premultiplyAlpha: 'none', colorSpaceConversion: 'none' });
 }
@@ -159,7 +159,7 @@ function tex(
 }
 
 /** Zeichenblatt: alle Glyphen des Atlas nebeneinander (48 x 80 px je Zeichen), neu bei geladener Schrift. */
-function blatt(g: Gl): void {
+function buildSheet(g: Gl): void {
 	const cv = document.createElement('canvas');
 	cv.width = 48 * ATLAS.length;
 	cv.height = 80;
@@ -170,26 +170,26 @@ function blatt(g: Gl): void {
 	x.textBaseline = 'middle';
 	x.fillStyle = '#fff';
 	for (let i = 0; i < ATLAS.length; i++) x.fillText(ATLAS[i] ?? '', 48 * i + 24, 42);
-	if (g.gly) g.gl.deleteTexture(g.gly);
-	g.gly = tex(g.gl, 2, cv, true);
+	if (g.glyphs) g.gl.deleteTexture(g.glyphs);
+	g.glyphs = tex(g.gl, 2, cv, true);
 	g.fv = loop.fv;
 }
 
-async function laden(): Promise<void> {
+async function load(): Promise<void> {
 	const [m, lum, meta] = await Promise.all([
-		fetch('/wohnung/wohnung.json').then((r) => r.json() as Promise<Masse>),
-		bild('/wohnung/lum.webp'),
-		bild('/wohnung/meta.png'),
+		fetch('/wohnung/wohnung.json').then((r) => r.json() as Promise<FlatMetrics>),
+		loadImage('/wohnung/lum.webp'),
+		loadImage('/wohnung/meta.png'),
 	]);
 	const cv = document.createElement('canvas');
 	const gl = cv.getContext('webgl2', { antialias: false, depth: false, alpha: false });
 	if (!gl) return;
 	const p = gl.createProgram();
-	for (const [typ, src] of [
+	for (const [kind, src] of [
 		[gl.VERTEX_SHADER, VS],
 		[gl.FRAGMENT_SHADER, FS],
 	] as const) {
-		const sh = gl.createShader(typ);
+		const sh = gl.createShader(kind);
 		if (!sh) return;
 		gl.shaderSource(sh, src);
 		gl.compileShader(sh);
@@ -208,16 +208,16 @@ async function laden(): Promise<void> {
 	lum.close();
 	meta.close();
 	// Rampen als Tabelle: Zeile = Klasse, Spalte 0 = Länge, danach die Atlas-Stellen
-	const R = new Uint8Array(16 * RAMPEN.length * 4);
-	RAMPEN.forEach(([r, hell], k) => {
+	const R = new Uint8Array(16 * RAMPS.length * 4);
+	RAMPS.forEach(([r, brightness], k) => {
 		R[k * 64] = r.length;
-		R[k * 64 + 60] = Math.round(hell * 255);
+		R[k * 64 + 60] = Math.round(brightness * 255);
 		for (let i = 0; i < r.length; i++)
 			R[k * 64 + (i + 1) * 4] = Math.max(0, ATLAS.indexOf(r[i] ?? ' '));
 	});
 	gl.activeTexture(gl.TEXTURE3);
 	gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 16, RAMPEN.length, 0, gl.RGBA, gl.UNSIGNED_BYTE, R);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 16, RAMPS.length, 0, gl.RGBA, gl.UNSIGNED_BYTE, R);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 	gl.uniform1i(u('uLum'), 0);
@@ -228,36 +228,36 @@ async function laden(): Promise<void> {
 	gl.uniform1f(u('uS'), m.S);
 	gl.uniform1f(u('uHmax'), m.hMax);
 	gl.uniform4f(u('uImg'), m.w, m.h, m.OX, m.OY);
-	const g: Gl = { cv, gl, u, m, gly: null, fv: -1 };
+	const g: Gl = { cv, gl, u, m, glyphs: null, fv: -1 };
 	// Zeichenblatt und erster Zeichenaufruf (dabei übersetzt der Treiber den Shader) in einer Leerlaufpause statt im
 	// ersten sichtbaren Bild: dort kostete das beim Scrollen einen Ruckler
 	const warm = () => {
-		blatt(g);
+		buildSheet(g);
 		// in Fenstergröße: so liegt auch der Puffer schon an
 		cv.width = Math.round(loop.vw * Math.min(2, devicePixelRatio || 1)) || 1;
 		cv.height = Math.round(loop.vh * Math.min(2, devicePixelRatio || 1)) || 1;
 		gl.viewport(0, 0, cv.width, cv.height);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
-		zustand = g;
+		glState = g;
 	};
 	if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 1000 });
 	else setTimeout(warm, 0);
 }
 
 /** Render und Shader im Hintergrund laden, bevor die Wohnung zu sehen ist (stage.ts ruft das vorab). */
-export function wohnungVorladen(): void {
-	if (gestartet) return;
-	gestartet = true;
-	laden().catch(() => {});
+export function preloadFlat(): void {
+	if (started) return;
+	started = true;
+	load().catch(() => {});
 }
 
 /** Zeichnet die Wohnung als Zeichen und gibt das Canvas zurück, solange Render und Shader noch laden null. */
-export function wohnungsZeichen(e: ZeichenEingabe): HTMLCanvasElement | null {
-	wohnungVorladen();
-	const g = zustand;
+export function drawFlatGlyphs(e: GlyphInput): HTMLCanvasElement | null {
+	preloadFlat();
+	const g = glState;
 	if (!g) return null;
 	const { gl, u, m } = g;
-	if (g.fv !== loop.fv) blatt(g);
+	if (g.fv !== loop.fv) buildSheet(g);
 	const w = Math.max(1, Math.round(e.W * e.dpr));
 	const h = Math.max(1, Math.round(e.H * e.dpr));
 	if (g.cv.width !== w || g.cv.height !== h) {
@@ -269,19 +269,19 @@ export function wohnungsZeichen(e: ZeichenEingabe): HTMLCanvasElement | null {
 	gl.uniform2f(u('uRes'), w, h);
 	gl.uniform1f(u('uDpr'), e.dpr);
 	gl.uniform3f(u('uMap'), k, e.x0 - m.OX * k, e.y0 - m.OY * k);
-	const [zw, zh] = zelle(e.W);
+	const [zw, zh] = cellSize(e.W);
 	gl.uniform2f(u('Z'), zw, zh);
 	gl.uniform1f(u('uLod'), Math.max(0, Math.log2(zw / k)));
-	gl.uniform1f(u('uBau'), e.bau);
+	gl.uniform1f(u('uBau'), e.build);
 	const rm = new Float32Array(32);
 	const lt = new Float32Array(8);
-	e.raeume.slice(0, 8).forEach((r, i) => {
+	e.rooms.slice(0, 8).forEach((r, i) => {
 		rm.set(r, i * 4);
-		lt[i] = e.licht[i] ?? 0;
+		lt[i] = e.light[i] ?? 0;
 	});
 	gl.uniform4fv(u('uRm'), rm);
 	gl.uniform1fv(u('uLt'), lt);
-	gl.uniform3f(u('uZg'), ...e.zeiger);
+	gl.uniform3f(u('uZg'), ...e.pointer);
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
 	return g.cv;
 }

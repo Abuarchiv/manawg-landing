@@ -1,7 +1,7 @@
 /* Titel und Knopf der Ende-Szene. Quer unten links wie im Entwurf, hoch oben über dem Handy
    (Platz dafür reserviert kamera.js, titelPlatz). Sie erscheinen erst, wenn der dunkle Grund steht
    (T-05): Deckkraft = clamp(0, (--e - 0,5) * 2,5, 1). */
-.titel {
+.title {
 	position: absolute;
 	left: var(--rand);
 	bottom: var(--sp-48);
@@ -21,14 +21,14 @@
 	letter-spacing: -0.05em;
 }
 
-.knopf {
+.button {
 	align-self: flex-start;
 }
 
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
 	/* Hoch: unter dem Kopf (der bleibt sichtbar), Titel eine Zeile, Knopf in der Höhe des Kopf-Knopfs.
 	   Muss zu kamera.js titelPlatz passen. */
-	.titel {
+	.title {
 		bottom: auto;
 		top: max(72px, calc(env(safe-area-inset-top, 0px) + 56px));
 		gap: 16px;

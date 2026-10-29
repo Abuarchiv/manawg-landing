@@ -5,16 +5,16 @@ import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
 import { modeOf } from '../../core/loop';
 import { BrLines, useDict } from '../../dict';
-import s from './Ende.module.css';
+import s from './End.module.css';
 import { Phone } from './Phone';
-import { kamera } from './kamera';
+import { camera } from './camera';
 
 // Ende-Ebene der Intro-Bühne: Handy und Hände auf #0A0A0A, darunter Titel und Knopf. Die Ebene liegt in
 // der Sticky-Bühne und scrollt mit ihr weg. Der Ende-Raum [data-ende-space] ist 1280 x 800 groß und wird
 // über --ende-x, --ende-y und --ende-f per kamera() in die Bühne eingepasst. Titel und Knopf stehen im DOM vor dem
 // Handy, damit Shift+Tab aus dem App-iframe auf dem Knopf landet (nicht auf dem Body); Kopf und Hinweise sind im Ende inert.
 
-export function Ende() {
+export function End() {
 	const { end, links, aria } = useDict();
 	const spaceRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +24,7 @@ export function Ende() {
 		const safe = stage.querySelector('[data-safe]') as HTMLElement;
 		const set = () => {
 			const W = stage.clientWidth;
-			const cam = kamera(W, stage.clientHeight, safe.clientHeight, modeOf(W, innerHeight).mode);
+			const cam = camera(W, stage.clientHeight, safe.clientHeight, modeOf(W, innerHeight).mode);
 			space.style.setProperty('--ende-x', `${cam.ox}px`);
 			space.style.setProperty('--ende-y', `${cam.oy}px`);
 			space.style.setProperty('--ende-f', String(cam.f));
@@ -53,14 +53,14 @@ export function Ende() {
 				data-safe-ende="1"
 				style={css('position:absolute;left:0;right:0;top:0;height:100svh;pointer-events:none')}
 			>
-				<div className={s.titel} data-ende-titel="1">
+				<div className={s.title} data-ende-titel="1">
 					<h2 data-quiet="1" className={s.h}>
 						<BrLines lines={end.title} />
 					</h2>
 					<a
 						data-cta="1"
 						data-quiet="1"
-						className={`cta cta--voll cta--gross ${s.knopf}`}
+						className={`cta cta--voll cta--gross ${s.button}`}
 						href={appUrl(links.create)}
 					>
 						{end.cta}

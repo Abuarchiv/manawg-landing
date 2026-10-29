@@ -3,10 +3,10 @@
 import { glVisible } from '../../../core/canvas';
 import type { Fit } from '../../../core/canvas';
 import { qa } from '../../../core/loop';
-import { atlanten, divArray, tileArray } from './atlas';
-import { STEP } from './konstanten';
+import { atlases, divArray, tileArray } from './atlas';
+import { STEP } from './constants';
 import { VS, fsSrc } from './shader';
-import type { AtlasMeta, Ebene, HaltMeta, Raster, Uniforms, Zeichenwerte } from './typen';
+import type { AtlasMeta, CellGrid, DrawValues, HoldMeta, Layer, Uniforms } from './types';
 
 function compile(gl: WebGL2RenderingContext, type: number, src: string): WebGLShader {
 	const s = gl.createShader(type);
@@ -39,7 +39,7 @@ export interface Probe {
 }
 
 /** Teil 1 der Eignungsprüfung: Kontext anlegen, Texturgröße prüfen, beide Programme anstoßen. false = untauglich. */
-export function glTaugtStart(metaH: HaltMeta, metaP: AtlasMeta): Probe | false {
+export function glProbeStart(metaH: HoldMeta, metaP: AtlasMeta): Probe | false {
 	const cv = document.createElement('canvas');
 	const gl = cv.getContext('webgl2');
 	if (!gl) return false;
@@ -52,10 +52,10 @@ export function glTaugtStart(metaH: HaltMeta, metaP: AtlasMeta): Probe | false {
  * Teil 2: Ergebnis der Programme und der Ausgabe prüfen. undefined, solange der Treiber noch übersetzt
  * (KHR_parallel_shader_compile), dann in einem späteren Bild erneut rufen.
  */
-export function glTaugtEnde({ cv, gl, progs }: Probe, sofort = false): boolean | undefined {
+export function glProbeEnd({ cv, gl, progs }: Probe, immediate = false): boolean | undefined {
 	const ext = gl.getExtension('KHR_parallel_shader_compile');
 	if (
-		!sofort &&
+		!immediate &&
 		ext &&
 		progs.some(({ pr }) => !gl.getProgramParameter(pr, ext.COMPLETION_STATUS_KHR))
 	)
@@ -77,12 +77,12 @@ export function glTaugtEnde({ cv, gl, progs }: Probe, sofort = false): boolean |
 }
 
 /** Prüft einmalig, ob WebGL2 mit dem Shader und den Texturgrößen taugt (in einem Zug). */
-export function glTaugt(metaH: HaltMeta, metaP: AtlasMeta): boolean {
-	const p = glTaugtStart(metaH, metaP);
-	return p ? (glTaugtEnde(p, true) ?? false) : false;
+export function glUsable(metaH: HoldMeta, metaP: AtlasMeta): boolean {
+	const p = glProbeStart(metaH, metaP);
+	return p ? (glProbeEnd(p, true) ?? false) : false;
 }
 
-const uniformTabelle = (f: (name: string) => WebGLUniformLocation | null): Uniforms => {
+const uniformTable = (f: (name: string) => WebGLUniformLocation | null): Uniforms => {
 	return {
 		uTH: f('uTH'),
 		uTP: f('uTP'),
@@ -110,18 +110,18 @@ const uniformTabelle = (f: (name: string) => WebGLUniformLocation | null): Unifo
 	};
 };
 
-const uniformOrte = (gl: WebGL2RenderingContext, pr: WebGLProgram): Uniforms =>
-	uniformTabelle((n) => gl.getUniformLocation(pr, n));
+const uniformLocations = (gl: WebGL2RenderingContext, pr: WebGLProgram): Uniforms =>
+	uniformTable((n) => gl.getUniformLocation(pr, n));
 
 /** Platzhalter, bis initProgram die Orte nach dem Linken holt. */
-const leereOrte = (): Uniforms => uniformTabelle(() => null);
+const noLocations = (): Uniforms => uniformTable(() => null);
 
 /** Programme, Zellpuffer und Zustand einer Ebene (beim Anlegen und nach wiederhergestelltem Kontext). */
-function frisch(
+function freshLayer(
 	gl: WebGL2RenderingContext,
 ): Pick<
-	Ebene,
-	'dead' | 'ready' | 'stage' | 'zeile' | 'last' | 'prs' | 'cells' | 'ext' | 'u' | 'vao'
+	Layer,
+	'dead' | 'ready' | 'stage' | 'row' | 'last' | 'prs' | 'cells' | 'ext' | 'u' | 'vao'
 > {
 	const vao = gl.createVertexArray();
 	if (!vao) throw new Error('hand: Vertex-Array nicht erzeugt');
@@ -129,17 +129,17 @@ function frisch(
 		dead: false,
 		ready: false,
 		stage: 0,
-		zeile: 0,
+		row: 0,
 		last: null,
 		prs: [linkProgram(gl, true).pr, linkProgram(gl, false).pr],
 		cells: { w: 0, h: 0, tex: null, fbo: null },
 		ext: gl.getExtension('KHR_parallel_shader_compile'),
-		u: [leereOrte(), leereOrte()],
+		u: [noLocations(), noLocations()],
 		vao,
 	};
 }
 
-export function makeLayer(cv: HTMLCanvasElement, front: boolean): Ebene | null {
+export function makeLayer(cv: HTMLCanvasElement, front: boolean): Layer | null {
 	const gl = cv.getContext('webgl2', {
 		alpha: true,
 		premultipliedAlpha: true,
@@ -149,11 +149,11 @@ export function makeLayer(cv: HTMLCanvasElement, front: boolean): Ebene | null {
 		powerPreference: 'high-performance',
 	});
 	if (!gl) return null;
-	const L: Ebene = {
+	const L: Layer = {
 		cv,
 		gl,
 		front,
-		...frisch(gl),
+		...freshLayer(gl),
 		lastB: null,
 		th: null,
 		tp: null,
@@ -165,12 +165,12 @@ export function makeLayer(cv: HTMLCanvasElement, front: boolean): Ebene | null {
 		e.preventDefault();
 		L.dead = true;
 	});
-	cv.addEventListener('webglcontextrestored', () => Object.assign(L, frisch(gl)));
+	cv.addEventListener('webglcontextrestored', () => Object.assign(L, freshLayer(gl)));
 	return L;
 }
 
 /** Textur für einen Atlas anlegen (leer, Größe des Bildes) und binden. */
-function legeTexAn(
+function createTexture(
 	gl: WebGL2RenderingContext,
 	unit: number,
 	bmp: ImageBitmap,
@@ -189,38 +189,38 @@ function legeTexAn(
 	return tx;
 }
 
-const STREIFEN_ZEILEN = 160; // Zeilen je Aufruf: ein ganzer Atlas (8 MP) auf einmal kostet 20 bis 30 ms, 330 Zeilen noch 4 bis 5 ms je Bild
+const STRIP_ROWS = 160; // Zeilen je Aufruf: ein ganzer Atlas (8 MP) auf einmal kostet 20 bis 30 ms, 330 Zeilen noch 4 bis 5 ms je Bild
 
 /** Nächsten Streifen des Atlas in die gebundene Textur kopieren (UNPACK_SKIP_ROWS). true, wenn der Atlas komplett ist. */
-function ladeStreifen(
+function uploadStrip(
 	gl: WebGL2RenderingContext,
 	unit: number,
 	tx: WebGLTexture | null,
 	bmp: ImageBitmap,
-	L: Ebene,
+	L: Layer,
 ): boolean {
-	const n = Math.min(STREIFEN_ZEILEN, bmp.height - L.zeile);
+	const n = Math.min(STRIP_ROWS, bmp.height - L.row);
 	gl.activeTexture(gl.TEXTURE0 + unit);
 	gl.bindTexture(gl.TEXTURE_2D, tx);
-	gl.pixelStorei(gl.UNPACK_SKIP_ROWS, L.zeile);
-	gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, L.zeile, bmp.width, n, gl.RED, gl.UNSIGNED_BYTE, bmp);
+	gl.pixelStorei(gl.UNPACK_SKIP_ROWS, L.row);
+	gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, L.row, bmp.width, n, gl.RED, gl.UNSIGNED_BYTE, bmp);
 	gl.pixelStorei(gl.UNPACK_SKIP_ROWS, 0);
-	L.zeile += n;
-	return L.zeile >= bmp.height;
+	L.row += n;
+	return L.row >= bmp.height;
 }
 
 function setUniforms(
-	L: Ebene,
+	L: Layer,
 	u: Uniforms,
-	S: Zeichenwerte,
+	S: DrawValues,
 	cam: Fit,
 	W: number,
 	w: number,
 	h: number,
-	cells: Raster,
+	cells: CellGrid,
 ): void {
 	const { gl } = L;
-	const mh = atlanten().hold.meta;
+	const mh = atlases().hold.meta;
 	gl.uniform4f(u.uPR, mh.phone.r, mh.screen.r, S.bottomY, S.lightPow);
 	gl.uniform4f(u.uLight, S.light.x, S.light.y, S.ringAt.x, S.ringAt.y);
 	gl.uniform4f(u.uTipU, S.tip.x, S.tip.y, S.u.x, S.u.y);
@@ -232,16 +232,16 @@ function setUniforms(
 	gl.uniform3f(u.uBack, w / W, h / cells.H, h);
 	gl.uniform2i(u.uCell0, cells.i0, cells.j0);
 	gl.uniform2i(u.uCellN, cells.cw, cells.ch);
-	gl.uniform1f(u.uZer, S.zer);
+	gl.uniform1f(u.uZer, S.decay);
 }
 
-function initProgram(L: Ebene, k: 0 | 1): void {
+function initProgram(L: Layer, k: 0 | 1): void {
 	const { gl } = L;
 	const pr = L.prs[k];
-	const u = uniformOrte(gl, pr);
+	const u = uniformLocations(gl, pr);
 	L.u[k] = u;
 	gl.useProgram(pr);
-	const { hold, point } = atlanten();
+	const { hold, point } = atlases();
 	const mh = hold.meta;
 	const mp = point.meta;
 	gl.uniform1i(u.uTH, 0);
@@ -258,8 +258,8 @@ function initProgram(L: Ebene, k: 0 | 1): void {
 }
 
 /** Umschließendes Rechteck beider Hände im Ende-Raum: [x0, y0, x1, y1]. */
-function handBox(S: Zeichenwerte): [number, number, number, number] {
-	const { hold, point } = atlanten();
+function handBox(S: DrawValues): [number, number, number, number] {
+	const { hold, point } = atlases();
 	const mh = hold.meta;
 	const mp = point.meta;
 	const hb = [
@@ -276,13 +276,13 @@ function handBox(S: Zeichenwerte): [number, number, number, number] {
 	let by0 = 1e9;
 	let bx1 = -1e9;
 	let by1 = -1e9;
-	const ecken: [number, number][] = [
+	const corners: [number, number][] = [
 		[a0, b0],
 		[a1, b0],
 		[a0, b1],
 		[a1, b1],
 	];
-	for (const [a, b] of ecken) {
+	for (const [a, b] of corners) {
 		const x = S.tip.x + (S.u.x * a - S.u.y * b) * S.sc;
 		const y = S.tip.y + (S.u.y * a + S.u.x * b) * S.sc;
 		bx0 = Math.min(bx0, x);
@@ -294,7 +294,7 @@ function handBox(S: Zeichenwerte): [number, number, number, number] {
 }
 
 /** Ein Schritt je Bild bis die Ebene bereit ist (Shader gelinkt, Texturen hochgeladen). true, wenn bereit. */
-export function readyStep(L: Ebene): boolean {
+export function readyStep(L: Layer): boolean {
 	const { gl } = L;
 	if (L.dead || gl.isContextLost()) return false;
 	if (!L.ready) {
@@ -307,21 +307,21 @@ export function readyStep(L: Ebene): boolean {
 				return false;
 			}
 			L.stage = 1;
-			L.zeile = 0;
-			L.th = legeTexAn(gl, 0, atlanten().hold.bmp);
+			L.row = 0;
+			L.th = createTexture(gl, 0, atlases().hold.bmp);
 			return false;
 		}
 		// Atlanten streifenweise hochladen: ein Streifen je Bild (Hand, dann Zeigehand)
 		if (L.stage === 1) {
-			if (ladeStreifen(gl, 0, L.th, atlanten().hold.bmp, L)) {
+			if (uploadStrip(gl, 0, L.th, atlases().hold.bmp, L)) {
 				L.stage = 2;
-				L.zeile = 0;
-				L.tp = legeTexAn(gl, 1, atlanten().point.bmp);
+				L.row = 0;
+				L.tp = createTexture(gl, 1, atlases().point.bmp);
 			}
 			return false;
 		}
 		if (L.stage === 2) {
-			if (ladeStreifen(gl, 1, L.tp, atlanten().point.bmp, L)) L.stage = 3;
+			if (uploadStrip(gl, 1, L.tp, atlases().point.bmp, L)) L.stage = 3;
 			return false;
 		}
 		initProgram(L, 0);
@@ -342,7 +342,7 @@ export function readyStep(L: Ebene): boolean {
 }
 
 /** Zeichnet eine Ebene in zwei Durchgängen (Ton je Zelle, dann Punkte). false, solange sie nicht bereit ist. */
-export function glFrame(L: Ebene, S: Zeichenwerte, cam: Fit, W: number, H: number): boolean {
+export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number): boolean {
 	const { gl, cv } = L;
 	if (!readyStep(L)) return false;
 	const w = cv.width;
@@ -368,7 +368,7 @@ export function glFrame(L: Ebene, S: Zeichenwerte, cam: Fit, W: number, H: numbe
 		...S.q,
 		S.pa,
 		S.push,
-		S.zer,
+		S.decay,
 	];
 	const bkey = [S.br.x, S.br.y, S.br.r];
 	const same =
@@ -384,7 +384,7 @@ export function glFrame(L: Ebene, S: Zeichenwerte, cam: Fit, W: number, H: numbe
 	const j0 = Math.floor(-cam.oy / cam.f / STEP);
 	const cw = Math.floor((W - cam.ox) / cam.f / STEP) - i0 + 1;
 	const ch = Math.floor((H - cam.oy) / cam.f / STEP) - j0 + 1;
-	const cells: Raster = { i0, j0, cw, ch, H };
+	const cells: CellGrid = { i0, j0, cw, ch, H };
 	const C = L.cells;
 	gl.activeTexture(gl.TEXTURE2);
 	gl.bindTexture(gl.TEXTURE_2D, C.tex);
@@ -427,7 +427,7 @@ export function glFrame(L: Ebene, S: Zeichenwerte, cam: Fit, W: number, H: numbe
 	// nur dort rastern, wo eine Hand liegen kann (Haltehand-Kachel und Sprite der Zeigehand), Rest bleibt leer
 	const bb = handBox(S);
 	// Staub weht nach oben rechts über die Kachel hinaus
-	if (S.zer > 0) {
+	if (S.decay > 0) {
 		bb[2] += 260;
 		bb[1] -= 260;
 	}

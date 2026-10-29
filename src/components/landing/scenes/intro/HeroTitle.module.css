@@ -1,4 +1,4 @@
-.titel {
+.title {
 	position: absolute;
 	left: var(--rand);
 	right: var(--rand);
@@ -22,7 +22,7 @@
 
 /* Hoch: über dem Sprunglink, größer, damit die Zeile die Breite füllt */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
-	.titel {
+	.title {
 		bottom: max(var(--sp-64), calc(env(safe-area-inset-bottom, 0px) + 84px));
 	}
 	.h1 {
@@ -31,7 +31,7 @@
 }
 
 /* Unterzeile: sagt in einem Satz, was die App tut. Blendet mit dem Titel aus (Elternelement). */
-.unter {
+.sub {
 	margin: 6px 0 0;
 	text-wrap: balance;
 	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
@@ -44,7 +44,7 @@
 	text-shadow: 0 1px 14px rgba(10, 10, 10, 0.85), 0 0 2px rgba(10, 10, 10, 0.5);
 }
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
-	.unter {
+	.sub {
 		font-size: clamp(15px, 4.4vw, 20px);
 	}
 }

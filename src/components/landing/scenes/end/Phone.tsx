@@ -8,7 +8,7 @@ import { cl } from '../../core/math';
 import { useDict, useLocale } from '../../dict';
 import { live } from '../intro/stage';
 import s from './Phone.module.css';
-import { datumsZeilen } from './datum';
+import { dateLines } from './date';
 
 // Das Handy der Ende-Szene mit der echten ManaWG-App: ein gleich-originiges iframe auf
 // /app-demo/index.html (Standalone-DOM und CSS der App, Zustandsautomat in demo.js). Hülle und Geometrie
@@ -40,11 +40,11 @@ interface Demo {
 }
 
 /** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
-function Statusleiste() {
+function StatusBar() {
 	return (
 		<div className={s.status} aria-hidden="true">
-			<span className={s.zeit}>09:41</span>
-			<span className={s.insel} />
+			<span className={s.time}>09:41</span>
+			<span className={s.island} />
 			<svg
 				aria-hidden="true"
 				className={s.signal}
@@ -60,7 +60,7 @@ function Statusleiste() {
 			</svg>
 			<svg
 				aria-hidden="true"
-				className={s.wlan}
+				className={s.wifi}
 				viewBox="0 0 19 14"
 				width="19"
 				height="14"
@@ -70,7 +70,7 @@ function Statusleiste() {
 				<path d="M9.5 6.9c1.6 0 3.1.6 4.3 1.6.1.1.3.1.4 0l1.1-1.1c.1-.1.1-.3 0-.4a9 9 0 0 0-11.6 0c-.1.1-.1.3 0 .4l1.1 1.1c.1.1.3.1.4 0 1.2-1 2.7-1.6 4.3-1.6Z" />
 				<path d="M9.5 11.1c.9 0 1.7.3 2.3.9.1.1.1.3 0 .4l-1.9 1.9c-.2.2-.4.2-.6 0l-1.9-1.9c-.1-.1-.1-.3 0-.4.6-.6 1.4-.9 2.1-.9Z" />
 			</svg>
-			<svg aria-hidden="true" className={s.akku} viewBox="0 0 28 14" width="28" height="14">
+			<svg aria-hidden="true" className={s.battery} viewBox="0 0 28 14" width="28" height="14">
 				<rect
 					x="0.5"
 					y="0.5"
@@ -94,37 +94,38 @@ function Statusleiste() {
 
 export function Phone() {
 	const { phone } = useDict();
-	const { src: SRC, still: BILD, lang } = APP_DEMO[useLocale()];
-	const wurzel = useRef<HTMLDivElement>(null);
-	const rahmen = useRef<HTMLIFrameElement>(null);
+	const { src: SRC, still: STILL, lang } = APP_DEMO[useLocale()];
+	const rootRef = useRef<HTMLDivElement>(null);
+	const frameRef = useRef<HTMLIFrameElement>(null);
 	const [src, setSrc] = useState<string | undefined>(undefined);
-	const [bild, setBild] = useState<string | undefined>(undefined);
-	const [bereit, setBereit] = useState(false);
-	const [zeilen, setZeilen] = useState<[string, string] | null>(null);
-	const [benutzt, setBenutzt] = useState(false);
-	useEffect(() => setZeilen(datumsZeilen(lang)), [lang]);
+	const [still, setStill] = useState<string | undefined>(undefined);
+	const [ready, setReady] = useState(false);
+	const [lines, setLines] = useState<[string, string] | null>(null);
+	const [used, setUsed] = useState(false);
+	useEffect(() => setLines(dateLines(lang)), [lang]);
 
 	// Vorführung der Zeigehand (hand.js, demo): die Hand fährt zum Ziel und meldet die Berührung (hand:kontakt),
 	// erst dann geht ein synthetischer Klick in die gleich-originige App. Eigene Klicks, Tastatur und Fokus gehen
 	// direkt in die App (keine Fangschicht), die Zeigehand folgt dem Zeiger über das Glas (siehe onLoad).
 	useEffect(() => {
-		const el = wurzel.current as HTMLDivElement;
+		const el = rootRef.current as HTMLDivElement;
 		const host = el.closest('[data-buehne]');
 		if (!host) return;
-		const an = (e: Event) => {
+		const onContact = (e: Event) => {
 			const { x, y, demo } = (e as CustomEvent<{ x: number; y: number; demo?: boolean }>).detail;
-			if (!demo) setBenutzt(true);
-			const fr = rahmen.current;
+			if (!demo) setUsed(true);
+			const fr = frameRef.current;
 			const doc = fr?.contentDocument;
 			if (!fr || !doc?.defaultView) return;
 			const r = fr.getBoundingClientRect();
 			const k = r.width / fr.clientWidth;
 			const lx = (x - r.left) / k;
 			const ly = (y - r.top) / k;
-			const ziel = doc.elementFromPoint(lx, ly);
-			const Maus = (doc.defaultView as unknown as { MouseEvent: typeof MouseEvent }).MouseEvent;
-			ziel?.dispatchEvent(
-				new Maus('click', {
+			const target = doc.elementFromPoint(lx, ly);
+			const MouseCtor = (doc.defaultView as unknown as { MouseEvent: typeof MouseEvent })
+				.MouseEvent;
+			target?.dispatchEvent(
+				new MouseCtor('click', {
 					bubbles: true,
 					cancelable: true,
 					composed: true,
@@ -134,18 +135,18 @@ export function Phone() {
 				}),
 			);
 		};
-		host.addEventListener('hand:kontakt', an);
-		return () => host.removeEventListener('hand:kontakt', an);
+		host.addEventListener('hand:kontakt', onContact);
+		return () => host.removeEventListener('hand:kontakt', onContact);
 	}, []);
 
 	// Scroll-Choreografie, Bild für Bild am Fortschritt der Bühne
 	useEffect(() => {
-		if (!bereit || benutzt) return;
-		let stufe = -1;
+		if (!ready || used) return;
+		let step = -1;
 		let warm = false;
 		const off = onFrame(() => {
 			const st = live.stage?.state;
-			const fr = rahmen.current;
+			const fr = frameRef.current;
 			const demo = (fr?.contentWindow as (Window & { __demo?: Demo }) | null)?.__demo;
 			// Die Seiten der Choreografie im Leerlauf vorbauen, damit der erste Wechsel im Scroll nicht ruckelt
 			if (demo && !warm) {
@@ -153,43 +154,44 @@ export function Phone() {
 				demo.vorwaermen?.(TABS.map(([, id]) => id));
 			}
 			if (!st || !demo || !st.endOn) return;
-			const neu = Math.min(TABS.length - 1, Math.floor(cl((st.P - 0.95) / 0.05) * TABS.length));
-			if (neu === stufe) return;
+			const next = Math.min(TABS.length - 1, Math.floor(cl((st.P - 0.95) / 0.05) * TABS.length));
+			if (next === step) return;
 			// Erstes Bild: nur merken, die App steht schon richtig (Start)
-			const erst = stufe < 0;
-			stufe = neu;
-			if (erst && neu === 0) return;
+			const first = step < 0;
+			step = next;
+			if (first && next === 0) return;
 			// Der Scroll schaltet sofort um (kein Anfahren der Zeigehand: das wirkte verzögert)
-			const [, id] = TABS[neu] ?? TABS[0];
+			const [, id] = TABS[next] ?? TABS[0];
 			demo.enter('-', id, { vt: false });
 		});
 		return off;
-	}, [bereit, benutzt]);
+	}, [ready, used]);
 
 	// Standbild und iframe-src erst ab P 0,55 setzen (stage.ts setzt data-nah am #final)
 	useEffect(() => {
-		const el = wurzel.current as HTMLDivElement;
+		const el = rootRef.current as HTMLDivElement;
 		const root = el.closest('#final') as HTMLElement | null;
 		if (!root) return;
-		const pruefe = () => {
+		const check = () => {
 			if (root.dataset.nah === '1') {
 				mo.disconnect();
-				setBild(BILD); // Standbild gleichzeitig mit dem Zählen ab P 0,55, nicht schon beim Erstladen
+				setStill(STILL); // Standbild gleichzeitig mit dem Zählen ab P 0,55, nicht schon beim Erstladen
 				// Das iframe läuft im selben Hauptthread wie die Landing: Laden und Aufbau in einer Leerlaufpause
-				const los = () => setSrc(SRC);
-				if ('requestIdleCallback' in window) window.requestIdleCallback(los, { timeout: 2000 });
-				else setTimeout(los, 300);
+				const startLoad = () => setSrc(SRC);
+				if ('requestIdleCallback' in window)
+					window.requestIdleCallback(startLoad, { timeout: 2000 });
+				else setTimeout(startLoad, 300);
 			}
 		};
-		const mo = new MutationObserver(pruefe);
+		const mo = new MutationObserver(check);
 		mo.observe(root, { attributes: true, attributeFilter: ['data-nah'] });
-		pruefe();
+		check();
 		return () => mo.disconnect();
-	}, [BILD, SRC]);
+	}, [STILL, SRC]);
 
 	return (
 		<div
-			ref={wurzel}
+			ref={rootRef}
 			data-cta="1"
 			// biome-ignore lint/a11y/useSemanticElements: div bleibt div (gleiche Box, kein fieldset)
 			role="group"
@@ -231,33 +233,33 @@ export function Phone() {
 				>
 					{/* Standbild: derselbe Zustand und dieselben Insets wie das iframe, liegt darunter und bleibt bis zum Laden stehen */}
 					<div
-						className={s.flaeche}
-						style={{ opacity: bereit ? 0 : 'calc(1 - var(--app-aus, 0))' }}
+						className={s.surface}
+						style={{ opacity: ready ? 0 : 'calc(1 - var(--app-aus, 0))' }}
 						aria-hidden="true"
 					>
 						<img
-							src={bild}
+							src={still}
 							alt=""
 							width={390}
 							height={839}
 							loading="lazy"
 							decoding="async"
-							className={s.bild}
+							className={s.still}
 						/>
-						{zeilen && (
+						{lines && (
 							<>
-								<span className={s.datum} style={{ top: 523.375 }}>
-									{zeilen[0]}
+								<span className={s.date} style={{ top: 523.375 }}>
+									{lines[0]}
 								</span>
-								<span className={s.datum} style={{ top: 573.625 }}>
-									{zeilen[1]}
+								<span className={s.date} style={{ top: 573.625 }}>
+									{lines[1]}
 								</span>
 							</>
 						)}
 					</div>
 					{src && (
 						<iframe
-							ref={rahmen}
+							ref={frameRef}
 							className={s.app}
 							title={phone.frameTitle}
 							src={src}
@@ -267,12 +269,12 @@ export function Phone() {
 								const doc = fr.contentDocument;
 								if (doc) {
 									// Der erste eigene Tipp beendet den Hinweis
-									doc.addEventListener('pointerdown', () => setBenutzt(true), { once: true });
-									doc.addEventListener('keydown', () => setBenutzt(true), { once: true });
+									doc.addEventListener('pointerdown', () => setUsed(true), { once: true });
+									doc.addEventListener('keydown', () => setUsed(true), { once: true });
 									// Zeigerereignisse steigen nicht aus dem iframe auf: Maus und Stift werden mit Fensterkoordinaten
 									// an die Bühne gemeldet (als direkt markiert), damit die Zeigehand folgt und beim Klick drückt,
 									// ohne den Klick ein zweites Mal auszulösen (stage.js, hand.js)
-									const weiter = (ev: Event) => {
+									const proceed = (ev: Event) => {
 										const pe = ev as PointerEvent;
 										if (pe.pointerType === 'touch') return;
 										const r = fr.getBoundingClientRect();
@@ -283,24 +285,24 @@ export function Phone() {
 											clientY: r.top + pe.clientY * k,
 											pointerType: pe.pointerType,
 											button: pe.button,
-										}) as PointerEvent & { direkt?: boolean };
-										w.direkt = true;
+										}) as PointerEvent & { direct?: boolean };
+										w.direct = true;
 										fr.dispatchEvent(w);
 									};
 									for (const t of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel'])
-										doc.addEventListener(t, weiter);
+										doc.addEventListener(t, proceed);
 									// Über dem Glas ersetzt die gezeichnete Fingerspitze den Zeiger (hand.js setzt data-hand)
 									const st = doc.createElement('style');
 									st.textContent = 'html[data-hand] *{cursor:none!important}';
 									doc.head.appendChild(st);
 								}
-								requestAnimationFrame(() => requestAnimationFrame(() => setBereit(true)));
+								requestAnimationFrame(() => requestAnimationFrame(() => setReady(true)));
 							}}
 							// Übergang: die App zerfällt in Zeichen (scenes/zerfall setzt --app-aus)
 							style={{ border: 0, background: '#0A0A0A', opacity: 'calc(1 - var(--app-aus, 0))' }}
 						/>
 					)}
-					<Statusleiste />
+					<StatusBar />
 					<span
 						style={css(
 							'position:absolute;inset:0;border-radius:37px;background:linear-gradient(118deg,rgba(255,255,255,0.13) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,0.05) 100%);pointer-events:none;z-index:5',
@@ -313,7 +315,7 @@ export function Phone() {
 					data-ende-hinweis="1"
 					aria-hidden="true"
 					style={css(
-						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:${benutzt ? 0 : 1}`,
+						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:${used ? 0 : 1}`,
 					)}
 				>
 					{phone.hint}

@@ -3,18 +3,18 @@
 
 import {
 	CON,
+	EDGE_IN,
+	EDGE_THUMB,
 	EDV,
 	EDW,
 	GAM,
 	INK,
 	INK_DARK,
 	JIT,
-	RAND_DAUMEN,
-	RAND_IN,
 	RIM,
 	RING_N,
 	STEP,
-} from './konstanten';
+} from './constants';
 
 export const FS = `#version 300 es
 #pragma DEFS
@@ -113,7 +113,7 @@ vec2 holdTone(vec2 C){
     float vd = pow(1. - tn, .45);
     if (edge) vd = max(vd, .95);
     // auf dem Glas nur ein schmaler Streifen am Rand: Tab-Leiste und Inhalt bleiben frei
-    float ri = C.x < 800. ? ${(RAND_DAUMEN - 4).toFixed(1)} : ${(RAND_IN - 4).toFixed(1)};
+    float ri = C.x < 800. ? ${(EDGE_THUMB - 4).toFixed(1)} : ${(EDGE_IN - 4).toFixed(1)};
     float ti = vd * cov * (1. - ss((-sdS - ri) / 7.));
     tone = mix(tone, ti, gk);
   }

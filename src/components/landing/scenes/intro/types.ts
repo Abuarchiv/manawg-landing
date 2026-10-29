@@ -4,16 +4,16 @@ import type { Fit } from '../../core/canvas';
 import type { Mode } from '../../core/loop';
 
 /** Rechteck eines DOM-Elements mit data-loch in Bühnen-CSS-Pixeln. art: 'logo', 'cta', 'hinweis', 'text'. */
-export interface Loch {
+export interface Hole {
 	x: number;
 	y: number;
 	w: number;
 	h: number;
-	art: string;
+	kind: string;
 }
 
 /** Zeiger der Bühne in Bühnen-CSS-Pixeln (Listener an der ganzen Seite). */
-export interface BuehnenZeiger {
+export interface StagePointer {
 	x: number;
 	y: number;
 	in: boolean;
@@ -27,11 +27,11 @@ export interface BuehnenZeiger {
 	y0: number;
 	sy0: number;
 	/** Der Klick kam aus der App im Handy (Phone.tsx) und ist dort schon angekommen. */
-	direkt: boolean;
+	direct: boolean;
 }
 
 /** Kontext der Bühne je Bild: wird an Hero, Wohnung, Flut und Hand übergeben. */
-export interface BuehnenKontext {
+export interface StageContext {
 	/** Fortschritt der Choreografie (geglättet) und Scroll-Strecke (0..1). */
 	P: number;
 	s: number;
@@ -45,11 +45,11 @@ export interface BuehnenKontext {
 	mode: Mode;
 	reduced: boolean;
 	fit: Fit;
-	m: BuehnenZeiger;
+	m: StagePointer;
 	fpA: number;
 	endA: number;
 	/** Zerfall der Hände beim Wegscrollen der Ende-Ebene (0..1, bei reduzierter Bewegung 0). */
-	zer: number;
+	decay: number;
 	endOn: boolean;
 	stageTop: number;
 	visible: boolean;
@@ -57,11 +57,11 @@ export interface BuehnenKontext {
 	sv: number;
 	/** Pixelfaktor des Heros (auf Touch-Geräten gedeckelt). */
 	dprHero?: number;
-	loecher?: Loch[];
+	holes?: Hole[];
 }
 
 /** Marken des Heros je Bild, aus P abgeleitet. */
-export interface HeroMarken {
+export interface HeroMarks {
 	look: number;
 	mx: number;
 	split: number;

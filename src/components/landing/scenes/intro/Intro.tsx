@@ -3,27 +3,27 @@
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
 import { useDict } from '../../dict';
-import { Ende } from '../ende/Ende';
-import { HeroTitel } from './HeroTitel';
-import { Raeume } from './Raeume';
+import { End } from '../end/End';
+import { HeroTitle } from './HeroTitle';
+import { Rooms } from './Rooms';
 import { createStage } from './stage';
-import { INTRO_SCREENS, unwarp } from './zeitachse';
+import { INTRO_SCREENS, unwarp } from './timeline';
 
 // Intro: eine Sticky-Bühne in voller Fenstergröße (100lvh) über (1 + INTRO_SCREENS) Bildschirmhöhen.
 // Ebenen von unten nach oben: Berg und Zeichen (Hero), Wohnung, sicherer Kasten mit Titel und
 // Raumkarten (100svh), Ende-Ebene. Die Ende-Ebene scrollt mit der Bühne natürlich weg.
 
-const FLAECHE = 'position:absolute;inset:0;width:100%;height:100%;display:block';
+const FILL = 'position:absolute;inset:0;width:100%;height:100%;display:block';
 
 export function Intro() {
 	const { aria, canvasRooms, people } = useDict();
 	const secRef = useRef<HTMLElement>(null);
-	const buehneRef = useRef<HTMLDivElement>(null);
+	const stageRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const stage = createStage({
 			sec: secRef.current as HTMLElement,
-			buehne: buehneRef.current as HTMLDivElement,
+			stageEl: stageRef.current as HTMLDivElement,
 			rooms: canvasRooms,
 			people,
 		});
@@ -51,25 +51,25 @@ export function Intro() {
 			/>
 			<div
 				data-buehne="intro"
-				ref={buehneRef}
+				ref={stageRef}
 				style={css('position:sticky;top:0;height:100lvh;overflow-x:clip;overflow-y:visible')}
 			>
-				<canvas data-intro="hero" aria-hidden="true" style={css(`${FLAECHE};opacity:var(--g,1)`)} />
+				<canvas data-intro="hero" aria-hidden="true" style={css(`${FILL};opacity:var(--g,1)`)} />
 				<canvas
 					data-intro="wohnung"
 					aria-hidden="true"
 					style={css(
-						`${FLAECHE};opacity:var(--f,0);clip-path:circle(calc(var(--por,1) * 90vmax) at 50% 50%)`,
+						`${FILL};opacity:var(--f,0);clip-path:circle(calc(var(--por,1) * 90vmax) at 50% 50%)`,
 					)}
 				/>
 				<div
 					data-safe="1"
 					style={css('position:absolute;left:0;right:0;top:0;height:100svh;pointer-events:none')}
 				>
-					<HeroTitel />
-					<Raeume />
+					<HeroTitle />
+					<Rooms />
 				</div>
-				<Ende />
+				<End />
 			</div>
 		</section>
 	);

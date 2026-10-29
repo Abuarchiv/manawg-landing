@@ -1,16 +1,16 @@
 // Typen der Hände: Atlas-Metadaten (public/hand/hold.json, point.json), Zustand, Bildwerte und die WebGL-Ebene.
 
+import type { TILES } from './constants';
 import type { Probe } from './gl';
-import type { TILES } from './konstanten';
 
 // ----------------------------------------------------------------------------------------------------
 // Atlas
 // ----------------------------------------------------------------------------------------------------
 
-export type KachelName = (typeof TILES)[number];
+export type TileName = (typeof TILES)[number];
 
 /** Eine Kachel im Atlas: Lage und Größe in Atlas-px, div = Auflösungsteiler gegenüber lum. */
-export interface Kachel {
+export interface Tile {
 	x: number;
 	y: number;
 	w: number;
@@ -18,14 +18,14 @@ export interface Kachel {
 	div: number;
 }
 
-export interface Rechteck {
+export interface Rect {
 	x: number;
 	y: number;
 	w: number;
 	h: number;
 }
 
-export interface RundRechteck extends Rechteck {
+export interface RoundRect extends Rect {
 	r: number;
 }
 
@@ -35,18 +35,18 @@ export interface AtlasMeta {
 	atlas: [number, number];
 	tile: [number, number];
 	origin: [number, number];
-	tiles: Record<KachelName, Kachel>;
+	tiles: Record<TileName, Tile>;
 }
 
 /** Haltehand: zusätzlich Handy, Bildschirm und die Höhe, ab der der Unterarm ausläuft. */
-export interface HaltMeta extends AtlasMeta {
-	phone: RundRechteck;
-	screen: RundRechteck;
+export interface HoldMeta extends AtlasMeta {
+	phone: RoundRect;
+	screen: RoundRect;
 	bottomY: number;
 }
 
 /** Für den 2D-Fallback: eine Kachel als Byte-Feld. */
-export interface CpuKachel {
+export interface CpuTile {
 	a: Uint8Array;
 	w: number;
 	h: number;
@@ -54,8 +54,8 @@ export interface CpuKachel {
 }
 
 export interface CpuAtlas {
-	T: Record<KachelName, CpuKachel>;
-	samp: (t: CpuKachel, X: number, Y: number) => number;
+	T: Record<TileName, CpuTile>;
+	samp: (t: CpuTile, X: number, Y: number) => number;
 }
 
 export interface Atlas<M extends AtlasMeta> {
@@ -64,8 +64,8 @@ export interface Atlas<M extends AtlasMeta> {
 	cpu: CpuAtlas | null;
 }
 
-export interface Atlanten {
-	hold: Atlas<HaltMeta>;
+export interface Atlases {
+	hold: Atlas<HoldMeta>;
 	point: Atlas<AtlasMeta>;
 }
 
@@ -73,38 +73,38 @@ export interface Atlanten {
 // Bildwerte
 // ----------------------------------------------------------------------------------------------------
 
-export interface Punkt {
+export interface Point {
 	x: number;
 	y: number;
 }
 
-export interface Atmen {
+export interface Breath {
 	x: number;
 	y: number;
 	r: number;
 }
 
 /** Alles, was ein Bild der Hände vom Zustand abhängt (Ende-Raum, Bühnen-px). */
-export interface Zeichenwerte {
-	light: Punkt;
-	ringAt: Punkt;
+export interface DrawValues {
+	light: Point;
+	ringAt: Point;
 	lightPow: number;
 	bottomY: number;
-	tip: Punkt;
-	u: Punkt;
+	tip: Point;
+	u: Point;
 	sc: number;
 	pa: number;
 	push: number;
 	/** Zerfall 0..1 (Scroll-geführt, Hände lösen sich vom Rand her in Staub). */
-	zer: number;
-	br: Atmen;
+	decay: number;
+	br: Breath;
 	ring: number;
 	ringR: number;
 	q: number[];
 }
 
 /** Zeigerzustand der Bühne (stage.js), soweit die Hände ihn lesen. */
-export interface HandZeiger {
+export interface HandPointer {
 	x: number;
 	y: number;
 	type: string;
@@ -112,14 +112,14 @@ export interface HandZeiger {
 	down: boolean;
 	clickT: number;
 	moveT?: number | undefined;
-	direkt?: boolean | undefined;
+	direct?: boolean | undefined;
 }
 
 /** Der Teil des Bühnenkontexts (stage.js), den die Hände lesen. */
-export interface HandKontext {
+export interface HandContext {
 	P: number;
 	endA: number;
-	zer: number;
+	decay: number;
 	endOn: boolean;
 	W: number;
 	H: number;
@@ -127,7 +127,7 @@ export interface HandKontext {
 	now: number;
 	dt: number;
 	reduced: boolean;
-	m: HandZeiger;
+	m: HandPointer;
 	/** Scrollgeschwindigkeit der Seite (px/s): Handy und Hände hängen dem Scroll leicht nach. */
 	sv: number;
 }
@@ -164,7 +164,7 @@ export interface Uniforms {
 }
 
 /** Zellraster des ersten Durchgangs: Zielgröße, Textur und Framebuffer. */
-export interface ZellPuffer {
+export interface CellBuffer {
 	w: number;
 	h: number;
 	tex: WebGLTexture | null;
@@ -172,7 +172,7 @@ export interface ZellPuffer {
 }
 
 /** Sichtbares Raster im Ende-Raum (Zellen) plus Bühnenhöhe. */
-export interface Raster {
+export interface CellGrid {
 	i0: number;
 	j0: number;
 	cw: number;
@@ -187,7 +187,7 @@ export interface TimerQuery {
 }
 
 /** Eine WebGL2-Ebene (back oder front): Programme für beide Durchgänge, Texturen, Cache des letzten Bildes. */
-export interface Ebene {
+export interface Layer {
 	cv: HTMLCanvasElement;
 	gl: WebGL2RenderingContext;
 	front: boolean;
@@ -195,11 +195,11 @@ export interface Ebene {
 	dead: boolean;
 	stage: number;
 	/** Nächste Zeile des Atlas, die readyStep hochlädt. */
-	zeile: number;
+	row: number;
 	last: number[] | null;
 	lastB: number[] | null;
 	prs: [WebGLProgram, WebGLProgram];
-	cells: ZellPuffer;
+	cells: CellBuffer;
 	ext: KHR_parallel_shader_compile | null;
 	u: [Uniforms, Uniforms];
 	vao: WebGLVertexArrayObject;
@@ -215,7 +215,7 @@ export interface Ebene {
 // ----------------------------------------------------------------------------------------------------
 
 /** Ein anstehender Tipp: die Zeigehand fährt hin, bei Ankunft folgt Druck, Ring und Klick. */
-export interface Tipp {
+export interface Tap {
 	x: number;
 	y: number;
 	t0: number;
@@ -226,17 +226,17 @@ export interface Tipp {
 }
 
 /** Vorführung: n = schon getippte Ziele (0 Haushalt, 1 Start), seit = Beginn der Untätigkeit. */
-export interface Vorfuehrung {
+export interface DemoRun {
 	n: number;
-	seit: number | null;
+	idleSince: number | null;
 	next: number;
 	off: boolean;
 }
 
-export type Zeichenart = 'gl' | 'cpu';
+export type DrawMode = 'gl' | 'cpu';
 
 /** Vorgerechneter 2D-Fallback: Haltehand als Bild und die beiden Sprites der Zeigehand. */
-export interface CpuGebacken {
+export interface CpuBaked {
 	held: HTMLCanvasElement;
 	sp: [HTMLCanvasElement, HTMLCanvasElement];
 }
@@ -249,34 +249,34 @@ export interface HandDbg {
 	tap: [number, number] | null;
 }
 
-export interface HandZustand {
+export interface HandState {
 	back: HTMLCanvasElement;
 	front: HTMLCanvasElement;
 	host: HTMLElement | null;
-	ht: Punkt | null;
-	lt: Punkt;
+	ht: Point | null;
+	lt: Point;
 	park: [number, number];
 	lastClick: number;
 	tap: [number, number] | null;
 	contactT: number;
-	pending: Tipp | null;
+	pending: Tap | null;
 	space: HTMLElement | null;
 	appDoc: HTMLElement | null;
 	clean: boolean;
-	mode: Zeichenart | null;
-	layers: [Ebene, Ebene] | null;
+	mode: DrawMode | null;
+	layers: [Layer, Layer] | null;
 	/** Ergebnis der Eignungsprüfung (einmal) und die schon angelegten Ebenen, solange chooseMode schrittweise vorwärmt. */
-	tauglich?: boolean;
+	usable?: boolean;
 	/** Laufende Eignungsprüfung (glTaugtStart), bis ihr Ergebnis in tauglich steht. */
 	probe?: Probe;
-	ebenen?: (Ebene | null)[];
+	pendingLayers?: (Layer | null)[];
 	/** Vorwärmen abgeschlossen: Shader gelinkt, Texturen hochgeladen. */
 	warm?: boolean;
-	cpu: { key: string | null; baked: CpuGebacken | null };
+	cpu: { key: string | null; baked: CpuBaked | null };
 	quiet: number[];
 	rects: [number, number, number, number][];
 	frames: number;
-	demo: Vorfuehrung | null;
+	demo: DemoRun | null;
 	ms?: number;
 	dbg?: HandDbg;
 }

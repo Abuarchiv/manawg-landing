@@ -4,24 +4,16 @@
 import type { Fit } from '../../../core/canvas';
 import { isTouch } from '../../../core/canvas';
 import { qa } from '../../../core/loop';
-import { istHoch } from '../kamera';
-import { atlanten } from './atlas';
-import { ARM, PS, RING_T } from './konstanten';
-import type {
-	Atmen,
-	HandKontext,
-	HandZustand,
-	Punkt,
-	Tipp,
-	Vorfuehrung,
-	Zeichenwerte,
-} from './typen';
+import { isPortrait } from '../camera';
+import { atlases } from './atlas';
+import { ARM, PS, RING_T } from './constants';
+import type { Breath, DemoRun, DrawValues, HandContext, HandState, Point, Tap } from './types';
 
 /** Zeigerlage im Ende-Raum (Objektraum der Hände, ohne Atmen) aus Bühnen-CSS-px. */
 type ObjFn = (x: number, y: number) => [number, number];
 
 /** Zeiger und Eingabeart eines Bildes, im Ende-Raum. */
-interface Eingabe {
+interface Input {
 	obj: ObjFn;
 	mx: number;
 	my: number;
@@ -29,21 +21,21 @@ interface Eingabe {
 }
 
 /** Ziel der Zeigehand in diesem Bild und wie stark sie dorthin zieht. */
-interface Ziel {
+interface Target {
 	tg: readonly [number, number];
 	k: number;
-	folgt: boolean;
-	pend: Tipp | null;
+	follows: boolean;
+	pend: Tap | null;
 }
 
 // ----------------------------------------------------------------------------------------------------
 // Zustand
 // ----------------------------------------------------------------------------------------------------
 
-export const states = new WeakMap<HTMLCanvasElement, HandZustand>();
+export const states = new WeakMap<HTMLCanvasElement, HandState>();
 
 /** Leises Atmen (Sinus plus langsames Rauschen): x, y in Bühnen-px, r in rad. Perioden 4 bis 6 s. */
-export function atem(t: number): Atmen {
+export function breath(t: number): Breath {
 	const w = 1.2; // 5,2 s
 	const x = 0.65 * Math.sin(t * w) + 0.35 * Math.sin(t * 1.55 + 1.3);
 	const y = 0.65 * Math.sin(t * 1.05 + 2) + 0.35 * Math.sin(t * 1.4 + 0.4);
@@ -58,7 +50,7 @@ function autopilot(t: number): [number, number] {
 	return [820 + 40 * Math.sin(t * 0.45), 400 + 70 * tri];
 }
 
-export function newState(back: HTMLCanvasElement, front: HTMLCanvasElement): HandZustand {
+export function newState(back: HTMLCanvasElement, front: HTMLCanvasElement): HandState {
 	return {
 		back,
 		front,
@@ -84,7 +76,7 @@ export function newState(back: HTMLCanvasElement, front: HTMLCanvasElement): Han
 }
 
 /** Ruhige Rechtecke (Titel, Knopf) im Ende-Raum und Knopf-Rechtecke in Bühnen-px neu messen. */
-function measure(st: HandZustand, cam: Fit): void {
+function measure(st: HandState, cam: Fit): void {
 	const root = st.back.parentElement;
 	if (!root) return;
 	const cr = st.back.getBoundingClientRect();
@@ -109,9 +101,9 @@ function measure(st: HandZustand, cam: Fit): void {
 }
 
 /** Vorführung schon gesehen (einmal je Sitzung)? Mit setzen = merken. */
-function demoGetan(setzen?: boolean): boolean {
+function demoDone(set?: boolean): boolean {
 	try {
-		if (setzen) sessionStorage.setItem('mwg-demo', '1');
+		if (set) sessionStorage.setItem('mwg-demo', '1');
 		return sessionStorage.getItem('mwg-demo') === '1';
 	} catch {
 		return false;
@@ -119,8 +111,8 @@ function demoGetan(setzen?: boolean): boolean {
 }
 
 /** Mitte der Tab-Taste (Name) in der App-Vorschau als Ziel der Zeigehand: Objektraum plus Fensterkoordinaten. */
-function demoZiel(
-	st: HandZustand,
+function demoTarget(
+	st: HandState,
 	name: string,
 	obj: ObjFn,
 ): { x: number; y: number; cx: number; cy: number } | null {
@@ -145,13 +137,13 @@ function demoZiel(
 // Ein Bild der Steuerung
 // ----------------------------------------------------------------------------------------------------
 
-const aufGlas = (x: number, y: number): boolean => {
-	const sc = atlanten().hold.meta.screen;
+const onGlass = (x: number, y: number): boolean => {
+	const sc = atlases().hold.meta.screen;
 	return x > sc.x - 4 && x < sc.x + sc.w + 4 && y > sc.y - 4 && y < sc.y + sc.h + 4;
 };
 
 /** Zeiger im Ende-Raum (Objektraum der Hände, ohne das Atmen). */
-function objektRaum(cam: Fit, br: Atmen): ObjFn {
+function objectSpace(cam: Fit, br: Breath): ObjFn {
 	return (x, y) => {
 		const qx = (x - cam.ox) / cam.f - br.x - 800;
 		const qy = (y - cam.oy) / cam.f - br.y - 400;
@@ -166,15 +158,15 @@ function objektRaum(cam: Fit, br: Atmen): ObjFn {
  * Berührung läuft der Druck, der Ring und der Klick in die App. Touch: es tippt der echte Finger, nur der Ring
  * markiert die Kontaktstelle (die App reagiert sofort, nichts wird verzögert).
  */
-function tippen(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung): void {
+function tap(st: HandState, c: HandContext, e: Input, dm: DemoRun): void {
 	const { now } = c;
 	if (c.m.clickT === st.lastClick) return;
 	st.lastClick = c.m.clickT;
-	if (c.endOn && aufGlas(e.mx, e.my)) {
+	if (c.endOn && onGlass(e.mx, e.my)) {
 		dm.off = true; // eigener Tipp: die Vorführung ist überflüssig
 		// Touch: es tippt der echte Finger. direkt: der Klick ist schon in der App angekommen (Phone.tsx), die
 		// Zeigehand drückt nur noch mit und der Ring markiert die Stelle.
-		if (e.touch || c.m.direkt) {
+		if (e.touch || c.m.direct) {
 			st.tap = [e.mx, e.my];
 			st.contactT = now;
 		} else {
@@ -201,19 +193,19 @@ function tippen(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung): v
  * und drei Sekunden später auf „Start“ (über denselben Kontakt-Pfad wie ein echter Tipp). Hover über dem Glas, ein Tipp
  * oder Touch beenden sie. Bei reduzierter Bewegung läuft sie nicht (nur der Hinweis unter dem Handy).
  */
-function vorfuehren(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung): void {
+function runDemo(st: HandState, c: HandContext, e: Input, dm: DemoRun): void {
 	const { now } = c;
-	if (c.endOn && !e.touch && c.m.in && aufGlas(e.mx, e.my) && now - (c.m.moveT ?? -9) < 1.4)
+	if (c.endOn && !e.touch && c.m.in && onGlass(e.mx, e.my) && now - (c.m.moveT ?? -9) < 1.4)
 		dm.off = true;
 	// Fokus im App-iframe (Tastatur, Screenreader): der Besucher bedient die App, die Vorführung bleibt aus
 	if (document.activeElement?.tagName === 'IFRAME') dm.off = true;
 	if (dm.off || c.reduced || e.touch || isTouch() || !c.endOn || dm.n >= 2) {
-		if (!c.endOn) dm.seit = null;
+		if (!c.endOn) dm.idleSince = null;
 		if (dm.off && st.pending?.demo) st.pending = null;
 	} else {
-		dm.seit ??= now;
-		if (!st.pending && now - dm.seit > 2.5 && now >= dm.next) {
-			const z = demoZiel(st, dm.n ? 'Start' : 'Haushalt', e.obj);
+		dm.idleSince ??= now;
+		if (!st.pending && now - dm.idleSince > 2.5 && now >= dm.next) {
+			const z = demoTarget(st, dm.n ? 'Start' : 'Haushalt', e.obj);
 			if (z) st.pending = { ...z, t0: now, demo: true, slow: true };
 			else dm.next = now + 0.8;
 		}
@@ -221,32 +213,25 @@ function vorfuehren(st: HandZustand, c: HandKontext, e: Eingabe, dm: Vorfuehrung
 }
 
 /** Wohin die Zeigehand zieht: anstehender Tipp, Zeiger über dem Glas oder Parkplatz. */
-function zielWaehlen(st: HandZustand, c: HandKontext, e: Eingabe): Ziel {
+function chooseTarget(st: HandState, c: HandContext, e: Input): Target {
 	const pend = st.pending;
 	// Nach dem Kontakt zieht sich die Hand nach 0,35 s zurück, damit das Ergebnis des Tipps zu sehen ist
 	// Über dem Glas klebt die Fingerspitze am Zeiger, solange er dort ist (kein Rückzug, kein Zeitlimit)
-	const folgt = c.endOn && !e.touch && c.m.in && aufGlas(e.mx, e.my);
+	const follows = c.endOn && !e.touch && c.m.in && onGlass(e.mx, e.my);
 	let tg: readonly [number, number] = st.park;
 	let k = 7;
-	if (folgt) {
+	if (follows) {
 		tg = [e.mx, e.my];
 		k = Number.POSITIVE_INFINITY;
 	} else if (pend) {
 		tg = [pend.x, pend.y];
 		k = pend.slow ? 9 : 40;
 	}
-	return { tg, k, folgt, pend };
+	return { tg, k, follows, pend };
 }
 
 /** Fingerspitze und Zeigerlicht ans Ziel ziehen; bei Ankunft des Tipps Kontakt auslösen. */
-function bewegen(
-	st: HandZustand,
-	c: HandKontext,
-	cam: Fit,
-	e: Eingabe,
-	z: Ziel,
-	dm: Vorfuehrung,
-): Punkt {
+function move(st: HandState, c: HandContext, cam: Fit, e: Input, z: Target, dm: DemoRun): Point {
 	const { H, t, now, dt } = c;
 	// Zeigerlicht: folgt der Maus, sonst ein ruhiger Autopilot
 	const lg: [number, number] =
@@ -269,7 +254,7 @@ function bewegen(
 		if (pend.demo) {
 			dm.n++;
 			dm.next = now + 3;
-			if (dm.n >= 2) demoGetan(true);
+			if (dm.n >= 2) demoDone(true);
 		}
 		st.tap = [pend.x, pend.y];
 		st.contactT = now;
@@ -285,29 +270,29 @@ function bewegen(
 }
 
 /** Cursor: über dem Glas ersetzt die Fingerspitze den Zeiger (auch im Dokument der App, Phone.tsx). */
-function cursorSetzen(st: HandZustand, folgen: boolean): void {
-	if (st.host) st.host.toggleAttribute('data-hand-folgt', folgen);
+function setCursor(st: HandState, follow: boolean): void {
+	if (st.host) st.host.toggleAttribute('data-hand-folgt', follow);
 	if (!st.appDoc?.isConnected)
 		st.appDoc = st.space?.querySelector('iframe')?.contentDocument?.documentElement ?? null;
-	if (st.appDoc && st.appDoc.hasAttribute('data-hand') !== folgen)
-		st.appDoc.toggleAttribute('data-hand', folgen);
+	if (st.appDoc && st.appDoc.hasAttribute('data-hand') !== follow)
+		st.appDoc.toggleAttribute('data-hand', follow);
 }
 
 /** Bildwerte aus dem Zustand: Spitze, Armrichtung, Druck, Ring, Licht (auf 4 px gerastert). */
-function werteBauen(
-	st: HandZustand,
-	c: HandKontext,
+function buildValues(
+	st: HandState,
+	c: HandContext,
 	cam: Fit,
-	br: Atmen,
-	ht: Punkt,
+	br: Breath,
+	ht: Point,
 	touch: boolean,
-): Zeichenwerte {
+): DrawValues {
 	const { W, H, now } = c;
 	const pr = now - st.contactT;
 	const push = st.tap && pr >= 0 && pr < 0.4 && !touch ? Math.sin((pr / 0.4) * Math.PI) : 0;
-	const hoch = istHoch(W, H);
-	const ax = (hoch ? (W - cam.ox) / cam.f : ARM[0]) - ht.x;
-	const ay = (hoch ? (H - cam.oy) / cam.f : ARM[1]) - ht.y;
+	const portrait = isPortrait(W, H);
+	const ax = (portrait ? (W - cam.ox) / cam.f : ARM[0]) - ht.x;
+	const ay = (portrait ? (H - cam.oy) / cam.f : ARM[1]) - ht.y;
 	const AL = Math.hypot(ax, ay) || 1;
 	const ux = ax / AL;
 	const uy = ay / AL;
@@ -319,7 +304,7 @@ function werteBauen(
 		ringAt: { x: st.tap ? st.tap[0] : 0, y: st.tap ? st.tap[1] : 0 },
 		lightPow: st.mode === 'gl' ? 1 : 0,
 		// Unterarm löst sich am unteren Bildrand auf (Verlauf statt harter Kante)
-		bottomY: Math.min(atlanten().hold.meta.bottomY, (H - cam.oy) / cam.f + 10),
+		bottomY: Math.min(atlases().hold.meta.bottomY, (H - cam.oy) / cam.f + 10),
 		// Die Spitze steht exakt am Ziel, beim Druck geht sie leicht in Armrichtung
 		tip: {
 			x: Math.round((ht.x + ux * push * 4) * 2) / 2,
@@ -330,7 +315,7 @@ function werteBauen(
 		// Touch: keine gezeichnete Zeigehand, dort tippt der echte Finger
 		pa: qa.noPoint || touch ? 0 : 1,
 		push: Math.round(push * 20) / 20,
-		zer: Math.round(c.zer * 200) / 200,
+		decay: Math.round(c.decay * 200) / 200,
 		br,
 		ring: st.tap && pr >= 0 && pr < RING_T ? 1 - pr / RING_T : 0,
 		ringR: 10 + Math.max(0, pr) * 150,
@@ -342,23 +327,23 @@ function werteBauen(
  * Ein Bild der Zeigehand-Steuerung (Reihenfolge wie im Ablauf): Tipp, Vorführung, Ziel, Bewegung, Cursor, Werte.
  * br: Atmen dieses Bildes.
  */
-export function zeigeSchritt(st: HandZustand, c: HandKontext, cam: Fit, br: Atmen): Zeichenwerte {
-	const obj = objektRaum(cam, br);
+export function pointStep(st: HandState, c: HandContext, cam: Fit, br: Breath): DrawValues {
+	const obj = objectSpace(cam, br);
 	const [mx, my] = obj(c.m.x, c.m.y);
 	const touch = c.m.type === 'touch';
-	const e: Eingabe = { obj, mx, my, touch };
-	if (!st.demo) st.demo = { n: 0, seit: null, next: 0, off: demoGetan() };
+	const e: Input = { obj, mx, my, touch };
+	if (!st.demo) st.demo = { n: 0, idleSince: null, next: 0, off: demoDone() };
 	const dm = st.demo;
-	tippen(st, c, e, dm);
-	vorfuehren(st, c, e, dm);
-	const z = zielWaehlen(st, c, e);
-	const ht = bewegen(st, c, cam, e, z, dm);
-	cursorSetzen(st, !!(z.folgt || z.pend));
+	tap(st, c, e, dm);
+	runDemo(st, c, e, dm);
+	const z = chooseTarget(st, c, e);
+	const ht = move(st, c, cam, e, z, dm);
+	setCursor(st, !!(z.follows || z.pend));
 	st.dbg = {
 		m: { x: c.m.x, y: c.m.y, in: c.m.in, down: c.m.down, type: c.m.type },
 		tg: z.tg,
 		endOn: c.endOn,
 		tap: st.tap,
 	};
-	return werteBauen(st, c, cam, br, ht, touch);
+	return buildValues(st, c, cam, br, ht, touch);
 }

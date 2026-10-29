@@ -8,7 +8,7 @@ import { type Fit, fitBox } from '../../core/canvas';
 import type { Mode } from '../../core/loop';
 
 /** Hochformat, wie in core/loop.ts modeOf: Breite/Höhe <= 1 oder Breite < 700. */
-export const istHoch = (W: number, H: number): boolean => W / H <= 1 || W < 700;
+export const isPortrait = (W: number, H: number): boolean => W / H <= 1 || W < 700;
 
 // Hochformat: Ausschnitt im Ende-Raum (Daumen links bei x ~585). Das Handy füllt etwa 78 % der Breite, die
 // Finger rechts laufen aus dem Bild (natürlicher Anschnitt), der Unterarm wird unten angeschnitten.
@@ -37,24 +37,24 @@ function safeTop(): number {
  * Abstand oben max(72, safe-top + 56), Titel (Schrift 40 bis 60, eine Zeile), Abstand 16, Knopf 40,
  * Abstand zum Handy 20.
  */
-export function titelPlatz(W: number, _safeH: number): number {
-	const oben = Math.max(72, 56 + safeTop());
+export function titleSlot(W: number, _safeH: number): number {
+	const top = Math.max(72, 56 + safeTop());
 	const fs = Math.max(40, Math.min(0.08 * W, 60));
-	return oben + fs + 16 + 40 + 20;
+	return top + fs + 16 + 40 + 20;
 }
 
-export function kamera(W: number, H: number, safeH: number, _mode: Mode): Fit {
-	if (!istHoch(W, H)) return fitBox(W, safeH, 1280, 800, 1.25);
-	const top = titelPlatz(W, safeH);
+export function camera(W: number, H: number, safeH: number, _mode: Mode): Fit {
+	if (!isPortrait(W, H)) return fitBox(W, safeH, 1280, 800, 1.25);
+	const top = titleSlot(W, safeH);
 	// Daumen links (x 584) und Fingerkuppen rechts (x 998) bleiben mit mindestens 8 px Rand im Bild
 	const f = Math.max(
 		0.2,
 		Math.min((0.78 * W) / PHONE_W, (H - top - 12) / PHONE_H, 1.25, (W - 16) / (SPAN1 - SPAN0)),
 	);
-	const links = Math.max(8, (W - (SPAN1 - SPAN0) * f) / 2) + (PHONE_X - SPAN0) * f;
+	const left = Math.max(8, (W - (SPAN1 - SPAN0) * f) / 2) + (PHONE_X - SPAN0) * f;
 	return {
 		f,
-		ox: links - PHONE_X * f,
+		ox: left - PHONE_X * f,
 		oy: top - PHONE_TOP * f,
 	};
 }

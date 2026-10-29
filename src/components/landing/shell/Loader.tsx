@@ -85,7 +85,7 @@ export function Loader() {
 			const ms = now - l0;
 			const dt = now - last;
 			last = now;
-			if (live.stage?.state.bereit) ready = true;
+			if (live.stage?.state.ready) ready = true;
 			const eased = 1 - (1 - Math.min(1, ms / MIN)) ** 2;
 			if (ready && fonts) {
 				// echte Bereitschaft: bis 100 in NACH ms, vorher nie schneller als die Zeitkurve

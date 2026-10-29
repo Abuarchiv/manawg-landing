@@ -3,26 +3,26 @@
 
 import { hsh } from '../../core/math';
 
-export const STERNE_ANZAHL = 220;
+export const STAR_COUNT = 220;
 // Dichte des Entwurfs (220 Punkte auf 1280 x 360 px) bleibt auf jeder Fläche gleich.
-const DICHTE = STERNE_ANZAHL / (1280 * 360);
+const DENSITY = STAR_COUNT / (1280 * 360);
 
-const kontexte = new WeakMap<HTMLCanvasElement, CanvasRenderingContext2D>();
+const contexts = new WeakMap<HTMLCanvasElement, CanvasRenderingContext2D>();
 
 /** Zeichnet die Sterne. cv: sichtbares 2D-Canvas, W und H in CSS-Pixeln, dpr Pixelfaktor, t Sekunden. */
-export function zeichneSterne(
+export function drawStars(
 	cv: HTMLCanvasElement,
 	W: number,
 	H: number,
 	dpr: number,
 	t: number,
 ): void {
-	let ctx = kontexte.get(cv);
+	let ctx = contexts.get(cv);
 	if (!ctx) {
-		const neu = cv.getContext('2d');
-		if (!neu) return;
-		ctx = neu;
-		kontexte.set(cv, ctx);
+		const next = cv.getContext('2d');
+		if (!next) return;
+		ctx = next;
+		contexts.set(cv, ctx);
 	}
 	const w = Math.max(1, Math.round(W * dpr));
 	const h = Math.max(1, Math.round(H * dpr));
@@ -33,7 +33,7 @@ export function zeichneSterne(
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	ctx.clearRect(0, 0, W, H);
 	ctx.fillStyle = '#FAFAFA';
-	const n = Math.max(90, Math.round(DICHTE * W * H * 0.45));
+	const n = Math.max(90, Math.round(DENSITY * W * H * 0.45));
 	for (let q = 0; q < n; q++) {
 		const x = hsh(q, 21) * W;
 		const y = hsh(q, 22) * H * 0.45;

@@ -16,9 +16,9 @@ export const KNOTS = [
 ] as const satisfies readonly (readonly [s: number, P: number])[];
 
 /** Spalte der Knoten: 0 = Scroll-Strecke s, 1 = Fortschritt P. */
-type Spalte = 0 | 1;
+type Column = 0 | 1;
 
-function map(x: number, from: Spalte, to: Spalte): number {
+function map(x: number, from: Column, to: Column): number {
 	const a: number[] = KNOTS.map((k) => k[from]);
 	const b: number[] = KNOTS.map((k) => k[to]);
 	if (x <= (a[0] ?? 0)) return b[0] ?? 0;

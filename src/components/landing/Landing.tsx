@@ -42,7 +42,7 @@ function installQaHook(root: HTMLElement) {
 		section: (id: string) => sectionBox(id),
 		dbg: qa,
 		get bereit() {
-			return live.stage?.state.bereit ?? false;
+			return live.stage?.state.ready ?? false;
 		},
 	};
 }

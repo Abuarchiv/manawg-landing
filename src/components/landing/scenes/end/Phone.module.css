@@ -1,5 +1,5 @@
 /* Handy-Bildschirm 278 x 598: die App läuft in 390 x 839 CSS-Pixeln und wird um die linke obere Ecke skaliert. */
-.flaeche,
+.surface,
 .status {
 	position: absolute;
 	left: 0;
@@ -31,7 +31,7 @@
 	color: #fafafa;
 }
 
-.zeit {
+.time {
 	position: absolute;
 	left: 41px;
 	top: 14px;
@@ -42,7 +42,7 @@
 	font-feature-settings: "tnum";
 }
 
-.insel {
+.island {
 	position: absolute;
 	left: 132px;
 	top: 11px;
@@ -59,25 +59,25 @@
 	top: 20px;
 }
 
-.wlan {
+.wifi {
 	position: absolute;
 	left: 310px;
 	top: 19px;
 }
 
-.akku {
+.battery {
 	position: absolute;
 	left: 336px;
 	top: 19px;
 }
 
-.bild {
+.still {
 	display: block;
 	width: 390px;
 	height: 839px;
 }
 
-.datum {
+.date {
 	position: absolute;
 	left: 65.6px;
 	font: 400 12px / 18px Inter, sans-serif;

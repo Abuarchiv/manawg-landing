@@ -3,19 +3,19 @@
 
 import type { Fit } from '../../../core/canvas';
 import { BAYER as HB, cl, hsh, ss } from '../../../core/math';
-import { atlanten } from './atlas';
-import { CON, EDV, EDW, GAM, JIT, PS, RAND_DAUMEN, RAND_IN, RIM, RING_N, STEP } from './konstanten';
+import { atlases } from './atlas';
+import { CON, EDGE_IN, EDGE_THUMB, EDV, EDW, GAM, JIT, PS, RIM, RING_N, STEP } from './constants';
 import type {
 	Atlas,
 	AtlasMeta,
 	CpuAtlas,
-	CpuGebacken,
-	CpuKachel,
-	HandZustand,
-	KachelName,
-	Rechteck,
-	Zeichenwerte,
-} from './typen';
+	CpuBaked,
+	CpuTile,
+	DrawValues,
+	HandState,
+	Rect,
+	TileName,
+} from './types';
 
 function ctx2d(
 	cv: HTMLCanvasElement,
@@ -27,7 +27,7 @@ function ctx2d(
 }
 
 const lightF = (x: number, y: number): number => 0.45 + 0.55 * cl(1 - (x - 450 + (y - 120)) / 1100);
-const sdfRR = (x: number, y: number, R: Rechteck, r: number): number => {
+const sdfRR = (x: number, y: number, R: Rect, r: number): number => {
 	const qx = Math.abs(x - (R.x + R.w / 2)) - (R.w / 2 - r);
 	const qy = Math.abs(y - (R.y + R.h / 2)) - (R.h / 2 - r);
 	return Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) + Math.min(Math.max(qx, qy), 0) - r;
@@ -43,7 +43,7 @@ function cpuAtlas<M extends AtlasMeta>(at: Atlas<M>): CpuAtlas {
 	const g = ctx2d(cv, { willReadFrequently: true });
 	g.drawImage(bmp, 0, 0);
 	const D = g.getImageData(0, 0, cv.width, cv.height).data;
-	const kachel = (n: KachelName): CpuKachel => {
+	const tile = (n: TileName): CpuTile => {
 		const t = meta.tiles[n];
 		const a = new Uint8Array(t.w * t.h);
 		for (let j = 0; j < t.h; j++)
@@ -51,15 +51,15 @@ function cpuAtlas<M extends AtlasMeta>(at: Atlas<M>): CpuAtlas {
 		return { a, w: t.w, h: t.h, div: t.div };
 	};
 	const T = {
-		lum: kachel('lum'),
-		a: kachel('a'),
-		nx: kachel('nx'),
-		ny: kachel('ny'),
-		z: kachel('z'),
+		lum: tile('lum'),
+		a: tile('a'),
+		nx: tile('nx'),
+		ny: tile('ny'),
+		z: tile('z'),
 	};
 	const [X0, Y0] = meta.origin;
 	const S = meta.scale;
-	const samp = (t: CpuKachel, X: number, Y: number): number => {
+	const samp = (t: CpuTile, X: number, Y: number): number => {
 		const u = ((X - X0) * S) / t.div - 0.5;
 		const v = ((Y - Y0) * S) / t.div - 0.5;
 		const i = Math.floor(u);
@@ -83,8 +83,8 @@ const gradeL = (L: number): number => cl(0.5 + (L ** GAM - 0.5) * CON);
 /** Haltehand an der Stelle (x, y) ohne Zeigerlicht: [Ton, Ebene] (Ebene 1 hinten, 2 vorn) oder null. */
 let cpuBottom = 1400;
 function holdCpu(x: number, y: number): [number, number] | null {
-	const { T, samp } = cpuAtlas(atlanten().hold);
-	const m = atlanten().hold.meta;
+	const { T, samp } = cpuAtlas(atlases().hold);
+	const m = atlases().hold.meta;
 	const al = samp(T.a, x, y);
 	if (al < 0.5) return null;
 	const zmm = samp(T.z, x, y) * 200 - 100;
@@ -110,7 +110,7 @@ function holdCpu(x: number, y: number): [number, number] | null {
 		const tn = 0.04 + 0.86 * cl(v) ** 1.35;
 		let vd = (1 - tn) ** 0.45;
 		if (edge) vd = Math.max(vd, 0.95);
-		return [vd * cov * (1 - ss((-sdS - ((x < 800 ? RAND_DAUMEN : RAND_IN) - 4)) / 7)), 2];
+		return [vd * cov * (1 - ss((-sdS - ((x < 800 ? EDGE_THUMB : EDGE_IN) - 4)) / 7)), 2];
 	}
 	if (edge) v = Math.max(v, EDV * lf * al);
 	return [v * cov, front ? 2 : 1];
@@ -118,7 +118,7 @@ function holdCpu(x: number, y: number): [number, number] | null {
 
 /** Zeigehand im Sprite-Raum: [Ton normal, Ton als Tinte über dem Bildschirm] */
 function pointCpu(a: number, b: number, ps: number, lf: number): [number, number] | null {
-	const { T, samp } = cpuAtlas(atlanten().point);
+	const { T, samp } = cpuAtlas(atlases().point);
 	const al = samp(T.a, a, b);
 	if (al < 0.5) return null;
 	const dist = Math.hypot(a, b) * ps;
@@ -139,7 +139,7 @@ function pointCpu(a: number, b: number, ps: number, lf: number): [number, number
 }
 
 /** Bayer-Schwelle der Zelle (i, j). */
-const schwelle = (i: number, j: number): number => (HB[(j & 3) * 4 + (i & 3)] ?? 0) / 16 + 0.035;
+const threshold = (i: number, j: number): number => (HB[(j & 3) * 4 + (i & 3)] ?? 0) / 16 + 0.035;
 
 function dotRect(
 	cx: CanvasRenderingContext2D,
@@ -150,9 +150,9 @@ function dotRect(
 	j: number,
 	k = 1,
 ): void {
-	const ton = v * (1 - JIT / 2 + JIT * hsh(i, j));
-	if (ton > schwelle(i, j)) {
-		const z = STEP * (0.5 + 0.5 * Math.min(1, ton)) * k;
+	const tone = v * (1 - JIT / 2 + JIT * hsh(i, j));
+	if (tone > threshold(i, j)) {
+		const z = STEP * (0.5 + 0.5 * Math.min(1, tone)) * k;
 		cx.fillRect(x - z / 2, y - z / 2, z, z);
 	}
 }
@@ -164,7 +164,7 @@ const mkCanvas = (w: number, h: number): HTMLCanvasElement => {
 	return cv;
 };
 
-function rrPath(g: CanvasRenderingContext2D, R: Rechteck, r: number): void {
+function rrPath(g: CanvasRenderingContext2D, R: Rect, r: number): void {
 	g.moveTo(R.x + r, R.y);
 	g.arcTo(R.x + R.w, R.y, R.x + R.w, R.y + R.h, r);
 	g.arcTo(R.x + R.w, R.y + R.h, R.x, R.y + R.h, r);
@@ -174,8 +174,8 @@ function rrPath(g: CanvasRenderingContext2D, R: Rechteck, r: number): void {
 }
 
 /** Haltehand: Punkte von hinten (cb, direkt auf back) und von vorn (cf, in ein eigenes Bild). */
-function backeHaltehand(
-	st: HandZustand,
+function bakeHoldHand(
+	st: HandState,
 	W: number,
 	H: number,
 	dpr: number,
@@ -192,7 +192,7 @@ function backeHaltehand(
 		cx.setTransform(dpr * cam.f, 0, 0, dpr * cam.f, dpr * cam.ox, dpr * cam.oy);
 		cx.fillStyle = '#FAFAFA';
 	}
-	const mh = atlanten().hold.meta;
+	const mh = atlases().hold.meta;
 	const x1 = (W - cam.ox) / cam.f;
 	const y1 = (H - cam.oy) / cam.f;
 	const xa = mh.origin[0];
@@ -207,17 +207,17 @@ function backeHaltehand(
 			const y = (j + 0.5) * STEP;
 			const r = holdCpu(x, y);
 			if (r && r[0] > 0.02) {
-				const vorn = r[1] === 2;
-				if (vorn) cf.fillStyle = sdfRR(x, y, mh.screen, mh.screen.r) < -1 ? '#0A0A0A' : '#FAFAFA';
-				dotRect(vorn ? cf : cb, x, y, r[0], i, j);
+				const front = r[1] === 2;
+				if (front) cf.fillStyle = sdfRR(x, y, mh.screen, mh.screen.r) < -1 ? '#0A0A0A' : '#FAFAFA';
+				dotRect(front ? cf : cb, x, y, r[0], i, j);
 			}
 		}
 	return held;
 }
 
 /** Zeige-Sprite (Maßstab PS, Licht an einer festen Stelle): [normal, Tinte über dem Bildschirm]. */
-function backeSprites(m: number): [HTMLCanvasElement, HTMLCanvasElement] {
-	const mp = atlanten().point.meta;
+function bakeSprites(m: number): [HTMLCanvasElement, HTMLCanvasElement] {
+	const mp = atlases().point.meta;
 	const sw = Math.ceil((mp.tile[0] / mp.scale) * PS * m);
 	const sh = Math.ceil((mp.tile[1] / mp.scale) * PS * m);
 	const sp: [HTMLCanvasElement, HTMLCanvasElement] = [mkCanvas(sw, sh), mkCanvas(sw, sh)];
@@ -236,10 +236,10 @@ function backeSprites(m: number): [HTMLCanvasElement, HTMLCanvasElement] {
 			if (!r) continue;
 			for (let k = 0; k < 2; k++) {
 				const g = cs[k];
-				const ton = r[k];
-				if (g && ton !== undefined && ton > 0.02) {
-					const v = ton * (1 - JIT / 2 + JIT * hsh(i, j));
-					if (v > schwelle(i, j)) {
+				const tone = r[k];
+				if (g && tone !== undefined && tone > 0.02) {
+					const v = tone * (1 - JIT / 2 + JIT * hsh(i, j));
+					if (v > threshold(i, j)) {
 						const z = STEP * (0.5 + 0.5 * Math.min(1, v)) * m;
 						g.fillRect((i + 0.5) * st2 * PS * m - z / 2, (j + 0.5) * st2 * PS * m - z / 2, z, z);
 					}
@@ -250,20 +250,20 @@ function backeSprites(m: number): [HTMLCanvasElement, HTMLCanvasElement] {
 }
 
 /** Fallback: Haltehand und Zeige-Sprite für diese Größe vorrechnen. */
-function bakeCpu(st: HandZustand, W: number, H: number, dpr: number, cam: Fit): CpuGebacken {
-	cpuBottom = Math.min(atlanten().hold.meta.bottomY, (H - cam.oy) / cam.f + 10);
+function bakeCpu(st: HandState, W: number, H: number, dpr: number, cam: Fit): CpuBaked {
+	cpuBottom = Math.min(atlases().hold.meta.bottomY, (H - cam.oy) / cam.f + 10);
 	const w = Math.max(1, Math.round(W * dpr));
 	const h = Math.max(1, Math.round(H * dpr));
 	st.cpu.key = [w, h, cam.f, cam.ox, cam.oy].join();
-	const held = backeHaltehand(st, W, H, dpr, cam);
-	const sp = backeSprites(cam.f * dpr);
+	const held = bakeHoldHand(st, W, H, dpr, cam);
+	const sp = bakeSprites(cam.f * dpr);
 	st.cpu.baked = { held, sp };
 	return st.cpu.baked;
 }
 
 export function cpuFrame(
-	st: HandZustand,
-	S: Zeichenwerte,
+	st: HandState,
+	S: DrawValues,
 	cam: Fit,
 	W: number,
 	H: number,
@@ -277,7 +277,7 @@ export function cpuFrame(
 		cam.oy,
 	].join();
 	const f = st.cpu.baked && st.cpu.key === key ? st.cpu.baked : bakeCpu(st, W, H, dpr, cam);
-	const { hold, point } = atlanten();
+	const { hold, point } = atlases();
 	const mh = hold.meta;
 	const mp = point.meta;
 	const cf = ctx2d(st.front);
@@ -331,7 +331,7 @@ export function cpuFrame(
 }
 
 /** Löscht beide Ebenen im 2D-Fallback. */
-export function cpuLeeren(st: HandZustand): void {
+export function cpuClear(st: HandState): void {
 	for (const cv of [st.back, st.front]) {
 		const g = ctx2d(cv);
 		g.setTransform(1, 0, 0, 1, 0, 0);
