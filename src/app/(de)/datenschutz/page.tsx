@@ -1,3 +1,5 @@
+import { LanguageLink } from '@/components/LanguageLink';
+import { languageAlternates } from '@/lib/locale';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -7,7 +9,10 @@ export const metadata: Metadata = {
 	title: 'Datenschutzerklärung von ManaWG',
 	description:
 		'Welche Daten ManaWG verarbeitet, an wen sie übermittelt werden, wie lange sie gespeichert bleiben und welche Rechte du hast.',
-	alternates: { canonical: '/datenschutz' },
+	alternates: {
+		canonical: '/datenschutz',
+		languages: languageAlternates('/datenschutz', '/en/privacy') ?? {},
+	},
 	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
 	openGraph: {
 		title: 'Datenschutzerklärung von ManaWG',
@@ -34,6 +39,11 @@ export default function DatenschutzPage() {
 					<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />
 					Zur Startseite
 				</Link>
+				<LanguageLink
+					to="en"
+					href="/en/privacy"
+					className="float-right inline-flex min-h-[44px] items-center rounded-lg px-3 py-3 font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)] transition-colors hover:text-[var(--text-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+				/>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-8">Datenschutzerklärung</h1>
 

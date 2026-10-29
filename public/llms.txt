@@ -70,6 +70,6 @@ Alle Seiten als ein Text: https://manawg.com/llms-full.txt
 ## Rahmen
 
 - Preis: kostenlos
-- Sprache: Deutsch
+- Sprachen: Deutsch und Englisch (englische Fassung: https://manawg.com/en/llms.txt)
 - Plattform: Web-App (PWA) für iPhone, Android und Desktop
 - Keine Werbung; Daten liegen in Frankfurt am Main (EU)
