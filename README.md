@@ -20,13 +20,15 @@
 </p>
 
 <p align="center">
-  <img src=".github/readme/home.jpg" width="32%" alt="Home page intro: the ManaWG mark as a halftone sculpture with the headline The flat app for your flat">
-  <img src=".github/readme/flat.jpg" width="32%" alt="Scroll scene: a shared flat drawn in ASCII characters, with flatmates moving between the rooms">
-  <img src=".github/readme/app.jpg" width="32%" alt="Scroll scene: a hand holds a phone running the real ManaWG app, with the headline Share it all">
+  <a href="https://manawg.com/en"><img src=".github/readme/home.jpg" alt="Home page intro: the ManaWG mark as a halftone sculpture with the headline The flat app for your flat"></a>
+</p>
+<p align="center">
+  <img src=".github/readme/flat.jpg" width="49%" alt="Scroll scene: a shared flat drawn in ASCII characters, with flatmates moving between the rooms">
+  <img src=".github/readme/app.jpg" width="49%" alt="Scroll scene: a hand holds a phone with the real ManaWG app on sample data, with the headline Share it all">
 </p>
 
 The home page is one scroll-driven stage: canvas scenes drawn in halftone and ASCII, and at the end
-a phone that runs the real app. Around it sit topic pages and guides for shared flats, the legal
+a phone with the real app on sample data that visitors can tap through. Around it sit topic pages and guides for shared flats, the legal
 pages, and machine-readable files, all in English and German.
 
 The app itself lives in [Abuarchiv/manawg](https://github.com/Abuarchiv/manawg). This repository
