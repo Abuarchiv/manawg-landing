@@ -1,5 +1,5 @@
 import { LegalPage } from '@/components/LegalPage';
-import { legalMetadata } from '@/lib/legal-metadata';
+import { legalMetadata } from '@/lib/page-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
 
 export const metadata = legalMetadata({

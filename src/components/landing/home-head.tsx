@@ -1,3 +1,4 @@
+import { JsonLd } from '@/components/JsonLd';
 import { APP_DEMO } from '@/content/app-demo';
 import { HOME_DICT } from '@/content/home';
 import { APP_ORIGIN } from '@/lib/app-origin';
@@ -56,16 +57,8 @@ export function HomeHead({ locale }: { locale: Locale }) {
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: static string, no user content
 				dangerouslySetInnerHTML={{ __html: NOSCRIPT_STYLE }}
 			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationSchema) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-			/>
+			<JsonLd data={softwareApplicationSchema} />
+			<JsonLd data={faqSchema} />
 		</>
 	);
 }

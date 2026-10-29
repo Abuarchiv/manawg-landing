@@ -1,5 +1,5 @@
 import { LegalPage } from '@/components/LegalPage';
-import { legalMetadata } from '@/lib/legal-metadata';
+import { legalMetadata } from '@/lib/page-metadata';
 
 export const metadata = legalMetadata({
 	locale: 'de',

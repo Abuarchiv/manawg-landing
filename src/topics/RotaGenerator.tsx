@@ -174,9 +174,7 @@ export default function RotaGenerator({ locale }: { locale: Locale }) {
 			<div className="md:col-span-12 min-w-0 plan-print" aria-live="polite">
 				{plan ? (
 					<>
-						<h3 className="m-0 mb-4 font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[20px]">
-							{t.title(weeks)}
-						</h3>
+						<h3 className="m-0 mb-4 font-display font-semibold text-[20px]">{t.title(weeks)}</h3>
 						<div className="overflow-x-auto">
 							<table className="w-full min-w-[540px] border-collapse text-left">
 								<caption className="sr-only">{t.caption}</caption>

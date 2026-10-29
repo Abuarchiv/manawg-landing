@@ -1,13 +1,15 @@
+import { JsonLd } from '@/components/JsonLd';
 import { appUrl } from '@/lib/app-origin';
 import {
 	INTL_LOCALE,
 	IN_LANGUAGE,
 	type Locale,
-	OG_LOCALE,
+	PATHS,
 	languageAlternates,
 	localiseHref,
 	toGermanSlug,
 } from '@/lib/locale';
+import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -140,38 +142,23 @@ const pathOf = (locale: Locale, slug: string) => localiseHref(locale, `/${slug}`
 function alternatesOf(locale: Locale, slug: string) {
 	const other = counterpartOf(locale, slug);
 	const own = pathOf(locale, slug);
-	return locale === 'de' ? languageAlternates(own, other) : other && languageAlternates(other, own);
+	if (locale === 'de') return languageAlternates(own, other);
+	return other ? languageAlternates(other, own) : undefined;
 }
 
 export function topicMetadata(locale: Locale, slug: string): Metadata {
 	const t = topics(locale)[slug];
 	if (!t) return {};
 	const path = pathOf(locale, slug);
-	const languages = alternatesOf(locale, slug);
-	const feed = locale === 'de' ? '/feed.xml' : '/en/feed.xml';
-	return {
+	return pageMetadata({
+		locale,
+		path,
 		title: t.title,
 		description: t.description,
-		// alternates replaces the layout object completely (no deep merge), so the feed is repeated here.
-		alternates: {
-			canonical: path,
-			...(languages ? { languages } : {}),
-			types: { 'application/atom+xml': feed },
-		},
-		openGraph: {
-			title: t.title,
-			description: t.description,
-			url: path,
-			siteName: 'ManaWG',
-			locale: OG_LOCALE[locale],
-			alternateLocale: OG_LOCALE[locale === 'de' ? 'en' : 'de'],
-			type: 'article',
-			publishedTime: isoDateTime(t.published),
-			modifiedTime: isoDateTime(t.updated),
-			images: [{ url: `${path}/opengraph-image`, width: 1200, height: 630, alt: t.h1 }],
-		},
-		twitter: { title: t.title, description: t.description, images: [`${path}/opengraph-image`] },
-	};
+		languages: alternatesOf(locale, slug),
+		image: { url: `${path}/opengraph-image`, alt: t.h1 },
+		article: { publishedTime: isoDateTime(t.published), modifiedTime: isoDateTime(t.updated) },
+	});
 }
 
 export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: string }) {
@@ -195,9 +182,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 	};
 
 	const ids = schemaIds();
-	const site = ids.site;
-	const orgId = ids.organisation;
-	const websiteId = ids.website;
+	const { site } = ids;
 	const sources = (t.sources ?? []).map(([name, url]): [string, string] => [
 		name,
 		url.startsWith('/') ? `${site}${url}` : url,
@@ -219,11 +204,11 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 		author: {
 			'@type': 'Person',
 			name: 'Abubakar Abditube',
-			url: `${site}${locale === 'de' ? '/ueber-manawg' : '/en/about-manawg'}`,
+			url: `${site}${PATHS[locale].about}`,
 		},
 		// Name and URL included directly so the article is complete even without a resolved @id (Rich Results Test).
-		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: site },
-		isPartOf: { '@id': websiteId },
+		publisher: { '@type': 'Organization', '@id': ids.organisation, name: 'ManaWG', url: site },
+		isPartOf: { '@id': ids.website },
 		// Product pages and the switching guide are about the app; legal and everyday guides are not.
 		...(groupId !== 'guides' || deSlug === 'splitwise-splid-wechseln'
 			? { about: { '@id': ids.app } }
@@ -233,14 +218,13 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 
 	// Guides hang under the guide index, comparisons under the best-app page, features under the app page (three-level breadcrumb).
 	const isGuide = groupId === 'guides';
-	const parentCrumb: [string, string] | null =
-		groupId === 'guides'
-			? txt.parentCrumbs.guides
-			: groupId === 'compare' && deSlug !== 'beste-wg-app'
-				? txt.parentCrumbs.compare
-				: groupId === 'features' && deSlug !== 'wg-app'
-					? txt.parentCrumbs.features
-					: null;
+	const parentCrumb: [string, string] | null = isGuide
+		? txt.parentCrumbs.guides
+		: groupId === 'compare' && deSlug !== 'beste-wg-app'
+			? txt.parentCrumbs.compare
+			: groupId === 'features' && deSlug !== 'wg-app'
+				? txt.parentCrumbs.features
+				: null;
 	const breadcrumb = {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
@@ -282,9 +266,6 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 
 	// Provider comparison: notice from the provider, above the content.
 	const isComparison = groupId === 'compare';
-	const notice = txt.comparisonNotice;
-
-	const lineCls = 'divider';
 
 	return (
 		<main
@@ -292,23 +273,9 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 			tabIndex={-1}
 			className="topic-page min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
 		>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
-			/>
-			{faqSchema && (
-				<script
-					type="application/ld+json"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-				/>
-			)}
+			<JsonLd data={breadcrumb} />
+			<JsonLd data={article} />
+			{faqSchema && <JsonLd data={faqSchema} />}
 
 			<TopicHeader locale={locale} />
 
@@ -333,7 +300,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 
 			<div className={`${gutter} flex-1`}>
 				<h1
-					className={`font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
+					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
 				>
 					{t.h1}
 				</h1>
@@ -342,7 +309,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				</p>
 				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
 					{txt.by}{' '}
-					<Link href={locale === 'de' ? '/ueber-manawg' : '/en/about-manawg'} prefetch={false}>
+					<Link href={PATHS[locale].about} prefetch={false}>
 						{txt.authorName}
 					</Link>{' '}
 					· {txt.published} <time dateTime={t.published}>{formatDate(t.published)}</time> ·{' '}
@@ -356,7 +323,9 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 						· <a href={`#${anchorId(t.widget.after)}`}>{txt.printLabel}</a>
 					</p>
 				)}
-				{isComparison && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{notice}</p>}
+				{isComparison && (
+					<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{txt.comparisonNotice}</p>
+				)}
 
 				{/* Tables with after: 'intro' sit directly below the intro text. */}
 				{t.tables
@@ -368,14 +337,14 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 					))}
 
 				{t.sections.length >= 4 && (
-					<nav aria-labelledby="contents" className={`${lineCls} mt-20 md:mt-32 pt-10`}>
+					<nav aria-labelledby="contents" className="divider mt-20 md:mt-32 pt-10">
 						<h2 id="contents" className={`${mono} m-0 mb-6 font-normal`}>
 							{txt.contents}
 						</h2>
 						<ol className="list-none m-0 p-0">
 							{[...t.sections.map(([heading]) => heading), ...(t.faq ? [faqHeading] : [])].map(
 								(heading) => (
-									<li key={heading} className={`${lineCls} py-3`}>
+									<li key={heading} className="divider py-3">
 										<a href={`#${heading === faqHeading ? 'fragen' : anchorId(heading)}`}>
 											{heading}
 										</a>
@@ -396,9 +365,9 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 							<Fragment key={heading}>
 								<section
 									id={anchorId(heading)}
-									className={`${lineCls} py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8 scroll-mt-6`}
+									className="divider py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8 scroll-mt-6"
 								>
-									<h2 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
+									<h2 className="font-display font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
 										{heading}
 									</h2>
 									{lines.length > 1 ? (
@@ -432,7 +401,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				</div>
 
 				{t.faq && (
-					<section aria-labelledby="fragen" className={`${lineCls} pt-10 md:pt-14`}>
+					<section aria-labelledby="fragen" className="divider pt-10 md:pt-14">
 						<h2 id="fragen" className={`${mono} m-0 mb-8 font-normal`}>
 							{faqHeading}
 						</h2>
@@ -440,9 +409,9 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 							<div
 								key={question}
 								id={anchorId(question)}
-								className={`${lineCls} py-8 scroll-mt-6 md:grid md:grid-cols-12 md:gap-8`}
+								className="divider py-8 scroll-mt-6 md:grid md:grid-cols-12 md:gap-8"
 							>
-								<h3 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
+								<h3 className="font-display font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
 									{question}
 								</h3>
 								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-[var(--text-2)]">
@@ -454,13 +423,13 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				)}
 
 				{sources.length > 0 && (
-					<section aria-labelledby="quellen" className={`${lineCls} pt-10 md:pt-14`}>
+					<section aria-labelledby="quellen" className="divider pt-10 md:pt-14">
 						<h2 id="quellen" className={`${mono} m-0 mb-6 font-normal`}>
 							{txt.sources(updatedDate)}
 						</h2>
 						<ul className="list-none m-0 p-0">
 							{sources.map(([name, url]) => (
-								<li key={url} className={`${lineCls} py-3`}>
+								<li key={url} className="divider py-3">
 									<a href={url}>{name}</a>
 								</li>
 							))}
@@ -469,24 +438,20 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				)}
 
 				{isGuide && (
-					<aside aria-label={txt.guideNoteLabel} className={`${lineCls} pt-10 md:pt-14`}>
+					<aside aria-label={txt.guideNoteLabel} className="divider pt-10 md:pt-14">
 						<p className={`${mono} m-0`}>
 							{txt.guideNote} <a href="mailto:info@manawg.com">info@manawg.com</a>.
 						</p>
 					</aside>
 				)}
 
-				<div
-					className={`${lineCls} mt-16 md:mt-24 pt-14 md:pt-20 md:grid md:grid-cols-12 md:gap-8 items-end`}
-				>
-					<p className="m-0 md:col-span-7 font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[clamp(30px,4.4vw,64px)] leading-[1] tracking-[-0.045em]">
+				<div className="divider mt-16 md:mt-24 pt-14 md:pt-20 md:grid md:grid-cols-12 md:gap-8 items-end">
+					<p className="m-0 md:col-span-7 font-display font-semibold text-[clamp(30px,4.4vw,64px)] leading-[1] tracking-[-0.045em]">
 						{txt.ctaTagline}
 					</p>
 					<div className="mt-8 md:mt-0 md:col-start-9 md:col-span-4">
 						<a
-							href={appUrl(
-								locale === 'de' ? '/registrieren?action=create' : '/signup?action=create',
-							)}
+							href={appUrl(PATHS[locale].signup)}
 							className="inline-flex items-center justify-center min-h-[56px] px-8 rounded-full bg-[var(--ink)] text-[var(--paper)] font-semibold no-underline hover:bg-[rgb(var(--ink-rgb)/0.82)] transition-colors"
 						>
 							{txt.ctaButton}
@@ -495,7 +460,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 					</div>
 				</div>
 
-				<nav aria-labelledby="weiter" className={`${lineCls} mt-20 md:mt-32 pt-10`}>
+				<nav aria-labelledby="weiter" className="divider mt-20 md:mt-32 pt-10">
 					<h2 id="weiter" className={`${mono} m-0 mb-6 font-normal`}>
 						{txt.readNext}
 					</h2>
@@ -505,13 +470,13 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 							const relGroup = groupOf(locale, relSlug);
 							if (!rel) return null;
 							return (
-								<li key={relSlug} className={`${lineCls}`}>
+								<li key={relSlug} className="divider">
 									<Link
 										href={pathOf(locale, relSlug)}
 										prefetch={false}
 										className="group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-6 no-underline"
 									>
-										<span className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
+										<span className="font-display font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
 											{rel.h1}
 										</span>{' '}
 										<span className={mono}>{relGroup && groupName(locale, relGroup.id)}</span>

@@ -8,6 +8,22 @@ export const IN_LANGUAGE = { de: 'de-DE', en: 'en-GB' } as const;
 export const OG_LOCALE = { de: 'de_DE', en: 'en_GB' } as const;
 export const INTL_LOCALE = { de: 'de-DE', en: 'en-GB' } as const;
 
+/** Paths linked from several places. `signup` is a path in the app, for appUrl(). */
+export const PATHS = {
+	de: {
+		guides: '/ratgeber',
+		about: '/ueber-manawg',
+		feed: '/feed.xml',
+		signup: '/registrieren?action=create',
+	},
+	en: {
+		guides: '/en/guides',
+		about: '/en/about-manawg',
+		feed: '/en/feed.xml',
+		signup: '/signup?action=create',
+	},
+} as const;
+
 /** Pages that exist once per language outside the topic system, as [German path, English path]. */
 export const STATIC_PAIRS: ReadonlyArray<readonly [de: string, en: string]> = [
 	['/', '/en'],

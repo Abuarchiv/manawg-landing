@@ -1,5 +1,7 @@
+import { JsonLd } from '@/components/JsonLd';
 import { getAppUrl } from '@/lib/app-url';
-import { type Locale, OG_LOCALE, languageAlternates } from '@/lib/locale';
+import { type Locale, languageAlternates } from '@/lib/locale';
+import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
 import { THEME_COLOR, THEME_SCRIPT } from '@/lib/theme';
 import type { Metadata, Viewport } from 'next';
@@ -15,16 +17,12 @@ const TEXT = {
 		description:
 			'Die kostenlose, werbefreie WG-App auf Deutsch: Ausgaben teilen, Putzplan organisieren und gemeinsam einkaufen. Für eure WG im Browser – ohne App-Store.',
 		path: '/',
-		feed: '/feed.xml',
-		ogAlt: 'Das ManaWG-Zeichen als 3D-Körper',
 	},
 	en: {
 		title: 'Free flatmate app: split bills, rota & shopping | ManaWG',
 		description:
 			'The free, ad-free and open-source app for flatmates and roommates: split bills, run a cleaning rota and shop together. In English and German, in the browser.',
 		path: '/en',
-		feed: '/en/feed.xml',
-		ogAlt: 'The ManaWG mark as a 3D object',
 	},
 } as const;
 
@@ -63,31 +61,19 @@ const webSiteSchema = {
 };
 
 export function siteMetadata(locale: Locale): Metadata {
-	const { title, description, path, feed, ogAlt } = TEXT[locale];
-	const languages = languageAlternates('/', '/en');
+	const { title, description, path } = TEXT[locale];
 	return {
 		metadataBase: new URL(appUrl),
-		title,
-		description,
-		authors: [{ name: 'ManaWG' }],
-		applicationName: 'ManaWG',
-		alternates: {
-			canonical: path,
-			...(languages ? { languages } : {}),
-			types: { 'application/atom+xml': feed },
-		},
-		robots: { index: true, follow: true },
-		openGraph: {
+		...pageMetadata({
+			locale,
+			path,
 			title,
 			description,
-			url: path,
-			siteName: 'ManaWG',
-			locale: OG_LOCALE[locale],
-			alternateLocale: OG_LOCALE[locale === 'de' ? 'en' : 'de'],
-			type: 'website',
-			images: [{ url: '/og.png?v=2', width: 1200, height: 630, alt: ogAlt }],
-		},
-		twitter: { card: 'summary_large_image', title, description, images: ['/og.png?v=2'] },
+			languages: languageAlternates('/', '/en'),
+		}),
+		authors: [{ name: 'ManaWG' }],
+		applicationName: 'ManaWG',
+		robots: { index: true, follow: true },
 		// Deliberately no manifest: manawg.com is the marketing site, only app.manawg.com is installable.
 		icons: {
 			// ?v=2 forces search engines to reload the icons (Google keeps favicons for weeks)
@@ -136,16 +122,8 @@ export function SiteHead({ locale }: { locale: Locale }) {
 				href="/fonts/jetbrains-mono-latin.woff2"
 				crossOrigin="anonymous"
 			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema(locale)) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
-			/>
+			<JsonLd data={organizationSchema(locale)} />
+			<JsonLd data={webSiteSchema} />
 		</head>
 	);
 }

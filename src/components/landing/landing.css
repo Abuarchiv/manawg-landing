@@ -378,37 +378,11 @@
 	height: max(100%, 44px);
 	transform: translateY(-50%);
 }
-.focus-anchor {
-	position: fixed;
-	left: calc(var(--margin) + env(safe-area-inset-left));
-	bottom: calc(max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px)) + 32px);
-	z-index: 21;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;
-	clip-path: inset(50%);
-	white-space: nowrap;
-	color: var(--ink);
-	text-decoration: none;
-}
-.focus-anchor:focus-visible {
-	width: auto;
-	height: auto;
-	overflow: visible;
-	clip-path: none;
-	padding: 8px 12px;
-	background: var(--paper);
-	border: 1px solid rgb(var(--ink-rgb) / 0.4);
-	border-radius: 8px;
-	outline: 2px solid var(--ink);
-	outline-offset: 2px;
-}
-/* Skip link "Skip to content": first tab stop, visible below the header band only on keyboard focus */
+/* Keyboard jumps (to the app demo, "Skip to content"): hidden until focused by keyboard */
+.focus-anchor,
 .skip-link {
 	position: fixed;
 	left: calc(var(--margin) + env(safe-area-inset-left));
-	top: calc(var(--header-bottom) + 8px);
-	z-index: 22;
 	width: 1px;
 	height: 1px;
 	overflow: hidden;
@@ -417,6 +391,16 @@
 	color: var(--ink);
 	text-decoration: none;
 }
+.focus-anchor {
+	bottom: calc(max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px)) + 32px);
+	z-index: 21;
+}
+/* The skip link is the first tab stop and appears below the header band */
+.skip-link {
+	top: calc(var(--header-bottom) + 8px);
+	z-index: 22;
+}
+.focus-anchor:focus-visible,
 .skip-link:focus-visible {
 	width: auto;
 	height: auto;

@@ -1,6 +1,6 @@
 import { LanguageLink } from '@/components/LanguageLink';
-import { LEGAL_PAGES, type LegalPageId } from '@/lib/legal-metadata';
 import type { Locale } from '@/lib/locale';
+import { LEGAL_PAGES, type LegalPageId } from '@/lib/page-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';

@@ -1,12 +1,14 @@
+import { JsonLd } from '@/components/JsonLd';
 import {
 	IN_LANGUAGE,
 	type Locale,
-	OG_LOCALE,
+	PATHS,
 	counterpartPath,
 	languageAlternates,
 	localiseHref,
 	toEnglishSlug,
 } from '@/lib/locale';
+import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -68,47 +70,22 @@ function clustersOf(locale: Locale): Array<[string, string[]]> {
 	]).filter(([, slugs]) => slugs.length > 0);
 }
 
-const indexPath = (locale: Locale) => (locale === 'de' ? '/ratgeber' : '/en/guides');
-
 export function guideIndexMetadata(locale: Locale): Metadata {
 	const txt = ui(locale).guideIndex;
-	const path = indexPath(locale);
-	const languages = languageAlternates('/ratgeber', '/en/guides');
-	return {
+	return pageMetadata({
+		locale,
+		path: PATHS[locale].guides,
 		title: txt.title,
 		description: txt.description,
-		alternates: {
-			canonical: path,
-			...(languages ? { languages } : {}),
-			types: { 'application/atom+xml': locale === 'de' ? '/feed.xml' : '/en/feed.xml' },
-		},
-		openGraph: {
-			title: txt.title,
-			description: txt.description,
-			url: path,
-			siteName: 'ManaWG',
-			locale: OG_LOCALE[locale],
-			alternateLocale: OG_LOCALE[locale === 'de' ? 'en' : 'de'],
-			type: 'website',
-			images: [
-				{
-					url: '/og.png?v=2',
-					width: 1200,
-					height: 630,
-					alt:
-						locale === 'de' ? 'Das ManaWG-Zeichen als 3D-Körper' : 'The ManaWG mark as a 3D object',
-				},
-			],
-		},
-		twitter: { title: txt.title, description: txt.description, images: ['/og.png?v=2'] },
-	};
+		languages: languageAlternates(PATHS.de.guides, PATHS.en.guides),
+	});
 }
 
 export function GuideIndex({ locale }: { locale: Locale }) {
 	const { site, website } = schemaIds();
 	const txt = ui(locale).guideIndex;
 	const data = topics(locale);
-	const path = indexPath(locale);
+	const path = PATHS[locale].guides;
 	const clusters = clustersOf(locale);
 	const slugs = clusters.flatMap(([, s]) => s);
 	const collection = {
@@ -150,16 +127,8 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 			tabIndex={-1}
 			className="topic-page min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
 		>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
-			/>
-			<script
-				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(collection) }}
-			/>
+			<JsonLd data={breadcrumb} />
+			<JsonLd data={collection} />
 
 			<TopicHeader locale={locale} />
 
@@ -176,7 +145,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 
 			<div className={`${gutter} flex-1`}>
 				<h1
-					className={`font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
+					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
 				>
 					{txt.h1}
 				</h1>
@@ -187,7 +156,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 				<div className="mt-20 md:mt-32">
 					{clusters.map(([name, list]) => (
 						<section key={name} className="divider py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8">
-							<h2 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
+							<h2 className="font-display font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
 								{name}
 							</h2>
 							<ul className="list-none m-0 p-0 md:col-start-6 md:col-span-7 flex flex-col">
@@ -199,7 +168,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 											<Link
 												href={localiseHref(locale, `/${slug}`)}
 												prefetch={false}
-												className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[19px] leading-[1.25] tracking-[-0.02em] no-underline hover:text-[var(--text-2)]"
+												className="font-display font-semibold text-[19px] leading-[1.25] tracking-[-0.02em] no-underline hover:text-[var(--text-2)]"
 											>
 												{t.h1}
 											</Link>

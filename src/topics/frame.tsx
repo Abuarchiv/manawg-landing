@@ -1,6 +1,7 @@
 import { LanguageLink } from '@/components/LanguageLink';
 import { appUrl } from '@/lib/app-origin';
-import { type Locale, TOPIC_SLUG_EN, localiseHref } from '@/lib/locale';
+import { type Locale, PATHS, TOPIC_SLUG_EN, localiseHref } from '@/lib/locale';
+import { LEGAL_PAGES } from '@/lib/page-metadata';
 import Link from 'next/link';
 import { GROUPS } from './groups';
 import { groupName, topics, ui } from './registry';
@@ -30,12 +31,10 @@ export function TopicHeader({ locale }: { locale: Locale }) {
 					height={346}
 					className="h-5 w-auto"
 				/>
-				<span className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] text-[17px] font-semibold tracking-[-0.03em]">
-					ManaWG
-				</span>
+				<span className="font-display text-[17px] font-semibold tracking-[-0.03em]">ManaWG</span>
 			</Link>
 			<a
-				href={appUrl(locale === 'de' ? '/registrieren?action=create' : '/signup?action=create')}
+				href={appUrl(PATHS[locale].signup)}
 				className="font-mono text-[12px] text-[var(--text-3)] min-h-[44px] inline-flex items-center"
 			>
 				{t.openApp}
@@ -43,11 +42,6 @@ export function TopicHeader({ locale }: { locale: Locale }) {
 		</header>
 	);
 }
-
-const LEGAL_PATHS: Record<Locale, [notice: string, privacy: string, terms: string]> = {
-	de: ['/impressum', '/datenschutz', '/agb'],
-	en: ['/en/legal-notice', '/en/privacy', '/en/terms'],
-};
 
 /** Footer. `counterpart` is this page's path in the other language; without it no language link shows. */
 export function TopicFooter({
@@ -57,7 +51,6 @@ export function TopicFooter({
 }: { locale: Locale; active?: string; counterpart?: string | null }) {
 	const t = ui(locale);
 	const data = topics(locale);
-	const [notice, privacy, terms] = LEGAL_PATHS[locale];
 	const localSlug = (slug: string) => (locale === 'de' ? slug : TOPIC_SLUG_EN[slug]);
 	return (
 		<footer
@@ -73,7 +66,7 @@ export function TopicFooter({
 						<nav key={g.id} aria-label={name}>
 							<p className={`${mono} m-0 mb-4`}>
 								{g.id === 'guides' ? (
-									<Link href={locale === 'de' ? '/ratgeber' : '/en/guides'} prefetch={false}>
+									<Link href={PATHS[locale].guides} prefetch={false}>
 										{name}
 									</Link>
 								) : (
@@ -100,13 +93,13 @@ export function TopicFooter({
 			</div>
 			<p className={`${mono} mt-12 mb-0 flex flex-wrap gap-x-5`}>
 				<span>{t.footerNote}</span>
-				<Link href={notice} prefetch={false}>
+				<Link href={LEGAL_PAGES.notice[locale].path} prefetch={false}>
 					{t.legal.notice}
 				</Link>
-				<Link href={privacy} prefetch={false}>
+				<Link href={LEGAL_PAGES.privacy[locale].path} prefetch={false}>
 					{t.legal.privacy}
 				</Link>
-				<Link href={terms} prefetch={false}>
+				<Link href={LEGAL_PAGES.terms[locale].path} prefetch={false}>
 					{t.legal.terms}
 				</Link>
 				{counterpart && <LanguageLink to={locale === 'de' ? 'en' : 'de'} href={counterpart} />}

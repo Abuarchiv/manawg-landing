@@ -12,6 +12,7 @@ const config: Config = {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', '"Inter Fallback"', 'system-ui', 'sans-serif'],
+				display: ['"Inter Tight"', '"Inter Tight Fallback"', 'sans-serif'],
 				mono: ['"JetBrains Mono"', '"JetBrains Mono Fallback"', 'monospace'],
 			},
 		},
