@@ -1,6 +1,8 @@
 import type { TopicUi } from './ui.ts';
 
-// First English draft of the topic frame strings; the topics package refines it.
+const PROPER_NOUN = /^(Splitwise|Splid|Flatastic|Tricount|OurHome|ManaWG)/;
+
+// English topic frame strings. German terms stay out of the frame; pages explain them once.
 export const UI_EN: TopicUi = {
 	homeLabel: 'ManaWG, to the home page',
 	openApp: 'Open the app',
@@ -14,11 +16,13 @@ export const UI_EN: TopicUi = {
 	updated: 'Updated',
 	// The FAQ page is itself called “Frequently asked questions”; it keeps that title.
 	faqHeading: (link) =>
-		/^(faq|frequently asked)/i.test(link) ? link : `Frequently asked questions about ${link}`,
+		/^(faq|frequently asked)/i.test(link)
+			? 'Frequently asked questions'
+			: `Questions about ${PROPER_NOUN.test(link) ? link : link.charAt(0).toLowerCase() + link.slice(1)}`,
 	sources: (date) => `Sources (as of ${date})`,
 	guideNoteLabel: 'About this guide',
 	guideNote:
-		'Written by the person who runs ManaWG. We review this page when the rules or the app change. Spotted a mistake? Email',
+		'Written by the person who runs ManaWG. This page is reviewed whenever the rules or the app change. Spotted a mistake? Email',
 	ctaTagline: 'Your flat, in one place.',
 	ctaButton: 'Create a flat for free',
 	ctaNote: 'Free, no ads, in the browser.',
@@ -26,7 +30,7 @@ export const UI_EN: TopicUi = {
 	csvDownload: 'Download as CSV',
 	printLabel: 'Print / save as PDF',
 	comparisonNotice:
-		'ManaWG, the provider of the flat-share app featured here, wrote this comparison, so it is not an independent ranking. Confirmed statements about other providers link to their sources; details we could not verify are marked as such. Check the current status with the providers themselves.',
+		'This comparison was written by ManaWG, the provider of the flat-share app featured here, so it is not an independent ranking. Confirmed statements about other providers link to their sources, and anything we could not verify is marked as such. Please check the current details with the providers themselves.',
 	groupNames: {
 		features: 'Features',
 		compare: 'Comparisons',
@@ -41,12 +45,12 @@ export const UI_EN: TopicUi = {
 	ogSubtitle: 'Free flat-share app · manawg.com',
 	ogFallback: 'The app for everyday flat life',
 	guideIndex: {
-		title: 'Flat-share guides: money, cleaning, rules, moving in and out | ManaWG',
+		title: 'Flat-share guides: money, rota, rules, moving | ManaWG',
 		description:
-			'Guides for life in a shared flat in Germany: splitting costs, a cleaning rota, house rules, conflicts, tenancy, notice, registration, moving in and out. Free.',
-		h1: 'Guides for life in a shared flat',
+			'Guides to life in a shared flat in Germany: splitting costs, a cleaning rota, house rules, conflicts, tenancy, notice, registration, moving in and out. Free.',
+		h1: 'Guides to living in a shared flat',
 		intro:
-			'From starting a flat share through everyday life to moving out: guides on money, cleaning, house rules and contracts in a German WG (shared flat). With worked examples, templates and checklists to copy.',
+			'From starting a flat share through everyday life to moving out: guides on money, cleaning, house rules and contracts in a German WG (shared flat). They come with worked examples, templates and checklists you can copy.',
 		crumb: 'Guides',
 		collectionName: 'Flat-share guides',
 		clusters: {
