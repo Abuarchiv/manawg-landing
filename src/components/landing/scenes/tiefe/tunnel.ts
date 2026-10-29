@@ -625,6 +625,8 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 		warm: (s) => bereite(s, words),
 		lies(s) {
 			const L = s.lage;
+			// The QA hook can call lies before init has run.
+			if (!L) return;
 			L.kopf = s.kopf ? s.kopf.getBoundingClientRect().bottom : 0;
 			L.el = s.el.getBoundingClientRect().top;
 			const r = sec.getBoundingClientRect();

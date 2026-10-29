@@ -29,7 +29,7 @@ export const en: HomeDict = {
 		scroll: 'SCROLL',
 	},
 	hero: {
-		title: ['The flat-share app ', 'for your flat.'],
+		title: ['The flat app ', 'for your flat.'],
 		sub: 'The free flat-share app: expenses, shopping and cleaning rota. In the browser.',
 	},
 	rooms: [
@@ -266,7 +266,7 @@ export const en: HomeDict = {
 		privacy: 'Privacy policy',
 		terms: 'Terms',
 	},
-	end: { title: ['Share ', 'everyday life.'], cta: 'Create a flat' },
+	end: { title: ['Share it all.'], cta: 'Create a flat' },
 	phone: {
 		aria: 'Try ManaWG',
 		frameTitle: 'ManaWG app',

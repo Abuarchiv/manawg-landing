@@ -66,11 +66,15 @@ const deutsch = (teil: string, locale: Locale) =>
 			);
 
 const zelle = 'px-3 py-2 border-b border-white/10';
+// English strings are longer: with up to three columns the table fits a phone instead of scrolling sideways.
+const zelleEn = 'px-2 md:px-3 py-2 border-b border-white/10';
 
 type TabelleDaten = NonNullable<Thema['tabellen']>[number];
 
 // Tabelle als Daten: scrollbare, beschriftete Region mit Spaltenköpfen und Zeilenkopf in der ersten Spalte.
-function Tabelle({ t }: { t: TabelleDaten }) {
+function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
+	const kompakt = locale === 'en' && t.kopf.length <= 3;
+	const zelleKlasse = kompakt ? zelleEn : zelle;
 	const id = `tabelle-${slug(t.titel)}`;
 	return (
 		<section aria-labelledby={id} className="linie pt-10 md:pt-14">
@@ -85,12 +89,14 @@ function Tabelle({ t }: { t: TabelleDaten }) {
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollbare Region muss per Tastatur erreichbar sein
 				tabIndex={0}
 			>
-				<table className="w-full min-w-[540px] border-collapse text-left">
+				<table
+					className={`w-full ${kompakt ? 'min-w-0 md:min-w-[540px]' : 'min-w-[540px]'} border-collapse text-left`}
+				>
 					<caption className="sr-only">{t.titel}</caption>
 					<thead>
 						<tr>
 							{t.kopf.map((k) => (
-								<th key={k} scope="col" className={`${zelle} text-left font-normal`}>
+								<th key={k} scope="col" className={`${zelleKlasse} text-left font-normal`}>
 									{k}
 								</th>
 							))}
@@ -101,11 +107,11 @@ function Tabelle({ t }: { t: TabelleDaten }) {
 							<tr key={zeile.join('|')}>
 								{zeile.map((feld, j) =>
 									j === 0 ? (
-										<th key={feld} scope="row" className={`${zelle} text-left font-normal`}>
+										<th key={feld} scope="row" className={`${zelleKlasse} text-left font-normal`}>
 											{feld}
 										</th>
 									) : (
-										<td key={j} className={zelle}>
+										<td key={j} className={zelleKlasse}>
 											{feld}
 										</td>
 									),
@@ -314,7 +320,9 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 			</nav>
 
 			<div className={`${rand} flex-1`}>
-				<h1 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] hyphens-auto break-words">
+				<h1
+					className={`font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
+				>
 					{t.h1}
 				</h1>
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
@@ -343,7 +351,7 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 					?.filter((tab) => tab.nach === 'einleitung')
 					.map((tab) => (
 						<div key={tab.titel} className="mt-10 md:mt-16">
-							<Tabelle t={tab} />
+							<Tabelle t={tab} locale={locale} />
 						</div>
 					))}
 
@@ -396,7 +404,7 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 								{t.tabellen
 									?.filter((tab) => tab.nach === kopf)
 									.map((tab) => (
-										<Tabelle key={tab.titel} t={tab} />
+										<Tabelle key={tab.titel} t={tab} locale={locale} />
 									))}
 								{t.widget?.after === kopf &&
 									(t.widget.kind === 'rota-generator' ? (

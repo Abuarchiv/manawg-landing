@@ -140,7 +140,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 						'no app store, English and German, up to 20 active members',
 					],
 				],
-				hinweis: 'Details from the app, as of 29 October 2026.',
+				hinweis: 'Details from the app, as of 27 October 2026.',
 			},
 		],
 		fragen: [
@@ -423,7 +423,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					].map((column) => column[i] ?? NC),
 				]),
 				hinweis:
-					'Details on other providers come from their English pages, checked on 29 October 2026. Anything the sources do not support reads “not checked”. Columns are alphabetical, not a ranking.',
+					'Details on other providers come from their English pages, checked on 14 October 2026 (Tricount: 27 October 2026). Anything the sources do not support reads “not checked”. Columns are alphabetical, not a ranking.',
 			},
 		],
 		abschnitte: [
@@ -513,13 +513,13 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					'conversion in Pro per provider',
 					'Pro plan per provider; scope of the free version not checked',
 				],
-				'Details on Splitwise come from the provider’s Pro page, checked on 29 October 2026. Anything the sources do not support reads “not checked”.',
+				'Details on Splitwise come from the provider’s Pro page, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
 		abschnitte: [
 			[
 				'What Splitwise Pro includes, per the provider',
-				'The Splitwise Pro page lists unlimited expenses, an ad-free experience, receipt scanning with itemisation and conversion of bills into any currency, among other things. Transaction import from a card is described for the US only. The Pro page does not tell us exactly where the free version stops, and we have not verified the details of the free version here, so check that with Splitwise itself. Plans change, so rely on the provider’s page as of 29 October 2026.',
+				'The Splitwise Pro page lists unlimited expenses, an ad-free experience, receipt scanning with itemisation and conversion of bills into any currency, among other things. Transaction import from a card is described for the US only. The Pro page does not tell us exactly where the free version stops, and we have not verified the details of the free version here, so check that with Splitwise itself. Plans change, so rely on the provider’s page as of 14 October 2026.',
 			],
 			[
 				'No paid tier, no ads',
@@ -583,13 +583,13 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			comparisonTable(
 				'Splid',
 				['yes, in groups', NC, NC, NC, NC, 'over 150 per provider', 'free per provider'],
-				'Details on Splid come from the provider’s English page, checked on 29 October 2026. Anything the sources do not support reads “not checked”.',
+				'Details on Splid come from the provider’s English page, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
 		abschnitte: [
 			[
 				'What Splid does, per the provider',
-				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. Details of the feature set are there as of 29 October 2026. In ManaWG, by contrast, each person signs in with Google or with email and password. In return, expenses, balances and history belong firmly to your flat, and flatmates join through an invite link or an email invitation.',
+				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. Details of the feature set are there as of 14 October 2026. In ManaWG, by contrast, each person signs in with Google or with email and password. In return, expenses, balances and history belong firmly to your flat, and flatmates join through an invite link or an email invitation.',
 			],
 			[
 				'Expenses and household in one app',
@@ -662,7 +662,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					NC,
 					'Premium is paid per provider; scope of the free version not checked',
 				],
-				'Details on Flatastic come from the provider’s English pages, checked on 29 October 2026. Anything the sources do not support reads “not checked”.',
+				'Details on Flatastic come from the provider’s English pages, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 			{
 				nach: 'What Flatastic Premium unlocks',
@@ -684,7 +684,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					['Images on expenses', 'Premium', 'photo on a receipt, attached, not analysed'],
 				],
 				hinweis:
-					'Details on Flatastic come from the provider’s Premium page, checked on 29 October 2026. Anything the sources do not support reads “not checked”.',
+					'Details on Flatastic come from the provider’s Premium page, checked on 27 October 2026. Anything the sources do not support reads “not checked”.',
 			},
 		],
 		abschnitte: [
@@ -694,7 +694,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'What Flatastic Premium unlocks',
-				'Flatastic can be used free and offers a paid Premium. The provider’s Premium page lists, among other things, no advertising, the history of the cleaning plan, access to earlier budget breakdowns in an archive, images on expense entries and a CSV export of financial entries (checked on 29 October 2026). We do not quote prices, because they change; you will find them with the provider. In ManaWG every area is open with no paid tier.',
+				'Flatastic can be used free and offers a paid Premium. The provider’s Premium page lists, among other things, no advertising, the history of the cleaning plan, access to earlier budget breakdowns in an archive, images on expense entries and a CSV export of financial entries (checked on 27 October 2026). We do not quote prices, because they change; you will find them with the provider. In ManaWG every area is open with no paid tier.',
 			],
 			[
 				'Reminders you control yourself',
@@ -740,11 +740,11 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Is Flatastic free?',
-				'Per the provider, Flatastic is free to use and offers a paid Premium. The Premium page lists, among other things, no advertising, the history of the cleaning plan, earlier budget breakdowns, images on expenses and the CSV export of financial entries (checked on 29 October 2026). ManaWG has no paid tier.',
+				'Per the provider, Flatastic is free to use and offers a paid Premium. The Premium page lists, among other things, no advertising, the history of the cleaning plan, earlier budget breakdowns, images on expenses and the CSV export of financial entries (checked on 27 October 2026). ManaWG has no paid tier.',
 			],
 			[
 				'Does Flatastic have a points system for cleaning?',
-				'Per the provider’s website, yes: the chore planner includes a score system that shows how much each person has contributed (checked on 29 October 2026). ManaWG has no points: the cleaning rota distributes tasks by workload and shows in advance who is next. More on [Cleaning rota app](/cleaning-rota).',
+				'Per the provider’s website, yes: the chore planner includes a score system that shows how much each person has contributed (checked on 27 October 2026). ManaWG has no points: the cleaning rota distributes tasks by workload and shows in advance who is next. More on [Cleaning rota app](/cleaning-rota).',
 			],
 		],
 	},
@@ -757,7 +757,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			'Tricount handles several currencies and suits trips. For a flat with rent, fixed costs and a cleaning rota, ManaWG is free, in the browser, with statements.',
 		h1: 'Tricount alternative for flats and fixed groups',
 		einleitung:
-			'Tricount splits expenses in groups and, per the provider, works with several currencies. If you live together long term, you usually also need rent, fixed costs and a cleaning rota. ManaWG joins them in a free web app in English and German. Details on Tricount come from the provider’s linked pages, checked on 29 October 2026.',
+			'Tricount splits expenses in groups and, per the provider, works with several currencies. If you live together long term, you usually also need rent, fixed costs and a cleaning rota. ManaWG joins them in a free web app in English and German. Details on Tricount come from the provider’s linked pages, checked on 27 October 2026.',
 		quellen: [
 			['Tricount features', 'https://tricount.com/features'],
 			[
@@ -770,7 +770,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			comparisonTable(
 				'Tricount',
 				['yes', NC, NC, NC, NC, 'multiple currencies per provider', 'free per provider'],
-				'Details on Tricount come from the provider’s features page and App Store listing, checked on 29 October 2026. Anything the sources do not support reads “not checked”.',
+				'Details on Tricount come from the provider’s features page and App Store listing, checked on 27 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
 		abschnitte: [
@@ -827,7 +827,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			'ManaWG as an alternative to OurHome: a free cleaning rota and shared expenses in the browser. OurHome’s current feature set has not been verified.',
 		h1: 'An OurHome alternative for flats',
 		einleitung:
-			'Whether OurHome is available today, and to what extent, we have not verified (as of 29 October 2026), so check that yourself. Below we only describe how ManaWG handles the cleaning rota and expenses for a WG (shared flat).',
+			'Whether OurHome is available today, and to what extent, we have not verified (as of 14 October 2026), so check that yourself. Below we only describe how ManaWG handles the cleaning rota and expenses for a WG (shared flat).',
 		quellen: [['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app']],
 		tabellen: [
 			comparisonTable(
