@@ -48,10 +48,11 @@ uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat, uInk;
 // pointer is light on the snow, the mark stands as the sun in the sky.
 const float IMGA = 2560. / 3200.;
 // Light mode: exactly the negative of the dark mode (same strokes, same light), paper at the page tone (.04 inverts to
-// #f5f5f5). Faint strokes are far weaker as gray on paper than as gray on black, so a gamma lifts them; the text calm
-// at the bottom is milder for the same reason.
-const float INK_G = .8, INK_CALM = .75;
-float ink(float v){ return .04 + .92 * pow(v, INK_G); }
+// #f5f5f5). Faint strokes are far weaker as gray on paper than as gray on black, so a gamma lifts them. The foot (b)
+// fades to black in the dark mode but would fade to empty paper here, so instead of calming it the strokes get stronger.
+const float INK_G = .8, INK_FOOT = 1.3;
+// the grain is cut first, otherwise the gain turns it into gray grit on the paper
+float ink(float v, float b){ v = min(max(v - .03 * b, 0.) * (1. + INK_FOOT * b), 1.); return .04 + .92 * pow(v, INK_G - .25 * b); }
 vec2 photoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
   float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
   float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
@@ -65,7 +66,7 @@ float photoMountain(vec2 uv){
   // On opening, the engraving draws itself by brightness: first the bright strokes, then the fine ones
   // Retreat (uRetreat): the threshold runs back, the dark strokes go first, the bright ones last
   float th = 1.05 - uPhoto * 1.1 + uRetreat * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
-  v *= mix(1., mix(.5, INK_CALM, uInk), smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook))); // dark text needs less calm
+  float foot = smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook)); v *= 1. - .5 * foot * (1. - uInk);
   // Pointer as light: the snow beneath it brightens softly, rock stays dark
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   float lm = exp(-length(uv - uM * vec2(.9, .5)) * 3.2); v += smoothstep(.45, .85, v) * msk * lm * .12;
@@ -74,7 +75,7 @@ float photoMountain(vec2 uv){
   // no grain once lines carry the tone: they would flicker
   v = clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.);
   // Light mode (canvas CSS-inverted, v becomes ink): clean paper, crisp dark strokes, no solid black blots
-  return mix(v, ink(v), uInk); }
+  return mix(v, ink(v, foot), uInk); }
 float mountain(vec2 uv){
   if(uPhoto > .001) return photoMountain(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
