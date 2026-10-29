@@ -1,6 +1,7 @@
 // The sky behind the finale: an engraved-style cloudscape in gray tones with the brand as a cloud. Sky, cloud and
 // masks are the layers of the cloud loader (landing-konzept/wolke). No curtain and no scroll opening; the clouds billow slowly, the pointer is wind.
 
+import { isLight, onTheme } from '@/lib/theme';
 import { dprFor } from '../../core/canvas';
 import { type SceneState, loop, register } from '../../core/loop';
 import { cl } from '../../core/math';
@@ -75,6 +76,7 @@ void main(){
 interface Gl {
 	gl: WebGL2RenderingContext;
 	u: (n: string) => WebGLUniformLocation | null;
+	tx: WebGLTexture[];
 }
 
 interface SkyState extends SceneState {
@@ -84,6 +86,7 @@ interface SkyState extends SceneState {
 	open: number;
 	/** smoothed pointer in uv and strength */
 	pointer: [number, number, number];
+	offTheme: () => void;
 }
 
 function program(gl: WebGL2RenderingContext): WebGLProgram | null {
@@ -115,13 +118,36 @@ async function loadImage(src: string): Promise<ImageBitmap> {
 /** Wait for the next task: shader, textures and context end up in different frames, not in one. */
 const pause = () => new Promise<void>((ok) => setTimeout(ok, 0));
 
+/** The two engravings: in light mode the Codex drawings on paper, stored as negatives (the canvas is CSS-inverted). */
+const engravings = () =>
+	isLight() ? ['stich-quer-hell', 'stich-hoch-hell'] : ['stich-quer', 'stich-hoch'];
+
+function upload(gl: WebGL2RenderingContext, tex: WebGLTexture | null, img: ImageBitmap) {
+	gl.bindTexture(gl.TEXTURE_2D, tex);
+	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+	img.close();
+}
+
+/** Theme switch: replace the engravings in units 0 and 1, the masks stay. */
+async function swap(s: SkyState): Promise<void> {
+	const imgs = await Promise.all(engravings().map((n) => loadImage(`/himmel/${n}.webp`)));
+	const g = s.g;
+	for (const [i, img] of imgs.entries()) {
+		if (!g) {
+			img.close();
+			continue;
+		}
+		g.gl.activeTexture(g.gl.TEXTURE0 + i);
+		upload(g.gl, g.tx[i] ?? null, img);
+	}
+}
+
 async function load(s: SkyState): Promise<void> {
 	const names = ['uSkyQ', 'uSkyH', 'uFine', 'uCoarse'];
 	// Decoding runs in parallel and without the main thread while context and shader are created
 	const images = Promise.all(
-		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) =>
-			loadImage(`/himmel/${n}.webp`),
-		),
+		[...engravings(), 'maske-fein', 'maske-grob'].map((n) => loadImage(`/himmel/${n}.webp`)),
 	);
 	const gl = s.cv2.getContext('webgl2', {
 		premultipliedAlpha: true,
@@ -135,24 +161,24 @@ async function load(s: SkyState): Promise<void> {
 	gl.useProgram(p);
 	const u = (n: string) => gl.getUniformLocation(p, n);
 	const done = await images;
+	const tx: WebGLTexture[] = [];
 	for (const [i, img] of done.entries()) {
 		await pause();
 		gl.activeTexture(gl.TEXTURE0 + i);
-		gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
-		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+		const t = gl.createTexture();
+		tx.push(t);
+		upload(gl, t, img);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.uniform1i(u(names[i] ?? ''), i);
-		img.close();
 	}
 	// A draw call in 1 x 1 pixel forces the driver to finish compiling the program now
 	await pause();
 	gl.viewport(0, 0, 1, 1);
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
-	s.g = { gl, u };
+	s.g = { gl, u, tx };
 	s.ready = true;
 }
 
@@ -191,6 +217,9 @@ export function registerSky(
 			s.open = 0;
 			s.pointer = [0.5, 0.5, 0];
 			load(s).catch(() => {});
+			s.offTheme = onTheme(() => {
+				swap(s).catch(() => {});
+			});
 		},
 		frame(s) {
 			const g = s.g;
@@ -238,6 +267,7 @@ export function registerSky(
 			gl.drawArrays(gl.TRIANGLES, 0, 3);
 		},
 		destroy(s) {
+			s.offTheme();
 			s.g?.gl.getExtension('WEBGL_lose_context')?.loseContext();
 		},
 	});
