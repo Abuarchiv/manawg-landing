@@ -1,6 +1,7 @@
 // The sky behind the finale: an engraved-style cloudscape in gray tones with the brand as a cloud. Sky, cloud and
 // masks are the layers of the cloud loader (landing-konzept/wolke). No curtain and no scroll opening; the clouds billow slowly, the pointer is wind.
 
+import { isLight } from '@/lib/theme';
 import { dprFor } from '../../core/canvas';
 import { type SceneState, loop, register } from '../../core/loop';
 import { cl } from '../../core/math';
@@ -13,10 +14,12 @@ precision highp float;
 uniform sampler2D uSkyQ, uSkyH, uFine, uCoarse;
 uniform float uPortrait, uDprH;
 uniform vec2 uRes, uCC;
-uniform float uT, uOpen, uCS;
+uniform float uT, uOpen, uCS, uInk;
 uniform vec3 uPointer; // pointer in uv and strength: wind that parts the clouds
 uniform vec4 uTxt; // text box in uv (x0, y0, x1, y1), the sky stays calm and darker there
 out vec4 o;
+// Light mode tone: paper at the page tone (.04 inverts to #f5f5f5), faint haze cut away, strokes crisp and dark
+const float INK_LO = .1, INK_TOP = .34;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
   return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }
@@ -68,6 +71,8 @@ void main(){
   // Bottom edge: clouds fade into the footer background (no edge at the seam)
   col *= mix(.0, 1., smoothstep(0., 110. / uRes.y * uDprH, uv.y));
   col += (hash(gl_FragCoord.xy + fract(uT) * 91.) - .5) * .03;
+  // Light mode (canvas CSS-inverted, col becomes ink): the strokes as strong as on black
+  col = mix(col, vec3(.04 + .86 * smoothstep(INK_LO, INK_TOP, col.r)), uInk);
   o = vec4(col, 1.);
 }
 `;
@@ -213,6 +218,7 @@ export function registerSky(
 			gl.uniform2f(u('uRes'), w, h);
 			gl.uniform1f(u('uT'), s.reduced ? 4 : loop.t);
 			gl.uniform1f(u('uOpen'), s.open);
+			gl.uniform1f(u('uInk'), isLight() ? 1 : 0);
 			const bottom = cl((r0.bottom - loop.vh) / s.H, 0, 1); // part of the area below the window edge
 			if (portrait) {
 				// Portrait: fixed in the section above the title, scrolls away with the text (no room at the top in the final view)

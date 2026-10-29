@@ -6,6 +6,7 @@
 // (not a fixed 1280 x 800), in portrait the image section is framed (uZ), and the output goes
 // through an offscreen canvas into the visible 2D canvas.
 
+import { isLight } from '@/lib/theme';
 import { glSoftware, glVisible } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import type { HeroMarks, StageContext } from './types';
@@ -41,11 +42,14 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 `;
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
-uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat;
+uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat, uInk;
 // Mountain: copper engraving as a camera move. Image section covers, tighter around the
 // summit in portrait; looking up (uLook) shifts the section into the dark sky. Clouds drift slightly, the
 // pointer is light on the snow, the mark stands as the sun in the sky.
 const float IMGA = 2560. / 3200.;
+const float INK_LO = .06, INK_TOP = .8;
+// Light mode tone: paper at the page tone (.04 inverts to #f5f5f5), faint haze cut away, strokes crisp and dark
+float ink(float v){ return .04 + .86 * smoothstep(INK_LO, INK_TOP, v); }
 vec2 photoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
   float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
   float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
@@ -65,7 +69,10 @@ float photoMountain(vec2 uv){
   float lm = exp(-length(uv - uM * vec2(.9, .5)) * 3.2); v += smoothstep(.45, .85, v) * msk * lm * .12;
   float d = sunD(uv, sp, sc); float sun = (1. - msk) * smoothstep(.002, -.002, d); v = mix(v, .9, sun);
   v += (1. - msk) * exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .07 * (1. + uLook * 3.);
-  return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.); } // no grain once lines carry the tone: they would flicker
+  // no grain once lines carry the tone: they would flicker
+  v = clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.);
+  // Light mode (canvas CSS-inverted, v becomes ink): clean paper, crisp dark strokes, no solid black blots
+  return mix(v, ink(v), uInk); }
 float mountain(vec2 uv){
   if(uPhoto > .001) return photoMountain(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
@@ -133,7 +140,8 @@ type SceneU =
 	| 'uImg'
 	| 'uMsk'
 	| 'uPhoto'
-	| 'uRetreat';
+	| 'uRetreat'
+	| 'uInk';
 type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad';
 
 /** WebGL state of the hero: offscreen canvas, context, programs, scene texture with framebuffer. */
@@ -254,6 +262,7 @@ export function createHero(cv: HTMLCanvasElement) {
 				'uMsk',
 				'uPhoto',
 				'uRetreat',
+				'uInk',
 			],
 			'scene',
 		);
@@ -538,6 +547,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		}
 		gl.uniform1f(U.uPhoto, G.photoTx ? G.photoA : 0);
 		gl.uniform1f(U.uRetreat, ss((look - 0.02) / 0.6));
+		gl.uniform1f(U.uInk, isLight() ? 1 : 0);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		if (gcv.width < w) gcv.width = w;
