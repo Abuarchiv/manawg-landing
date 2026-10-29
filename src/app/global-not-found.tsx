@@ -1,7 +1,7 @@
-import { TEXT_LINK } from '@/lib/text-link';
-import { THEME_SCRIPT } from '@/lib/theme';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TEXT_LINK } from '@/lib/text-link';
+import { THEME_SCRIPT } from '@/lib/theme';
 import './globals.css';
 
 export const metadata: Metadata = {

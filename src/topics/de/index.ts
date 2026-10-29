@@ -1,6 +1,6 @@
 import type { Topic } from '../types.ts';
-import { GUIDES_DE_MONEY } from './guides-money.ts';
 import { GUIDES_DE } from './guides.ts';
+import { GUIDES_DE_MONEY } from './guides-money.ts';
 import { GUIDES_DE_NEW } from './new-guides.ts';
 import { OPEN_SOURCE_DE } from './open-source.ts';
 import { TOPICS_DE_CORE } from './topics.ts';

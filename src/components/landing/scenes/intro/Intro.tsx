@@ -45,9 +45,8 @@ export function Intro() {
 			style={{ position: 'relative', zIndex: '1', height: `calc(${1 + INTRO_SCREENS} * 100lvh)` }}
 		>
 			{/* Jump target of the app preview (focus anchor): start of the end layer, P 0.985 */}
-			<div
+			<section
 				id="app-demo"
-				role="region"
 				tabIndex={-1}
 				aria-label={aria.appPreview}
 				style={{

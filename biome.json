@@ -1,66 +1,49 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true,
-			"correctness": {
-				"noUnusedVariables": "error",
-				"noUnusedImports": "error"
-			},
+			"preset": "recommended",
+			"correctness": { "noUnusedVariables": "error", "noUnusedImports": "error" },
 			"suspicious": {
 				"noExplicitAny": "warn",
-				"noConsole": {
-					"level": "warn",
-					"options": {
-						"allow": ["warn", "error"]
-					}
-				},
+				"noConsole": { "level": "warn", "options": { "allow": ["warn", "error"] } },
 				"noArrayIndexKey": "off"
 			},
-			"a11y": {
-				"noAriaHiddenOnFocusable": "off"
+			"a11y": { "noAriaHiddenOnFocusable": "off" },
+			"performance": { "noImgElement": "off" },
+			"complexity": { "noImportantStyles": "off" },
+			"style": { "noHeadElement": "off" }
+		}
+	},
+	"formatter": { "enabled": true, "indentStyle": "tab", "indentWidth": 2, "lineWidth": 100 },
+	"javascript": {
+		"formatter": { "quoteStyle": "single", "trailingCommas": "all", "semicolons": "always" },
+		"parser": { "unsafeParameterDecoratorsEnabled": true }
+	},
+	"css": { "parser": { "cssModules": true, "tailwindDirectives": true } },
+	"json": { "formatter": { "enabled": true } },
+	"files": {
+		"includes": [
+			"**",
+			"!**/node_modules",
+			"!**/.next",
+			"!**/.next-*",
+			"!**/next-env.d.ts",
+			"!**/.vercel",
+			"!**/graphify-out",
+			"!**/public"
+		]
+	},
+	"overrides": [
+		{
+			"includes": ["src/**/*.ts"],
+			"linter": {
+				"rules": {
+					"correctness": { "useHookAtTopLevel": "off", "noComponentHookFactories": "off" }
+				}
 			}
 		}
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab",
-		"indentWidth": 2,
-		"lineWidth": 100
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "single",
-			"trailingCommas": "all",
-			"semicolons": "always"
-		},
-		"parser": {
-			"unsafeParameterDecoratorsEnabled": true
-		}
-	},
-	"css": {
-		"parser": {
-			"cssModules": true
-		}
-	},
-	"json": {
-		"formatter": {
-			"enabled": true
-		}
-	},
-	"files": {
-		"ignore": [
-			"node_modules",
-			".next",
-			".next-*",
-			"next-env.d.ts",
-			".vercel",
-			"graphify-out",
-			"public"
-		]
-	}
+	]
 }

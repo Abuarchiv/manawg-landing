@@ -1,8 +1,8 @@
+import Link from 'next/link';
 import { LanguageLink } from '@/components/LanguageLink';
 import { appUrl } from '@/lib/app-origin';
-import { type Locale, PATHS, TOPIC_SLUG_EN, localiseHref } from '@/lib/locale';
+import { type Locale, localiseHref, PATHS, TOPIC_SLUG_EN } from '@/lib/locale';
 import { LEGAL_PAGES } from '@/lib/page-metadata';
-import Link from 'next/link';
 import { GROUPS } from './groups';
 import { groupName, topics, ui } from './registry';
 
@@ -48,7 +48,11 @@ export function TopicFooter({
 	locale,
 	active,
 	counterpart,
-}: { locale: Locale; active?: string; counterpart?: string | null }) {
+}: {
+	locale: Locale;
+	active?: string;
+	counterpart?: string | null;
+}) {
 	const t = ui(locale);
 	const data = topics(locale);
 	const localSlug = (slug: string) => (locale === 'de' ? slug : TOPIC_SLUG_EN[slug]);

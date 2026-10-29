@@ -74,7 +74,8 @@
 	position: absolute;
 	inset: -40px;
 	/* same dark background as on the Android device */
-	background: radial-gradient(80% 34% at 72% 14%, #6a6a6a 0%, rgba(106, 106, 106, 0) 72%),
+	background:
+		radial-gradient(80% 34% at 72% 14%, #6a6a6a 0%, rgba(106, 106, 106, 0) 72%),
 		linear-gradient(180deg, #353535 0%, #141414 36%, #0b0b0b 100%);
 }
 .ios_grid {
@@ -167,7 +168,9 @@
 	height: 50px;
 	border-radius: 25px;
 	background: rgba(44, 44, 46, 0.9);
-	box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 2px 10px rgba(0, 0, 0, 0.3);
+	box-shadow:
+		inset 0 0 0 0.5px rgba(255, 255, 255, 0.12),
+		0 2px 10px rgba(0, 0, 0, 0.3);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -189,7 +192,9 @@
 	height: 20px;
 	border: 2px solid #fff;
 	border-radius: 5px;
-	box-shadow: 3px -3px 0 -1px #2c2c2e, 3px -3px 0 0 #fff;
+	box-shadow:
+		3px -3px 0 -1px #2c2c2e,
+		3px -3px 0 0 #fff;
 }
 .ios_scrim {
 	position: absolute;
@@ -210,7 +215,9 @@
 	background: rgba(37, 37, 39, 0.9);
 	-webkit-backdrop-filter: blur(28px) saturate(1.7);
 	backdrop-filter: blur(28px) saturate(1.7);
-	box-shadow: 0 10px 44px rgba(0, 0, 0, 0.5), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+	box-shadow:
+		0 10px 44px rgba(0, 0, 0, 0.5),
+		inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
 	overflow: hidden;
 	display: none;
 }
@@ -265,7 +272,9 @@
 	background: rgba(30, 30, 32, 0.94);
 	-webkit-backdrop-filter: blur(30px) saturate(1.6);
 	backdrop-filter: blur(30px) saturate(1.6);
-	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+	box-shadow:
+		0 8px 40px rgba(0, 0, 0, 0.5),
+		inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
 	overflow: hidden;
 	display: none;
 }
@@ -684,7 +693,8 @@
 	background: #e5e5ea;
 }
 :global(:root[data-theme="light"]) .ios_wall {
-	background: radial-gradient(80% 34% at 72% 14%, #ffffff 0%, rgba(255, 255, 255, 0) 72%),
+	background:
+		radial-gradient(80% 34% at 72% 14%, #ffffff 0%, rgba(255, 255, 255, 0) 72%),
 		linear-gradient(180deg, #d8d8de 0%, #ececf0 36%, #f4f4f6 100%);
 }
 :global(:root[data-theme="light"]) .ios_cell {
@@ -709,18 +719,24 @@
 :global(:root[data-theme="light"]) .ios_round,
 :global(:root[data-theme="light"]) .ios_pill {
 	background: rgba(255, 255, 255, 0.9);
-	box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 2px 12px rgba(0, 0, 0, 0.12);
+	box-shadow:
+		inset 0 0 0 0.5px rgba(0, 0, 0, 0.08),
+		0 2px 12px rgba(0, 0, 0, 0.12);
 }
 :global(:root[data-theme="light"]) .ios_pill {
 	color: #000;
 }
 :global(:root[data-theme="light"]) .ios_tabs {
 	border-color: #000;
-	box-shadow: 3px -3px 0 -1px #fff, 3px -3px 0 0 #000;
+	box-shadow:
+		3px -3px 0 -1px #fff,
+		3px -3px 0 0 #000;
 }
 :global(:root[data-theme="light"]) .ios_menu {
 	background: rgba(249, 249, 249, 0.9);
-	box-shadow: 0 10px 44px rgba(0, 0, 0, 0.18), inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 10px 44px rgba(0, 0, 0, 0.18),
+		inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
 }
 :global(:root[data-theme="light"]) .ios_row,
 :global(:root[data-theme="light"]) .ios_row_i,
@@ -736,7 +752,9 @@
 }
 :global(:root[data-theme="light"]) .ios_share {
 	background: rgba(242, 242, 247, 0.94);
-	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16), inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 8px 40px rgba(0, 0, 0, 0.16),
+		inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
 }
 :global(:root[data-theme="light"]) .ios_tile {
 	background: #fff;

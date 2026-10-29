@@ -38,3 +38,10 @@ export function counterpartOf(locale: Locale, slug: string): string | null {
 	const de = toGermanSlug(slug);
 	return de && de in TOPICS_DE ? `/${de}` : null;
 }
+
+/** Latest update date (YYYY-MM-DD) of a set of pages; ISO dates sort as strings. */
+export const newestUpdate = (pages: Record<string, { updated: string }>): string =>
+	Object.values(pages)
+		.map((t) => t.updated)
+		.sort()
+		.at(-1) ?? '';

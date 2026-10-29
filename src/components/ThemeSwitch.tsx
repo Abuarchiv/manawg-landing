@@ -1,8 +1,8 @@
 'use client';
 
+import { type CSSProperties, useEffect, useState } from 'react';
 import type { Locale } from '@/lib/locale';
 import type { ThemeChoice } from '@/lib/theme';
-import { type CSSProperties, useEffect, useState } from 'react';
 
 // Light, dark or system, as in the app. THEME_SCRIPT (lib/theme.ts) applies the choice; this only shows it.
 
@@ -22,7 +22,11 @@ export function ThemeSwitch({
 	locale,
 	className,
 	style,
-}: { locale: Locale; className?: string; style?: CSSProperties }) {
+}: {
+	locale: Locale;
+	className?: string;
+	style?: CSSProperties;
+}) {
 	const [choice, setChoice] = useState<ThemeChoice | null>(null);
 	useEffect(() => {
 		setChoice((document.documentElement.dataset.themeChoice as ThemeChoice) ?? 'system');

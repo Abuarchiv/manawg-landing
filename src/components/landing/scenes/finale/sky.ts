@@ -3,7 +3,7 @@
 
 import { isLight } from '@/lib/theme';
 import { buildProgram, dprFor, sizeBacking } from '../../core/canvas';
-import { type SceneState, loop, register } from '../../core/loop';
+import { loop, register, type SceneState } from '../../core/loop';
 import { cl } from '../../core/math';
 
 const VS = `#version 300 es

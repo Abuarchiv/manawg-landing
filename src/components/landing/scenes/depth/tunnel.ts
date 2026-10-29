@@ -3,7 +3,7 @@
 // Scene space: landscape reference box 1280 x 800, portrait its own box 640 units wide (the words sit at
 // depth 9 at 40 to 50 % of the width and so fit every format). Drawing happens in CSS px.
 
-import { type SceneState, loop, qa, register } from '../../core/loop';
+import { loop, qa, register, type SceneState } from '../../core/loop';
 import { cl, cs, hsh, lag, lerp, sn, ss } from '../../core/math';
 
 const MONO = '"JetBrains Mono", monospace';
@@ -547,7 +547,7 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 	ctx.textBaseline = 'middle';
 	for (let tr = 0; tr < 6; tr++) {
 		const e = nb[tr];
-		if (!e || !e.ch.length) continue;
+		if (!e?.ch.length) continue;
 		ctx.font = `500 ${(Math.round(8 * 2 ** (tr / 2)) * f).toFixed(2)}px ${MONO}`;
 		for (let i = 0; i < e.ch.length; i++) {
 			ctx.globalAlpha = e.xya[3 * i + 2] ?? 0;

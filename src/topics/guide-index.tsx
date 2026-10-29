@@ -1,18 +1,18 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import { JsonLd } from '@/components/JsonLd';
 import {
+	counterpartPath,
 	IN_LANGUAGE,
 	type Locale,
-	PATHS,
-	counterpartPath,
 	languageAlternates,
 	localiseHref,
+	PATHS,
 	toEnglishSlug,
 } from '@/lib/locale';
 import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { TopicFooter, TopicHeader, gutter, mono } from './frame';
+import { gutter, mono, TopicFooter, TopicHeader } from './frame';
 import { GROUPS } from './groups';
 import { topics, ui } from './registry';
 

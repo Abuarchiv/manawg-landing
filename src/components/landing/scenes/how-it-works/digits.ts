@@ -3,7 +3,7 @@
 // cells away, springs pull them back. While in motion (intro, pointer) the characters of a cell cycle through the ramp every
 // 90 ms; at rest the digit stays still: bright edge of @, body of muted #.
 
-import { type SceneState, loop, qa, register } from '../../core/loop';
+import { loop, qa, register, type SceneState } from '../../core/loop';
 import { hsh } from '../../core/math';
 
 const RAMP = '@%#*+=-:';
@@ -73,7 +73,9 @@ export function buildGrid(txt: string, W0: number, H0: number, cs: number): Grid
 	// The shape comes from Inter Tight (without the dot in the zero of the mono font), filled with mono characters
 	o.font = `600 ${fs / cs}px "Inter Tight", sans-serif`;
 	o.textBaseline = 'alphabetic';
-	txt.split('|').forEach((ln, i) => o.fillText(ln, 0, (H * 0.97 + i * fs * 0.9) / cs));
+	txt.split('|').forEach((ln, i) => {
+		o.fillText(ln, 0, (H * 0.97 + i * fs * 0.9) / cs);
+	});
 	const d = o.getImageData(0, 0, cols, rows).data;
 	const on = new Uint8Array(cols * rows);
 	for (let q = 0; q < on.length; q++) on[q] = (d[q * 4 + 3] ?? 0) > 110 ? 1 : 0;

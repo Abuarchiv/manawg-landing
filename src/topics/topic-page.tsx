@@ -1,24 +1,24 @@
-import { JsonLd } from '@/components/JsonLd';
-import { appUrl } from '@/lib/app-origin';
-import {
-	INTL_LOCALE,
-	IN_LANGUAGE,
-	type Locale,
-	PATHS,
-	languageAlternates,
-	localiseHref,
-	toGermanSlug,
-} from '@/lib/locale';
-import { pageMetadata } from '@/lib/page-metadata';
-import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
 import { preload } from 'react-dom';
+import { JsonLd } from '@/components/JsonLd';
+import { appUrl } from '@/lib/app-origin';
+import {
+	IN_LANGUAGE,
+	INTL_LOCALE,
+	type Locale,
+	languageAlternates,
+	localiseHref,
+	PATHS,
+	toGermanSlug,
+} from '@/lib/locale';
+import { pageMetadata } from '@/lib/page-metadata';
+import { schemaIds } from '@/lib/schema-ids';
+import { gutter, mono, TopicFooter, TopicHeader } from './frame';
 import RentCalculator from './RentCalculator';
 import RotaGenerator from './RotaGenerator';
-import { TopicFooter, TopicHeader, gutter, mono } from './frame';
 import { counterpartOf, groupName, groupOf, related, topics, ui } from './registry';
 import type { Topic } from './types';
 
@@ -85,9 +85,9 @@ function Table({ t, locale }: { t: TableData; locale: Locale }) {
 			<h2 id={id} className={`${mono} m-0 mb-8 font-normal`}>
 				{t.title}
 			</h2>
+			{/* biome-ignore lint/a11y/useSemanticElements: scrollable table needs a labelled region instead of a section */}
 			<div
 				className="min-w-0 overflow-x-auto"
-				// biome-ignore lint/a11y/useSemanticElements: scrollable table needs a labelled region instead of a section
 				role="region"
 				aria-label={t.title}
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollable region must be reachable by keyboard

@@ -1,13 +1,13 @@
 'use client';
 
-import { APP_DEMO } from '@/content/app-demo';
 import { useEffect, useRef, useState } from 'react';
+import { APP_DEMO } from '@/content/app-demo';
 import { onFrame } from '../../core/loop';
 import { cl } from '../../core/math';
 import { useDict, useLocale } from '../../dict';
 import { live } from '../intro/stage';
-import s from './Phone.module.css';
 import { dateLines } from './date';
+import s from './Phone.module.css';
 
 // The phone of the end scene with the real ManaWG app: a same-origin iframe on
 // /app-demo/index.html (standalone DOM and CSS of the app, state machine in demo.js). Shell and geometry
@@ -188,10 +188,10 @@ export function Phone() {
 	}, [STILL, SRC]);
 
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: div stays div (same box, no fieldset)
 		<div
 			ref={rootRef}
 			data-cta="1"
-			// biome-ignore lint/a11y/useSemanticElements: div stays div (same box, no fieldset)
 			role="group"
 			aria-label={phone.aria}
 			style={{

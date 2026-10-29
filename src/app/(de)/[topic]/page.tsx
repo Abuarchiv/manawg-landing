@@ -1,5 +1,5 @@
-import { TopicPage, topicMetadata, topicStaticParams } from '@/topics/topic-page';
 import type { Metadata } from 'next';
+import { TopicPage, topicMetadata, topicStaticParams } from '@/topics/topic-page';
 
 export const dynamicParams = false;
 

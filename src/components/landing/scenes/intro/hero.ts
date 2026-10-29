@@ -8,7 +8,7 @@
 
 import { isLight } from '@/lib/theme';
 import { buildProgram, glSoftware, glVisible, sizeBacking } from '../../core/canvas';
-import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
+import { aMark, cl, ease, HOME, HOME3, hsh, lerp, ss } from '../../core/math';
 import type { HeroMarks, StageContext } from './types';
 
 const VS = `#version 300 es

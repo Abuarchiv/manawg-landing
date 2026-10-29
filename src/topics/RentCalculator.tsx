@@ -1,8 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import type { Locale } from '@/lib/locale';
 import { INTL_LOCALE } from '@/lib/locale';
-import { useState } from 'react';
 import { euro, parseAmount, rentShares } from './rent-calculator';
 
 const fieldCls =

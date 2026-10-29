@@ -1,9 +1,9 @@
 'use client';
 
-import { APP_DEMO } from '@/content/app-demo';
-import { appUrl } from '@/lib/app-origin';
 import { EllipsisVertical, Menu } from 'lucide-react';
 import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react';
+import { APP_DEMO } from '@/content/app-demo';
+import { appUrl } from '@/lib/app-origin';
 import { useDict, useLocale } from '../../dict';
 import { Android } from './Android';
 import { Desktop } from './Desktop';

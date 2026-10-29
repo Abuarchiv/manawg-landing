@@ -1,7 +1,7 @@
 'use client';
 
-import { appUrl } from '@/lib/app-origin';
 import { useEffect, useRef } from 'react';
+import { appUrl } from '@/lib/app-origin';
 import { BrLines, useDict } from '../../dict';
 import s from './Finale.module.css';
 import { registerSky } from './sky';

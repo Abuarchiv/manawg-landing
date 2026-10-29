@@ -160,7 +160,8 @@
 	width: 22px;
 	height: 22px;
 	border-radius: 50%;
-	background: radial-gradient(circle at 50% 38%, #4a7fb5 0 21%, transparent 23%),
+	background:
+		radial-gradient(circle at 50% 38%, #4a7fb5 0 21%, transparent 23%),
 		radial-gradient(ellipse at 50% 108%, #4a7fb5 0 46%, transparent 48%), #d3e3fd;
 }
 .dk_page {
@@ -196,7 +197,9 @@
 	padding: 20px 20px 18px;
 	border-radius: 12px;
 	background: #2b2b2b;
-	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+	box-shadow:
+		0 8px 28px rgba(0, 0, 0, 0.5),
+		0 0 0 1px rgba(255, 255, 255, 0.08);
 	display: none;
 	z-index: 4;
 }
@@ -321,7 +324,9 @@
 }
 :global(:root[data-theme="light"]) .dk_dlg {
 	background: #fff;
-	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.06);
+	box-shadow:
+		0 8px 28px rgba(0, 0, 0, 0.18),
+		0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 :global(:root[data-theme="light"]) .dk_button {
 	border-color: #747775;

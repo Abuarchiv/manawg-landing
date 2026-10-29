@@ -1,11 +1,11 @@
 // WebGL2 path of the hands: suitability check, layers (programs, textures) and the two passes per frame.
 
-import { glVisible } from '../../../core/canvas';
 import type { Fit } from '../../../core/canvas';
+import { glVisible } from '../../../core/canvas';
 import { qa } from '../../../core/loop';
 import { atlases, divArray, tileArray } from './atlas';
 import { STEP } from './constants';
-import { VS, fsSrc } from './shader';
+import { fsSrc, VS } from './shader';
 import type { AtlasMeta, CellGrid, DrawValues, HoldMeta, Layer, Uniforms } from './types';
 
 function compile(gl: WebGL2RenderingContext, type: number, src: string): WebGLShader {

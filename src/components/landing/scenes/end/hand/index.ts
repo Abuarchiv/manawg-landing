@@ -11,7 +11,7 @@
 // Structure: atlas.ts (load passes), shader.ts (GLSL), gl.ts (WebGL2 path), cpu.ts (2D fallback), pointing.ts
 // (pointing-hand control, demo, contact), types.ts, constants.ts. Here: the public interface.
 
-import { type Fit, dprFor, sizeBacking } from '../../../core/canvas';
+import { dprFor, type Fit, sizeBacking } from '../../../core/canvas';
 import { qa } from '../../../core/loop';
 import { atlases, isReady } from './atlas';
 import { cpuClear, cpuFrame } from './cpu';

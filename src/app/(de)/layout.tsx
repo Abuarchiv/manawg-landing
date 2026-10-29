@@ -1,5 +1,5 @@
-import { SiteHead, siteMetadata, siteViewport } from '@/lib/site';
 import type { Metadata, Viewport } from 'next';
+import { SiteHead, siteMetadata, siteViewport } from '@/lib/site';
 import '../globals.css';
 
 export const metadata: Metadata = siteMetadata('de');

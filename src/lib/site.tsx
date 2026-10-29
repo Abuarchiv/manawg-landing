@@ -1,10 +1,10 @@
+import type { Metadata, Viewport } from 'next';
 import { JsonLd } from '@/components/JsonLd';
 import { getAppUrl } from '@/lib/app-url';
 import { type Locale, languageAlternates } from '@/lib/locale';
 import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
 import { THEME_COLOR, THEME_SCRIPT } from '@/lib/theme';
-import type { Metadata, Viewport } from 'next';
 
 // Parts of the root layout shared by the German and the English tree.
 

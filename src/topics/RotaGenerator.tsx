@@ -1,7 +1,7 @@
 'use client';
 
-import type { Locale } from '@/lib/locale';
 import { useState } from 'react';
+import type { Locale } from '@/lib/locale';
 import { cleaningRota, tableToCsv } from './cleaning-rota';
 
 const TEXT: Record<

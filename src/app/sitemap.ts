@@ -1,15 +1,13 @@
+import type { MetadataRoute } from 'next';
 import { getAppUrl } from '@/lib/app-url';
-import { STATIC_PAIRS, TOPIC_SLUG_EN, languageAlternates, toGermanSlug } from '@/lib/locale';
+import { languageAlternates, STATIC_PAIRS, TOPIC_SLUG_EN, toGermanSlug } from '@/lib/locale';
 import { TOPICS_DE } from '@/topics/de/index';
 import { TOPICS_EN } from '@/topics/en/index';
-import type { MetadataRoute } from 'next';
+import { newestUpdate } from '@/topics/registry';
 
 type Entry = MetadataRoute.Sitemap[number];
 
-const newest = (data: Record<string, { updated: string }>) =>
-	new Date(
-		Object.values(data).reduce((latest, t) => (t.updated > latest ? t.updated : latest), ''),
-	);
+const newest = (data: Record<string, { updated: string }>) => new Date(newestUpdate(data));
 
 // Only topic, guide pages and the guide indexes carry their known last-updated date.
 // Home page and legal pages have no known date and get none;

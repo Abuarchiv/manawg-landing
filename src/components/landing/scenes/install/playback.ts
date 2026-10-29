@@ -5,7 +5,7 @@
 //   re-entry and on every tab switch.
 // - reduce: no loop, one still frame per step.
 
-import { type SceneState, loop, qa, register } from '../../core/loop';
+import { loop, qa, register, type SceneState } from '../../core/loop';
 import { plan as android } from './android-plan';
 import { plan as desktop } from './desktop-plan';
 import { plan as ios } from './ios-plan';

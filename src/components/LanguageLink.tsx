@@ -1,5 +1,5 @@
-import { HTML_LANG, type Locale } from '@/lib/locale';
 import type { CSSProperties } from 'react';
+import { HTML_LANG, type Locale } from '@/lib/locale';
 
 /**
  * Link to the same page in the other language. A plain anchor on purpose: German and English are

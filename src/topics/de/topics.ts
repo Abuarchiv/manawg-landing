@@ -1,7 +1,7 @@
 // Topic pages for search queries that the home page alone does not cover.
 // Only name features that really exist in manawg-app.
 import type { Topic } from '../types.ts';
-import { NOT_CHECKED, comparisonTable } from './comparison.ts';
+import { comparisonTable, NOT_CHECKED } from './comparison.ts';
 
 export const TOPICS_DE_CORE: Record<string, Topic> = {
 	'wg-app': {

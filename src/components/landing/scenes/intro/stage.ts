@@ -5,7 +5,7 @@
 // CSS variables and data-phase on #final and calls the sub-renderers. The variables are set EVERY
 // frame, even when nothing is drawn, so nothing is left stale after jumps.
 
-import { type Fit, dprFor, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
+import { dprFor, type Fit, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
 import { cl, ss } from '../../core/math';
 import { camera } from '../end/camera';

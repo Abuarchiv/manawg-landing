@@ -1,7 +1,7 @@
 // Load the hand passes: one atlas (.webp) per hand with luminance, alpha, normal and depth plus a .json with the layout.
 
 import { HAND_V, TILES } from './constants';
-import type { Atlas, AtlasMeta, Atlases, HoldMeta } from './types';
+import type { Atlas, Atlases, AtlasMeta, HoldMeta } from './types';
 
 const A: { ready: boolean; data: Atlases | null; p: Promise<void> | null; err: boolean } = {
 	ready: false,

@@ -1,9 +1,9 @@
 'use client';
 
+import { createContext, Fragment, type ReactNode, useContext } from 'react';
 import { HOME_DICT } from '@/content/home';
 import type { HomeDict, Lines } from '@/content/home/types';
 import type { Locale } from '@/lib/locale';
-import { Fragment, type ReactNode, createContext, useContext } from 'react';
 
 // Language of the landing: the provider sits at the root of <Landing>, every component reads its strings
 // with useDict(). Canvas modules never read the context; they get their words through registration calls.

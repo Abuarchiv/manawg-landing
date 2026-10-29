@@ -1,8 +1,8 @@
 // Guide pages for search queries about living in a flat share. General tips, not legal advice.
 // Only name ManaWG features where manawg-app really has them (see topics.ts).
-import type { Topic } from '../types.ts';
 
 import { cleaningRota, tableToCsv } from '../cleaning-rota.ts';
+import type { Topic } from '../types.ts';
 // The pure functions live in a small file so the generator does not load all guide texts.
 import { COMPARISON_ROWS, MANAWG_CELLS, NOT_CHECKED } from './comparison.ts';
 

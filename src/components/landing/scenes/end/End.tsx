@@ -1,12 +1,12 @@
 'use client';
 
-import { appUrl } from '@/lib/app-origin';
 import { useEffect, useRef } from 'react';
+import { appUrl } from '@/lib/app-origin';
 import { modeOf } from '../../core/loop';
 import { BrLines, useDict } from '../../dict';
+import { camera } from './camera';
 import s from './End.module.css';
 import { Phone } from './Phone';
-import { camera } from './camera';
 
 // End layer of the intro stage: phone and hands on var(--paper), title and button below. The layer sits in
 // the sticky stage and scrolls away with it. The end space [data-end-space] is 1280 x 800 and is fitted

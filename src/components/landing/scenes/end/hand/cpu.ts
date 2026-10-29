@@ -2,7 +2,7 @@
 // the pointing hand as a sprite).
 
 import type { Fit } from '../../../core/canvas';
-import { BAYER as HB, cl, hsh, ss } from '../../../core/math';
+import { cl, BAYER as HB, hsh, ss } from '../../../core/math';
 import { atlases } from './atlas';
 import { CON, EDGE_IN, EDGE_THUMB, EDV, EDW, GAM, JIT, PS, RIM, RING_N, STEP } from './constants';
 import type {

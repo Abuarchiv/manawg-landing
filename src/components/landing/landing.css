@@ -138,14 +138,19 @@
 	text-decoration: none;
 	color: rgb(var(--ink-rgb) / 0.7);
 	/* no fill: legibility over the artwork (mountain, hand, ASCII) comes from a soft dark shadow */
-	text-shadow: 0 0 10px rgb(var(--paper-rgb) / 0.85), 0 0 2px rgb(var(--paper-rgb) / 0.6);
+	text-shadow:
+		0 0 10px rgb(var(--paper-rgb) / 0.85),
+		0 0 2px rgb(var(--paper-rgb) / 0.6);
 	background: transparent no-repeat;
 	border: 0;
 	border-radius: 2px;
 	background-image: linear-gradient(var(--ink), var(--ink));
 	background-position: 0 29px;
 	background-size: 0 1px;
-	transition: color var(--time) ease, gap var(--time) ease, background-size var(--time) ease,
+	transition:
+		color var(--time) ease,
+		gap var(--time) ease,
+		background-size var(--time) ease,
 		transform var(--time) ease;
 }
 .cta::before,
@@ -180,10 +185,15 @@
 }
 .cta--solid {
 	color: var(--ink);
-	background-image: linear-gradient(var(--ink), var(--ink)),
+	background-image:
+		linear-gradient(var(--ink), var(--ink)),
 		linear-gradient(rgb(var(--ink-rgb) / 0.45), rgb(var(--ink-rgb) / 0.45));
-	background-position: 0 29px, 0 29px;
-	background-size: 0 1px, 100% 1px;
+	background-position:
+		0 29px,
+		0 29px;
+	background-size:
+		0 1px,
+		100% 1px;
 }
 .cta--solid::before,
 .cta--solid::after {
@@ -287,7 +297,9 @@
 	display: grid;
 	grid-template-rows: 0fr;
 	visibility: hidden;
-	transition: grid-template-rows 0.3s ease, visibility 0s linear 0.3s;
+	transition:
+		grid-template-rows 0.3s ease,
+		visibility 0s linear 0.3s;
 }
 .faq-answer[data-open="true"] {
 	grid-template-rows: 1fr;
@@ -354,7 +366,9 @@
 	font-size: 11px;
 	letter-spacing: 0.12em;
 	color: var(--ink);
-	text-shadow: 0 0 10px rgb(var(--paper-rgb) / 0.9), 0 0 2px rgb(var(--paper-rgb) / 0.7);
+	text-shadow:
+		0 0 10px rgb(var(--paper-rgb) / 0.9),
+		0 0 2px rgb(var(--paper-rgb) / 0.7);
 	text-decoration: none;
 	cursor: pointer;
 	opacity: calc(0.85 * (1 - var(--e, 0) * 1.38));

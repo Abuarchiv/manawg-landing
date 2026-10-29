@@ -1,10 +1,10 @@
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
+import { Fragment, type ReactNode } from 'react';
 import { LanguageLink } from '@/components/LanguageLink';
 import type { Locale } from '@/lib/locale';
 import { LEGAL_PAGES, type LegalPageId } from '@/lib/page-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { Fragment, type ReactNode } from 'react';
 
 const HOME: Record<Locale, { href: string; label: string }> = {
 	de: { href: '/', label: 'Zur Startseite' },

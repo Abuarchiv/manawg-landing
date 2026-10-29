@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import type { Locale } from '@/lib/locale';
 import { ImageResponse } from 'next/og';
+import type { Locale } from '@/lib/locale';
 import { topics, ui } from './registry';
 
 const ogSize = { width: 1200, height: 630 };

@@ -80,7 +80,9 @@
 .date {
 	position: absolute;
 	left: 65.6px;
-	font: 400 12px / 18px Inter, sans-serif;
+	font:
+		400 12px / 18px Inter,
+		sans-serif;
 	/* muted text of the app (--muted-foreground): oklch(0.708) dark, oklch(0.52) light */
 	color: #a3a3a3;
 	white-space: nowrap;

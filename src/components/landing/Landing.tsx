@@ -1,7 +1,7 @@
 'use client';
 
-import type { Locale } from '@/lib/locale';
 import { useEffect } from 'react';
+import type { Locale } from '@/lib/locale';
 import './landing.css';
 import { loop, modeOf, qa, setMode, start } from './core/loop';
 import { initScroll, sectionBox } from './core/scroll';
@@ -34,6 +34,7 @@ declare global {
 // Read-only hook for the QA tools (?qa=1); does not affect behaviour.
 function installQaHook(root: HTMLElement) {
 	window.__landing = {
+		// biome-ignore lint/correctness/noComponentHookFactories: P is the scroll progress read by the QA tools, not a component
 		P: () => live.stage?.state.P ?? 0,
 		s: () => live.stage?.state.s ?? 0,
 		phase: () => root.dataset.phase ?? '',

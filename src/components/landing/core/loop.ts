@@ -18,8 +18,8 @@
 // (init runs before the first frame, resize before that).
 
 import {
-	type Fit,
 	dprFor,
+	type Fit,
 	fitBox,
 	full,
 	observe,

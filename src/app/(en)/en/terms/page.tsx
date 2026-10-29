@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import { LegalPage } from '@/components/LegalPage';
 import { legalMetadata } from '@/lib/page-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
-import Link from 'next/link';
 
 export const metadata = legalMetadata({
 	locale: 'en',

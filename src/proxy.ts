@@ -1,6 +1,6 @@
+import { type NextRequest, NextResponse } from 'next/server';
 import { LOCALE_COOKIE, languageDecision } from '@/lib/language-redirect';
 import { contentSecurityPolicy } from '@/lib/security-headers';
-import { type NextRequest, NextResponse } from 'next/server';
 
 /**
  * CSP for pages this site actually renders itself. /wg, /api, /neu and

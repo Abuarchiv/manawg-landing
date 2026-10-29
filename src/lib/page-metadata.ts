@@ -1,5 +1,5 @@
-import { type Locale, OG_LOCALE, PATHS, languageAlternates } from '@/lib/locale';
 import type { Metadata } from 'next';
+import { type Locale, languageAlternates, OG_LOCALE, PATHS } from '@/lib/locale';
 
 const OG_IMAGE = '/og.png?v=2';
 const OG_ALT: Record<Locale, string> = {

@@ -1,8 +1,8 @@
 // The topic pages as machine-readable files per language: Atom feed (feed.xml) and full Markdown text (llms-full.txt).
 import { appUrl } from '@/lib/app-origin';
 import { getAppUrl } from '@/lib/app-url';
-import { type Locale, PATHS, localiseHref } from '@/lib/locale';
-import { groupOf, topics, ui } from '@/topics/registry';
+import { type Locale, localiseHref, PATHS } from '@/lib/locale';
+import { groupOf, newestUpdate, topics, ui } from '@/topics/registry';
 import type { Topic } from '@/topics/types';
 
 const TEXT = {
@@ -36,7 +36,7 @@ export function atomFeed(locale: Locale): Response {
 			return `<entry><title>${esc(t.h1)}</title><link href="${url}"/><id>${url}</id><published>${t.published}T00:00:00Z</published><updated>${t.updated}T00:00:00Z</updated><summary>${esc(t.description)}</summary></entry>`;
 		})
 		.join('');
-	const newest = Object.values(all).reduce((m, t) => (t.updated > m ? t.updated : m), '');
+	const newest = newestUpdate(all);
 	const txt = TEXT[locale];
 	// RFC 4287 requires an author on the feed or on every entry.
 	const xml = `<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="${locale}"><title>${txt.feedTitle}</title><link href="${base}${PATHS[locale].feed}" rel="self"/><link href="${home}"/><id>${home}</id><author><name>ManaWG</name><uri>${base}${PATHS[locale].about}</uri></author><updated>${newest}T00:00:00Z</updated>${entries}</feed>`;

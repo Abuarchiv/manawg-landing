@@ -1,7 +1,7 @@
 'use client';
 
-import type { Locale } from '@/lib/locale';
 import { useEffect } from 'react';
+import type { Locale } from '@/lib/locale';
 
 const TEXT: Record<Locale, { title: string; hint: string; retry: string }> = {
 	de: {
@@ -17,7 +17,11 @@ export function ErrorView({
 	locale,
 	error,
 	reset,
-}: { locale: Locale; error: Error & { digest?: string }; reset: () => void }) {
+}: {
+	locale: Locale;
+	error: Error & { digest?: string };
+	reset: () => void;
+}) {
 	const t = TEXT[locale];
 	useEffect(() => {
 		// console.error goes to the Vercel platform log; there is no third-party error tracker.

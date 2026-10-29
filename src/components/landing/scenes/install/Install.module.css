@@ -150,7 +150,9 @@
 	position: relative;
 	width: 300px;
 	height: 620px;
-	transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+	transition:
+		width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+		height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .frame {
 	position: absolute;
@@ -166,8 +168,11 @@
 	box-shadow: 0 0 120px rgba(250, 250, 250, 0.08);
 	transform-origin: 0 0;
 	transform: scale(var(--z, 1));
-	transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
-		border-radius 0.6s, padding 0.6s;
+	transition:
+		width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+		height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+		border-radius 0.6s,
+		padding 0.6s;
 }
 .frame:not([data-tab="2"]) {
 	border: 0;
@@ -179,8 +184,11 @@
 		#262626 82%,
 		#737373 100%
 	);
-	box-shadow: inset 0 0 0 1px rgba(250, 250, 250, 0.35), inset 0 0 0 3px #0a0a0a, 0 50px 120px
-		rgba(0, 0, 0, 0.7), 0 0 90px rgba(250, 250, 250, 0.1);
+	box-shadow:
+		inset 0 0 0 1px rgba(250, 250, 250, 0.35),
+		inset 0 0 0 3px #0a0a0a,
+		0 50px 120px rgba(0, 0, 0, 0.7),
+		0 0 90px rgba(250, 250, 250, 0.1);
 }
 /* Pixel: slightly less rounded corners than the iPhone, otherwise the same casing */
 .frame[data-tab="1"] {
@@ -196,7 +204,9 @@
 	padding: 8px;
 	border-radius: 14px;
 	border-color: rgba(250, 250, 250, 0.18);
-	box-shadow: 0 50px 120px rgba(0, 0, 0, 0.7), 0 0 90px rgba(250, 250, 250, 0.08);
+	box-shadow:
+		0 50px 120px rgba(0, 0, 0, 0.7),
+		0 0 90px rgba(250, 250, 250, 0.08);
 }
 .key {
 	position: absolute;
@@ -470,8 +480,10 @@
 	--b-app: var(--b-app-l);
 }
 :global(:root[data-theme="light"]) .frame:not([data-tab="2"]) {
-	box-shadow: inset 0 0 0 1px rgba(250, 250, 250, 0.35), inset 0 0 0 3px #0a0a0a, 0 40px 90px
-		rgba(0, 0, 0, 0.28);
+	box-shadow:
+		inset 0 0 0 1px rgba(250, 250, 250, 0.35),
+		inset 0 0 0 3px #0a0a0a,
+		0 40px 90px rgba(0, 0, 0, 0.28);
 }
 :global(:root[data-theme="light"]) .frame[data-tab="2"] {
 	border-color: rgba(0, 0, 0, 0.14);

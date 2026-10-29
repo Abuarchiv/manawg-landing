@@ -3,7 +3,7 @@
 // Same rule as app.manawg.com: the first supported language wins,
 // English when the system only names languages we do not offer.
 
-import { type Locale, counterpartPath } from './locale.ts';
+import { counterpartPath, type Locale } from './locale.ts';
 
 export const LOCALE_COOKIE = 'manawg_locale';
 
