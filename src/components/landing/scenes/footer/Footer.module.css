@@ -50,6 +50,11 @@
 		color: var(--ink);
 	}
 }
+/* 24 px hit area without moving the line */
+.language {
+	padding-block: 5px;
+	margin-bottom: -5px;
+}
 .column {
 	padding: var(--sp-32) var(--sp-24);
 	border-left: 1px dashed var(--hairline);

@@ -22,8 +22,8 @@ export function Footer() {
 						to={locale === 'de' ? 'en' : 'de'}
 						href={links.other}
 						label={footer.language}
-						className="label"
-						style={css('margin-top:var(--sp-12)')}
+						className={`label ${s.language}`}
+						style={css('margin-top:calc(var(--sp-12) - 5px)')}
 					/>
 					<ThemeSwitch locale={locale} className={`label ${s.theme}`} />
 				</div>
