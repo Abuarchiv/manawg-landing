@@ -104,13 +104,14 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Anmeldung und lokale Daten:</strong> Du kannst dich mit Google oder mit
-								E-Mail-Adresse und Passwort anmelden. Bei der Google-Anmeldung erhalten wir von
-								Google deine E-Mail-Adresse und deinen Namen. Bei der Anmeldung per E-Mail versendet
-								Supabase Bestätigungs-E-Mails und E-Mails zum Zurücksetzen des Passworts an deine
-								Adresse. Resend übernimmt den Versand; als Absender erscheint noreply@manawg.com.
-								Supabase Auth verwaltet die Anmeldung, die Sitzung wird in Cookies gespeichert.
-								Außerdem können WG-Zuordnungen und Namensentwürfe im lokalen Browserspeicher (Local
-								Storage) liegen.
+								E-Mail-Adresse anmelden, entweder mit Passwort oder mit einem Einmalcode, den wir
+								dir per E-Mail schicken. Bei der Google-Anmeldung erhalten wir von Google deine
+								E-Mail-Adresse und deinen Namen. Bei der Anmeldung per E-Mail versendet Supabase
+								Bestätigungs-E-Mails, Anmeldecodes und E-Mails zum Zurücksetzen des Passworts an
+								deine Adresse. Resend übernimmt den Versand; als Absender erscheint
+								noreply@manawg.com. Supabase Auth verwaltet die Anmeldung, die Sitzung wird in
+								Cookies gespeichert. Außerdem können WG-Zuordnungen und Namensentwürfe im lokalen
+								Browserspeicher (Local Storage) liegen.
 							</li>
 							<li>
 								<strong>Speicherdauer:</strong> Kontodaten speichern wir, bis du dein Konto über{' '}
@@ -377,8 +378,8 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Resend, Inc.</strong> (USA): versendet im Produktivbetrieb die von Supabase
-								Auth ausgelösten Bestätigungs-E-Mails und E-Mails zum Zurücksetzen des Passworts
-								sowie die eigenen E-Mails der App (Einladungen, Zahlungserinnerungen,
+								Auth ausgelösten Bestätigungs-E-Mails, Anmeldecodes und E-Mails zum Zurücksetzen des
+								Passworts sowie die eigenen E-Mails der App (Einladungen, Zahlungserinnerungen,
 								Monatsabrechnung). Absender ist noreply@manawg.com (siehe Abschnitt 4a). Die
 								Übermittlung stützt sich auf EU-Standardvertragsklauseln oder das EU-US Data Privacy
 								Framework.
@@ -438,10 +439,11 @@ export default function DatenschutzPage() {
 							7. Cookies und lokaler Browser-Speicher
 						</h2>
 						<p>
-							Für die Anmeldung bei Supabase verwendet ManaWG Cookies. Außerdem können
-							WG-Zuordnungen und Namensentwürfe im lokalen Browserspeicher (
-							<strong>Local Storage</strong>) abgelegt werden. Wenn du den Browser-Speicher löschst,
-							werden auch diese lokalen Daten entfernt.
+							Für die Anmeldung bei Supabase verwendet ManaWG Cookies. Wenn du in der App eine
+							Sprache wählst, speichert das Cookie manawg_locale diese Wahl ein Jahr lang; mit
+							„System“ wird es entfernt. Außerdem können WG-Zuordnungen und Namensentwürfe im
+							lokalen Browserspeicher (<strong>Local Storage</strong>) abgelegt werden. Wenn du den
+							Browser-Speicher löschst, werden auch diese lokalen Daten entfernt.
 						</p>
 					</section>
 
@@ -548,9 +550,9 @@ export default function DatenschutzPage() {
 						</h2>
 						<p>
 							Du bist weder gesetzlich noch vertraglich verpflichtet, personenbezogene Daten
-							bereitzustellen (Art. 13 Abs. 2 lit. e DSGVO). Ohne Anmeldung mit Google oder mit
-							E-Mail-Adresse und Passwort sowie ohne Anzeigenamen kannst du die App allerdings nicht
-							nutzen.
+							bereitzustellen (Art. 13 Abs. 2 lit. e DSGVO). Ohne Anmeldung (mit Google oder mit
+							E-Mail-Adresse und Passwort oder E-Mail-Code) sowie ohne Anzeigenamen kannst du die
+							App allerdings nicht nutzen.
 						</p>
 					</section>
 

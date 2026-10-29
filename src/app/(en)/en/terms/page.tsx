@@ -86,10 +86,10 @@ export default function TermsPage() {
 							3. Membership and obligations
 						</h2>
 						<p>
-							You sign in with your Google account or with an email address and password. You are
-							responsible for the content you post. Protect your device and the browser access
-							stored on it against unauthorised use. You must not post unlawful content, misuse
-							ManaWG or carry out automated attacks.
+							You sign in with your Google account or with an email address and a password or a
+							one-time email code. You are responsible for the content you post. Protect your device
+							and the browser access stored on it against unauthorised use. You must not post
+							unlawful content, misuse ManaWG or carry out automated attacks.
 						</p>
 					</section>
 

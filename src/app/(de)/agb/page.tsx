@@ -80,10 +80,11 @@ export default function AgbPage() {
 							3. Mitgliedschaft und Pflichten
 						</h2>
 						<p>
-							Du meldest dich mit deinem Google-Konto oder mit E-Mail-Adresse und Passwort an. Für
-							Inhalte, die du einstellst, bist du verantwortlich. Schütze dein Gerät und den darauf
-							gespeicherten Browserzugang vor unbefugtem Zugriff. Es ist untersagt, rechtswidrige
-							Inhalte einzustellen, ManaWG zu missbrauchen oder automatisierte Angriffe auszuführen.
+							Du meldest dich mit deinem Google-Konto oder mit E-Mail-Adresse und Passwort oder
+							E-Mail-Code an. Für Inhalte, die du einstellst, bist du verantwortlich. Schütze dein
+							Gerät und den darauf gespeicherten Browserzugang vor unbefugtem Zugriff. Es ist
+							untersagt, rechtswidrige Inhalte einzustellen, ManaWG zu missbrauchen oder
+							automatisierte Angriffe auszuführen.
 						</p>
 					</section>
 

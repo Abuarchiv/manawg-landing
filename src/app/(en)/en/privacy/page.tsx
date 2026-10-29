@@ -108,13 +108,13 @@ export default function PrivacyPage() {
 								<strong>Legal basis:</strong> Art. 6(1)(b) GDPR (performance of the contract of use)
 							</li>
 							<li>
-								<strong>Sign-in and local data:</strong> You can sign in with Google or with an
-								email address and password. With Google sign-in we receive your email address and
-								name from Google. With email sign-in, Supabase sends confirmation emails and
-								password-reset emails to your address. Resend delivers them; the sender appears as
-								noreply@manawg.com. Supabase Auth manages sign-in, and the session is stored in
-								cookies. In addition, flat assignments and name drafts may be held in the browser’s
-								local storage.
+								<strong>Sign-in and local data:</strong> You can sign in with Google, or with an
+								email address and either a password or a one-time code sent by email. With Google
+								sign-in we receive your email address and name from Google. With email sign-in,
+								Supabase sends confirmation emails, sign-in codes and password-reset emails to your
+								address. Resend delivers them; the sender appears as noreply@manawg.com. Supabase
+								Auth manages sign-in, and the session is stored in cookies. In addition, flat
+								assignments and name drafts may be held in the browser’s local storage.
 							</li>
 							<li>
 								<strong>Retention:</strong> We keep account data until you delete your account under{' '}
@@ -374,8 +374,8 @@ export default function PrivacyPage() {
 								file storage for photos in Frankfurt am Main (EU).
 							</li>
 							<li>
-								<strong>Resend, Inc.</strong> (USA): in production, sends the confirmation and
-								password-reset emails triggered by Supabase Auth and the app’s own emails
+								<strong>Resend, Inc.</strong> (USA): in production, sends the confirmation, sign-in
+								code and password-reset emails triggered by Supabase Auth and the app’s own emails
 								(invitations, payment reminders, the monthly statement). The sender is
 								noreply@manawg.com (see section 4a). The transfer relies on EU standard contractual
 								clauses or the EU-US Data Privacy Framework.
@@ -434,9 +434,11 @@ export default function PrivacyPage() {
 							7. Cookies and local browser storage
 						</h2>
 						<p>
-							ManaWG uses cookies for sign-in with Supabase. In addition, flat assignments and name
-							drafts may be held in the browser’s local storage (<strong>Local Storage</strong>). If
-							you clear the browser storage, this local data is removed as well.
+							ManaWG uses cookies for sign-in with Supabase. If you choose a language in the app, a
+							cookie named manawg_locale stores that choice for one year; with “System”, it is
+							removed. In addition, flat assignments and name drafts may be held in the browser’s
+							local storage (<strong>Local Storage</strong>). If you clear the browser storage, this
+							local data is removed as well.
 						</p>
 					</section>
 
@@ -544,8 +546,8 @@ export default function PrivacyPage() {
 						</h2>
 						<p>
 							You are neither legally nor contractually obliged to provide personal data (Art.
-							13(2)(e) GDPR). However, without signing in with Google or with an email address and
-							password, and without a display name, you cannot use the app.
+							13(2)(e) GDPR). However, without signing in (with Google, or with an email address and
+							a password or email code), and without a display name, you cannot use the app.
 						</p>
 					</section>
 
