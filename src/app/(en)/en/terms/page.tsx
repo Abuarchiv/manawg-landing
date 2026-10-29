@@ -71,9 +71,9 @@ export default function TermsPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">2. Services</h2>
 						<p>
-							ManaWG offers expense tracking, a cleaning rota, a shopping list and a noticeboard.
-							Using it is free. We cannot promise uninterrupted availability, data recovery, support
-							or any particular feature.
+							ManaWG offers expense tracking, a cleaning rota, a shopping list with supplies, a
+							calendar, a noticeboard and a chat. Using it is free. We cannot promise uninterrupted
+							availability, data recovery, support or any particular feature.
 						</p>
 						<p className="mt-2">
 							<strong>Use by minors:</strong> If you are under 16, you need the express consent of a

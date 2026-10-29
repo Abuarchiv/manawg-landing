@@ -86,7 +86,7 @@ export default function PrivacyPage() {
 							personal data and we do not show ads. For product analytics we send only the details
 							described in section 4f to PostHog Cloud EU. The accounts you create to sign in and to
 							be a member of your flat are separate from this; section 4a has more on them. The
-							app's source code is published as open source under the Apache License 2.0.
+							app’s source code is published as open source under the Apache License 2.0.
 						</p>
 					</section>
 
@@ -375,9 +375,10 @@ export default function PrivacyPage() {
 							</li>
 							<li>
 								<strong>Resend, Inc.</strong> (USA): in production, sends the confirmation and
-								password-reset emails triggered by Supabase Auth. The sender is noreply@manawg.com
-								(see section 4a). The transfer relies on EU standard contractual clauses or the
-								EU-US Data Privacy Framework.
+								password-reset emails triggered by Supabase Auth and the app’s own emails
+								(invitations, payment reminders, the monthly statement). The sender is
+								noreply@manawg.com (see section 4a). The transfer relies on EU standard contractual
+								clauses or the EU-US Data Privacy Framework.
 							</li>
 							<li>
 								<strong>Vercel Inc.</strong> (USA): hosts the web app and runs the edge network;

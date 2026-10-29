@@ -377,9 +377,11 @@ export default function DatenschutzPage() {
 							</li>
 							<li>
 								<strong>Resend, Inc.</strong> (USA): versendet im Produktivbetrieb die von Supabase
-								Auth ausgelösten Bestätigungs-E-Mails und E-Mails zum Zurücksetzen des Passworts.
-								Absender ist noreply@manawg.com (siehe Abschnitt 4a). Die Übermittlung stützt sich
-								auf EU-Standardvertragsklauseln oder das EU-US Data Privacy Framework.
+								Auth ausgelösten Bestätigungs-E-Mails und E-Mails zum Zurücksetzen des Passworts
+								sowie die eigenen E-Mails der App (Einladungen, Zahlungserinnerungen,
+								Monatsabrechnung). Absender ist noreply@manawg.com (siehe Abschnitt 4a). Die
+								Übermittlung stützt sich auf EU-Standardvertragsklauseln oder das EU-US Data Privacy
+								Framework.
 							</li>
 							<li>
 								<strong>Vercel Inc.</strong> (USA): hostet die Web-App und betreibt das

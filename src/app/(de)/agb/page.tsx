@@ -63,10 +63,10 @@ export default function AgbPage() {
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">2. Leistungen</h2>
 						<p>
-							ManaWG bietet eine Ausgabenverwaltung, einen Putzplan, eine Einkaufsliste und eine
-							Pinnwand. Die Nutzung ist kostenlos. Eine durchgehende Verfügbarkeit, die
-							Wiederherstellung von Daten, Support oder bestimmte Funktionen können wir nicht
-							zusagen.
+							ManaWG bietet eine Ausgabenverwaltung, einen Putzplan, eine Einkaufsliste mit
+							Vorräten, einen Kalender, eine Pinnwand und einen Chat. Die Nutzung ist kostenlos.
+							Eine durchgehende Verfügbarkeit, die Wiederherstellung von Daten, Support oder
+							bestimmte Funktionen können wir nicht zusagen.
 						</p>
 						<p className="mt-2">
 							<strong>Nutzung durch Minderjährige:</strong> Wenn du unter 16 Jahre alt bist,
