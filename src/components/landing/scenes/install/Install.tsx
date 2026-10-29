@@ -39,7 +39,7 @@ const FRAMES = [
 	[300, 620],
 	[300, 620],
 	[600, 400],
-];
+] as const;
 
 /** Never split the token (German "Home-Bildschirm"), replace symbol characters with the real drawing. */
 function keepTogether(t: string, nowrap: string, menuAria: string, dotsAria: string) {
@@ -63,8 +63,8 @@ export function Install() {
 	const { install } = useDict();
 	const demo = APP_DEMO[useLocale()];
 	const WAYS = install.ways;
-	const [inst, setInst] = useState(0);
-	const instRef = useRef(0);
+	const [inst, setInst] = useState<TabIndex>(0);
+	const instRef = useRef<TabIndex>(0);
 	instRef.current = inst;
 	const secRef = useRef<HTMLElement>(null);
 	const frameRef = useRef<HTMLDivElement>(null);
@@ -101,7 +101,7 @@ export function Install() {
 		const a = registerPlayback(
 			frameRef.current as HTMLDivElement,
 			secRef.current as HTMLElement,
-			() => instRef.current as TabIndex,
+			() => instRef.current,
 		);
 		api.current = a;
 		return () => a.stop();
@@ -112,7 +112,7 @@ export function Install() {
 		const bu = stageRef.current as HTMLDivElement;
 		const sk = scaleRef.current as HTMLDivElement;
 		const fit = () => {
-			const [fw, fh] = FRAMES[inst] as number[];
+			const [fw, fh] = FRAMES[inst];
 			// Portrait and phone landscape: the stage has a fixed height, the device fits entirely
 			const portrait = matchMedia(
 				'(max-aspect-ratio: 1/1), (max-width: 699px), (orientation: landscape) and (max-height: 499px)',
@@ -120,21 +120,16 @@ export function Install() {
 			const cs = getComputedStyle(bu);
 			const w =
 				bu.clientWidth - Number.parseFloat(cs.paddingLeft) - Number.parseFloat(cs.paddingRight);
-			// On large screens the device may exceed its design size (up to 78 % of the window height)
-			// Portrait: the stage has a fixed height (100svh minus header, tabs, row), the device fits entirely
+			// Portrait: the stage height is 100svh minus header, tabs and step row
 			const hh =
 				bu.clientHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom);
 			// Landscape: window height minus the stage padding (header band at top and bottom)
 			const free =
 				innerHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom) - 8;
-			const z = Math.min(
-				inst === 2 ? 1.2 : 1.4,
-				w / (fw as number),
-				(portrait ? hh : free) / (fh as number),
-			);
+			const z = Math.min(inst === 2 ? 1.2 : 1.4, w / fw, (portrait ? hh : free) / fh);
 			sk.style.setProperty('--z', z.toFixed(4));
-			sk.style.width = `${(fw as number) * z}px`;
-			sk.style.height = `${(fh as number) * z}px`;
+			sk.style.width = `${fw * z}px`;
+			sk.style.height = `${fh * z}px`;
 		};
 		fit();
 		const ro = new ResizeObserver(fit);
@@ -146,25 +141,16 @@ export function Install() {
 		};
 	}, [inst]);
 
-	const handleKey = (e: KeyboardEvent, i: number) => {
-		const n = WAYS.length;
-		const k =
-			e.key === 'ArrowRight'
-				? (i + 1) % n
-				: e.key === 'ArrowLeft'
-					? (i + n - 1) % n
-					: e.key === 'Home'
-						? 0
-						: e.key === 'End'
-							? n - 1
-							: -1;
-		if (k < 0) return;
+	// Tablist keys: arrows wrap around, Home and End jump to the first and last tab
+	const handleKey = (e: KeyboardEvent, i: TabIndex) => {
+		const next = { ArrowRight: (i + 1) % 3, ArrowLeft: (i + 2) % 3, Home: 0, End: 2 }[e.key];
+		if (next === undefined) return;
 		e.preventDefault();
-		setInst(k);
-		tabRefs.current[k]?.focus();
+		setInst(next as TabIndex);
+		tabRefs.current[next]?.focus();
 	};
 
-	const way = WAYS[inst] as (typeof WAYS)[number];
+	const way = WAYS[inst];
 	return (
 		<section
 			id="installieren"
@@ -196,8 +182,8 @@ export function Install() {
 							aria-controls="ins-panel"
 							tabIndex={inst === i ? 0 : -1}
 							className={`tab ${s.tab}`}
-							onClick={() => setInst(i)}
-							onKeyDown={(e) => handleKey(e, i)}
+							onClick={() => setInst(i as TabIndex)}
+							onKeyDown={(e) => handleKey(e, i as TabIndex)}
 						>
 							{w.name}
 						</button>

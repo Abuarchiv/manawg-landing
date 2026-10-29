@@ -72,7 +72,7 @@ export const loop: Loop = {
 export const qa: Record<string, unknown> = {};
 
 /** Pointer state of a scene (scene coordinates x, y; CSS pixels px, py). */
-export interface ScenePointer {
+interface ScenePointer {
 	x: number;
 	y: number;
 	px: number;

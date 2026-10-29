@@ -6,7 +6,7 @@
 export type Lines = readonly string[];
 
 /** One of the four room cards of the flat scene. */
-export interface RoomCard {
+interface RoomCard {
 	/** Counter, e.g. "01 / 04". */
 	number: string;
 	/** Mono label of the room, uppercase literal. */
@@ -19,20 +19,20 @@ export interface RoomCard {
 	amount: string;
 }
 
-export interface Step {
+interface Step {
 	number: string;
 	title: string;
 	text: string;
 }
 
-export interface InstallWay {
+interface InstallWay {
 	/** Tab name. */
 	name: string;
 	/** Three steps; "≡" and "⋮" are swapped for the real icons. */
 	steps: readonly [string, string, string];
 }
 
-export interface IosStrings {
+interface IosStrings {
 	/** Labels below the app icons of the home screen. */
 	homeFitness: string;
 	homeWatch: string;
@@ -85,7 +85,7 @@ export interface IosStrings {
 	keySpace: string;
 }
 
-export interface AndroidStrings {
+interface AndroidStrings {
 	/** Chrome menu entries; an empty string is a separator. */
 	menu: readonly string[];
 	sheetTitle: Lines;
@@ -99,7 +99,7 @@ export interface AndroidStrings {
 	toastInstalled: string;
 }
 
-export interface DesktopStrings {
+interface DesktopStrings {
 	chip: string;
 	tooltip: string;
 	dialogTitle: string;

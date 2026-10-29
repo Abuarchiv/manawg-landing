@@ -121,10 +121,9 @@ export function Phone() {
 			const lx = (x - r.left) / k;
 			const ly = (y - r.top) / k;
 			const target = doc.elementFromPoint(lx, ly);
-			const MouseCtor = (doc.defaultView as unknown as { MouseEvent: typeof MouseEvent })
-				.MouseEvent;
+			// The iframe's own MouseEvent, so the app's listeners see a native event of their realm
 			target?.dispatchEvent(
-				new MouseCtor('click', {
+				new doc.defaultView.MouseEvent('click', {
 					bubbles: true,
 					cancelable: true,
 					composed: true,

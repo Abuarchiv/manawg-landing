@@ -10,7 +10,7 @@ import type { Probe } from './gl';
 export type TileName = (typeof TILES)[number];
 
 /** A tile in the atlas: position and size in atlas px, div = resolution divisor measured from lum. */
-export interface Tile {
+interface Tile {
 	x: number;
 	y: number;
 	w: number;
@@ -25,7 +25,7 @@ export interface Rect {
 	h: number;
 }
 
-export interface RoundRect extends Rect {
+interface RoundRect extends Rect {
 	r: number;
 }
 
@@ -104,7 +104,7 @@ export interface DrawValues {
 }
 
 /** Pointer state of the stage (stage.js), as far as the hands read it. */
-export interface HandPointer {
+interface HandPointer {
 	x: number;
 	y: number;
 	type: string;
@@ -164,7 +164,7 @@ export interface Uniforms {
 }
 
 /** Cell grid of the first pass: target size, texture and framebuffer. */
-export interface CellBuffer {
+interface CellBuffer {
 	w: number;
 	h: number;
 	tex: WebGLTexture | null;
@@ -181,7 +181,7 @@ export interface CellGrid {
 }
 
 /** Extension EXT_disjoint_timer_query_webgl2 (not in lib.dom), only the constants in use. */
-export interface TimerQuery {
+interface TimerQuery {
 	TIME_ELAPSED_EXT: number;
 	GPU_DISJOINT_EXT: number;
 }
@@ -233,7 +233,7 @@ export interface DemoRun {
 	off: boolean;
 }
 
-export type DrawMode = 'gl' | 'cpu';
+type DrawMode = 'gl' | 'cpu';
 
 /** Precomputed 2D fallback: holding hand as an image and the two sprites of the pointing hand. */
 export interface CpuBaked {
@@ -242,7 +242,7 @@ export interface CpuBaked {
 }
 
 /** Measurements for landing-konzept/werkzeuge/qa (qa.hand). */
-export interface HandDbg {
+interface HandDbg {
 	m: { x: number; y: number; in: boolean; down: boolean; type: string };
 	tg: readonly [number, number];
 	endOn: boolean;
