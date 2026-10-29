@@ -258,7 +258,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Open the template in Excel or Google Sheets',
-				'1. Create the plan in the generator and download it as a CSV. The file separates columns with commas and opens directly in English Excel and Google Sheets, with accented letters kept\n2. Excel: double-click the file and it opens as a table. German-region Excel splits columns on semicolons, so there use Data, From Text/CSV and choose comma as the delimiter\n3. Google Sheets: choose File, Import, Upload, and pick comma as the separator if it is not detected\n4. Numbers: open the file directly\n5. Add columns the printout does not have, such as “Done” and “Swap with”, then share or print',
+				'1. Create the plan in the generator and download it as a CSV. The file separates columns with commas and opens directly in Excel set to a UK or US region and in Google Sheets, with accented letters kept\n2. Excel: double-click the file and it opens as a table. German-region Excel splits columns on semicolons, so there use Data, From Text/CSV and choose comma as the delimiter\n3. Google Sheets: choose File, Import, Upload, and pick comma as the separator if it is not detected\n4. Numbers: open the file directly\n5. Add columns the printout does not have, such as “Done” and “Swap with”, then share or print',
 			],
 			[
 				'How to use the rotation',
@@ -331,7 +331,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'PDF or CSV, which should I use?',
-				'For the display on the wall, print it: in the browser’s print dialogue you can also save the plan as a PDF. The CSV file is for anyone who wants to keep editing the plan in a spreadsheet or maintain it in a shared file.',
+				'For the display on the wall, print it: in the browser’s print dialog you can also save the plan as a PDF. The CSV file is for anyone who wants to keep editing the plan in a spreadsheet or maintain it in a shared file.',
 			],
 			[
 				'What does a cleaning rota for two people look like?',
@@ -646,7 +646,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		],
 	},
 	'wg-casting-questions': {
-		link: 'WG-Casting',
+		link: 'Flat interviews (WG-Casting)',
 		stand: '2026-10-29',
 		erschienen: '2026-10-29',
 		titel: 'WG-Casting explained: 48 questions, templates | ManaWG',
@@ -690,7 +690,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Questions applicants ask the flat',
-				'Why is the room becoming free?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nWhat belongs to contract types and deposits is covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ cold rent (Kaltmiete, rent without utilities) and may be paid in three equal monthly instalments.',
+				'Why is the room becoming free?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and other utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nWhat belongs to contract types and deposits is covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ cold rent (Kaltmiete, rent without utilities) and may be paid in three equal monthly instalments.',
 			],
 			[
 				'Preparing as an applicant',
@@ -841,7 +841,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'What do I ask as an applicant at a WG-Casting?',
-				'Why the room is becoming free, whether there is a tenancy agreement of your own or a sublease, how high the Warmmiete (rent including heating and utilities) and the Kaution (deposit) are, how the cleaning rota works, how expenses are split and how long the others want to stay.',
+				'Why the room is becoming free, whether there is a tenancy agreement of your own or a sublease, how high the Warmmiete (rent including heating and other utilities) and the Kaution (deposit) are, how the cleaning rota works, how expenses are split and how long the others want to stay.',
 			],
 			[
 				'Which questions are off limits at a WG-Casting?',
@@ -850,7 +850,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		],
 		quellen: [
 			[
-				'§ 551 BGB, Begrenzung und Anlage von Mietsicherheiten (in German)',
+				'§ 551 BGB, limits and investment of rental deposits (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__551.html',
 			],
 		],
@@ -876,7 +876,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'The sublease',
-				'1. The names of the main tenant (Hauptmieter) or tenant and the subtenant\n2. The exact period with start and end date\n3. Rent including utilities, internet and the broadcasting fee share\n4. The deposit (Kaution) and when it is paid back\n5. Which furniture and items stay in the room\n6. That the flat’s rules apply, such as the cleaning rota and quiet hours\n7. A handover with a protocol and photos at the start and at the end',
+				'1. The names of the main tenant (Hauptmieter) or tenant and the subtenant\n2. The exact period with start and end date\n3. Rent including utilities, internet and the broadcasting fee share\n4. The deposit (Kaution) and when it is paid back\n5. Which furniture and items stay in the room\n6. That the flat’s rules apply, such as the cleaning rota and quiet hours\n7. A written handover record (Übergabeprotokoll) with photos at the start and at the end',
 			],
 			[
 				'Rent and deposit',
@@ -884,7 +884,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Address registration and formalities',
-				'Someone who is already registered in Germany and stays no longer than six months does not usually have to re-register for the sublet. If the person stays longer, they must register (Anmeldung, address registration) within two weeks after the six months have passed, and someone who otherwise lives abroad must already do so after three months. For this, you as main tenant issue the Wohnungsgeberbestätigung (landlord’s confirmation of residence). You yourself normally stay registered at the flat address while you are away. Arrange mail forwarding or ask the flat to collect your post. More on registering is in [Anmeldung in a shared flat](/anmeldung-shared-flat).',
+				'Someone who is already registered in Germany and stays no longer than six months does not usually have to re-register for the sublet. If the person stays longer, they must register (Anmeldung, address registration) within two weeks after the six months have passed, and someone who otherwise lives abroad must already do so after three months. For this, you as main tenant issue the Wohnungsgeberbestätigung (landlord’s confirmation of move-in). You yourself normally stay registered at the flat address while you are away. Arrange mail forwarding or ask the flat to collect your post. More on registering is in [Anmeldung in a shared flat](/anmeldung-shared-flat).',
 			],
 			[
 				'In daily life in the flat',
@@ -892,7 +892,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Return and handover',
-				'At the end, do a handover using the protocol from the start. Check the room and inventory, settle open amounts and pay back the deposit if everything is in order. Allow a few days of buffer between the subtenant moving out and your return in case a date shifts. If you still have questions about the rota and costs during your absence, see [holidays and time away in a flat share](/holidays-and-time-away).',
+				'At the end, do a handover using the handover record from the start. Check the room and inventory, settle open amounts and pay back the deposit if everything is in order. Allow a few days of buffer between the subtenant moving out and your return in case a date shifts. If you still have questions about the rota and costs during your absence, see [holidays and time away in a flat share](/holidays-and-time-away).',
 			],
 		],
 		fragen: [
@@ -915,23 +915,23 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		],
 		quellen: [
 			[
-				'§ 540 BGB, Gebrauchsüberlassung an Dritte (in German)',
+				'§ 540 BGB, letting third parties use the home (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__540.html',
 			],
 			[
-				'§ 553 BGB, Gestattung der Gebrauchsüberlassung an Dritte (in German)',
+				'§ 553 BGB, permission to sublet (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__553.html',
 			],
 			[
-				'§ 551 BGB, Begrenzung und Anlage von Mietsicherheiten (in German)',
+				'§ 551 BGB, limits and investment of rental deposits (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__551.html',
 			],
 			[
-				'§ 17 BMG, An- und Abmeldung (in German)',
+				'§ 17 BMG, registration and deregistration (in German)',
 				'https://www.gesetze-im-internet.de/bmg/__17.html',
 			],
 			[
-				'§ 27 BMG, Ausnahmen von der Meldepflicht (in German)',
+				'§ 27 BMG, exemptions from the duty to register (in German)',
 				'https://www.gesetze-im-internet.de/bmg/__27.html',
 			],
 		],

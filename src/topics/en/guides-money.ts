@@ -79,16 +79,16 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		widget: { after: 'Calculator', kind: 'rent-calculator' },
 		stand: '2026-10-29',
 		erschienen: '2026-10-29',
-		titel: 'Flat share rent calculator by room size | ManaWG',
+		titel: 'Flat-share rent calculator by room size | ManaWG',
 		beschreibung:
-			'Split flat share rent fairly: calculator by room size with shared areas, the formula with an example, and tips on balconies, private bathrooms and utilities.',
-		h1: 'Split flat share rent by room size',
+			'Split flat-share rent fairly: calculator by room size with shared areas, the formula with an example, and tips on balconies, private bathrooms and utilities.',
+		h1: 'Split flat-share rent by room size',
 		einleitung:
 			'When the rooms in a shared flat (WG) are different sizes, an equal rent share rarely fits. The calculator splits the rent by the floor area of each room and spreads the shared rooms equally across everyone. The result is a proposal that you still need to agree on.',
 		abschnitte: [
 			[
 				'Calculator',
-				'Enter the rent, the area of each room in square metres and the area of the shared rooms such as the kitchen, bathroom and hall. Whether you use Kaltmiete (rent excluding utilities) or Warmmiete (rent including the advance payment for utilities) is up to you, the calculation stays the same. The pre-filled values are an example. What you enter stays in your browser and is neither stored nor sent anywhere.',
+				'Enter the rent, the area of each room in square metres and the area of the shared rooms such as the kitchen, bathroom and hall. Whether you use Kaltmiete (rent excluding utilities) or Warmmiete (rent including heating and other utilities) is up to you, the calculation stays the same. The pre-filled values are an example. What you enter stays in your browser and is neither stored nor sent anywhere.',
 			],
 			[
 				'The formula with an example',
@@ -159,7 +159,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			'How German flat shares split Nebenkosten, electricity, internet and the broadcasting fee: who holds the contract, how to settle up and share back payments.',
 		h1: 'Utilities, electricity and internet in a flat share',
 		einleitung:
-			'After the rent, Nebenkosten (utility and service charges such as heating, water and waste), electricity and internet are the biggest items in a flat share budget in Germany. Because usually one person holds the contract, questions come up: who pays what, and what happens with back payments? This guide covers the usual solutions.',
+			'After the rent, Nebenkosten (utility and service charges such as heating, water and waste), electricity and internet are the biggest items in a flat-share budget in Germany. Because usually one person holds the contract, questions come up: who pays what, and what happens with back payments? This guide covers the usual solutions.',
 		abschnitte: [
 			[
 				'Nebenkosten: advance payment and annual statement',
@@ -214,7 +214,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		],
 		quellen: [
 			[
-				'§ 556 BGB, Vereinbarungen über Betriebskosten (in German)',
+				'§ 556 BGB, agreements on utility costs (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__556.html',
 			],
 			[
@@ -240,7 +240,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'One fee per dwelling',
-				'In the private sphere, section 2(1) of the Rundfunkbeitragsstaatsvertrag (RBStV, the state treaty on the broadcasting fee) requires a fee for every dwelling, payable by the holder of the dwelling. The holder is every adult who lives in the dwelling themselves (section 2(2)). A person is presumed to be the holder if they are registered there under residence registration law (see [Anmeldung in a shared flat](/anmeldung-shared-flat)) or named as a tenant in the tenancy agreement. According to the Beitragsservice, the number of people who live in the flat has no effect on the amount.',
+				'In the private sphere, § 2 para. 1 of the Rundfunkbeitragsstaatsvertrag (RBStV, the state treaty on the broadcasting fee) requires a fee for every dwelling, payable by the holder of the dwelling. The holder is every adult who lives in the dwelling themselves (§ 2 para. 2). A person is presumed to be the holder if they are registered there under residence registration law (see [Anmeldung in a shared flat](/anmeldung-shared-flat)) or named as a tenant in the tenancy agreement. According to the Beitragsservice, the number of people who live in the flat has no effect on the amount.',
 			],
 			[
 				'A flatmate already pays: how to deregister',
@@ -252,11 +252,11 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Who is liable',
-				'Under section 2(3) RBStV, several people liable for the fee are jointly and severally liable, in line with section 44 of the Abgabenordnung (AO, the German fiscal code). Under section 44(1) AO, each joint debtor owes the whole amount unless something else is provided. So if a fee is outstanding, the Beitragsservice can turn to any person who counts as a holder, even if you split things differently among yourselves. Agree who pays the fee, and settle shares between you.',
+				'Under § 2 para. 3 RBStV, several people liable for the fee are jointly and severally liable, in line with § 44 of the Abgabenordnung (AO, the German fiscal code). Under § 44 para. 1 AO, each joint debtor owes the whole amount unless something else is provided. So if a fee is outstanding, the Beitragsservice can turn to any person who counts as a holder, even if you split things differently among yourselves. Agree who pays the fee, and settle shares between you.',
 			],
 			[
 				'Moving out and changing the payer',
-				'Anyone who moves out should tell the Beitragsservice. Under section 7(2) RBStV, the obligation ends at the end of the month in which the person stops holding the dwelling, but not before the end of the month in which this was reported. If you do not report it, you may carry on paying. If the paying person moves out, the dwelling is still liable. Agree in good time who pays from then on, and report it using the forms on rundfunkbeitrag.de so that the contribution number and the direct debit belong to the right person. More on moving out is in the [moving-out checklist](/moving-out-checklist).',
+				'Anyone who moves out should tell the Beitragsservice. Under § 7 para. 2 RBStV, the obligation ends at the end of the month in which the person stops holding the dwelling, but not before the end of the month in which this was reported. If you do not report it, you may carry on paying. If the paying person moves out, the dwelling is still liable. Agree in good time who pays from then on, and report it using the forms on rundfunkbeitrag.de so that the contribution number and the direct debit belong to the right person. More on moving out is in the [moving-out checklist](/moving-out-checklist).',
 			],
 			[
 				'Exemption',
@@ -264,7 +264,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'As a fixed cost in ManaWG',
-				`Set the fee up in [shared expenses](/shared-expenses) as a fixed cost: amount ${euro(RUNDFUNK_QUARTAL_CENT, 'en')}, interval “Quarter”, under “Paid by” the person who pays, and the split “Equally” among everyone taking part. Use the next direct debit date as the first due date. ManaWG then books the fee as an expense every three months automatically, and the shares go into the balance. If you pay yearly, choose an interval of 12 months and enter the annual amount.`,
+				`Set the fee up in [shared expenses](/shared-expenses) as a fixed cost: amount ${euro(RUNDFUNK_QUARTAL_CENT, 'en')}, interval “Quarter”, under “Paid by” the person who pays, and the split “Equally” among everyone taking part. Use the next direct debit date as the first due date. ManaWG then books the fee as an expense every three months automatically, and the shares go into the balance. If you pay yearly, choose the interval “Year” and enter the annual amount.`,
 			],
 		],
 		tabellen: [
@@ -295,7 +295,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Who is liable if the fee is not paid?',
-				'Several people liable for the fee in one dwelling are jointly and severally liable (section 2(3) RBStV, section 44 AO). The Beitragsservice can therefore turn to any person who counts as a holder of the dwelling.',
+				'Several people liable for the fee in one dwelling are jointly and severally liable (§ 2 para. 3 RBStV, § 44 AO). The Beitragsservice can therefore turn to any person who counts as a holder of the dwelling.',
 			],
 		],
 		quellen: [
@@ -308,31 +308,31 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'https://www.rundfunkbeitrag.de/welcome/english/students-and-apprentices',
 			],
 			[
-				'Rundfunkbeitrag: Zahlung und Höhe (rundfunkbeitrag.de, in German)',
+				'Rundfunkbeitrag: payment and amount (rundfunkbeitrag.de, in German)',
 				'https://www.rundfunkbeitrag.de/buergerinnen-und-buerger/informationen/zahlung',
 			],
 			[
-				'Rundfunkbeitrag: Wohnung abmelden (rundfunkbeitrag.de, in German)',
+				'Rundfunkbeitrag: deregister a dwelling (rundfunkbeitrag.de, in German)',
 				'https://www.rundfunkbeitrag.de/buergerinnen-und-buerger/formulare/abmelden',
 			],
 			[
-				'Rundfunkbeitrag: Ausnahmen von der Beitragspflicht (rundfunkbeitrag.de, in German)',
+				'Rundfunkbeitrag: exemptions from the fee (rundfunkbeitrag.de, in German)',
 				'https://www.rundfunkbeitrag.de/ausnahmen-von-der-rundfunkbeitragspflicht',
 			],
 			[
-				'Rundfunkbeitrag: Befreiung oder Ermäßigung beantragen (rundfunkbeitrag.de, in German)',
+				'Rundfunkbeitrag: apply for exemption or reduction (rundfunkbeitrag.de, in German)',
 				'https://www.rundfunkbeitrag.de/buergerinnen-und-buerger/formulare/befreiung-oder-ermaessigung-beantragen',
 			],
 			[
-				'RBStV § 2 Rundfunkbeitrag im privaten Bereich (in German)',
+				'RBStV § 2, the fee in the private sphere (in German)',
 				'https://www.gesetze-bayern.de/Content/Document/RBeitrStV-2',
 			],
 			[
-				'RBStV § 7 Beginn und Ende der Beitragspflicht (in German)',
+				'RBStV § 7, start and end of the obligation to pay (in German)',
 				'https://www.gesetze-bayern.de/Content/Document/RBeitrStV-7',
 			],
 			[
-				'AO § 44 Gesamtschuldner (in German)',
+				'AO § 44, joint debtors (in German)',
 				'https://www.gesetze-im-internet.de/ao_1977/__44.html',
 			],
 		],
@@ -341,10 +341,10 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		link: 'Household kitty',
 		stand: '2026-10-29',
 		erschienen: '2026-10-29',
-		titel: 'Flat share household kitty: cash, account or app? | ManaWG',
+		titel: 'Flat-share household kitty: cash, account or app? | ManaWG',
 		beschreibung:
 			'A shared household kitty in a flat share: cash tin, joint account or app? Pros and cons, a worked example, rules and settling up without arguments.',
-		h1: 'The flat share household kitty: three ways',
+		h1: 'The flat-share household kitty: three ways',
 		einleitung:
 			'Loo roll, cleaning products, dishwasher tablets: small items add up and cause friction. A shared kitty can solve that, as long as it is clear how it is run. This guide covers the three usual ways with their pros and cons, a worked example and the rules that should apply whichever you choose.',
 		abschnitte: [
@@ -425,7 +425,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'When everyone is liable together',
-				'With a joint main tenancy (Hauptmietvertrag, the tenancy agreement with the landlord, see the [tenancy agreement guide](/flat-share-tenancy-agreement)), the landlord can demand the whole rent from any one tenant, even if the others do not pay (section 421 BGB, the German Civil Code). Anyone who has paid more than their share can reclaim the rest from the others. If in doubt, equality applies: everyone bears the same share unless something else is agreed (section 426 BGB). Put in writing beforehand how you split if it should not be equal.',
+				'With a joint main tenancy (Hauptmietvertrag, the tenancy agreement with the landlord, see the [tenancy agreement guide](/flat-share-tenancy-agreement)), the landlord can demand the whole rent from any one tenant, even if the others do not pay (§ 421 BGB, the German Civil Code). Anyone who has paid more than their share can reclaim the rest from the others. If in doubt, equality applies: everyone bears the same share unless something else is agreed (§ 426 BGB). Put in writing beforehand how you split if it should not be equal.',
 			],
 			[
 				'When someone does not pay',
@@ -433,11 +433,11 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Lent instead of shared: debts between friends',
-				'Borrowed money is different from a shared expense: someone fronts the Kaution (rental deposit) or helps out with €300 until the end of the month. That is a loan (Darlehen), for which section 488 BGB prescribes no particular form between private individuals. If no repayment date is agreed, it only falls due when one side gives notice, and the notice period is three months (section 488(3) BGB). So always name a date when you lend. If an argument comes later, proof is usually missing. Helpful are a bank transfer with a reference such as “Loan, repay by 30 Nov”, a message in which the other person confirms the amount and date, or a short signed note with amount, date and repayment date. Keep such loans apart from shared expenses in your [shared expenses](/shared-expenses) so that the balances stay right.',
+				'Borrowed money is different from a shared expense: someone fronts the Kaution (rental deposit) or helps out with €300 until the end of the month. That is a loan (Darlehen), for which § 488 BGB prescribes no particular form between private individuals. If no repayment date is agreed, it only falls due when one side gives notice, and the notice period is three months (§ 488 para. 3 BGB). So always name a date when you lend. If an argument comes later, proof is usually missing. Helpful are a bank transfer with a reference such as “Loan, repay by 30 Nov”, a message in which the other person confirms the amount and date, or a short signed note with amount, date and repayment date. Keep such loans apart from shared expenses in your [shared expenses](/shared-expenses) so that the balances stay right.',
 			],
 			[
 				'Reminders and limitation: how long you can claim the money back',
-				'Once the agreed date has passed, send one written reminder with the amount and a new date, by email or message so that it can be proved. If a fixed calendar day was agreed, the person is in default after that day even without a reminder (section 286(2) no. 1 BGB), provided they are responsible for the late payment (section 286(4) BGB). If no date was agreed, default only begins when the person fails to pay after a reminder sent once the money is due (section 286(1) BGB). The next step would be a court order for payment (Mahnbescheid), which costs fees. For small amounts and among friends, it is worth weighing that up first. But do not wait too long: the regular limitation period is three years (section 195 BGB) and starts at the end of the year in which the claim arose and you knew who owed you the money (section 199(1) BGB). Example: if repayment was agreed for 15 August 2026, the period starts at the end of 31 December 2026 and ends at the end of 31 December 2029. After that, the debtor may refuse to pay (section 214(1) BGB).',
+				'Once the agreed date has passed, send one written reminder with the amount and a new date, by email or message so that it can be proved. If a fixed calendar day was agreed, the person is in default after that day even without a reminder (§ 286 para. 2 no. 1 BGB), provided they are responsible for the late payment (§ 286 para. 4 BGB). If no date was agreed, default only begins when the person fails to pay after a reminder sent once the money is due (§ 286 para. 1 BGB). The next step would be a court order for payment (Mahnbescheid), which costs fees. For small amounts and among friends, it is worth weighing that up first. But do not wait too long: the regular limitation period is three years (§ 195 BGB) and starts at the end of the year in which the claim arose and you knew who owed you the money (§ 199 para. 1 BGB). Example: if repayment was agreed for 15 August 2026, the period starts at the end of 31 December 2026 and ends at the end of 31 December 2029. After that, the debtor may refuse to pay (§ 214 para. 1 BGB).',
 			],
 		],
 		fragen: [
@@ -459,15 +459,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'What can you do if a friend does not repay borrowed money in Germany?',
-				'Speak to them calmly and name the amount and a new date. If that does not help, send a reminder in writing or by message. If a calendar date was agreed, they are already in default, otherwise at the latest after the reminder (section 286(1) and (2) BGB). For small amounts, letting go is often more sensible than a court order for payment.',
+				'Speak to them calmly and name the amount and a new date. If that does not help, send a reminder in writing or by message. If a calendar date was agreed, they are in default once it has passed; otherwise only after a reminder sent once the money is due (§ 286 para. 1 and 2 BGB). For small amounts, letting go is often more sensible than a court order for payment.',
 			],
 			[
 				'How long can you claim back debts between friends in Germany?',
-				'Usually three years (section 195 BGB). The period starts at the end of the year in which repayment fell due and you knew who owed you the money (section 199(1) BGB). After that, the debtor may refuse to pay (section 214(1) BGB).',
+				'Usually three years (§ 195 BGB). The period starts at the end of the year in which repayment fell due and you knew who owed you the money (§ 199 para. 1 BGB). After that, the debtor may refuse to pay (§ 214 para. 1 BGB).',
 			],
 			[
 				'Do you need a written contract for borrowed money in Germany?',
-				'No, section 488 BGB prescribes no form for a loan between private individuals. Without proof, though, it is hard to show later that it was a loan and by when it was due back. So put the amount and date in writing.',
+				'No, § 488 BGB prescribes no form for a loan between private individuals. Without proof, though, it is hard to show later that it was a loan and by when it was due back. So put the amount and date in writing.',
 			],
 		],
 		quellen: [
@@ -475,32 +475,29 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'German Civil Code (BGB), English translation (may lag behind the current law)',
 				'https://www.gesetze-im-internet.de/englisch_bgb/',
 			],
+			['§ 421 BGB, joint debtors (in German)', 'https://www.gesetze-im-internet.de/bgb/__421.html'],
 			[
-				'§ 421 BGB, Gesamtschuldner (in German)',
-				'https://www.gesetze-im-internet.de/bgb/__421.html',
-			],
-			[
-				'§ 426 BGB, Ausgleichungspflicht, Forderungsübergang (in German)',
+				'§ 426 BGB, contribution between joint debtors, transfer of the claim (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__426.html',
 			],
 			[
-				'§ 488 BGB, Vertragstypische Pflichten beim Darlehensvertrag (in German)',
+				'§ 488 BGB, core duties under a loan agreement (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__488.html',
 			],
 			[
-				'§ 286 BGB, Verzug des Schuldners (in German)',
+				'§ 286 BGB, debtor in default (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__286.html',
 			],
 			[
-				'§ 195 BGB, Regelmäßige Verjährungsfrist (in German)',
+				'§ 195 BGB, standard limitation period (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__195.html',
 			],
 			[
-				'§ 199 BGB, Beginn der regelmäßigen Verjährungsfrist (in German)',
+				'§ 199 BGB, start of the standard limitation period (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__199.html',
 			],
 			[
-				'§ 214 BGB, Wirkung der Verjährung (in German)',
+				'§ 214 BGB, effect of limitation (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__214.html',
 			],
 		],
@@ -542,7 +539,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'After the switch',
-				'From now on everything runs in [shared expenses](/shared-expenses): split expenses, see balances, get settlements suggested with few transfers, plus fixed costs and the monthly statement. It is best to settle open balances from the old system before you switch, or bring them across with the import. How to settle debts fairly is covered in [debts between flatmates](/flatmate-debts). For comparisons of the apps, see [Splitwise alternative](/splitwise-alternative), [Splid alternative](/splid-alternative) and [Tricount alternative](/tricount-alternative), and for all criteria the [best flat share app](/best-flat-share-app).',
+				'From now on everything runs in [shared expenses](/shared-expenses): split expenses, see balances, get settlements suggested with few transfers, plus fixed costs and the monthly statement. It is best to settle open balances from the old system before you switch, or bring them across with the import. How to settle debts fairly is covered in [debts between flatmates](/flatmate-debts). For comparisons of the apps, see [Splitwise alternative](/splitwise-alternative), [Splid alternative](/splid-alternative) and [Tricount alternative](/tricount-alternative), and for all criteria the [best flat-share app](/best-flat-share-app).',
 			],
 		],
 		fragen: [
@@ -593,7 +590,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'What you can do',
-				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in German and English and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [switching](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative).',
+				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in German and English and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [switching](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative).',
 			],
 		],
 		tabellen: [
@@ -727,7 +724,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'What belongs in a good WG ad',
-				'The facts first: room size, Warmmiete (rent including all utility charges) with everything included, move-in date, any fixed term, location and transport links. Then the flat share itself: how many people, what age, what do you do, how much do you do together? Good photos of the room, kitchen and bathroom in daylight. And one honest sentence about how you run the household and money, for example with a cleaning rota and shared expenses in an app. That filters out applicants who are looking for something quite different.',
+				'The facts first: room size, Warmmiete (rent including heating and other utilities), move-in date, any fixed term, location and transport links. Then the flat share itself: how many people, what age, what do you do, how much do you do together? Good photos of the room, kitchen and bathroom in daylight. And one honest sentence about how you run the household and money, for example with a cleaning rota and shared expenses in an app. That filters out applicants who are looking for something quite different.',
 			],
 			[
 				'The ad title: formula and examples',
@@ -747,19 +744,19 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Choosing without chaos',
-				'For popular rooms, dozens of messages come in quickly. Decide who replies and collect the applications in one place. Invite only the people whose message suits the flat to a viewing (a “WG-Casting”, where applicants meet the flat). After the appointments, decide together, as soon as you can, because good applicants often have several offers. Tell everyone you invited who did not get the room. Suitable questions for the conversation are in the [WG casting guide](/wg-casting-questions).',
+				'For popular rooms, dozens of messages come in quickly. Decide who replies and collect the applications in one place. Invite only the people whose message suits the flat to a viewing (a “WG-Casting”, where applicants meet the flat). After the appointments, decide together, as soon as you can, because good applicants often have several offers. Tell everyone you invited who did not get the room. Suitable questions for the conversation are in the [WG-Casting guide](/wg-casting-questions).',
 			],
 			[
 				'Before the move',
-				'Send the new person the most important [house rules](/house-rules) in writing: cleaning rota, how costs are split, quiet hours, bins. Arrange the key handover and the Wohnungsgeberbestätigung for the Anmeldung. If your flat uses [ManaWG as its flat share app](/flat-share-app), send an invite link or flat code. After joining, the new person sees the cleaning rota, shopping list, calendar and noticeboard straight away, and new expenses are shared with them from then on.',
+				'Send the new person the most important [house rules](/house-rules) in writing: cleaning rota, how costs are split, quiet hours, bins. Arrange the key handover and the Wohnungsgeberbestätigung for the Anmeldung. If your flat uses [ManaWG as its flat-share app](/flat-share-app), send an invite link. After joining, the new person sees the cleaning rota, shopping list, calendar and noticeboard straight away, and new expenses are shared with them from then on.',
 			],
 			[
 				'Watch out for dodgy enquiries',
-				'Scammers turn up on flat share portals again and again. Typical are messages from people who are supposedly abroad, want to take the room without a viewing and announce a transfer of a higher amount, the rest of which you are meant to pay back. Do not hand over bank details or copies of ID before you have seen the person, at least by video call, and never pay back money that is not safely in your account.',
+				'Scammers turn up on flat-share portals again and again. Typical are messages from people who are supposedly abroad, want to take the room without a viewing and announce a transfer of a higher amount, the rest of which you are meant to pay back. Do not hand over bank details or copies of ID before you have seen the person, at least by video call, and never pay back money that is not safely in your account.',
 			],
 			[
 				'Timeline for the search',
-				'Six to eight weeks before: clear up the contract, fix the price and move-in date\nFive to six weeks before: put the ad online with photos\nFour weeks before: bundle viewings into two or three evenings\nThree weeks before: decide together, say yes to one and no to everyone else\nMove-in day: keys, Wohnungsgeberbestätigung, invitation to the flat share app',
+				'Six to eight weeks before: clear up the contract, fix the price and move-in date\nFive to six weeks before: put the ad online with photos\nFour weeks before: bundle viewings into two or three evenings\nThree weeks before: decide together, say yes to one and no to everyone else\nMove-in day: keys, Wohnungsgeberbestätigung, invitation to the flat-share app',
 			],
 		],
 		tabellen: [
@@ -833,17 +830,17 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		],
 		quellen: [
 			['WG-Gesucht (English interface)', 'https://www.wg-gesucht.de/en/'],
-			['WG-Gesucht: Portal für WG-Zimmer (in German)', 'https://www.wg-gesucht.de/'],
+			['WG-Gesucht: portal for rooms in shared flats (in German)', 'https://www.wg-gesucht.de/'],
 			[
-				'ImmoScout24: WG-Zimmer (in German)',
+				'ImmoScout24: rooms in shared flats (in German)',
 				'https://www.immobilienscout24.de/wohnen/wg-zimmer.html',
 			],
 			[
-				'WG-Gesucht: Angebot aufgeben (in German)',
+				'WG-Gesucht: place a listing (in German)',
 				'https://www.wg-gesucht.de/en/artikel/angebot-aufgeben-so-inserieren-sie-erfolgreich-ihre-wg-wohnung',
 			],
 			[
-				'WG-Gesucht: WG inserieren (in German)',
+				'WG-Gesucht: advertise a shared flat (in German)',
 				'https://www.wg-gesucht.de/en/ic/wg-inserieren.html',
 			],
 		],

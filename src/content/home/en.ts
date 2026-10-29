@@ -29,7 +29,7 @@ export const en: HomeDict = {
 		scroll: 'SCROLL',
 	},
 	hero: {
-		title: ['The flat app ', 'for your flat.'],
+		title: ['The flat-share app ', 'for your flat.'],
 		sub: 'The free flat-share app: expenses, shopping and cleaning rota. In the browser.',
 	},
 	rooms: [
@@ -55,7 +55,7 @@ export const en: HomeDict = {
 			number: '03 / 04',
 			room: 'BATHROOM',
 			title: 'Cleaning rota',
-			text: 'Tasks rotate by themselves. The app reminds, it does not nag.',
+			text: 'Tasks rotate by themselves. The app reminds, it does not chase.',
 			rowTitle: 'Bathroom is due today.',
 			rowSub: 'Lea · today',
 			amount: '',
@@ -247,7 +247,7 @@ export const en: HomeDict = {
 		],
 	],
 	questions: { prefix: '[ 07 ] ', title: 'QUESTIONS' },
-	finale: { title: ['Move', 'in.'], create: 'Create a flat', invite: 'Redeem an invite' },
+	finale: { title: ['Move', 'in.'], create: 'Create a flat', invite: 'Accept an invitation' },
 	footer: {
 		tagline: 'ManaWG, the app for everyday flat life.',
 		copyright: '© 2026 MANAWG',
@@ -259,14 +259,14 @@ export const en: HomeDict = {
 		guides: 'Guides',
 		account: 'Account',
 		create: 'Create a flat',
-		invite: 'Redeem an invite',
+		invite: 'Accept an invitation',
 		login: 'Log in',
 		legal: 'Legal',
 		legalNotice: 'Legal notice',
 		privacy: 'Privacy policy',
 		terms: 'Terms',
 	},
-	end: { title: ['Share it all.'], cta: 'Create a flat' },
+	end: { title: ['Share ', 'everyday life.'], cta: 'Create a flat' },
 	phone: {
 		aria: 'Try ManaWG',
 		frameTitle: 'ManaWG app',

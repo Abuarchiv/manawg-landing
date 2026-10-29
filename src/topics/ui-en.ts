@@ -2,7 +2,7 @@ import type { TopicUi } from './ui.ts';
 
 // English topic frame strings. German terms stay out of the frame; pages explain them once.
 export const UI_EN: TopicUi = {
-	homeLabel: 'ManaWG, to the home page',
+	homeLabel: 'ManaWG home page',
 	openApp: 'Open the app',
 	footerNote: 'ManaWG, 2026',
 	legal: { notice: 'Legal notice', privacy: 'Privacy policy', terms: 'Terms' },

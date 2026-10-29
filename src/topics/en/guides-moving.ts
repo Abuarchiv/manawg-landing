@@ -34,7 +34,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Budget and flat size before you search',
-				'Work backwards. What each person can pay per month for the Warmmiete (rent including heating and utilities), multiplied by the number of people, gives the ceiling for the flat. Four people at €400 each means €1,600 all-in. Electricity, internet and the [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) (the German broadcasting fee) usually come on top. For the running costs to expect, see [utilities and internet in a flat share](/utilities-and-internet). Everyone needs a room of their own. If you also want a shared living room, look for a flat with one room more than you have people. With a large kitchen-diner, one room per person is often enough. From four people upwards it is worth asking about a second bathroom. If you want shares based on room size rather than an equal split, the [rent split calculator](/rent-split-calculator) works them out.',
+				'Work backwards. What each person can pay per month for the Warmmiete (rent including heating and other utilities), multiplied by the number of people, gives the ceiling for the flat. Four people at €400 each means €1,600 all-in. Electricity, internet and the [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) (the German broadcasting fee) usually come on top. For the running costs to expect, see [utilities and internet in a flat share](/utilities-and-internet). Everyone needs a room of their own. If you also want a shared living room, look for a flat with one room more than you have people. With a large kitchen-diner, one room per person is often enough. From four people upwards it is worth asking about a second bathroom. If you want shares based on room size rather than an equal split, the [rent split calculator](/rent-split-calculator) works them out.',
 			],
 			[
 				'2. Search for a flat and apply together',
@@ -50,11 +50,11 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'5. A flat agreement between yourselves',
-				'Alongside the tenancy agreement, a short agreement between flatmates is worth having. It covers what the contract with the landlord leaves open: rent shares per room, utilities, electricity and internet, the cleaning rota, a shared kitty, guests, quiet hours and what happens when someone moves out, such as how early they tell the others and who helps find a replacement. The agreement is an understanding between flatmates and does not change the tenancy agreement. A short model: “We, [names], live at [address] from [date]. Rent: [split]. Fixed costs: [list]. Cleaning rota: [rhythm]. Guests: [rule]. Anyone moving out tells the others [number] weeks ahead and helps find a successor. After three months we review this agreement.” Suggestions for individual rules are in [house rules](/house-rules). In ManaWG, you can record the agreement as a noticeboard post of the type Decision, and the others reply with “Agreed”.',
+				'Alongside the tenancy agreement, a short agreement between flatmates is worth having. It covers what the contract with the landlord leaves open: rent shares per room, utilities, electricity and internet, the cleaning rota, a shared kitty, guests, quiet hours and what happens when someone moves out, such as how early they tell the others and who helps find a replacement. The agreement is an understanding between flatmates and does not change the tenancy agreement. A short model: “We, [names], live at [address] from [date]. Rent: [split]. Fixed costs: [list]. Cleaning rota: [rhythm]. Guests: [rule]. Anyone moving out tells the others [number] weeks ahead and helps find a successor. After three months we review this agreement.” Suggestions for individual rules are in [house rules](/house-rules). In ManaWG, you can record the agreement as a noticeboard post of the type Decision, and the others react with “Works for me”.',
 			],
 			[
 				'6. Register and set up contracts',
-				'After moving in, everyone has to register their address with the local citizens’ office (Bürgeramt) within two weeks. This is the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation) issued by the landlord, or by the main tenant if you sublet. The [guide to the Anmeldung](/anmeldung-shared-flat) explains how. Electricity and internet usually run in one person’s name, and you split the costs. The [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) is due once per flat, not per person: one person registers and the others give that person’s contribution number. Everyone should have their own personal liability insurance (Haftpflichtversicherung) and check whether their contents insurance (Hausratversicherung) covers a flat share.',
+				'After moving in, everyone has to register their address with the local citizens’ office (Bürgeramt) within two weeks. This is the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in) issued by the landlord, or by the main tenant if you sublet. The [guide to the Anmeldung](/anmeldung-shared-flat) explains how. Electricity and internet usually run in one person’s name, and you split the costs. The [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) is due once per flat, not per person: one person registers and the others give that person’s contribution number. Everyone should have their own personal liability insurance (Haftpflichtversicherung) and check whether their contents insurance (Hausratversicherung) covers a flat share.',
 			],
 			[
 				'7. Settle the money',
@@ -399,11 +399,11 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'On move-in day',
-				'Have the keys handed over and note how many there are. Look at the room together with the person handing over, and photograph any damage. That protects you when you move out. Ask about the wifi, the fuse box, the main water tap and where to keep bicycles. For your Anmeldung (address registration) in Germany at the Bürgeramt (citizens’ office), you need a Wohnungsgeberbestätigung (landlord’s confirmation), issued by the landlord or the main tenant. The registration is due within two weeks of moving in.',
+				'Have the keys handed over and note how many there are. Look at the room together with the person handing over, and photograph any damage. That protects you when you move out. Ask about the wifi, the fuse box, the main water tap and where to keep bicycles. For your Anmeldung (address registration) in Germany at the Bürgeramt (citizens’ office), you need a Wohnungsgeberbestätigung (landlord’s confirmation of move-in), issued by the landlord or the main tenant. The registration is due within two weeks of moving in.',
 			],
 			[
 				'In the first week',
-				'Get to know your flatmates, ideally over a shared dinner. Have rubbish separation, collection days and washing machine times explained. Add yourself to the cleaning rota and ask how the rotation works. If there is none yet, the guide to [making a cleaning rota](/make-a-cleaning-rota) helps, and a [printable cleaning rota template](/cleaning-rota-template) saves you the start. If the flat share uses [ManaWG as its flat-share app](/flat-share-app), you join with an invite link or flat code and immediately see the cleaning rota, shopping list, calendar and noticeboard.',
+				'Get to know your flatmates, ideally over a shared dinner. Have rubbish separation, collection days and washing machine times explained. Add yourself to the cleaning rota and ask how the rotation works. If there is none yet, the guide to [making a cleaning rota](/make-a-cleaning-rota) helps, and a [printable cleaning rota template](/cleaning-rota-template) saves you the start. If the flat share uses [ManaWG as its flat-share app](/flat-share-app), you join with an invite link and immediately see the cleaning rota, shopping list, calendar and noticeboard.',
 			],
 			[
 				'Settle the money from the start',
@@ -415,7 +415,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'What comes with you to the flat-share room',
-				'Bedding, towels and your own toiletries\nPlate, cup and cutlery, if the kitchen is sparsely equipped\nExtension lead and multi-socket adaptor\nYour own labelled shelf for food\nPassport or ID and the landlord’s confirmation for the [Anmeldung](/anmeldung-shared-flat)',
+				'Bedding, towels and your own toiletries\nPlate, cup and cutlery, if the kitchen is sparsely equipped\nExtension lead and multi-socket adaptor\nYour own labelled shelf for food\nPassport or ID and the landlord’s confirmation of move-in for the [Anmeldung](/anmeldung-shared-flat)',
 			],
 			[
 				'After the first month',
@@ -425,7 +425,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		fragen: [
 			[
 				'What should you settle when moving into a flat share?',
-				'Tenancy or sublease, deposit, how costs are split, cleaning rota, quiet hours and how to handle visitors. Plus the landlord’s confirmation (Wohnungsgeberbestätigung) for the Anmeldung.',
+				'Tenancy or sublease, deposit, how costs are split, cleaning rota, quiet hours and how to handle visitors. Plus the landlord’s confirmation of move-in (Wohnungsgeberbestätigung) for the Anmeldung.',
 			],
 			[
 				'Does everyone in a flat share have to pay the Rundfunkbeitrag?',
@@ -433,7 +433,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'How do I join a flat in ManaWG?',
-				'With the invite link or flat code a flatmate sends you. Before that, you sign up with Google or with your email address.',
+				'With the invite link a flatmate sends you, or the invitation they email you. Before that, you sign up with Google or with your email address.',
 			],
 		],
 		quellen: [
@@ -454,13 +454,13 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		],
 	},
 	'anmeldung-shared-flat': {
-		link: 'Anmeldung in a flat share',
+		link: 'Registering your address (Anmeldung)',
 		stand: '2026-10-29',
 		erschienen: '2026-10-29',
 		titel: 'Anmeldung in a flat share: deadline and form | ManaWG',
 		beschreibung:
-			'Register your address (Anmeldung) in a German flat share: the two-week deadline, who issues the landlord’s confirmation and what to do if it is refused.',
-		h1: 'Anmeldung in a flat share in Germany: landlord’s confirmation and deadline',
+			'Register your address (Anmeldung) in a German flat share: the two-week deadline, who issues the landlord’s confirmation of move-in and what to do if it is refused.',
+		h1: 'Anmeldung in a flat share in Germany: landlord’s confirmation of move-in and deadline',
 		einleitung:
 			'If you move into a flat-share room in Germany, you have to register your address at the local citizens’ office (Bürgeramt). This is called the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in). Who issues it depends on your tenancy, and with subletting in particular, many main tenants do not know they are responsible. This page summarises the rules of the Bundesmeldegesetz (BMG, the Federal Registration Act) for internationals and is not legal advice. Details such as forms and appointments are set by your city.',
 		abschnitte: [
@@ -469,7 +469,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Anyone who moves into a flat has to register with the registration authority (Meldebehörde), usually the Bürgeramt, within two weeks of moving in. That includes a room in a flat share. Appointments are scarce in big cities, so book before the move; the deadline runs regardless. Many cities now also offer the registration online with an electronic ID card. For internationals, the registration certificate (Meldebescheinigung) matters beyond the law itself: banks, employers and authorities regularly ask for it, and the residence permit and your tax ID depend on it.',
 			],
 			[
-				'Who issues the landlord’s confirmation?',
+				'Who issues the landlord’s confirmation of move-in?',
 				'The Wohnungsgeber (the person who provides the housing) is whoever lets you the flat. If you have your own contract with the landlord or you are named in a joint main tenancy, that is the landlord or the property management. With [subletting](/flat-share-tenancy-agreement), the Hauptmieter (main tenant) is the Wohnungsgeber and has to issue the confirmation personally. They must confirm your move-in within the two weeks. If they refuse or the confirmation does not arrive in time, you tell the registration authority without delay.',
 			],
 			[
@@ -486,11 +486,11 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'What to bring to the appointment',
-				'Your ID card or passport, the landlord’s confirmation and the completed registration form, if your city requires one. If you are moving from abroad, you may need further documents depending on where you come from, such as a residence permit. The registration itself is usually free. Berlin’s official welcome guide also advises being wary of anyone selling appointments or certificates: they are not official.',
+				'Your ID card or passport, the landlord’s confirmation of move-in and the completed registration form, if your city requires one. If you are moving from abroad, you may need further documents depending on where you come from, such as a residence permit. The registration itself is usually free. Berlin’s official welcome guide also advises being wary of anyone selling appointments or certificates: they are not official.',
 			],
 			[
 				'Main residence or second residence',
-				'If you are still registered at your parents’ home, you have to state which residence is your main residence (Hauptwohnung). That is the one you mainly use, which for students is usually the flat share where they study. Many cities charge a second-home tax (Zweitwohnungsteuer) on a secondary residence. Check that before you register the flat share as a secondary residence.',
+				'If you are still registered at your parents’ home, you have to state which residence is your main residence (Hauptwohnung). That is the one you mainly use, which for students is usually the flat share in the town where they study. Many cities charge a second-home tax (Zweitwohnungsteuer) on a secondary residence. Check that before you register the flat share as a secondary residence.',
 			],
 			[
 				'When you do not need to register',
@@ -498,7 +498,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Moving out: deregistering only in two cases',
-				'If you move within Germany, you register at your new address and the old one is deregistered automatically. You only have to deregister if you move abroad or give up a secondary residence without taking a new one. That is possible from one week before to two weeks after moving out at the earliest and latest. What else is on the list when you leave is in the [moving-out checklist](/moving-out-checklist).',
+				'If you move within Germany, you register at your new address and the old one is deregistered automatically. You only have to deregister if you move abroad or give up a secondary residence without taking a new one. You can deregister no earlier than one week before moving out and must do so within two weeks after. What else is on the list when you leave is in the [moving-out checklist](/moving-out-checklist).',
 			],
 			[
 				'Fines',
@@ -512,7 +512,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		tabellen: [
 			{
 				nach: 'Model: what the confirmation contains',
-				titel: 'Example of a landlord’s confirmation (Wohnungsgeberbestätigung)',
+				titel: 'Example of a landlord’s confirmation of move-in (Wohnungsgeberbestätigung)',
 				kopf: ['Field', 'Example'],
 				zeilen: [
 					[
@@ -529,7 +529,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		],
 		fragen: [
 			[
-				'Who issues the landlord’s confirmation in a flat share?',
+				'Who issues the landlord’s confirmation of move-in in a flat share?',
 				'With your own contract or a joint main tenancy, the landlord or property management. With subletting, the main tenant.',
 			],
 			[
@@ -607,7 +607,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Form and procedure of notice',
-				'Notice on a home has to be in writing, meaning on paper with a handwritten signature. Email, messenger or a note without a signature are not enough. For the period to run, the notice has to be received. Hand it over in person with a witness, or send it by registered mail with delivery by drop-in (Einwurf-Einschreiben). State the date the tenancy should end and, for subletting, the reason or the rule you rely on.',
+				'Notice on a home has to be in writing, meaning on paper with a handwritten signature. Email, messenger or a note without a signature are not enough. For the period to run, the notice has to be received. Hand it over in person with a witness, or send it by Einwurf-Einschreiben (registered post with proof of delivery to the letterbox). State the date the tenancy should end and, for subletting, the reason or the rule you rely on.',
 			],
 			[
 				'What is not allowed',
@@ -800,11 +800,11 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Replacement tenant: no right, but often the fastest way',
-				'There is no general right to leave the contract early by finding a replacement tenant (Nachmieter). If the contract has a replacement-tenant clause, it applies. In practice, landlords and main tenants often agree if you bring a suitable person. Help the flat share with [advertising and choosing](/find-a-flatmate), ideally with a joint [WG casting](/wg-casting-questions) (an informal interview with applicants). Put any agreement on an earlier move-out in writing.',
+				'There is no general right to leave the contract early by finding a replacement tenant (Nachmieter). If the contract has a replacement-tenant clause, it applies. In practice, landlords and main tenants often agree if you bring a suitable person. Help the flat share with [advertising and choosing](/find-a-flatmate), ideally with a joint [WG-Casting](/wg-casting-questions) (an informal interview with applicants). Put any agreement on an earlier move-out in writing.',
 			],
 			[
 				'What the notice must look like',
-				'Notice on a home has to be in writing, meaning on paper with a handwritten signature (§ 568 para. 1 BGB). Email, messenger or a photo of the letter are not enough. The period only starts once the notice is received. Hand it over in person in front of a witness, or send it by registered mail with delivery by drop-in (Einwurf-Einschreiben), and allow a few days of buffer before the third working day or the 15th. As a tenant, you do not have to give a reason.',
+				'Notice on a home has to be in writing, meaning on paper with a handwritten signature (§ 568 para. 1 BGB). Email, messenger or a photo of the letter are not enough. The period only starts once the notice is received. Hand it over in person in front of a witness, or send it by Einwurf-Einschreiben (registered post with proof of delivery to the letterbox), and allow a few days of buffer before the third working day or the 15th. As a tenant, you do not have to give a reason.',
 			],
 			[
 				'Model: notice on a flat-share room',

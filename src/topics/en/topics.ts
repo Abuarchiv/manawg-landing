@@ -59,11 +59,11 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Room search or everyday life: what a flat-share app is',
-				'People who search for a “flat-share app” sometimes want a portal for rooms and flatmates, and sometimes an app for daily life in a flat they already share. ManaWG is the second kind: you split expenses, keep a cleaning rota and a shopping list, plan events and talk things through. ManaWG does not match rooms or flatmates. For the search, [Find a flatmate](/find-a-flatmate) and the [WG casting questions](/wg-casting-questions) help, and [Start a flat share](/start-a-flat-share) shows how to set one up.',
+				'People who search for a “flat-share app” sometimes want a portal for rooms and flatmates, and sometimes an app for daily life in a flat they already share. ManaWG is the second kind: you split expenses, keep a cleaning rota and a shopping list, plan events and talk things through. ManaWG does not match rooms or flatmates. For the search, [Find a flatmate](/find-a-flatmate) and the [WG-Casting questions](/wg-casting-questions) help, and [Start a flat share](/start-a-flat-share) shows how to set one up.',
 			],
 			[
 				'Split expenses and settle up',
-				'[Shared expenses](/shared-expenses) can be split equally or with a custom amount per person, and each belongs to one of six categories, such as groceries or housing and utilities. The shares always add up to exactly the amount. ManaWG suggests settlements with as few transfers as possible. You mark them as paid, because the app does not move money itself. Anyone who records an expense for someone else also carries a share of it.',
+				'[Shared expenses](/shared-expenses) can be split equally or with a custom amount per person, and each belongs to one of six categories, such as groceries or housing. The shares always add up to exactly the amount. ManaWG suggests settlements with as few transfers as possible. You mark them as paid, because the app does not move money itself. Anyone who records an expense for someone else also carries a share of it.',
 			],
 			[
 				'Fixed costs and the monthly statement',
@@ -87,7 +87,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Installing ManaWG: iPhone, Android, desktop',
-				'iPhone: in Safari, tap Share, choose “Add to Home Screen” and tap Add at the top right. Then open ManaWG from the home screen and sign in once.\nAndroid: in Chrome, open the menu and choose “Install app” or “Add to Home screen”, then confirm.\nDesktop: click Install in the address bar, or choose “Install ManaWG” from the menu.',
+				'iPhone: in Safari, tap ≡, then Share, then Show More, choose “Add to Home Screen” and tap Add. Then open ManaWG from the home screen and sign in once.\nAndroid: in Chrome, tap the menu ⋮, choose “Install and create shortcut”, then “Install” and confirm.\nDesktop: click the “Install” icon on the right of the address bar, then “Install” in the dialog.',
 			],
 			[
 				'Working without a connection',
@@ -136,7 +136,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					],
 					[
 						'Access',
-						'in the browser, installable on the home screen, join by code or link',
+						'in the browser, installable on the home screen, join by invite link or email invitation',
 						'no app store, English and German, up to 20 active members',
 					],
 				],
@@ -154,7 +154,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'How many people fit in one flat?',
-				'Up to 20 active members. People who have moved out do not count, and their history is kept. Admins can renew the join code or close the flat to new members.',
+				'Up to 20 active members. People who have moved out do not count, and their history is kept. Admins can revoke invitations at any time.',
 			],
 			[
 				'Can I switch from Splitwise or Splid?',
@@ -170,7 +170,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Is ManaWG an app for finding a room?',
-				'No. ManaWG matches neither rooms nor flatmates. It organises a flat that already exists. For the search, [Find a flatmate](/find-a-flatmate) and the [WG casting questions](/wg-casting-questions) help.',
+				'No. ManaWG matches neither rooms nor flatmates. It organises a flat that already exists. For the search, [Find a flatmate](/find-a-flatmate) and the [WG-Casting questions](/wg-casting-questions) help.',
 			],
 			[
 				'Can I use ManaWG on a laptop?',
@@ -211,7 +211,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Setting up and scope',
-				'A flat has a flat code. Members join by code or link, and up to 20 active people fit in one flat. ManaWG is free, has no ads and is available in English and German. You install it as a PWA through the browser, and there is no app store listing. Besides the cleaning rota there are expenses, shopping, supplies, calendar, chat and noticeboard. All areas are introduced on [Flat-share app](/flat-share-app).',
+				'Members join through an invite link or an email invitation, and up to 20 active people fit in one flat. ManaWG is free, has no ads and is available in English and German. You install it as a PWA through the browser, and there is no app store listing. Besides the cleaning rota there are expenses, shopping, supplies, calendar, chat and noticeboard. All areas are introduced on [Flat-share app](/flat-share-app).',
 			],
 		],
 		fragen: [
@@ -282,7 +282,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Reminders without the friction',
-				'On the Reminders page a member can send a payment reminder with the Remind button. A cooling-off period limits how often that can happen in a row, and a rate limit stops too many requests. The balance stays visible to everyone at any time, for example in the monthly statement. The page is its own area of the flat, next to expenses, statement and activity. How to bring up open amounts without a row is covered in [Flatmate debts](/flatmate-debts).',
+				'On the Reminders page a member can send a payment reminder with the Remind button. A cooling-off period limits how often that can happen in a row, and a rate limit stops too many requests. The balance stays visible to everyone at any time, for example in the monthly statement. The page is its own area of the flat, next to expenses, statement and activity. How to bring up open amounts without an argument is covered in [Flatmate debts](/flatmate-debts).',
 			],
 			[
 				'Moving over from Splitwise or Splid',
@@ -312,7 +312,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'How many people fit in one flat?',
-				'Up to 20 active members. Anyone who moves out is deactivated and no longer counts, and their history is kept. Others can be invited by code or link.',
+				'Up to 20 active members. Anyone who moves out is deactivated and no longer counts, and their history is kept. Others join through an invite link or an email invitation.',
 			],
 		],
 	},
@@ -344,7 +344,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'After ticking items off, the person who has just shopped sees a prompt to record the items straight away as an expense. It stays for 12 hours. The expense lands in [Shared expenses](/shared-expenses), gets the category groceries or household, and you can attach a photo of the receipt. Nobody has to reconstruct later what was in the trolley.',
 			],
 			[
-				'Splitting without rounding rows',
+				'Splitting without rounding arguments',
 				'ManaWG stores amounts in whole cents. With an equal split the shares add up to exactly the amount, and no share differs from another by more than one cent. With custom amounts per person, only those who really ate pay. The balances then show who owes whom. Everything is calculated in euros, and there are no exchange rates.',
 			],
 			[
@@ -429,7 +429,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'1. What does the app really cost?',
-				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. What limits [the free version of Splitwise](/splitwise-free-limit) has its own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. It works in euros only, is available in English and German, and is meant for at most 20 active members per flat. Plans and features change, so check the current state with the providers themselves.',
+				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. It works in euros only, is available in English and German, and is meant for at most 20 active members per flat. Plans and features change, so check the current state with the providers themselves.',
 			],
 			[
 				'2. Does it cover money and household?',
@@ -589,7 +589,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'What Splid does, per the provider',
-				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. Details of the feature set are there as of 29 October 2026. In ManaWG, by contrast, each person signs in with Google or with email and password. In return, expenses, balances and history belong firmly to your flat, and flatmates join by link or code. You can renew the code at any time.',
+				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. Details of the feature set are there as of 29 October 2026. In ManaWG, by contrast, each person signs in with Google or with email and password. In return, expenses, balances and history belong firmly to your flat, and flatmates join through an invite link or an email invitation.',
 			],
 			[
 				'Expenses and household in one app',
@@ -615,7 +615,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 		fragen: [
 			[
 				'Does ManaWG need an account?',
-				'Yes. Each person signs in with Google or with email and password. Joining then works by invite link or code.',
+				'Yes. Each person signs in with Google or with email and password. Joining then works through an invite link or an email invitation.',
 			],
 			[
 				'How do I bring my data over from Splid?',
@@ -698,7 +698,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Reminders you control yourself',
-				'Each member switches push notifications off for each area individually: announcements, cleaning rota, expenses, shopping, supplies, reminders, chat and events. The cleaning rota reminds about tasks that are due today or up to seven days overdue and assigned to someone, at most every 18 hours for each task. Events notify you the day before, repeating ones too. Emails such as the digest or the monthly statement can be switched off as well.',
+				'Each member switches push notifications off for each area individually: noticeboard, cleaning rota, expenses, reminders, shopping, supplies, chat and calendar. The cleaning rota reminds about tasks that are due today or up to seven days overdue and assigned to someone, at most every 18 hours for each task. Events notify you the day before, repeating ones too. Emails such as the monthly statement or payment reminders can be switched off as well.',
 			],
 			[
 				'A cleaning rota with fair rotation',
@@ -736,7 +736,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'How precisely can reminders be set?',
-				'Each member switches push notifications off for each area, for example cleaning rota, expenses or chat. The daily digest and the monthly statement by email have an unsubscribe link.',
+				'Each member switches push notifications off for each area, for example cleaning rota, expenses or chat. Emails such as the monthly statement and payment reminders have an unsubscribe link.',
 			],
 			[
 				'Is Flatastic free?',
@@ -859,7 +859,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Web instead of a store',
-				'ManaWG runs at app.manawg.com and can be installed on the home screen. The data is stored centrally on the server, not on a single device. The app remembers actions made offline and sends them later. You can sign in with Google or with email and password. Joining works by code, link or email invitation.',
+				'ManaWG runs at app.manawg.com and can be installed on the home screen. The data is stored centrally on the server, not on a single device. The app remembers actions made offline and sends them later. You can sign in with Google or with email and password. Joining works through an invite link or an email invitation.',
 			],
 		],
 		fragen: [
@@ -881,7 +881,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'How many people fit in one flat?',
-				'A flat holds up to 20 active members. Members who have moved out do not count, and their history is kept. Admins can renew the code or close the flat to new members.',
+				'A flat holds up to 20 active members. Members who have moved out do not count, and their history is kept. Admins can revoke invitations at any time.',
 			],
 		],
 	},
@@ -931,7 +931,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'How do I sign in?',
-				'With Google or with email and password. You join by invite link or by a code a flatmate sends you.',
+				'With Google or with email and password. You join through an invite link or an email invitation from a flatmate.',
 			],
 			[
 				'Does ManaWG work with other currencies?',
@@ -959,7 +959,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'How do I install ManaWG on an iPhone?',
-				'Open app.manawg.com in Safari, tap Share, choose “Add to Home Screen” and tap Add at the top right. Then open ManaWG from the home screen and sign in once.',
+				'Open app.manawg.com in Safari, tap ≡, then Share, then Show More, choose “Add to Home Screen” and tap Add. Then open ManaWG from the home screen and sign in once.',
 			],
 			[
 				'Who is behind ManaWG?',
@@ -993,7 +993,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Facts at a glance',
-				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro. Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: stored in the EU (Frankfurt am Main). Joining: by invite link or code.',
+				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro. Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: stored in the EU (Frankfurt am Main). Joining: by invite link or email invitation.',
 			],
 			[
 				'Features',

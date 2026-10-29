@@ -89,7 +89,7 @@ export default function LegalNoticePage() {
 			<footer className="pb-[max(1.5rem,env(safe-area-inset-bottom))] px-4 text-center">
 				<p className="text-xs text-[var(--text-3)]">
 					<Link href="/en/terms" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
-						Terms of use
+						Terms
 					</Link>
 					{' · '}
 					<Link href="/en/privacy" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>

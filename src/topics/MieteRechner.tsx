@@ -45,7 +45,7 @@ const TEXT: Record<
 	en: {
 		rent: 'Monthly rent in euros',
 		common: 'Shared area in m²',
-		rooms: 'Room sizes in m² (2 to 8)',
+		rooms: 'Room sizes in m² (2 to 8 rooms)',
 		roomLabel: (n) => `Room ${n} in m²`,
 		add: 'Add a room',
 		remove: 'Remove a room',

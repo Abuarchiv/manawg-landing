@@ -44,9 +44,26 @@ const mitLinks = (text: string, locale: Locale) =>
 				{m[1]}
 			</Link>
 		) : (
-			teil
+			deutsch(teil, locale)
 		);
 	});
+
+// German form names and model sentences quoted inside English prose, marked lang="de" for screen readers.
+const GERMAN_QUOTES =
+	/(“Wohnung abmelden”|“Befreiung oder Ermäßigung beantragen”|„Hiermit kündige ich[^“”]*[“”])/;
+const deutsch = (teil: string, locale: Locale) =>
+	locale === 'de'
+		? teil
+		: teil.split(GERMAN_QUOTES).map((stueck, i) =>
+				// split with one capture group puts the matches at odd indexes
+				i % 2 === 1 ? (
+					<span key={i} lang="de">
+						{stueck}
+					</span>
+				) : (
+					stueck
+				),
+			);
 
 const zelle = 'px-3 py-2 border-b border-white/10';
 
@@ -142,9 +159,8 @@ export function topicMetadata(locale: Locale, slug: string): Metadata {
 			type: 'article',
 			publishedTime: zeitpunkt(t.erschienen),
 			modifiedTime: zeitpunkt(t.stand),
-			images: [{ url: `${path}/opengraph-image`, width: 1200, height: 630, alt: t.h1 }],
 		},
-		twitter: { title: t.titel, description: t.beschreibung, images: [`${path}/opengraph-image`] },
+		twitter: { title: t.titel, description: t.beschreibung },
 	};
 }
 
@@ -183,7 +199,6 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 		'@id': `${site}${path}#artikel`,
 		headline: t.h1,
 		description: t.beschreibung,
-		image: `${site}${path}/opengraph-image`,
 		inLanguage: IN_LANGUAGE[locale],
 		datePublished: zeitpunkt(t.erschienen),
 		dateModified: zeitpunkt(t.stand),

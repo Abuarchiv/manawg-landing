@@ -24,7 +24,7 @@ export function GET() {
 	const pages = Object.entries(TOPICS_EN).map(([slug, t]) => {
 		const sources = (t.quellen ?? []).map(
 			([name, url]) =>
-				[name, url.startsWith('/') ? `${base}/en${url === '/' ? '' : url}` : url] as [
+				[name, url.startsWith('/en') ? `${base}${url}` : url.startsWith('/') ? `${base}/en${url === '/' ? '' : url}` : url] as [
 					string,
 					string,
 				],

@@ -122,7 +122,7 @@ export interface HomeDict {
 		create: string;
 		/** Second button of the finale. */
 		invite: string;
-		/** "Redeem an invite" in the footer. */
+		/** "Accept an invitation" in the footer. */
 		inviteFooter: string;
 		login: string;
 		guides: string;

@@ -111,10 +111,11 @@ export default function PrivacyPage() {
 								<strong>Sign-in and local data:</strong> You can sign in with Google or with an
 								email address and password. With Google sign-in we receive your email address and
 								name from Google. With email sign-in, Supabase sends confirmation emails and
-								password-reset emails to your address. Resend delivers them; the sender appears as
-								noreply@manawg.com. Supabase Auth manages sign-in, and the session is stored in
-								cookies. In addition, flat assignments and name drafts may be held in the browser’s
-								local storage.
+								password-reset emails to your address. The app also sends welcome, invitation,
+								monthly statement, payment reminder and account deletion emails. Resend delivers
+								them; the sender appears as noreply@manawg.com. Supabase Auth manages sign-in, and
+								the session is stored in cookies. In addition, flat assignments and name drafts may
+								be held in the browser’s local storage.
 							</li>
 							<li>
 								<strong>Retention:</strong> We keep account data until you delete your account under{' '}
@@ -241,9 +242,9 @@ export default function PrivacyPage() {
 						</ul>
 
 						<p className="mb-3 text-sm">
-							If you start receipt recognition (OCR, automatic text recognition), the app loads
+							If you start text recognition of a screenshot in the import (OCR), the app loads
 							Tesseract worker and core files as well as German and English language models from
-							jsDelivr when needed. Recognition runs in your browser. The receipt image and the
+							jsDelivr when needed. Recognition runs in your browser. The screenshot and the
 							recognised text are not sent to jsDelivr. According to the{' '}
 							<a
 								href="https://www.jsdelivr.com/terms/privacy-policy"
@@ -374,8 +375,10 @@ export default function PrivacyPage() {
 								file storage for photos in Frankfurt am Main (EU).
 							</li>
 							<li>
-								<strong>Resend, Inc.</strong> (USA): in production, sends the confirmation emails
-								and password-reset emails triggered by Supabase Auth. The sender is
+								<strong>Resend, Inc.</strong> (USA): in production, sends the confirmation and
+								password-reset emails triggered by Supabase Auth and the app’s own emails (welcome,
+								invitations, monthly statement, payment reminders, account deletion). For an
+								invitation, the address a flatmate enters is processed to send it. The sender is
 								noreply@manawg.com (see section 4a). The transfer relies on EU standard contractual
 								clauses or the EU-US Data Privacy Framework.
 							</li>
@@ -458,12 +461,11 @@ export default function PrivacyPage() {
 								details and you leave all flats. Data of a flat in which you are the only member is
 								removed from the active database; for the related photos see section{' '}
 								<a href="#4d">4d</a>. If other members stay in a flat, your display name remains on
-								your earlier contributions (see section <a href="#4b">4b</a>). The person who
-								created a flat can remove it irrevocably under{' '}
-								<em>Settings → Access → Delete flat permanently</em>. All members, expenses, lists,
-								tasks and noticeboard posts of the flat are then removed from the active database.
-								Access to the related images is blocked straight away; the physical deletion follows
-								later (see section <a href="#4d">4d</a>
+								your earlier contributions (see section <a href="#4b">4b</a>). An admin of the flat
+								can remove it irrevocably under <em>Settings → Access → Delete flat permanently</em>
+								. All members, expenses, lists, tasks and noticeboard posts of the flat are then
+								removed from the active database. Access to the related images is blocked straight
+								away; the physical deletion follows later (see section <a href="#4d">4d</a>
 								). You can request more extensive deletion by emailing{' '}
 								<a href="mailto:info@manawg.com" className="break-all">
 									info@manawg.com
@@ -484,8 +486,10 @@ export default function PrivacyPage() {
 								<strong>Art. 77 GDPR</strong>: complaint to the competent supervisory authority:
 								<br />
 								<strong>
-									Der Hessische Beauftragte für Datenschutz und Informationsfreiheit (HBDI), the
-									Hessian Commissioner for Data Protection and Freedom of Information
+									<span lang="de">
+										Der Hessische Beauftragte für Datenschutz und Informationsfreiheit
+									</span>{' '}
+									(HBDI), the Hessian Commissioner for Data Protection and Freedom of Information
 								</strong>
 								<br />
 								Gustav-Stresemann-Ring 1, 65189 Wiesbaden
@@ -553,8 +557,7 @@ export default function PrivacyPage() {
 						</h2>
 						<p>
 							If our data processing changes, we may update this privacy policy. We will tell you
-							about material changes by email or in the app. The date of the last update is shown at
-							the top of this page.
+							about material changes by email or in the app.
 						</p>
 					</section>
 				</div>
@@ -567,7 +570,7 @@ export default function PrivacyPage() {
 					</Link>
 					{' · '}
 					<Link href="/en/terms" className={`${TEXT_LINK} inline-block px-2 py-3.5`}>
-						Terms of use
+						Terms
 					</Link>
 				</p>
 			</footer>
