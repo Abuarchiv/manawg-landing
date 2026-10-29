@@ -1,5 +1,5 @@
 // The hands of the end scene: one hand holds the phone, the other waits below the screen outside it and
-// moves over the target only to tap. Both come from rendered data passes (public/hand/, landing-konzept/design/HAND.md):
+// moves over the target only to tap. Both come from rendered data passes (public/hand/):
 // luminance, alpha, normal and depth. They are drawn as a fine halftone (cell grid 1.25 stage px,
 // Bayer 4 x 4) with the silhouette smoothed by pixel alpha, in the WebGL2 fragment shader. Without WebGL2 the halftone
 // is precomputed in 2D once per resize (without pointer light, the pointing hand as a sprite).

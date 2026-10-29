@@ -1,5 +1,5 @@
 // The intro stage: a sticky area at full window size on which mountain, mark, organ, flood,
-// flat and the end scene run one after another (PLAN-V2 2.4 and 4.1).
+// flat and the end scene run one after another.
 //
 // stage.ts reads the scroll distance s each frame, turns it into the progress P (timeline.ts), sets the
 // CSS variables and data-phase on #final and calls the sub-renderers. The variables are set EVERY

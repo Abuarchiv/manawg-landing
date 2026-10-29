@@ -3,7 +3,7 @@ import { BrLines, useDict } from '../../dict';
 import s from './HeroTitle.module.css';
 
 // Title of the intro: star field (stars.ts) and the page heading. Full until P 0.04, zero at
-// P 0.086 (T-09: plateau instead of an immediate fade).
+// P 0.086 (a plateau instead of an immediate fade).
 
 export function HeroTitle() {
 	const { hero } = useDict();

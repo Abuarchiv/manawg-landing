@@ -1,6 +1,6 @@
-/* Title and button of the end scene. Landscape: bottom left as in the draft, portrait: at the top above the phone
-   (camera.ts, titleSlot reserves the space). They appear only once the dark ground is in place
-   (T-05): opacity = clamp(0, (--e - 0.5) * 2.5, 1). */
+/* Title and button of the end scene. Landscape: bottom left, portrait: at the top above the phone
+   (camera.ts, titleSlot reserves the space). They appear only once the dark ground is in place:
+   opacity = clamp(0, (--e - 0.5) * 2.5, 1). */
 .title {
 	position: absolute;
 	left: var(--margin);

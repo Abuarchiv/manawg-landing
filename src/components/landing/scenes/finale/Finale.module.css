@@ -32,7 +32,7 @@
 }
 /* The content sits in the part of the finale that is visible above the footer in the final view of the page
    (--footer-h = footer height, set by Finale.tsx), with the header as top edge. This way the
-   title at the end of the page sits entirely below the header (T-06). */
+   title at the end of the page sits entirely below the header. */
 .content {
 	position: absolute;
 	left: 0;

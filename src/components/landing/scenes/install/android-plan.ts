@@ -1,4 +1,4 @@
-// Android: Chrome 150 and later (menu per Chromium 157), loop ≈ 14.3 s. Timings per INSTALL-FLOWS 3.2, 3.3, 3.4:
+// Android: Chrome 150 and later (menu per Chromium 157), loop ≈ 14.3 s. Timings:
 // menu staggered over 0.45–0.65 s, dialog 0.2 s, "installing…" messages ≈ 2 s. All pure functions of t.
 
 import { cl, lerp } from '../../core/math';

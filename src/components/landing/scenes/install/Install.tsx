@@ -12,7 +12,7 @@ import { Iphone } from './Iphone';
 import { registerPlayback } from './playback';
 import type { TabIndex } from './types';
 
-// Scene [07] INSTALL: the real install flow per platform (INSTALL-FLOWS), time-driven loop
+// Scene [07] INSTALL: the real install flow per platform, time-driven loop
 // on the device, step list in sync and clickable, tabs as a tablist with arrow keys.
 
 // The step icons are the same drawings as on the device (Safari iOS 27: side menu ≡ at the left of the address pill, Chrome: three dots)

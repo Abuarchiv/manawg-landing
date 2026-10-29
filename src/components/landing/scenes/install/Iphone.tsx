@@ -1,4 +1,4 @@
-// iPhone screen (iOS 27, Safari in the "Compact" layout) as DOM per INSTALL-FLOWS 2. Stage 390 x 844 pt.
+// iPhone screen (iOS 27, Safari in the "Compact" layout) as DOM. Stage 390 x 844 pt.
 // All moving parts carry data-k, playback.ts sets their styles per frame. No screenshots from Apple.
 
 import {

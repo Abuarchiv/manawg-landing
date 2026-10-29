@@ -1,4 +1,4 @@
-// Timeline of the intro stage (PLAN-V2 2.4).
+// Timeline of the intro stage.
 //
 // The stage sticks to the window over INTRO_SCREENS screen heights. The scroll distance s (0..1)
 // maps to the choreography progress P: P = warp(s). All scene marks (look, mx, split,

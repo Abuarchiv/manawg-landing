@@ -1,4 +1,4 @@
-// Android screen (Chrome 150 and later, address bar at the top, menu per Chromium 157) as DOM per INSTALL-FLOWS 3.
+// Android screen (Chrome 150 and later, address bar at the top, menu per Chromium 157) as DOM.
 // Stage 411 x 884 dp (device 411 x 914 dp, adapted here to the frame's aspect ratio).
 
 import {
@@ -147,7 +147,7 @@ export function Android() {
 					data-k="and-icon"
 					style={{ left: 34, top: 74, transformOrigin: '30px 30px' }}
 				>
-					{/* WebAPK after "Install": own icon without Chrome badge (INSTALL-FLOWS 3.4) */}
+					{/* WebAPK after "Install": own icon without Chrome badge */}
 					<i className={s.and_hround}>
 						<img loading="lazy" src={ICON} alt="ManaWG" width="36" height="36" />
 					</i>

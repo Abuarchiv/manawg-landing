@@ -1,4 +1,4 @@
-// Desktop: Chrome 154 on macOS. Order and labels are documented (INSTALL-FLOWS 4.1); the timings of the
+// Desktop: Chrome 154 on macOS. Order and labels are documented; the timings of the
 // desktop part are NOT measured and deliberately conservative (estimated): the chip expands in 0.4 s,
 // the dialog takes 0.18 s, the window switch 0.32 s ease-out.
 
