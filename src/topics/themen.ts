@@ -71,7 +71,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Für wen ManaWG gedacht ist',
-				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Code oder Link, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen.',
+				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Einladungslink, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen.',
 			],
 			[
 				'So startet eure WG',
@@ -128,7 +128,7 @@ export const THEMEN: Record<string, Thema> = {
 					],
 					[
 						'Zugang',
-						'im Browser, auf dem Home-Bildschirm installierbar, Beitritt per Code oder Link',
+						'im Browser, auf dem Home-Bildschirm installierbar, Beitritt per Einladungslink oder E-Mail-Einladung',
 						'kein App Store, auf Deutsch und Englisch, bis zu 20 aktive Mitglieder',
 					],
 				],
@@ -146,7 +146,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie viele Leute passen in eine WG?',
-				'Bis zu 20 aktive Mitglieder. Ausgezogene Personen zählen nicht mit, ihre Historie bleibt erhalten. Admins können den Beitrittscode erneuern oder das Beitreten sperren.',
+				'Bis zu 20 aktive Mitglieder. Ausgezogene Personen zählen nicht mit, ihre Historie bleibt erhalten. Admins können Einladungen jederzeit widerrufen.',
 			],
 			[
 				'Kann ich von Splitwise oder Splid wechseln?',
@@ -203,7 +203,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Einrichten und Umfang',
-				'Eine WG hat einen Share-Code. Mitglieder treten per Code oder Link bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und auf Deutsch und Englisch verfügbar. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor.',
+				'Mitglieder treten per Einladungslink oder E-Mail-Einladung bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und auf Deutsch und Englisch verfügbar. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor.',
 			],
 		],
 		fragen: [
@@ -304,7 +304,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Wie viele Leute passen in eine WG?',
-				'Bis zu 20 aktive Mitglieder. Wer auszieht, wird deaktiviert und zählt nicht mehr mit, seine Historie bleibt erhalten. Weitere Personen lassen sich per Code oder Link einladen.',
+				'Bis zu 20 aktive Mitglieder. Wer auszieht, wird deaktiviert und zählt nicht mehr mit, seine Historie bleibt erhalten. Weitere Personen kommen per Einladungslink oder E-Mail-Einladung dazu.',
 			],
 		],
 	},
@@ -743,7 +743,7 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			[
 				'Web statt Store',
-				'ManaWG läuft unter app.manawg.com und lässt sich auf dem Home-Bildschirm installieren. Die Daten liegen zentral auf dem Server, nicht auf einem einzelnen Gerät. Aktionen ohne Netz merkt sich die App und sendet sie später nach. Anmelden könnt ihr euch mit Google oder E-Mail und Passwort. Beitreten geht per Code, Link oder E-Mail-Einladung.',
+				'ManaWG läuft unter app.manawg.com und lässt sich auf dem Home-Bildschirm installieren. Die Daten liegen zentral auf dem Server, nicht auf einem einzelnen Gerät. Aktionen ohne Netz merkt sich die App und sendet sie später nach. Anmelden könnt ihr euch mit Google oder E-Mail und Passwort. Beitreten geht per Einladungslink oder E-Mail-Einladung.',
 			],
 		],
 		fragen: [
