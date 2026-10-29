@@ -1,10 +1,10 @@
 // English money and flatmate-search guides (batch A). Keys are English slugs; the German
-// counterparts live in ../ratgeber.ts and ../ratgeber-geld.ts. Links are prefix-free.
+// counterparts live in ../de/guides.ts and ../de/guides-money.ts. Links are prefix-free.
 import { euro, rentShares } from '../rent-calculator.ts';
 import type { Topic } from '../types.ts';
 import { BGB_EN } from './guides-moving.ts';
 
-// Rent example of the calculator page: values come from mieteAnteile, not from hand.
+// Rent example of the calculator page: values come from rentShares, not from hand.
 const EXAMPLE_ROOMS = [12, 18, 24];
 const EXAMPLE_SHARED = 18;
 const EXAMPLE_RENT_CENT = 90000;

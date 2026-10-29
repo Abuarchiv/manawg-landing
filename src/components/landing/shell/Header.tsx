@@ -3,7 +3,7 @@ import { css } from '../core/dc';
 import { useDict } from '../dict';
 
 // Header: logo on the left, button on the right, fixed to the window. While the end layer of the intro covers the
-// header area, --kopf-aus fades it out (stage.ts). Safe-area insets for notch and corners.
+// header area, --header-off fades it out (stage.ts). Safe-area insets for notch and corners.
 
 export function Header() {
 	const dict = useDict();
@@ -11,7 +11,7 @@ export function Header() {
 		<header
 			data-kopf="1"
 			style={css(
-				'position:fixed;z-index:20;top:var(--header-top);left:calc(var(--margin) + env(safe-area-inset-left));right:calc(var(--margin) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;pointer-events:none;opacity:calc(1 - var(--kopf-aus,0))',
+				'position:fixed;z-index:20;top:var(--header-top);left:calc(var(--margin) + env(safe-area-inset-left));right:calc(var(--margin) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;pointer-events:none;opacity:calc(1 - var(--header-off,0))',
 			)}
 		>
 			<div data-loch="logo" style={css('display:flex;align-items:center;gap:var(--sp-10)')}>

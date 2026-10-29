@@ -307,7 +307,7 @@ export function createStage({
 		}
 		// Portrait: the header stays visible (the title sits below it), otherwise the button would be left alone after fading out
 		const headerOff = loop.mode === 'hoch' ? 0 : endA * (rb.bottom > headerBottom ? 1 : 0);
-		setVar('--kopf-aus', headerOff.toFixed(3), [header]);
+		setVar('--header-off', headerOff.toFixed(3), [header]);
 		// Portrait: title and button of the end layer fade out as soon as they reach the header band
 		// while scrolling out (no text over the logo); to the same degree the header button returns
 		let titleOff = 0;
