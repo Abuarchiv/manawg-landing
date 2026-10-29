@@ -62,7 +62,7 @@ const FS = `#version 300 es
 precision highp float;
 uniform sampler2D uLum, uMeta, uGly, uRamp;
 uniform vec2 uRes;
-uniform float uDpr, uS, uHmax, uBau, uLod, uN;
+uniform float uDpr, uS, uHmax, uBuild, uLod, uN;
 uniform vec3 uMap;   // CSS px per image pixel, image origin in CSS px
 uniform vec4 uImg;   // width, height, OX, OY (image pixels)
 uniform vec4 uRm[8];
@@ -89,7 +89,7 @@ void main(){
   float gz = mt.g * uHmax;
   if (cls == 3 && gz > 2.05) cls = 14;
   // Build-up: floors first, tall things last, in a Bayer grid
-  if (bayer(ci) >= uBau * 1.6 - gz / uHmax * .6) return;
+  if (bayer(ci) >= uBuild * 1.6 - gz / uHmax * .6) return;
   // Grid position of the surface (back-computed via the height) -> room and its light
   float d = (I.x - uImg.z) / (.8660254 * uS);
   float s = (I.y - uImg.w) / (.5 * uS) + 2. * gz;
@@ -104,19 +104,19 @@ void main(){
   float n = texelFetch(uRamp, ivec2(0, cls), 0).r * 255.;
   if (n < .5) return;
   // Outline: furniture cells whose neighbour lies clearly lower become dense and bright (figure against ground)
-  float kante = 0.;
+  float edge = 0.;
   if (cls > 3 && cls < 14) {
     vec2 dz = Z / uMap.x / uImg.xy;
     float lo = min(min(texture(uMeta, uv + vec2(dz.x, 0.)).g, texture(uMeta, uv - vec2(dz.x, 0.)).g),
       min(texture(uMeta, uv + vec2(0., dz.y)).g, texture(uMeta, uv - vec2(0., dz.y)).g)) * uHmax;
-    kante = step(.3, gz - lo);
+    edge = step(.3, gz - lo);
   }
-  float t = clamp(max(L * 1.1 + li * .35, kante * .8), 0., .999);
+  float t = clamp(max(L * 1.1 + li * .35, edge * .8), 0., .999);
   float id = texelFetch(uRamp, ivec2(1 + int(t * n), cls), 0).r * 255.;
   vec2 lu = fract(css / Z);
   vec2 au = vec2((id + lu.x) / uN, lu.y);
   float a = smoothstep(.1, .55, textureGrad(uGly, au, vec2(1. / (Z.x * uDpr * uN), 0.), vec2(0., 1. / (Z.y * uDpr))).r);
-  float br = texelFetch(uRamp, ivec2(15, cls), 0).r * clamp(.58 + .42 * lit + .6 * li + .25 * kante, 0., 1.);
+  float br = texelFetch(uRamp, ivec2(15, cls), 0).r * clamp(.58 + .42 * lit + .6 * li + .25 * edge, 0., 1.);
   o = vec4(vec3(bg + a * (.98 - bg) * br), 1.);
 }`;
 
@@ -272,7 +272,7 @@ export function drawFlatGlyphs(e: GlyphInput): HTMLCanvasElement | null {
 	const [zw, zh] = cellSize(e.W);
 	gl.uniform2f(u('Z'), zw, zh);
 	gl.uniform1f(u('uLod'), Math.max(0, Math.log2(zw / k)));
-	gl.uniform1f(u('uBau'), e.build);
+	gl.uniform1f(u('uBuild'), e.build);
 	const rm = new Float32Array(32);
 	const lt = new Float32Array(8);
 	e.rooms.slice(0, 8).forEach((r, i) => {

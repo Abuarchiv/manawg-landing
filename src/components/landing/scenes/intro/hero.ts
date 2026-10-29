@@ -41,24 +41,24 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 `;
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
-uniform sampler2D uImg, uMsk; uniform float uFoto, uAb;
+uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat;
 // Mountain: copper engraving (Codex, technique like the sky of the finale) as a camera move. Image section covers, tighter around the
 // summit in portrait; looking up (uLook) shifts the section into the dark sky. Clouds drift slightly, the
 // pointer is light on the snow, the mark stands as the sun in the sky.
 const float IMGA = 2560. / 3200.;
-vec2 fotoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
+vec2 photoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
   float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
   float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
   return c + vec2((s.x - .5) * wN, (.5 - s.y) * hN) / z; }
-float fotoBerg(vec2 uv){
-  vec2 iu = fotoUV(gl_FragCoord.xy); iu.y = 1. - iu.y; float msk = texture(uMsk, iu).r; float himmel = 1. - texture(uMsk, iu, 2.5).r; // image uploaded flipped
-  vec2 wv = (vec2(nz(iu * vec2(6., 14.) + vec2(T * .05, 0.)), nz(iu * vec2(6., 14.) + vec2(3.7, T * .03))) - .5) * .006 * himmel;
+float photoMountain(vec2 uv){
+  vec2 iu = photoUV(gl_FragCoord.xy); iu.y = 1. - iu.y; float msk = texture(uMsk, iu).r; float skyWeight = 1. - texture(uMsk, iu, 2.5).r; // image uploaded flipped
+  vec2 wv = (vec2(nz(iu * vec2(6., 14.) + vec2(T * .05, 0.)), nz(iu * vec2(6., 14.) + vec2(3.7, T * .03))) - .5) * .006 * skyWeight;
   float v = texture(uImg, iu + wv).r;
   // Tone curve like a black-and-white print: deep black in the rock, snow stays bright; dark ground at the bottom for the text
   v = smoothstep(.04, .97, pow(v, 1.18)); vec2 sv = gl_FragCoord.xy / uR;
   // On opening, the engraving draws itself by brightness: first the bright strokes, then the fine ones
-  // Retreat (uAb): the threshold runs back, the dark strokes go first, the bright ones last
-  float th = 1.05 - uFoto * 1.1 + uAb * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
+  // Retreat (uRetreat): the threshold runs back, the dark strokes go first, the bright ones last
+  float th = 1.05 - uPhoto * 1.1 + uRetreat * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
   v *= mix(1., .5, smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook)));
   // Pointer as light: the snow beneath it brightens softly, rock stays dark
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
@@ -67,7 +67,7 @@ float fotoBerg(vec2 uv){
   v += (1. - msk) * exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .07 * (1. + uLook * 3.);
   return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.); } // no grain once lines carry the tone: they would flicker
 float mountain(vec2 uv){
-  if(uFoto > .001) return fotoBerg(uv);
+  if(uPhoto > .001) return photoMountain(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   vec3 L = normalize(RT * (sp.x * 1.5 + .9) + UP * .42 - FW * .2);
@@ -82,9 +82,9 @@ float alb = mix(rockA(p) * .5, .95, sn); float amb = .5 + .5 * n.y; v = alb * (d
 // Organ: soft tissue instead of smooth spheres. Fine folds travel across the skin (three sine fields), the pointer
 // presses a dent; light with translucency (wrap), specular highlight, cavity shading and pores, which the halftone shows as
 // varying dot sizes.
-float falte(vec3 p){ return sin(p.x * 9. + T * .7 + sin(p.y * 5. - T * .4) * 1.6) * sin(p.y * 8. - T * .5 + sin(p.z * 6.) * 1.4) * sin(p.z * 7. + p.x * 3. + T * .3); }
+float fold(vec3 p){ return sin(p.x * 9. + T * .7 + sin(p.y * 5. - T * .4) * 1.6) * sin(p.y * 8. - T * .5 + sin(p.z * 6.) * 1.4) * sin(p.z * 7. + p.x * 3. + T * .3); }
 float omap(vec3 p){ float d = 1e5; for(int i = 0; i < 8; i++) d = smin(d, length(p - uO[i].xyz) - uO[i].w, uK);
-  d += falte(p * 2.6) * .016 + exp(-dot(p.xy - uM * 1.6, p.xy - uM * 1.6) * 6.) * .03; return max(d, -(length(p.xy - uH.xy) - uH.z)); }
+  d += fold(p * 2.6) * .016 + exp(-dot(p.xy - uM * 1.6, p.xy - uM * 1.6) * 6.) * .03; return max(d, -(length(p.xy - uH.xy) - uH.z)); }
 vec3 onrm(vec3 p){ const vec2 e = vec2(.002, -.002); return normalize(e.xyy * omap(p + e.xyy) + e.yyx * omap(p + e.yyx) + e.yxy * omap(p + e.yxy) + e.xxx * omap(p + e.xxx)); }
 float organ(vec2 uv){ vec3 ro = uC, rd = normalize(vec3(uv, -1.6)); float t = 0., md = 1e5;
   for(int i = 0; i < 96; i++){ vec3 p = ro + rd * t; float d = omap(p); md = min(md, d);
@@ -93,8 +93,8 @@ if(d < .0015){ vec3 n = onrm(p); vec3 l = normalize(vec3(uM.x * 2.4 - .6, uM.y *
   float ao = clamp(omap(p + n * .06) / .06, 0., 1.) * .5 + clamp(omap(p + n * .22) / .22, 0., 1.) * .5;
   float rim = pow(1. - max(dot(n, -rd), 0.), 3.); float sp = pow(max(dot(reflect(-l, n), -rd), 0.), 36.);
   float por = .78 + .22 * nz(p.xy * 26. + p.z * 9.);
-  float hinten = pow(max(dot(n, normalize(vec3(-l.x, -l.y, -.4))), 0.), 2.) * .25; // backlight at the edge
-  return clamp(df * .85 * por * (.3 + .7 * ao) + .04 + rim * .2 + hinten + sp * .9, 0., 1.); }
+  float backlight = pow(max(dot(n, normalize(vec3(-l.x, -l.y, -.4))), 0.), 2.) * .25; // backlight at the edge
+  return clamp(df * .85 * por * (.3 + .7 * ao) + .04 + rim * .2 + backlight + sp * .9, 0., 1.); }
 t += d * .82; if(t > 40.) break; }
   return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)); }
 void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv), uMix); o = vec4(v, v, v, 1.); }`;
@@ -132,8 +132,8 @@ type SceneU =
 	| 'uZ'
 	| 'uImg'
 	| 'uMsk'
-	| 'uFoto'
-	| 'uAb';
+	| 'uPhoto'
+	| 'uRetreat';
 type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad';
 
 /** WebGL state of the hero: offscreen canvas, context, programs, scene texture with framebuffer. */
@@ -252,8 +252,8 @@ export function createHero(cv: HTMLCanvasElement) {
 				'uZ',
 				'uImg',
 				'uMsk',
-				'uFoto',
-				'uAb',
+				'uPhoto',
+				'uRetreat',
 			],
 			'scene',
 		);
@@ -536,8 +536,8 @@ export function createHero(cv: HTMLCanvasElement) {
 			gl.uniform1i(U.uMsk, 2);
 			gl.activeTexture(gl.TEXTURE0);
 		}
-		gl.uniform1f(U.uFoto, G.photoTx ? G.photoA : 0);
-		gl.uniform1f(U.uAb, ss((look - 0.02) / 0.6));
+		gl.uniform1f(U.uPhoto, G.photoTx ? G.photoA : 0);
+		gl.uniform1f(U.uRetreat, ss((look - 0.02) / 0.6));
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 		if (gcv.width < w) gcv.width = w;

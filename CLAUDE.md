@@ -1,7 +1,7 @@
 # manawg-landing
 
-Ins Repo gehört nur, was die Seite baut. Design-Vorlage (`design/final.dc.html`), Prüfskripte und Aufnahmekette liegen in `../landing-konzept/` (siehe dortige README).
+Only what builds the site belongs in this repo. The design template (`design/final.dc.html`), check scripts and the capture chain live in `../landing-konzept/` (see the README there).
 
-- `final.dc.html` 1:1 umsetzen, nicht ausdünnen oder neu interpretieren.
-- Nur `main`, lokal committen. Push und Deploy erst nach ausdrücklicher Freigabe (Vercel baut `main` automatisch).
-- Vor „fertig“: `pnpm lint && pnpm typecheck && pnpm build`. Bei laufendem Dev-Server `NEXT_DIST_DIR=.next-xyz`, Ordner danach entfernen.
+- Implement `final.dc.html` 1:1, do not thin it out or reinterpret it.
+- `main` only, commit locally. Push and deploy only after explicit approval (Vercel builds `main` automatically).
+- Before "done": `pnpm lint && pnpm typecheck && pnpm build`. With a dev server running, use `NEXT_DIST_DIR=.next-xyz` and remove the folder afterwards.

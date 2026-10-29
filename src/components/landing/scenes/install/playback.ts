@@ -61,12 +61,12 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 		if (Math.abs(f - s.progress) < 0.004 && f !== 1) return;
 		s.progress = f;
 		const v = f.toFixed(3);
-		s.steps[s.active]?.style.setProperty('--fort', v);
-		s.caption?.style.setProperty('--fort', v);
+		s.steps[s.active]?.style.setProperty('--progress', v);
+		s.caption?.style.setProperty('--progress', v);
 	};
 	let st: PlaybackState | null = null;
 	const off = register<PlaybackState>({
-		name: 'installieren',
+		name: 'install',
 		el: fr,
 		host: fr,
 		init(s) {
@@ -168,7 +168,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 					el.toggleAttribute('data-aktiv', isActive);
 					if (isActive) el.setAttribute('aria-current', 'step');
 					else el.removeAttribute('aria-current');
-					if (!isActive) el.style.removeProperty('--fort');
+					if (!isActive) el.style.removeProperty('--progress');
 				}
 				s.progress = -1;
 			}

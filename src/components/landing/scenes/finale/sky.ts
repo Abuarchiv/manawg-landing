@@ -10,8 +10,8 @@ void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-
 
 const FS = `#version 300 es
 precision highp float;
-uniform sampler2D uSkyQ, uSkyH, uFein, uGrob;
-uniform float uHoch, uDprH;
+uniform sampler2D uSkyQ, uSkyH, uFine, uCoarse;
+uniform float uPortrait, uDprH;
 uniform vec2 uRes, uCC;
 uniform float uT, uOpen, uCS;
 uniform vec3 uZg; // pointer in uv and strength: wind that parts the clouds
@@ -27,7 +27,7 @@ void main(){
   // Sky: engraved cloudscape (Codex, technique like the reference "engraved clouds"), scaled to cover and anchored at
   // the bottom so the cloud banks sit at the lower edge. When opening, the strokes appear by brightness:
   // first the brightest lines, then the fine ones, as if the engraving were being drawn right now.
-  float texA = uHoch > .5 ? .5625 : 1.7778;
+  float texA = uPortrait > .5 ? .5625 : 1.7778;
   vec2 sc = vec2(min(asp / texA, 1.), min(texA / asp, 1.));
   vec2 suv = vec2((uv.x - .5) * sc.x + .5, uv.y * sc.y);
   // Clouds billow: two-stage distorted field, faster at the top than in the banks below. The pointer is wind: it pushes
@@ -38,9 +38,9 @@ void main(){
   vec2 zd = (uv - uZg.xy) * vec2(asp, 1.); float zr = dot(zd, zd);
   vec2 wind = zd / (sqrt(zr) + .02) * exp(-zr * 14.) * .032 * uZg.z;
   suv -= wind * vec2(sc.x / asp, sc.y);
-  float L = uHoch > .5 ? texture(uSkyH, suv).r : texture(uSkyQ, suv).r;
-  float zug = smoothstep(.05, .85, uOpen);
-  float th = 1.05 - zug * 1.1;
+  float L = uPortrait > .5 ? texture(uSkyH, suv).r : texture(uSkyQ, suv).r;
+  float progress = smoothstep(.05, .85, uOpen);
+  float th = 1.05 - progress * 1.1;
   float sky = L * smoothstep(th, th + .18, L + hash(floor(gl_FragCoord.xy / 2.)) * .05);
   // Brand: exact silhouette from the masks of the loader, filled with the densest part of the engraved cloudscape
   float c = smoothstep(.35, .95, uOpen);
@@ -50,7 +50,7 @@ void main(){
   float inside = step(0., cuv.x) * step(cuv.x, 1.) * step(0., cuv.y) * step(cuv.y, 1.);
   vec2 w = vec2(fbm(cuv * 3. + uT * .22), fbm(cuv * 3. + 7.3 - uT * .2)) - .5;
   vec2 duv = cuv + w * (.07 * (1. - c) + .02) - wind * .7 / uCS;
-  float sil = mix(texture(uGrob, duv).r, texture(uFein, duv).r, c);
+  float sil = mix(texture(uCoarse, duv).r, texture(uFine, duv).r, c);
   float n = fbm(duv * 7. + vec2(uT * .25, -uT * .16));
   float thm = mix(.95, .3, c);
   float m = smoothstep(thm - .08, thm + .08, sil + (n - .5) * .45 * (1. - .6 * c));
@@ -116,7 +116,7 @@ async function loadImage(src: string): Promise<ImageBitmap> {
 const pause = () => new Promise<void>((ok) => setTimeout(ok, 0));
 
 async function load(s: SkyState): Promise<void> {
-	const names = ['uSkyQ', 'uSkyH', 'uFein', 'uGrob'];
+	const names = ['uSkyQ', 'uSkyH', 'uFine', 'uCoarse'];
 	// Decoding runs in parallel and without the main thread while context and shader are created
 	const images = Promise.all(
 		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) =>
@@ -173,14 +173,14 @@ function textBox(sec: HTMLElement, r0: DOMRect): [number, number, number, number
 	];
 }
 
-/** Registers the sky. ebene: element above the ASCII sun, containing the WebGL canvas. */
+/** Registers the sky. layer: element above the ASCII sun, containing the WebGL canvas. */
 export function registerSky(
 	layer: HTMLElement,
 	cv: HTMLCanvasElement,
 	sec: HTMLElement,
 ): () => void {
 	return register<SkyState>({
-		name: 'himmel',
+		name: 'sky',
 		el: layer,
 		host: sec,
 		box: (W, H) => ({ bw: W, bh: H }),
@@ -208,7 +208,7 @@ export function registerSky(
 			const r0 = s.el.getBoundingClientRect();
 			s.open = 1;
 			const portrait = s.mode === 'hoch';
-			gl.uniform1f(u('uHoch'), portrait ? 1 : 0);
+			gl.uniform1f(u('uPortrait'), portrait ? 1 : 0);
 			gl.uniform1f(u('uDprH'), dpr);
 			gl.uniform2f(u('uRes'), w, h);
 			gl.uniform1f(u('uT'), s.reduced ? 4 : loop.t);

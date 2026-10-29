@@ -234,7 +234,7 @@ export function Phone() {
 					{/* Still image: same state and same insets as the iframe, sits underneath and stays until the iframe has loaded */}
 					<div
 						className={s.surface}
-						style={{ opacity: ready ? 0 : 'calc(1 - var(--app-aus, 0))' }}
+						style={{ opacity: ready ? 0 : 'calc(1 - var(--app-out, 0))' }}
 						aria-hidden="true"
 					>
 						<img
@@ -298,8 +298,8 @@ export function Phone() {
 								}
 								requestAnimationFrame(() => requestAnimationFrame(() => setReady(true)));
 							}}
-							// Transition: the app disintegrates into characters (scenes/zerfall sets --app-aus)
-							style={{ border: 0, background: '#0A0A0A', opacity: 'calc(1 - var(--app-aus, 0))' }}
+							// Transition: the app disintegrates into characters (scenes/decay sets --app-out)
+							style={{ border: 0, background: '#0A0A0A', opacity: 'calc(1 - var(--app-out, 0))' }}
 						/>
 					)}
 					<StatusBar />

@@ -1,4 +1,4 @@
-# Abhängigkeiten
+# Dependencies
 node_modules
 
 # Build
@@ -6,12 +6,12 @@ node_modules
 .next-*
 *.tsbuildinfo
 
-# Umgebung (Vorlage .env.example bleibt)
+# Environment (the .env.example template stays)
 .env*
 !.env.example
 .vercel
 
-# Lokale Agenten- und Graph-Daten
+# Local agent and graph data
 .claude/
 graphify-out/
 

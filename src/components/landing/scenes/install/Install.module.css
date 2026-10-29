@@ -5,13 +5,13 @@
 	color: #fafafa;
 	overflow: clip; /* not a scroll container: the phone stays sticky in landscape */
 	display: grid;
-	grid-template-columns: calc(var(--rand) + var(--w-520)) minmax(0, 1fr);
+	grid-template-columns: calc(var(--margin) + var(--w-520)) minmax(0, 1fr);
 	column-gap: var(--sp-60);
 	padding: 0;
 }
 .text {
 	/* Top edge below the header band (header + 28 px gradient of the header mask), otherwise it covers the label and phone */
-	padding: max(var(--sp-96), calc(var(--kopf-unten) + 24px)) 0 var(--sp-32) var(--rand);
+	padding: max(var(--sp-96), calc(var(--header-bottom) + 24px)) 0 var(--sp-32) var(--margin);
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-24);
@@ -60,7 +60,7 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	border-top: 1px solid var(--haar);
+	border-top: 1px solid var(--hairline);
 }
 .steps li {
 	display: block;
@@ -73,7 +73,7 @@
 	width: 100%;
 	min-height: 44px;
 	border: 0;
-	border-bottom: 1px solid var(--haar);
+	border-bottom: 1px solid var(--hairline);
 	background: transparent;
 	color: #fafafa;
 	font: inherit;
@@ -103,7 +103,7 @@
 }
 .step[data-aktiv]::after {
 	opacity: 0.9;
-	transform: scaleX(var(--fort, 0));
+	transform: scaleX(var(--progress, 0));
 }
 .nr {
 	font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
@@ -124,9 +124,9 @@
 }
 .stage {
 	/* at least the header band at top and bottom, so the phone at rest sits entirely below the header */
-	--luft: calc(var(--kopf-unten) + 28px);
-	padding-top: var(--luft);
-	padding-bottom: max(calc(var(--sp-96) - var(--sp-32)), var(--luft));
+	--clearance: calc(var(--header-bottom) + 28px);
+	padding-top: var(--clearance);
+	padding-bottom: max(calc(var(--sp-96) - var(--sp-32)), var(--clearance));
 	min-width: 0;
 	align-self: center;
 	justify-self: center;
@@ -140,7 +140,7 @@
 	.stage:has(.frame[data-tab="2"]) {
 		justify-content: flex-end;
 		box-sizing: border-box;
-		padding-right: var(--rand);
+		padding-right: var(--margin);
 	}
 }
 .scale {
@@ -335,7 +335,7 @@
 		gap: var(--sp-16);
 		min-height: 0;
 		/* tighter at the bottom than the text scenes: only the questions label follows the button */
-		padding: max(var(--abschnitt-oben), calc(var(--kopf-unten) + 24px)) var(--rand) var(--sp-64);
+		padding: max(var(--section-top), calc(var(--header-bottom) + 24px)) var(--margin) var(--sp-64);
 		box-sizing: border-box;
 	}
 	.text {
@@ -369,7 +369,7 @@
 		order: 1;
 		height: max(
 			340px,
-			calc(100svh - 340px - max(0px, var(--kopf-unten) + 24px - var(--abschnitt-oben)))
+			calc(100svh - 340px - max(0px, var(--header-bottom) + 24px - var(--section-top)))
 		);
 		padding: var(--sp-8, 8px) 0;
 		box-sizing: border-box;
@@ -397,12 +397,12 @@
 		width: 96px;
 		height: 1px;
 		margin-left: -48px;
-		background: var(--haar);
+		background: var(--hairline);
 	}
 	.caption::after {
 		background: #fafafa;
 		transform-origin: 0 50%;
-		transform: scaleX(var(--fort, 0));
+		transform: scaleX(var(--progress, 0));
 	}
 }
 /* Phone landscape: two columns. Title, tabs and steps on the left (scrolling), the phone fixed below the header on the right. */
@@ -413,7 +413,7 @@
 		column-gap: var(--sp-32);
 		align-items: start;
 		row-gap: 0;
-		padding: calc(var(--kopf-unten) + 16px) var(--rand) var(--sp-48);
+		padding: calc(var(--header-bottom) + 16px) var(--margin) var(--sp-48);
 	}
 	.text {
 		display: flex;
@@ -439,8 +439,8 @@
 		order: 0;
 		position: sticky;
 		align-self: start;
-		top: calc(var(--kopf-unten) + 8px);
-		height: calc(100svh - var(--kopf-unten) - 24px);
+		top: calc(var(--header-bottom) + 8px);
+		height: calc(100svh - var(--header-bottom) - 24px);
 		padding: 0;
 	}
 	.caption {

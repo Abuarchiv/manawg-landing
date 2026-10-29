@@ -160,7 +160,7 @@ export interface Uniforms {
 	uTone: WebGLUniformLocation | null;
 	uCell0: WebGLUniformLocation | null;
 	uCellN: WebGLUniformLocation | null;
-	uZer: WebGLUniformLocation | null;
+	uDecay: WebGLUniformLocation | null;
 }
 
 /** Cell grid of the first pass: target size, texture and framebuffer. */

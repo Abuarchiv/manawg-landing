@@ -11,7 +11,7 @@ import { camera } from './camera';
 
 // End layer of the intro stage: phone and hands on #0A0A0A, title and button below. The layer sits in
 // the sticky stage and scrolls away with it. The end space [data-ende-space] is 1280 x 800 and is fitted
-// into the stage via --ende-x, --ende-y and --ende-f by camera(). Title and button precede the phone in the
+// into the stage via --end-x, --end-y and --end-f by camera(). Title and button precede the phone in the
 // DOM so that Shift+Tab from the app iframe lands on the button (not on the body); header and hints are inert in the end.
 
 export function End() {
@@ -25,9 +25,9 @@ export function End() {
 		const set = () => {
 			const W = stage.clientWidth;
 			const cam = camera(W, stage.clientHeight, safe.clientHeight, modeOf(W, innerHeight).mode);
-			space.style.setProperty('--ende-x', `${cam.ox}px`);
-			space.style.setProperty('--ende-y', `${cam.oy}px`);
-			space.style.setProperty('--ende-f', String(cam.f));
+			space.style.setProperty('--end-x', `${cam.ox}px`);
+			space.style.setProperty('--end-y', `${cam.oy}px`);
+			space.style.setProperty('--end-f', String(cam.f));
 		};
 		set();
 		const ro = new ResizeObserver(set);
@@ -71,7 +71,7 @@ export function End() {
 				ref={spaceRef}
 				data-ende-space="1"
 				style={css(
-					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--ende-x,0px),var(--ende-y,0px)) scale(var(--ende-f,1)) translate(var(--ax,0px),var(--ay,0px)) translate(800px,400px) rotate(var(--ar,0deg)) translate(-800px,-400px)',
+					'position:absolute;left:0;top:0;width:1280px;height:800px;transform-origin:0 0;transform:translate(var(--end-x,0px),var(--end-y,0px)) scale(var(--end-f,1)) translate(var(--ax,0px),var(--ay,0px)) translate(800px,400px) rotate(var(--ar,0deg)) translate(-800px,-400px)',
 				)}
 			>
 				<Phone />

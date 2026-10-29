@@ -2,7 +2,7 @@
 //
 // The end space is 1280 x 800 (phone 650/90/300/620, the hand passes lie in this space).
 // camera() says how it fits into the stage: { f, ox, oy } with stage CSS px = end space * f + (ox, oy).
-// End.tsx derives --ende-x/-y/-f from it, hand.draw uses the same function (one contract).
+// End.tsx derives --end-x/-y/-f from it, hand.draw uses the same function (one contract).
 
 import { type Fit, fitBox } from '../../core/canvas';
 import type { Mode } from '../../core/loop';

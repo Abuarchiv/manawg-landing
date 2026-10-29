@@ -56,7 +56,7 @@ export function Hints() {
 				aria-hidden="true"
 				className="label"
 				style={css(
-					'position:fixed;right:calc(var(--rand) + env(safe-area-inset-right));bottom:max(var(--sp-28),calc(env(safe-area-inset-bottom) + 8px));opacity:calc(0.72 - var(--p,0) * 10);pointer-events:none;z-index:20',
+					'position:fixed;right:calc(var(--margin) + env(safe-area-inset-right));bottom:max(var(--sp-28),calc(env(safe-area-inset-bottom) + 8px));opacity:calc(0.72 - var(--p,0) * 10);pointer-events:none;z-index:20',
 				)}
 			>
 				{dict.hints.scroll}

@@ -106,7 +106,7 @@ const uniformTable = (f: (name: string) => WebGLUniformLocation | null): Uniform
 		uTone: f('uTone'),
 		uCell0: f('uCell0'),
 		uCellN: f('uCellN'),
-		uZer: f('uZer'),
+		uDecay: f('uDecay'),
 	};
 };
 
@@ -232,7 +232,7 @@ function setUniforms(
 	gl.uniform3f(u.uBack, w / W, h / cells.H, h);
 	gl.uniform2i(u.uCell0, cells.i0, cells.j0);
 	gl.uniform2i(u.uCellN, cells.cw, cells.ch);
-	gl.uniform1f(u.uZer, S.decay);
+	gl.uniform1f(u.uDecay, S.decay);
 }
 
 function initProgram(L: Layer, k: 0 | 1): void {

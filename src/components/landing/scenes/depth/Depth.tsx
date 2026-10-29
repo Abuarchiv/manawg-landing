@@ -38,7 +38,7 @@ export function Depth() {
 						data-hint="1"
 						className="label"
 						style={css(
-							'position:absolute;top:calc(var(--kopf-unten) + var(--sp-24));left:var(--rand)',
+							'position:absolute;top:calc(var(--header-bottom) + var(--sp-24));left:var(--margin)',
 						)}
 					>
 						{depth.hint}
@@ -48,7 +48,7 @@ export function Depth() {
 							key={w.label}
 							data-dcap={i}
 							style={css(
-								'position:absolute;left:var(--rand);right:var(--rand);bottom:var(--sp-72);display:flex;flex-direction:column;gap:var(--sp-10);opacity:0',
+								'position:absolute;left:var(--margin);right:var(--margin);bottom:var(--sp-72);display:flex;flex-direction:column;gap:var(--sp-10);opacity:0',
 							)}
 						>
 							<span className="label" aria-hidden="true">
@@ -66,7 +66,7 @@ export function Depth() {
 					<div
 						className="label"
 						aria-hidden="true"
-						style={css('position:absolute;right:var(--rand);bottom:var(--sp-28)')}
+						style={css('position:absolute;right:var(--margin);bottom:var(--sp-28)')}
 					>
 						{depth.counter}
 						<span data-depth="1">000</span>

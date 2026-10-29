@@ -37,18 +37,18 @@ interface Island {
 }
 
 /** Point of the cloud: x, y, z, character, island (-1 = dust). */
-// streuX/streuY/streuZ: start offset in the tunnel from which the point streams into the word shape (computed once at build);
+// scatterX/scatterY/scatterZ: start offset in the tunnel from which the point streams into the word shape (computed once at build);
 // ph: breathing phase, h: staggering (who arrives earlier and leaves earlier)
 type Point = [
 	x: number,
 	y: number,
 	z: number,
-	zeichen: string,
-	insel: number,
+	char: string,
+	island: number,
 	nr: number,
-	streuX: number,
-	streuY: number,
-	streuZ: number,
+	scatterX: number,
+	scatterY: number,
+	scatterZ: number,
 	ph: number,
 	h: number,
 ];
@@ -349,7 +349,7 @@ interface View {
 }
 
 // Flow field of the swarm: divergence-free field from two octaves of a stream function (cheap pseudo-curl,
-// every point only knows its rest position). Result in cvx, cvy; the phase fase runs with the scroll, scrolling
+// every point only knows its rest position). Result in cvx, cvy; the phase runs with the scroll, scrolling
 // backwards turns the flow back.
 let cvx = 0;
 let cvy = 0;
@@ -584,7 +584,7 @@ function prepare(s: DepthState, words: readonly string[]): boolean {
 export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: readonly string[]) {
 	const root = cv.parentElement ?? cv;
 	return register<DepthState>({
-		name: 'tiefe',
+		name: 'depth',
 		el: cv,
 		host: root,
 		box: (_W, _H, _safeH, mode) =>

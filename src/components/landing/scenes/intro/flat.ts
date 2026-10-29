@@ -545,12 +545,12 @@ export function draw(
 	const size = Math.max(10.5, 11 * f);
 	const items: Label[] = [];
 	st.pp.forEach((pp, k) => {
-		const sch = panes[k];
-		if (!sch) return;
+		const pane = panes[k];
+		if (!pane) return;
 		items.push({
 			text: pp.name,
-			x: tx + sch.pt[0] * f,
-			y: ty + (sch.pt[1] - sch.r) * f - 8,
+			x: tx + pane.pt[0] * f,
+			y: ty + (pane.pt[1] - pane.r) * f - 8,
 			size,
 			a: 0.72,
 			kind: 'name',

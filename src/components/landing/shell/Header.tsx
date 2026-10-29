@@ -11,7 +11,7 @@ export function Header() {
 		<header
 			data-kopf="1"
 			style={css(
-				'position:fixed;z-index:20;top:var(--kopf-oben);left:calc(var(--rand) + env(safe-area-inset-left));right:calc(var(--rand) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;pointer-events:none;opacity:calc(1 - var(--kopf-aus,0))',
+				'position:fixed;z-index:20;top:var(--header-top);left:calc(var(--margin) + env(safe-area-inset-left));right:calc(var(--margin) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;pointer-events:none;opacity:calc(1 - var(--kopf-aus,0))',
 			)}
 		>
 			<div data-loch="logo" style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
@@ -34,7 +34,7 @@ export function Header() {
 				data-loch="cta"
 				href={appUrl(dict.links.create)}
 				className="cta cta--voll"
-				style={css('pointer-events:auto;opacity:calc(1 - var(--kopf-cta-aus,0))')}
+				style={css('pointer-events:auto;opacity:calc(1 - var(--header-cta-out,0))')}
 			>
 				{dict.header.cta}
 			</a>

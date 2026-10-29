@@ -10,7 +10,7 @@ export const mix = (a: number, b: number, p: number): number => a + (b - a) * p;
 type Curve = (x: number) => number;
 
 /** CSS cubic-bezier as a function x(0..1) -> y. Newton with bisection fallback. */
-export function bez(x1: number, y1: number, x2: number, y2: number): Curve {
+export function bezier(x1: number, y1: number, x2: number, y2: number): Curve {
 	const cx = 3 * x1;
 	const bx = 3 * (x2 - x1) - cx;
 	const ax = 1 - cx - bx;
@@ -46,11 +46,11 @@ export function bez(x1: number, y1: number, x2: number, y2: number): Curve {
 }
 
 /** Ease-out like iOS sheets (fast, long tail), without overshoot. */
-export const easeOut = bez(0.22, 1, 0.36, 1);
+export const easeOut = bezier(0.22, 1, 0.36, 1);
 /** Soft easing in and out (tap paths, system transitions). */
-export const io = bez(0.42, 0, 0.2, 1);
+export const io = bezier(0.42, 0, 0.2, 1);
 /** Material "emphasized decelerate". */
-export const mat = bez(0.05, 0.7, 0.1, 1);
+export const mat = bezier(0.05, 0.7, 0.1, 1);
 
 /**
  * Damped spring from rest to 1: ζ damping ratio, wn natural frequency in rad/s, tau seconds since start.

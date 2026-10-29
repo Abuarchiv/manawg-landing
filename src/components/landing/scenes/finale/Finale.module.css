@@ -1,20 +1,24 @@
 .section {
 	--h: max(560px, 95svh);
-	--titel-fs: var(--t-200);
-	--knoepfe-h: 32px;
-	--luecke: var(--sp-32);
-	--pad-oben: calc(max(var(--rand-kopf), env(safe-area-inset-top, 0px) + 8px) + var(--cta-h) + 24px);
+	--title-fs: var(--t-200);
+	--buttons-h: 32px;
+	--gap: var(--sp-32);
+	--pad-top: calc(
+		max(var(--margin-header), env(safe-area-inset-top, 0px) + 8px) +
+		var(--cta-h) +
+		24px
+	);
 	/* Minimum height from the content: header padding, title (2 lines), gap, buttons, footer padding */
-	--noetig: calc(
-		var(--pad-oben) +
+	--needed: calc(
+		var(--pad-top) +
 		1.76 *
-		var(--titel-fs) +
-		var(--luecke) +
-		var(--knoepfe-h) +
+		var(--title-fs) +
+		var(--gap) +
+		var(--buttons-h) +
 		var(--sp-32)
 	);
 	position: relative;
-	height: max(var(--h), var(--noetig));
+	height: max(var(--h), var(--needed));
 	background: #0a0a0a;
 	color: #fafafa;
 	overflow: hidden;
@@ -27,7 +31,7 @@
 	display: block;
 }
 /* The content sits in the part of the finale that is visible above the footer in the final view of the page
-   (--fuss = footer height, set by Finale.tsx), with the header as top edge. This way the
+   (--footer-h = footer height, set by Finale.tsx), with the header as top edge. This way the
    title at the end of the page sits entirely below the header (T-06). */
 .content {
 	position: absolute;
@@ -35,25 +39,25 @@
 	right: 0;
 	bottom: 0;
 	top: min(
-		max(0px, calc(var(--h) + var(--fuss, 0px) - 100svh)),
-		calc(max(var(--h), var(--noetig)) - var(--noetig))
+		max(0px, calc(var(--h) + var(--footer-h, 0px) - 100svh)),
+		calc(max(var(--h), var(--needed)) - var(--needed))
 	);
 	display: flex;
 	flex-direction: column;
-	padding: var(--pad-oben) var(--rand) var(--sp-32);
+	padding: var(--pad-top) var(--margin) var(--sp-32);
 	pointer-events: none;
 }
 .block {
 	margin-block: auto;
 	display: flex;
 	flex-direction: column;
-	gap: var(--luecke);
+	gap: var(--gap);
 }
 .title {
 	margin: 0;
 	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
 	font-weight: 600;
-	font-size: var(--titel-fs);
+	font-size: var(--title-fs);
 	line-height: 0.88;
 	letter-spacing: -0.06em;
 	overflow-wrap: break-word;
@@ -69,16 +73,16 @@
 	/* In the final view, title, buttons and footer together must fit in the viewport (Safari with bars is
 	   shorter than 100svh on desktop): the title shrinks down to 64 px, the buttons sit side by side. */
 	.section {
-		--luecke: var(--sp-24);
-		--frei: calc(
+		--gap: var(--sp-24);
+		--free: calc(
 			100svh -
-			var(--fuss, 0px) -
-			var(--pad-oben) -
-			var(--luecke) -
-			var(--knoepfe-h) -
+			var(--footer-h, 0px) -
+			var(--pad-top) -
+			var(--gap) -
+			var(--buttons-h) -
 			var(--sp-32)
 		);
-		--titel-fs: clamp(64px, min(27vw, var(--frei) / 1.76), 150px);
+		--title-fs: clamp(64px, min(27vw, var(--free) / 1.76), 150px);
 	}
 	.title {
 		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
@@ -103,7 +107,7 @@
 /* Phone landscape: little height, smaller title so it fits entirely above the footer */
 @media (orientation: landscape) and (max-height: 499px) {
 	.section {
-		--titel-fs: clamp(48px, 15svh, 64px);
-		--luecke: 12px;
+		--title-fs: clamp(48px, 15svh, 64px);
+		--gap: 12px;
 	}
 }

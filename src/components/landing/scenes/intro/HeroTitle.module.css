@@ -1,7 +1,7 @@
 .title {
 	position: absolute;
-	left: var(--rand);
-	right: var(--rand);
+	left: var(--margin);
+	right: var(--margin);
 	bottom: var(--sp-64);
 	display: flex;
 	flex-direction: column;

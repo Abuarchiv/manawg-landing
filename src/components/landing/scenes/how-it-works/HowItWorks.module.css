@@ -2,7 +2,7 @@
 	position: relative;
 	background: #0a0a0a;
 	color: #fafafa;
-	padding: var(--abschnitt-oben) var(--rand) var(--abschnitt-unten);
+	padding: var(--section-top) var(--margin) var(--section-bottom);
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-48);
@@ -13,14 +13,14 @@
 .columns {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	border-top: 1px solid var(--haar);
+	border-top: 1px solid var(--hairline);
 }
 .column {
 	padding: var(--sp-28) var(--sp-28) 0 var(--sp-28);
 	display: flex;
 	flex-direction: column;
 	gap: var(--sp-16);
-	border-right: 1px solid var(--haar);
+	border-right: 1px solid var(--hairline);
 }
 .column:first-child {
 	padding-left: 0;
@@ -59,7 +59,7 @@
 	.column:last-child {
 		padding: var(--sp-28) 0 var(--sp-32);
 		border-right: 0;
-		border-bottom: 1px solid var(--haar);
+		border-bottom: 1px solid var(--hairline);
 	}
 	.column:last-child {
 		border-bottom: 0;

@@ -2,7 +2,7 @@
    as tall as the tallest card. Landscape: left of the flat. Portrait: full width below the header. */
 .column {
 	position: absolute;
-	left: var(--rand);
+	left: var(--margin);
 	top: var(--sp-150);
 	width: var(--w-440);
 	display: grid;
@@ -42,8 +42,8 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--sp-16);
-	border-top: 1px solid var(--haar);
-	border-bottom: 1px solid var(--haar);
+	border-top: 1px solid var(--hairline);
+	border-bottom: 1px solid var(--hairline);
 	padding: var(--sp-14) 0;
 	margin-top: 8px;
 }
@@ -63,7 +63,7 @@
 
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
 	.column {
-		right: var(--rand);
+		right: var(--margin);
 		width: auto;
 		top: calc(env(safe-area-inset-top, 0px) + 76px);
 		max-width: 560px;

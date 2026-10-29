@@ -42,7 +42,7 @@ uniform int uFront;
 uniform sampler2D uTone;
 uniform ivec2 uCell0;
 uniform ivec2 uCellN;
-uniform float uZer;    // decay 0..1: the hands dissolve into dust from the edge inward
+uniform float uDecay;    // decay 0..1: the hands dissolve into dust from the edge inward
 out vec4 o;
 
 float cl(float x){ return clamp(x, 0., 1.); }
@@ -176,7 +176,7 @@ float pixA(vec2 S){
 }
 
 // Decay: edge proximity 0..1 from the silhouette (1 at the edge, 0 from about 30 px depth)
-float randNaehe(vec2 C){
+float edgeProximity(vec2 C){
   float em = 0.;
   for (int i = 0; i < 8; i++) {
     float an = float(i) * .785398;
@@ -193,9 +193,9 @@ float vn(vec2 p){
   return mix(mix(hsh(c), hsh(c + ivec2(1, 0)), f.x), mix(hsh(c + ivec2(0, 1)), hsh(c + ivec2(1, 1)), f.x), f.y);
 }
 // Release degree 0..1 of a cell: edges first, plus noise so the front frays
-float loes(vec2 C, ivec2 cell){
-  float thr = (1. - randNaehe(C)) * .5 + (vn(C / 36.) * .55 + hsh(cell) * .45) * .4;
-  return clamp((uZer * 1.3 - thr) / .4, 0., 1.);
+float dissolve(vec2 C, ivec2 cell){
+  float thr = (1. - edgeProximity(C)) * .5 + (vn(C / 36.) * .55 + hsh(cell) * .45) * .4;
+  return clamp((uDecay * 1.3 - thr) / .4, 0., 1.);
 }
 
 #ifdef PASS1
@@ -211,7 +211,7 @@ void main(){
   else { if (h.y == 2.) tone = h.x * own; tone = max(tone, pt.x); }
   tone = clamp(tone * quiet(C), 0., 1.);
   float lg = 0.;
-  if (uZer > 0. && tone > 0.) lg = loes(C, cell);
+  if (uDecay > 0. && tone > 0.) lg = dissolve(C, cell);
   o = vec4(tone, lg, 0., 1.);
 }
 #else
@@ -252,7 +252,7 @@ void main(){
   float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 24.) : 0.;
   // Dust: released cells fly diagonally to the top right (source searched per target cell along three wind directions)
   float dust = 0.;
-  if (uZer > 0.) {
+  if (uDecay > 0.) {
     for (int k = 1; k <= 13; k++) {
       float d = .4 * pow(1.62, float(k));
       for (int a = 0; a < 3; a++) {
@@ -269,7 +269,7 @@ void main(){
     }
     dust *= 1. - gk; // the app stays clear over the glass
   }
-  bool istStaub = dust > tone;
+  bool isDust = dust > tone;
   tone = max(tone, dust);
   float ink = mix(${INK}, ${INK_DARK}, gk);
   bool pt = uFront == 1 && uPS.y > 0.;
@@ -284,11 +284,11 @@ void main(){
     float z = min(${STEP.toFixed(2)} * (.5 + .5 * min(1., tone)), ${STEP.toFixed(2)} * .92);
     vec2 dd = abs(S - C);
     c = clamp((z * .5 - max(dd.x, dd.y)) / px + .5, 0., 1.);
-    if (tone > .8 && !istStaub) {
+    if (tone > .8 && !isDust) {
       float hh = ${STEP.toFixed(2)} * .436 * (1. - clamp((tone - .8) / .2, 0., 1.));
       c = 1. - clamp((hh - max(dd.x, dd.y)) / px + .5, 0., 1.) * step(.001, hh);
     }
-    if (!istStaub) {
+    if (!isDust) {
       float a = pixA(S);
       float w = max(fwidth(a), .02);
       c *= clamp((a - .5) / w + .5, 0., 1.);
@@ -300,12 +300,12 @@ void main(){
     float a2 = floor(atan(dr.y, dr.x) / step_ + .5) * step_;
     vec2 pp = uLight.zw + uRing.x * vec2(cos(a2), sin(a2));
     vec2 d2 = abs(S - pp);
-    c = max(c, clamp((.7 - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S) * (1. - ss(uZer * 5.)));
+    c = max(c, clamp((.7 - max(d2.x, d2.y)) / px + .5, 0., 1.) * uRing.y * quiet(S) * (1. - ss(uDecay * 5.)));
   }
   float base = 0.;
   float sh = 0.;
   if (pt && gk > 0.) {
-    float zf = 1. - ss(uZer * 6.); // base area and shading of the pointing hand dissolve first, the dots remain
+    float zf = 1. - ss(uDecay * 6.); // base area and shading of the pointing hand dissolve first, the dots remain
     base = pointSil(S) * gk * zf;
     // soft shading of the pointing hand on the glass: the closer the finger (press), the tighter and darker
     vec2 off = vec2(7., 11.) * (1. - .55 * uRing.w);

@@ -79,14 +79,14 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 	let prevT = 0;
 	let blank = true;
 	let appOffValue = '';
-	// --app-aus only on the phone screen (still image and iframe), not on #final: an inherited variable on the
+	// --app-out only on the phone screen (still image and iframe), not on #final: an inherited variable on the
 	// root would recompute the style of the whole scene in every frame. Write only on change.
 	const setAppOff = (v: string) => {
 		if (v === appOffValue) return;
 		appOffValue = v;
 		document
 			.querySelector('iframe[title="ManaWG-App"]')
-			?.parentElement?.style.setProperty('--app-aus', v);
+			?.parentElement?.style.setProperty('--app-out', v);
 	};
 
 	const idleFrame = (T: number) => {

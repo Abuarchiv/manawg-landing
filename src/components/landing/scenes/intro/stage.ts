@@ -314,11 +314,11 @@ export function createStage({
 		if (loop.mode === 'hoch' && endTitle && endA > 0) {
 			titleOff = 1 - cl((titleTop - headerBottom) / 16);
 		}
-		setVar('--ende-titel-aus', titleOff.toFixed(3), [endTitle]);
+		setVar('--end-title-out', titleOff.toFixed(3), [endTitle]);
 		// Portrait: the header stays but its button goes while the button of the end layer is in view (no duplicate)
 		const headerCtaOff =
 			loop.mode === 'hoch' ? endA * (rb.bottom > headerBottom ? 1 : 0) * (1 - titleOff) : 0;
-		setVar('--kopf-cta-aus', headerCtaOff.toFixed(3), [header]);
+		setVar('--header-cta-out', headerCtaOff.toFixed(3), [header]);
 		if (headerCta && headerCta.inert !== headerCtaOff >= 0.6) headerCta.inert = headerCtaOff >= 0.6;
 		if (header && header.inert !== headerOff >= 0.6) header.inert = headerOff >= 0.6;
 		const phase: Phase = rb.bottom <= 0 ? 'nach' : P >= 0.9 ? 'ende' : 'intro';

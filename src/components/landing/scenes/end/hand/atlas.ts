@@ -10,7 +10,7 @@ const A: { ready: boolean; data: Atlases | null; p: Promise<void> | null; err: b
 	err: false,
 };
 
-async function ladeAtlas<M extends AtlasMeta>(name: string): Promise<Atlas<M>> {
+async function loadAtlas<M extends AtlasMeta>(name: string): Promise<Atlas<M>> {
 	const [meta, blob] = await Promise.all([
 		fetch(`/hand/${name}.json?v=${HAND_V}`).then((r): Promise<M> => r.json()),
 		fetch(`/hand/${name}.webp?v=${HAND_V}`).then((r) => r.blob()),
@@ -25,7 +25,7 @@ async function ladeAtlas<M extends AtlasMeta>(name: string): Promise<Atlas<M>> {
 /** Loads the hand passes (once). stage.js calls this from P > 0.75. */
 export function load(): Promise<void> {
 	if (!A.p)
-		A.p = Promise.all([ladeAtlas<HoldMeta>('hold'), ladeAtlas<AtlasMeta>('point')])
+		A.p = Promise.all([loadAtlas<HoldMeta>('hold'), loadAtlas<AtlasMeta>('point')])
 			.then(([hold, point]) => {
 				A.data = { hold, point };
 				A.ready = true;

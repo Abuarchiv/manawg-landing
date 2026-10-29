@@ -119,7 +119,7 @@ export function Loader() {
 				aria-hidden="true"
 				suppressHydrationWarning
 				style={css(
-					`position:fixed;inset:0;z-index:100;background:#0A0A0A;color:#FAFAFA;display:flex;flex-direction:column;justify-content:flex-end;gap:var(--sp-16);padding:var(--rand);transition:opacity ${FADE_MS}ms ease`,
+					`position:fixed;inset:0;z-index:100;background:#0A0A0A;color:#FAFAFA;display:flex;flex-direction:column;justify-content:flex-end;gap:var(--sp-16);padding:var(--margin);transition:opacity ${FADE_MS}ms ease`,
 				)}
 			>
 				<span

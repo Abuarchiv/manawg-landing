@@ -138,7 +138,7 @@ export function registerDigit(
 	{ text, cs: cs0 = 7, gl: gl0 = 8 }: DigitOptions,
 ): () => void {
 	return register<DigitState>({
-		name: `ziffer ${text}`,
+		name: `digit ${text}`,
 		el: cv,
 		host: cv.parentElement ?? undefined,
 		box: (W, H) => ({ bw: Math.max(1, W), bh: Math.max(1, H), max: 1 }),

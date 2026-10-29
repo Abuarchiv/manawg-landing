@@ -20,7 +20,7 @@ export function Finale() {
 			),
 		[],
 	);
-	// Footer height as --fuss, so the title sits below the header in the final view. If the footer together with the
+	// Footer height as --footer-h, so the title sits below the header in the final view. If the footer together with the
 	// title block does not fit in the viewport (footer with short text is taller than a screen), the final-view rule
 	// does not apply: then the title sits in the middle of the finale and the footer follows below.
 	useEffect(() => {
@@ -34,7 +34,7 @@ export function Finale() {
 			const needed =
 				block.offsetHeight + Number.parseFloat(cs.paddingTop) + Number.parseFloat(cs.paddingBottom);
 			const fits = window.innerHeight - foot.offsetHeight >= needed;
-			el.style.setProperty('--fuss', `${fits ? foot.offsetHeight : 0}px`);
+			el.style.setProperty('--footer-h', `${fits ? foot.offsetHeight : 0}px`);
 		};
 		set();
 		if (typeof ResizeObserver === 'undefined') return;
