@@ -22,7 +22,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			'Start a WG (shared flat) in Germany step by step: the right order, budget, tenancy type, deposit, flat agreement and Anmeldung. With a tick-off checklist.',
 		h1: 'Start a flat share in Germany: steps and checklist',
 		intro:
-			'Starting a WG (Wohngemeinschaft, a shared flat) in Germany is mostly about getting the order and the responsibilities right: who moves in, what the flat may cost, which type of tenancy applies and who pays which share when. This checklist runs from the first conversation to the first flat meeting after move-in, with a worked deposit example and a list to tick off at the end. It is general information and not legal advice, particularly on tenancy agreements.',
+			'Starting a WG (Wohngemeinschaft, a shared flat) in Germany is mostly about getting the order and the responsibilities right: who moves in, what the flat may cost, which type of tenancy applies and who pays which share when. It is general information and not legal advice, particularly on tenancy agreements.',
 		sections: [
 			[
 				'The order in which a flat share comes together',
@@ -41,6 +41,10 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 				'If you search as a group, present yourselves to landlords as one. Prepare a short flat-share profile: who you are, how long you want to stay and which type of tenancy you have in mind. Landlords often ask each person for a Schufa credit report, proof of income and a Mietschuldenfreiheitsbescheinigung (confirmation that you have no rent arrears), so ask in advance what they need. At the viewing, ask how many bathrooms there are, where the electricity and gas meters are, and whether the landlord allows a joint contract, individual contracts or subletting (Untermiete).',
 			],
 			[
+				'Viewing: is the flat suitable for a flat share?',
+				'A flat can be big enough and still not suit a flat share. At the viewing (Besichtigung), check whether every room has its own door or whether you have to walk through one room to reach another. See whether the rooms are of similar size; if they differ clearly, it is worth [splitting the rent by room size](/rent-split-calculator). Ask yourselves whether the kitchen and bathroom will cope with everyone in the morning and whether there is a separate toilet. If there is only one balcony, cellar room or parking space, settle beforehand who uses it. Also get the landlord’s permission to use the flat as a flat share in writing.',
+			],
+			[
 				'3. Choose the right type of tenancy',
 				'There are three common set-ups in a flat share. With a joint main tenancy (Hauptmietvertrag), everyone signs and is jointly liable for the whole rent. One person can only leave with the consent of the landlord and the other tenants. With a subletting arrangement, one person is the Hauptmieter (main tenant), rents the flat and sublets rooms. They carry the risk and need the landlord’s permission, but have more say over who moves in. With individual tenancy agreements, each person has their own contract with the landlord for their room. Which one fits depends on how settled the flat share is. The differences are set out in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). If in doubt, a Mieterverein (tenants’ association) can advise you.',
 			],
@@ -53,6 +57,10 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 				'Alongside the tenancy agreement, a short agreement between flatmates is worth having. It covers what the contract with the landlord leaves open: rent shares per room, utilities, electricity and internet, the cleaning rota, a shared kitty, guests, quiet hours and what happens when someone moves out, such as how early they tell the others and who helps find a replacement. The agreement is an understanding between flatmates and does not change the tenancy agreement. A short model: “We, [names], live at [address] from [date]. Rent: [split]. Fixed costs: [list]. Cleaning rota: [rhythm]. Guests: [rule]. Anyone moving out tells the others [number] weeks ahead and helps find a successor. After three months we review this agreement.” Suggestions for individual rules are in [house rules](/house-rules). In ManaWG, you can record the agreement as a noticeboard post of the type Decision, and the others react with “Works for me”.',
 			],
 			[
+				'An exit plan before you sign',
+				'Agree on moving out while everyone still gets on well. Besides the notice period, note whether everyone has a say in choosing the successor. Settle the deposit too: it stays with the landlord until the tenancy ends. Often the successor pays their share of the deposit directly to the person leaving, and you note that in the agreement. Also decide what happens if someone is away for a long time, for example after losing a job or on a semester abroad: who advances the rent, and how is it made up? How to treat [time away](/holidays-and-time-away) fairly is covered in its own guide, and the [moving-out checklist](/moving-out-checklist) shows what comes up when someone leaves.',
+			],
+			[
 				'6. Register and set up contracts',
 				'After moving in, everyone has to register their address with the local citizens’ office (Bürgeramt) within two weeks. This is the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in) issued by the landlord, or by the main tenant if you sublet. The [guide to the Anmeldung](/anmeldung-shared-flat) explains how. Electricity and internet usually run in one person’s name, and you split the costs. The [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) is due once per flat, not per person: one person registers, and the others deregister, quoting that person’s contribution number. Everyone should have their own personal liability insurance (Haftpflichtversicherung) and check whether their contents insurance (Hausratversicherung) covers a flat share.',
 			],
@@ -62,11 +70,11 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'8. Agree on the initial equipment',
-				'Agree what is bought together (washing machine, vacuum cleaner, kitchen appliances, cleaning supplies) and who owns it when someone moves out. For expensive items, a simple note of who paid how much helps. Many flat shares buy the basics together and everyone brings the rest themselves.',
+				'Agree what is bought together (washing machine, vacuum cleaner, kitchen appliances, cleaning supplies) and who owns it when someone moves out. For expensive items, a simple note of who paid how much helps.',
 			],
 			[
 				'What starting up costs',
-				'There are one-off and running costs at the start. One-off costs are mainly the deposit, initial equipment and the move. Running costs are rent, electricity, internet and insurance. Settle before signing who can pay how much at move-in, because the deposit and the first rent are due straight away. How to share the running costs afterwards is covered in [splitting flat costs](/split-flat-costs).',
+				'Settle before signing who can pay how much at move-in, because the deposit and the first rent are due straight away. How to share the running costs afterwards is covered in [splitting flat costs](/split-flat-costs).',
 			],
 			[
 				'9. Organise the household and the cleaning rota',
@@ -133,6 +141,14 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			[
 				'Is ManaWG suitable for new flat shares?',
 				'Yes. One person creates the flat and shares the invite link, and the others are in straight away. The app is free, available in English and German, and needs no installation from an app store.',
+			],
+			[
+				'Which insurance do you need in a new flat share?',
+				'Tenants are not generally required by law to have liability or contents insurance, but a tenancy agreement can demand it, so check the contract. A private liability policy (Haftpflichtversicherung) for each person makes sense: it steps in if you accidentally damage flatmates’ or third parties’ belongings. Whether damage to the rented flat itself is also covered is set out in the policy terms. Contents insurance (Hausratversicherung) covers your own belongings in case of burglary, fire or tap water damage. Ask the insurer whether a flat share is covered and whether each person needs their own policy. Also check whether you are already covered through existing policies.',
+			],
+			[
+				'Practical flat share or friends’ flat share: which suits us?',
+				'In a Zweck-WG (practical flat share) you mainly share the flat and the costs, and each person largely lives their own life. A friends’ flat share adds shared evenings, shared cooking and often a household kitty. Decide this before the search, because it determines how much you share: fridge shelves or a shared stock, separate shopping or a [household kitty](/household-kitty). The [house rules](/house-rules) also turn out differently, for example on guests and quiet hours. There are many mixed forms between the two. What matters is that everyone has the same picture.',
 			],
 		],
 		tables: [
@@ -275,7 +291,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 		published: '2026-10-29',
 		title: 'Flat-share tenancy agreement in Germany: 3 models | ManaWG',
 		description:
-			'Which tenancy fits a WG (shared flat) in Germany? Joint tenancy, subletting or individual contracts compared, plus a sublease checklist and deposit rules.',
+			'Joint tenancy, subletting or individual contracts for a WG (shared flat) compared: liability, notice, change of tenant, deposit and sample checklists.',
 		h1: 'The flat-share tenancy agreement in Germany: three models compared',
 		intro:
 			'Living in a WG (shared flat) in Germany does not automatically give you the same rights as your flatmates. What matters is how the tenancy is set up: whether everyone signs together, one person sublets, or each person has their own contract. That decides who is liable for the rent, who can give notice and how a change of flatmate works. This page gives an overview and is not legal advice. For a specific case, a Mieterverein (tenants’ association) can help.',
@@ -283,6 +299,10 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			[
 				'Model 1: joint main tenancy (Mietgemeinschaft)',
 				'All flatmates sign one contract with the landlord, which Germans call a Mietgemeinschaft (joint tenancy). Everyone has the same rights, but everyone is jointly liable for the whole rent: if one person does not pay, the landlord can demand the full amount from any of the others. As a rule, only everyone together can give notice, and nobody can [ask a flatmate to leave](/asking-a-flatmate-to-leave). If one person wants to move out, the change needs the consent of the landlord and the other tenants. Some landlords add a clause that expressly allows flatmates to change, so check whether yours has one before you sign.',
+			],
+			[
+				'Leaving a joint tenancy: how to get out of the contract',
+				'When one person moves out, their obligation to the landlord does not end by itself. Everyone named in the tenancy agreement stays liable as a joint debtor (Gesamtschuldner, § 421 BGB) until the tenancy ends or the landlord agrees and expressly releases the person from the contract. An arrangement only between flatmates does not bind the landlord. Here is how to go about it: ask the landlord in writing whether the person may leave and who takes their place. Introduce the successor, since the landlord will usually check that the rent is secure. Then record the change in a written agreement that everyone involved signs. Settle the [deposit](/flat-share-deposit) among yourselves, as it stays with the landlord, and square any open amounts within the flat share before the person leaves. Moving out, changing your registered address or handing back the keys changes nothing about the liability. More on the process: [moving-out checklist](/moving-out-checklist).',
 			],
 			[
 				'Model 2: main tenant with subtenants',
@@ -309,11 +329,48 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 				'A ready-made contract template rarely fits your flat share exactly. The table shows which points a sublease for a room in a flat share should cover, each with an example entry to adapt. Whether the room is furnished and whether the main tenant lives there decides the notice period. Which periods apply when you move out later is explained in [giving notice on a room](/give-notice-on-a-room).',
 			],
 			[
+				'Notice periods in a sublease',
+				'The normal case is the statutory period of three months for notice given by the subtenant: the written notice must reach the main tenant by the third working day of a month at the latest and ends the contract at the end of the month after next (§ 573c para. 1 BGB). If it arrives by the third working day in March, the sublease ends on 31 May. An exception applies to a room that is part of the flat the main tenant lives in and that is mostly furnished by them, unless the person lives there permanently with family or in a lasting shared household (§ 573c para. 3 with § 549 para. 2 no. 2 BGB). In that case notice by the 15th of a month ends the contract at the end of that same month. Write into the contract which case applies to you, and do not just say “statutory” for the period. Other cases: [giving notice on a room](/give-notice-on-a-room).',
+			],
+			[
+				'Sample checklist for a joint main tenancy',
+				'If you all sign with the landlord, the landlord usually supplies the contract. Before signing, go through the points in the table and ask about any gaps. Unless agreed otherwise, joint debtors bear equal shares among themselves (§ 426 BGB). If you want to split by room size, record that in a separate flat-share agreement, as described in [splitting flat costs](/split-flat-costs).',
+			],
+			[
 				'Which model fits?',
 				'For a settled flat share of friends who want to live together for a long time, a joint main tenancy with a clause for changes of tenant fits well. If flatmates change often, as in student cities, subletting is more flexible but puts the burden on the main tenant. Individual contracts are the most convenient, but give the flat share the least influence over who moves in. How you then split rent, utilities and shopping is covered in [splitting flat costs](/split-flat-costs), and everything else you need to get started is in the [checklist for starting a flat share](/start-a-flat-share).',
 			],
 		],
 		tables: [
+			{
+				after: 'Sample checklist for a joint main tenancy',
+				title: 'Joint main tenancy: points with examples',
+				header: ['Point', 'Example entry'],
+				rows: [
+					['Tenants', 'all flatmates with full names, each person as a tenant'],
+					['Liability', 'all as joint debtors, each person for the whole rent'],
+					[
+						'Change of tenant',
+						'clause allowing individual tenants to leave with the landlord’s consent and successors to join (Nachfolgeklausel)',
+					],
+					['Notice', 'only by everyone together, in writing with all signatures'],
+					[
+						'Rent',
+						'rent excluding utilities, advance payment for utilities, due date and a joint account for payment',
+					],
+					[
+						'Deposit',
+						'at most three months’ rent excluding utilities, payable in three instalments',
+					],
+					['Rooms', 'who has which room and which rooms are shared'],
+					['Cosmetic repairs (Schönheitsreparaturen)', 'whether and how they are passed on to you'],
+					[
+						'Separate flat-share agreement',
+						'each room’s share of the rent, cleaning rota, guests, rules for moving out',
+					],
+				],
+				note: 'Example entries to adapt, not a legally checked contract template.',
+			},
 			{
 				after: 'Sublease checklist',
 				title: 'Sublease for a flat-share room: points with examples',
@@ -326,7 +383,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 					['Due date', 'by the third working day of the month at the latest'],
 					['Deposit', 'amount, at most three months’ rent excluding utilities'],
 					['Start and term', 'from 1 March, open-ended or with an end date'],
-					['Notice', 'statutory periods under § 573c BGB'],
+					['Notice', 'state the period and the case, for example three months under § 573c BGB'],
 					['Landlord’s permission', 'copy of the permission to sublet as an annex'],
 					['House rules', 'house rules and flat-share rules as an annex'],
 					['Signatures', 'handwritten by both sides, with place and date'],
@@ -359,6 +416,10 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 				'What is a Nebenmieter?',
 				'It usually means a person named in the main tenancy alongside others, in other words a co-tenant. Some people also use the word for subtenants. What matters is who signed the contract with whom.',
 			],
+			[
+				'Does a flat-share tenancy agreement have to be in writing?',
+				'Not necessarily, as a tenancy can also be agreed verbally. But if it is meant to run for longer than a year, it counts as open-ended without the written form, and notice is possible at the earliest at the end of one year after the home was handed over (§ 550 BGB). Notice itself must also be in writing (§ 568 BGB). With a joint main tenancy it is therefore best for all tenants to sign, and with a sublease the main tenant and the subtenant. Everyone keeps a signed copy, together with annexes such as the landlord’s permission, house rules and the handover record.',
+			],
 		],
 		sources: [
 			[
@@ -376,6 +437,27 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			[
 				'§ 573c BGB, notice periods (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__573c.html',
+			],
+			['§ 421 BGB, joint debtors (in German)', 'https://www.gesetze-im-internet.de/bgb/__421.html'],
+			[
+				'§ 415 BGB, contract between debtor and assuming party (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__415.html',
+			],
+			[
+				'§ 426 BGB, contribution between joint debtors (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__426.html',
+			],
+			[
+				'§ 549 BGB, provisions applicable to residential tenancies (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__549.html',
+			],
+			[
+				'§ 550 BGB, form of the tenancy agreement (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__550.html',
+			],
+			[
+				'§ 568 BGB, form and content of notice (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__568.html',
 			],
 			BGB_EN,
 		],

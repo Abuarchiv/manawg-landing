@@ -37,7 +37,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			'Make a cleaning rota or chore chart in five steps: tasks by room and rhythm, a weekly plan as a table, a points system and a free generator for flatmates.',
 		h1: 'Make a cleaning rota, step by step, for a home or flat share',
 		intro:
-			'A cleaning rota rarely fails because people are lazy. It fails because the tasks are vague and nobody keeps the plan up to date. In five steps you get to a rota for a household or flat share: collect tasks by room, estimate the effort, spread them over the week, share them fairly and make the plan visible. All figures and days are examples that you adapt to your own flat.',
+			'A cleaning rota rarely fails because people are lazy. It fails because the tasks are vague and nobody keeps the plan up to date. In five steps you get to a rota for a household or flat share: collect tasks by room, estimate the effort, spread them over the week, share them fairly and make the plan visible.',
 		sections: [
 			[
 				'Five steps to a cleaning rota',
@@ -57,19 +57,27 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Step 2: estimate the effort',
-				'Fair does not mean everyone has the same number of tasks. It means everyone cleans for roughly the same amount of time. Estimate the times for your flat once, together, and there will be fewer arguments about uneven loads later. Whoever takes the bins can also get the hallway or the fridge. The table gives rough guide values as a starting point.',
+				'Fair does not mean everyone has the same number of tasks. It means everyone cleans for roughly the same amount of time. Estimate the times for your flat once, together, and there will be fewer arguments about uneven loads later. Whoever takes the bins can also get the hallway or the fridge.',
+			],
+			[
+				'How much time does the rota cost per person?',
+				'Before you start, work out once what the rota costs. The four weekly tasks in the guide values above (bathroom, kitchen, floors, and bins and deposit bottles) add up to about 90 to 125 minutes a week. Shared between four people that is roughly 22 to 31 minutes each, with three people 30 to 42 and as a pair 45 to 63 minutes. Daily jobs and rare tasks come on top. If the sum for your flat looks clearly higher, cut tasks or stretch the rhythm rather than trying to save the rota with willpower.',
 			],
 			[
 				'Step 3: spread them over the week',
-				'Spread the tasks across the days so that not everything lands on the weekend. Keep one day a week free: it is a buffer for anything that slipped, and nobody has to clean on that day. The table shows an example weekly plan.',
+				'Spread the tasks across the days so that not everything lands on the weekend. Keep one day a week free: it is a buffer for anything that slipped, and nobody has to clean on that day.',
 			],
 			[
 				'Daily, weekly, monthly: what is due when',
-				'A cleaning rota works on three levels: daily, weekly and less often. Everyone deals with daily jobs as they go, so only shared appliances such as the dishwasher belong in the plan. Weekly jobs make up the weekly plan proper and rotate between people. Anything less frequent is shared out separately, otherwise the week gets too full. The table sorts typical tasks.',
+				'A cleaning rota works on three levels: daily, weekly and less often. Everyone deals with daily jobs as they go, so only shared appliances such as the dishwasher belong in the plan. Weekly jobs make up the weekly plan proper and rotate between people. Anything less frequent is shared out separately, otherwise the week gets too full.',
+			],
+			[
+				'Rarely, but not forgotten: quarterly, half-yearly, yearly',
+				'Tasks that only come up now and then still belong in the plan, otherwise they get forgotten or stick to one person. Give them their own rhythms: quarterly, half-yearly and yearly. Do not put these in the weekly plan. Hand them out in turn instead, say one a month. That keeps the weekly plan slim, and every rare task still has a date and a name. Each person normally washes their own towels and bedding, but agree a shared rhythm for that too. The table shows examples. The intervals are rough guides and depend on your flat and habits.',
 			],
 			[
 				'Step 4: share them out, fixed or rotating',
-				'There are three ways to hand tasks out. The table compares them. A ready-made four-week rotation for four people is in the [cleaning rota template](/cleaning-rota-template).',
+				'There are three ways to hand tasks out. A ready-made four-week rotation for four people is in the [cleaning rota template](/cleaning-rota-template).',
 			],
 			[
 				'Points system: counting effort fairly',
@@ -77,7 +85,11 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Step 5: make the plan visible and keep it up to date',
-				'Everyone needs to be able to see the plan, ideally where they already look every day: a sheet on the kitchen door or fridge, a table in a shared file or an app. Keep it current. If someone moves out or tasks stop fitting, talk it over at your flat meeting and change the plan. Nobody wants to be the one who polices it, so reminders help more than checking up.',
+				'Everyone needs to be able to see the plan, ideally where they already look every day: a sheet on the kitchen door or fridge, a table in a shared file or an app. Keep it current. If someone moves out or tasks stop fitting, talk it over at your flat meeting and change the plan.',
+			],
+			[
+				'The first four weeks: a trial period',
+				'Treat the first four weeks as a trial. Then sit down briefly and go through three questions: which task was put off most often? Are the estimated times right? Does everyone mean the same when they say a room is done? Change only what has really turned out to be a problem, and write the new version where everyone can see it. After that, a check every few months or when someone moves in or out is enough.',
 			],
 			[
 				'Things that come up in a flat share',
@@ -177,6 +189,29 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 				],
 			},
 			{
+				after: 'Rarely, but not forgotten: quarterly, half-yearly, yearly',
+				title: 'Example: rare tasks',
+				header: ['Rhythm', 'Examples', 'How to share them'],
+				rows: [
+					[
+						'quarterly',
+						'Wipe out the kitchen cupboards, clean the bins thoroughly',
+						'in turn, one person per quarter',
+					],
+					[
+						'half-yearly',
+						'Empty and wipe out the fridge, wash the curtains',
+						'in turn, two fixed dates a year',
+					],
+					[
+						'yearly',
+						'Clean the cooker hood filter, defrost the freezer compartment',
+						'one person per task, in the plan with a date',
+					],
+				],
+				note: 'Rough guide values, not measurements.',
+			},
+			{
 				after: 'Points system: counting effort fairly',
 				title: 'Example: points by effort (1 point = 5 minutes)',
 				header: ['Task', 'Guide value', 'Points'],
@@ -217,6 +252,10 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			[
 				'Is there a cleaning rota app?',
 				'Yes, ManaWG includes a cleaning rota with rhythms, sharing by workload, time away and reminders. The app is free and runs in the browser.',
+			],
+			[
+				'Can I build the cleaning rota myself in Excel or Google Sheets?',
+				'Yes. Create a table with the columns Week, Task, What it includes, Responsible and Done, enter your tasks from step 1 and let the names move down one row each week. In Excel, Numbers or Google Sheets that takes only a few lines. If you do not want to start from zero, download the plan from the generator as a CSV and open it there, the instructions are on the [cleaning rota template](/cleaning-rota-template) page. You then move the names along each week yourselves.',
 			],
 		],
 	},
@@ -442,20 +481,36 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 				'Add underneath the sheet: These rules apply from ____, the trial period runs until ____. Signatures: ____',
 			],
 			[
+				'How to agree on house rules: an outline for the first evening',
+				'1. Collect topics: everyone writes down for ten minutes what matters in daily life or has already annoyed them.\n2. Sort: keep only what affects more than one person and match it to the areas of the template.\n3. Fix the numbers: write times, nights, amounts and deadlines concretely, not “late” or “longer”.\n4. Vote: a rule applies once everyone agrees. Anyone who does not agree gives the reason, then you look for a compromise.\n5. Put it up and test it: print the sheet or record it as a decision on the noticeboard, enter the start and end of the trial period and set the date of the first flat meeting. You settle the details there.',
+			],
+			[
 				'Quiet hours and noise',
 				'Set fixed times when it is quiet, for example from 10 pm on weekdays. That includes announcing parties in advance. A rule of thumb: whoever is having people round says so at least a day ahead and takes account of flatmates with an exam or an early shift.',
 			],
 			[
+				'Working from home, exams and shift work',
+				'Basic rule: fixed quiet hours are not enough if someone works during the day or sleeps at other times. So add exceptions that you agree beforehand.\nWorking from home: calls and video calls in your own room with the door closed, music and TV quiet or on headphones during core working hours.\nExam period: a quiet time, for example from 7 to 10 pm, that the person announces beforehand and that is limited to a few weeks.\nShift work or early starts: whoever works nights or gets up very early says what their rhythm is. Doors are then closed quietly, and loud appliances such as the hoover run at other times.\nEnd date: give every exception an end date, otherwise it becomes a permanent rule.',
+			],
+			[
 				'Guests and overnight visitors',
-				'Settle how often and how long guests can stay and whether people ask first. Anyone with a regular visitor contributes to the utility costs. These are agreements, not laws. Legal questions about the tenancy agreement are settled with the landlord or a tenants’ association (Mieterverein).',
+				'Settle how often and how long guests can stay and whether people ask first. Anyone with a regular visitor contributes to the utility costs. Legal questions about the tenancy agreement are settled with the landlord or a tenants’ association (Mieterverein).',
 			],
 			[
 				'Housework and cleanliness',
 				'Record who does which task and when, and what “clean” means. A cleaning rota with fixed tasks and reminders replaces discussions. How to set one up is covered in [making a cleaning rota](/make-a-cleaning-rota), and a [cleaning rota template to print](/cleaning-rota-template) is a good start. Dishes do not belong in the sink overnight and shared rooms stay usable: mini-rules like these prevent most conflicts.',
 			],
 			[
+				'What does “clean enough” mean? A minimum standard',
+				'Basic idea: arguments about cleanliness often arise because each person means something different. So write down a minimum standard that applies to everyone every day.\nKitchen: worktop and hob wiped after cooking, dishes put away the same day.\nBathroom: shower and basin given a quick squeegee after use, hair removed from the plughole, toilet paper replaced.\nBins: the bin is emptied before it overflows.\nHallway: shoes go on the mat or the rack, not in the middle of the floor.\nThorough cleaning: that follows the [cleaning rota](/make-a-cleaning-rota) with fixed tasks, and the minimum standard adds to it for daily life. The examples are suggestions, so adapt them to your flat.',
+			],
+			[
 				'The shared kitty and shopping',
 				'Define what is paid for together (cleaning supplies, toilet paper, spices) and what is not. Decide how you settle up: how a shared kitty can be run is in the [household kitty](/household-kitty) guide, and how to divide the costs under [splitting flat costs fairly](/split-flat-costs). With a shared list for [organising flat shopping](/organise-flat-shopping), everyone knows what is missing and nobody buys the same thing twice.',
+			],
+			[
+				'Shared belongings and purchases',
+				'Settle early on what belongs to whom. A list at the flat meeting is enough: what did each person bring, what was bought together and who paid how much? Purchases above the agreed amount, €30 in the template, are asked about beforehand. You split the cost among those who use the item, as described in [splitting flat costs fairly](/split-flat-costs). Also settle who pays if a shared item breaks. One suggestion: everyone for normal wear and tear, the person who caused it for gross carelessness. When someone moves out, they take what they bought alone. For things bought together, you decide beforehand whether they stay and the person is paid out. Personal things are only borrowed after asking and are given back.',
 			],
 			[
 				'Bathroom, kitchen and shared rooms',
@@ -471,7 +526,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Rules for the fridge and dishwasher',
-				'Fridge: everyone has their own shelf, and there is another for shared food. Other people’s food is only eaten after asking.\nFridge: every two weeks you go through it together and bin anything out of date, for example as a recurring cleaning task.\nDishwasher: clean dishes are put away straight away, and used ones go in the machine instead of the sink overnight.\nDishwasher: everyone pays for tablets and rinse aid together, and whoever takes the last one puts it on the shopping list.',
+				'Fridge: every two weeks you go through it together and bin anything out of date, for example as a recurring cleaning task.\nDishwasher: clean dishes are put away straight away, and used ones go in the machine instead of the sink overnight.\nDishwasher: everyone pays for tablets and rinse aid together, and whoever takes the last one puts it on the shopping list.',
 			],
 			[
 				'Smoking, pets and instruments',
@@ -483,7 +538,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Trial period and review',
-				'Do not agree rules for ever. Set a trial period of four weeks and a fixed date to talk about what did not work. After that the monthly flat meeting is enough, as rule 10 of the template provides. Write underneath the template when it starts and when the trial period ends.',
+				'Do not agree rules for ever. Set a trial period of four weeks and a fixed date to talk about what did not work. After that the monthly flat meeting is enough, as rule 10 of the template provides.',
 			],
 			[
 				'How to keep the rules on record',
@@ -647,9 +702,9 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 		link: 'Flat interviews (WG-Casting)',
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'WG-Casting explained: 48 questions, templates | ManaWG',
+		title: 'WG-Casting explained: 53 questions, templates | ManaWG',
 		description:
-			'What is a WG-Casting and how does it work? 48 questions for the flat and for applicants, off-limits questions, reply templates and a scoring sheet.',
+			'What is a WG-Casting and how does it work? 53 questions for flats and applicants, tips for the visit, templates for messages and replies, scoring sheet.',
 		h1: 'WG-Casting: how it works and what to ask, for the flat and for applicants',
 		intro:
 			'At a WG-Casting, the flat interview for a free room in a German shared flat, twenty minutes decide whether you will live well together for the next few years. Both sides check each other: the flat checks the newcomer, and the applicant checks the flat. With the right questions you learn what really counts, not just who seems the nicest. In short: plan 20 to 30 minutes per appointment, meet applicants one at a time and decide afterwards, separately from the applicants.',
@@ -683,6 +738,10 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 				'How long can a guest stay before people ask first?\nDo you have a partner who would often be here?\nDo you like having parties at home?\nFrom when should it be quiet on weekdays?\nHow do you tell people when you plan guests or a party?\nWhat is loud for you, and what is still normal?',
 			],
 			[
+				'Questions about flat-share experience and conflicts',
+				'Have you lived in a WG before? What worked well there, and what was difficult?\nWhat matters most to you about living together today?\nWhat do you do when something about a flatmate bothers you?\nHow do you react when someone raises something with you?\nWhat would your former flatmates say about you?\nThese questions show how someone actually behaves, not just what they intend. Someone who talks about an earlier row calmly, without running the others down, makes a good impression.',
+			],
+			[
 				'Smoking, pets, instruments',
 				'Is smoking allowed in the flat, or only on the balcony?\nWhat pets do you have or plan to have, and who looks after them on holiday?\nDo you play an instrument, and when do you practise?\nDo smoke or pet smells in the shared rooms bother you?\nThese points cause the most trouble when they are not discussed beforehand. The tenancy agreement can set limits on pets, so settle that first.',
 			],
@@ -692,15 +751,27 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Preparing as an applicant',
-				'The ad: read it again and note what you like about the flat, then you have a concrete answer to “Why would you like to join us?”.\nAbout you: three sentences are enough: what you do, what your day looks like and how long you want to stay.\nYour own questions: prepare two or three, for example about the cleaning rota, the kitty and why the room is becoming available.\nBe on time: if you will be late, say so briefly.\nStay honest: anyone who pretends is noticed by the second month at the latest.\nWarning signs: if someone asks for money before a viewing and a contract, stop.',
+				'The ad: read it again and note what you like about the flat, then you have a concrete answer to “Why would you like to join us?”.\nAbout you: three sentences are enough: what you do, what your day looks like and how long you want to stay.\nYour own questions: prepare two or three, for example about the cleaning rota, the kitty and why the room is becoming available.\nBe on time: if you will be late, say so briefly.\nStay honest: anyone who pretends is noticed by the second month at the latest.',
+			],
+			[
+				'As an applicant on site: behaviour and clothes',
+				'Clothes: wear what you feel comfortable in, normal and tidy is enough. You are visiting a flat, not going to a job interview.\nManner: put your phone away and remember the names. Look at the flat without judging it, and do not praise anything you do not mean.\nConversation: answer in two or three sentences and ask a question yourself now and then, so it becomes a conversation.\nWeaknesses: admit where you are not perfect and say what you reliably do about it.\nEnding: ask by when the flat will get back to you, and say a brief thank you.',
+			],
+			[
+				'As an applicant: first message and follow-up',
+				'Your first message often decides whether you are invited to the WG-Casting. Keep it short, five to eight sentences, and refer to the ad: “Hello Mia and Jonas, I am Sara, 24, and I work part-time in an office. From December I am looking for a room in Leipzig, preferably for longer than a year. I like your ad because you eat together on Sundays and still leave each other in peace. During the week I am usually home from 6 pm. I would be glad to meet, I am free from Wednesday.” The day after the casting, one line is enough: “Thank you for the nice chat yesterday, I liked the flat and the conversation in the kitchen. I look forward to hearing from you.” If the flat has not been in touch by the date they gave, ask once, politely.',
 			],
 			[
 				'Questions that do not belong in a casting',
-				'Questions about origin, religion, health, pregnancy or wanting children, and sexual orientation are intrusive and say nothing about whether someone fits the daily life of the flat.\nIf someone volunteers such things, that is their right. But you do not ask about them and do not weigh them.\nAsk instead about what counts in daily life: quiet hours, eating habits, visitors and how long someone wants to stay.\nDeclining: the reply templates further down show how to do it kindly.',
+				'Questions about origin, religion, health, pregnancy or wanting children, and sexual orientation are intrusive and say nothing about whether someone fits the daily life of the flat.\nIf someone volunteers such things, that is their right. But you do not ask about them and do not weigh them.\nAsk instead about what counts in daily life: quiet hours, eating habits, visitors and how long someone wants to stay.',
+			],
+			[
+				'Asking sensitive questions better',
+				'Instead of “Do you have a boyfriend or girlfriend?”: “How often do you have visitors, including overnight?”\nInstead of “What do you earn?”: “Is the rent secure for you in the long run?”\nInstead of “Do you have any health conditions?”: “Are there allergies or dietary rules we should consider when cooking?”\nInstead of “Do you want children?”: “How long would you like to live here?”\nApplicants may say that a question is too personal. That is no reason to rate them lower.',
 			],
 			[
 				'Inviting and preparing as a flat',
-				'Do not invite too many people at once. How you collect and pre-sort applications is covered in [find a flatmate](/find-a-flatmate). Individual appointments with some buffer work better than a group casting where the loudest win. As many flatmates as possible should be there, because anyone who does not help decide feels overruled later. Show the flat honestly, including the small bathroom and the full kitchen. And agree beforehand what matters to you, so the decision does not hang on gut feeling alone.',
+				'Do not invite too many people at once. How you collect and pre-sort applications is covered in [find a flatmate](/find-a-flatmate). Individual appointments with some buffer work better than a group casting where the loudest win. As many flatmates as possible should be there, because anyone who does not help decide feels overruled later. And agree beforehand what matters to you, so the decision does not hang on gut feeling alone.',
 			],
 			[
 				'Video casting and scams',

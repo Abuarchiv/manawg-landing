@@ -76,14 +76,14 @@ export const GUIDES_DE: Record<string, Topic> = {
 	'putzplan-erstellen': {
 		link: 'Putzplan erstellen',
 		widget: { after: 'Putzplan-Generator: in einer Minute zum Plan', kind: 'rota-generator' },
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-11',
 		title: 'Putzplan selber erstellen: Wochenplan & Generator | ManaWG',
 		description:
 			'Putzplan selber erstellen in fünf Schritten: Aufgaben nach Raum und Rhythmus, Wochenplan als Tabelle, Punktesystem und kostenloser Generator für eure Namen.',
 		h1: 'Putzplan erstellen: Schritt für Schritt für Haushalt und WG',
 		intro:
-			'Ein Putzplan scheitert selten an der Faulheit, sondern an unklaren Aufgaben und an Plänen, die niemand pflegt. In fünf Schritten kommt ihr zu einem Plan für Haushalt oder WG: Aufgaben nach Räumen sammeln, Aufwand schätzen, auf die Woche verteilen, fair zuteilen und sichtbar machen. Alle Zahlen und Tage sind Beispiele, die ihr an eure Wohnung anpasst.',
+			'Ein Putzplan scheitert selten an der Faulheit, sondern an unklaren Aufgaben und an Plänen, die niemand pflegt. In fünf Schritten kommt ihr zu einem Plan für Haushalt oder WG: Aufgaben nach Räumen sammeln, Aufwand schätzen, auf die Woche verteilen, fair zuteilen und sichtbar machen.',
 		sections: [
 			[
 				'In fünf Schritten zum Putzplan',
@@ -103,19 +103,27 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Schritt 2: Aufwand schätzen',
-				'Fair heißt nicht, dass alle gleich viele Aufgaben haben, sondern ungefähr gleich viel Zeit putzen. Schätzt die Zeiten für eure Wohnung einmal gemeinsam, dann gibt es später weniger Streit über ungleiche Lasten. Wer den Müll übernimmt, kann deshalb zusätzlich den Flur oder den Kühlschrank bekommen. Die Tabelle nennt grobe Richtwerte als Ausgangspunkt.',
+				'Fair heißt nicht, dass alle gleich viele Aufgaben haben, sondern ungefähr gleich viel Zeit putzen. Schätzt die Zeiten für eure Wohnung einmal gemeinsam, dann gibt es später weniger Streit über ungleiche Lasten. Wer den Müll übernimmt, kann deshalb zusätzlich den Flur oder den Kühlschrank bekommen.',
+			],
+			[
+				'Wie viel Zeit kostet der Plan pro Person?',
+				'Rechnet vor dem Start einmal nach, was der Plan kostet. Die vier Wochenaufgaben aus den Richtwerten oben (Bad, Küche, Böden sowie Müll und Pfand) summieren sich auf etwa 90 bis 125 Minuten pro Woche. Verteilt auf vier Personen sind das rund 22 bis 31 Minuten, bei drei Personen 30 bis 42 und zu zweit 45 bis 63 Minuten. Täglich Anfallendes und seltene Aufgaben kommen dazu. Zeigt die Rechnung für eure Wohnung deutlich mehr, streicht Aufgaben oder verlängert den Rhythmus, statt den Plan mit Disziplin zu retten.',
 			],
 			[
 				'Schritt 3: Auf die Woche verteilen',
-				'Verteilt die Aufgaben so auf die Tage, dass nicht alles am Wochenende landet. Lasst einen Tag pro Woche frei: Er dient als Puffer für Verschobenes, und niemand muss an diesem Tag putzen. Die Tabelle zeigt einen Wochenplan als Beispiel, den ihr an eure Termine anpasst.',
+				'Verteilt die Aufgaben so auf die Tage, dass nicht alles am Wochenende landet. Lasst einen Tag pro Woche frei: Er dient als Puffer für Verschobenes, und niemand muss an diesem Tag putzen.',
 			],
 			[
 				'Täglich, wöchentlich, monatlich: was wann dran ist',
-				'Ein Putzplan arbeitet mit drei Ebenen: täglich, wöchentlich und seltener. Was täglich anfällt, erledigt jede Person nebenbei, in den Plan gehören davon nur gemeinsam genutzte Geräte wie die Spülmaschine. Was wöchentlich anfällt, bildet den eigentlichen Wochenplan und wechselt zwischen den Personen. Alles, was seltener ansteht, verteilt ihr getrennt davon, sonst wird die Woche zu voll. Die Tabelle ordnet typische Aufgaben ein. Passt die Rhythmen an eure Wohnung an.',
+				'Ein Putzplan arbeitet mit drei Ebenen: täglich, wöchentlich und seltener. Was täglich anfällt, erledigt jede Person nebenbei, in den Plan gehören davon nur gemeinsam genutzte Geräte wie die Spülmaschine. Was wöchentlich anfällt, bildet den eigentlichen Wochenplan und wechselt zwischen den Personen. Alles, was seltener ansteht, verteilt ihr getrennt davon, sonst wird die Woche zu voll.',
+			],
+			[
+				'Selten, aber nicht vergessen: Quartal, Halbjahr, Jahr',
+				'Was nur selten anfällt, gehört trotzdem in den Plan, sonst wird es vergessen oder bleibt an einer Person hängen. Legt dafür eigene Rhythmen fest: vierteljährlich, halbjährlich und jährlich. Verteilt diese Aufgaben nicht in die Woche, sondern reihum, etwa eine pro Monat. So bleibt der Wochenplan schlank, und trotzdem hat jede seltene Aufgabe einen Termin und einen Namen. Handtücher und Bettwäsche wäscht in der Regel jede Person für sich, haltet aber auch dafür einen gemeinsamen Rhythmus fest. Die Tabelle zeigt Beispiele, die Abstände sind Richtwerte und hängen von Wohnung und Gewohnheiten ab.',
 			],
 			[
 				'Schritt 4: Fest oder rotierend verteilen',
-				'Es gibt drei Wege, die Aufgaben auf Personen zu verteilen. Die Tabelle stellt sie gegenüber. Eine fertige Vier-Wochen-Rotation für vier Personen steht in der [Putzplan-Vorlage](/putzplan-vorlage).',
+				'Es gibt drei Wege, die Aufgaben auf Personen zu verteilen. Eine fertige Vier-Wochen-Rotation für vier Personen steht in der [Putzplan-Vorlage](/putzplan-vorlage).',
 			],
 			[
 				'Punktesystem: Aufwand fair zählen',
@@ -123,7 +131,11 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Schritt 5: Sichtbar machen und pflegen',
-				'Der Plan muss für alle sichtbar sein, am besten dort, wo ohnehin jeder täglich hinschaut: als Aushang an Küchentür oder Kühlschrank, als Tabelle in einer geteilten Datei oder in einer App. Pflegt ihn regelmäßig. Zieht jemand aus oder passen Aufgaben nicht mehr, besprecht das in der WG-Runde und ändert den Plan. Niemand will der Aufpasser sein, deshalb helfen Erinnerungen mehr als Kontrolle.',
+				'Der Plan muss für alle sichtbar sein, am besten dort, wo ohnehin jeder täglich hinschaut: als Aushang an Küchentür oder Kühlschrank, als Tabelle in einer geteilten Datei oder in einer App. Pflegt ihn regelmäßig. Zieht jemand aus oder passen Aufgaben nicht mehr, besprecht das in der WG-Runde und ändert den Plan.',
+			],
+			[
+				'Die ersten vier Wochen: Probezeit',
+				'Behandelt die ersten vier Wochen als Probezeit. Setzt euch danach kurz zusammen und geht drei Fragen durch: Welche Aufgabe wurde am häufigsten verschoben? Stimmen die geschätzten Zeiten? Gilt für alle dasselbe, wenn es heißt, ein Raum sei fertig? Ändert nur das, was sich wirklich als Problem gezeigt hat, und tragt den neuen Stand sichtbar ein. Danach reicht eine Prüfung alle paar Monate oder wenn jemand ein- oder auszieht.',
 			],
 			[
 				'Besonderheiten in der WG',
@@ -135,6 +147,29 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 		],
 		tables: [
+			{
+				after: 'Selten, aber nicht vergessen: Quartal, Halbjahr, Jahr',
+				title: 'Beispiel: seltene Aufgaben',
+				header: ['Rhythmus', 'Beispiele', 'So verteilt ihr es'],
+				rows: [
+					[
+						'vierteljährlich',
+						'Küchenschränke innen auswischen, Mülleimer gründlich reinigen',
+						'reihum, eine Person je Quartal',
+					],
+					[
+						'halbjährlich',
+						'Kühlschrank leeren und auswischen, Vorhänge waschen',
+						'reihum, zwei feste Termine im Jahr',
+					],
+					[
+						'jährlich',
+						'Dunstabzugsfilter reinigen, Gefrierfach abtauen',
+						'eine Person pro Aufgabe, im Plan mit Datum',
+					],
+				],
+				note: 'Grobe Richtwerte, keine Messung.',
+			},
 			{
 				after: 'Schritt 1: Aufgaben nach Räumen sammeln',
 				title: 'Beispiel: Aufgaben nach Räumen und Rhythmus',
@@ -268,6 +303,10 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'Gibt es eine Putzplan-App?',
 				'Ja, ManaWG enthält einen Putzplan mit Rhythmus, Verteilung nach Auslastung, Abwesenheiten und Erinnerungen. Die App ist kostenlos und läuft im Browser.',
 			],
+			[
+				'Kann ich den Putzplan in Excel oder Google Tabellen selbst bauen?',
+				'Ja. Legt eine Tabelle mit den Spalten Woche, Aufgabe, Was dazugehört, Zuständig und Erledigt an, tragt eure Aufgaben aus Schritt 1 ein und lasst die Namen jede Woche eine Zeile weiterrutschen. In Excel, Numbers oder Google Tabellen geht das mit wenigen Zeilen. Wollt ihr nicht von null anfangen, ladet den Plan aus dem Generator als CSV herunter und öffnet ihn dort, die Anleitung steht bei der [Putzplan-Vorlage](/putzplan-vorlage). Das Weiterrücken pflegt ihr danach selbst.',
+			],
 		],
 	},
 	'wg-gruenden-checkliste': {
@@ -279,7 +318,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			'WG gründen Schritt für Schritt: Reihenfolge, Budget, Vertragsform, Kaution, WG-Vereinbarung und Anmeldung. Mit Checkliste zum Abhaken und Rechenbeispiel.',
 		h1: 'WG gründen: Ablauf und Checkliste',
 		intro:
-			'Eine WG zu gründen heißt vor allem, Reihenfolge und Zuständigkeiten zu klären: Wer zieht ein, was darf die Wohnung kosten, welche Vertragsform gilt und wer zahlt wann welchen Anteil? Diese Checkliste führt durch die WG-Gründung vom ersten Gespräch bis zur ersten WG-Runde nach dem Einzug, mit Rechenbeispiel für die Kaution und einer Liste zum Abhaken am Ende. Sie ersetzt keine Rechtsberatung, besonders nicht bei Mietverträgen.',
+			'Eine WG zu gründen heißt vor allem, Reihenfolge und Zuständigkeiten zu klären: Wer zieht ein, was darf die Wohnung kosten, welche Vertragsform gilt und wer zahlt wann welchen Anteil? Sie ersetzt keine Rechtsberatung, besonders nicht bei Mietverträgen.',
 		sections: [
 			[
 				'In welcher Reihenfolge eine WG entsteht',
@@ -298,6 +337,10 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'Sucht ihr als Gruppe, tretet gegenüber Vermietern geschlossen auf. Bereitet einen kurzen WG-Steckbrief vor: wer ihr seid, wie lange ihr bleiben wollt und welche Vertragsform ihr euch vorstellt. Häufig verlangen Vermieter von jeder Person eine Schufa-Auskunft, einen Einkommensnachweis und eine Mietschuldenfreiheitsbescheinigung; fragt vorher, was sie brauchen. Bei der Besichtigung fragt ihr nach der Zahl der Bäder, nach den Zählern für Strom und Gas und danach, ob der Vermieter einen gemeinsamen Vertrag, Einzelverträge oder Untermiete zulässt.',
 			],
 			[
+				'Besichtigung: Ist die Wohnung WG-tauglich?',
+				'Eine Wohnung kann groß genug sein und trotzdem nicht zur WG passen. Prüft bei der Besichtigung, ob jedes Zimmer eine eigene Tür hat oder ob man durch ein Zimmer gehen muss, um in ein anderes zu kommen. Schaut, ob die Zimmer ähnlich groß sind; bei deutlichen Unterschieden lohnt es sich, die Miete [nach Zimmergröße aufzuteilen](/wg-miete-rechner). Fragt euch, ob Küche und Bad am Morgen für alle reichen und ob es ein separates WC gibt. Gibt es nur einen Balkon, einen Kellerraum oder einen Stellplatz, klärt vorher, wer ihn nutzt. Lasst euch außerdem die Erlaubnis des Vermieters zur Nutzung als WG schriftlich geben.',
+			],
+			[
 				'3. Die richtige Vertragsform wählen',
 				'In einer WG gibt es drei übliche Konstellationen. Beim gemeinsamen Hauptmietvertrag unterschreiben alle und haften gemeinsam für die ganze Miete; ausziehen kann eine Person nur mit Zustimmung von Vermieter und Mitbewohnern. Beim Untermietvertrag mietet eine Person die Wohnung und vermietet Zimmer weiter; sie trägt das Risiko, braucht dafür die Erlaubnis des Vermieters und hat mehr Einfluss bei Nachmietern. Bei Einzelmietverträgen hat jede Person einen eigenen Vertrag über ihr Zimmer mit dem Vermieter. Welche Form passt, hängt davon ab, wie fest die WG ist; die Unterschiede stehen im Ratgeber zum [WG-Mietvertrag](/wg-mietvertrag). Im Zweifel hilft ein Mieterverein.',
 			],
@@ -310,6 +353,10 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'Neben dem Mietvertrag lohnt sich eine kurze Vereinbarung nur unter euch. Sie regelt, was der Vertrag mit dem Vermieter offenlässt: Mietanteile je Zimmer, Nebenkosten, Strom und Internet, Putzplan, gemeinsame Kasse, Gäste und Ruhezeiten und was beim Auszug gilt, etwa wie früh jemand Bescheid sagt und wer bei der Suche nach einem Nachfolger hilft. Die Vereinbarung ist eine Absprache unter Mitbewohnern, am Mietvertrag ändert sie nichts. Ein kurzes Muster: „Wir, [Namen], wohnen ab [Datum] in [Adresse]. Miete: [Aufteilung]. Fixkosten: [Liste]. Putzplan: [Rhythmus]. Gäste: [Regel]. Wer auszieht, sagt es [Zahl] Wochen vorher und hilft bei der Suche nach einem Nachfolger. Nach drei Monaten sprechen wir die Vereinbarung neu durch.“ Vorschläge für einzelne Regeln stehen bei den [WG-Regeln](/wg-regeln). In ManaWG haltet ihr die Vereinbarung als Pinnwand-Beitrag der Art Entscheidung fest, die anderen antworten mit „Passt“.',
 			],
 			[
+				'Ausstiegsplan, bevor ihr unterschreibt',
+				'Sprecht den Auszug ab, solange alle sich gut verstehen. Haltet neben der Kündigungsfrist fest, ob alle bei der Wahl des Nachfolgers mitreden. Klärt auch die Kaution: Sie bleibt beim Vermieter, bis das Mietverhältnis endet. Oft zahlt der Nachfolger seinen Kautionsanteil direkt an die ausziehende Person, das notiert ihr in der Vereinbarung. Legt außerdem fest, was passiert, wenn jemand längere Zeit ausfällt, etwa nach einem Jobverlust oder bei einem Auslandssemester: Wer legt die Miete vor, und wie wird sie ausgeglichen? Wie ihr [Abwesenheiten](/wg-abwesenheit-urlaub) fair behandelt, steht in einem eigenen Ratgeber, die [Auszug-Checkliste](/wg-auszug-checkliste) zeigt, was beim Auszug ansteht.',
+			],
+			[
 				'6. Anmelden und Verträge abschließen',
 				'Nach dem Einzug muss sich jede Person innerhalb von zwei Wochen beim Bürgeramt anmelden. Dafür braucht es eine [Wohnungsgeberbestätigung](/wg-anmeldung), die der Vermieter ausstellt, bei Untermiete der Hauptmieter. Strom und Internet laufen meist auf eine Person, die Kosten teilt ihr. Der [Rundfunkbeitrag](/rundfunkbeitrag-wg) fällt einmal pro Wohnung an, nicht pro Person: Eine Person meldet sich an, die anderen geben deren Beitragsnummer an. Jede Person sollte eine eigene Haftpflichtversicherung haben und prüfen, ob ihre Hausratversicherung eine WG abdeckt.',
 			],
@@ -319,11 +366,11 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'8. Erstausstattung absprechen',
-				'Klärt, was gemeinsam angeschafft wird (Waschmaschine, Staubsauger, Küchengeräte, Putzmittel) und wem es gehört, wenn jemand auszieht. Bei teuren Dingen hilft eine einfache Notiz, wer wie viel bezahlt hat. Viele WGs kaufen Grundausstattung gemeinsam und den Rest bringt jede Person selbst mit.',
+				'Klärt, was gemeinsam angeschafft wird (Waschmaschine, Staubsauger, Küchengeräte, Putzmittel) und wem es gehört, wenn jemand auszieht. Bei teuren Dingen hilft eine einfache Notiz, wer wie viel bezahlt hat.',
 			],
 			[
 				'Was die Gründung kostet',
-				'Zum Start fallen einmalige und laufende Kosten an. Einmalig sind vor allem Kaution, Erstausstattung und Umzug, laufend Miete, Strom, Internet und Versicherungen. Klärt vor der Unterschrift, wer wie viel zum Einzug zahlen kann, denn Kaution und erste Miete werden gleich zu Beginn fällig. Wie ihr danach die laufenden Kosten teilt, steht unter [WG-Kosten aufteilen](/wg-kosten-aufteilen).',
+				'Klärt vor der Unterschrift, wer wie viel zum Einzug zahlen kann, denn Kaution und erste Miete werden gleich zu Beginn fällig. Wie ihr danach die laufenden Kosten teilt, steht unter [WG-Kosten aufteilen](/wg-kosten-aufteilen).',
 			],
 			[
 				'9. Haushalt und Putzplan organisieren',
@@ -390,6 +437,14 @@ export const GUIDES_DE: Record<string, Topic> = {
 			[
 				'Ist ManaWG für neue WGs geeignet?',
 				'Ja. Eine Person erstellt die WG und teilt den Einladungslink, die anderen sind sofort dabei. Die App ist kostenlos und braucht keine Installation aus dem App Store.',
+			],
+			[
+				'Welche Versicherungen braucht man in einer neuen WG?',
+				'Für Mieter gibt es keine allgemeine gesetzliche Pflicht zu einer Haftpflicht- oder Hausratversicherung, ein Mietvertrag kann sie aber verlangen; schaut deshalb in den Vertrag. Sinnvoll ist eine private Haftpflichtversicherung für jede Person: Sie springt ein, wenn ihr aus Versehen Dinge von Mitbewohnern oder Dritten beschädigt. Ob auch Schäden an der Mietwohnung selbst eingeschlossen sind, steht in den Vertragsbedingungen. Die Hausratversicherung deckt eigene Sachen bei Einbruch, Feuer oder Leitungswasser. Fragt beim Versicherer nach, ob eine WG mitversichert ist und ob jede Person eine eigene Police braucht. Prüft auch, ob ihr über bestehende Verträge schon abgesichert seid.',
+			],
+			[
+				'Zweck-WG oder Freundes-WG: Was passt zu uns?',
+				'In einer Zweck-WG teilt ihr vor allem Wohnung und Kosten, jede Person lebt weitgehend für sich. In einer Freundes-WG kommen gemeinsame Abende, gemeinsames Kochen und oft eine Haushaltskasse dazu. Entscheidet das vor der Suche, denn davon hängt ab, wie viel ihr teilt: Kühlschrankfächer oder gemeinsamer Vorrat, getrennte Einkäufe oder [WG-Haushaltskasse](/wg-haushaltskasse). Auch die [WG-Regeln](/wg-regeln) fallen anders aus, etwa bei Besuch und Ruhezeiten. Zwischen beiden Typen gibt es viele Mischformen. Wichtig ist, dass alle dasselbe Bild haben.',
 			],
 		],
 		tables: [
@@ -525,9 +580,9 @@ export const GUIDES_DE: Record<string, Topic> = {
 		link: 'WG-Mietvertrag',
 		updated: '2026-10-29',
 		published: '2026-10-19',
-		title: 'WG-Mietvertrag: 3 Modelle und Muster-Checkliste | ManaWG',
+		title: 'WG-Mietvertrag Muster: Mietgemeinschaft, Untermiete | ManaWG',
 		description:
-			'Welcher Mietvertrag passt zur WG? Mietgemeinschaft, Untermiete oder Einzelverträge im Vergleich, mit Muster-Checkliste für den Untermietvertrag und Kaution.',
+			'Mietgemeinschaft, Untermiete oder Einzelverträge im Vergleich: Haftung, Kündigung, Mieterwechsel und Kaution, dazu Muster-Checklisten für den WG-Mietvertrag.',
 		h1: 'Der WG-Mietvertrag: drei Modelle im Vergleich',
 		intro:
 			'Wer in einer WG wohnt, hat nicht automatisch dieselben Rechte wie die Mitbewohner. Entscheidend ist, wie der Mietvertrag aufgebaut ist: ob alle gemeinsam unterschreiben, eine Person untervermietet oder jede Person einen eigenen Vertrag hat. Davon hängt ab, wer für die Miete haftet, wer kündigen kann und wie ein Wechsel abläuft. Diese Seite gibt einen Überblick und ersetzt keine Rechtsberatung. Bei konkreten Fragen helfen Mietervereine.',
@@ -535,6 +590,10 @@ export const GUIDES_DE: Record<string, Topic> = {
 			[
 				'Modell 1: Gemeinsamer Hauptmietvertrag (Mietgemeinschaft)',
 				'Alle Mitbewohner unterschreiben einen Vertrag mit dem Vermieter, man spricht dann von einer Mietgemeinschaft. Jede Person hat damit dieselben Rechte, aber alle haften gemeinsam für die ganze Miete: Zahlt eine Person nicht, kann der Vermieter den vollen Betrag von jeder anderen verlangen. Kündigen können in der Regel nur alle gemeinsam, und [einen Mitbewohner kündigen](/mitbewohner-kuendigen) kann niemand. Will eine Person ausziehen, braucht der Wechsel die Zustimmung des Vermieters und der übrigen Mieter. Manche Vermieter nehmen dafür eine Klausel auf, die Mieterwechsel in der WG ausdrücklich erlaubt. Achtet beim Unterschreiben darauf, ob es sie gibt.',
+			],
+			[
+				'Auszug aus der Mietgemeinschaft: So kommt ihr aus dem Vertrag',
+				'Zieht eine Person aus, endet ihre Pflicht gegenüber dem Vermieter nicht von selbst. Wer im Mietvertrag steht, haftet als Gesamtschuldner (§ 421 BGB) weiter, bis der Vertrag endet oder der Vermieter zustimmt und die Person ausdrücklich aus dem Vertrag entlässt. Eine Absprache nur unter Mitbewohnern bindet den Vermieter nicht. So geht ihr vor: Fragt den Vermieter schriftlich, ob die Person ausscheiden darf und wer eintritt. Stellt die Nachfolge vor, denn der Vermieter prüft meist, ob die Miete gesichert ist. Haltet den Wechsel dann in einem schriftlichen Vertrag fest, den alle Beteiligten unterschreiben. Klärt die [Kaution](/wg-kaution) untereinander (sie bleibt beim Vermieter) und rechnet offene Beträge in der WG ab, bevor die Person geht. Auszug, Ummeldung oder Schlüsselrückgabe ändern an der Haftung nichts. Mehr zum Ablauf: [WG-Auszug-Checkliste](/wg-auszug-checkliste).',
 			],
 			[
 				'Modell 2: Hauptmieter mit Untermietern',
@@ -561,11 +620,45 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'Ein fertiges Vertragsmuster passt selten genau auf eure WG. Die Tabelle zeigt, welche Punkte ein Untermietvertrag für ein WG-Zimmer regeln sollte, jeweils mit einer Beispielangabe zum Anpassen. Ob das Zimmer möbliert ist und der Hauptmieter selbst dort wohnt, entscheidet über die Kündigungsfrist. Welche Fristen gelten, wenn ihr später auszieht, steht unter [WG-Zimmer kündigen](/wg-zimmer-kuendigen).',
 			],
 			[
+				'Kündigungsfristen im Untermietvertrag',
+				'Der Normalfall ist die gesetzliche Frist von drei Monaten für die Kündigung durch den Untermieter: Die schriftliche Kündigung muss spätestens am dritten Werktag eines Monats beim Hauptmieter eingegangen sein und beendet den Vertrag zum Ablauf des übernächsten Monats (§ 573c Abs. 1 BGB). Geht sie bis zum dritten Werktag im März ein, endet der Untermietvertrag am 31. Mai. Eine Ausnahme gilt für ein Zimmer, das in der vom Hauptmieter selbst bewohnten Wohnung liegt und überwiegend von ihm möbliert ist, sofern die Person dort nicht dauerhaft mit Familie oder gemeinsamem Haushalt wohnt (§ 573c Abs. 3 i. V. m. § 549 Abs. 2 Nr. 2 BGB). Dann reicht eine Kündigung bis zum 15. eines Monats zum Ablauf dieses Monats. Schreibt in den Vertrag, welcher Fall bei euch gilt, und nennt die Frist nicht nur pauschal „gesetzlich“. Weitere Fälle: [WG-Zimmer kündigen](/wg-zimmer-kuendigen).',
+			],
+			[
+				'Muster-Checkliste für den gemeinsamen Hauptmietvertrag',
+				'Steht ihr alle im Vertrag mit dem Vermieter, legt meist er den Vertrag vor. Prüft vor der Unterschrift die Punkte der Tabelle und fragt bei Lücken nach. Ohne andere Absprache tragen Gesamtschuldner untereinander gleiche Anteile (§ 426 BGB). Wollt ihr nach Zimmergröße aufteilen, haltet das in einer separaten WG-Vereinbarung fest, wie es [WG-Kosten aufteilen](/wg-kosten-aufteilen) beschreibt.',
+			],
+			[
 				'Welches Modell passt?',
 				'Für eine feste WG unter Freunden, die lange zusammen wohnen will, passt der gemeinsame Hauptmietvertrag mit einer Klausel für Mieterwechsel. Wechseln die Mitbewohner oft, etwa in Studentenstädten, ist Untermiete flexibler, belastet aber den Hauptmieter. Einzelverträge sind am bequemsten, geben der WG aber am wenigsten Einfluss darauf, wer einzieht. Wie ihr danach Miete, Nebenkosten und Einkäufe aufteilt, steht unter [WG-Kosten aufteilen](/wg-kosten-aufteilen), alles Weitere für den Start in der [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
 			],
 		],
 		tables: [
+			{
+				after: 'Muster-Checkliste für den gemeinsamen Hauptmietvertrag',
+				title: 'Gemeinsamer Hauptmietvertrag: Punkte mit Beispiel',
+				header: ['Punkt', 'Beispielangabe'],
+				rows: [
+					['Mieter', 'alle Mitbewohner mit vollem Namen, jede Person als Mieter'],
+					['Haftung', 'alle als Gesamtschuldner, jede Person für die ganze Miete'],
+					[
+						'Mieterwechsel',
+						'Klausel, dass einzelne Mieter mit Zustimmung des Vermieters ausscheiden und Nachfolger eintreten können (Nachfolgeklausel)',
+					],
+					['Kündigung', 'nur durch alle gemeinsam, schriftlich mit allen Unterschriften'],
+					[
+						'Miete',
+						'Kaltmiete, Nebenkosten-Vorauszahlung, Fälligkeit und ein gemeinsames Zahlungskonto',
+					],
+					['Kaution', 'höchstens drei Nettokaltmieten, in drei Raten möglich'],
+					['Räume', 'Zimmerzuordnung und gemeinsam genutzte Räume'],
+					['Schönheitsreparaturen', 'ob und wie sie auf euch übertragen werden'],
+					[
+						'Separate WG-Vereinbarung',
+						'Anteil jedes Zimmers an der Miete, Putzplan, Gäste, Auszugsregeln',
+					],
+				],
+				note: 'Beispielangaben zum Anpassen, kein geprüftes Vertragsmuster.',
+			},
 			{
 				after: 'Muster-Checkliste für den Untermietvertrag',
 				title: 'Untermietvertrag für ein WG-Zimmer: Punkte mit Beispiel',
@@ -578,7 +671,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 					['Fälligkeit', 'spätestens am dritten Werktag des Monats'],
 					['Kaution', 'Betrag, höchstens drei Monatsmieten ohne Nebenkosten'],
 					['Beginn und Dauer', 'ab 1. März, unbefristet oder mit Enddatum'],
-					['Kündigung', 'gesetzliche Fristen nach § 573c BGB'],
+					['Kündigung', 'Frist und Fall nennen, etwa drei Monate nach § 573c BGB'],
 					['Erlaubnis des Vermieters', 'Kopie der Erlaubnis zur Untervermietung als Anlage'],
 					['WG-Regeln', 'Hausordnung und WG-Regeln als Anlage'],
 					['Unterschriften', 'eigenhändig von beiden Seiten, mit Ort und Datum'],
@@ -612,6 +705,10 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'Was ist ein Nebenmieter?',
 				'Meist ist damit eine Person gemeint, die neben anderen im Hauptmietvertrag steht, also ein Mitmieter. Manche benutzen das Wort auch für Untermieter. Entscheidend ist, wer den Vertrag mit wem unterschrieben hat.',
 			],
+			[
+				'Muss ein WG-Mietvertrag schriftlich sein?',
+				'Nicht zwingend, ein Mietvertrag kann auch mündlich zustande kommen. Soll er aber länger als ein Jahr laufen, gilt er ohne Schriftform als unbefristet, und eine Kündigung ist frühestens zum Ablauf eines Jahres nach der Überlassung des Wohnraums möglich (§ 550 BGB). Auch die Kündigung selbst muss schriftlich erfolgen (§ 568 BGB). Beim gemeinsamen Hauptmietvertrag unterschreiben deshalb am besten alle Mieter, beim Untermietvertrag Hauptmieter und Untermieter. Jede Person behält ein unterschriebenes Exemplar, dazu gehören Anlagen wie die Erlaubnis des Vermieters, Hausordnung und Übergabeprotokoll.',
+			],
 		],
 		sources: [
 			[
@@ -627,6 +724,24 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'https://www.gesetze-im-internet.de/bgb/__551.html',
 			],
 			['§ 573c BGB, Kündigungsfristen', 'https://www.gesetze-im-internet.de/bgb/__573c.html'],
+			['§ 421 BGB, Gesamtschuldner', 'https://www.gesetze-im-internet.de/bgb/__421.html'],
+			[
+				'§ 415 BGB, Vertrag zwischen Schuldner und Übernehmer',
+				'https://www.gesetze-im-internet.de/bgb/__415.html',
+			],
+			[
+				'§ 426 BGB, Ausgleichungspflicht, Forderungsübergang',
+				'https://www.gesetze-im-internet.de/bgb/__426.html',
+			],
+			[
+				'§ 549 BGB, Auf Wohnraummietverhältnisse anwendbare Vorschriften',
+				'https://www.gesetze-im-internet.de/bgb/__549.html',
+			],
+			['§ 550 BGB, Form des Mietvertrags', 'https://www.gesetze-im-internet.de/bgb/__550.html'],
+			[
+				'§ 568 BGB, Form und Inhalt der Kündigung',
+				'https://www.gesetze-im-internet.de/bgb/__568.html',
+			],
 		],
 	},
 	'wg-zwischenmiete': {
@@ -705,7 +820,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-regeln': {
 		link: 'WG-Regeln',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-11',
 		title: 'WG-Regeln Vorlage: 10 Regeln zum Übernehmen | ManaWG',
 		description:
@@ -802,20 +917,36 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'Ergänzt unter dem Aushang: Diese Regeln gelten ab ____, die Testphase läuft bis ____. Unterschriften: ____',
 			],
 			[
+				'So einigt ihr euch auf WG-Regeln: Ablauf für den ersten Abend',
+				'1. Themen sammeln: Jede Person schreibt zehn Minuten lang auf, was im Alltag wichtig ist oder schon genervt hat.\n2. Sortieren: Behaltet nur, was mehr als eine Person betrifft, und ordnet es den Bereichen der Vorlage zu.\n3. Zahlen festlegen: Uhrzeiten, Nächte, Beträge und Fristen schreibt ihr konkret auf, nicht „spät“ oder „länger“.\n4. Abstimmen: Eine Regel gilt, wenn alle zustimmen. Wer nicht zustimmt, nennt den Grund, dann sucht ihr einen Kompromiss.\n5. Aufhängen und testen: Druckt den Aushang aus oder haltet ihn als Entscheidung auf der Pinnwand fest, tragt Start und Ende der Testphase ein und legt den Termin der ersten WG-Runde fest. Feinheiten klärt ihr dort.',
+			],
+			[
 				'Ruhezeiten und Lärm',
 				'Vereinbart feste Zeiten, zu denen Ruhe herrscht, zum Beispiel unter der Woche ab 22 Uhr. Dazu gehört die Absprache, dass Feiern angekündigt werden. Eine Faustregel: Wer feiert, sagt es mindestens einen Tag vorher und nimmt Rücksicht auf Mitbewohner mit Prüfung oder Frühschicht.',
 			],
 			[
+				'Homeoffice, Prüfungen und Schichtarbeit',
+				'Grundregel: Feste Ruhezeiten reichen nicht, wenn jemand tagsüber arbeitet oder zu anderen Zeiten schläft. Ergänzt deshalb Ausnahmen, die ihr vorher absprecht.\nHomeoffice: Telefonate und Videocalls im eigenen Zimmer bei geschlossener Tür, Musik und Fernseher in den Kernarbeitszeiten leise oder mit Kopfhörern.\nPrüfungsphase: Eine Leise-Zeit, zum Beispiel von 19 bis 22 Uhr, die die Person vorher ansagt und die auf einige Wochen begrenzt ist.\nSchichtarbeit oder Frühstart: Wer nachts arbeitet oder sehr früh aufsteht, nennt den eigenen Rhythmus. Türen werden dann leise geschlossen, laute Geräte wie der Staubsauger laufen zu anderen Zeiten.\nEnddatum: Gebt jeder Ausnahme ein Enddatum, sonst wird sie zur Dauerregel.',
+			],
+			[
 				'Besuch und Übernachtungsgäste',
-				'Klärt, wie oft und wie lange Gäste bleiben dürfen und ob man vorher fragt. Wer Dauerbesuch hat, beteiligt sich an Nebenkosten. Das sind Absprachen, keine Gesetze. Rechtliche Fragen zum Mietvertrag klärt ihr mit Vermieter oder Mieterverein.',
+				'Klärt, wie oft und wie lange Gäste bleiben dürfen und ob man vorher fragt. Wer Dauerbesuch hat, beteiligt sich an Nebenkosten. Rechtliche Fragen zum Mietvertrag klärt ihr mit Vermieter oder Mieterverein.',
 			],
 			[
 				'Haushalt und Sauberkeit',
 				'Haltet fest, wer wann welche Aufgabe übernimmt, und was „sauber“ bedeutet. Ein Putzplan mit festen Aufgaben und Erinnerungen ersetzt Diskussionen. Wie er entsteht, steht unter [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) ist ein guter Anfang. Geschirr gehört nicht über Nacht in die Spüle, Gemeinschaftsräume bleiben nutzbar: solche Mini-Regeln verhindern die meisten Konflikte.',
 			],
 			[
+				'Was heißt „sauber genug“? Ein Mindeststandard',
+				'Grundidee: Streit um Sauberkeit entsteht oft, weil jede Person etwas anderes meint. Schreibt deshalb einen Mindeststandard auf, der jeden Tag für alle gilt.\nKüche: Arbeitsfläche und Herd nach dem Kochen abgewischt, Geschirr am selben Tag weggeräumt.\nBad: Dusche und Waschbecken nach der Nutzung kurz abgezogen, Haare aus dem Abfluss entfernt, Klopapier nachgelegt.\nMüll: Der Eimer wird geleert, bevor er überquillt.\nFlur: Schuhe stehen auf der Matte oder im Regal, nicht mittendrin.\nGründlich putzen: Das geschieht nach dem [Putzplan](/putzplan-erstellen) mit festen Aufgaben, der Mindeststandard ergänzt ihn für den Alltag. Die Beispiele sind Vorschläge, passt sie an eure Wohnung an.',
+			],
+			[
 				'Gemeinsame Kasse und Einkauf',
 				'Definiert, was gemeinsam bezahlt wird (Putzmittel, Klopapier, Gewürze) und was nicht. Legt fest, wie ausgeglichen wird: Wie eine gemeinsame Kasse geführt werden kann, steht im Ratgeber [WG-Haushaltskasse](/wg-haushaltskasse), die Aufteilung der Kosten unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen). Mit einer gemeinsamen [Einkaufsliste](/wg-einkauf-organisieren) weiß jeder, was fehlt, und doppelte Einkäufe entfallen.',
+			],
+			[
+				'Gemeinsames Eigentum und Anschaffungen',
+				'Legt früh fest, was wem gehört. Eine Liste in der WG-Runde genügt: Was hat eine Person mitgebracht, was wurde gemeinsam gekauft und wer hat wie viel bezahlt? Bei Anschaffungen über dem vereinbarten Betrag, in der Vorlage 30 Euro, wird vorher gefragt. Die Kosten teilt ihr unter denen, die das Gerät nutzen, wie unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen) beschrieben. Klärt auch, wer zahlt, wenn ein gemeinsames Gerät kaputtgeht. Ein Vorschlag: bei normaler Abnutzung alle, bei grober Unachtsamkeit die Person, die es verursacht hat. Beim [Auszug](/wg-auszug-checkliste) nimmt jede Person mit, was sie allein gekauft hat. Bei gemeinsam Gekauftem entscheidet ihr vorher, ob es bleibt und die Person ausgezahlt wird. Eigene Dinge werden nur nach Frage geliehen und zurückgegeben.',
 			],
 			[
 				'Bad, Küche und Gemeinschaftsräume',
@@ -831,7 +962,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Regeln für Kühlschrank und Spülmaschine',
-				'Kühlschrank: Jede Person hat ein eigenes Fach, für Gemeinsames gibt es ein weiteres. Fremdes wird nur nach Frage gegessen.\nKühlschrank: Alle zwei Wochen wird gemeinsam durchgesehen und Abgelaufenes entsorgt, zum Beispiel als wiederkehrende Putzaufgabe.\nSpülmaschine: Sauberes Geschirr wird gleich ausgeräumt, benutztes kommt in die Maschine statt über Nacht in die Spüle.\nSpülmaschine: Tabs und Klarspüler zahlen alle gemeinsam, wer den letzten nimmt, setzt ihn auf die Einkaufsliste.',
+				'Kühlschrank: Alle zwei Wochen wird gemeinsam durchgesehen und Abgelaufenes entsorgt, zum Beispiel als wiederkehrende Putzaufgabe.\nSpülmaschine: Sauberes Geschirr wird gleich ausgeräumt, benutztes kommt in die Maschine statt über Nacht in die Spüle.\nSpülmaschine: Tabs und Klarspüler zahlen alle gemeinsam, wer den letzten nimmt, setzt ihn auf die Einkaufsliste.',
 			],
 			[
 				'Rauchen, Haustiere und Instrumente',
@@ -843,7 +974,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Testphase und Überprüfung',
-				'Beschließt Regeln nicht für immer. Vereinbart eine Testphase von vier Wochen und einen festen Termin, an dem ihr besprecht, was nicht funktioniert hat. Danach reicht die monatliche WG-Runde, wie sie Regel 10 der Vorlage vorsieht. Schreibt unter die Vorlage, ab wann sie gilt und bis wann die Testphase läuft.',
+				'Beschließt Regeln nicht für immer. Vereinbart eine Testphase von vier Wochen und einen festen Termin, an dem ihr besprecht, was nicht funktioniert hat. Danach reicht die monatliche WG-Runde, wie sie Regel 10 der Vorlage vorsieht.',
 			],
 			[
 				'Wie ihr Regeln festhaltet',
@@ -1622,9 +1753,9 @@ export const GUIDES_DE: Record<string, Topic> = {
 		link: 'WG-Casting',
 		updated: '2026-10-29',
 		published: '2026-10-19',
-		title: 'WG-Casting-Fragen: 48 Fragen, Ablauf, Mustertexte | ManaWG',
+		title: 'WG-Casting-Fragen: 53 Fragen, Ablauf, Mustertexte | ManaWG',
 		description:
-			'WG-Casting-Fragen für WG und Bewerber: 48 Fragen mit Hintergrund, Ablauf, Tabu-Fragen, Mustertexte für Zu- und Absage und ein Bewertungsbogen.',
+			'WG-Casting-Fragen für WG und Bewerber: 53 Fragen mit Hintergrund, Ablauf, Tipps vor Ort, Mustertexte für Nachricht, Zu- und Absage, Bewertungsbogen.',
 		h1: 'WG-Casting: Ablauf und Fragen für WG und Bewerber',
 		intro:
 			'Beim WG-Casting entscheidet sich in zwanzig Minuten, ob ihr die nächsten Jahre gut zusammenlebt. Beide Seiten prüfen einander: die WG die neue Person, die Bewerberin oder der Bewerber die WG. Mit den richtigen Fragen erfahrt ihr, was wirklich zählt, und nicht nur, wer am sympathischsten wirkt. Kurz gesagt: Plant pro Termin 20 bis 30 Minuten, führt Einzeltermine und entscheidet erst danach, getrennt von den Bewerbern.',
@@ -1654,6 +1785,10 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'Wie lange darf Besuch bleiben, bevor man vorher fragt?\nHast du eine Partnerin oder einen Partner, die oder der oft hier wäre?\nFeierst du gern zu Hause?\nAb wann soll unter der Woche Ruhe sein?\nWie sagst du Bescheid, wenn du Gäste oder eine Feier planst?\nWas ist für dich laut, was noch normal?',
 			],
 			[
+				'Fragen zu WG-Erfahrung und Konflikten',
+				'Hast du schon in einer WG gewohnt? Was hat dort gut funktioniert, was war schwierig?\nWas ist dir im Zusammenleben heute besonders wichtig?\nWas machst du, wenn dich etwas an einer Mitbewohnerin oder einem Mitbewohner stört?\nWie reagierst du, wenn dich jemand auf etwas anspricht?\nWas würden frühere Mitbewohner über dich sagen?\nDiese Fragen zeigen, wie jemand tatsächlich handelt, nicht nur, was die Person sich vornimmt. Wer von einem früheren Streit sachlich erzählt, ohne die anderen schlechtzumachen, macht einen guten Eindruck.',
+			],
+			[
 				'Rauchen, Haustiere, Instrumente',
 				'Darf in der Wohnung geraucht werden, oder nur auf dem Balkon?\nWelche Haustiere hast du oder planst du, und wer kümmert sich im Urlaub?\nSpielst du ein Instrument, und wann übst du?\nStört dich Rauch oder Tiergeruch in den Gemeinschaftsräumen?\nDiese Punkte sorgen für den meisten Ärger, wenn sie vorher nicht besprochen sind. Der Mietvertrag kann Haustieren Grenzen setzen, klärt das vorher.',
 			],
@@ -1663,15 +1798,27 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Als Bewerber vorbereiten',
-				'Anzeige: Lest sie noch einmal und notiert, was euch an der WG gefällt, dann habt ihr auf „Warum möchtest du zu uns?“ eine konkrete Antwort.\nÜber euch: Drei Sätze reichen: was ihr macht, wie euer Tag aussieht und wie lange ihr bleiben wollt.\nEigene Fragen: Zwei bis drei vorbereiten, etwa zum Putzplan, zur Kasse und dazu, warum das Zimmer frei wird.\nPünktlich sein: Wird es später, kurz Bescheid sagen.\nEhrlich bleiben: Wer sich verstellt, fällt spätestens im zweiten Monat auf.\nWarnzeichen: Verlangt jemand Geld vor Besichtigung und Vertrag, brecht ab.',
+				'Anzeige: Lest sie noch einmal und notiert, was euch an der WG gefällt, dann habt ihr auf „Warum möchtest du zu uns?“ eine konkrete Antwort.\nÜber euch: Drei Sätze reichen: was ihr macht, wie euer Tag aussieht und wie lange ihr bleiben wollt.\nEigene Fragen: Zwei bis drei vorbereiten, etwa zum Putzplan, zur Kasse und dazu, warum das Zimmer frei wird.\nPünktlich sein: Wird es später, kurz Bescheid sagen.\nEhrlich bleiben: Wer sich verstellt, fällt spätestens im zweiten Monat auf.',
+			],
+			[
+				'Als Bewerber vor Ort: Verhalten und Kleidung',
+				'Kleidung: Zieht an, worin ihr euch wohlfühlt, normal und gepflegt reicht. Ihr besucht eine Wohnung, kein Vorstellungsgespräch.\nAuftreten: Legt das Handy weg und merkt euch die Namen. Schaut euch die Wohnung ohne Bewertung an und lobt nichts, was ihr nicht meint.\nGespräch: Antwortet in zwei, drei Sätzen und stellt zwischendurch selbst eine Frage, damit ein Gespräch entsteht.\nSchwächen: Gebt zu, wo ihr nicht perfekt seid, und nennt, was ihr dafür verlässlich tut.\nAbschluss: Fragt, bis wann sich die WG meldet, und bedankt euch kurz.',
+			],
+			[
+				'Als Bewerber: erste Nachricht und Nachfassen',
+				'Eure erste Nachricht entscheidet oft, ob ihr zum WG-Casting eingeladen werdet. Schreibt kurz, fünf bis acht Sätze, und bezieht euch auf die Anzeige: „Hallo Mia und Jonas, ich bin Sara, 24, und arbeite in Teilzeit im Büro. Ab Dezember suche ich ein Zimmer in Leipzig, am liebsten länger als ein Jahr. Eure Anzeige gefällt mir, weil ihr sonntags zusammen esst und trotzdem Ruhe lasst. Unter der Woche bin ich meist ab 18 Uhr zu Hause. Ich würde mich über einen Kennenlerntermin freuen, ab Mittwoch hätte ich Zeit.“ Am Tag nach dem Casting reicht eine Zeile: „Danke für das nette Gespräch gestern, die Wohnung und das Gespräch in der Küche haben mir gefallen. Ich freue mich, wenn ihr euch meldet.“ Meldet sich die WG nicht bis zur genannten Frist, fragt einmal freundlich nach.',
 			],
 			[
 				'Fragen, die nicht ins Casting gehören',
-				'Fragen nach Herkunft, Religion, Gesundheit, Schwangerschaft oder Kinderwunsch und sexueller Orientierung sind übergriffig und sagen nichts darüber, ob jemand in den Alltag der WG passt.\nWer so etwas freiwillig erzählt, darf das. Ihr fragt aber nicht danach und bewertet es nicht.\nFragt stattdessen nach dem, was im Alltag zählt: Ruhezeiten, Essgewohnheiten, Besuch und wie lange jemand bleiben möchte.\nAbsagen: Wie das freundlich geht, zeigen die Mustertexte weiter unten.',
+				'Fragen nach Herkunft, Religion, Gesundheit, Schwangerschaft oder Kinderwunsch und sexueller Orientierung sind übergriffig und sagen nichts darüber, ob jemand in den Alltag der WG passt.\nWer so etwas freiwillig erzählt, darf das. Ihr fragt aber nicht danach und bewertet es nicht.\nFragt stattdessen nach dem, was im Alltag zählt: Ruhezeiten, Essgewohnheiten, Besuch und wie lange jemand bleiben möchte.',
+			],
+			[
+				'Heikle Fragen besser stellen',
+				'Statt „Hast du einen Freund oder eine Freundin?“: „Wie oft hast du Besuch, auch über Nacht?“\nStatt „Was verdienst du?“: „Ist die Miete für dich auf Dauer gesichert?“\nStatt „Hast du Vorerkrankungen?“: „Gibt es Allergien oder Ernährungsregeln, auf die wir beim Kochen achten sollen?“\nStatt „Willst du Kinder?“: „Wie lange möchtest du hier wohnen?“\nBewerber dürfen sagen, dass ihnen eine Frage zu persönlich ist. Das ist kein Grund, sie schlechter zu bewerten.',
 			],
 			[
 				'Einladen und vorbereiten als WG',
-				'Ladet nicht zu viele Leute auf einmal ein. Wie ihr Bewerbungen sammelt und vorsortiert, steht unter [Mitbewohner finden](/mitbewohner-finden). Einzeltermine mit etwas Puffer funktionieren besser als ein Gruppencasting, bei dem die Lautesten gewinnen. Es sollten möglichst alle Mitbewohner dabei sein, denn wer nicht mitentscheidet, fühlt sich später übergangen. Zeigt die Wohnung ehrlich, auch das kleine Bad und die volle Küche. Und legt vorher fest, worauf es euch ankommt, damit die Entscheidung nicht nur am Bauchgefühl hängt.',
+				'Ladet nicht zu viele Leute auf einmal ein. Wie ihr Bewerbungen sammelt und vorsortiert, steht unter [Mitbewohner finden](/mitbewohner-finden). Einzeltermine mit etwas Puffer funktionieren besser als ein Gruppencasting, bei dem die Lautesten gewinnen. Es sollten möglichst alle Mitbewohner dabei sein, denn wer nicht mitentscheidet, fühlt sich später übergangen. Und legt vorher fest, worauf es euch ankommt, damit die Entscheidung nicht nur am Bauchgefühl hängt.',
 			],
 			[
 				'Video-Casting und Betrug',
@@ -1840,8 +1987,16 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'1. Auf wg-gesucht.de das Inserieren starten und die Kategorie WG-Zimmer wählen. Das Konto entsteht dabei, vorher registrieren müsst ihr euch nicht\n2. Mit E-Mail-Adresse registrieren oder über Google oder Apple anmelden\n3. Ein privates Konto wählen, denn ihr bietet als WG ein Zimmer an und vermietet nicht gewerblich\n4. Die Registrierung per SMS-Code bestätigen, das verlangt WG-Gesucht\n5. Miete, Nebenkosten, Kaution und Adresse eintragen. Nur mit vollständiger Adresse erscheint die Anzeige laut WG-Gesucht in der Umkreissuche\n6. Titel, Text und Fotos ergänzen, wie in den Abschnitten unten beschrieben. Inserieren ist laut WG-Gesucht kostenlos, daneben gibt es ein freiwilliges, kostenpflichtiges Premium-Angebot. Stand Oktober 2026, die Oberfläche kann sich ändern',
 			],
 			[
+				'Ohne Konto inserieren: Alternativen',
+				'Auf wgfrei.de lässt sich ein WG-Zimmer nach Angabe des Portals ohne Registrierung und ohne Login einstellen. Das Portal nimmt nur provisionsfreie Angebote von Privatpersonen an, erlaubt vier Bilder und ein Video und lässt im Beschreibungstext keine Links, Telefonnummern oder E-Mail-Adressen zu. Fragt außerdem bei der Studierendenvertretung eurer Hochschule nach, ob sie Anzeigen für ihr Schwarzes Brett annimmt.',
+			],
+			[
 				'Was in eine gute WG-Anzeige gehört',
 				'Die Fakten zuerst: Größe des Zimmers, Warmmiete mit allen Nebenkosten, Einzugsdatum, Befristung, Lage und Verkehrsanbindung. Was Kürzel wie WM, KM und NK bedeuten, steht unter [WG-Anzeigen-Abkürzungen](/wg-abkuerzungen). Dann die WG selbst: Wie viele Personen, welches Alter, was macht ihr, wie viel Gemeinsames gibt es? Gute Fotos von Zimmer, Küche und Bad bei Tageslicht. Und ein ehrlicher Satz dazu, wie ihr Haushalt und Geld organisiert, etwa mit Putzplan und gemeinsamer Abrechnung in einer App. Das filtert Bewerber, die etwas ganz anderes suchen.',
+			],
+			[
+				'Kosten, Ablöse und Vertragsart angeben',
+				'Tragt in allen Kostenfeldern Kaltmiete, Nebenkosten, sonstige Kosten und Kaution ein. WG-Gesucht rät, alle Kosten anzugeben, weil zu niedrige oder lückenhafte Zahlen Anfragen von Leuten bringen können, die sich das Zimmer nicht leisten können. Schreibt dazu, ob die Nebenkosten pauschal sind oder abgerechnet werden und ob Internet, Strom und Heizung enthalten sind. Sollen Möbel gegen Ablöse im Zimmer bleiben, listet jedes Stück mit Preis im Text auf. Laut WG-Gesucht sinken die Chancen, jemanden zu finden, je höher die Ablöse ist. Kennzeichnet Zwischenmiete und Befristung deutlich und nennt, ob die neue Person einen Untermietvertrag bekommt.',
 			],
 			[
 				'Der Anzeigentitel: Formel und Beispiele',
@@ -1849,19 +2004,27 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Beispiel für eine WG-Anzeige',
-				'„Ab 1. Dezember wird in unserer Dreier-WG in Leipzig-Connewitz ein 16-Quadratmeter-Zimmer frei, 420 Euro warm inklusive Internet. Wir sind Mia (26, Pflege) und Jonas (24, Informatik) und suchen jemanden zwischen 21 und 30. Unter der Woche kocht jeder für sich, sonntags essen wir oft zusammen. Geputzt wird nach Plan im Wochenwechsel, gemeinsame Ausgaben rechnen wir in einer App ab. Schreib uns kurz, was du machst und wie du dir WG-Leben vorstellst.“ Solche konkreten Angaben halten Bewerber ab, die etwas anderes suchen.',
+				'„Ab 1. Dezember wird in unserer Dreier-WG in Leipzig-Connewitz ein 16-Quadratmeter-Zimmer frei, 420 Euro warm inklusive Internet. Wir sind Mia (26, Pflege) und Jonas (24, Informatik) und suchen jemanden zwischen 21 und 30. Unter der Woche kocht jeder für sich, sonntags essen wir oft zusammen. Geputzt wird nach Plan im Wochenwechsel, gemeinsame Ausgaben rechnen wir in einer App ab. Schreib uns kurz, was du machst und wie du dir WG-Leben vorstellst.“',
+			],
+			[
+				'Ausstattung ankreuzen und Fotos beschriften',
+				'Ein Teil der Suchenden filtert nach Merkmalen wie Balkon, Garten, möbliert, Haustiere erlaubt oder barrierefrei. Kreuzt deshalb alles an, was bei euch zutrifft; WG-Gesucht empfiehlt das, weil die Anzeige so mehr Aufrufe bekommt. Fotografiert jeden Raum bei Tageslicht und aufgeräumt, dazu Haus und Straße, damit man ein Gefühl für die Umgebung bekommt. Ergänzt zu jedem Bild eine Bildunterschrift mit dem, was das Foto nicht zeigt, etwa „Fenster nach Süden, Schreibtisch bleibt“. Wollt ihr die genaue Adresse nicht veröffentlichen, könnt ihr bei WG-Gesucht die Hausnummer weglassen, bekommt dann laut WG-Gesucht aber unter Umständen weniger Anfragen.',
 			],
 			[
 				'Länge, Fotos und typische Fehler',
-				'Länge: Laut WG-Gesucht werden Angebote ab 150 Wörtern am schnellsten vergeben. Das Beispiel oben ist kürzer, eure Anzeige darf länger sein, solange sie konkret bleibt.\nFotos: Zimmer, Küche, Bad und Flur, bei Tageslicht und aufgeräumt.\nFloskeln: „Nette WG“ sagt nichts, Zahlen und Beispiele schon.\nMiete: Immer warm angeben und nennen, was enthalten ist.\nBefristung: Fehlt sie in der Anzeige, fällt sie erst im Gespräch auf und kostet beide Seiten Zeit.\nVerbote: Zwei oder drei echte Ausschlusskriterien reichen, eine lange Liste schreckt ab.\nAntworten: Wer Bewerbungen liegen lässt, verliert die passenden an andere WGs. Fürs Gespräch danach gibt es den [Ratgeber zum WG-Casting](/wg-casting-fragen).',
+				'Länge: Laut WG-Gesucht werden Angebote ab 150 Wörtern am schnellsten vergeben. Das Beispiel oben ist kürzer, eure Anzeige darf länger sein, solange sie konkret bleibt.\nMiete: Immer warm angeben und nennen, was enthalten ist.\nBefristung: Fehlt sie in der Anzeige, fällt sie erst im Gespräch auf und kostet beide Seiten Zeit.\nVerbote: Zwei oder drei echte Ausschlusskriterien reichen, eine lange Liste schreckt ab.\nAntworten: Wer Bewerbungen liegen lässt, verliert die passenden an andere WGs. Fürs Gespräch danach gibt es den [Ratgeber zum WG-Casting](/wg-casting-fragen).',
+			],
+			[
+				'Anzeige verbreiten',
+				'Teilt den Link in WhatsApp-Gruppen, in Hochschul- und Stadtgruppen und über Instagram, und bittet Freunde, ihn weiterzuleiten. Nach dem Aufgeben bietet WG-Gesucht an, die Anzeige mit wenigen Klicks auf Facebook zu teilen; laut WG-Gesucht bringt ein Like im Schnitt 25 Prozent mehr Aufrufe (Angabe des Portals). Gebt beim Teilen immer den Link zur Anzeige mit, nicht nur ein Foto, damit Interessierte Preis, Termin und Bedingungen selbst nachlesen können. Antwortet auf Nachrichten, die daraus entstehen, genauso zügig wie auf die aus dem Portal.',
 			],
 			[
 				'Auswählen ohne Chaos',
-				'Bei beliebten Zimmern kommen schnell dutzende Nachrichten. Legt fest, wer antwortet, und sammelt die Bewerbungen an einer Stelle. Ladet nur die Personen zum Casting ein, deren Nachricht zur WG passt. Nach den Terminen entscheidet ihr gemeinsam, möglichst zeitnah, denn gute Bewerber haben oft mehrere Zusagen. Sagt allen Eingeladenen ab, die es nicht geworden sind. Passende Fragen fürs Gespräch stehen im [Ratgeber zum WG-Casting](/wg-casting-fragen).',
+				'Bei beliebten Zimmern kommen schnell dutzende Nachrichten, deshalb legt ihr fest, wer antwortet, und ladet nur Personen zum Casting ein, deren Nachricht zur WG passt. Entscheidet nach den Terminen zeitnah gemeinsam, sagt allen Eingeladenen ab, die es nicht geworden sind, und nutzt fürs Gespräch den [Ratgeber zum WG-Casting](/wg-casting-fragen).',
 			],
 			[
 				'Vor dem Einzug',
-				'Schickt der neuen Person die wichtigsten [Regeln](/wg-regeln) schriftlich: Putzplan, Kostenverteilung, Ruhezeiten, Müll. Klärt die Schlüsselübergabe und die Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG [ManaWG als WG-App](/wg-app) nutzt, schickt ihr einen Einladungslink. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand sofort, neue Ausgaben werden ab dann mit ihr geteilt.',
+				'Schickt der neuen Person die wichtigsten [Regeln](/wg-regeln) schriftlich und klärt Schlüsselübergabe und Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG [ManaWG als WG-App](/wg-app) nutzt, schickt ihr einen Einladungslink. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand; neue Ausgaben werden ab dann mit ihr geteilt.',
 			],
 			[
 				'Vorsicht bei unseriösen Anfragen',
@@ -1908,10 +2071,6 @@ export const GUIDES_DE: Record<string, Topic> = {
 		],
 		faq: [
 			[
-				'Wo finde ich einen neuen Mitbewohner?',
-				'Auf WG-Portalen wie WG-Gesucht, in Gruppen der Hochschule, über Aushänge beim Studierendenwerk, Kleinanzeigen und das eigene Umfeld.',
-			],
-			[
 				'Was gehört in eine WG-Anzeige?',
 				'Zimmergröße, Warmmiete mit Nebenkosten, Einzugsdatum, Befristung, Lage, Fotos bei Tageslicht und eine ehrliche Beschreibung der WG und ihres Alltags.',
 			],
@@ -1944,6 +2103,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 				'https://www.wg-gesucht.de/en/artikel/angebot-aufgeben-so-inserieren-sie-erfolgreich-ihre-wg-wohnung',
 			],
 			['WG-Gesucht, WG inserieren', 'https://www.wg-gesucht.de/en/ic/wg-inserieren.html'],
+			['wgfrei.de, WG-Zimmer anbieten', 'https://wgfrei.de/anbieten/'],
 		],
 	},
 	'wg-auszug-checkliste': {

@@ -721,8 +721,16 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 				'1. Start posting on wg-gesucht.de and choose the category WG room. The account is created in the process; you do not need to register beforehand\n2. Register with an email address or sign in with Google or Apple\n3. Choose a private account, because you are offering a room as a flat share and not letting commercially\n4. Confirm the registration with an SMS code, which WG-Gesucht requires\n5. Enter rent, Nebenkosten (utility charges), Kaution (deposit) and address. According to WG-Gesucht, the ad only appears in the nearby search with a full address\n6. Add title, text and photos as described in the sections below. According to WG-Gesucht, posting is free, and there is also an optional, paid premium offer. As of October 2026; the interface may change',
 			],
 			[
+				'Advertising without an account: alternatives',
+				'On wgfrei.de, according to the site, you can post a WG room without registering and without logging in. The portal only accepts commission-free offers from private individuals, allows four pictures and a video, and does not allow links, phone numbers or email addresses in the description text. Also ask your university’s student representatives (Studierendenvertretung) whether they will take ads for their noticeboard.',
+			],
+			[
 				'What belongs in a good WG ad',
 				'The facts first: room size, Warmmiete (rent including heating and other utilities), move-in date, any fixed term, location and transport links. If you read German ads, the [flat-share glossary](/german-flat-share-glossary) explains abbreviations such as WM, KM and NK. Then the flat share itself: how many people, what age, what do you do, how much do you do together? Good photos of the room, kitchen and bathroom in daylight. And one honest sentence about how you run the household and money, for example with a cleaning rota and shared expenses in an app. That filters out applicants who are looking for something quite different.',
+			],
+			[
+				'State the costs, any Ablöse and the type of contract',
+				'Fill in all the cost fields: rent excluding utilities, Nebenkosten (utility charges), other costs and Kaution (deposit). WG-Gesucht advises stating all costs, because figures that are too low or incomplete can attract enquiries from people who cannot afford the room. Add whether the utility charges are a flat rate or settled against actual use and whether internet, electricity and heating are included. If furniture is to stay in the room against an Ablöse (a payment to the previous occupant for items left behind), list each piece with its price in the text. According to WG-Gesucht, the higher the Ablöse, the lower the chances of finding someone. Mark a Zwischenmiete (short-term sublet) and any fixed term clearly, and say whether the new person gets a sublease (Untermietvertrag).',
 			],
 			[
 				'The ad title: formula and examples',
@@ -730,7 +738,11 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'An example WG ad',
-				'“From 1 December, a 16 square metre room is available in our three-person WG in Leipzig-Connewitz, €420 all-in including internet. We are Mia (26, nursing) and Jonas (24, computer science) and are looking for someone between 21 and 30. During the week everyone cooks for themselves, and on Sundays we often eat together. Cleaning follows a rota that changes weekly, and we settle shared expenses in an app. Write and tell us briefly what you do and how you picture life in a WG. English is fine.” Details like these are specific enough that the right people get in touch and the others do not bother writing.',
+				'“From 1 December, a 16 square metre room is available in our three-person WG in Leipzig-Connewitz, €420 all-in including internet. We are Mia (26, nursing) and Jonas (24, computer science) and are looking for someone between 21 and 30. During the week everyone cooks for themselves, and on Sundays we often eat together. Cleaning follows a rota that changes weekly, and we settle shared expenses in an app. Write and tell us briefly what you do and how you picture life in a WG. English is fine.”',
+			],
+			[
+				'Tick the equipment and caption the photos',
+				'Some searchers filter by features such as balcony, garden, furnished, pets allowed or step-free access. So tick everything that applies to you; WG-Gesucht recommends this because the ad then gets more views. Photograph every room in daylight and tidy, plus the building and the street, so people get a feel for the area. Add a caption to each picture with what the photo does not show, such as “south-facing window, desk stays”. If you do not want to publish the exact address, you can leave out the house number on WG-Gesucht, but according to WG-Gesucht you may then get fewer enquiries.',
 			],
 			[
 				'For international applicants and English-speaking flats',
@@ -738,15 +750,19 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Length, photos and common mistakes',
-				'Length: according to WG-Gesucht, rooms in ads of 150 words or more are let fastest. The example above is shorter, and your ad can be longer as long as it stays concrete.\nPhotos: room, kitchen, bathroom and hallway, in daylight and tidy.\nFiller: “nice flat share” says nothing, while numbers and examples do.\nRent: always state it all-in and say what is included.\nFixed term: if it is missing from the ad, it only comes out in the conversation and costs both sides time.\nNo-gos: two or three real dealbreakers are enough, a long list puts people off.\nReplies: if you leave applications unanswered, you lose the right ones to other flat shares. For the conversation afterwards, see the [WG-Casting guide](/wg-casting-questions).',
+				'Length: according to WG-Gesucht, rooms in ads of 150 words or more are let fastest. The example above is shorter, and your ad can be longer as long as it stays concrete.\nRent: always state it all-in and say what is included.\nFixed term: if it is missing from the ad, it only comes out in the conversation and costs both sides time.\nNo-gos: two or three real dealbreakers are enough, a long list puts people off.\nReplies: if you leave applications unanswered, you lose the right ones to other flat shares. For the conversation afterwards, see the [WG-Casting guide](/wg-casting-questions).',
+			],
+			[
+				'Spreading the word',
+				'Share the link in WhatsApp groups, in university and city groups and on Instagram, and ask friends to pass it on. After you post, WG-Gesucht offers to share the ad on Facebook in a few clicks; according to WG-Gesucht, a like brings 25 per cent more views on average (the portal’s own figure). When you share, always include the link to the ad, not just a photo, so interested people can read the price, dates and conditions themselves. Reply to messages that come from this just as quickly as to those from the portal.',
 			],
 			[
 				'Choosing an applicant',
-				'For popular rooms, dozens of messages come in quickly. Decide who replies and collect the applications in one place. Invite only the people whose message suits the flat to a viewing (a “WG-Casting”, where applicants meet the flat). After the appointments, decide together, as soon as you can, because good applicants often have several offers. Tell everyone you invited who did not get the room. Suitable questions for the conversation are in the [WG-Casting guide](/wg-casting-questions).',
+				'For popular rooms, dozens of messages come in quickly, so decide who replies and invite only people whose message suits the flat to a viewing (a “WG-Casting”, where applicants meet the flat). Decide together soon after the appointments, tell everyone you invited who did not get the room, and use the [WG-Casting guide](/wg-casting-questions) for the conversation.',
 			],
 			[
 				'Before the move',
-				'Send the new person the most important [house rules](/house-rules) in writing: cleaning rota, how costs are split, quiet hours, bins. Arrange the key handover and the Wohnungsgeberbestätigung for the Anmeldung. If your flat uses [ManaWG as its flat-share app](/flat-share-app), send an invite link. After joining, the new person sees the cleaning rota, shopping list, calendar and noticeboard straight away, and new expenses are shared with them from then on.',
+				'Send the new person the most important [house rules](/house-rules) in writing and arrange the key handover and the Wohnungsgeberbestätigung for the Anmeldung. If your flat uses [ManaWG as its flat-share app](/flat-share-app), send an invite link. After joining, the new person sees the cleaning rota, shopping list, calendar and noticeboard, and new expenses are shared with them from then on.',
 			],
 			[
 				'Watch out for dodgy enquiries',
@@ -797,10 +813,6 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 		],
 		faq: [
 			[
-				'Where do I find a new flatmate in Germany?',
-				'On WG portals such as WG-Gesucht, in university groups, through noticeboards at the Studierendenwerk, on classified ads sites such as Kleinanzeigen and through your own network.',
-			],
-			[
 				'What belongs in a WG ad?',
 				'Room size, Warmmiete with utility charges, move-in date, any fixed term, location, photos in daylight and an honest description of the flat share and its everyday life.',
 			],
@@ -840,6 +852,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 				'WG-Gesucht: advertise a shared flat (in German)',
 				'https://www.wg-gesucht.de/ic/wg-inserieren.html',
 			],
+			['wgfrei.de: offer a WG room (in German)', 'https://wgfrei.de/anbieten/'],
 		],
 	},
 };
