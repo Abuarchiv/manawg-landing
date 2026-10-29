@@ -17,7 +17,7 @@ export const UI_EN: TopicUi = {
 	sources: (date) => `Sources (as of ${date})`,
 	guideNoteLabel: 'About this guide',
 	guideNote:
-		'Written by the person who runs ManaWG. This page is reviewed whenever the rules or the app change. Spotted a mistake? Email',
+		'Written by the person who runs ManaWG. This page is reviewed whenever the law or the app changes. Spotted a mistake? Email',
 	ctaTagline: 'Your flat, in one place.',
 	ctaButton: 'Create a flat for free',
 	ctaNote: 'Free, no ads, in the browser.',

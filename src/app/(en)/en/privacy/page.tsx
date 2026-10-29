@@ -6,18 +6,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Privacy policy of ManaWG',
+	title: 'ManaWG privacy policy',
 	description:
-		'Which data ManaWG processes, who it is passed to, how long it is kept and what rights you have.',
+		'What data ManaWG processes, who it is passed to, how long it is kept and what rights you have.',
 	alternates: {
 		canonical: '/en/privacy',
 		languages: languageAlternates('/datenschutz', '/en/privacy') ?? {},
 	},
 	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
 	openGraph: {
-		title: 'Privacy policy of ManaWG',
+		title: 'ManaWG privacy policy',
 		description:
-			'Which data ManaWG processes, who it is passed to, how long it is kept and what rights you have.',
+			'What data ManaWG processes, who it is passed to, how long it is kept and what rights you have.',
 		url: '/en/privacy',
 		siteName: 'ManaWG',
 		locale: 'en_GB',
@@ -111,11 +111,10 @@ export default function PrivacyPage() {
 								<strong>Sign-in and local data:</strong> You can sign in with Google or with an
 								email address and password. With Google sign-in we receive your email address and
 								name from Google. With email sign-in, Supabase sends confirmation emails and
-								password-reset emails to your address. The app also sends welcome, invitation,
-								monthly statement, payment reminder and account deletion emails. Resend delivers
-								them; the sender appears as noreply@manawg.com. Supabase Auth manages sign-in, and
-								the session is stored in cookies. In addition, flat assignments and name drafts may
-								be held in the browser’s local storage.
+								password-reset emails to your address. Resend delivers them; the sender appears as
+								noreply@manawg.com. Supabase Auth manages sign-in, and the session is stored in
+								cookies. In addition, flat assignments and name drafts may be held in the browser’s
+								local storage.
 							</li>
 							<li>
 								<strong>Retention:</strong> We keep account data until you delete your account under{' '}
@@ -376,11 +375,9 @@ export default function PrivacyPage() {
 							</li>
 							<li>
 								<strong>Resend, Inc.</strong> (USA): in production, sends the confirmation and
-								password-reset emails triggered by Supabase Auth and the app’s own emails (welcome,
-								invitations, monthly statement, payment reminders, account deletion). For an
-								invitation, the address a flatmate enters is processed to send it. The sender is
-								noreply@manawg.com (see section 4a). The transfer relies on EU standard contractual
-								clauses or the EU-US Data Privacy Framework.
+								password-reset emails triggered by Supabase Auth. The sender is noreply@manawg.com
+								(see section 4a). The transfer relies on EU standard contractual clauses or the
+								EU-US Data Privacy Framework.
 							</li>
 							<li>
 								<strong>Vercel Inc.</strong> (USA): hosts the web app and runs the edge network;
@@ -397,7 +394,7 @@ export default function PrivacyPage() {
 							</li>
 							<li>
 								<strong>Sentry (Functional Software, Inc.)</strong>: investigates technical errors
-								if Sentry is enabled for the app deployment in question (see section 4c).{' '}
+								if Sentry is enabled for the app deployment in question (see section 4c). See{' '}
 								<a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">
 									Sentry’s privacy notices
 								</a>{' '}
@@ -461,11 +458,12 @@ export default function PrivacyPage() {
 								details and you leave all flats. Data of a flat in which you are the only member is
 								removed from the active database; for the related photos see section{' '}
 								<a href="#4d">4d</a>. If other members stay in a flat, your display name remains on
-								your earlier contributions (see section <a href="#4b">4b</a>). An admin of the flat
-								can remove it irrevocably under <em>Settings → Access → Delete flat permanently</em>
-								. All members, expenses, lists, tasks and noticeboard posts of the flat are then
-								removed from the active database. Access to the related images is blocked straight
-								away; the physical deletion follows later (see section <a href="#4d">4d</a>
+								your earlier contributions (see section <a href="#4b">4b</a>). The person who
+								created a flat can remove it irrevocably under{' '}
+								<em>Settings → Access → Delete flat permanently</em>. All members, expenses, lists,
+								tasks and noticeboard posts of the flat are then removed from the active database.
+								Access to the related images is blocked straight away; the physical deletion follows
+								later (see section <a href="#4d">4d</a>
 								). You can request more extensive deletion by emailing{' '}
 								<a href="mailto:info@manawg.com" className="break-all">
 									info@manawg.com

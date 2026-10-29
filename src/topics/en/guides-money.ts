@@ -70,7 +70,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Is there an app for splitting flat costs?',
-				'Yes, for example ManaWG: free, with no ads, in German and English, with balances, settlement suggestions and fixed costs. It runs in the browser, so no app store is needed.',
+				'Yes, for example ManaWG: free, with no ads, in English and German, with balances, settlement suggestions and fixed costs. It runs in the browser, so no app store is needed.',
 			],
 		],
 	},
@@ -344,7 +344,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		titel: 'Flat-share household kitty: cash, account or app? | ManaWG',
 		beschreibung:
 			'A shared household kitty in a flat share: cash tin, joint account or app? Pros and cons, a worked example, rules and settling up without arguments.',
-		h1: 'The flat-share household kitty: three ways',
+		h1: 'The flat-share household kitty: three options',
 		einleitung:
 			'Loo roll, cleaning products, dishwasher tablets: small items add up and cause friction. A shared kitty can solve that, as long as it is clear how it is run. This guide covers the three usual ways with their pros and cons, a worked example and the rules that should apply whichever you choose.',
 		abschnitte: [
@@ -353,16 +353,16 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Before you discuss the form, settle the content. Typical items are things everyone uses up: loo roll, washing-up liquid, cleaning products, bin bags, light bulbs, spices and staples such as oil, salt or coffee, if you share those. Private groceries, toiletries and things for your own room do not belong in it. Bigger purchases such as a vacuum cleaner are better kept separate, because when someone moves out the question comes up of who owns the appliance.',
 			],
 			[
-				'Way 1: a cash tin',
+				'Option 1: a cash tin',
 				'Everyone pays a fixed amount into a tin every month, and shared shopping is paid from it. It is easy to see and needs no technology. In practice it quickly gets messy: receipts go missing, nobody knows the balance, someone without cash pays out of pocket and forgets, and whoever moves out wants their share of what is left. If you choose this way, keep a cash book and count the tin together once a month.',
 			],
 			[
-				'Way 2: a joint account',
+				'Option 2: a joint account',
 				'An account that everyone pays into by standing order is transparent, because every transaction is visible. But someone has to open it, run it and answer for it, and many banks charge fees. If the account is in one person’s name, they carry the risk if others do not pay. When people in the flat change often, managing access gets tedious too.',
 			],
 			[
-				'Way 3: record expenses and settle up',
-				'Instead of holding money, everyone pays for what is missing and records the amount, for example straight after shopping from the [shared shopping list](/organise-flat-shopping). At the end of the month the balances show who owes whom. How to settle open balances fairly is covered in [debts between flatmates](/flatmate-debts). There is no pot for anyone to manage, and nobody is permanently out of pocket. In [ManaWG as your shared expenses](/shared-expenses) you split equally or with individual amounts per person, give each expense a category and see where the money goes. The app suggests settlements with few transfers. You transfer the money yourselves and mark it as paid. If you have been using Splitwise or Splid, bring the old data across with the CSV import, see [switching](/switch-from-splitwise-or-splid).',
+				'Option 3: record expenses and settle up',
+				'Instead of holding money, everyone pays for what is missing and records the amount, for example straight after shopping from the [shared shopping list](/organise-flat-shopping). At the end of the month the balances show who owes whom. How to settle open balances fairly is covered in [debts between flatmates](/flatmate-debts). There is no pot for anyone to manage, and nobody is permanently out of pocket. In [ManaWG’s shared expenses](/shared-expenses) you split equally or with individual amounts per person, give each expense a category and see where the money goes. The app suggests settlements with few transfers. You transfer the money yourselves and mark it as paid. If you have been using Splitwise or Splid, bring the old data across with the CSV import, see [switching](/switch-from-splitwise-or-splid).',
 			],
 			[
 				'Worked example',
@@ -375,7 +375,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		],
 		fragen: [
 			[
-				'How much should go into the flat kitty each month?',
+				'How much should go into the household kitty each month?',
 				'It depends on your needs. Add up your actual shared spending over three months and divide by the number of flatmates and months. With the settle-up approach there is no fixed payment in.',
 			],
 			[
@@ -383,8 +383,8 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Open amounts should be settled before they leave. With a cash tin or an account, the person gets their share of the balance. With recorded expenses, it is enough to bring the balance to zero.',
 			],
 			[
-				'Is there an app for a flat kitty?',
-				'Yes. ManaWG is free, has no ads, works in German and English and shows balances and settlement suggestions.',
+				'Is there an app for a household kitty?',
+				'Yes. ManaWG is free, has no ads, works in English and German and shows balances and settlement suggestions.',
 			],
 		],
 	},
@@ -405,7 +405,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Record it straight away',
-				'Enter every expense immediately, while the receipt is to hand. In [ManaWG as your shared expenses](/shared-expenses) you can see each person’s balance at any time. The shares always add up to exactly the total. With an equal split, any leftover cent moves on from one entry to the next, so it does not always fall on the same person.',
+				'Enter every expense immediately, while the receipt is to hand. In [ManaWG’s shared expenses](/shared-expenses) you can see each person’s balance at any time. The shares always add up to exactly the total. With an equal split, any leftover cent moves on from one entry to the next, so it does not always fall on the same person.',
 			],
 			[
 				'Settle up with a few transfers',
@@ -433,7 +433,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Lent instead of shared: debts between friends',
-				'Borrowed money is different from a shared expense: someone fronts the Kaution (rental deposit) or helps out with €300 until the end of the month. That is a loan (Darlehen), for which § 488 BGB prescribes no particular form between private individuals. If no repayment date is agreed, it only falls due when one side gives notice, and the notice period is three months (§ 488 para. 3 BGB). So always name a date when you lend. If an argument comes later, proof is usually missing. Helpful are a bank transfer with a reference such as “Loan, repay by 30 Nov”, a message in which the other person confirms the amount and date, or a short signed note with amount, date and repayment date. Keep such loans apart from shared expenses in your [shared expenses](/shared-expenses) so that the balances stay right.',
+				'Borrowed money is different from a shared expense: someone fronts the Kaution (rental deposit) or helps out with €300 until the end of the month. That is a loan (Darlehen), for which § 488 BGB prescribes no particular form between private individuals. If no repayment date is agreed, it only falls due when one side gives notice, and the notice period is three months (§ 488 para. 3 BGB). So always name a date when you lend. If an argument comes later, proof is usually missing. What helps is a bank transfer with a reference such as “Loan, repay by 30 Nov”, a message in which the other person confirms the amount and date, or a short signed note with amount, date and repayment date. Keep such loans out of your [shared expenses](/shared-expenses) so that the balances stay right.',
 			],
 			[
 				'Reminders and limitation: how long you can claim the money back',
@@ -519,7 +519,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'The import in four steps',
-				'1. Open the import in your flat and choose the source: Splitwise CSV or Splid CSV.\n2. Choose the CSV file or paste its contents.\n3. Check the preview with all recognised rows and match the names in the file to your flatmates. The app marks suggested matches, please check them.\n4. Confirm the import. Only then is anything saved.',
+				'1. Open the import in your flat and choose the source: Splitwise CSV or Splid CSV.\n2. Choose the CSV file or paste its contents.\n3. Check the preview with all recognised rows and match the names in the file to your flatmates. The app marks suggested matches; check them before you confirm.\n4. Confirm the import. Only then is anything saved.',
 			],
 			[
 				'Matching names and leaving rows out',
@@ -590,7 +590,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'What you can do',
-				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in German and English and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [switching](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative).',
+				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [switching](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative).',
 			],
 		],
 		tabellen: [
@@ -600,12 +600,16 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				kopf: ['Feature', 'Free', 'Pro'],
 				zeilen: [
 					['Expenses', `up to ${SPLITWISE_TAGESLIMIT} per day`, 'unlimited'],
-					['Transaction import (selected countries only)', 'listed as a Pro feature', 'included'],
-					['Search', 'listed as a Pro feature', 'included'],
-					['Currency conversion', 'Pro only', 'included'],
-					['Receipt scanning and itemised splits', 'Pro only', 'included'],
-					['Charts', 'listed as a Pro feature', 'included'],
-					['Default splits', 'listed as a Pro feature', 'included'],
+					[
+						'Transaction import (selected countries only)',
+						'not included (listed as Pro)',
+						'included',
+					],
+					['Search', 'not included (listed as Pro)', 'included'],
+					['Currency conversion', 'not included (listed as Pro)', 'included'],
+					['Receipt scanning and itemised splits', 'not included (listed as Pro)', 'included'],
+					['Charts', 'not included (listed as Pro)', 'included'],
+					['Default splits', 'not included (listed as Pro)', 'included'],
 				],
 				hinweis: 'Source: Splitwise help centre, accessed on 27 October 2026.',
 			},
@@ -720,7 +724,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'WG-Gesucht: creating an account and placing an ad',
-				'1. Start posting on wg-gesucht.de and choose the category WG room. The account is created in the process, you do not need to register beforehand\n2. Register with an email address or sign in with Google or Apple\n3. Choose a private account, because you are offering a room as a flat share and not letting commercially\n4. Confirm the registration with an SMS code, which WG-Gesucht requires\n5. Enter rent, Nebenkosten (utility charges), Kaution (deposit) and address. According to WG-Gesucht, the ad only appears in the nearby search with a full address\n6. Add title, text and photos as described in the sections below. According to WG-Gesucht, posting is free, and there is also an optional, paid premium offer. As of October 2026, the interface may change',
+				'1. Start posting on wg-gesucht.de and choose the category WG room. The account is created in the process, you do not need to register beforehand\n2. Register with an email address or sign in with Google or Apple\n3. Choose a private account, because you are offering a room as a flat share and not letting commercially\n4. Confirm the registration with an SMS code, which WG-Gesucht requires\n5. Enter rent, Nebenkosten (utility charges), Kaution (deposit) and address. According to WG-Gesucht, the ad only appears in the nearby search with a full address\n6. Add title, text and photos as described in the sections below. According to WG-Gesucht, posting is free, and there is also an optional, paid premium offer. As of October 2026; the interface may change',
 			],
 			[
 				'What belongs in a good WG ad',

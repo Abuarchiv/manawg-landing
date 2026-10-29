@@ -235,7 +235,7 @@ export const en: HomeDict = {
 		],
 		[
 			'Do I need an app from a store?',
-			'No. ManaWG runs in the browser at app.manawg.com. You can add it to your Home Screen and open it from there; there is no download from the App Store or Google Play.',
+			'No. ManaWG runs in the browser at app.manawg.com. You can add it to your home screen and open it from there; there is no download from the App Store or Google Play.',
 		],
 		[
 			'What does ManaWG cost?',
@@ -260,7 +260,7 @@ export const en: HomeDict = {
 		account: 'Account',
 		create: 'Create a flat',
 		invite: 'Accept an invitation',
-		login: 'Log in',
+		login: 'Sign in',
 		legal: 'Legal',
 		legalNotice: 'Legal notice',
 		privacy: 'Privacy policy',

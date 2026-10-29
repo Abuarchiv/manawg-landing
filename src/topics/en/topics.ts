@@ -79,7 +79,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Who ManaWG is for',
-				'Student flats, professional flat shares and a couple sharing with a flatmate: up to 20 active members fit in one flat. People join with a code or a link, and invitations can also go out by email. You sign in with Google or with email and password. The app runs in the browser and can be added to your home screen. The interface is in English and German and follows the language of your device.',
+				'Student flats, professional flat shares and a couple sharing with a flatmate: up to 20 active members fit in one flat. People join through an invite link, and invitations can also go out by email. You sign in with Google or with email and password. The app runs in the browser and can be added to your home screen. The interface is in English and German and follows the language of your device.',
 			],
 			[
 				'How your flat gets started',
@@ -349,7 +349,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'In the supermarket, even with a weak signal',
-				'ManaWG runs in the browser at app.manawg.com and can be added to the home screen without an app store. If the network drops while you are out, the app keeps actions locally and sends them later. After 7 days, actions that were left behind are no longer sent automatically but shown to you for review. Each person switches push notifications for shopping and supplies on or off. What else the app can do is on [Flat-share app](/flat-share-app).',
+				'ManaWG runs in the browser at app.manawg.com and can be added to the home screen without an app store. If the network drops while you are out, the app keeps actions locally and sends them later. After about seven days, actions that were left behind are no longer sent automatically but shown to you for review. Each person switches push notifications for shopping and supplies on or off. What else the app can do is on [Flat-share app](/flat-share-app).',
 			],
 		],
 		fragen: [
@@ -407,19 +407,43 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					row,
 					...[
 						[
-							'finances per provider',
-							'chores per provider',
-							'shopping per provider',
+							'finances, per the provider',
+							'chores, per the provider',
+							'shopping, per the provider',
 							NC,
-							'noticeboard per provider, chat not checked',
+							'pinboard, per the provider; chat not checked',
 							NC,
-							'Premium is paid per provider',
+							'Premium is paid, per the provider',
 						],
 						MANAWG_CELLS,
 						[],
-						['yes, in groups', NC, NC, NC, NC, 'over 150 per provider', 'free per provider'],
-						['yes', NC, NC, NC, NC, 'conversion in Pro per provider', 'Pro plan per provider'],
-						['yes', NC, NC, NC, NC, 'multiple currencies per provider', 'free per provider'],
+						[
+							'yes, in groups',
+							NC,
+							NC,
+							NC,
+							NC,
+							'over 150, per the provider',
+							'free, per the provider',
+						],
+						[
+							'yes',
+							NC,
+							NC,
+							NC,
+							NC,
+							'conversion in Pro, per the provider',
+							'Pro plan, per the provider',
+						],
+						[
+							'yes',
+							NC,
+							NC,
+							NC,
+							NC,
+							'multiple currencies, per the provider',
+							'free, per the provider',
+						],
 					].map((column) => column[i] ?? NC),
 				]),
 				hinweis:
@@ -449,7 +473,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'6. Privacy and language',
-				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the data is stored in the EU, there are no ads, and the app is available in English and German. There are no currencies other than the euro. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
+				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. There are no currencies other than the euro. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
 			],
 			[
 				'7. How easy is switching?',
@@ -510,8 +534,8 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					NC,
 					NC,
 					NC,
-					'conversion in Pro per provider',
-					'Pro plan per provider; scope of the free version not checked',
+					'conversion in Pro, per the provider',
+					'Pro plan, per the provider; scope of the free version not checked',
 				],
 				'Details on Splitwise come from the provider’s Pro page, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
@@ -527,7 +551,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Reads photos, but is not a receipt scanner',
-				'In the import you choose the source Screenshot. ManaWG reads a photo or screenshot of an expense list with text recognition in the browser and shows a preview you can correct. Only euro amounts are recognised, and reading can take up to 30 seconds. On a single receipt you only attach a photo, and it is not analysed there.',
+				'In the import you choose the source Screenshot. ManaWG reads a photo or screenshot of an expense list with text recognition in the browser and shows a preview you can correct. Only euro amounts are recognised, and reading can take up to 30 seconds. A photo of a single receipt is only attached to the expense, not analysed.',
 			],
 			[
 				'CSV import, if your data exists as a file',
@@ -553,7 +577,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Does ManaWG read receipts from a photo?',
-				'Not in the strict sense. The import reads photos or screenshots of expense lists and recognises euro amounts. A photo on a single receipt is only attached, not analysed.',
+				'Not in the strict sense. The import reads photos or screenshots of expense lists and recognises euro amounts. A photo of a single receipt is only attached, not analysed.',
 			],
 			[
 				'Does ManaWG work with foreign currencies?',
@@ -582,14 +606,14 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 		tabellen: [
 			comparisonTable(
 				'Splid',
-				['yes, in groups', NC, NC, NC, NC, 'over 150 per provider', 'free per provider'],
+				['yes, in groups', NC, NC, NC, NC, 'over 150, per the provider', 'free, per the provider'],
 				'Details on Splid come from the provider’s English page, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
 		abschnitte: [
 			[
 				'What Splid does, per the provider',
-				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. Details of the feature set are there as of 14 October 2026. In ManaWG, by contrast, each person signs in with Google or with email and password. In return, expenses, balances and history belong firmly to your flat, and flatmates join through an invite link or an email invitation.',
+				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. Details of the feature set are there as of 14 October 2026. In ManaWG, each person signs in with Google or with email and password. That way, expenses, balances and history stay tied to your flat, and flatmates join through an invite link or an email invitation.',
 			],
 			[
 				'Expenses and household in one app',
@@ -597,7 +621,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Fixed costs and the monthly statement',
-				'You enter rent, internet or electricity once as fixed costs. The interval counts in whole months, and a template can be paused. At the end of the month the statement shows the total, expenses per category and suggested transfers. It arrives on the 1st of the month by email, and each member can switch that off individually. With equally split fixed costs, the odd cent moves on to the next person.',
+				'You enter rent, internet or electricity once as fixed costs. The interval counts in whole months, and a template can be paused. At the end of the month the statement shows the total, expenses per category and suggested transfers. It arrives on the first of the month by email, and each member can switch that off individually. With equally split fixed costs, the odd cent moves on to the next person.',
 			],
 			[
 				'Moving over with a CSV import',
@@ -654,20 +678,20 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			comparisonTable(
 				'Flatastic',
 				[
-					'finances per provider',
-					'chores per provider',
-					'shopping per provider',
+					'finances, per the provider',
+					'chores, per the provider',
+					'shopping, per the provider',
 					NC,
-					'noticeboard per provider, chat not checked',
+					'pinboard, per the provider; chat not checked',
 					NC,
-					'Premium is paid per provider; scope of the free version not checked',
+					'Premium is paid, per the provider; scope of the free version not checked',
 				],
 				'Details on Flatastic come from the provider’s English pages, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 			{
 				nach: 'What Flatastic Premium unlocks',
 				titel: 'Flatastic Premium and ManaWG',
-				kopf: ['Feature', 'Flatastic per provider', 'ManaWG'],
+				kopf: ['Feature', 'Flatastic, per the provider', 'ManaWG'],
 				zeilen: [
 					['Ads', 'no advertising with Premium', 'no ads'],
 					['Cleaning history', 'Premium', 'history of every completion'],
@@ -681,7 +705,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 						'CSV of financial entries with Premium',
 						'JSON and CSV for each area, for any member',
 					],
-					['Images on expenses', 'Premium', 'photo on a receipt, attached, not analysed'],
+					['Images on expenses', 'Premium', 'receipt photo on an expense, attached, not analysed'],
 				],
 				hinweis:
 					'Details on Flatastic come from the provider’s Premium page, checked on 27 October 2026. Anything the sources do not support reads “not checked”.',
@@ -769,7 +793,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 		tabellen: [
 			comparisonTable(
 				'Tricount',
-				['yes', NC, NC, NC, NC, 'multiple currencies per provider', 'free per provider'],
+				['yes', NC, NC, NC, NC, 'multiple currencies, per the provider', 'free, per the provider'],
 				'Details on Tricount come from the provider’s features page and App Store listing, checked on 27 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
@@ -923,7 +947,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Can I take data from Splitwise or Splid with me?',
-				'If your data exists as a CSV file, through the [CSV import with a preview](/switch-from-splitwise-or-splid). In the import you can also read in a photo or screenshot of an expense list with text recognition and correct it before saving; a photo on a single receipt is only attached, not analysed.',
+				'If your data exists as a CSV file, through the [CSV import with a preview](/switch-from-splitwise-or-splid). In the import you can also read in a photo or screenshot of an expense list with text recognition and correct it before saving; a photo of a single receipt is only attached, not analysed.',
 			],
 			[
 				'What is there besides money and cleaning?',
@@ -993,7 +1017,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Facts at a glance',
-				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro. Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: stored in the EU (Frankfurt am Main). Joining: by invite link or email invitation.',
+				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro. Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: database in the EU (Frankfurt am Main). Joining: by invite link or email invitation.',
 			],
 			[
 				'Features',
@@ -1021,7 +1045,10 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'Does ManaWG have anything to do with WireGuard?',
 				'No. ManaWG is a household app for shared flats. WireGuard is a VPN protocol.',
 			],
-			['Where is ManaWG’s data stored?', 'In the EU, on servers in Frankfurt am Main.'],
+			[
+				'Where is ManaWG’s data stored?',
+				'The database and photos are stored with Supabase in Frankfurt am Main (EU). Email is sent through Resend (USA). Details are in the privacy policy.',
+			],
 		],
 	},
 };

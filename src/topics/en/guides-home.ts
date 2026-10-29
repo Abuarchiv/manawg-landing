@@ -53,7 +53,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Fridge and dishwasher',
-				'These two corners of the kitchen tend to get missed because they belong to nobody. Give them their own lines in the plan. Go through the fridge every two weeks: bin anything out of date and wipe the shelves. Empty the dishwasher daily and clean its filter now and then. If someone notices that something has run out, they add it to the list. In ManaWG the supplies show what is running low and suggest what to buy, more on that at [shared shopping list](/shopping-list).',
+				'These two corners of the kitchen tend to get missed because they belong to nobody. Give them their own lines in the plan. Go through the fridge every two weeks: bin anything out of date and wipe the shelves. Empty the dishwasher daily and clean its filter now and then. If someone notices that something has run out, they add it to the list. In ManaWG the supplies show what is running low and suggest what to buy. More on that on the [shared shopping list](/shopping-list) page.',
 			],
 			[
 				'Step 2: estimate the effort',
@@ -134,7 +134,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			{
 				nach: 'Step 4: share them out, fixed or rotating',
 				titel: 'Three ways to share tasks out',
-				kopf: ['Way', 'Upside', 'Downside'],
+				kopf: ['Approach', 'Upside', 'Downside'],
 				zeilen: [
 					[
 						'Fixed areas',
@@ -564,7 +564,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Rows about cleaning',
-				'Cleaning rows usually arise because it is unclear whose turn it is or because tasks are shared unevenly. A cleaning rota with a fixed rotation takes the discussion out: it is visible who is next and what is done. How to build one is in [making a cleaning rota](/make-a-cleaning-rota), and a [cleaning rota template to print](/cleaning-rota-template) helps you start. In the [flat-share app ManaWG](/flat-share-app), tasks move on automatically and anyone who is away is skipped. If one person still does not clean for good, that belongs at the flat meeting, not in passive-aggressive notes on the fridge.',
+				'Cleaning rows usually arise because it is unclear whose turn it is or because tasks are shared unevenly. A cleaning rota with a fixed rotation takes the discussion out: it is visible who is next and what is done. How to build one is in [making a cleaning rota](/make-a-cleaning-rota), and a [cleaning rota template to print](/cleaning-rota-template) helps you start. In the [flat-share app ManaWG](/flat-share-app), tasks move on automatically and anyone who is away is skipped. If one person still keeps not cleaning, that belongs at the flat meeting, not in passive-aggressive notes on the fridge.',
 			],
 			[
 				'Rows about noise and guests',
@@ -607,7 +607,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Cleaning rota while someone is away',
-				'Someone who is not there cannot clean. When you are [making a cleaning rota](/make-a-cleaning-rota), a rule for this belongs in it. The usual approach is that people who are away are skipped and do not have to catch up on everything afterwards. Some flats agree that before a long trip the person does their own task first, so nobody takes over an uncleaned bathroom. In [ManaWG as a cleaning rota app](/cleaning-rota) you enter time away with a date range. When a task is marked done, that person is passed over at the next assignment. Tasks already assigned stay with them, the app marks them as away, and someone else can take them over.',
+				'Someone who is not there cannot clean. When you are [making a cleaning rota](/make-a-cleaning-rota), a rule for this belongs in it. The usual approach is that people who are away are skipped and do not have to catch up on everything afterwards. Some flats agree that before a long trip the person does their own task first, so nobody takes over an uncleaned bathroom. In the [ManaWG cleaning rota](/cleaning-rota) you enter time away with a date range. When a task is marked done, that person is passed over at the next assignment. Tasks already assigned stay with them, the app marks them as away, and someone else can take them over.',
 			],
 			[
 				'Rent and fixed costs',
@@ -678,7 +678,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Questions about money and shopping',
-				'Are there things you definitely do not want to share?\nHow should internet, electricity and cleaning supplies be split?\nWould you enter expenses in a shared [flat kitty](/shared-expenses) and settle up at the end of the month?\nWhat do you buy for everyone, and what for yourself?\nFor basics such as washing-up liquid and toilet paper: do you pay from a kitty or in turn?\nWould you say so if money gets tight?\nTell them openly how your flat has settled up so far, see [splitting flat costs](/split-flat-costs). Anyone who knows at the casting how things are settled has no surprises later.',
+				'Are there things you definitely do not want to share?\nHow should internet, electricity and cleaning supplies be split?\nWould you enter expenses in a [shared expenses app](/shared-expenses) and settle up at the end of the month?\nWhat do you buy for everyone, and what for yourself?\nFor basics such as washing-up liquid and toilet paper: do you pay from a kitty or in turn?\nWould you say so if money gets tight?\nTell them openly how your flat has settled up so far, see [splitting flat costs](/split-flat-costs). Anyone who knows at the casting how things are settled has no surprises later.',
 			],
 			[
 				'Questions about guests, partners and parties',
@@ -884,7 +884,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Address registration and formalities',
-				'Someone who is already registered in Germany and stays no longer than six months does not usually have to re-register for the sublet. If the person stays longer, they must register (Anmeldung, address registration) within two weeks after the six months have passed, and someone who otherwise lives abroad must already do so after three months. For this, you as main tenant issue the Wohnungsgeberbestätigung (landlord’s confirmation of move-in). You yourself normally stay registered at the flat address while you are away. Arrange mail forwarding or ask the flat to collect your post. More on registering is in [Anmeldung in a shared flat](/anmeldung-shared-flat).',
+				'Someone who is already registered in Germany and stays no longer than six months does not usually have to re-register for the sublet. If the person stays longer, they must register (Anmeldung, address registration) within two weeks after the six months have passed, and someone who otherwise lives abroad must already do so after three months. For this, you as main tenant issue the Wohnungsgeberbestätigung (landlord’s confirmation of move-in). You yourself normally stay registered at the flat address while you are away. Set up a mail redirection (Nachsendeauftrag) or ask the flat to collect your post. More on registering is in [Anmeldung in a shared flat](/anmeldung-shared-flat).',
 			],
 			[
 				'In daily life in the flat',

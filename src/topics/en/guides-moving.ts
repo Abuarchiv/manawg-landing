@@ -132,7 +132,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Is ManaWG suitable for new flat shares?',
-				'Yes. One person creates the flat and shares the invite link, and the others are in straight away. The app is free, available in German and English, and needs no installation from an app store.',
+				'Yes. One person creates the flat and shares the invite link, and the others are in straight away. The app is free, available in English and German, and needs no installation from an app store.',
 			],
 		],
 		tabellen: [
@@ -229,7 +229,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				zeilen: [
 					[
 						'Deposit',
-						'at the start of the tenancy, three monthly instalments possible if paid in cash (§ 551 para. 2 BGB)',
+						'at the start of the tenancy, three monthly instalments possible for a money deposit (§ 551 para. 2 BGB)',
 						'each person their share, note the shares down',
 					],
 					['First rent', 'at the start of the tenancy', 'according to your split'],

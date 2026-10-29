@@ -6,18 +6,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Legal notice of ManaWG',
+	title: 'ManaWG legal notice',
 	description:
-		'Legal notice of ManaWG, the free flat-share app: who runs the app and how to get in touch with questions about the app and this website.',
+		'ManaWG legal notice, the free flat-share app: who runs the app and how to get in touch with questions about the app and this website.',
 	alternates: {
 		canonical: '/en/legal-notice',
 		languages: languageAlternates('/impressum', '/en/legal-notice') ?? {},
 	},
 	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
 	openGraph: {
-		title: 'Legal notice of ManaWG',
+		title: 'ManaWG legal notice',
 		description:
-			'Legal notice of ManaWG, the free flat-share app: who runs the app and how to get in touch with questions about the app and this website.',
+			'ManaWG legal notice, the free flat-share app: who runs the app and how to get in touch with questions about the app and this website.',
 		url: '/en/legal-notice',
 		siteName: 'ManaWG',
 		locale: 'en_GB',

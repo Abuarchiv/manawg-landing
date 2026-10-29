@@ -1,6 +1,6 @@
 # ManaWG
 
-> ManaWG is a free flat-share app (a WG, or Wohngemeinschaft, is a shared flat in Germany). Flatmates split expenses, keep a shared shopping list, run a rotating cleaning rota and agree things on a noticeboard. The app runs in the browser and can be installed on the Home Screen without an app store.
+> ManaWG is a free flat-share app (a WG, or Wohngemeinschaft, is a shared flat in Germany). Flatmates split expenses, keep a shared shopping list, run a rotating cleaning rota and agree things on a noticeboard. The app runs in the browser and can be installed on the home screen without an app store.
 
 Note on the name: ManaWG is a household app for shared flats and has nothing to do with WireGuard.
 
@@ -8,7 +8,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 
 - Split expenses: equally or with custom amounts per person, balances, settling up with as few transfers as possible
 - Fixed costs and monthly statement: recurring costs such as rent or internet
-- Import: bring in matching CSV files from Splitwise and Splid (preview, undo); read a photo or screenshot of an expense list with text recognition, photo on a single receipt as an attachment only
+- Import: bring in matching CSV files from Splitwise and Splid (preview, undo); read a photo or screenshot of an expense list with text recognition, a receipt photo on a single expense is an attachment only
 - Shopping list and supplies: one list for everyone, ticked-off purchases can be booked straight as an expense
 - Cleaning rota: tasks repeat, rotate fairly, and absent flatmates are skipped
 - Calendar (also as a calendar subscription), noticeboard and chat
@@ -57,7 +57,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [WG-Casting questions](https://manawg.com/en/wg-casting-questions): how it works, list of questions, sample texts for accepting and declining
 - [Flat-share tenancy agreement](https://manawg.com/en/flat-share-tenancy-agreement): joint tenancy, subletting, individual contracts, liability, deposit, sample checklist
 - [Asking a flatmate to leave](https://manawg.com/en/asking-a-flatmate-to-leave): subletting, main tenancy, individual contracts, no contract, notice periods, written form
-- [Anmeldung in a shared flat](https://manawg.com/en/anmeldung-shared-flat): landlord's confirmation of move-in, deadline, main and secondary residence, deregistering
+- [Anmeldung in a shared flat](https://manawg.com/en/anmeldung-shared-flat): landlord’s confirmation of move-in, deadline, main and secondary residence, deregistering
 - [Subletting a room](https://manawg.com/en/subletting-a-room): permission, contract, rent, deposit, registration
 - [Resolving flatmate conflict](https://manawg.com/en/flatmate-conflict): cleaning, noise, money
 - [Give notice on a room](https://manawg.com/en/give-notice-on-a-room): notice periods, examples with dates, template, replacement tenant, joint contract

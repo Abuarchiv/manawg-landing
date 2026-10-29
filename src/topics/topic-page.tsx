@@ -66,14 +66,16 @@ const deutsch = (teil: string, locale: Locale) =>
 			);
 
 const zelle = 'px-3 py-2 border-b border-white/10';
-// English strings are longer: with up to three columns the table fits a phone instead of scrolling sideways.
+// English strings are longer: with up to three short columns the table fits a phone instead of scrolling sideways.
 const zelleEn = 'px-2 md:px-3 py-2 border-b border-white/10';
 
 type TabelleDaten = NonNullable<Thema['tabellen']>[number];
 
 // Tabelle als Daten: scrollbare, beschriftete Region mit Spaltenköpfen und Zeilenkopf in der ersten Spalte.
 function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
-	const kompakt = locale === 'en' && t.kopf.length <= 3;
+	// Long cells would wrap to one or two words per line on a phone, so those tables keep the scroll region.
+	const kompakt =
+		locale === 'en' && t.kopf.length <= 3 && t.zeilen.every((z) => z.every((f) => f.length <= 48));
 	const zelleKlasse = kompakt ? zelleEn : zelle;
 	const id = `tabelle-${slug(t.titel)}`;
 	return (
@@ -165,8 +167,9 @@ export function topicMetadata(locale: Locale, slug: string): Metadata {
 			type: 'article',
 			publishedTime: zeitpunkt(t.erschienen),
 			modifiedTime: zeitpunkt(t.stand),
+			images: [{ url: `${path}/opengraph-image`, width: 1200, height: 630, alt: t.h1 }],
 		},
-		twitter: { title: t.titel, description: t.beschreibung },
+		twitter: { title: t.titel, description: t.beschreibung, images: [`${path}/opengraph-image`] },
 	};
 }
 
@@ -205,6 +208,7 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 		'@id': `${site}${path}#artikel`,
 		headline: t.h1,
 		description: t.beschreibung,
+		image: `${site}${path}/opengraph-image`,
 		inLanguage: IN_LANGUAGE[locale],
 		datePublished: zeitpunkt(t.erschienen),
 		dateModified: zeitpunkt(t.stand),

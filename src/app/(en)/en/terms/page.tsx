@@ -6,18 +6,18 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-	title: 'Terms of use of ManaWG',
+	title: 'ManaWG terms of use',
 	description:
-		'Terms of use of ManaWG, the free flat-share app: account, use, flat content, liability, termination and deletion of data.',
+		'ManaWG terms of use, the free flat-share app: account, use, flat content, liability, termination and deletion of data.',
 	alternates: {
 		canonical: '/en/terms',
 		languages: languageAlternates('/agb', '/en/terms') ?? {},
 	},
 	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
 	openGraph: {
-		title: 'Terms of use of ManaWG',
+		title: 'ManaWG terms of use',
 		description:
-			'Terms of use of ManaWG, the free flat-share app: account, use, flat content, liability, termination and deletion of data.',
+			'ManaWG terms of use, the free flat-share app: account, use, flat content, liability, termination and deletion of data.',
 		url: '/en/terms',
 		siteName: 'ManaWG',
 		locale: 'en_GB',
@@ -182,10 +182,10 @@ export default function TermsPage() {
 							explained in section <Link href="/en/privacy#rechte">8 of the privacy policy</Link>.
 						</p>
 						<p className="mt-2">
-							An admin of the flat can remove it irrevocably under{' '}
+							The person who created a flat can remove it irrevocably under{' '}
 							<em>Settings → Access → Delete flat permanently</em>. The flat’s data is removed from
-							the active database. Images can no longer be retrieved straight away; for the physical
-							deletion that follows, see{' '}
+							the active database. From that moment, images can no longer be retrieved; for the
+							physical deletion that follows, see{' '}
 							<Link href="/en/privacy#4d">section 4d of the privacy policy</Link>.
 						</p>
 						<p className="mt-2">
