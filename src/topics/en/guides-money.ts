@@ -88,7 +88,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Calculator',
-				'Enter the rent, the area of each room in square metres and the area of the shared rooms such as the kitchen, bathroom and hall. Whether you use Kaltmiete (rent excluding utilities) or Warmmiete (rent including heating and other utilities) is up to you, the calculation stays the same. The pre-filled values are an example. What you enter stays in your browser and is neither stored nor sent anywhere.',
+				'Enter the rent, the area of each room in square metres and the area of the shared rooms such as the kitchen, bathroom and hallway. Whether you use Kaltmiete (rent excluding utilities) or Warmmiete (rent including heating and other utilities) is up to you; the calculation stays the same. The pre-filled values are an example. What you enter stays in your browser and is neither stored nor sent anywhere.',
 			],
 			[
 				'The formula with an example',
@@ -104,7 +104,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Using the result in ManaWG',
-				'Set the rent up as a fixed cost in [shared expenses](/shared-expenses): enter the amount, choose an interval of one month, and under “Paid by” pick the person who transfers the rent to the landlord. Under the split, choose “Manually” and enter each person’s amount from the calculator. ManaWG shows whether the shares add up to the rent. A split by percentage is not available, you enter euro amounts. After that, the app books the rent as an expense every month automatically.',
+				'Set the rent up as a fixed cost in [shared expenses](/shared-expenses): enter the amount, choose an interval of one month, and under “Paid by” pick the person who transfers the rent to the landlord. Under the split, choose “Manually” and enter each person’s amount from the calculator. ManaWG shows whether the shares add up to the rent. Splitting by percentage is not available; you enter euro amounts. After that, the app books the rent as an expense every month automatically.',
 			],
 		],
 		tabellen: [
@@ -142,7 +142,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Does the shared area count?',
-				'It can, but it does not have to. Without it, each room pays only for its own area. With it, everyone pays the same area share for the kitchen, bathroom and hall, and the differences get smaller. Agree together which rooms count as shared area.',
+				'It can, but it does not have to. Without it, each room pays only for its own area. With it, everyone pays the same area share for the kitchen, bathroom and hallway, and the differences get smaller. Agree together which rooms count as shared area.',
 			],
 			[
 				'What if a room has a balcony?',
@@ -362,7 +362,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Option 3: record expenses and settle up',
-				'Instead of holding money, everyone pays for what is missing and records the amount, for example straight after shopping from the [shared shopping list](/organise-flat-shopping). At the end of the month the balances show who owes whom. How to settle open balances fairly is covered in [debts between flatmates](/flatmate-debts). There is no pot for anyone to manage, and nobody is permanently out of pocket. In [ManaWG’s shared expenses](/shared-expenses) you split equally or with individual amounts per person, give each expense a category and see where the money goes. The app suggests settlements with few transfers. You transfer the money yourselves and mark it as paid. If you have been using Splitwise or Splid, bring the old data across with the CSV import, see [switching](/switch-from-splitwise-or-splid).',
+				'Instead of holding money, everyone pays for what is missing and records the amount, for example straight after shopping (see [organising flat shopping](/organise-flat-shopping)). At the end of the month the balances show who owes whom. How to settle open balances fairly is covered in [debts between flatmates](/flatmate-debts). There is no pot for anyone to manage, and nobody is permanently out of pocket. In [ManaWG’s shared expenses](/shared-expenses) you split equally or with individual amounts per person, give each expense a category and see where the money goes. The app suggests settlements with few transfers. You transfer the money yourselves and mark it as paid. If you have been using Splitwise or Splid, bring the old data across with the CSV import, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid).',
 			],
 			[
 				'Worked example',
@@ -409,7 +409,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Settle up with a few transfers',
-				'When several people owe each other money, the balances can be netted off. Instead of everyone transferring to everyone else, a few payments are usually enough. ManaWG suggests transfers that settle everything with few payments. The money moves outside the app, you only mark it as paid.',
+				'When several people owe each other money, the balances can be netted off. Instead of everyone transferring to everyone else, a few payments are usually enough. ManaWG suggests transfers that settle everything with few payments. The money moves outside the app; you only mark it as paid.',
 			],
 			[
 				'Example with four people',
@@ -590,7 +590,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'What you can do',
-				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [switching](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative).',
+				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative).',
 			],
 		],
 		tabellen: [
@@ -724,7 +724,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'WG-Gesucht: creating an account and placing an ad',
-				'1. Start posting on wg-gesucht.de and choose the category WG room. The account is created in the process, you do not need to register beforehand\n2. Register with an email address or sign in with Google or Apple\n3. Choose a private account, because you are offering a room as a flat share and not letting commercially\n4. Confirm the registration with an SMS code, which WG-Gesucht requires\n5. Enter rent, Nebenkosten (utility charges), Kaution (deposit) and address. According to WG-Gesucht, the ad only appears in the nearby search with a full address\n6. Add title, text and photos as described in the sections below. According to WG-Gesucht, posting is free, and there is also an optional, paid premium offer. As of October 2026; the interface may change',
+				'1. Start posting on wg-gesucht.de and choose the category WG room. The account is created in the process; you do not need to register beforehand\n2. Register with an email address or sign in with Google or Apple\n3. Choose a private account, because you are offering a room as a flat share and not letting commercially\n4. Confirm the registration with an SMS code, which WG-Gesucht requires\n5. Enter rent, Nebenkosten (utility charges), Kaution (deposit) and address. According to WG-Gesucht, the ad only appears in the nearby search with a full address\n6. Add title, text and photos as described in the sections below. According to WG-Gesucht, posting is free, and there is also an optional, paid premium offer. As of October 2026; the interface may change',
 			],
 			[
 				'What belongs in a good WG ad',
@@ -744,7 +744,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Length, photos and common mistakes',
-				'Length: according to WG-Gesucht, offers of 150 words or more are taken fastest. The example above is shorter, and your ad can be longer as long as it stays concrete.\nPhotos: room, kitchen, bathroom and hall, in daylight and tidy.\nFiller: “nice flat share” says nothing, while numbers and examples do.\nRent: always state it all-in and say what is included.\nFixed term: if it is missing from the ad, it only comes out in the conversation and costs both sides time.\nNo-gos: two or three real dealbreakers are enough, a long list puts people off.\nReplies: if you leave applications unanswered, you lose the right ones to other flat shares. For the conversation afterwards, see the [guide to WG viewings](/wg-casting-questions).',
+				'Length: according to WG-Gesucht, rooms in ads of 150 words or more are let fastest. The example above is shorter, and your ad can be longer as long as it stays concrete.\nPhotos: room, kitchen, bathroom and hallway, in daylight and tidy.\nFiller: “nice flat share” says nothing, while numbers and examples do.\nRent: always state it all-in and say what is included.\nFixed term: if it is missing from the ad, it only comes out in the conversation and costs both sides time.\nNo-gos: two or three real dealbreakers are enough, a long list puts people off.\nReplies: if you leave applications unanswered, you lose the right ones to other flat shares. For the conversation afterwards, see the [guide to WG viewings](/wg-casting-questions).',
 			],
 			[
 				'Choosing without chaos',
@@ -829,7 +829,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'How long should a WG ad be?',
-				'Long enough for the facts, the flat share and everyday life. WG-Gesucht gives a guideline of at least 150 words, because such offers are taken fastest.',
+				'Long enough for the facts, the flat share and everyday life. WG-Gesucht gives a guideline of at least 150 words, because such ads fill their rooms fastest.',
 			],
 		],
 		quellen: [

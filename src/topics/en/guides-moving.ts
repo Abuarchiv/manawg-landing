@@ -22,7 +22,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			'Start a WG (shared flat) in Germany step by step: the right order, budget, tenancy type, deposit, flat agreement and Anmeldung. With a tick-off checklist.',
 		h1: 'Start a flat share in Germany: steps and checklist',
 		einleitung:
-			'Starting a WG (Wohngemeinschaft, a shared flat) in Germany is mostly about getting the order and the responsibilities right: who moves in, what the flat may cost, which type of tenancy applies and who pays which share when. This checklist runs from the first conversation to the first flat meeting after move-in, with a worked deposit example and a list to tick off at the end. It is general information, not legal advice, least of all on tenancy agreements.',
+			'Starting a WG (Wohngemeinschaft, a shared flat) in Germany is mostly about getting the order and the responsibilities right: who moves in, what the flat may cost, which type of tenancy applies and who pays which share when. This checklist runs from the first conversation to the first flat meeting after move-in, with a worked deposit example and a list to tick off at the end. It is general information and not legal advice, particularly on tenancy agreements.',
 		abschnitte: [
 			[
 				'The order in which a flat share comes together',
@@ -46,7 +46,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'4. Agree the deposit and the handover',
-				'The Kaution (deposit) may be at most three months’ net rent excluding utilities, and can be paid in three monthly instalments. Write down who paid which share, so it is clear who is owed what when someone leaves. At the handover, every room belongs in the handover record (Übergabeprotokoll), ideally with photos of any damage and the meter readings for electricity, gas and water.',
+				'The Kaution (deposit) may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Write down who paid which share, so it is clear who is owed what when someone leaves. At the handover, every room belongs in the handover record (Übergabeprotokoll), ideally with photos of any damage and the meter readings for electricity, gas and water.',
 			],
 			[
 				'5. A flat agreement between yourselves',
@@ -116,7 +116,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'How high can the deposit be in a flat share?',
-				'At most three months’ rent excluding utilities, payable in three equal monthly instalments (§ 551 BGB). With €1,200 net rent that is at most €3,600, or €900 per person for four people sharing equally.',
+				'At most three months’ rent excluding utilities, payable in three equal monthly instalments (§ 551 BGB). With €1,200 Kaltmiete that is at most €3,600, or €900 per person for four people sharing equally.',
 			],
 			[
 				'Does a flat share need its own agreement?',
@@ -138,7 +138,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		tabellen: [
 			{
 				nach: '4. Agree the deposit and the handover',
-				titel: 'Example: deposit with €1,200 net rent and four people',
+				titel: 'Example: deposit with €1,200 Kaltmiete and four people',
 				kopf: ['Item', 'Amount', 'Basis'],
 				zeilen: [
 					['Maximum: three months’ rent excluding utilities', '€3,600', '§ 551 para. 1 BGB'],
@@ -300,7 +300,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'The deposit in a flat share',
-				'The Kaution (deposit) may be at most three months’ net rent excluding utilities, and can be paid in three monthly instalments. With a joint main tenancy, the flat share pays it together. Write down who paid which share, because when someone leaves, the successor usually pays their share to the person moving out, while the deposit stays with the landlord. With subletting, you pay the deposit to the main tenant.',
+				'The Kaution (deposit) may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. With a joint main tenancy, the flat share pays it together. Write down who paid which share, because when someone leaves, the successor usually pays their share to the person moving out, while the deposit stays with the landlord. With subletting, you pay the deposit to the main tenant.',
 			],
 			[
 				'What the contract should contain',
@@ -395,7 +395,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Before moving in: contract and paperwork',
-				'Find out whether you get your own tenancy agreement with the landlord or a [sublease](/flat-share-tenancy-agreement) with a flatmate. Ask about the amount and repayment of the Kaution (deposit): it may be at most three months’ net rent excluding utilities, and can be paid in three monthly instalments. Also ask whether the rent is quoted warm (including heating and utilities) or cold. Have the rooms, cupboards and fridge shelves that are yours pointed out to you. Ask about the existing [house rules](/house-rules) on quiet, visitors and cleaning, and how costs are split.',
+				'Find out whether you get your own tenancy agreement with the landlord or a [sublease](/flat-share-tenancy-agreement) with a flatmate. Ask about the amount and repayment of the Kaution (deposit): it may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Also ask whether the rent is quoted warm (including heating and utilities) or cold. Have the rooms, cupboards and fridge shelves that are yours pointed out to you. Ask about the existing [house rules](/house-rules) on quiet, visitors and cleaning, and how costs are split.',
 			],
 			[
 				'On move-in day',
@@ -462,11 +462,11 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			'Register your address (Anmeldung) in a German flat share: the two-week deadline, who issues the landlord’s confirmation of move-in and what to do if it is refused.',
 		h1: 'Anmeldung in a flat share in Germany: landlord’s confirmation of move-in and deadline',
 		einleitung:
-			'If you move into a flat-share room in Germany, you have to register your address at the local citizens’ office (Bürgeramt). This is called the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in). Who issues it depends on your tenancy, and with subletting in particular, many main tenants do not know they are responsible. This page summarises the rules of the Bundesmeldegesetz (BMG, the Federal Registration Act) for internationals and is not legal advice. Details such as forms and appointments are set by your city.',
+			'If you move into a flat-share room in Germany, you have to register your address at the local citizens’ office (Bürgeramt). This is called the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in). Who issues it depends on your tenancy, and with subletting in particular, many main tenants do not know they are responsible. This page summarises the rules of the Bundesmeldegesetz (BMG, the Federal Registration Act) for people moving to Germany and is not legal advice. Details such as forms and appointments are set by your city.',
 		abschnitte: [
 			[
 				'Deadline: two weeks after moving in',
-				'Anyone who moves into a flat has to register with the registration authority (Meldebehörde), usually the Bürgeramt, within two weeks of moving in. That includes a room in a flat share. Appointments are scarce in big cities, so book before the move; the deadline runs regardless. Many cities now also offer the registration online with an electronic ID card. For internationals, the registration certificate (Meldebescheinigung) matters beyond the law itself: banks, employers and authorities regularly ask for it, and the residence permit and your tax ID depend on it.',
+				'Anyone who moves into a flat has to register with the registration authority (Meldebehörde), usually the Bürgeramt, within two weeks of moving in. That includes a room in a flat share. Appointments are scarce in big cities, so book before the move; the deadline runs regardless. Many cities now also offer the registration online with an electronic ID card. If you are new to Germany, the registration certificate (Meldebescheinigung) matters beyond the law itself: banks, employers and authorities regularly ask for it, and the residence permit and your tax ID depend on it.',
 			],
 			[
 				'Who issues the landlord’s confirmation of move-in?',
@@ -934,7 +934,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Handover',
-				'Clear the room and your shelves in the kitchen and bathroom completely. Repaint the room if the contract requires it. Do a handover with photos and return all keys. Do your last round on the cleaning rota before you go. In ManaWG, you leave the flat yourself in the settings at the end.',
+				'Clear the room and your shelves in the kitchen and bathroom completely. Repaint the room if the contract requires it. Do a handover with photos and return all keys. Do your last round on the cleaning rota before you go. In ManaWG, you leave the flat yourself at the end under Settings → Access → Leave flat.',
 			],
 			[
 				'The checklist to tick off',

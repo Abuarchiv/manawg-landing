@@ -51,7 +51,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			'ManaWG is the free app for everyday flat life, not a room search: expenses, cleaning rota, shopping list, calendar and chat in your browser, no app store.',
 		h1: 'The flat-share app for money, cleaning, shopping and plans',
 		einleitung:
-			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how many a WG (shared flat) runs. ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app, in English and German.',
+			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many a WG (shared flat). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app, in English and German.',
 		abschnitte: [
 			[
 				'Why an app instead of notes and WhatsApp',
@@ -63,7 +63,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Split expenses and settle up',
-				'[Shared expenses](/shared-expenses) can be split equally or with a custom amount per person, and each belongs to one of six categories, such as groceries or housing. The shares always add up to exactly the amount. ManaWG suggests settlements with as few transfers as possible. You mark them as paid, because the app does not move money itself. Anyone who records an expense for someone else also carries a share of it.',
+				'[Shared expenses](/shared-expenses) can be split equally or with a custom amount per person, and each belongs to one of six categories, such as groceries or housing. The shares always add up to exactly the amount. ManaWG suggests settlements with as few transfers as possible. You mark them as paid, because the app does not move money itself. If you add an expense for someone else, your own share has to be more than €0.',
 			],
 			[
 				'Fixed costs and the monthly statement',
@@ -137,7 +137,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					[
 						'Access',
 						'in the browser, installable on the home screen, join by invite link or email invitation',
-						'no app store, English and German, up to 20 active members',
+						'no app store, English and German only, up to 20 active members',
 					],
 				],
 				hinweis: 'Details from the app, as of 27 October 2026.',
@@ -233,7 +233,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Is the app in the App Store?',
-				'No, ManaWG is not a native app. You install it as a PWA through the browser, with manual steps on iOS and Firefox, and you can set push notifications for each area.',
+				'No, ManaWG is not a native app. You install it as a PWA through the browser. iOS and Firefox offer no install prompt, so there you follow the manual steps. You can switch push notifications on or off for each area.',
 			],
 		],
 		tabellen: [
@@ -520,7 +520,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			'ManaWG is a free Splitwise alternative for flats: no ads, no paid tier, plus a cleaning rota, shopping list and CSV import.',
 		h1: 'A Splitwise alternative with no paywall and no ads',
 		einleitung:
-			'Splitwise splits expenses reliably, and its Pro plan lists, per the provider, unlimited expenses, no ads, receipt scanning and currency conversion, among other things. What the free version covers is on [Splitwise free limit](/splitwise-free-limit). ManaWG costs nothing, shows no ads and has no paid tier. It also adds a cleaning rota, shopping list and calendar.',
+			'Splitwise splits expenses reliably, and its Pro plan lists, per the provider, unlimited expenses, no ads, receipt scanning and currency conversion, among other things. What the free version covers is explained in [Splitwise’s free limit](/splitwise-free-limit). ManaWG costs nothing, shows no ads and has no paid tier. It also adds a cleaning rota, shopping list and calendar.',
 		quellen: [
 			['Splitwise Pro', 'https://www.splitwise.com/pro'],
 			['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app'],
@@ -800,7 +800,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'What Tricount does well',
-				'Per the provider, Tricount is free and works with several currencies. Expenses can be added without a signal and synced later. The provider also lists payment requests and a connection to a bunq Card. Plans and features change, so check the current state with Tricount itself.',
+				'Per the provider, Tricount is free and works with several currencies. Expenses can be added without a signal and synced later. The provider also lists payment requests and a connection to a bunq card. Plans and features change, so check the current state with Tricount itself.',
 			],
 			[
 				'When to stay with Tricount',
@@ -851,7 +851,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			'ManaWG as an alternative to OurHome: a free cleaning rota and shared expenses in the browser. OurHome’s current feature set has not been verified.',
 		h1: 'An OurHome alternative for flats',
 		einleitung:
-			'Whether OurHome is available today, and to what extent, we have not verified (as of 14 October 2026), so check that yourself. Below we only describe how ManaWG handles the cleaning rota and expenses for a WG (shared flat).',
+			'We have not verified whether OurHome is still available or what it offers today (as of 14 October 2026), so check that yourself. Below we only describe how ManaWG handles the cleaning rota and expenses for a WG (shared flat).',
 		quellen: [['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app']],
 		tabellen: [
 			comparisonTable(

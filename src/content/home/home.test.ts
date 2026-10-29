@@ -115,7 +115,6 @@ test('install steps keep their symbols and the nowrap token', () => {
 		assert.ok(ios.steps[0].includes('≡'));
 		assert.ok(android.steps[0].includes('⋮'));
 		assert.ok(ios.steps[1].includes(d.install.nowrap));
-		assert.ok(d.install.heading[1].includes(d.install.nowrap));
 		assert.equal(desktop.steps.length, 3);
 	}
 	assert.equal(en.install.nowrap, 'Home Screen');

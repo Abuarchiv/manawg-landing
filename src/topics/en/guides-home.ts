@@ -258,7 +258,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Open the template in Excel or Google Sheets',
-				'1. Create the plan in the generator and download it as a CSV. The file separates columns with commas and opens directly in Excel set to a UK or US region and in Google Sheets, with accented letters kept\n2. Excel: double-click the file and it opens as a table. German-region Excel splits columns on semicolons, so there use Data, From Text/CSV and choose comma as the delimiter\n3. Google Sheets: choose File, Import, Upload, and pick comma as the separator if it is not detected\n4. Numbers: open the file directly\n5. Add columns the printout does not have, such as “Done” and “Swap with”, then share or print',
+				'1. Create the plan in the generator and download it as a CSV. The file separates columns with commas and opens directly in Excel set to a UK or US region and in Google Sheets, with accented letters kept\n2. Excel: double-click the file and it opens as a table. Excel set to a German region splits columns on semicolons, so in that case use Data > From Text/CSV and choose comma as the delimiter\n3. Google Sheets: choose File, Import, Upload, and pick comma as the separator if it is not detected\n4. Numbers: open the file directly\n5. Add columns the printout does not have, such as “Done” and “Swap with”, then share or print',
 			],
 			[
 				'How to use the rotation',
@@ -319,7 +319,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		fragen: [
 			[
 				'Is there a free cleaning rota template for a flat share?',
-				'Yes. This page has ready rotations for two, three, four and five people and a generator where you enter your names. The plan is free, you do not need an account and nothing is stored. If you do not want to print anything, use the cleaning rota in ManaWG.',
+				'Yes. This page has ready rotations for two, three, four and five people and a generator where you enter your names. The plan is free: you do not need an account, and nothing is stored. If you do not want to print anything, use the cleaning rota in ManaWG.',
 			],
 			[
 				'How often should the tasks change?',
@@ -477,7 +477,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Smoking, pets and instruments',
-				'These three points cause the most trouble when they are not discussed beforehand. Settle whether smoking is allowed in the flat or only on the balcony, whether pets are allowed (the tenancy agreement can set limits here) and at what times people may practise. It is best to ask at the [WG-Casting](/wg-casting-questions) (flat interview) already.',
+				'These three points cause the most trouble when they are not discussed beforehand. Settle whether smoking is allowed in the flat or only on the balcony, whether pets are allowed (the tenancy agreement can set limits here) and at what times people may practise. It is best to raise them at the [WG-Casting](/wg-casting-questions) (flat interview).',
 			],
 			[
 				'Rules for new flatmates',
@@ -493,7 +493,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Raising conflicts',
-				'Raise problems early and calmly: concrete behaviour, concrete effect, concrete request. “You often leave dishes out, that bothers me, could you wash them in the evening?” works better than “You are messy”. More in the guide to [solving flatmate conflict](/flatmate-conflict).',
+				'Raise problems early and calmly: concrete behaviour, concrete effect, concrete request. “You often leave dishes out. That bothers me. Could you wash them in the evening?” works better than “You are messy”. More in the guide to [solving flatmate conflict](/flatmate-conflict).',
 			],
 			[
 				'When someone breaks the rules repeatedly',
@@ -654,11 +654,11 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			'What is a WG-Casting and how does it work? 48 questions for the flat and for applicants, off-limits questions, reply templates and a scoring sheet.',
 		h1: 'WG-Casting: how it works and what to ask, for the flat and for applicants',
 		einleitung:
-			'At a WG-Casting, the flat interview for a free room in a German shared flat, twenty minutes decide whether you will live well together for the next few years. Both sides check each other: the flat checks the newcomer, and the applicant checks the flat. With the right questions you learn what really counts, not just who seems the nicest. In short: plan 20 to 30 minutes per appointment, hold one-to-one meetings and decide afterwards, separately from the applicants.',
+			'At a WG-Casting, the flat interview for a free room in a German shared flat, twenty minutes decide whether you will live well together for the next few years. Both sides check each other: the flat checks the newcomer, and the applicant checks the flat. With the right questions you learn what really counts, not just who seems the nicest. In short: plan 20 to 30 minutes per appointment, meet applicants one at a time and decide afterwards, separately from the applicants.',
 		abschnitte: [
 			[
 				'What is a WG-Casting and how does it work?',
-				'A WG-Casting is a get-to-know-you meeting at which a WG (shared flat) and people interested in a free room check whether they suit each other. Some call it a flat viewing or an introduction round. It is not an audition, it is about whether daily life and expectations fit. It usually takes place in the flat, often at the kitchen table, and lasts 20 to 30 minutes. At the end the flat says by when it will get back to you.',
+				'A WG-Casting is a get-to-know-you meeting at which a WG (shared flat) and people interested in a free room check whether they suit each other. Some call it a flat viewing or an introduction round. It is not an audition; it is about whether daily life and expectations fit. It usually takes place in the flat, often at the kitchen table, and lasts 20 to 30 minutes. At the end the flat says by when it will get back to you.',
 			],
 			[
 				'For newcomers to Germany: what to expect',
@@ -690,7 +690,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Questions applicants ask the flat',
-				'Why is the room becoming free?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and other utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nWhat belongs to contract types and deposits is covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ cold rent (Kaltmiete, rent without utilities) and may be paid in three equal monthly instalments.',
+				'Why is the room becoming free?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and other utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nContract types and deposits are covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ Kaltmiete (rent excluding utilities) and may be paid in three equal monthly instalments.',
 			],
 			[
 				'Preparing as an applicant',
@@ -702,7 +702,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Inviting and preparing as a flat',
-				'Do not invite too many people at once. How you collect and pre-sort applications is covered in [find a flatmate](/find-a-flatmate). One-to-one meetings with some buffer work better than a group casting where the loudest win. As many flatmates as possible should be there, because anyone who does not help decide feels overruled later. Show the flat honestly, including the small bathroom and the full kitchen. And agree beforehand what matters to you, so the decision does not hang on gut feeling alone.',
+				'Do not invite too many people at once. How you collect and pre-sort applications is covered in [find a flatmate](/find-a-flatmate). Individual appointments with some buffer work better than a group casting where the loudest win. As many flatmates as possible should be there, because anyone who does not help decide feels overruled later. Show the flat honestly, including the small bathroom and the full kitchen. And agree beforehand what matters to you, so the decision does not hang on gut feeling alone.',
 			],
 			[
 				'Video casting and scams',
@@ -714,7 +714,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Accepting and declining: reply templates',
-				'Offer: “Hi Tim, we would be glad if you moved in with us. The room is free from 1 December, €420 all in. Please tell us by Friday whether you accept, and we will send you the draft contract and our house rules.”\nDecline: “Hi Lena, thank you for the nice chat yesterday. We have chosen someone whose daily life fits a little better. It was not an easy choice. We wish you every success with the search.”\nTiming: send declines on the same day as the offer, so nobody waits.\nContent: no reasons that judge the person, and no comparisons with others.\nAfterwards: what to settle before moving in is covered in [find a flatmate](/find-a-flatmate) and in the [moving-in checklist](/moving-in-checklist).',
+				'Offer: “Hi Tim, we would be glad if you moved in with us. The room is free from 1 December, €420 all-in. Please tell us by Friday whether you accept, and we will send you the draft contract and our house rules.”\nDecline: “Hi Lena, thank you for the nice chat yesterday. We have chosen someone whose daily life fits a little better. It was not an easy choice. We wish you every success with the search.”\nTiming: send declines on the same day as the offer, so nobody waits.\nContent: no reasons that judge the person, and no comparisons with others.\nAfterwards: what to settle before moving in is covered in [find a flatmate](/find-a-flatmate) and in the [moving-in checklist](/moving-in-checklist).',
 			],
 		],
 		tabellen: [
@@ -868,11 +868,11 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Ask first: landlord and flat',
-				'In Germany a sublet is legally a [sublease](/flat-share-tenancy-agreement) (Untermiete) and needs the landlord’s permission, ideally in writing. If you have a legitimate interest that arose after signing your contract, for example a temporary stay abroad, you have under certain conditions a claim to it. Your flatmates matter just as much: they will live with the new person for months and should help choose.',
+				'In Germany a sublet is legally a [sublease](/flat-share-tenancy-agreement) (Untermiete) and needs the landlord’s permission, ideally in writing. If a legitimate interest arises after you sign your contract, for example a temporary stay abroad, you can, under certain conditions, demand that permission (§ 553 para. 1 BGB). Your flatmates matter just as much: they will live with the new person for months and should help choose.',
 			],
 			[
 				'Finding the subtenant',
-				'Subtenants often search at short notice and for fixed periods, for example exchange students or interns. State exactly in the ad from when until when the room is free, what it costs all in (Warmmiete) and what stays in the room. A short meeting with the flat, by video call if need be, prevents nasty surprises. How to sort and choose applications is in [find a flatmate](/find-a-flatmate), and what the interview usually looks like in [WG-Casting questions](/wg-casting-questions).',
+				'Subtenants often search at short notice and for fixed periods, for example exchange students or interns. State exactly in the ad from when until when the room is free, what it costs all-in (Warmmiete) and what stays in the room. A short meeting with the flat, by video call if need be, prevents nasty surprises. How to sort and choose applications is in [find a flatmate](/find-a-flatmate), and what the interview usually looks like in [WG-Casting questions](/wg-casting-questions).',
 			],
 			[
 				'The sublease',
@@ -880,7 +880,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Rent and deposit',
-				'It is usual for the subtenant to take over the rent for the room, meaning their share of cold rent, utilities, electricity and internet. You keep paying the landlord or the flat as before and receive the money from the subtenant. A deposit (Kaution) of one to two months’ rent protects you against damage and open amounts. Anyone letting a furnished room may charge a reasonable supplement for it, but profit at the subtenant’s expense is not the point.',
+				'It is usual for the subtenant to take over the rent for the room, meaning their share of the Kaltmiete (rent excluding utilities), the utilities, electricity and internet. You keep paying the landlord or the flat as before and receive the money from the subtenant. A deposit (Kaution) of one to two months’ rent protects you against damage and open amounts. Anyone letting a furnished room may charge a reasonable supplement for it, but profit at the subtenant’s expense is not the point.',
 			],
 			[
 				'Address registration and formalities',
@@ -898,7 +898,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		fragen: [
 			[
 				'Do I need the landlord’s permission to sublet in Germany?',
-				'Yes. Subletting needs the landlord’s permission. For a temporary stay abroad you have a claim to it under certain conditions.',
+				'Yes. Subletting needs the landlord’s permission. For a temporary stay abroad you can demand it under certain conditions.',
 			],
 			[
 				'Does a subtenant have to register their address?',

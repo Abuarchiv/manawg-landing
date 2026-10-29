@@ -108,7 +108,7 @@ export const en: HomeDict = {
 	install: {
 		prefix: '[ 06 ] ',
 		title: 'INSTALL',
-		heading: ['Put it on your ', 'Home Screen.'],
+		heading: ['Put it on your ', 'home screen.'],
 		lead: 'No app store, works offline. Open app.manawg.com, then:',
 		platformAria: 'Platform',
 		ways: [
@@ -123,7 +123,7 @@ export const en: HomeDict = {
 			{
 				name: 'Android',
 				steps: [
-					'Tap the menu ⋮.',
+					'Tap the menu ⋮',
 					'“Install and create shortcut”, then “Install”',
 					'Confirm “Install” in the dialog. Done.',
 				],
