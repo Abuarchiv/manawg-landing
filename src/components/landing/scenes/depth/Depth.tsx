@@ -3,15 +3,15 @@
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
 import { useDict } from '../../dict';
-import { registerTiefe } from './tunnel';
+import { registerDepth } from '../depth/tunnel';
 
-export function Tiefe() {
+export function Depth() {
 	const { depth, tunnelWords } = useDict();
 	const secRef = useRef<HTMLElement>(null);
 	const cvRef = useRef<HTMLCanvasElement>(null);
 	useEffect(
 		() =>
-			registerTiefe(cvRef.current as HTMLCanvasElement, secRef.current as HTMLElement, tunnelWords),
+			registerDepth(cvRef.current as HTMLCanvasElement, secRef.current as HTMLElement, tunnelWords),
 		[tunnelWords],
 	);
 	return (

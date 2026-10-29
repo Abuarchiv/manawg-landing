@@ -8,49 +8,49 @@ import { useDict } from '../../dict';
 // Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
 // Die Höhe läuft über grid-template-rows (landing.css .faq-antwort), nur eine Antwort ist offen.
 
-const KOPF = 10; // Breite der Entschlüsselungs-Front in Zeichen
+const FRONT_WIDTH = 10; // Breite der Entschlüsselungs-Front in Zeichen
 
 /** Antwort entschlüsselt sich beim Öffnen von vorn nach hinten; der Rest bleibt unsichtbar reserviert, damit nichts umbricht. */
-function Antwort({ text, an }: { text: string; an: boolean }) {
-	const [k, setK] = useState(text.length);
-	const erst = useRef(true);
+function Answer({ text, open }: { text: string; open: boolean }) {
+	const [revealed, setRevealed] = useState(text.length);
+	const first = useRef(true);
 	useEffect(() => {
 		// beim ersten Rendern (erste Frage offen) und bei reduzierter Bewegung steht der Text sofort
-		if (erst.current || !an || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-			erst.current = false;
-			setK(text.length);
+		if (first.current || !open || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			first.current = false;
+			setRevealed(text.length);
 			return;
 		}
 		let raf = 0;
 		const t0 = performance.now();
 		const f = (now: number) => {
 			const n = Math.min(text.length, Math.round(((now - t0) / 650) * text.length));
-			setK(n);
+			setRevealed(n);
 			if (n < text.length) raf = requestAnimationFrame(f);
 		};
-		setK(0);
+		setRevealed(0);
 		raf = requestAnimationFrame(f);
 		return () => cancelAnimationFrame(raf);
-	}, [an, text]);
-	if (k >= text.length) return <p>{text}</p>;
-	const kopf = [...text.slice(k, k + KOPF)]
+	}, [open, text]);
+	if (revealed >= text.length) return <p>{text}</p>;
+	const front = [...text.slice(revealed, revealed + FRONT_WIDTH)]
 		.map((c) => (c === ' ' ? c : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]))
 		.join('');
 	return (
 		<p>
 			<span className="faq-sr">{text}</span>
 			<span aria-hidden="true">
-				{text.slice(0, k)}
-				<span className="faq-kopf">{kopf}</span>
-				<span style={css('visibility:hidden')}>{text.slice(k + KOPF)}</span>
+				{text.slice(0, revealed)}
+				<span className="faq-kopf">{front}</span>
+				<span style={css('visibility:hidden')}>{text.slice(revealed + FRONT_WIDTH)}</span>
 			</span>
 		</p>
 	);
 }
 
-export function Fragen() {
+export function Faq() {
 	const { faq, questions } = useDict();
-	const [offen, setOffen] = useState(0);
+	const [openIndex, setOpenIndex] = useState(0);
 	return (
 		<section
 			id="fragen"
@@ -73,9 +73,9 @@ export function Fragen() {
 								type="button"
 								id={`faq-frage-${i}`}
 								className="faq-frage"
-								aria-expanded={offen === i}
+								aria-expanded={openIndex === i}
 								aria-controls={`faq-antwort-${i}`}
-								onClick={() => setOffen((o) => (o === i ? -1 : i))}
+								onClick={() => setOpenIndex((o) => (o === i ? -1 : i))}
 							>
 								<span>
 									<span className="label faq-nr" aria-hidden="true">
@@ -93,10 +93,10 @@ export function Fragen() {
 							id={`faq-antwort-${i}`}
 							aria-labelledby={`faq-frage-${i}`}
 							className="faq-antwort"
-							data-offen={offen === i}
+							data-offen={openIndex === i}
 						>
 							<div className="faq-innen">
-								<Antwort text={q[1]} an={offen === i} />
+								<Answer text={q[1]} open={openIndex === i} />
 							</div>
 						</section>
 					</div>

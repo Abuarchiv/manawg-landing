@@ -77,22 +77,22 @@ interface Gl {
 	u: (n: string) => WebGLUniformLocation | null;
 }
 
-interface HimmelState extends SceneState {
+interface SkyState extends SceneState {
 	cv2: HTMLCanvasElement;
 	g: Gl | null;
-	bereit: boolean;
-	offen: number;
+	ready: boolean;
+	open: number;
 	/** geglätteter Zeiger in uv und Stärke */
 	zg: [number, number, number];
 }
 
-function programm(gl: WebGL2RenderingContext): WebGLProgram | null {
+function program(gl: WebGL2RenderingContext): WebGLProgram | null {
 	const p = gl.createProgram();
-	for (const [typ, src] of [
+	for (const [kind, src] of [
 		[gl.VERTEX_SHADER, VS],
 		[gl.FRAGMENT_SHADER, FS],
 	] as const) {
-		const sh = gl.createShader(typ);
+		const sh = gl.createShader(kind);
 		if (!sh || !p) return null;
 		gl.shaderSource(sh, src);
 		gl.compileShader(sh);
@@ -107,7 +107,7 @@ function programm(gl: WebGL2RenderingContext): WebGLProgram | null {
 }
 
 /** Bild laden, kippen und abseits des Hauptthreads dekodieren: der Texturupload kopiert danach nur noch. */
-async function bild(src: string): Promise<ImageBitmap> {
+async function loadImage(src: string): Promise<ImageBitmap> {
 	const blob = await (await fetch(src)).blob();
 	return createImageBitmap(blob, { imageOrientation: 'flipY', premultiplyAlpha: 'none' });
 }
@@ -115,11 +115,13 @@ async function bild(src: string): Promise<ImageBitmap> {
 /** Nächste Aufgabe abwarten: Shader, Texturen und Kontext landen in verschiedenen Bildern, nicht in einem. */
 const pause = () => new Promise<void>((ok) => setTimeout(ok, 0));
 
-async function laden(s: HimmelState): Promise<void> {
-	const namen = ['uSkyQ', 'uSkyH', 'uFein', 'uGrob'];
+async function load(s: SkyState): Promise<void> {
+	const names = ['uSkyQ', 'uSkyH', 'uFein', 'uGrob'];
 	// Dekodieren läuft parallel und ohne den Hauptthread, während Kontext und Shader entstehen
-	const bilder = Promise.all(
-		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) => bild(`/himmel/${n}.webp`)),
+	const images = Promise.all(
+		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) =>
+			loadImage(`/himmel/${n}.webp`),
+		),
 	);
 	const gl = s.cv2.getContext('webgl2', {
 		premultipliedAlpha: true,
@@ -128,12 +130,12 @@ async function laden(s: HimmelState): Promise<void> {
 	});
 	if (!gl) return;
 	await pause();
-	const p = programm(gl);
+	const p = program(gl);
 	if (!p) return;
 	gl.useProgram(p);
 	const u = (n: string) => gl.getUniformLocation(p, n);
-	const fertig = await bilder;
-	for (const [i, img] of fertig.entries()) {
+	const done = await images;
+	for (const [i, img] of done.entries()) {
 		await pause();
 		gl.activeTexture(gl.TEXTURE0 + i);
 		gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());
@@ -143,7 +145,7 @@ async function laden(s: HimmelState): Promise<void> {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.uniform1i(u(namen[i] ?? ''), i);
+		gl.uniform1i(u(names[i] ?? ''), i);
 		img.close();
 	}
 	// Ein Zeichenaufruf in 1 x 1 Pixel zwingt den Treiber, das Programm schon jetzt fertig zu übersetzen
@@ -151,11 +153,11 @@ async function laden(s: HimmelState): Promise<void> {
 	gl.viewport(0, 0, 1, 1);
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
 	s.g = { gl, u };
-	s.bereit = true;
+	s.ready = true;
 }
 
 /** Enges Rechteck um Titel und Knöpfe (CSS-px relativ zur Fläche). */
-function textFeld(sec: HTMLElement, r0: DOMRect): [number, number, number, number] | null {
+function textBox(sec: HTMLElement, r0: DOMRect): [number, number, number, number] | null {
 	const h = sec.querySelector('h2');
 	const k = sec.querySelector('[data-knoepfe]');
 	if (!h) return null;
@@ -172,27 +174,27 @@ function textFeld(sec: HTMLElement, r0: DOMRect): [number, number, number, numbe
 }
 
 /** Meldet den Himmel an. ebene: Element über der ASCII-Sonne, darin das WebGL-Canvas. */
-export function registerHimmel(
-	ebene: HTMLElement,
+export function registerSky(
+	layer: HTMLElement,
 	cv: HTMLCanvasElement,
 	sec: HTMLElement,
 ): () => void {
-	return register<HimmelState>({
+	return register<SkyState>({
 		name: 'himmel',
-		el: ebene,
+		el: layer,
 		host: sec,
 		box: (W, H) => ({ bw: W, bh: H }),
 		init(s) {
 			s.cv2 = cv;
 			s.g = null;
-			s.bereit = false;
-			s.offen = 0;
+			s.ready = false;
+			s.open = 0;
 			s.zg = [0.5, 0.5, 0];
-			laden(s).catch(() => {});
+			load(s).catch(() => {});
 		},
 		frame(s) {
 			const g = s.g;
-			if (!s.bereit || !g) return;
+			if (!s.ready || !g) return;
 			const { gl, u } = g;
 			const dpr = dprFor(1.5, 1, s.W, s.H);
 			const w = Math.max(1, Math.round(s.W * dpr));
@@ -204,20 +206,20 @@ export function registerHimmel(
 			}
 			// Kein Vorhang mehr: der Himmel steht von Anfang an offen
 			const r0 = s.el.getBoundingClientRect();
-			s.offen = 1;
-			const hoch = s.mode === 'hoch';
-			gl.uniform1f(u('uHoch'), hoch ? 1 : 0);
+			s.open = 1;
+			const portrait = s.mode === 'hoch';
+			gl.uniform1f(u('uHoch'), portrait ? 1 : 0);
 			gl.uniform1f(u('uDprH'), dpr);
 			gl.uniform2f(u('uRes'), w, h);
 			gl.uniform1f(u('uT'), s.reduced ? 4 : loop.t);
-			gl.uniform1f(u('uOpen'), s.offen);
-			const unten = cl((r0.bottom - loop.vh) / s.H, 0, 1); // Teil der Fläche unter dem Fensterrand
-			if (hoch) {
+			gl.uniform1f(u('uOpen'), s.open);
+			const bottom = cl((r0.bottom - loop.vh) / s.H, 0, 1); // Teil der Fläche unter dem Fensterrand
+			if (portrait) {
 				// Hoch: fest im Abschnitt über dem Titel, scrollt mit dem Text weg (im Endbild ist oben kein Platz)
 				gl.uniform2f(u('uCC'), 0.5, 0.74);
 				gl.uniform1f(u('uCS'), Math.min(0.42, 0.62 * (s.W / s.H)));
 			} else {
-				gl.uniform2f(u('uCC'), 0.72, unten + (1 - unten) * 0.55);
+				gl.uniform2f(u('uCC'), 0.72, bottom + (1 - bottom) * 0.55);
 				gl.uniform1f(u('uCS'), 0.62);
 			}
 			// Zeiger als Wind; ohne Zeiger (Handy) zieht eine langsame Böe über den Himmel
@@ -230,7 +232,7 @@ export function registerHimmel(
 			s.zg[1] += (zy - s.zg[1]) * k;
 			s.zg[2] += ((s.reduced ? 0 : da ? 1 : 0.55) - s.zg[2]) * k;
 			gl.uniform3f(u('uZg'), s.zg[0], s.zg[1], s.zg[2]);
-			const tf = textFeld(sec, r0);
+			const tf = textBox(sec, r0);
 			if (tf) gl.uniform4f(u('uTxt'), tf[0] / s.W, 1 - tf[3] / s.H, tf[2] / s.W, 1 - tf[1] / s.H);
 			else gl.uniform4f(u('uTxt'), 0, 0, 0, 0);
 			gl.drawArrays(gl.TRIANGLES, 0, 3);

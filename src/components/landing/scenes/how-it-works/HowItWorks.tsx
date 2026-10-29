@@ -2,16 +2,16 @@
 
 import { useEffect, useRef } from 'react';
 import { useDict } from '../../dict';
-import s from './SoGehts.module.css';
-import { registerZiffer } from './ziffern';
+import { registerDigit } from '../how-it-works/digits';
+import s from './HowItWorks.module.css';
 
-function Ziffer({ text }: { text: string }) {
+function Digit({ text }: { text: string }) {
 	const ref = useRef<HTMLCanvasElement>(null);
-	useEffect(() => registerZiffer(ref.current as HTMLCanvasElement, { text }), [text]);
-	return <canvas ref={ref} aria-hidden="true" className={s.ziffer} />;
+	useEffect(() => registerDigit(ref.current as HTMLCanvasElement, { text }), [text]);
+	return <canvas ref={ref} aria-hidden="true" className={s.digit} />;
 }
 
-export function SoGehts() {
+export function HowItWorks() {
 	const { howItWorks } = useDict();
 	return (
 		<section
@@ -19,16 +19,16 @@ export function SoGehts() {
 			data-sec="so-gehts"
 			tabIndex={-1}
 			aria-labelledby="so-gehts-titel"
-			className={s.sektion}
+			className={s.section}
 		>
-			<h2 id="so-gehts-titel" className={`label ${s.titel}`} data-entschluesseln="">
+			<h2 id="so-gehts-titel" className={`label ${s.title}`} data-entschluesseln="">
 				<span aria-hidden="true">{howItWorks.prefix}</span>
 				{howItWorks.title}
 			</h2>
-			<div className={s.raster}>
+			<div className={s.columns}>
 				{howItWorks.steps.map((x) => (
-					<div key={x.number} className={s.spalte}>
-						<Ziffer text={x.number} />
+					<div key={x.number} className={s.column}>
+						<Digit text={x.number} />
 						<h3 className={s.h3}>{x.title}</h3>
 						<p className={s.text}>{x.text}</p>
 					</div>

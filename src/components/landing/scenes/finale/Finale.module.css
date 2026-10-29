@@ -1,4 +1,4 @@
-.sektion {
+.section {
 	--h: max(560px, 95svh);
 	--titel-fs: var(--t-200);
 	--knoepfe-h: 32px;
@@ -19,7 +19,7 @@
 	color: #fafafa;
 	overflow: hidden;
 }
-.feld {
+.field {
 	position: absolute;
 	inset: 0;
 	width: 100%;
@@ -29,7 +29,7 @@
 /* Der Inhalt liegt in dem Teil des Finales, der im Endbild der Seite über der Fußzeile zu sehen ist
    (--fuss = Höhe der Fußzeile, von Finale.tsx gesetzt), mit dem Kopf als Oberkante. So steht der
    Titel am Ende der Seite ganz unter dem Kopf (T-06). */
-.inhalt {
+.content {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -49,7 +49,7 @@
 	flex-direction: column;
 	gap: var(--luecke);
 }
-.titel {
+.title {
 	margin: 0;
 	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
 	font-weight: 600;
@@ -58,7 +58,7 @@
 	letter-spacing: -0.06em;
 	overflow-wrap: break-word;
 }
-.knoepfe {
+.buttons {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 4px 28px;
@@ -68,7 +68,7 @@
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
 	/* Im Endbild müssen Titel, Knöpfe und Fußzeile zusammen in den Viewport passen (Safari mit Leisten ist
 	   niedriger als 100svh am Rechner): der Titel schrumpft bis 64 px, die Knöpfe stehen nebeneinander. */
-	.sektion {
+	.section {
 		--luecke: var(--sp-24);
 		--frei: calc(
 			100svh -
@@ -80,21 +80,21 @@
 		);
 		--titel-fs: clamp(64px, min(27vw, var(--frei) / 1.76), 150px);
 	}
-	.titel {
+	.title {
 		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
 	}
 	/* beide Knöpfe in einer Zeile: engere Sperrung und Klammerabstand */
-	.knoepfe {
+	.buttons {
 		max-width: 520px;
 		gap: 4px 14px;
 	}
-	.knopf {
+	.button {
 		letter-spacing: 0.04em;
 		gap: 0.5em;
 	}
 }
 @media (max-width: 339px) {
-	.knopf {
+	.button {
 		font-size: 11px;
 		letter-spacing: 0.02em;
 	}
@@ -102,7 +102,7 @@
 
 /* Handy quer: wenig Höhe, Titel kleiner, damit er über der Fußzeile ganz Platz hat */
 @media (orientation: landscape) and (max-height: 499px) {
-	.sektion {
+	.section {
 		--titel-fs: clamp(48px, 15svh, 64px);
 		--luecke: 12px;
 	}

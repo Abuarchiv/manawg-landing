@@ -2,12 +2,12 @@
 
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
-import { startZerfall } from './zeichen';
+import { startDecay } from '../decay/glyphs';
 
 // Fest am Fenster über dem Inhalt, unter dem Kopf: die Zeichen des Übergangs Handy → So geht's (zeichen.ts).
-export function Zerfall() {
+export function Decay() {
 	const ref = useRef<HTMLCanvasElement>(null);
-	useEffect(() => startZerfall(ref.current as HTMLCanvasElement), []);
+	useEffect(() => startDecay(ref.current as HTMLCanvasElement), []);
 	return (
 		<canvas
 			ref={ref}

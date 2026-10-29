@@ -6,15 +6,15 @@
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { hsh } from '../../core/math';
 
-const RAMPE = '@%#*+=-:';
+const RAMP = '@%#*+=-:';
 qa.masse = { ...(qa.masse as Record<string, unknown> | undefined), zifferZelle: 7, zifferGlyph: 8 };
 
 /** Eine Rasterzelle der Ziffer: Ruhelage (x, y), Ton in der Rampe, Auslenkung (ox, oy) und Tempo (vx, vy). */
-interface Zelle {
+interface Cell {
 	x: number;
 	y: number;
 	/** Zeichen in Ruhe: 0 am Rand (@, hell), 2 innen (#, gedämpft). */
-	ton: 0 | 2;
+	tone: 0 | 2;
 	ox: number;
 	oy: number;
 	vx: number;
@@ -22,23 +22,23 @@ interface Zelle {
 }
 
 /** Vorgerendertes Zeichenblatt: ein Streifen mit den Glyphen der Rampe, z = Kantenlänge einer Glyphe in Gerätepixeln. */
-interface Blatt {
+interface Sheet {
 	cv: HTMLCanvasElement;
 	z: number;
 }
 
-interface ZifferState extends SceneState {
-	cells: Zelle[];
+interface DigitState extends SceneState {
+	cells: Cell[];
 	/** Schlüssel des letzten Rasteraufbaus (Text, Schriftstand, Größe, Pixelfaktor, Zelle). */
 	key: string;
 	dirty: boolean;
 	/** Im letzten gezeichneten Bild waren Zellen in Bewegung. */
-	bewegt: boolean;
-	blattKey: string;
-	blatt: Blatt | null;
+	moving: boolean;
+	sheetKey: string;
+	sheet: Sheet | null;
 }
 
-interface ZifferOptionen {
+interface DigitOptions {
 	text: string;
 	/** Zelle in CSS-Pixeln. */
 	cs?: number;
@@ -47,14 +47,14 @@ interface ZifferOptionen {
 }
 
 /** Eine Zelle des Rasters in Ruhe: Lage in CSS-px und Ton (0 Rand, 2 innen). */
-export interface RasterZelle {
+export interface GridCell {
 	x: number;
 	y: number;
-	ton: 0 | 2;
+	tone: 0 | 2;
 }
 
 /** Zellen einer Ziffer auf der Fläche W x H (CSS-px) mit Zelle cs. Rein, auch für den Übergang (scenes/zerfall). */
-export function raster(txt: string, W0: number, H0: number, cs: number): RasterZelle[] {
+export function buildGrid(txt: string, W0: number, H0: number, cs: number): GridCell[] {
 	const W = Math.max(1, Math.round(W0));
 	const H = Math.max(1, Math.round(H0));
 	const fs = H * 1.28; // Ziffernhöhe (0,73 em) füllt rund 94 % der Fläche
@@ -73,7 +73,7 @@ export function raster(txt: string, W0: number, H0: number, cs: number): RasterZ
 	const d = o.getImageData(0, 0, cols, rows).data;
 	const on = new Uint8Array(cols * rows);
 	for (let q = 0; q < on.length; q++) on[q] = (d[q * 4 + 3] ?? 0) > 110 ? 1 : 0;
-	const aus: RasterZelle[] = [];
+	const out: GridCell[] = [];
 	for (let q = 0; q < on.length; q++)
 		if (on[q]) {
 			const a = q % cols;
@@ -85,21 +85,21 @@ export function raster(txt: string, W0: number, H0: number, cs: number): RasterZ
 					const y = b + dj;
 					if ((di || dj) && x >= 0 && y >= 0 && x < cols && y < rows && on[y * cols + x]) n++;
 				}
-			aus.push({ x: a * cs, y: b * cs, ton: n >= 8 ? 2 : 0 });
+			out.push({ x: a * cs, y: b * cs, tone: n >= 8 ? 2 : 0 });
 		}
-	return aus;
+	return out;
 }
 
 /** Zellgröße und Glyphe je Modus (hoch etwas feiner). */
-export const zifferMasse = (hoch: boolean): { cs: number; gl: number } =>
-	hoch ? { cs: 6, gl: 7 } : { cs: 7, gl: 8 };
+export const digitMetrics = (portrait: boolean): { cs: number; gl: number } =>
+	portrait ? { cs: 6, gl: 7 } : { cs: 7, gl: 8 };
 
 /** Solange der Übergang aus dem Handy läuft, zeichnet er die Ziffern (scenes/zerfall), die Ziffern selbst ruhen. */
-export const uebergang = { verdeckt: false };
+export const handover = { covered: false };
 
-function baue(s: ZifferState, txt: string, cs: number) {
+function build(s: DigitState, txt: string, cs: number) {
 	const old = s.cells;
-	s.cells = raster(txt, s.W, s.H, cs).map((z, k) => {
+	s.cells = buildGrid(txt, s.W, s.H, cs).map((z, k) => {
 		const p = old[k];
 		return {
 			...z,
@@ -112,12 +112,12 @@ function baue(s: ZifferState, txt: string, cs: number) {
 }
 
 // Zeichenblatt: die acht Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
-function blatt(s: ZifferState, gl: number): Blatt {
+function buildSheet(s: DigitState, gl: number): Sheet {
 	const key = `${s.dpr}|${loop.fv}|${gl}`;
-	if (s.blatt && s.blattKey === key) return s.blatt;
+	if (s.sheet && s.sheetKey === key) return s.sheet;
 	const z = Math.ceil((gl + 4) * s.dpr);
 	const cv = document.createElement('canvas');
-	cv.width = z * RAMPE.length;
+	cv.width = z * RAMP.length;
 	cv.height = z;
 	const g = cv.getContext('2d');
 	if (!g) return { cv, z };
@@ -125,19 +125,19 @@ function blatt(s: ZifferState, gl: number): Blatt {
 	g.textAlign = 'center';
 	g.textBaseline = 'middle';
 	g.fillStyle = '#FAFAFA';
-	for (let i = 0; i < RAMPE.length; i++)
-		g.fillText(RAMPE[i] ?? '', z * i + z / 2, z / 2 + 0.5 * s.dpr);
-	s.blattKey = key;
-	s.blatt = { cv, z };
-	return s.blatt;
+	for (let i = 0; i < RAMP.length; i++)
+		g.fillText(RAMP[i] ?? '', z * i + z / 2, z / 2 + 0.5 * s.dpr);
+	s.sheetKey = key;
+	s.sheet = { cv, z };
+	return s.sheet;
 }
 
 /** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
-export function registerZiffer(
+export function registerDigit(
 	cv: HTMLCanvasElement,
-	{ text, cs: cs0 = 7, gl: gl0 = 8 }: ZifferOptionen,
+	{ text, cs: cs0 = 7, gl: gl0 = 8 }: DigitOptions,
 ): () => void {
-	return register<ZifferState>({
+	return register<DigitState>({
 		name: `ziffer ${text}`,
 		el: cv,
 		host: cv.parentElement ?? undefined,
@@ -147,22 +147,22 @@ export function registerZiffer(
 			s.cells = [];
 			s.key = '';
 			s.dirty = false;
-			s.bewegt = false;
-			s.blattKey = '';
-			s.blatt = null;
+			s.moving = false;
+			s.sheetKey = '';
+			s.sheet = null;
 		},
 		frame(s, _t, dt) {
 			// Hochformat: etwas feineres Raster (Zelle 6, Glyph 7), die Ziffer bleibt eine Form
-			const cs = s.mode === 'hoch' ? zifferMasse(true).cs : cs0;
-			const gl = s.mode === 'hoch' ? zifferMasse(true).gl : gl0;
+			const cs = s.mode === 'hoch' ? digitMetrics(true).cs : cs0;
+			const gl = s.mode === 'hoch' ? digitMetrics(true).gl : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
 			if (s.key !== key) {
 				s.key = key;
-				baue(s, text, cs);
+				build(s, text, cs);
 				s.dirty = true;
 			}
 			// Der Übergang zeichnet die Ziffer: hier leer lassen und in Ruhelage halten, damit sie beim Übergeben steht
-			if (uebergang.verdeckt) {
+			if (handover.covered) {
 				for (const c of s.cells) c.ox = c.oy = c.vx = c.vy = 0;
 				if (!s.dirty) s.ctx?.clearRect(0, 0, s.cv?.width ?? 0, s.cv?.height ?? 0);
 				s.dirty = true;
@@ -200,14 +200,14 @@ export function registerZiffer(
 				s.dirty = true;
 			}
 			// Ruhende Ziffer ohne Zeiger: nichts neu zeichnen
-			if (!(s.dirty || moving || s.m.in || s.bewegt)) return;
-			s.bewegt = moving;
+			if (!(s.dirty || moving || s.m.in || s.moving)) return;
+			s.moving = moving;
 			s.dirty = false;
-			const { ctx, cv: flaeche } = s;
-			if (!ctx || !flaeche) return;
-			const { cv: sheet, z } = blatt(s, gl);
+			const { ctx, cv: area } = s;
+			if (!ctx || !area) return;
+			const { cv: sheet, z } = buildSheet(s, gl);
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
-			ctx.clearRect(0, 0, flaeche.width, flaeche.height);
+			ctx.clearRect(0, 0, area.width, area.height);
 			const dpr = s.dpr;
 			ctx.globalAlpha = 1;
 			const tq = Math.floor(loop.now / 0.09);
@@ -215,13 +215,11 @@ export function registerZiffer(
 				const dx = Math.round((c.x + c.ox + cs / 2) * dpr - z / 2);
 				const dy = Math.round((c.y + c.oy + cs / 2) * dpr - z / 2);
 				// Unterwegs (Entwurf: Abstand über 3 px oder Tempo über 0,5): Zeichen wechselt alle 90 ms, sonst fest
-				const unterwegs = Math.abs(c.ox) + Math.abs(c.oy) > 3 || Math.hypot(c.vx, c.vy) > 0.5;
-				const ton = unterwegs
-					? Math.floor(hsh(c.x + tq, c.y) * RAMPE.length) % RAMPE.length
-					: c.ton;
+				const inMotion = Math.abs(c.ox) + Math.abs(c.oy) > 3 || Math.hypot(c.vx, c.vy) > 0.5;
+				const tone = inMotion ? Math.floor(hsh(c.x + tq, c.y) * RAMP.length) % RAMP.length : c.tone;
 				// Körper der Ziffer gedämpft, Rand hell: so liest sich die Form sofort
-				ctx.globalAlpha = unterwegs || c.ton === 0 ? 1 : 0.42;
-				ctx.drawImage(sheet, z * ton, 0, z, z, dx, dy, z, z);
+				ctx.globalAlpha = inMotion || c.tone === 0 ? 1 : 0.42;
+				ctx.drawImage(sheet, z * tone, 0, z, z, dx, dy, z, z);
 			}
 			ctx.globalAlpha = 1;
 		},

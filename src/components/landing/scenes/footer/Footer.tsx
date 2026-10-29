@@ -2,16 +2,16 @@ import { LanguageLink } from '@/components/LanguageLink';
 import { appUrl } from '@/lib/app-origin';
 import { css } from '../../core/dc';
 import { useDict, useLocale } from '../../dict';
-import s from './Fusszeile.module.css';
+import s from './Footer.module.css';
 
 // Kurz gehalten: alle Themenseiten erreicht man über /ratgeber und die Sitemap.
-export function Fusszeile() {
+export function Footer() {
 	const { footer, links } = useDict();
 	const locale = useLocale();
 	return (
-		<footer id="fusszeile" data-sec="fusszeile" tabIndex={-1} className={s.fuss}>
-			<div className={s.raster}>
-				<div className={s.marke}>
+		<footer id="fusszeile" data-sec="fusszeile" tabIndex={-1} className={s.foot}>
+			<div className={s.columns}>
+				<div className={s.brand}>
 					<span style={css('font-size:var(--t-14);opacity:0.72')}>{footer.tagline}</span>
 					<span className="label" style={css('margin-top:var(--sp-32)')}>
 						{footer.copyright}
@@ -25,8 +25,8 @@ export function Fusszeile() {
 						style={css('margin-top:var(--sp-12)')}
 					/>
 				</div>
-				<div className={s.spalte}>
-					<span className={s.kopf}>{footer.product}</span>
+				<div className={s.column}>
+					<span className={s.head}>{footer.product}</span>
 					<a href="#funktionen" className="fuss-link">
 						{footer.features}
 					</a>
@@ -40,8 +40,8 @@ export function Fusszeile() {
 						{footer.guides}
 					</a>
 				</div>
-				<div className={s.spalte}>
-					<span className={s.kopf}>{footer.account}</span>
+				<div className={s.column}>
+					<span className={s.head}>{footer.account}</span>
 					<a href={appUrl(links.create)} className="fuss-link">
 						{footer.create}
 					</a>
@@ -52,8 +52,8 @@ export function Fusszeile() {
 						{footer.login}
 					</a>
 				</div>
-				<div className={s.spalte}>
-					<span className={s.kopf}>{footer.legal}</span>
+				<div className={s.column}>
+					<span className={s.head}>{footer.legal}</span>
 					<a href={links.legalNotice} className="fuss-link">
 						{footer.legalNotice}
 					</a>
