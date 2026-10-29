@@ -47,7 +47,7 @@ uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat, uInk;
 // summit in portrait; looking up (uLook) shifts the section into the dark sky. Clouds drift slightly, the
 // pointer is light on the snow, the mark stands as the sun in the sky.
 const float IMGA = 2560. / 3200.;
-const float INK_LO = .045, INK_TOP = .8, INK_G = .8;
+const float INK_LO = .045, INK_TOP = 1., INK_G = .8, INK_SHARP = 1.4;
 // Light mode tone (curve in photoMountain): paper at the page tone (.04 inverts to #f5f5f5), darkest ink .9
 float ink(float v){ return .04 + .86 * v; }
 vec2 photoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
@@ -58,6 +58,10 @@ float photoMountain(vec2 uv){
   vec2 iu = photoUV(gl_FragCoord.xy); iu.y = 1. - iu.y; float msk = texture(uMsk, iu).r; float skyWeight = 1. - texture(uMsk, iu, 2.5).r; // image uploaded flipped
   vec2 wv = (vec2(nz(iu * vec2(6., 14.) + vec2(T * .05, 0.)), nz(iu * vec2(6., 14.) + vec2(3.7, T * .03))) - .5) * .006 * skyWeight;
   float v = texture(uImg, iu + wv).r;
+  // Light mode: local contrast, so the fine gaps inside the lit snow faces stay open when they become dense ink
+  if(uInk > .5){ vec2 tx = 1.2 / vec2(textureSize(uImg, 0)); vec2 q = iu + wv;
+    float bl = (texture(uImg, q + vec2(tx.x, 0.)).r + texture(uImg, q - vec2(tx.x, 0.)).r + texture(uImg, q + vec2(0., tx.y)).r + texture(uImg, q - vec2(0., tx.y)).r) * .25;
+    v = clamp(v + (v - bl) * INK_SHARP * smoothstep(.05, .14, max(v, bl)), 0., 1.); } // not in the empty sky
   // Tone curve like a black-and-white print: deep black in the rock, snow stays bright; dark ground at the bottom for the text
   // Light mode: inside the mountain (msk) only the gaps between the strokes cut away and a gamma that lifts the faint strokes of
   // the shaded slopes, which on paper would otherwise read as empty white; the sky keeps a cut so it stays clean
