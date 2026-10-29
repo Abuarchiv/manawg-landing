@@ -48,9 +48,6 @@ const nextConfig: NextConfig = {
 		ignoreBuildErrors: false,
 		tsconfigPath: process.env.NEXT_TSCONFIG_PATH ?? 'tsconfig.json',
 	},
-	eslint: {
-		ignoreDuringBuilds: false,
-	},
 	async headers() {
 		// The last rule with the same key wins: the app's demo document may be embedded from its own
 		// origin (phone in the end scene), everything else stays DENY.
