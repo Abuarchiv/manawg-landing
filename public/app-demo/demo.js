@@ -1,8 +1,8 @@
-// ManaWG-Demo: Zustandsautomat ohne Framework über den aufgenommenen Zuständen der echten App.
-// Alle Zustände (Seiten und Overlays) liegen als <script type="text/plain"> in index.html (Rohtext, kein DOM-Aufbau beim Laden), der Graph (Klickfolgen, Welten) im
-// <script id="model">. Jedes Element stammt aus einer Aufnahme der App (landing-konzept/werkzeuge/app-demo). Gebaut von
-// landing-konzept/werkzeuge/app-demo/build-demo.mjs. Nichts hier erfindet Inhalt: demo.js tauscht Aufnahmen aus und animiert
-// die Übergänge mit den Dauern und Kurven der App (REF §7) über deren eigenes CSS (data-open, data-ending-style).
+// ManaWG demo: a framework-free state machine over the recorded states of the real app.
+// All states (pages and overlays) sit as <script type="text/plain"> in index.html (raw text, no DOM built on load), the graph (click chains, worlds) in
+// <script id="model">. Every element comes from a recording of the app (landing-konzept/werkzeuge/app-demo). Built by
+// landing-konzept/werkzeuge/app-demo/build-demo.mjs. Nothing here invents content: demo.js swaps recordings and animates
+// the transitions with the durations and curves of the app (REF §7) through the app's own CSS (data-open, data-ending-style).
 (() => {
 	'use strict';
 	const M = JSON.parse(document.getElementById('model').textContent);
@@ -12,12 +12,12 @@
 	const root = document.documentElement;
 	const app = document.getElementById('app');
 	const layer = document.getElementById('layer');
-	// Übergang zwischen Seiten: kurzes Überblenden mit der Kurve der App
+	// Transition between pages: a short cross-fade with the curve of the app
 	document.head.insertAdjacentHTML('beforeend', '<style>::view-transition-old(root),::view-transition-new(root){animation-duration:200ms;animation-timing-function:cubic-bezier(.2,0,0,1)}</style>');
 
-	// ---------------------------------------------------------------- Uhr und Datum
-	// Feste Uhr Di, 06.10.2026 17:43 Europe/Berlin (Zeitpunkt der Originalaufnahmen, REF.md §Zeiten): alle Datums- und
-	// Zeittexte der Vorschau stehen fest, nichts läuft mit der Systemzeit (nachts wäre „Pizza heute Abend?“ um 00:14 unglaubwürdig).
+	// ---------------------------------------------------------------- Clock and dates
+	// Fixed clock Tue 06 Oct 2026 17:43 Europe/Berlin (time of the original recordings): all date and
+	// time texts of the preview are fixed, nothing follows the system time (at night "Pizza tonight?" at 00:14 would not be believable).
 	const REF_NOW = Date.parse('2026-10-06T15:43:00Z');
 	const clock = () => REF_NOW;
 	const T0 = clock();
@@ -40,7 +40,7 @@
 		const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(ms).map((x) => [x.type, x.value]));
 		return { y: +p.year, m: +p.month, d: +p.day, hh: p.hour, mm: p.minute };
 	};
-	/** Kalendertag in Berlin + k Tage als UTC-Mittag (nur zum Formatieren). */
+	/** Calendar day in Berlin + k days as UTC noon (only used for formatting). */
 	const day = (k, ms = clock()) => {
 		const b = berlin(ms);
 		return Date.UTC(b.y, b.m - 1, b.d + k, 12);
@@ -51,7 +51,7 @@
 		const b = berlin(ms);
 		return `${b.hh}:${b.mm}`;
 	};
-	/** Format der App (formatRelativeTime, core/utils/time.ts) für "vor Minuten". */
+	/** Format of the app (formatRelativeTime, core/utils/time.ts, English catalogue common.time) for "n min ago". */
 	const ago = (min) => {
 		const diff = min * 60000;
 		if (diff < 60000) return 'gerade eben';
@@ -61,13 +61,13 @@
 		return d === 1 ? 'gestern' : `vor ${d} Tagen`;
 	};
 	const nextMonth3 = (n) => {
-		// n-te Buchung "am 03." des Folgemonats: Wert für {{M:n|tm}} (Fixkosten laufen am 3. jedes Monats)
+		// n-th booking "on the 3rd" of the following month: value for {{M:n|tm}} (fixed costs run on the 3rd of every month)
 		const b = berlin(clock());
 		return Date.UTC(b.y, b.m - 1 + n, 3, 12);
 	};
-	const S = { sent: null }; // Zeitpunkt der gesendeten Chat-Antwort
-	// Tokens: {{D:k:fmt}} Tag + k, {{F:fmt}} nächster Freitag, {{M:n:fmt}} 3. des n-ten Folgemonats, {{A:min}} "vor n",
-	// {{CT:n}} Chat-Uhrzeit n (Minuten vor T0 aus CHAT_AGO in der Reihenfolge des Verlaufs, n = Länge: Antwort), {{CD:n}} datetime/title
+	const S = { sent: null }; // time the chat reply was sent
+	// Tokens: {{D:k:fmt}} day + k, {{F:fmt}} next Friday, {{M:n:fmt}} the 3rd of the n-th following month, {{A:min}} "n ago",
+	// {{CT:n}} chat time n (minutes before T0 from CHAT_AGO in history order, n = length: the reply), {{CD:n}} datetime/title
 	const CHAT_AGO = [1560, 1540, 1530, 95, 62, 41, 30, 14]; // Seed in landing-konzept/werkzeuge/app-demo/demo-server.mjs
 	const TOK = (s) =>
 		s.replace(/\{\{([^}]+)\}\}/g, (_, t) => {
@@ -101,42 +101,42 @@
 			}
 		});
 
-	// ---------------------------------------------------------------- Vorlagen
+	// ---------------------------------------------------------------- Templates
 	const tpl = (id) => {
 		const t = document.getElementById(`t-${id}`);
 		if (!t) return '';
 		return TOK(t.textContent.replace(/<x-s i="(\d+)"><\/x-s>/g, (_, i) => M.s[i]).replace(/ class="~(\d+)"/g, (_, i) => ` class="${M.c[i]}"`));
 	};
 
-	// ---------------------------------------------------------------- Zustand
-	const st = { w: '-', id: null, busy: false, timer: 0, over: null /* Element des Overlays */, overKey: null };
+	// ---------------------------------------------------------------- State
+	const st = { w: '-', id: null, busy: false, timer: 0, over: null /* element of the overlay */, overKey: null };
 	const node = (w, id) => {
 		let n = M.nodes[w]?.[id];
 		const base = M.nodes['-'][id];
 		if (!n && !base) return null;
 		if (!n) {
-			// Welt ohne eigene Aufnahme dieses Zustands: Seite der Welt, Overlay und Kanten der Ausgangswelt
+			// World without its own recording of this state: page of the world, overlay and edges of the base world
 			const rt = id.split('|')[0];
 			const rel = M.rel[rt] || '';
 			const set = w === '-' ? [] : w.split('+');
 			const sub = M.flags.filter((f) => rel.includes(f) && set.includes(f)).join('+') || '-';
 			n = { ...base, p: base.v ? base.p : (M.pg[`${rt}|${sub}`] ?? base.p) };
 		}
-		// Endzustand der Aufnahme (Tiefe erreicht, keine eigenen Kanten): Bedienung wie der Zustand des letzten Schritts, sonst wie die Route
+		// End state of a recording (depth reached, no edges of its own): behaves like the state of the last step, otherwise like the route
 		if (n.v && !n.x && !n.o && !Object.keys(n.e).length) {
 			const rt = id.split('|')[0];
 			const alt = `${rt}|${id.split('>').pop()}`;
 			const x = alt !== id && M.nodes['-'][alt] ? alt : `${rt}|`;
 			if (x !== id) n = { ...n, x };
 		}
-		if (n.x) n = { ...n, e: { ...(node(w, n.x)?.e ?? {}), ...n.e } }; // Zustand direkt nach einer Änderung: Bedienung wie die Route
+		if (n.x) n = { ...n, e: { ...(node(w, n.x)?.e ?? {}), ...n.e } }; // state right after a change: controls like the route
 		return n;
 	};
 	const cur = () => node(st.w, st.id);
 	const hasOver = (n) => !!(n && n.o);
 
-	// Fokus: der Zustand merkt sich das fokussierte Element (data-k), die Eingabefelder sind schreibgeschützt
-	// (das Antippen tippt den aufgenommenen Text, keine Bildschirmtastatur auf dem Handy).
+	// Focus: the state remembers the focused element (data-k), the input fields are read-only
+	// (tapping types the recorded text, there is no on-screen keyboard on the phone).
 	const prep = (rootEl) => {
 		for (const i of rootEl.querySelectorAll('input,textarea')) {
 			i.readOnly = true;
@@ -146,7 +146,7 @@
 		for (const a of rootEl.querySelectorAll('a[href]')) a.setAttribute('href', '#');
 	};
 
-	/** Monatsraster auf den heutigen Monat umrechnen (Zahlen, Beschriftung, heute, Termin-Punkte). */
+	/** Recalculate the month grid to the current month (numbers, labels, today, event dots). */
 	const gridFix = (rootEl) => {
 		for (const tb of rootEl.querySelectorAll('table[role=grid]')) {
 			let g;
@@ -186,12 +186,12 @@
 		}
 	};
 
-	const masse = new Map(); // gemessene Höhen (Tableiste je Fenstergröße, Chat je Fenstergröße und Seite)
-	// Wie die App: die Tableiste misst sich selbst (mit Inset unten 84 px statt der aufgenommenen 57 px), damit Inhalt
-	// und Eingabezeile des Chats über ihr enden statt dahinter. Gemessen wird nur einmal je Fenstergröße (und Seite):
-	// jedes Messen direkt nach dem Austausch erzwang ein eigenes Layout, beim Scrollen der Landing ein Ruckler.
-	// Der Chat misst seine Höhe in der App per Skript (bis zur Tableiste); die Aufnahme hat sie ohne Insets fest
-	// eingetragen, sonst läge die Eingabezeile hinter der Tableiste.
+	const masse = new Map(); // measured heights (tab bar per window size, chat per window size and page)
+	// Like the app: the tab bar measures itself (with a bottom inset of 84 px instead of the recorded 57 px) so that the content
+	// and the chat input end above it instead of behind it. Measured only once per window size (and page):
+	// every measurement right after the swap forced a layout of its own, a stutter while the landing scrolls.
+	// The chat measures its height in the app by script (down to the tab bar); the recording has it hard-coded
+	// without insets, otherwise the input line would sit behind the tab bar.
 	const messe = (el, p, vp) => {
 		const nav = el.querySelector('nav[data-app-chrome]');
 		const shell = el.querySelector('[style*="--app-nav-height"]');
@@ -207,10 +207,10 @@
 		}
 	};
 	const setPage = (n, morph) => {
-		// Tabbar und SubNav bleiben in der App stehen, nur der aktive Eintrag wechselt (120 ms bzw. 150 ms Hintergrund).
-		// Beim Austausch der Seite starten die neuen Einträge im alten Zustand und gleiten in den neuen.
+		// Tab bar and SubNav stay in place in the app, only the active entry changes (120 ms and 150 ms background).
+		// When the page is swapped the new entries start in the old state and glide into the new one.
 		const old = morph ? [...app.querySelectorAll('nav')].map((nv) => [...nv.querySelectorAll('a')].map((a) => [a.className, a.getAttribute('aria-current')])) : [];
-		// Fenstergröße vor dem Austausch lesen, solange das Layout noch gültig ist
+		// Read the window size before the swap while the layout is still valid
 		const vp = `${innerWidth}x${innerHeight}`;
 		app.innerHTML = tpl(`p-${n.p}`);
 		prep(app);
@@ -231,7 +231,7 @@
 		});
 	};
 
-	/** Overlay einsetzen und mit dem CSS der App animieren (Beginn über data-starting-style). */
+	/** Insert an overlay and animate it with the CSS of the app (start via data-starting-style). */
 	const showOver = (n, still) => {
 		const el = document.createElement('div');
 		el.className = still ? 'demo-over demo-still' : 'demo-over';
@@ -247,7 +247,7 @@
 			requestAnimationFrame(() => requestAnimationFrame(() => { for (const s of sty) s.removeAttribute('data-starting-style'); }));
 		}
 	};
-	/** Overlay schließen: Sheets über data-ending-style (400 ms), Dialoge über data-closed (animate-out, 220 ms). */
+	/** Close an overlay: sheets via data-ending-style (400 ms), dialogs via data-closed (animate-out, 220 ms). */
 	const hideOver = (instant) => {
 		const el = st.over;
 		if (!el) return;
@@ -288,9 +288,9 @@
 		st.id = id;
 		const pageChanged = !prev || prev.p !== n.p || opts.force;
 		const morph = !!prev && !opts.instant && !opts.force;
-		// Seitenwechsel blenden weich über (View Transition, 200 ms wie ein Tabwechsel der App), statt hart zu springen.
-		// Der Browser hält dabei ein Bild der alten Seite, der Aufbau der neuen läuft im selben Zug. Nur bei eigenen Tipps:
-		// beim Scrollen schaltet die Landing ohne Überblendung um (vt: false), das Standbild kostet sonst ein Bild.
+		// Page changes cross-fade softly (View Transition, 200 ms like a tab change in the app) instead of jumping hard.
+		// The browser keeps a picture of the old page meanwhile, the new one is built in the same go. Only for taps of its own:
+		// while the landing scrolls it switches without a cross-fade (vt: false), the still picture would cost a frame otherwise.
 		if (pageChanged && morph && opts.vt !== false && document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			document.startViewTransition(() => wechsel(n, prev, w, opts, pageChanged, morph));
 			return true;
@@ -299,7 +299,7 @@
 	};
 
 	const wechsel = (n, prev, w, opts, pageChanged, morph) => {
-		const y0 = scrollY; // vor dem Austausch lesen: danach erzwingt das Lesen ein Layout
+		const y0 = scrollY; // read before the swap: reading afterwards forces a layout
 		if (pageChanged) setPage(n, morph);
 		else document.body.setAttribute('style', n.b || '');
 		const wasOver = !!st.over;
@@ -307,7 +307,7 @@
 		else if (!n.o) hideOver(true);
 		if (n.o && st.overKey !== n.o) {
 			hideOver(true);
-			// Overlay -> Overlay (z. B. nach dem Tippen im Formular): ohne erneutes Einblenden austauschen
+			// Overlay -> overlay (e.g. after typing in the form): swap without fading in again
 			showOver(n, wasOver || opts.instant);
 		}
 		if (n.t) root.style.setProperty('--thumb-action-space', '52px');
@@ -315,8 +315,8 @@
 		focusKey(n);
 		if (n.a) st.timer = setTimeout(() => enter(w, n.a[1]), n.a[0]);
 		if (pageChanged && y0) window.scrollTo(0, 0);
-		// Der Chat steht wie in der App am Ende des Verlaufs (die Aufnahme speichert keine Scrollposition). Gesetzt wird
-		// nach dem nächsten Layout, vor dem Malen (ResizeObserver): sofort gesetzt erzwang es ein eigenes Layout.
+		// Like in the app the chat sits at the end of the history (the recording stores no scroll position). It is set
+		// after the next layout, before painting (ResizeObserver): setting it at once forced a layout of its own.
 		const vp = app.querySelector('[data-slot="message-scroller-viewport"]');
 		if (vp) {
 			const ro = new ResizeObserver(() => {
@@ -329,7 +329,7 @@
 		return true;
 	};
 
-	// ---------------------------------------------------------------- Eingaben
+	// ---------------------------------------------------------------- Input
 	const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 	const typeInto = async (el, text, per) => {
 		el.focus({ preventScroll: true });
@@ -340,7 +340,7 @@
 		}
 	};
 
-	/** Weg über Eingabe-/Klick-Kanten bis zu einer Kante mit dem Schlüssel k (für Felder, die vor ihrer Reihe angetippt werden). */
+	/** Path over input/click edges to an edge with key k (for fields tapped before their row). */
 	const pathTo = (w, id, k) => {
 		const seen = new Set([id]);
 		const q = [[id, []]];
@@ -373,7 +373,7 @@
 		}
 	};
 
-	/** Wendet eine Kante an: Welt wechseln (Änderung der Daten), Zielzustand betreten. */
+	/** Apply an edge: switch world (data change), enter the target state. */
 	const apply = (e) => {
 		let w = st.w;
 		if (e.add) {
@@ -382,7 +382,7 @@
 			w = M.flags.filter((f) => set.has(f)).join('+') || '-';
 		}
 		if (e.msg === 'C') S.sent = clock();
-		// Ziel ohne aufgenommenen Zustand (eigene Seite der App): kurzer Hinweis statt toter Knopf
+		// Target without a recorded state (a page of its own in the app): a short notice instead of a dead button
 		if (!enter(w, e.t, { force: !!e.add })) toast('Das öffnet sich in der echten App.');
 	};
 
@@ -391,7 +391,7 @@
 		const n = cur();
 		if (!n) return;
 		const el = target.closest('[data-k]');
-		// Klick auf die Fläche außerhalb des Sheets/Dialogs schließt (Dialoge mit Pflichtantwort ausgenommen)
+		// A click outside the sheet/dialog closes it (dialogs that require an answer excepted)
 		if (!el) {
 			if (n.o && target.closest('[data-slot=drawer-viewport],[data-slot=dialog-viewport],[data-slot=drawer-overlay],[data-slot=dialog-overlay]') && !target.closest('[data-slot=drawer-popup],[data-slot=dialog-content]')) {
 				const p = M.parent[st.id];
@@ -406,10 +406,10 @@
 			return apply(e);
 		}
 		if (e?.k === 'm' && e.t) return apply(e);
-		// Eingabefeld vor seiner Reihe angetippt: fehlende Felder der Reihe nach tippen
+		// Input field tapped before its row: type the missing fields in order
 		if (/^(input|textarea)\|/.test(k)) {
 			const path = pathTo(st.w, st.id, k);
-			// Feld ohne aufgenommene Eingabe: kurzer Hinweis statt totem Feld (die Demo tippt nur Aufgenommenes)
+			// Field without recorded input: a short notice instead of a dead field (the demo only types what was recorded)
 			if (!path) toast('Eingeben geht in der echten App.');
 			if (path) {
 				st.busy = true;
@@ -431,10 +431,10 @@
 		if (!/^(input|textarea)\|/.test(k)) micro(el);
 	};
 
-	// ---------------------------------------------------------------- Bedienung ohne aufgenommenen Zustand
-	// Nicht alles in der App wurde als Zustand aufgenommen. Damit nichts tot wirkt: Schalter, Zähler und
-	// Aufklappbares verhalten sich wie in der App (nur im Bild, ohne Speichern); Ziele, die in der App eine
-	// eigene Seite öffnen (Erinnerungen, Import, Kalender-Feed), melden das kurz als Hinweis.
+	// ---------------------------------------------------------------- Controls without a recorded state
+	// Not everything in the app was recorded as a state. So that nothing feels dead: switches, counters and
+	// collapsibles behave like in the app (in the picture only, nothing is saved); targets that open a page of their own
+	// in the app (reminders, import, calendar feed) show a short notice.
 	let toastEl = null;
 	let toastT = 0;
 	const toast = (text) => {
@@ -458,7 +458,7 @@
 		const lab = el.getAttribute('aria-label') || el.textContent.trim();
 		if (el.disabled || el.hasAttribute('data-disabled') || el.getAttribute('aria-disabled') === 'true') return true;
 		if (/^Zum (Hauptinhalt|Ende)/.test(lab)) return true;
-		// Abhaken (Einkaufsliste)
+		// Tick off (shopping list)
 		if (el.getAttribute('role') === 'checkbox' && el.hasAttribute('aria-checked')) {
 			const on = el.getAttribute('aria-checked') !== 'true';
 			el.setAttribute('aria-checked', String(on));
@@ -470,7 +470,7 @@
 			if (row) row.style.opacity = on ? '0.6' : '';
 			return true;
 		}
-		// Vorrat erhöhen oder verringern
+		// Increase or decrease a supply
 		const v = /um eins (erhöhen|verringern)$/.exec(lab);
 		if (v) {
 			const d = el.closest('[data-slot=item]')?.querySelector('[data-slot=item-description]');
@@ -481,7 +481,7 @@
 			}
 			return true;
 		}
-		// Reaktion setzen oder entfernen
+		// Set or remove a reaction
 		const r = /-Reaktion (setzen|entfernen): (.*)$/.exec(lab);
 		if (r && el.hasAttribute('aria-pressed')) {
 			const on = r[1] === 'setzen';
@@ -502,7 +502,7 @@
 			}
 			return true;
 		}
-		// Antworten ein- und ausklappen
+		// Expand and collapse replies
 		const pid = el.getAttribute('aria-controls');
 		const panel = pid && document.getElementById(pid);
 		if (panel && el.hasAttribute('aria-expanded')) {
@@ -514,7 +514,7 @@
 			panel.style.setProperty('--collapsible-panel-height', open ? `${panel.scrollHeight}px` : '0px');
 			return true;
 		}
-		// aktueller Reiter, Überschrift oder Auswahl: nichts zu tun
+		// current tab, heading or selection: nothing to do
 		if (el.getAttribute('aria-current') || el.getAttribute('aria-selected') === 'true' || el.getAttribute('aria-pressed') === 'true') return true;
 		toast('Das öffnet sich in der echten App.');
 		return true;
@@ -538,7 +538,7 @@
 		}
 	});
 
-	// ---------------------------------------------------------------- Zeiger und Scroll an die Landing
+	// ---------------------------------------------------------------- Pointer and scroll towards the landing
 	if (FRAMED) {
 		const fe = window.frameElement;
 		const send = (type, e) => {
@@ -548,13 +548,13 @@
 			const o = { bubbles: true, cancelable: false, composed: true, clientX: r.left + e.clientX * s, clientY: r.top + e.clientY * s, pointerType: e.pointerType || 'mouse', pointerId: e.pointerId || 1, isPrimary: true, buttons: e.buttons, button: e.button };
 			fe.dispatchEvent(new (window.parent.PointerEvent || PointerEvent)(type, o));
 		};
-		// Maus und Stift meldet Phone.tsx (als direkt markiert); hier nur Touch, sonst käme jeder Klick doppelt an die Bühne
+		// Mouse and pen are reported by Phone.tsx (marked as direct); only touch here, otherwise every click would reach the stage twice
 		for (const t of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel']) addEventListener(t, (e) => { if (e.pointerType === 'touch') send(t, e); }, { passive: true, capture: true });
 		document.addEventListener('pointerleave', (e) => send('pointerleave', e));
 		root.addEventListener('mouseleave', (e) => send('pointerleave', e));
-		// Rad: nach dem ersten Klick in die App scrollt erst die App (die Liste unter dem Zeiger oder der Bildschirm),
-		// an ihrem Rand und vor dem Klick die Seite der Landing. Verlässt der Zeiger das Handy, scrollt wieder die Seite.
-		// Gleitet die Seite (html.lenis), geht das Rad als Rad-Ereignis an die Landing, damit es wie daneben weich läuft.
+		// Wheel: after the first click into the app the app scrolls first (the list under the pointer or the screen),
+		// at its edge and before the click the landing page does. When the pointer leaves the phone the page scrolls again.
+		// While the page glides (html.lenis) the wheel goes to the landing as a wheel event so that it runs as smoothly as outside.
 		let bedient = false;
 		addEventListener('pointerdown', (e) => { if (e.pointerType !== 'touch') bedient = true; }, { capture: true, passive: true });
 		root.addEventListener('mouseleave', () => { bedient = false; });
@@ -578,7 +578,7 @@
 			if (P.document.documentElement.classList.contains('lenis')) P.dispatchEvent(new P.WheelEvent('wheel', { deltaX: e.deltaX, deltaY: e.deltaY, deltaMode: e.deltaMode, ctrlKey: e.ctrlKey, cancelable: true, bubbles: true }));
 			else P.scrollBy({ left: e.deltaX, top: e.deltaY, behavior: 'instant' });
 		}, { passive: false });
-		// Wisch: der Bildschirm der App scrollt nicht, also scrollt der senkrechte Wisch die Seite der Landing (mit Auslauf)
+		// Swipe: the screen of the app does not scroll, so a vertical swipe scrolls the landing page (with momentum)
 		let ty = 0;
 		let v = 0;
 		let raf = 0;
@@ -609,15 +609,15 @@
 	}
 
 	/**
-	 * Seiten unsichtbar vorbauen (je Leerlaufpause eine): der erste Aufbau einer Seite kostet Stil- und Layout-Caches
-	 * des Browsers, beim Scrollen der Landing war das der Ruckler am ersten Tabwechsel. Danach wird verworfen.
+	 * Build pages invisibly (one per idle pause): the first build of a page costs the style and layout caches
+	 * of the browser, while the landing scrolled that was the stutter on the first tab change. Afterwards it is discarded.
 	 */
 	const vorwaermen = (ids) => {
 		const liste = ids.map((id) => node('-', id)?.p).filter((p, i, a) => p && a.indexOf(p) === i && p !== cur()?.p);
 		const schritt = () => {
 			const p = liste.shift();
 			if (!p) return;
-			// fast durchsichtig statt unsichtbar: so malt der Browser die Seite einmal (Schrift, Emoji, Verläufe)
+			// almost transparent instead of invisible: that way the browser paints the page once (font, emoji, gradients)
 			const box = document.createElement('div');
 			box.setAttribute('aria-hidden', 'true');
 			box.inert = true;
