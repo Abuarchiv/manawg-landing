@@ -40,7 +40,7 @@ const withLinks = (text: string, locale: Locale) =>
 	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((part, i) => {
 		const m = /^\[([^\]]+)\]\((\/[a-z0-9-]*)\)$/.exec(part);
 		return m?.[1] && m[2] ? (
-			<Link key={`${i}-${m[2]}`} href={localiseHref(locale, m[2])}>
+			<Link key={`${i}-${m[2]}`} href={localiseHref(locale, m[2])} prefetch={false}>
 				{m[1]}
 			</Link>
 		) : (
@@ -342,7 +342,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				</p>
 				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
 					{txt.by}{' '}
-					<Link href={locale === 'de' ? '/ueber-manawg' : '/en/about-manawg'}>
+					<Link href={locale === 'de' ? '/ueber-manawg' : '/en/about-manawg'} prefetch={false}>
 						{txt.authorName}
 					</Link>{' '}
 					· {txt.published} <time dateTime={t.published}>{formatDate(t.published)}</time> ·{' '}

@@ -1,33 +1,17 @@
 import { LanguageLink } from '@/components/LanguageLink';
-import { languageAlternates } from '@/lib/locale';
+import { legalMetadata } from '@/lib/legal-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
+export const metadata = legalMetadata({
+	locale: 'de',
+	path: '/impressum',
+	counterpart: '/en/legal-notice',
 	title: 'Impressum von ManaWG',
 	description:
 		'Impressum von ManaWG, der kostenlosen WG-App: wer die App betreibt und wie ihr bei Fragen zur App und zu dieser Website Kontakt aufnehmt.',
-	alternates: {
-		canonical: '/impressum',
-		languages: languageAlternates('/impressum', '/en/legal-notice') ?? {},
-	},
-	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
-	openGraph: {
-		title: 'Impressum von ManaWG',
-		description:
-			'Impressum von ManaWG, der kostenlosen WG-App: wer die App betreibt und wie ihr bei Fragen zur App und zu dieser Website Kontakt aufnehmt.',
-		url: '/impressum',
-		siteName: 'ManaWG',
-		locale: 'de_DE',
-		alternateLocale: 'en_GB',
-		type: 'website',
-		images: [
-			{ url: '/og.png?v=2', width: 1200, height: 630, alt: 'Das ManaWG-Zeichen als 3D-Körper' },
-		],
-	},
-};
+});
 
 export default function LegalNoticePage() {
 	return (

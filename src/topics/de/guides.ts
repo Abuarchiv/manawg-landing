@@ -272,7 +272,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-gruenden-checkliste': {
 		link: 'WG gründen',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-11',
 		title: 'WG gründen: Schritt für Schritt mit Checkliste | ManaWG',
 		description:
@@ -303,7 +303,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'4. Kaution und Übergabe festhalten',
-				'Die Kaution darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Haltet fest, wer welchen Anteil eingezahlt hat, damit bei einem Auszug klar ist, wem was zusteht. Bei der Wohnungsübergabe gehört jedes Zimmer ins Übergabeprotokoll, am besten mit Fotos von Schäden und den Zählerständen für Strom, Gas und Wasser.',
+				'Die [Kaution](/wg-kaution) darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Haltet fest, wer welchen Anteil eingezahlt hat, damit bei einem Auszug klar ist, wem was zusteht. Bei der Wohnungsübergabe gehört jedes Zimmer ins Übergabeprotokoll, am besten mit Fotos von Schäden und den Zählerständen für Strom, Gas und Wasser.',
 			],
 			[
 				'5. Eine WG-Vereinbarung unter euch',
@@ -523,7 +523,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-mietvertrag': {
 		link: 'WG-Mietvertrag',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-19',
 		title: 'WG-Mietvertrag: 3 Modelle und Muster-Checkliste | ManaWG',
 		description:
@@ -550,7 +550,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Kaution in der WG',
-				'Die Kaution darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Beim gemeinsamen Hauptmietvertrag zahlt die WG sie gemeinsam. Haltet fest, wer welchen Anteil eingezahlt hat, denn bei einem Wechsel zahlt meist der Nachfolger seinen Anteil an die ausziehende Person, während die Kaution beim Vermieter bleibt. Bei Untermiete zahlt ihr die Kaution an den Hauptmieter.',
+				'Die [Kaution](/wg-kaution) darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Beim gemeinsamen Hauptmietvertrag zahlt die WG sie gemeinsam. Haltet fest, wer welchen Anteil eingezahlt hat, denn bei einem Wechsel zahlt meist der Nachfolger seinen Anteil an die ausziehende Person, während die Kaution beim Vermieter bleibt. Bei Untermiete zahlt ihr die Kaution an den Hauptmieter.',
 			],
 			[
 				'Was in den Vertrag gehören sollte',
@@ -631,7 +631,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-zwischenmiete': {
 		link: 'Zwischenmiete',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-19',
 		title: 'Zwischenmiete in der WG: Ablauf, Vertrag, Kosten | ManaWG',
 		description:
@@ -646,7 +646,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Den Zwischenmieter finden',
-				'Zwischenmieter suchen oft kurzfristig und für feste Zeiträume, etwa Austauschstudierende oder Praktikanten. Gebt in der Anzeige genau an, von wann bis wann das Zimmer frei ist, was es warm kostet und was im Zimmer bleibt. Ein kurzes Kennenlernen mit der WG, notfalls per Videocall, verhindert böse Überraschungen. Wie ihr Bewerbungen sortiert und auswählt, steht unter [Mitbewohner finden](/mitbewohner-finden).',
+				'Zwischenmieter suchen oft kurzfristig und für feste Zeiträume, etwa Austauschstudierende oder Praktikanten. Gebt in der Anzeige genau an, von wann bis wann das Zimmer frei ist, was es warm kostet und was im Zimmer bleibt. Kürzel wie WM, KM und ZW erklärt das Glossar [WG-Anzeigen-Abkürzungen](/wg-abkuerzungen). Ein kurzes Kennenlernen mit der WG, notfalls per Videocall, verhindert böse Überraschungen. Wie ihr Bewerbungen sortiert und auswählt, steht unter [Mitbewohner finden](/mitbewohner-finden).',
 			],
 			[
 				'Der Zwischenmietvertrag',
@@ -1402,7 +1402,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-11',
 		title: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		description:
@@ -1413,7 +1413,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 		sections: [
 			[
 				'Vor dem Einzug: Vertrag und Formalien',
-				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen [Untermietvertrag](/wg-mietvertrag) mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der Kaution: Sie darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Fragt außerdem, ob die Miete warm oder kalt angegeben ist. Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden [Regeln](/wg-regeln) für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
+				'Klärt, ob ihr einen eigenen Mietvertrag mit dem Vermieter bekommt oder einen [Untermietvertrag](/wg-mietvertrag) mit einem Mitbewohner. Fragt nach Höhe und Rückzahlung der [Kaution](/wg-kaution): Sie darf höchstens drei Nettokaltmieten betragen und kann in drei Monatsraten gezahlt werden. Fragt außerdem, ob die Miete warm oder kalt angegeben ist. Was die Kürzel WM und KM in Anzeigen bedeuten, erklärt das Glossar [WG-Anzeigen-Abkürzungen](/wg-abkuerzungen). Lasst euch zeigen, welche Räume, Schränke und Fächer im Kühlschrank euch gehören. Fragt nach den bestehenden [Regeln](/wg-regeln) für Ruhe, Besuch und Putzen und danach, wie die Kosten verteilt werden.',
 			],
 			[
 				'Am Einzugstag',
@@ -1620,7 +1620,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-casting-fragen': {
 		link: 'WG-Casting',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-19',
 		title: 'WG-Casting: Ablauf, 48 Fragen, Mustertexte | ManaWG',
 		description:
@@ -1659,7 +1659,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Fragen von Bewerbern an die WG',
-				'Warum wird das Zimmer frei?\nGibt es einen eigenen Mietvertrag oder einen Untermietvertrag, und wer ist Hauptmieter?\nWie hoch ist die Warmmiete, und was ist darin enthalten?\nWie hoch ist die Kaution?\nWelche Kündigungsfrist gilt?\nWer entscheidet über die Auswahl, und bis wann bekomme ich Bescheid?\nWie lange wollen die anderen noch in der WG wohnen?\nWie läuft der Putzplan?\nGibt es eine gemeinsame Kasse, und wie werden Ausgaben geteilt?\nWie viel unternimmt die WG gemeinsam?\nWas zu Vertragsarten und Kaution gehört, steht im Ratgeber [WG-Mietvertrag](/wg-mietvertrag).',
+				'Warum wird das Zimmer frei?\nGibt es einen eigenen Mietvertrag oder einen Untermietvertrag, und wer ist Hauptmieter?\nWie hoch ist die Warmmiete, und was ist darin enthalten?\nWie hoch ist die Kaution?\nWelche Kündigungsfrist gilt?\nWer entscheidet über die Auswahl, und bis wann bekomme ich Bescheid?\nWie lange wollen die anderen noch in der WG wohnen?\nWie läuft der Putzplan?\nGibt es eine gemeinsame Kasse, und wie werden Ausgaben geteilt?\nWie viel unternimmt die WG gemeinsam?\nWas zu Vertragsarten und Kaution gehört, steht im Ratgeber [WG-Mietvertrag](/wg-mietvertrag). Kürzel wie WM oder NK in der Anzeige erklärt das Glossar [WG-Anzeigen-Abkürzungen](/wg-abkuerzungen).',
 			],
 			[
 				'Als Bewerber vorbereiten',
@@ -1818,7 +1818,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'mitbewohner-finden': {
 		link: 'Mitbewohner finden',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-19',
 		title: 'WG-Anzeige aufgeben, Mitbewohner finden: Mustertext | ManaWG',
 		description:
@@ -1841,7 +1841,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Was in eine gute WG-Anzeige gehört',
-				'Die Fakten zuerst: Größe des Zimmers, Warmmiete mit allen Nebenkosten, Einzugsdatum, Befristung, Lage und Verkehrsanbindung. Dann die WG selbst: Wie viele Personen, welches Alter, was macht ihr, wie viel Gemeinsames gibt es? Gute Fotos von Zimmer, Küche und Bad bei Tageslicht. Und ein ehrlicher Satz dazu, wie ihr Haushalt und Geld organisiert, etwa mit Putzplan und gemeinsamer Abrechnung in einer App. Das filtert Bewerber, die etwas ganz anderes suchen.',
+				'Die Fakten zuerst: Größe des Zimmers, Warmmiete mit allen Nebenkosten, Einzugsdatum, Befristung, Lage und Verkehrsanbindung. Was Kürzel wie WM, KM und NK bedeuten, steht unter [WG-Anzeigen-Abkürzungen](/wg-abkuerzungen). Dann die WG selbst: Wie viele Personen, welches Alter, was macht ihr, wie viel Gemeinsames gibt es? Gute Fotos von Zimmer, Küche und Bad bei Tageslicht. Und ein ehrlicher Satz dazu, wie ihr Haushalt und Geld organisiert, etwa mit Putzplan und gemeinsamer Abrechnung in einer App. Das filtert Bewerber, die etwas ganz anderes suchen.',
 			],
 			[
 				'Der Anzeigentitel: Formel und Beispiele',
@@ -1948,7 +1948,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-auszug-checkliste': {
 		link: 'WG-Auszug',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-19',
 		title: 'WG-Auszug: Checkliste für Kündigung und Kaution | ManaWG',
 		description:
@@ -1967,7 +1967,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Geld: offene Beträge und Kaution',
-				'Gleicht alle offenen Beträge vor dem Auszug aus, solange alle noch erreichbar sind. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Wenn der Saldo auf null steht, ist alles erledigt. Klärt außerdem, was mit gemeinsamen Anschaffungen passiert: Bleibt der Staubsauger in der WG, und zahlen die anderen euren Anteil? Die Kaution bekommt ihr vom Vermieter oder Hauptmieter zurück. Die Prüfung kann einige Monate dauern, vor allem wenn noch eine [Nebenkostenabrechnung](/wg-nebenkosten) aussteht.',
+				'Gleicht alle offenen Beträge vor dem Auszug aus, solange alle noch erreichbar sind. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Wenn der Saldo auf null steht, ist alles erledigt. Klärt außerdem, was mit gemeinsamen Anschaffungen passiert: Bleibt der Staubsauger in der WG, und zahlen die anderen euren Anteil? Die [Kaution](/wg-kaution) bekommt ihr vom Vermieter oder Hauptmieter zurück. Die Prüfung kann einige Monate dauern, vor allem wenn noch eine [Nebenkostenabrechnung](/wg-nebenkosten) aussteht.',
 			],
 			[
 				'Verträge und Behörden',
@@ -2229,7 +2229,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'wg-zimmer-kuendigen': {
 		link: 'WG-Zimmer kündigen',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-27',
 		title: 'WG-Zimmer kündigen: Fristen, Muster, Nachmieter | ManaWG',
 		description:
@@ -2272,7 +2272,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Nach der Kündigung',
-				'Sagt der WG Bescheid, sobald die Kündigung raus ist, auch wenn ihr formal noch Zeit habt. Gleicht offene Beträge vor dem Auszug aus. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Läuft der [Rundfunkbeitrag](/rundfunkbeitrag-wg) auf euch, muss jemand übernehmen. Am neuen Wohnort meldet ihr euch innerhalb von zwei Wochen [an](/wg-anmeldung). Übergabe, Kaution und alle weiteren Punkte stehen in der [Auszugs-Checkliste](/wg-auszug-checkliste).',
+				'Sagt der WG Bescheid, sobald die Kündigung raus ist, auch wenn ihr formal noch Zeit habt. Gleicht offene Beträge vor dem Auszug aus. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Läuft der [Rundfunkbeitrag](/rundfunkbeitrag-wg) auf euch, muss jemand übernehmen. Am neuen Wohnort meldet ihr euch innerhalb von zwei Wochen [an](/wg-anmeldung). Übergabe, [Kaution](/wg-kaution) und alle weiteren Punkte stehen in der [Auszugs-Checkliste](/wg-auszug-checkliste).',
 			],
 		],
 		tables: [

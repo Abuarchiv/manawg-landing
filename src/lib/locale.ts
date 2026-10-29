@@ -52,6 +52,8 @@ export const TOPIC_SLUG_EN: Readonly<Record<string, string>> = {
 	'wg-mietvertrag': 'flat-share-tenancy-agreement',
 	'wg-einzug-checkliste': 'moving-in-checklist',
 	'wg-anmeldung': 'anmeldung-shared-flat',
+	'wg-kaution': 'flat-share-deposit',
+	'wg-abkuerzungen': 'german-flat-share-glossary',
 	'mitbewohner-kuendigen': 'asking-a-flatmate-to-leave',
 	'wg-zimmer-kuendigen': 'give-notice-on-a-room',
 	'wg-auszug-checkliste': 'moving-out-checklist',

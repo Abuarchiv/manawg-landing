@@ -1,33 +1,17 @@
 import { LanguageLink } from '@/components/LanguageLink';
-import { languageAlternates } from '@/lib/locale';
+import { legalMetadata } from '@/lib/legal-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
+export const metadata = legalMetadata({
+	locale: 'en',
+	path: '/en/privacy',
+	counterpart: '/datenschutz',
 	title: 'ManaWG privacy policy',
 	description:
 		'Privacy policy of ManaWG: what data the app and website process, who it is passed to, how long it is kept and which rights you have under the GDPR.',
-	alternates: {
-		canonical: '/en/privacy',
-		languages: languageAlternates('/datenschutz', '/en/privacy') ?? {},
-	},
-	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
-	openGraph: {
-		title: 'ManaWG privacy policy',
-		description:
-			'Privacy policy of ManaWG: what data the app and website process, who it is passed to, how long it is kept and which rights you have under the GDPR.',
-		url: '/en/privacy',
-		siteName: 'ManaWG',
-		locale: 'en_GB',
-		alternateLocale: 'de_DE',
-		type: 'website',
-		images: [
-			{ url: '/og.png?v=2', width: 1200, height: 630, alt: 'The ManaWG mark as a 3D object' },
-		],
-	},
-};
+});
 
 export default function PrivacyPage() {
 	return (

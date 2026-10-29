@@ -688,7 +688,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Questions applicants ask the flat',
-				'Why is the room becoming available?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and other utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nContract types and deposits are covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ Kaltmiete (rent excluding utilities) and may be paid in three equal monthly instalments.',
+				'Why is the room becoming available?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and other utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nContract types and deposits are covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ Kaltmiete (rent excluding utilities) and may be paid in three equal monthly instalments. If the ad uses abbreviations such as WM or NK, the [flat-share glossary](/german-flat-share-glossary) explains them.',
 			],
 			[
 				'Preparing as an applicant',
@@ -868,7 +868,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Finding the subtenant',
-				'Subtenants often search at short notice and for fixed periods, for example exchange students or interns. State exactly in the ad from when until when the room is free, what it costs all-in (Warmmiete) and what stays in the room. A short meeting with the flat, by video call if need be, prevents nasty surprises. How to sort and choose applications is in [find a flatmate](/find-a-flatmate), and what the interview usually looks like in [WG-Casting questions](/wg-casting-questions).',
+				'Subtenants often search at short notice and for fixed periods, for example exchange students or interns. State exactly in the ad from when until when the room is free, what it costs all-in (Warmmiete) and what stays in the room. Abbreviations such as ZW, WM and NK are explained in the [flat-share glossary](/german-flat-share-glossary). A short meeting with the flat, by video call if need be, prevents nasty surprises. How to sort and choose applications is in [find a flatmate](/find-a-flatmate), and what the interview usually looks like in [WG-Casting questions](/wg-casting-questions).',
 			],
 			[
 				'The sublease',

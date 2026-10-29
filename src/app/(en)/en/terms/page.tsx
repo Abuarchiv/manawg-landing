@@ -1,33 +1,17 @@
 import { LanguageLink } from '@/components/LanguageLink';
-import { languageAlternates } from '@/lib/locale';
+import { legalMetadata } from '@/lib/legal-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
+export const metadata = legalMetadata({
+	locale: 'en',
+	path: '/en/terms',
+	counterpart: '/agb',
 	title: 'ManaWG terms of use',
 	description:
 		'ManaWG terms of use, the free flat-share app: account, use, flat content, liability, termination and deletion of data.',
-	alternates: {
-		canonical: '/en/terms',
-		languages: languageAlternates('/agb', '/en/terms') ?? {},
-	},
-	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
-	openGraph: {
-		title: 'ManaWG terms of use',
-		description:
-			'ManaWG terms of use, the free flat-share app: account, use, flat content, liability, termination and deletion of data.',
-		url: '/en/terms',
-		siteName: 'ManaWG',
-		locale: 'en_GB',
-		alternateLocale: 'de_DE',
-		type: 'website',
-		images: [
-			{ url: '/og.png?v=2', width: 1200, height: 630, alt: 'The ManaWG mark as a 3D object' },
-		],
-	},
-};
+});
 
 export default function TermsPage() {
 	return (

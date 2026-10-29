@@ -46,7 +46,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'4. Agree the deposit and the handover',
-				'The Kaution (deposit) may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Write down who paid which share, so it is clear who is owed what when someone leaves. At the handover, every room belongs in the handover record (Übergabeprotokoll), ideally with photos of any damage and the meter readings for electricity, gas and water.',
+				'The [Kaution (deposit)](/flat-share-deposit) may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Write down who paid which share, so it is clear who is owed what when someone leaves. At the handover, every room belongs in the handover record (Übergabeprotokoll), ideally with photos of any damage and the meter readings for electricity, gas and water.',
 			],
 			[
 				'5. A flat agreement between yourselves',
@@ -298,7 +298,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'The deposit in a flat share',
-				'The Kaution (deposit) may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. With a joint main tenancy, the flat share pays it together. Write down who paid which share, because when someone leaves, the successor usually pays their share to the person moving out, while the deposit stays with the landlord. With subletting, you pay the deposit to the main tenant.',
+				'The [Kaution (deposit)](/flat-share-deposit) may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. With a joint main tenancy, the flat share pays it together. Write down who paid which share, because when someone leaves, the successor usually pays their share to the person moving out, while the deposit stays with the landlord. With subletting, you pay the deposit to the main tenant.',
 			],
 			[
 				'What the contract should contain',
@@ -393,7 +393,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 		sections: [
 			[
 				'Before moving in: contract and paperwork',
-				'Find out whether you get your own tenancy agreement with the landlord or a [sublease](/flat-share-tenancy-agreement) with a flatmate. Ask about the amount and repayment of the Kaution (deposit): it may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Also ask whether the rent is quoted as Warmmiete (including heating and other utilities) or Kaltmiete (excluding them). Have the rooms, cupboards and fridge shelves that are yours pointed out to you. Ask about the existing [house rules](/house-rules) on quiet, visitors and cleaning, and how costs are split.',
+				'Find out whether you get your own tenancy agreement with the landlord or a [sublease](/flat-share-tenancy-agreement) with a flatmate. Ask about the amount and repayment of the [Kaution (deposit)](/flat-share-deposit): it may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Also ask whether the rent is quoted as Warmmiete (including heating and other utilities) or Kaltmiete (excluding them). Abbreviations such as WM and KM are explained in the [flat-share glossary](/german-flat-share-glossary). Have the rooms, cupboards and fridge shelves that are yours pointed out to you. Ask about the existing [house rules](/house-rules) on quiet, visitors and cleaning, and how costs are split.',
 			],
 			[
 				'On move-in day',
@@ -809,7 +809,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'After giving notice',
-				'Tell your flatmates as soon as the notice is out, even if you formally have time. Settle open amounts before you move out. In the [shared expenses](/shared-expenses) in ManaWG you see your balance and the suggested transfers. If the [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) (broadcasting fee) is in your name, someone has to take it over. At your new address you register (Anmeldung) within two weeks, see [Anmeldung in a flat share](/anmeldung-shared-flat). Handover, deposit and all further points are in the [moving-out checklist](/moving-out-checklist).',
+				'Tell your flatmates as soon as the notice is out, even if you formally have time. Settle open amounts before you move out. In the [shared expenses](/shared-expenses) in ManaWG you see your balance and the suggested transfers. If the [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) (broadcasting fee) is in your name, someone has to take it over. At your new address you register (Anmeldung) within two weeks, see [Anmeldung in a flat share](/anmeldung-shared-flat). Handover, [deposit](/flat-share-deposit) and all further points are in the [moving-out checklist](/moving-out-checklist).',
 			],
 		],
 		tables: [
@@ -919,7 +919,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'Money: open amounts and the deposit',
-				'Settle all open amounts before you leave, while everyone is still reachable. In the [ManaWG shared expenses](/shared-expenses) you see your balance and the suggested transfers. When the balance is at zero, everything is done. Also clarify what happens to shared purchases: does the vacuum cleaner stay in the flat, and do the others pay your share? You get the Kaution (deposit) back from the landlord or the main tenant. The check can take a few months, especially if the annual utilities statement (Nebenkostenabrechnung, see [utilities in a flat share](/utilities-and-internet)) is still to come.',
+				'Settle all open amounts before you leave, while everyone is still reachable. In the [ManaWG shared expenses](/shared-expenses) you see your balance and the suggested transfers. When the balance is at zero, everything is done. Also clarify what happens to shared purchases: does the vacuum cleaner stay in the flat, and do the others pay your share? You get the [Kaution (deposit)](/flat-share-deposit) back from the landlord or the main tenant. The check can take a few months, especially if the annual utilities statement (Nebenkostenabrechnung, see [utilities in a flat share](/utilities-and-internet)) is still to come.',
 			],
 			[
 				'Contracts and authorities',

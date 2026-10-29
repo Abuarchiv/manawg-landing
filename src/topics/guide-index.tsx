@@ -25,6 +25,7 @@ const CLUSTERS: Array<[ClusterId, string[]]> = [
 			'wg-miete-rechner',
 			'wg-nebenkosten',
 			'rundfunkbeitrag-wg',
+			'wg-kaution',
 			'wg-haushaltskasse',
 			'schulden-mitbewohner',
 			'splitwise-splid-wechseln',
@@ -38,6 +39,7 @@ const CLUSTERS: Array<[ClusterId, string[]]> = [
 		[
 			'wg-gruenden-checkliste',
 			'wg-mietvertrag',
+			'wg-abkuerzungen',
 			'mitbewohner-finden',
 			'wg-casting-fragen',
 			'wg-einzug-checkliste',

@@ -722,7 +722,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'What belongs in a good WG ad',
-				'The facts first: room size, Warmmiete (rent including heating and other utilities), move-in date, any fixed term, location and transport links. Then the flat share itself: how many people, what age, what do you do, how much do you do together? Good photos of the room, kitchen and bathroom in daylight. And one honest sentence about how you run the household and money, for example with a cleaning rota and shared expenses in an app. That filters out applicants who are looking for something quite different.',
+				'The facts first: room size, Warmmiete (rent including heating and other utilities), move-in date, any fixed term, location and transport links. If you read German ads, the [flat-share glossary](/german-flat-share-glossary) explains abbreviations such as WM, KM and NK. Then the flat share itself: how many people, what age, what do you do, how much do you do together? Good photos of the room, kitchen and bathroom in daylight. And one honest sentence about how you run the household and money, for example with a cleaning rota and shared expenses in an app. That filters out applicants who are looking for something quite different.',
 			],
 			[
 				'The ad title: formula and examples',

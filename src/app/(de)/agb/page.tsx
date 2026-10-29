@@ -1,33 +1,17 @@
 import { LanguageLink } from '@/components/LanguageLink';
-import { languageAlternates } from '@/lib/locale';
+import { legalMetadata } from '@/lib/legal-metadata';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
+export const metadata = legalMetadata({
+	locale: 'de',
+	path: '/agb',
+	counterpart: '/en/terms',
 	title: 'Nutzungsbedingungen von ManaWG',
 	description:
 		'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung der Daten.',
-	alternates: {
-		canonical: '/agb',
-		languages: languageAlternates('/agb', '/en/terms') ?? {},
-	},
-	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
-	openGraph: {
-		title: 'Nutzungsbedingungen von ManaWG',
-		description:
-			'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung der Daten.',
-		url: '/agb',
-		siteName: 'ManaWG',
-		locale: 'de_DE',
-		alternateLocale: 'en_GB',
-		type: 'website',
-		images: [
-			{ url: '/og.png?v=2', width: 1200, height: 630, alt: 'Das ManaWG-Zeichen als 3D-Körper' },
-		],
-	},
-};
+});
 
 export default function TermsPage() {
 	return (
