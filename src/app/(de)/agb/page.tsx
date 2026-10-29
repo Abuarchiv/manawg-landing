@@ -1,3 +1,5 @@
+import { LanguageLink } from '@/components/LanguageLink';
+import { languageAlternates } from '@/lib/locale';
 import { TEXT_LINK } from '@/lib/text-link';
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -7,7 +9,10 @@ export const metadata: Metadata = {
 	title: 'Nutzungsbedingungen von ManaWG',
 	description:
 		'Nutzungsbedingungen der kostenlosen WG-App ManaWG: Konto, Nutzung, Inhalte der WG, Haftung, Kündigung und Löschung der Daten.',
-	alternates: { canonical: '/agb' },
+	alternates: {
+		canonical: '/agb',
+		languages: languageAlternates('/agb', '/en/terms') ?? {},
+	},
 	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
 	openGraph: {
 		title: 'Nutzungsbedingungen von ManaWG',
@@ -34,6 +39,11 @@ export default function AgbPage() {
 					<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />
 					Zur Startseite
 				</Link>
+				<LanguageLink
+					to="en"
+					href="/en/terms"
+					className="float-right inline-flex min-h-[44px] items-center rounded-lg px-3 py-3 font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)] transition-colors hover:text-[var(--text-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+				/>
 
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-8">Nutzungsbedingungen</h1>
 
@@ -135,9 +145,10 @@ export default function AgbPage() {
 							8. Lizenz / Quellcode
 						</h2>
 						<p>
-							Der Quellcode von ManaWG wird nicht als Open-Source-Software angeboten. Die Nutzung
-							der App überträgt dir keine Rechte zur Weitergabe oder kommerziellen Verwertung des
-							Quellcodes. Gesetzlich erlaubte Nutzungen bleiben unberührt.
+							Der Quellcode von ManaWG ist als Open-Source-Software unter der Apache-Lizenz 2.0
+							veröffentlicht. Für Nutzung, Weitergabe und Änderung des Quellcodes gelten die
+							Bedingungen dieser Lizenz. Die Nutzung des gehosteten Dienstes richtet sich nach
+							diesen AGB.
 						</p>
 					</section>
 

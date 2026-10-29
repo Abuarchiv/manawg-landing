@@ -1,3 +1,4 @@
+import { TEXT_LINK } from '@/lib/text-link';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import './globals.css';
@@ -31,6 +32,14 @@ export default function NotFound() {
 					>
 						Zur Startseite
 					</Link>
+					{/* One 404 serves both language trees, so the English visitor gets a line of their own. */}
+					<p lang="en-GB" className="mt-6 text-sm text-[var(--text-3)]">
+						Page not found.{' '}
+						<a href="/en" hrefLang="en" className={TEXT_LINK}>
+							Go to the English home page
+						</a>
+						.
+					</p>
 				</main>
 			</body>
 		</html>

@@ -1,0 +1,75 @@
+# ManaWG
+
+> ManaWG is a free flat-share app (a WG, or Wohngemeinschaft, is a shared flat in Germany). Flatmates split expenses, keep a shared shopping list, run a rotating cleaning rota and agree things on a noticeboard. The app runs in the browser and can be installed on the Home Screen without an app store.
+
+Note on the name: ManaWG is a household app for shared flats and has nothing to do with WireGuard.
+
+## Features
+
+- Split expenses: equally or with custom amounts per person, balances, settling up with as few transfers as possible
+- Fixed costs and monthly statement: recurring costs such as rent or internet
+- Import: bring in matching CSV files from Splitwise and Splid (preview, undo); read a photo or screenshot of an expense list with text recognition, photo on a single receipt as an attachment only
+- Shopping list and supplies: one list for everyone, ticked-off purchases can be booked straight as an expense
+- Cleaning rota: tasks repeat, rotate fairly, and absent flatmates are skipped
+- Calendar (also as a calendar subscription), noticeboard and chat
+
+## Getting started
+
+1. Create a flat at https://app.manawg.com/signup?action=create
+2. Flatmates sign in and join with an invite link
+3. Add the first expense, shopping item or cleaning slot
+
+## Pages
+
+- [Home](https://manawg.com/en): overview
+- [Flat-share app overview](https://manawg.com/en/flat-share-app)
+- [Cleaning rota](https://manawg.com/en/cleaning-rota)
+- [Shared expenses](https://manawg.com/en/shared-expenses)
+- [Shopping list](https://manawg.com/en/shopping-list)
+- [Splitwise alternative](https://manawg.com/en/splitwise-alternative)
+- [Flatastic alternative](https://manawg.com/en/flatastic-alternative)
+- [Tricount alternative](https://manawg.com/en/tricount-alternative)
+- [Splid alternative](https://manawg.com/en/splid-alternative)
+- [OurHome alternative](https://manawg.com/en/ourhome-alternative)
+- [Frequently asked questions](https://manawg.com/en/faq)
+
+## Guides
+
+- [All guides](https://manawg.com/en/guides): money, household, living together, starting, moving in and out
+- [Split flat costs fairly](https://manawg.com/en/split-flat-costs): rent, utilities, internet, three models
+- [Make a cleaning rota](https://manawg.com/en/make-a-cleaning-rota): generator, five steps, weekly plan, rhythm, points system
+- [Start a flat share: checklist](https://manawg.com/en/start-a-flat-share): order of steps, budget, type of contract, deposit, start-up costs
+- [House rules](https://manawg.com/en/house-rules): template, printable notice to fill in, consequences of breaking the rules
+- [Split rent by room size](https://manawg.com/en/rent-split-calculator): calculator, formula, example
+- [Utilities, electricity and internet](https://manawg.com/en/utilities-and-internet)
+- [Rundfunkbeitrag in a shared flat](https://manawg.com/en/rundfunkbeitrag-shared-flat): one fee per home, deregistering, sharing the cost
+- [Cleaning rota template](https://manawg.com/en/cleaning-rota-template): templates for 2 to 5 people, CSV for Excel ([CSV download](https://manawg.com/en/cleaning-rota-template.csv))
+- [Household kitty](https://manawg.com/en/household-kitty)
+- [Moving-in checklist](https://manawg.com/en/moving-in-checklist)
+- [Holidays and time away](https://manawg.com/en/holidays-and-time-away)
+- [Debts between flatmates](https://manawg.com/en/flatmate-debts): settling up, borrowed money, reminders, limitation
+- [Switch from Splitwise or Splid](https://manawg.com/en/switch-from-splitwise-or-splid): CSV import, preview, matching names, undo
+- [Splitwise free limit](https://manawg.com/en/splitwise-free-limit): daily limit according to Splitwise help, Pro, alternatives
+- [What is ManaWG? Facts](https://manawg.com/en/about-manawg)
+- [Best flat-share app: 7 criteria](https://manawg.com/en/best-flat-share-app)
+- [Organise flat shopping](https://manawg.com/en/organise-flat-shopping)
+- [Find a flatmate](https://manawg.com/en/find-a-flatmate): flat ad, WG-Gesucht account, required details, mistakes
+- [WG casting questions](https://manawg.com/en/wg-casting-questions): how it works, list of questions, sample texts for accepting and declining
+- [Flat-share tenancy agreement](https://manawg.com/en/flat-share-tenancy-agreement): joint tenancy, subletting, individual contracts, liability, deposit, sample checklist
+- [Asking a flatmate to leave](https://manawg.com/en/asking-a-flatmate-to-leave): subletting, main tenancy, individual contracts, no contract, notice periods, written form
+- [Anmeldung in a shared flat](https://manawg.com/en/anmeldung-shared-flat): landlord's confirmation, deadline, main and secondary residence, deregistering
+- [Subletting a room](https://manawg.com/en/subletting-a-room): permission, contract, rent, deposit, registration
+- [Resolving flatmate conflict](https://manawg.com/en/flatmate-conflict): cleaning, noise, money
+- [Give notice on a room](https://manawg.com/en/give-notice-on-a-room): notice periods, examples with dates, template, replacement tenant, joint contract
+- [Moving-out checklist](https://manawg.com/en/moving-out-checklist): notice, replacement tenant, deposit, final statement
+
+All pages as one text: https://manawg.com/en/llms-full.txt
+- [Open the app](https://app.manawg.com/)
+- [Privacy policy](https://manawg.com/en/privacy)
+
+## Details
+
+- Price: free
+- Languages: English and German
+- Platform: web app (PWA) for iPhone, Android and desktop
+- No ads; data is stored in Frankfurt am Main (EU)

@@ -1,28 +1,64 @@
-# ManaWG – kostenlose WG-App
+# ManaWG website
 
-> Anbieterinformationen von ManaWG, keine unabhängige Empfehlung.
+The marketing site for [ManaWG](https://manawg.com), a free, ad-free flat-share app: split expenses, run a cleaning rota and keep a shared shopping list. The app itself lives in its own repository, [Abuarchiv/manawg](https://github.com/Abuarchiv/manawg). This repository contains only the website.
 
-Mit ManaWG teilen Wohngemeinschaften Ausgaben, organisieren einen rotierenden Putzplan und führen eine gemeinsame Einkaufsliste. Kostenlos und werbefrei als Browser-App unter [app.manawg.com](https://app.manawg.com). Oberfläche ausschließlich Deutsch, Beträge ausschließlich Euro. Anmeldung mit Google oder E-Mail/Passwort, bis zu 20 aktive WG-Mitglieder. Weitere Informationen: [manawg.com](https://manawg.com), [WG-App](https://manawg.com/wg-app), [Putzplan-Vorlage](https://manawg.com/putzplan-vorlage).
+The site is available in German and English. ManaWG itself is available in both languages too, and amounts are in euros.
 
-*English summary: ManaWG is a free, ad-free browser app for shared flats, with German-language UI and EUR-only amounts.*
+## Routes
 
-Dieses Repository enthält nur die Website. Der Produktcode liegt in [manawg-app](https://github.com/Abuarchiv/manawg-app).
+| Language | Home | Topic pages | Guides | Legal pages |
+|---|---|---|---|---|
+| German | `/` | `/<slug>` | `/ratgeber` | `/impressum`, `/datenschutz`, `/agb` |
+| English | `/en` | `/en/<slug>` | `/en/guides` | `/en/legal-notice`, `/en/privacy`, `/en/terms` |
 
-## Entwicklung
+- German lives at the site root and English under `/en`, each with its own slugs. The slug map is in `src/lib/locale.ts`.
+- Every page that exists in both languages declares `hreflang` alternates and links to its counterpart.
+- The English legal pages are convenience translations. The German versions are the legally binding ones.
+- Machine-readable files: `/llms.txt` and `/en/llms.txt`, `/llms-full.txt` and `/en/llms-full.txt`, `/feed.xml` and `/en/feed.xml`, plus `sitemap.xml` and `robots.txt`.
 
-Landingpage für [manawg.com](https://manawg.com). Next.js 15, React 19, Tailwind, Lenis. Vercel baut `main` automatisch.
+## Stack
+
+- [Next.js](https://nextjs.org) 15 (app router) and React 19, statically prerendered
+- [Tailwind CSS](https://tailwindcss.com) 3
+- [Lenis](https://lenis.darkroom.engineering) for smooth scrolling on the home page
+- [Biome](https://biomejs.dev) for linting and formatting, TypeScript for type checking, `node --test` for unit tests
+
+## Getting started
+
+You need Node.js 22 or newer and pnpm 9 or newer.
 
 ```sh
 pnpm install
-pnpm dev        # http://localhost:3100
-pnpm lint && pnpm typecheck && pnpm build
+pnpm dev          # http://localhost:3100
 ```
 
-| Pfad | Inhalt |
+| Script | What it does |
 |---|---|
-| `src/app/` | Routen: Startseite, Themenseiten (`[thema]`), Rechtsseiten, robots, sitemap |
-| `src/components/landing/` | Startseite: `core/` (Canvas, Scroll, Loop), `scenes/` (ein Ordner je Szene in Scroll-Reihenfolge), `shell/` (Kopf, Lader, Hinweise) |
-| `src/lib/` | App-URL, Security-Header, Textlinks |
-| `public/` | Schriften, Bildpässe (`hand/`, `hero/`, `himmel/`, `install/`), App-Vorschau (`app-demo/`) |
+| `pnpm dev` | Dev server on port 3100 |
+| `pnpm lint` | Biome check |
+| `pnpm typecheck` | `tsc --noEmit` |
+| `pnpm build` | Production build |
+| `pnpm test` | Unit tests (`src/**/*.test.ts`) |
 
-Design-Vorlage, Prüfskripte und die Aufnahmekette der App-Vorschau liegen außerhalb des Repos in `../landing-konzept/` (`design/`, `werkzeuge/`). Alte Stände als Tags `archive/*`.
+Before opening a pull request, run `pnpm lint && pnpm typecheck && pnpm build && pnpm test`. If a dev server is already running, build into a separate folder with `NEXT_DIST_DIR=.next-check pnpm build` and delete it afterwards.
+
+`NEXT_PUBLIC_APP_URL` sets the public origin used for canonical links, the sitemap and structured data. Leave it unset for local work.
+
+## Project layout
+
+| Path | Contents |
+|---|---|
+| `src/app/` | Routes, split into `(de)` and `(en)` route groups with one root layout each, plus `robots`, `sitemap` and the 404 and error pages |
+| `src/components/landing/` | The home page: canvas, scroll and loop code in `core/`, one folder per scene in `scenes/`, header, loader and hints in `shell/` |
+| `src/content/` | Home page copy per language and the app demo paths |
+| `src/topics/` | Topic and guide pages: German data, English data in `en/`, shared renderers and UI strings |
+| `src/lib/` | Locale helpers and slug map, app and site URLs, security headers, shared text link style |
+| `public/` | Fonts, image sequences, the embedded app demo and install screenshots, `llms.txt` files |
+
+## Design template
+
+The home page implements the design template `final.dc.html` one to one: the layout, scene order, sizes and motion are fixed, and the English version changes copy only. The template, the check scripts and the recording chain for the app demo are not part of this repository.
+
+## Contributing
+
+Issues and pull requests are welcome. Keep changes small, write code comments in English, and keep German and English pages in step: a change to one language should come with the matching change to the other, or a note saying why not.
