@@ -1,14 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useDict } from '../../dict';
 import s from './SoGehts.module.css';
 import { registerZiffer } from './ziffern';
-
-const SCHRITTE = [
-	{ z: '01', titel: 'WG erstellen', text: 'Namen eingeben. Mehr braucht es nicht.' },
-	{ z: '02', titel: 'Einladen', text: 'Link teilen, die anderen treten bei.' },
-	{ z: '03', titel: 'Eintragen', text: 'Erste Ausgabe, erster Einkauf, erster Putztermin.' },
-];
 
 function Ziffer({ text }: { text: string }) {
 	const ref = useRef<HTMLCanvasElement>(null);
@@ -17,6 +12,7 @@ function Ziffer({ text }: { text: string }) {
 }
 
 export function SoGehts() {
+	const { howItWorks } = useDict();
 	return (
 		<section
 			id="so-gehts"
@@ -26,13 +22,14 @@ export function SoGehts() {
 			className={s.sektion}
 		>
 			<h2 id="so-gehts-titel" className={`label ${s.titel}`} data-entschluesseln="">
-				<span aria-hidden="true">[ 05 ] </span>SO GEHT’S
+				<span aria-hidden="true">{howItWorks.prefix}</span>
+				{howItWorks.title}
 			</h2>
 			<div className={s.raster}>
-				{SCHRITTE.map((x) => (
-					<div key={x.z} className={s.spalte}>
-						<Ziffer text={x.z} />
-						<h3 className={s.h3}>{x.titel}</h3>
+				{howItWorks.steps.map((x) => (
+					<div key={x.number} className={s.spalte}>
+						<Ziffer text={x.number} />
+						<h3 className={s.h3}>{x.title}</h3>
 						<p className={s.text}>{x.text}</p>
 					</div>
 				))}

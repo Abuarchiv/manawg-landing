@@ -1,10 +1,12 @@
 import { css } from '../../core/dc';
+import { BrLines, useDict } from '../../dict';
 import s from './HeroTitel.module.css';
 
 // Titel der Intro: Sternenfeld (sterne.ts) und die Überschrift der Seite. Voll bis P 0,04, null bei
 // P 0,086 (T-09: Plateau statt sofortigem Verblassen).
 
 export function HeroTitel() {
+	const { hero } = useDict();
 	return (
 		<div
 			style={css(
@@ -20,12 +22,9 @@ export function HeroTitel() {
 			/>
 			<div className={s.titel}>
 				<h1 className={s.h1}>
-					Die WG-App <br />
-					für eure WG.
+					<BrLines lines={hero.title} />
 				</h1>
-				<p className={s.unter}>
-					Die kostenlose WG-App: Ausgaben, Einkauf und Putzplan. Im Browser.
-				</p>
+				<p className={s.unter}>{hero.sub}</p>
 			</div>
 		</div>
 	);

@@ -1,9 +1,11 @@
 'use client';
 
+import { APP_DEMO } from '@/content/app-demo';
 import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
 import { onFrame } from '../../core/loop';
 import { cl } from '../../core/math';
+import { useDict, useLocale } from '../../dict';
 import { live } from '../intro/stage';
 import s from './Phone.module.css';
 import { datumsZeilen } from './datum';
@@ -13,9 +15,6 @@ import { datumsZeilen } from './datum';
 // wie im Entwurf (650/90, 300 x 620, Radius 48, Bildschirm Inset 11, Radius 37). Der Bildschirm ist 278 x 598,
 // die App läuft in 390 x 839 CSS-Pixeln und wird per scale(278/390) eingepasst. Die Statusleiste (iOS 27)
 // liegt als SVG darüber, die App rechnet ihre Safe-Area aus --sai-t / --sai-b (siehe app-demo/demo.js).
-
-const SRC = '/app-demo/index.html';
-const BILD = '/app-demo/start.webp';
 
 /**
  * Scroll-Choreografie: auf dem letzten Stück der Bühne (P 0,95 bis 1) tippt die Zeigehand mit dem Scroll durch die
@@ -94,6 +93,8 @@ function Statusleiste() {
 }
 
 export function Phone() {
+	const { phone } = useDict();
+	const { src: SRC, still: BILD, lang } = APP_DEMO[useLocale()];
 	const wurzel = useRef<HTMLDivElement>(null);
 	const rahmen = useRef<HTMLIFrameElement>(null);
 	const [src, setSrc] = useState<string | undefined>(undefined);
@@ -101,7 +102,7 @@ export function Phone() {
 	const [bereit, setBereit] = useState(false);
 	const [zeilen, setZeilen] = useState<[string, string] | null>(null);
 	const [benutzt, setBenutzt] = useState(false);
-	useEffect(() => setZeilen(datumsZeilen()), []);
+	useEffect(() => setZeilen(datumsZeilen(lang)), [lang]);
 
 	// Vorführung der Zeigehand (hand.js, demo): die Hand fährt zum Ziel und meldet die Berührung (hand:kontakt),
 	// erst dann geht ein synthetischer Klick in die gleich-originige App. Eigene Klicks, Tastatur und Fokus gehen
@@ -184,7 +185,7 @@ export function Phone() {
 		mo.observe(root, { attributes: true, attributeFilter: ['data-nah'] });
 		pruefe();
 		return () => mo.disconnect();
-	}, []);
+	}, [BILD, SRC]);
 
 	return (
 		<div
@@ -192,7 +193,7 @@ export function Phone() {
 			data-cta="1"
 			// biome-ignore lint/a11y/useSemanticElements: div bleibt div (gleiche Box, kein fieldset)
 			role="group"
-			aria-label="ManaWG zum Ausprobieren"
+			aria-label={phone.aria}
 			style={css(
 				'position:absolute;left:650px;top:90px;width:300px;height:620px;pointer-events:none',
 			)}
@@ -258,7 +259,7 @@ export function Phone() {
 						<iframe
 							ref={rahmen}
 							className={s.app}
-							title="ManaWG-App"
+							title={phone.frameTitle}
 							src={src}
 							loading="eager"
 							onLoad={(e) => {
@@ -315,7 +316,7 @@ export function Phone() {
 						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:${benutzt ? 0 : 1}`,
 					)}
 				>
-					TIPP INS HANDY · DAS IST DIE ECHTE APP
+					{phone.hint}
 				</span>
 			</div>
 		</div>

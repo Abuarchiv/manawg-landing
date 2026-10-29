@@ -13,6 +13,7 @@ import {
 	X,
 } from 'lucide-react';
 import type { CSSProperties } from 'react';
+import { useDict } from '../../dict';
 import s from './Rechner.module.css';
 
 const ICON = '/icon-512.png';
@@ -41,6 +42,7 @@ function Ampel() {
 }
 
 export function Rechner() {
+	const t = useDict().install.desktop;
 	return (
 		<div
 			className={s.dk}
@@ -73,7 +75,7 @@ export function Rechner() {
 						<span className={s.dk_url}>app.manawg.com</span>
 						<div className={s.dk_chip} data-k="dk-chip">
 							<MonitorDown size={17} strokeWidth={1.9} aria-hidden="true" />
-							<b data-k="dk-chip-t">Installieren</b>
+							<b data-k="dk-chip-t">{t.chip}</b>
 						</div>
 						<Star size={17} strokeWidth={1.8} className={s.dk_stern} aria-hidden="true" />
 					</div>
@@ -85,10 +87,10 @@ export function Rechner() {
 					<div style={scheibe(0, 454, 0, 215)} />
 				</div>
 				<div className={s.dk_tip} data-k="dk-tip">
-					ManaWG installieren
+					{t.tooltip}
 				</div>
 				<div className={s.dk_dlg} data-k="dk-dlg">
-					<div className={s.dk_dlg_t}>App installieren</div>
+					<div className={s.dk_dlg_t}>{t.dialogTitle}</div>
 					<div className={s.dk_zeile}>
 						<img loading="lazy" src={ICON} alt="" width="40" height="40" />
 						<div>
@@ -97,8 +99,8 @@ export function Rechner() {
 						</div>
 					</div>
 					<div className={s.dk_knoepfe}>
-						<span className={s.dk_knopf}>Abbrechen</span>
-						<span className={`${s.dk_knopf} ${s.dk_voll}`}>Installieren</span>
+						<span className={s.dk_knopf}>{t.dialogCancel}</span>
+						<span className={`${s.dk_knopf} ${s.dk_voll}`}>{t.dialogInstall}</span>
 					</div>
 				</div>
 			</div>

@@ -66,7 +66,19 @@ function braucht<T>(el: T | null, name: string): T {
 	return el;
 }
 
-export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLElement }): Stage {
+export function createStage({
+	sec,
+	buehne,
+	rooms,
+	people,
+}: {
+	sec: HTMLElement;
+	buehne: HTMLElement;
+	/** Mono labels of the rooms in the floor plan, in the order of wohnung.ts. */
+	rooms: readonly string[];
+	/** Names of the flatmates walking through the plan. */
+	people: readonly string[];
+}): Stage {
 	const root = braucht(buehne.closest<HTMLElement>('#final'), '#final');
 	const q = (k: string) => buehne.querySelector<HTMLCanvasElement>(`[data-intro="${k}"]`);
 	const cvHero = braucht(q('hero'), 'hero');
@@ -424,7 +436,7 @@ export function createStage({ sec, buehne }: { sec: HTMLElement; buehne: HTMLEle
 				heroDrawn = hero.frame(c, hm);
 			}
 			if (cvStars && P < 0.075) zeichneSterne(cvStars, W, safeH, dpr, t);
-			if ((fpA > 0.001 || por > 0.001) && endA < 0.999) wohnung.draw(cvWo, c);
+			if ((fpA > 0.001 || por > 0.001) && endA < 0.999) wohnung.draw(cvWo, c, rooms, people);
 			if (P > 0.3 && !st.handsLoaded) {
 				st.handsLoaded = true;
 				hand.laden();

@@ -23,6 +23,7 @@ import {
 	VenetianMask,
 } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
+import { BrLines, useDict } from '../../dict';
 import s from './Android.module.css';
 
 const ICON = '/icon-512.png';
@@ -66,24 +67,24 @@ function Status() {
 	);
 }
 
-type Eintrag = { ic: ReactNode; t: string } | null;
-const EINTRAEGE: Eintrag[] = [
-	{ ic: <Plus size={22} strokeWidth={1.7} />, t: 'Neuer Tab' },
-	{ ic: <VenetianMask size={22} strokeWidth={1.7} />, t: 'Neuer Inkognitotab' },
-	{ ic: <LayoutGrid size={22} strokeWidth={1.7} />, t: 'Tab zu neuer Gruppe hinzufügen' },
+/** Icons of the Chrome menu in the order of the dictionary's menu entries; null is a separator. */
+const MENUE_ICONS: ((() => ReactNode) | null)[] = [
+	() => <Plus size={22} strokeWidth={1.7} />,
+	() => <VenetianMask size={22} strokeWidth={1.7} />,
+	() => <LayoutGrid size={22} strokeWidth={1.7} />,
 	null,
-	{ ic: <History size={22} strokeWidth={1.7} />, t: 'Verlauf' },
-	{ ic: <Trash2 size={22} strokeWidth={1.7} />, t: 'Browserdaten löschen' },
-	{ ic: <Settings2 size={22} strokeWidth={1.7} />, t: 'Website-Einstellungen' },
+	() => <History size={22} strokeWidth={1.7} />,
+	() => <Trash2 size={22} strokeWidth={1.7} />,
+	() => <Settings2 size={22} strokeWidth={1.7} />,
 	null,
-	{ ic: <Check size={22} strokeWidth={1.9} />, t: 'Downloads' },
-	{ ic: <Star size={22} strokeWidth={1.7} fill="currentColor" />, t: 'Lesezeichen' },
-	{ ic: <MonitorSmartphone size={22} strokeWidth={1.7} />, t: 'Zuletzt geöffnete Tabs' },
+	() => <Check size={22} strokeWidth={1.9} />,
+	() => <Star size={22} strokeWidth={1.7} fill="currentColor" />,
+	() => <MonitorSmartphone size={22} strokeWidth={1.7} />,
 	null,
-	{ ic: <Share2 size={22} strokeWidth={1.7} />, t: 'Teilen…' },
-	{ ic: <FileSearch size={22} strokeWidth={1.7} />, t: 'Auf Seite suchen' },
-	{ ic: <SquarePlus size={22} strokeWidth={1.7} />, t: 'Lesemodus anzeigen' },
-	{ ic: <Download size={22} strokeWidth={1.7} />, t: 'Installieren und Verknüpfung erstellen' },
+	() => <Share2 size={22} strokeWidth={1.7} />,
+	() => <FileSearch size={22} strokeWidth={1.7} />,
+	() => <SquarePlus size={22} strokeWidth={1.7} />,
+	() => <Download size={22} strokeWidth={1.7} />,
 ];
 
 const CHROME = (
@@ -130,6 +131,7 @@ const PLAY = (
 );
 
 export function Android() {
+	const t = useDict().install.android;
 	let zeile = 0;
 	return (
 		<div
@@ -203,13 +205,14 @@ export function Android() {
 						})}
 					</div>
 					<div className={s.and_liste}>
-						{EINTRAEGE.map((e, i) => {
-							if (!e) return <i key={i} className={s.and_trenner} />;
+						{MENUE_ICONS.map((ic, i) => {
+							const text = t.menu[i] ?? '';
+							if (!ic) return <i key={i} className={s.and_trenner} />;
 							const k = zeile++;
 							return (
-								<div key={e.t} className={s.and_eintrag} data-k={`and-r${k}`}>
-									<span>{e.ic}</span>
-									{e.t}
+								<div key={text} className={s.and_eintrag} data-k={`and-r${k}`}>
+									<span>{ic()}</span>
+									{text}
 								</div>
 							);
 						})}
@@ -219,15 +222,14 @@ export function Android() {
 				{/* Sheet „Installieren und Verknüpfung erstellen“ */}
 				<div className={s.and_sheet} data-k="and-sheet">
 					<div className={s.and_sheet_t}>
-						Installieren und Verknüpfung <br />
-						erstellen
+						<BrLines lines={t.sheetTitle} />
 					</div>
 					<div className={s.and_srow} style={{ top: 84, height: 64 }}>
 						<span className={s.and_sicon}>
 							<img loading="lazy" src={ICON} alt="" width="40" height="40" />
 							<Download size={14} strokeWidth={2.6} color="#fff" aria-hidden="true" />
 						</span>
-						<b>Installieren</b>
+						<b>{t.sheetInstall}</b>
 						<ChevronRight size={22} strokeWidth={1.8} aria-hidden="true" />
 					</div>
 					<div className={s.and_srow} style={{ top: 156, height: 76 }}>
@@ -236,8 +238,8 @@ export function Android() {
 							<i className={s.and_chrome} />
 						</span>
 						<b>
-							Verknüpfung erstellen
-							<em>Verknüpfungen werden in Chrome geöffnet</em>
+							{t.sheetShortcut}
+							<em>{t.sheetShortcutNote}</em>
 						</b>
 						<ChevronRight size={22} strokeWidth={1.8} aria-hidden="true" />
 					</div>
@@ -245,7 +247,7 @@ export function Android() {
 
 				{/* Dialog „App installieren“ */}
 				<div className={s.and_dlg} data-k="and-dlg">
-					<div className={s.and_dlg_t}>App installieren</div>
+					<div className={s.and_dlg_t}>{t.dialogTitle}</div>
 					<div className={s.and_dzeile}>
 						<img loading="lazy" src={ICON} alt="" width="48" height="48" />
 						<div>
@@ -257,16 +259,16 @@ export function Android() {
 						</div>
 					</div>
 					<div className={s.and_knoepfe}>
-						<span>Abbrechen</span>
-						<span data-k="and-ok">Installieren</span>
+						<span>{t.dialogCancel}</span>
+						<span data-k="and-ok">{t.dialogInstall}</span>
 					</div>
 				</div>
 
 				<div className={s.and_toast} data-k="and-toast1">
-					„ManaWG“ wird installiert…
+					{t.toastInstalling}
 				</div>
 				<div className={s.and_toast} data-k="and-toast2">
-					App wurde installiert
+					{t.toastInstalled}
 				</div>
 			</div>
 

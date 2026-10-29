@@ -1,4 +1,4 @@
-// Die Tiefe: Fahrt durch eine Punktwolke, in der die Wörter GELD, HAUSHALT und ABSPRACHEN als Inseln
+// Die Tiefe: Fahrt durch eine Punktwolke, in der die drei Wörter aus dem Wörterbuch (tunnelWords) als Inseln
 // liegen. Die Kamera hängt am Scroll-Fortschritt des Abschnitts.
 // Szenenraum: quer Bezugsbox 1280 x 800, hoch eigene Box von 640 Einheiten Breite (die Wörter stehen bei
 // Tiefe 9 auf 40 bis 50 % der Breite und passen so in jedes Format). Gezeichnet wird in CSS-px.
@@ -9,7 +9,6 @@ import { cl, cs, hsh, lag, lerp, sn, ss } from '../../core/math';
 const MONO = '"JetBrains Mono", monospace';
 const TT = '"Inter Tight", sans-serif';
 const F = 720; // Brennweite in Szenen-Einheiten
-const WORDS = ['GELD', 'HAUSHALT', 'ABSPRACHEN'] as const;
 const SPACING = 0.065; // Punktabstand der Wörter in Welt-Einheiten (nur Hochformat)
 const SP = 26; // Abstand der Wort-Inseln in der Tiefe, wie im Entwurf
 const INSEL_X = [-4.5, 4.5, -4.5] as const;
@@ -561,13 +560,13 @@ function zeichnePunkte(s: TiefeState, nb: Eimer[], a: Ansicht) {
  * Wortmasken abtasten und Wolke bauen, je Aufruf ein Schritt (ein Wort oder der Aufbau), true wenn alles aktuell ist.
  * Das Vorwärmen (warm) ruft das je Bild einmal, frame holt Fehlendes in einem Zug nach (Schrift oder Format neu).
  */
-function bereite(s: TiefeState): boolean {
+function bereite(s: TiefeState, words: readonly string[]): boolean {
 	if (s.built !== loop.fv) {
 		s.built = loop.fv;
 		s.raw = [];
 		s.bm = null;
 	}
-	const wort = WORDS[s.raw.length];
+	const wort = words[s.raw.length];
 	if (wort) {
 		s.raw.push(sampleT(wort, 200));
 		return false;
@@ -581,7 +580,7 @@ function bereite(s: TiefeState): boolean {
 }
 
 /** Meldet die Tiefe-Szene an. sec: Abschnitt mit Sticky-Bühne. Gibt die Abmeldung zurück. */
-export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
+export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement, words: readonly string[]) {
 	const wurzel = cv.parentElement ?? cv;
 	return register<TiefeState>({
 		name: 'tiefe',
@@ -623,7 +622,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 			s.kopf = document.querySelector<HTMLElement>('[data-kopf]');
 			s.lage = { kopf: 0, el: 0, sec: 0, secH: 1, caps: s.caps.map(() => 0) };
 		},
-		warm: bereite,
+		warm: (s) => bereite(s, words),
 		lies(s) {
 			const L = s.lage;
 			L.kopf = s.kopf ? s.kopf.getBoundingClientRect().bottom : 0;
@@ -646,7 +645,7 @@ export function registerTiefe(cv: HTMLCanvasElement, sec: HTMLElement) {
 		frame(s, t, dt) {
 			const ctx = s.ctx;
 			if (!ctx) return;
-			while (!bereite(s));
+			while (!bereite(s, words));
 			const { f, cx, cy } = s;
 			// Beim Hinausscrollen läuft die Szene unter den fixen Kopf: Wortbild und Zeile blenden über den obersten
 			// 28 px unter dem Kopfband aus (Kopfunterkante in Canvas-Koordinaten)

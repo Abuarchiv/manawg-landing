@@ -1,8 +1,10 @@
 'use client';
 
+import { APP_DEMO } from '@/content/app-demo';
 import { appUrl } from '@/lib/app-origin';
 import { EllipsisVertical, Menu } from 'lucide-react';
 import { type KeyboardEvent, type ReactNode, useEffect, useRef, useState } from 'react';
+import { useDict, useLocale } from '../../dict';
 import { Android } from './Android';
 import s from './Installieren.module.css';
 import { Iphone } from './Iphone';
@@ -14,52 +16,24 @@ import type { TabIndex } from './types';
 // im Gerät, Schrittliste synchron und klickbar, Tabs als Tablist mit Pfeiltasten.
 
 // Die Symbole der Schritte sind dieselben Zeichnungen wie im Gerät (Safari iOS 27: Seitenmenü ≡ links in der Adresspille, Chrome: drei Punkte)
-const ICON: Record<string, ReactNode> = {
-	'≡': (
-		<Menu size="1.1em" strokeWidth={2.4} aria-label="Seitenmenü" role="img" className={s.ikone} />
-	),
-	'⋮': (
-		<EllipsisVertical
-			size="1.1em"
-			strokeWidth={2.4}
-			aria-label="Drei Punkte"
-			role="img"
-			className={s.ikone}
-		/>
-	),
-};
+function icon(sym: string, menuAria: string, dotsAria: string): ReactNode {
+	if (sym === '≡')
+		return (
+			<Menu size="1.1em" strokeWidth={2.4} aria-label={menuAria} role="img" className={s.ikone} />
+		);
+	if (sym === '⋮')
+		return (
+			<EllipsisVertical
+				size="1.1em"
+				strokeWidth={2.4}
+				aria-label={dotsAria}
+				role="img"
+				className={s.ikone}
+			/>
+		);
+	return null;
+}
 
-const WEGE: { name: string; schritte: string[] }[] = [
-	{
-		name: 'iPhone',
-		schritte: [
-			'≡ antippen, dann „Teilen“',
-			'„Mehr anzeigen“, dann „Zum Home-Bildschirm“',
-			'„Hinzufügen“ antippen. Fertig.',
-		],
-	},
-	{
-		name: 'Android',
-		schritte: [
-			'Menü ⋮ antippen.',
-			'„Installieren und Verknüpfung erstellen“, dann „Installieren“',
-			'Im Dialog „Installieren“ bestätigen. Fertig.',
-		],
-	},
-	{
-		name: 'Rechner',
-		schritte: [
-			'Symbol „Installieren“ rechts in der Adressleiste klicken.',
-			'Im Dialog „App installieren“ auf „Installieren“ klicken.',
-			'ManaWG öffnet als eigenes Fenster.',
-		],
-	},
-];
-const BILDER = {
-	'--b-ios': '/install/seite-ios-gast-dunkel.webp',
-	'--b-and': '/install/seite-android-gast-dunkel.webp',
-	'--b-app': '/install/app-start-dunkel.webp',
-};
 // Rahmen des Designs: Handy 300 x 620, Rechner 600 x 400
 const RAHMEN = [
 	[300, 620],
@@ -67,16 +41,17 @@ const RAHMEN = [
 	[600, 400],
 ];
 
-/** „Home-Bildschirm“ nie am Bindestrich trennen, Symbolzeichen durch die echte Zeichnung ersetzen. */
-function umbruch(t: string) {
+/** Das Token (deutsch „Home-Bildschirm“) nie trennen, Symbolzeichen durch die echte Zeichnung ersetzen. */
+function umbruch(t: string, nowrap: string, menuAria: string, dotsAria: string) {
 	return t.split(/([≡⋮])/).flatMap((q, k) => {
-		if (ICON[q]) return [<span key={`i${k}`}>{ICON[q]}</span>];
-		return q.split('Home-Bildschirm').flatMap((p, i) =>
+		const ic = icon(q, menuAria, dotsAria);
+		if (ic) return [<span key={`i${k}`}>{ic}</span>];
+		return q.split(nowrap).flatMap((p, i) =>
 			i === 0
 				? [p]
 				: [
 						<span key={`${k}-${i}`} className={s.nowrap}>
-							Home-Bildschirm
+							{nowrap}
 						</span>,
 						p,
 					],
@@ -85,6 +60,9 @@ function umbruch(t: string) {
 }
 
 export function Installieren() {
+	const { install } = useDict();
+	const demo = APP_DEMO[useLocale()];
+	const WEGE = install.ways;
 	const [inst, setInst] = useState(0);
 	const instRef = useRef(0);
 	instRef.current = inst;
@@ -101,14 +79,19 @@ export function Installieren() {
 		const io = new IntersectionObserver(
 			(e) => {
 				if (!e.some((x) => x.isIntersecting)) return;
-				for (const [k, v] of Object.entries(BILDER)) el.style.setProperty(k, `url(${v})`);
+				const bilder = {
+					'--b-ios': demo.installIos,
+					'--b-and': demo.installAndroid,
+					'--b-app': demo.installApp,
+				};
+				for (const [k, v] of Object.entries(bilder)) el.style.setProperty(k, `url(${v})`);
 				io.disconnect();
 			},
 			{ rootMargin: '200% 0px' },
 		);
 		io.observe(el);
 		return () => io.disconnect();
-	}, []);
+	}, [demo]);
 
 	useEffect(() => {
 		const a = registerAblauf(
@@ -189,14 +172,15 @@ export function Installieren() {
 		>
 			<div className={s.text}>
 				<span className="label" data-entschluesseln="">
-					[ 06 ] INSTALLIEREN
+					{`${install.prefix}${install.title}`}
 				</span>
 				<h2 id="installieren-titel" className={s.titel} data-entschluesseln="">
-					Auf den <br />
-					<span className={s.nowrap}>Home-Bildschirm.</span>
+					{install.heading[0]}
+					<br />
+					<span className={s.nowrap}>{install.heading[1]}</span>
 				</h2>
-				<p className={s.lead}>Ohne App Store, offlinefähig. app.manawg.com öffnen, dann:</p>
-				<div className={s.tabs} role="tablist" aria-label="Plattform">
+				<p className={s.lead}>{install.lead}</p>
+				<div className={s.tabs} role="tablist" aria-label={install.platformAria}>
 					{WEGE.map((w, i) => (
 						<button
 							key={w.name}
@@ -219,7 +203,7 @@ export function Installieren() {
 				</div>
 				<div id="ins-panel" role="tabpanel" aria-labelledby={`ins-tab-${inst}`} className={s.panel}>
 					<ol className={s.schritte}>
-						{weg.schritte.map((t, i) => (
+						{weg.steps.map((t, i) => (
 							<li key={t}>
 								<button
 									type="button"
@@ -230,21 +214,16 @@ export function Installieren() {
 								>
 									<span className={s.nr}>{`0${i + 1}`}</span>
 									<span className={s.zeile} data-zeile="">
-										{umbruch(t)}
+										{umbruch(t, install.nowrap, install.iconMenuAria, install.iconDotsAria)}
 									</span>
 								</button>
 							</li>
 						))}
 					</ol>
-					{inst === 2 && (
-						<p className={`label ${s.weitere}`}>
-							Edge: „App verfügbar“ → „Installieren“ · Safari (Mac): Ablage → „Zum Dock hinzufügen
-							…“ → „Hinzufügen“
-						</p>
-					)}
+					{inst === 2 && <p className={`label ${s.weitere}`}>{install.desktopExtra}</p>}
 				</div>
 				<a href={appUrl('/')} className={`cta cta--voll cta--gross ${s.cta}`}>
-					App installieren
+					{install.cta}
 				</a>
 			</div>
 			<div aria-hidden="true" inert className={s.buehne} ref={buRef}>

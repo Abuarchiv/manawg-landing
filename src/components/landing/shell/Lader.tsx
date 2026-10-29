@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { css } from '../core/dc';
+import { useDict } from '../dict';
 import { live } from '../scenes/intro/stage';
 
 // Lader: Zähler 000 bis 100 und Balken. Die Zählung folgt der echten Bereitschaft (erstes gezeichnetes
@@ -34,6 +35,7 @@ function aus(el: HTMLElement, sofort = false) {
 }
 
 export function Lader() {
+	const dict = useDict();
 	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -136,7 +138,7 @@ export function Lader() {
 					<span data-bar="1" className="label" style={css('white-space:pre;opacity:1')}>
 						........................................
 					</span>
-					<span className="label">MANAWG · LÄDT DIE WG</span>
+					<span className="label">{dict.loader.label}</span>
 				</div>
 			</div>
 			{/* Ausfallsicherung ohne JS und ohne Stylesheet: blendet der Lader nicht selbst aus (Chunks blockiert,

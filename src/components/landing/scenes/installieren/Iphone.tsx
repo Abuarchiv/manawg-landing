@@ -29,6 +29,7 @@ import {
 	ZoomIn,
 } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
+import { BrLines, useDict } from '../../dict';
 import s from './Iphone.module.css';
 
 const SF = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif';
@@ -100,9 +101,8 @@ function Kachel({
 	);
 }
 
-const REIHEN = ['qwertzuiopü', 'asdfghjklöä', 'yxcvbnm'];
-
 export function Iphone() {
+	const t = useDict().install.ios;
 	return (
 		<div className={s.ios} data-k="ios" style={{ fontFamily: SF }}>
 			{/* Home-Bildschirm hinter allem */}
@@ -118,7 +118,7 @@ export function Iphone() {
 								<circle cx="30" cy="30" r="7" fill="none" stroke="#00e1d0" strokeWidth="6" />
 							</svg>
 						</Kachel>
-						<em>Fitness</em>
+						<em>{t.homeFitness}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 122, top: 69 }}>
 						<Kachel style={{ background: '#0b0b0b' }}>
@@ -136,7 +136,7 @@ export function Iphone() {
 								<rect x="20" y="16" width="20" height="28" rx="6" fill="#050505" />
 							</svg>
 						</Kachel>
-						<em>Watch</em>
+						<em>{t.homeWatch}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 211, top: 69 }}>
 						<Kachel style={{ background: '#fff' }}>
@@ -156,7 +156,7 @@ export function Iphone() {
 								))}
 							</svg>
 						</Kachel>
-						<em>Erinnerungen</em>
+						<em>{t.homeReminders}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 301, top: 69 }}>
 						<Kachel style={{ background: '#fff' }}>
@@ -168,7 +168,7 @@ export function Iphone() {
 								<path d="M10 25h40v19a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4Z" fill="#59b1ff" />
 							</svg>
 						</Kachel>
-						<em>Dateien</em>
+						<em>{t.homeFiles}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 31, top: 165 }}>
 						<Kachel style={{ background: 'linear-gradient(160deg,#f6f1ff,#cfe3ff)' }}>
@@ -178,7 +178,7 @@ export function Iphone() {
 								<rect x="12" y="14" width="22" height="16" rx="4" fill="#ff5d7a" opacity=".85" />
 							</svg>
 						</Kachel>
-						<em>Vorschau</em>
+						<em>{t.homePreview}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 122, top: 165 }}>
 						<Kachel style={{ background: 'linear-gradient(160deg,#8b7a6d,#5e4f45)' }}>
@@ -196,7 +196,7 @@ export function Iphone() {
 								))}
 							</svg>
 						</Kachel>
-						<em>Dienstprogr.</em>
+						<em>{t.homeUtilities}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 211, top: 165 }}>
 						<Kachel style={{ background: 'linear-gradient(180deg,#d6d7da,#a9abb0)' }}>
@@ -205,7 +205,7 @@ export function Iphone() {
 								<path d="M12 52a18 14 0 0 1 36 0Z" fill="#fff" />
 							</svg>
 						</Kachel>
-						<em>Kontakte</em>
+						<em>{t.homeContacts}</em>
 					</div>
 					<div className={s.ios_cell} data-k="ios-icon" style={{ left: 301, top: 165 }}>
 						<Kachel>
@@ -252,7 +252,8 @@ export function Iphone() {
 					</div>
 				</div>
 				<div className={s.ios_suche}>
-					<Search size={12} strokeWidth={2.4} aria-hidden="true" /> Suchen
+					<Search size={12} strokeWidth={2.4} aria-hidden="true" />
+					{` ${t.search}`}
 				</div>
 			</div>
 
@@ -270,7 +271,7 @@ export function Iphone() {
 						<Menu
 							size={22}
 							strokeWidth={2}
-							aria-label="Seitenmenü"
+							aria-label={t.pageMenuAria}
 							role="img"
 							data-k="ios-menubtn"
 						/>
@@ -286,19 +287,16 @@ export function Iphone() {
 				{/* Seitenmenü */}
 				<div className={s.ios_menu} data-k="ios-menu">
 					<div className={s.ios_menu_in} data-k="ios-menu-in">
-						<Zeile ic={<Share size={22} strokeWidth={1.7} />} t="Teilen" tag="teilen" />
-						<Zeile ic={<Bookmark size={21} strokeWidth={1.7} />} t="Zu Lesezeichen hinzufügen" />
-						<Zeile
-							ic={<BookMarked size={22} strokeWidth={1.7} />}
-							t="Lesezeichen hinzufügen zu …"
-						/>
+						<Zeile ic={<Share size={22} strokeWidth={1.7} />} t={t.menuShare} tag="teilen" />
+						<Zeile ic={<Bookmark size={21} strokeWidth={1.7} />} t={t.menuAddBookmark} />
+						<Zeile ic={<BookMarked size={22} strokeWidth={1.7} />} t={t.menuAddBookmarkTo} />
 						<i className={s.ios_trenner} />
-						<Zeile ic={<FileSearch size={22} strokeWidth={1.7} />} t="Auf der Seite suchen" />
-						<Zeile ic={<ZoomIn size={22} strokeWidth={1.7} />} t="Seitenzoom" />
-						<Zeile ic={<BellRing size={21} strokeWidth={1.7} />} t="Mitteilung an mich" />
-						<Zeile ic={<EyeOff size={22} strokeWidth={1.7} />} t="Ablenkende Objekte ausblenden" />
+						<Zeile ic={<FileSearch size={22} strokeWidth={1.7} />} t={t.menuFind} />
+						<Zeile ic={<ZoomIn size={22} strokeWidth={1.7} />} t={t.menuZoom} />
+						<Zeile ic={<BellRing size={21} strokeWidth={1.7} />} t={t.menuNotify} />
+						<Zeile ic={<EyeOff size={22} strokeWidth={1.7} />} t={t.menuHideItems} />
 						<i className={s.ios_trenner} />
-						<Zeile ic={<SquarePlus size={22} strokeWidth={1.7} />} t="Erweiterung beschreiben" />
+						<Zeile ic={<SquarePlus size={22} strokeWidth={1.7} />} t={t.menuExtension} />
 					</div>
 				</div>
 
@@ -309,10 +307,11 @@ export function Iphone() {
 							<img loading="lazy" src={ICON} alt="" width="60" height="60" />
 						</span>
 						<div className={s.ios_kopf_t}>
-							<b>Deine WG-App</b>
+							<b className={t.sheetTitle.length > 20 ? s.ios_clip : undefined}>{t.sheetTitle}</b>
 							<span>app.manawg.com</span>
 							<em>
-								Optionen <ChevronRight size={14} strokeWidth={2.6} aria-hidden="true" />
+								{`${t.sheetOptions} `}
+								<ChevronRight size={14} strokeWidth={2.6} aria-hidden="true" />
 							</em>
 						</div>
 						<span className={s.ios_x} data-k="ios-share-x">
@@ -350,7 +349,7 @@ export function Iphone() {
 									))}
 								</svg>
 							</span>
-							<em>Erinnerungen</em>
+							<em>{t.sheetReminders}</em>
 						</div>
 						<div>
 							<span className={s.ios_gk} style={{ background: '#fff' }}>
@@ -375,7 +374,7 @@ export function Iphone() {
 							<span className={s.ios_gk} style={{ background: '#3a3a3c' }}>
 								<b className={s.ios_punkte}>•••</b>
 							</span>
-							<em>Mehr</em>
+							<em>{t.sheetMore}</em>
 						</div>
 					</div>
 					<i className={s.ios_haar} style={{ top: 256 }} />
@@ -384,15 +383,14 @@ export function Iphone() {
 							<span className={s.ios_gr}>
 								<Copy size={28} strokeWidth={1.5} aria-hidden="true" />
 							</span>
-							<em>Kopieren</em>
+							<em>{t.actionCopy}</em>
 						</div>
 						<div>
 							<span className={s.ios_gr}>
 								<Bookmark size={28} strokeWidth={1.5} aria-hidden="true" />
 							</span>
 							<em>
-								Zu Lesezeichen <br />
-								hinzufügen
+								<BrLines lines={t.actionBookmark} />
 							</em>
 						</div>
 						<div>
@@ -400,8 +398,7 @@ export function Iphone() {
 								<Glasses size={30} strokeWidth={1.5} aria-hidden="true" />
 							</span>
 							<em>
-								Zur Leseliste <br />
-								hinzufügen
+								<BrLines lines={t.actionReadingList} />
 							</em>
 						</div>
 						<div data-tag="mehr">
@@ -421,29 +418,23 @@ export function Iphone() {
 								/>
 							</span>
 							<em data-k="ios-mehr-t">
-								Mehr <br />
-								anzeigen
+								<BrLines lines={t.actionShowMore} />
 							</em>
 							<em data-k="ios-weniger-t" style={{ opacity: 0 }}>
-								Weniger <br />
-								anzeigen
+								<BrLines lines={t.actionShowLess} />
 							</em>
 						</div>
 					</div>
 					<div className={s.ios_gruppe} style={{ top: 410 }}>
-						<Zeile ic={<BookOpen size={22} strokeWidth={1.7} />} t="Lesezeichen hinzufügen zu …" />
-						<Zeile ic={<Star size={22} strokeWidth={1.7} />} t="Als Favoriten sichern" />
-						<Zeile ic={<FileSearch size={22} strokeWidth={1.7} />} t="Auf der Seite suchen" />
-						<Zeile
-							ic={<SquarePlus size={22} strokeWidth={1.7} />}
-							t="Zum Home-Bildschirm"
-							tag="home"
-						/>
+						<Zeile ic={<BookOpen size={22} strokeWidth={1.7} />} t={t.listAddBookmarkTo} />
+						<Zeile ic={<Star size={22} strokeWidth={1.7} />} t={t.listFavourites} />
+						<Zeile ic={<FileSearch size={22} strokeWidth={1.7} />} t={t.listFind} />
+						<Zeile ic={<SquarePlus size={22} strokeWidth={1.7} />} t={t.listAddToHome} tag="home" />
 					</div>
 					<div className={s.ios_gruppe} style={{ top: 626 }}>
-						<Zeile ic={<PenLine size={22} strokeWidth={1.7} />} t="Markierung" />
-						<Zeile ic={<Printer size={22} strokeWidth={1.7} />} t="Drucken" />
-						<Zeile ic={<Compass size={22} strokeWidth={1.7} />} t="In Safari öffnen" />
+						<Zeile ic={<PenLine size={22} strokeWidth={1.7} />} t={t.listMarkup} />
+						<Zeile ic={<Printer size={22} strokeWidth={1.7} />} t={t.listPrint} />
+						<Zeile ic={<Compass size={22} strokeWidth={1.7} />} t={t.listOpenInSafari} />
 					</div>
 				</div>
 
@@ -455,9 +446,9 @@ export function Iphone() {
 						<span className={s.ios_x2}>
 							<X size={22} strokeWidth={2.4} aria-hidden="true" />
 						</span>
-						<b>Zum Home-Bildsc…</b>
+						<b>{t.dialogTitle}</b>
 						<span className={s.ios_blau} data-k="ios-hinzu">
-							Hinzufügen
+							{t.dialogAdd}
 						</span>
 					</div>
 					<div data-k="ios-dlg-in" style={abs({ inset: 0 })}>
@@ -482,31 +473,28 @@ export function Iphone() {
 							<div className={s.ios_url}>https://app.manawg.com/</div>
 						</div>
 						<div className={s.ios_schalter_zeile}>
-							<span>Als Web-App öffnen</span>
+							<span>{t.dialogWebApp}</span>
 							<i className={s.ios_switch}>
 								<b />
 							</i>
 						</div>
-						<p className={s.ios_fuss}>
-							Für schnellen Zugriff auf diese Website wird auf deinem Home-Bildschirm ein Symbol
-							hinzugefügt.
-						</p>
+						<p className={s.ios_fuss}>{t.dialogFoot}</p>
 					</div>
 				</div>
 
-				{/* Tastatur (QWERTZ) */}
+				{/* Tastatur (QWERTZ im Deutschen, QWERTY im Englischen) */}
 				<div className={s.ios_kbd} data-k="ios-kbd">
 					<div className={s.ios_vorschlag}>
-						<span>„ManaWG“</span>
+						<span>{t.keySuggestion}</span>
 					</div>
-					{REIHEN.map((r, ri) => (
+					{t.keyRows.map((r, ri) => (
 						<div
 							className={s.ios_krow}
 							key={r}
 							style={{
 								top: 49 + ri * 54,
-								paddingLeft: ri === 1 ? 14 : ri === 2 ? 0 : 3,
-								paddingRight: ri === 1 ? 14 : 3,
+								paddingLeft: t.keyPadding[ri]?.[0],
+								paddingRight: t.keyPadding[ri]?.[1],
 							}}
 						>
 							{ri === 2 && (
@@ -531,7 +519,7 @@ export function Iphone() {
 							123
 						</span>
 						<span className={s.ios_taste_s} style={{ flex: 1, fontSize: 15 }}>
-							Leerzeichen
+							{t.keySpace}
 						</span>
 						<span
 							className={s.ios_taste_s}

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
 import { ZEICHEN } from '../../core/entschluesseln';
-import { FRAGEN } from './fragenDaten';
+import { useDict } from '../../dict';
 
 // Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
 // Die Höhe läuft über grid-template-rows (landing.css .faq-antwort), nur eine Antwort ist offen.
@@ -49,6 +49,7 @@ function Antwort({ text, an }: { text: string; an: boolean }) {
 }
 
 export function Fragen() {
+	const { faq, questions } = useDict();
 	const [offen, setOffen] = useState(0);
 	return (
 		<section
@@ -61,10 +62,11 @@ export function Fragen() {
 			)}
 		>
 			<h2 id="fragen-titel" className="label" style={css('margin:0')} data-entschluesseln="">
-				<span aria-hidden="true">[ 07 ] </span>FRAGEN
+				<span aria-hidden="true">{questions.prefix}</span>
+				{questions.title}
 			</h2>
 			<div style={css('display:flex;flex-direction:column;border-bottom:1px solid var(--haar)')}>
-				{FRAGEN.map((q, i) => (
+				{faq.map((q, i) => (
 					<div key={q[0]} className="faq-zeile">
 						<h3 style={css('margin:0;font-size:inherit;font-weight:inherit')}>
 							<button

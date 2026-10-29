@@ -659,3 +659,11 @@
 	opacity: 0;
 	z-index: 5;
 }
+
+/* Long page titles are cut off with an ellipsis in the share sheet, as on iOS (English guest page title) */
+.ios_kopf_t b.ios_clip {
+	max-width: 210px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

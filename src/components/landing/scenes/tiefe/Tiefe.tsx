@@ -2,20 +2,17 @@
 
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
+import { useDict } from '../../dict';
 import { registerTiefe } from './tunnel';
 
-const WOERTER = [
-	{ nr: '01 · GELD', text: 'Wer zahlt, trägt ein. ManaWG teilt auf.' },
-	{ nr: '02 · HAUSHALT', text: 'Einkauf, Vorräte, Putzplan.' },
-	{ nr: '03 · ABSPRACHEN', text: 'Kalender, Pinnwand, Chat.' },
-];
-
 export function Tiefe() {
+	const { depth, tunnelWords } = useDict();
 	const secRef = useRef<HTMLElement>(null);
 	const cvRef = useRef<HTMLCanvasElement>(null);
 	useEffect(
-		() => registerTiefe(cvRef.current as HTMLCanvasElement, secRef.current as HTMLElement),
-		[],
+		() =>
+			registerTiefe(cvRef.current as HTMLCanvasElement, secRef.current as HTMLElement, tunnelWords),
+		[tunnelWords],
 	);
 	return (
 		<section
@@ -24,10 +21,10 @@ export function Tiefe() {
 			data-stick="1"
 			tabIndex={-1}
 			ref={secRef}
-			aria-label="Funktionen"
+			aria-label={depth.srHeading}
 			style={css('position:relative;height:calc(4.5 * 100lvh);background:#0A0A0A;color:#FAFAFA')}
 		>
-			<h2 className="sr-only">Funktionen</h2>
+			<h2 className="sr-only">{depth.srHeading}</h2>
 			<div style={css('position:sticky;top:0;height:100lvh;overflow:hidden')}>
 				<canvas
 					ref={cvRef}
@@ -44,18 +41,18 @@ export function Tiefe() {
 							'position:absolute;top:calc(var(--kopf-unten) + var(--sp-24));left:var(--rand)',
 						)}
 					>
-						[ TIEFE ] WEITER SCROLLEN
+						{depth.hint}
 					</div>
-					{WOERTER.map((w, i) => (
+					{depth.captions.map((w, i) => (
 						<div
-							key={w.nr}
+							key={w.label}
 							data-dcap={i}
 							style={css(
 								'position:absolute;left:var(--rand);right:var(--rand);bottom:var(--sp-72);display:flex;flex-direction:column;gap:var(--sp-10);opacity:0',
 							)}
 						>
 							<span className="label" aria-hidden="true">
-								{w.nr}
+								{w.label}
 							</span>
 							<h3
 								style={css(
@@ -71,7 +68,7 @@ export function Tiefe() {
 						aria-hidden="true"
 						style={css('position:absolute;right:var(--rand);bottom:var(--sp-28)')}
 					>
-						{'TIEFE '}
+						{depth.counter}
 						<span data-depth="1">000</span>
 					</div>
 				</div>
