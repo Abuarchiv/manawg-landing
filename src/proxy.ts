@@ -3,7 +3,7 @@ import { LOCALE_COOKIE, languageDecision } from '@/lib/language-redirect';
 import { contentSecurityPolicy } from '@/lib/security-headers';
 
 /**
- * CSP for pages this site actually renders itself. /wg, /api, /neu and
+ * CSP for pages this site actually renders itself. /wg, /neu and
  * /offline redirect to app.manawg.com (see next.config.ts), and
  * /.well-known is rewritten there — the matcher below excludes all of
  * these so this proxy never sets a landing-only CSP header on a
@@ -56,7 +56,7 @@ export function proxy(req: NextRequest): NextResponse {
 
 export const config = {
 	matcher: [
-		// Segment-exact: /wg-app, /wg-kasse etc. are pages of their own and get the CSP; only /wg, /api, /neu, /offline and their subpaths do not.
-		'/((?!(?:wg|api|neu|offline)(?:/|$)|\\.well-known|wg-assets|_next/static|_next/image|favicon.ico|manifest.json|sw.js|.*\\..*).*)',
+		// Segment-exact: /wg-app, /wg-kasse etc. are pages of their own and get the CSP; only /wg, /neu, /offline and their subpaths do not.
+		'/((?!(?:wg|neu|offline)(?:/|$)|\\.well-known|_next/static|_next/image|.*\\..*).*)',
 	],
 };

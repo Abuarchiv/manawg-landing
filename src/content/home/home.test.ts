@@ -141,7 +141,7 @@ test('links and language switch', () => {
 	assert.equal(en.links.guides, '/en/guides');
 	assert.equal(en.links.create, '/signup?action=create');
 	// German links stay unchanged
-	assert.equal(de.links.create, '/registrieren?action=create');
+	assert.equal(de.links.create, '/signup?action=create');
 	assert.equal(de.links.guides, '/ratgeber');
 });
 

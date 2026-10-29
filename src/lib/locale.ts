@@ -14,7 +14,7 @@ export const PATHS = {
 		guides: '/ratgeber',
 		about: '/ueber-manawg',
 		feed: '/feed.xml',
-		signup: '/registrieren?action=create',
+		signup: '/signup?action=create',
 	},
 	en: {
 		guides: '/en/guides',

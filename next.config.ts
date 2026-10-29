@@ -107,14 +107,14 @@ const nextConfig: NextConfig = {
 	},
 	experimental: {
 		globalNotFound: true,
-		optimizePackageImports: ['lucide-react', '@react-three/drei'],
+		optimizePackageImports: ['lucide-react'],
 		inlineCss: true,
 	},
 	async redirects() {
 		return [
-			{ source: '/wg', destination: `${APP_ORIGIN}/neu`, permanent: true },
+			{ source: '/wg', destination: `${APP_ORIGIN}/login`, permanent: true },
 			{ source: '/wg/:path*', destination: `${APP_ORIGIN}/wg/:path*`, permanent: true },
-			{ source: '/neu', destination: `${APP_ORIGIN}/neu`, permanent: true },
+			{ source: '/neu', destination: `${APP_ORIGIN}/login`, permanent: true },
 			{ source: '/offline', destination: `${APP_ORIGIN}/offline`, permanent: true },
 		];
 	},

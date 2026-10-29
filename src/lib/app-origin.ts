@@ -6,7 +6,7 @@
  */
 export const APP_ORIGIN = 'https://app.manawg.com';
 
-/** Absolute URL on the app origin, e.g. `appUrl('/neu')`. */
+/** Absolute URL on the app origin, e.g. `appUrl('/login')`. */
 export function appUrl(path: string): string {
 	const normalized = path.startsWith('/') ? path : `/${path}`;
 	return `${APP_ORIGIN}${normalized}`;
