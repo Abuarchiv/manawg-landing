@@ -10,14 +10,14 @@ import {
 import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TopicFooter, TopicHeader, gutter, mono } from './frame';
 import { GROUPS } from './groups';
-import { Fuss, Kopf, mono, rand } from './rahmen';
 import { topics, ui } from './registry';
 
 type ClusterId = 'money' | 'household' | 'together' | 'moving' | 'more';
 
 // Themen der Übersicht; was hier fehlt, landet unter „Weitere“, damit kein Ratgeber verschwindet.
-const THEMENKREISE: Array<[ClusterId, string[]]> = [
+const CLUSTERS: Array<[ClusterId, string[]]> = [
 	[
 		'money',
 		[
@@ -48,17 +48,17 @@ const THEMENKREISE: Array<[ClusterId, string[]]> = [
 		],
 	],
 ];
-const alle = GROUPS.find((g) => g.id === 'guides')?.slugs ?? [];
-const zugeordnet = THEMENKREISE.flatMap(([, slugs]) => slugs);
-const weitere = alle.filter((slug) => !zugeordnet.includes(slug));
-const KREISE_DE: Array<[ClusterId, string[]]> =
-	weitere.length > 0 ? [...THEMENKREISE, ['more', weitere]] : THEMENKREISE;
+const allGuides = GROUPS.find((g) => g.id === 'guides')?.slugs ?? [];
+const assigned = CLUSTERS.flatMap(([, slugs]) => slugs);
+const unassigned = allGuides.filter((slug) => !assigned.includes(slug));
+const CLUSTERS_DE: Array<[ClusterId, string[]]> =
+	unassigned.length > 0 ? [...CLUSTERS, ['more', unassigned]] : CLUSTERS;
 
 /** Clusters of a language as [name, slugs of that language]; slugs without a page there are dropped. */
-function kreise(locale: Locale): Array<[string, string[]]> {
+function clustersOf(locale: Locale): Array<[string, string[]]> {
 	const txt = ui(locale).guideIndex;
 	const data = topics(locale);
-	return KREISE_DE.map(([id, slugs]): [string, string[]] => [
+	return CLUSTERS_DE.map(([id, slugs]): [string, string[]] => [
 		txt.clusters[id],
 		slugs
 			.map((s) => (locale === 'de' ? s : toEnglishSlug(s)))
@@ -102,13 +102,13 @@ export function guideIndexMetadata(locale: Locale): Metadata {
 }
 
 export function GuideIndex({ locale }: { locale: Locale }) {
-	const { site, webseite } = schemaIds();
+	const { site, website } = schemaIds();
 	const txt = ui(locale).guideIndex;
 	const data = topics(locale);
 	const path = indexPath(locale);
-	const gruppen = kreise(locale);
-	const slugs = gruppen.flatMap(([, s]) => s);
-	const sammlung = {
+	const clusters = clustersOf(locale);
+	const slugs = clusters.flatMap(([, s]) => s);
+	const collection = {
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
 		'@id': `${site}${path}#seite`,
@@ -116,7 +116,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 		description: txt.description,
 		url: `${site}${path}`,
 		inLanguage: IN_LANGUAGE[locale],
-		isPartOf: { '@id': webseite },
+		isPartOf: { '@id': website },
 		mainEntity: {
 			'@type': 'ItemList',
 			itemListElement: slugs.map((slug, i) => ({
@@ -155,12 +155,12 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(sammlung) }}
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(collection) }}
 			/>
 
-			<Kopf locale={locale} />
+			<TopicHeader locale={locale} />
 
-			<nav aria-label={ui(locale).breadcrumbLabel} className={`${rand} ${mono} pb-10 md:pb-16`}>
+			<nav aria-label={ui(locale).breadcrumbLabel} className={`${gutter} ${mono} pb-10 md:pb-16`}>
 				<ol className="flex flex-wrap gap-x-2 m-0 p-0 list-none">
 					<li>
 						<Link href={localiseHref(locale, '/')} prefetch={false}>
@@ -171,7 +171,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 				</ol>
 			</nav>
 
-			<div className={`${rand} flex-1`}>
+			<div className={`${gutter} flex-1`}>
 				<h1
 					className={`font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
 				>
@@ -182,13 +182,13 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 				</p>
 
 				<div className="mt-20 md:mt-32">
-					{gruppen.map(([name, liste]) => (
+					{clusters.map(([name, list]) => (
 						<section key={name} className="linie py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8">
 							<h2 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
 								{name}
 							</h2>
 							<ul className="list-none m-0 p-0 md:col-start-6 md:col-span-7 flex flex-col">
-								{liste.map((slug) => {
+								{list.map((slug) => {
 									const t = data[slug];
 									if (!t) return null;
 									return (
@@ -212,7 +212,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 				</div>
 			</div>
 
-			<Fuss locale={locale} counterpart={counterpartPath(path)} />
+			<TopicFooter locale={locale} counterpart={counterpartPath(path)} />
 		</main>
 	);
 }

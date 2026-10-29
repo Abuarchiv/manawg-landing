@@ -7,7 +7,7 @@ export function schemaIds() {
 	return {
 		site,
 		organisation: `${site}/#organisation`,
-		webseite: `${site}/#webseite`,
+		website: `${site}/#webseite`,
 		app: `${APP_ORIGIN}/#app`,
 	};
 }

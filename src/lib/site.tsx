@@ -52,7 +52,7 @@ function organizationSchema(locale: Locale) {
 const webSiteSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'WebSite',
-	'@id': ids.webseite,
+	'@id': ids.website,
 	name: 'ManaWG',
 	alternateName: ['Mana WG', 'ManaWG App'],
 	url: ids.site,

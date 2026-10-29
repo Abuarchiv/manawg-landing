@@ -14,14 +14,14 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
 import { preload } from 'react-dom';
-import MieteRechner from './RentCalculator';
-import PutzplanGenerator from './RotaGenerator';
-import { Fuss, Kopf, mono, rand } from './rahmen';
+import RentCalculator from './RentCalculator';
+import RotaGenerator from './RotaGenerator';
+import { TopicFooter, TopicHeader, gutter, mono } from './frame';
 import { counterpartOf, groupName, groupOf, related, topics, ui } from './registry';
 import type { Topic } from './types';
 
 // Anker-ID aus einer Überschrift (Umlaute umschrieben), für Inhaltsverzeichnis und Sprunglinks.
-const slug = (s: string) =>
+const anchorId = (s: string) =>
 	s
 		.toLowerCase()
 		.replace(/ä/g, 'ae')
@@ -32,52 +32,52 @@ const slug = (s: string) =>
 		.replace(/^-|-$/g, '');
 
 // Reduce markdown links back to the link word for machine text (schema).
-const ohneLinks = (text: string) => text.replace(/\[([^\]]+)\]\(\/[a-z0-9-]*\)/g, '$1');
+const stripLinks = (text: string) => text.replace(/\[([^\]]+)\]\(\/[a-z0-9-]*\)/g, '$1');
 
 // Links in running text as [word](/path): guides point at each other in the text, not only via the list at the end.
 // Data links are written without the /en prefix; localiseHref adds it for English.
-const mitLinks = (text: string, locale: Locale) =>
-	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((teil, i) => {
-		const m = /^\[([^\]]+)\]\((\/[a-z0-9-]*)\)$/.exec(teil);
+const withLinks = (text: string, locale: Locale) =>
+	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((part, i) => {
+		const m = /^\[([^\]]+)\]\((\/[a-z0-9-]*)\)$/.exec(part);
 		return m?.[1] && m[2] ? (
 			<Link key={`${i}-${m[2]}`} href={localiseHref(locale, m[2])}>
 				{m[1]}
 			</Link>
 		) : (
-			deutsch(teil, locale)
+			markGerman(part, locale)
 		);
 	});
 
 // German form names and model sentences quoted inside English prose, marked lang="de" for screen readers.
 const GERMAN_QUOTES =
 	/(“Wohnung abmelden”|“Befreiung oder Ermäßigung beantragen”|„Hiermit kündige ich[^“”]*[“”])/;
-const deutsch = (teil: string, locale: Locale) =>
+const markGerman = (part: string, locale: Locale) =>
 	locale === 'de'
-		? teil
-		: teil.split(GERMAN_QUOTES).map((stueck, i) =>
+		? part
+		: part.split(GERMAN_QUOTES).map((piece, i) =>
 				// split with one capture group puts the matches at odd indexes
 				i % 2 === 1 ? (
 					<span key={i} lang="de">
-						{stueck}
+						{piece}
 					</span>
 				) : (
-					stueck
+					piece
 				),
 			);
 
-const zelle = 'px-3 py-2 border-b border-white/10';
+const cellCls = 'px-3 py-2 border-b border-white/10';
 // English strings are longer: with up to three short columns the table fits a phone instead of scrolling sideways.
-const zelleEn = 'px-2 md:px-3 py-2 border-b border-white/10';
+const cellClsEn = 'px-2 md:px-3 py-2 border-b border-white/10';
 
-type TabelleDaten = NonNullable<Topic['tables']>[number];
+type TableData = NonNullable<Topic['tables']>[number];
 
 // Tabelle als Daten: scrollbare, beschriftete Region mit Spaltenköpfen und Zeilenkopf in der ersten Spalte.
-function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
+function Table({ t, locale }: { t: TableData; locale: Locale }) {
 	// Long cells would wrap to one or two words per line on a phone, so those tables keep the scroll region.
-	const kompakt =
+	const compact =
 		locale === 'en' && t.header.length <= 3 && t.rows.every((z) => z.every((f) => f.length <= 48));
-	const zelleKlasse = kompakt ? zelleEn : zelle;
-	const id = `tabelle-${slug(t.title)}`;
+	const cellClass = compact ? cellClsEn : cellCls;
+	const id = `tabelle-${anchorId(t.title)}`;
 	return (
 		<section aria-labelledby={id} className="linie pt-10 md:pt-14">
 			<h2 id={id} className={`${mono} m-0 mb-8 font-normal`}>
@@ -92,29 +92,29 @@ function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
 				tabIndex={0}
 			>
 				<table
-					className={`w-full ${kompakt ? 'min-w-0 md:min-w-[540px]' : 'min-w-[540px]'} border-collapse text-left`}
+					className={`w-full ${compact ? 'min-w-0 md:min-w-[540px]' : 'min-w-[540px]'} border-collapse text-left`}
 				>
 					<caption className="sr-only">{t.title}</caption>
 					<thead>
 						<tr>
 							{t.header.map((k) => (
-								<th key={k} scope="col" className={`${zelleKlasse} text-left font-normal`}>
+								<th key={k} scope="col" className={`${cellClass} text-left font-normal`}>
 									{k}
 								</th>
 							))}
 						</tr>
 					</thead>
 					<tbody>
-						{t.rows.map((zeile) => (
-							<tr key={zeile.join('|')}>
-								{zeile.map((feld, j) =>
+						{t.rows.map((row) => (
+							<tr key={row.join('|')}>
+								{row.map((cell, j) =>
 									j === 0 ? (
-										<th key={feld} scope="row" className={`${zelleKlasse} text-left font-normal`}>
-											{feld}
+										<th key={cell} scope="row" className={`${cellClass} text-left font-normal`}>
+											{cell}
 										</th>
 									) : (
-										<td key={j} className={zelleKlasse}>
-											{feld}
+										<td key={j} className={cellClass}>
+											{cell}
 										</td>
 									),
 								)}
@@ -129,7 +129,7 @@ function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
 }
 
 /** Google verlangt Datum mit Uhrzeit und Zeitzone (Rich Results Test: „Zeitzone fehlt“). */
-const zeitpunkt = (tag: string) => `${tag}T00:00:00+00:00`;
+const isoDateTime = (tag: string) => `${tag}T00:00:00+00:00`;
 
 /** Slugs to prerender for a language. */
 export const topicStaticParams = (locale: Locale): string[] => Object.keys(topics(locale));
@@ -165,44 +165,44 @@ export function topicMetadata(locale: Locale, slug: string): Metadata {
 			siteName: 'ManaWG',
 			locale: OG_LOCALE[locale],
 			type: 'article',
-			publishedTime: zeitpunkt(t.published),
-			modifiedTime: zeitpunkt(t.updated),
+			publishedTime: isoDateTime(t.published),
+			modifiedTime: isoDateTime(t.updated),
 			images: [{ url: `${path}/opengraph-image`, width: 1200, height: 630, alt: t.h1 }],
 		},
 		twitter: { title: t.title, description: t.description, images: [`${path}/opengraph-image`] },
 	};
 }
 
-export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: string }) {
-	const t = topics(locale)[thema];
+export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: string }) {
+	const t = topics(locale)[topicSlug];
 	if (!t) notFound();
 	const txt = ui(locale);
-	const deSlug = locale === 'de' ? thema : (toGermanSlug(thema) ?? thema);
-	const groupId = groupOf(locale, thema)?.id;
-	const path = pathOf(locale, thema);
+	const deSlug = locale === 'de' ? topicSlug : (toGermanSlug(topicSlug) ?? topicSlug);
+	const groupId = groupOf(locale, topicSlug)?.id;
+	const path = pathOf(locale, topicSlug);
 	// Der Fließtext (größtes Element, LCP) steht in Inter; das Layout lädt nur Inter Tight und Mono vor.
 	preload('/fonts/inter-latin.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
 
 	const faqSchema = t.faq && {
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
-		mainEntity: t.faq.map(([frage, antwort]) => ({
+		mainEntity: t.faq.map(([question, answer]) => ({
 			'@type': 'Question',
-			name: frage,
-			acceptedAnswer: { '@type': 'Answer', text: ohneLinks(antwort) },
+			name: question,
+			acceptedAnswer: { '@type': 'Answer', text: stripLinks(answer) },
 		})),
 	};
 
 	const ids = schemaIds();
 	const site = ids.site;
 	const orgId = ids.organisation;
-	const webseiteId = ids.webseite;
-	const quellen = (t.sources ?? []).map(([name, url]): [string, string] => [
+	const websiteId = ids.website;
+	const sources = (t.sources ?? []).map(([name, url]): [string, string] => [
 		name,
 		url.startsWith('/') ? `${site}${url}` : url,
 	]);
 
-	const artikel = {
+	const article = {
 		'@context': 'https://schema.org',
 		'@type': 'Article',
 		'@id': `${site}${path}#artikel`,
@@ -210,8 +210,8 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 		description: t.description,
 		image: `${site}${path}/opengraph-image`,
 		inLanguage: IN_LANGUAGE[locale],
-		datePublished: zeitpunkt(t.published),
-		dateModified: zeitpunkt(t.updated),
+		datePublished: isoDateTime(t.published),
+		dateModified: isoDateTime(t.updated),
 		mainEntityOfPage: { '@type': 'WebPage', '@id': `${site}${path}` },
 		isAccessibleForFree: true,
 		// Autor ist der Betreiber (Name steht im Impressum); Herausgeber bleibt die Organisation.
@@ -222,17 +222,17 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 		},
 		// Name und URL direkt mit, damit der Artikel auch ohne aufgelöste @id vollständig ist (Rich Results Test).
 		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: site },
-		isPartOf: { '@id': webseiteId },
+		isPartOf: { '@id': websiteId },
 		// Produktseiten und die Umstiegsanleitung handeln von der App; Rechts- und Alltagsratgeber nicht.
 		...(groupId !== 'guides' || deSlug === 'splitwise-splid-wechseln'
 			? { about: { '@id': ids.app } }
 			: {}),
-		...(quellen.length > 0 ? { citation: quellen.map(([, url]) => url) } : {}),
+		...(sources.length > 0 ? { citation: sources.map(([, url]) => url) } : {}),
 	};
 
 	// Guides hang under the guide index, comparisons under the best-app page, features under the app page (three-level breadcrumb).
-	const istRatgeber = groupId === 'guides';
-	const eltern: [string, string] | null =
+	const isGuide = groupId === 'guides';
+	const parentCrumb: [string, string] | null =
 		groupId === 'guides'
 			? txt.parentCrumbs.guides
 			: groupId === 'compare' && deSlug !== 'beste-wg-app'
@@ -250,33 +250,40 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 				name: 'ManaWG',
 				item: `${site}${localiseHref(locale, '/')}`,
 			},
-			...(eltern
-				? [{ '@type': 'ListItem', position: 2, name: eltern[0], item: `${site}${eltern[1]}` }]
+			...(parentCrumb
+				? [
+						{
+							'@type': 'ListItem',
+							position: 2,
+							name: parentCrumb[0],
+							item: `${site}${parentCrumb[1]}`,
+						},
+					]
 				: []),
 			{
 				'@type': 'ListItem',
-				position: eltern ? 3 : 2,
+				position: parentCrumb ? 3 : 2,
 				name: t.link,
 				item: `${site}${path}`,
 			},
 		],
 	};
 
-	const fragenKopf = txt.faqHeading(t.link);
-	const datum = (tag: string) =>
+	const faqHeading = txt.faqHeading(t.link);
+	const formatDate = (tag: string) =>
 		new Intl.DateTimeFormat(INTL_LOCALE[locale], {
 			timeZone: 'UTC',
 			day: 'numeric',
 			month: 'long',
 			year: 'numeric',
 		}).format(new Date(`${tag}T00:00:00Z`));
-	const aktualisiert = datum(t.updated);
+	const updatedDate = formatDate(t.updated);
 
 	// Provider comparison: notice from the provider, above the content.
-	const istVergleich = groupId === 'compare';
-	const hinweis = txt.comparisonNotice;
+	const isComparison = groupId === 'compare';
+	const notice = txt.comparisonNotice;
 
-	const linie = 'linie';
+	const lineCls = 'linie';
 
 	return (
 		<main
@@ -292,7 +299,7 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(artikel) }}
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
 			/>
 			{faqSchema && (
 				<script
@@ -302,20 +309,20 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 				/>
 			)}
 
-			<Kopf locale={locale} />
+			<TopicHeader locale={locale} />
 
-			<nav aria-label={txt.breadcrumbLabel} className={`${rand} ${mono} pb-10 md:pb-16`}>
+			<nav aria-label={txt.breadcrumbLabel} className={`${gutter} ${mono} pb-10 md:pb-16`}>
 				<ol className="flex flex-wrap gap-x-2 m-0 p-0 list-none">
 					<li>
 						<Link href={localiseHref(locale, '/')} prefetch={false}>
 							ManaWG
 						</Link>
 					</li>
-					{eltern && (
+					{parentCrumb && (
 						<li>
 							/{' '}
-							<Link href={eltern[1]} prefetch={false}>
-								{eltern[0]}
+							<Link href={parentCrumb[1]} prefetch={false}>
+								{parentCrumb[0]}
 							</Link>
 						</li>
 					)}
@@ -323,96 +330,100 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 				</ol>
 			</nav>
 
-			<div className={`${rand} flex-1`}>
+			<div className={`${gutter} flex-1`}>
 				<h1
 					className={`font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
 				>
 					{t.h1}
 				</h1>
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
-					{mitLinks(t.intro, locale)}
+					{withLinks(t.intro, locale)}
 				</p>
 				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
 					{txt.by}{' '}
 					<Link href={locale === 'de' ? '/ueber-manawg' : '/en/about-manawg'}>
 						{txt.authorName}
 					</Link>{' '}
-					· {txt.published} <time dateTime={t.published}>{datum(t.published)}</time> · {txt.updated}{' '}
-					<time dateTime={t.updated}>{aktualisiert}</time>
+					· {txt.published} <time dateTime={t.published}>{formatDate(t.published)}</time> ·{' '}
+					{txt.updated} <time dateTime={t.updated}>{updatedDate}</time>
 				</p>
 				{t.widget?.csv && (
 					<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
 						<a href={t.widget.csv} download>
 							{txt.csvDownload}
 						</a>{' '}
-						· <a href={`#${slug(t.widget.after)}`}>{txt.printLabel}</a>
+						· <a href={`#${anchorId(t.widget.after)}`}>{txt.printLabel}</a>
 					</p>
 				)}
-				{istVergleich && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{hinweis}</p>}
+				{isComparison && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{notice}</p>}
 
 				{/* Tabellen mit after: 'intro' stehen direkt unter dem Einleitungstext. */}
 				{t.tables
 					?.filter((tab) => tab.after === 'intro')
 					.map((tab) => (
 						<div key={tab.title} className="mt-10 md:mt-16">
-							<Tabelle t={tab} locale={locale} />
+							<Table t={tab} locale={locale} />
 						</div>
 					))}
 
 				{t.sections.length >= 4 && (
-					<nav aria-labelledby="inhalt" className={`${linie} mt-20 md:mt-32 pt-10`}>
+					<nav aria-labelledby="inhalt" className={`${lineCls} mt-20 md:mt-32 pt-10`}>
 						<h2 id="inhalt" className={`${mono} m-0 mb-6 font-normal`}>
 							{txt.contents}
 						</h2>
 						<ol className="list-none m-0 p-0">
-							{[...t.sections.map(([kopf]) => kopf), ...(t.faq ? [fragenKopf] : [])].map((kopf) => (
-								<li key={kopf} className={`${linie} py-3`}>
-									<a href={`#${kopf === fragenKopf ? 'fragen' : slug(kopf)}`}>{kopf}</a>
-								</li>
-							))}
+							{[...t.sections.map(([heading]) => heading), ...(t.faq ? [faqHeading] : [])].map(
+								(heading) => (
+									<li key={heading} className={`${lineCls} py-3`}>
+										<a href={`#${heading === faqHeading ? 'fragen' : anchorId(heading)}`}>
+											{heading}
+										</a>
+									</li>
+								),
+							)}
 						</ol>
 					</nav>
 				)}
 
 				<div className={t.sections.length >= 4 ? 'mt-10 md:mt-16' : 'mt-20 md:mt-32'}>
-					{t.sections.map(([kopf, text]) => {
+					{t.sections.map(([heading, text]) => {
 						// Nur Zeilen, die alle mit "1. " beginnen, sind eine Nummerierung; sonst eine Aufzählung.
-						const zeilen = text.split('\n');
-						const nummeriert = zeilen.length > 1 && zeilen.every((z) => /^\d+\.\s/.test(z));
-						const Liste = nummeriert ? 'ol' : 'ul';
+						const lines = text.split('\n');
+						const numbered = lines.length > 1 && lines.every((z) => /^\d+\.\s/.test(z));
+						const ListTag = numbered ? 'ol' : 'ul';
 						return (
-							<Fragment key={kopf}>
+							<Fragment key={heading}>
 								<section
-									id={slug(kopf)}
-									className={`${linie} py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8 scroll-mt-6`}
+									id={anchorId(heading)}
+									className={`${lineCls} py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8 scroll-mt-6`}
 								>
 									<h2 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
-										{kopf}
+										{heading}
 									</h2>
-									{zeilen.length > 1 ? (
-										<Liste
-											className={`m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)] flex flex-col gap-2 ${nummeriert ? '' : 'list-disc'}`}
+									{lines.length > 1 ? (
+										<ListTag
+											className={`m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)] flex flex-col gap-2 ${numbered ? '' : 'list-disc'}`}
 										>
-											{zeilen.map((zeile) => (
-												<li key={zeile}>{mitLinks(zeile.replace(/^\d+\.\s*/, ''), locale)}</li>
+											{lines.map((line) => (
+												<li key={line}>{withLinks(line.replace(/^\d+\.\s*/, ''), locale)}</li>
 											))}
-										</Liste>
+										</ListTag>
 									) : (
 										<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
-											{mitLinks(text, locale)}
+											{withLinks(text, locale)}
 										</p>
 									)}
 								</section>
 								{t.tables
-									?.filter((tab) => tab.after === kopf)
+									?.filter((tab) => tab.after === heading)
 									.map((tab) => (
-										<Tabelle key={tab.title} t={tab} locale={locale} />
+										<Table key={tab.title} t={tab} locale={locale} />
 									))}
-								{t.widget?.after === kopf &&
+								{t.widget?.after === heading &&
 									(t.widget.kind === 'rota-generator' ? (
-										<PutzplanGenerator locale={locale} />
+										<RotaGenerator locale={locale} />
 									) : (
-										<MieteRechner locale={locale} />
+										<RentCalculator locale={locale} />
 									))}
 							</Fragment>
 						);
@@ -420,35 +431,35 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 				</div>
 
 				{t.faq && (
-					<section aria-labelledby="fragen" className={`${linie} pt-10 md:pt-14`}>
+					<section aria-labelledby="fragen" className={`${lineCls} pt-10 md:pt-14`}>
 						<h2 id="fragen" className={`${mono} m-0 mb-8 font-normal`}>
-							{fragenKopf}
+							{faqHeading}
 						</h2>
-						{t.faq.map(([frage, antwort]) => (
+						{t.faq.map(([question, answer]) => (
 							<div
-								key={frage}
-								id={slug(frage)}
-								className={`${linie} py-8 scroll-mt-6 md:grid md:grid-cols-12 md:gap-8`}
+								key={question}
+								id={anchorId(question)}
+								className={`${lineCls} py-8 scroll-mt-6 md:grid md:grid-cols-12 md:gap-8`}
 							>
 								<h3 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
-									{frage}
+									{question}
 								</h3>
 								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-[var(--text-2)]">
-									{mitLinks(antwort, locale)}
+									{withLinks(answer, locale)}
 								</p>
 							</div>
 						))}
 					</section>
 				)}
 
-				{quellen.length > 0 && (
-					<section aria-labelledby="quellen" className={`${linie} pt-10 md:pt-14`}>
+				{sources.length > 0 && (
+					<section aria-labelledby="quellen" className={`${lineCls} pt-10 md:pt-14`}>
 						<h2 id="quellen" className={`${mono} m-0 mb-6 font-normal`}>
-							{txt.sources(aktualisiert)}
+							{txt.sources(updatedDate)}
 						</h2>
 						<ul className="list-none m-0 p-0">
-							{quellen.map(([name, url]) => (
-								<li key={url} className={`${linie} py-3`}>
+							{sources.map(([name, url]) => (
+								<li key={url} className={`${lineCls} py-3`}>
 									<a href={url}>{name}</a>
 								</li>
 							))}
@@ -456,8 +467,8 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 					</section>
 				)}
 
-				{istRatgeber && (
-					<aside aria-label={txt.guideNoteLabel} className={`${linie} pt-10 md:pt-14`}>
+				{isGuide && (
+					<aside aria-label={txt.guideNoteLabel} className={`${lineCls} pt-10 md:pt-14`}>
 						<p className={`${mono} m-0`}>
 							{txt.guideNote} <a href="mailto:info@manawg.com">info@manawg.com</a>.
 						</p>
@@ -465,7 +476,7 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 				)}
 
 				<div
-					className={`${linie} mt-16 md:mt-24 pt-14 md:pt-20 md:grid md:grid-cols-12 md:gap-8 items-end`}
+					className={`${lineCls} mt-16 md:mt-24 pt-14 md:pt-20 md:grid md:grid-cols-12 md:gap-8 items-end`}
 				>
 					<p className="m-0 md:col-span-7 font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[clamp(30px,4.4vw,64px)] leading-[1] tracking-[-0.045em]">
 						{txt.ctaTagline}
@@ -483,26 +494,26 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 					</div>
 				</div>
 
-				<nav aria-labelledby="weiter" className={`${linie} mt-20 md:mt-32 pt-10`}>
+				<nav aria-labelledby="weiter" className={`${lineCls} mt-20 md:mt-32 pt-10`}>
 					<h2 id="weiter" className={`${mono} m-0 mb-6 font-normal`}>
 						{txt.readNext}
 					</h2>
 					<ul className="list-none m-0 p-0">
-						{related(locale, thema).map((vs) => {
-							const v = topics(locale)[vs];
-							const vGroup = groupOf(locale, vs);
-							if (!v) return null;
+						{related(locale, topicSlug).map((relSlug) => {
+							const rel = topics(locale)[relSlug];
+							const relGroup = groupOf(locale, relSlug);
+							if (!rel) return null;
 							return (
-								<li key={vs} className={`${linie}`}>
+								<li key={relSlug} className={`${lineCls}`}>
 									<Link
-										href={pathOf(locale, vs)}
+										href={pathOf(locale, relSlug)}
 										prefetch={false}
 										className="group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-6 no-underline"
 									>
 										<span className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
-											{v.h1}
+											{rel.h1}
 										</span>{' '}
-										<span className={mono}>{vGroup && groupName(locale, vGroup.id)}</span>
+										<span className={mono}>{relGroup && groupName(locale, relGroup.id)}</span>
 									</Link>
 								</li>
 							);
@@ -511,7 +522,11 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 				</nav>
 			</div>
 
-			<Fuss locale={locale} aktiv={thema} counterpart={counterpartOf(locale, thema)} />
+			<TopicFooter
+				locale={locale}
+				active={topicSlug}
+				counterpart={counterpartOf(locale, topicSlug)}
+			/>
 		</main>
 	);
 }

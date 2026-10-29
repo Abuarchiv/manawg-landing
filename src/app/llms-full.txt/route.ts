@@ -7,38 +7,33 @@ import type { Topic } from '@/topics/types';
 
 export const dynamic = 'force-static';
 
-const zelle = (wert: string) => wert.replace(/\|/g, '\\|');
+const cell = (value: string) => value.replace(/\|/g, '\\|');
 
 // Tabelle aus den Themendaten als Markdown, mit Titel und Fußnote.
-function markdownTabelle({
-	title: titel,
-	header: kopf,
-	rows: zeilen,
-	note: hinweis,
-}: NonNullable<Topic['tables']>[number]) {
-	const reihe = (felder: string[]) => `| ${felder.map(zelle).join(' | ')} |`;
-	const tabelle = [reihe(kopf), reihe(kopf.map(() => '---')), ...zeilen.map(reihe)].join('\n');
-	return `### ${titel}\n\n${tabelle}${hinweis ? `\n\n${hinweis}` : ''}`;
+function markdownTable({ title, header, rows, note }: NonNullable<Topic['tables']>[number]) {
+	const row = (fields: string[]) => `| ${fields.map(cell).join(' | ')} |`;
+	const table = [row(header), row(header.map(() => '---')), ...rows.map(row)].join('\n');
+	return `### ${title}\n\n${table}${note ? `\n\n${note}` : ''}`;
 }
 
 // Alle Themen- und Ratgeberseiten als ein Markdown-Text, damit KI-Systeme den Inhalt ohne Crawl lesen können.
 export function GET() {
 	const base = getAppUrl();
-	const seiten = Object.entries(TOPICS_DE).map(([slug, t]) => {
-		const quellen = (t.sources ?? []).map(
+	const pages = Object.entries(TOPICS_DE).map(([slug, t]) => {
+		const sources = (t.sources ?? []).map(
 			([name, url]) => [name, url.startsWith('/') ? `${base}${url}` : url] as [string, string],
 		);
-		const teile = [
+		const parts = [
 			`# ${t.h1}`,
 			`Quelle: ${base}/${slug} (Stand ${t.updated})`,
 			...(groupOfSlug(slug)?.name === 'Vergleiche' ? [COMPARISON_NOTICE] : []),
 			[
 				t.intro.replaceAll('](/', `](${base}/`),
-				...(t.tables ?? []).filter((tab) => tab.after === 'intro').map(markdownTabelle),
+				...(t.tables ?? []).filter((tab) => tab.after === 'intro').map(markdownTable),
 			].join('\n\n'),
-			...t.sections.map(([kopf, text]) => {
-				const tabellen = (t.tables ?? []).filter((tab) => tab.after === kopf).map(markdownTabelle);
-				return [`## ${kopf}\n\n${text.replaceAll('](/', `](${base}/`)}`, ...tabellen].join('\n\n');
+			...t.sections.map(([heading, text]) => {
+				const tables = (t.tables ?? []).filter((tab) => tab.after === heading).map(markdownTable);
+				return [`## ${heading}\n\n${text.replaceAll('](/', `](${base}/`)}`, ...tables].join('\n\n');
 			}),
 			...(t.faq
 				? [
@@ -46,14 +41,14 @@ export function GET() {
 						...t.faq.map(([f, a]) => `**${f}**\n\n${a.replaceAll('](/', `](${base}/`)}`),
 					]
 				: []),
-			...(quellen.length > 0
-				? [`## Quellen\n\n${quellen.map(([name, url]) => `- ${name}: ${url}`).join('\n')}`]
+			...(sources.length > 0
+				? [`## Quellen\n\n${sources.map(([name, url]) => `- ${name}: ${url}`).join('\n')}`]
 				: []),
 		];
-		return teile.join('\n\n');
+		return parts.join('\n\n');
 	});
-	const kopf = `# ManaWG: vollständiger Inhalt\n\nManaWG ist eine kostenlose deutschsprachige WG-App (Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand, Chat) und hat nichts mit WireGuard zu tun. Start: ${appUrl('/registrieren?action=create')}`;
-	return new Response([kopf, ...seiten].join('\n\n---\n\n'), {
+	const preamble = `# ManaWG: vollständiger Inhalt\n\nManaWG ist eine kostenlose deutschsprachige WG-App (Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand, Chat) und hat nichts mit WireGuard zu tun. Start: ${appUrl('/registrieren?action=create')}`;
+	return new Response([preamble, ...pages].join('\n\n---\n\n'), {
 		headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
 	});
 }

@@ -7,13 +7,13 @@ import { groupName, topics, ui } from './registry';
 
 // Header and footer of the text pages (topics, guides, guide index).
 export const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
-export const rand = 'px-5 md:px-8 lg:px-16 mx-auto w-full max-w-[1440px]';
+export const gutter = 'px-5 md:px-8 lg:px-16 mx-auto w-full max-w-[1440px]';
 
-export function Kopf({ locale }: { locale: Locale }) {
+export function TopicHeader({ locale }: { locale: Locale }) {
 	const t = ui(locale);
 	return (
 		<header
-			className={`${rand} flex items-center justify-between pt-[max(1.25rem,env(safe-area-inset-top))] pb-6`}
+			className={`${gutter} flex items-center justify-between pt-[max(1.25rem,env(safe-area-inset-top))] pb-6`}
 		>
 			{/* No prefetch: the home page brings ~100 KB of scene JS that text pages should not preload. */}
 			<Link
@@ -49,18 +49,18 @@ const LEGAL_PATHS: Record<Locale, [notice: string, privacy: string, terms: strin
 };
 
 /** Footer. `counterpart` is this page's path in the other language; without it no language link shows. */
-export function Fuss({
+export function TopicFooter({
 	locale,
-	aktiv,
+	active,
 	counterpart,
-}: { locale: Locale; aktiv?: string; counterpart?: string | null }) {
+}: { locale: Locale; active?: string; counterpart?: string | null }) {
 	const t = ui(locale);
 	const data = topics(locale);
 	const [notice, privacy, terms] = LEGAL_PATHS[locale];
 	const localSlug = (slug: string) => (locale === 'de' ? slug : TOPIC_SLUG_EN[slug]);
 	return (
 		<footer
-			className={`${rand} linie mt-24 md:mt-32 pt-12 pb-[max(2rem,env(safe-area-inset-bottom))]`}
+			className={`${gutter} linie mt-24 md:mt-32 pt-12 pb-[max(2rem,env(safe-area-inset-bottom))]`}
 		>
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
 				{GROUPS.map((g) => {
@@ -85,7 +85,7 @@ export function Fuss({
 										<Link
 											href={localiseHref(locale, `/${slug}`)}
 											prefetch={false}
-											aria-current={slug === aktiv ? 'page' : undefined}
+											aria-current={slug === active ? 'page' : undefined}
 											className="inline-block py-[7px] text-[14px] text-[var(--text-2)] no-underline hover:text-[#fafafa] aria-[current=page]:text-[#fafafa]"
 										>
 											{data[slug]?.link}

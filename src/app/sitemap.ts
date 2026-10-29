@@ -7,7 +7,9 @@ import type { MetadataRoute } from 'next';
 type Entry = MetadataRoute.Sitemap[number];
 
 const newest = (data: Record<string, { updated: string }>) =>
-	new Date(Object.values(data).reduce((neu, t) => (t.updated > neu ? t.updated : neu), ''));
+	new Date(
+		Object.values(data).reduce((latest, t) => (t.updated > latest ? t.updated : latest), ''),
+	);
 
 // Only topic, guide pages and the guide indexes carry their known Stand date.
 // Home page and legal pages have no known date and get none;
@@ -39,12 +41,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	const english = Object.keys(TOPICS_EN);
 	return [
 		entry('/', undefined, '/', pair('/')),
-		...Object.entries(TOPICS_DE).map(([thema, t]) => {
-			const en = TOPIC_SLUG_EN[thema];
+		...Object.entries(TOPICS_DE).map(([slug, t]) => {
+			const en = TOPIC_SLUG_EN[slug];
 			return entry(
-				`/${thema}`,
+				`/${slug}`,
 				new Date(t.updated),
-				`/${thema}`,
+				`/${slug}`,
 				en && en in TOPICS_EN ? `/en/${en}` : null,
 			);
 		}),

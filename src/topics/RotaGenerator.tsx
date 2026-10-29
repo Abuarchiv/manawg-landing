@@ -68,29 +68,29 @@ const TEXT: Record<
 		download: 'Download as CSV',
 	},
 };
-const knopf =
+const buttonCls =
 	'inline-flex items-center justify-center min-h-[44px] px-6 rounded-full bg-[#fafafa] text-[#0a0a0a] font-semibold cursor-pointer border-0 hover:bg-[#d4d4d4] transition-colors disabled:opacity-40';
-const feld = 'min-h-[44px] px-3 rounded border border-white/20 bg-transparent text-[#fafafa]';
-const zelle = 'px-3 py-2 border-b border-white/10';
+const fieldCls = 'min-h-[44px] px-3 rounded border border-white/20 bg-transparent text-[#fafafa]';
+const cellCls = 'px-3 py-2 border-b border-white/10';
 const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
 
 // Ohne Speicherung und Konto: Eingaben und Plan leben nur im Browser.
-export default function PutzplanGenerator({ locale }: { locale: Locale }) {
+export default function RotaGenerator({ locale }: { locale: Locale }) {
 	const t = TEXT[locale];
-	const AUFGABEN = t.tasks;
-	const [namen, setNamen] = useState(t.names);
-	const [aufgaben, setAufgaben] = useState(AUFGABEN.slice(0, 4));
-	const [wochen, setWochen] = useState(4);
+	const allTasks = t.tasks;
+	const [names, setNames] = useState(t.names);
+	const [tasks, setTasks] = useState(allTasks.slice(0, 4));
+	const [weeks, setWeeks] = useState(4);
 
-	const personen = namen.map((n) => n.trim()).filter(Boolean);
-	const gewaehlt = AUFGABEN.filter((a) => aufgaben.includes(a));
+	const people = names.map((n) => n.trim()).filter(Boolean);
+	const chosen = allTasks.filter((a) => tasks.includes(a));
 	const plan =
-		personen.length >= 2 && gewaehlt.length > 0
-			? cleaningRota(personen, gewaehlt, wochen, t.weekLabel)
+		people.length >= 2 && chosen.length > 0
+			? cleaningRota(people, chosen, weeks, t.weekLabel)
 			: null;
-	const mehrfach = Math.ceil(gewaehlt.length / Math.max(personen.length, 1));
+	const perPerson = Math.ceil(chosen.length / Math.max(people.length, 1));
 
-	const drucken = () => {
+	const print = () => {
 		// Nur der Plan kommt aufs Papier (siehe globals.css).
 		document.body.classList.add('plan-drucken');
 		window.addEventListener('afterprint', () => document.body.classList.remove('plan-drucken'), {
@@ -119,16 +119,16 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 				<fieldset className="m-0 mb-6 p-0 border-0">
 					<legend className={`${mono} mb-3 p-0`}>{t.namesLegend}</legend>
 					<div className="grid grid-cols-2 gap-3">
-						{namen.map((name, i) => (
+						{names.map((name, i) => (
 							<input
 								key={i}
-								className={feld}
+								className={fieldCls}
 								type="text"
 								maxLength={20}
 								value={name}
 								placeholder={t.namePlaceholder(i + 1)}
 								aria-label={t.namePlaceholder(i + 1)}
-								onChange={(e) => setNamen(namen.map((n, j) => (j === i ? e.target.value : n)))}
+								onChange={(e) => setNames(names.map((n, j) => (j === i ? e.target.value : n)))}
 							/>
 						))}
 					</div>
@@ -136,16 +136,14 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 				<fieldset className="m-0 mb-6 p-0 border-0">
 					<legend className={`${mono} mb-3 p-0`}>{t.tasksLegend}</legend>
 					<div className="flex flex-col">
-						{AUFGABEN.map((a) => (
+						{allTasks.map((a) => (
 							<label key={a} className="flex items-center gap-3 min-h-[44px]">
 								<input
 									type="checkbox"
 									className="h-5 w-5"
-									checked={aufgaben.includes(a)}
+									checked={tasks.includes(a)}
 									onChange={(e) =>
-										setAufgaben(
-											e.target.checked ? [...aufgaben, a] : aufgaben.filter((x) => x !== a),
-										)
+										setTasks(e.target.checked ? [...tasks, a] : tasks.filter((x) => x !== a))
 									}
 								/>
 								{a}
@@ -162,8 +160,8 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 									type="radio"
 									name="wochen"
 									className="h-5 w-5"
-									checked={wochen === w}
-									onChange={() => setWochen(w)}
+									checked={weeks === w}
+									onChange={() => setWeeks(w)}
 								/>
 								{t.weeks(w)}
 							</label>
@@ -176,7 +174,7 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 				{plan ? (
 					<>
 						<h3 className="m-0 mb-4 font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[20px]">
-							{t.title(wochen)}
+							{t.title(weeks)}
 						</h3>
 						<div className="overflow-x-auto">
 							<table className="w-full min-w-[540px] border-collapse text-left">
@@ -184,27 +182,27 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 								<thead>
 									<tr>
 										{plan.header.map((k) => (
-											<th key={k} scope="col" className={`${zelle} text-left font-normal`}>
+											<th key={k} scope="col" className={`${cellCls} text-left font-normal`}>
 												{k}
 											</th>
 										))}
 									</tr>
 								</thead>
 								<tbody>
-									{plan.rows.map((zeile) => (
-										<tr key={zeile[0]}>
-											{zeile.map((feldtext, j) =>
+									{plan.rows.map((row) => (
+										<tr key={row[0]}>
+											{row.map((cellText, j) =>
 												j === 0 ? (
 													<th
-														key={feldtext}
+														key={cellText}
 														scope="row"
-														className={`${zelle} text-left font-normal`}
+														className={`${cellCls} text-left font-normal`}
 													>
-														{feldtext}
+														{cellText}
 													</th>
 												) : (
-													<td key={j} className={zelle}>
-														{feldtext}
+													<td key={j} className={cellCls}>
+														{cellText}
 													</td>
 												),
 											)}
@@ -213,23 +211,21 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 								</tbody>
 							</table>
 						</div>
-						{mehrfach > 1 && (
+						{perPerson > 1 && (
 							<p className={`${mono} mt-4 mb-0`}>
-								{mehrfach === 2 ? t.twoTasks : t.manyTasks(mehrfach)}
+								{perPerson === 2 ? t.twoTasks : t.manyTasks(perPerson)}
 							</p>
 						)}
-						{personen.length > gewaehlt.length && (
-							<p className={`${mono} mt-4 mb-0`}>{t.freeWeek}</p>
-						)}
+						{people.length > chosen.length && <p className={`${mono} mt-4 mb-0`}>{t.freeWeek}</p>}
 					</>
 				) : (
 					<p className={`${mono} m-0`}>{t.hint}</p>
 				)}
 				<div className="mt-6 flex flex-wrap gap-3 druck-aus">
-					<button type="button" className={knopf} onClick={drucken} disabled={!plan}>
+					<button type="button" className={buttonCls} onClick={print} disabled={!plan}>
 						{t.print}
 					</button>
-					<button type="button" className={knopf} onClick={csv} disabled={!plan}>
+					<button type="button" className={buttonCls} onClick={csv} disabled={!plan}>
 						{t.download}
 					</button>
 				</div>

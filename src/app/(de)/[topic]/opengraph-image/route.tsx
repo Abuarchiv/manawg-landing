@@ -6,10 +6,10 @@ import { topicOgImage } from '@/topics/topic-og';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-	return Object.keys(topics('de')).map((thema) => ({ thema }));
+	return Object.keys(topics('de')).map((topic) => ({ topic }));
 }
 
-export async function GET(_req: Request, { params }: { params: Promise<{ thema: string }> }) {
-	const { thema } = await params;
-	return topicOgImage('de', thema);
+export async function GET(_req: Request, { params }: { params: Promise<{ topic: string }> }) {
+	const { topic } = await params;
+	return topicOgImage('de', topic);
 }
