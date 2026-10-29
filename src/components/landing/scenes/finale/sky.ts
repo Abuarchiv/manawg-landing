@@ -27,7 +27,7 @@ float fbm(vec2 p){ float s = 0., a = .5; for(int i = 0; i < 5; i++){ s += a*nois
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes;
   float asp = uRes.x / uRes.y;
-  // Sky: engraved cloudscape (Codex, technique like the reference "engraved clouds"), scaled to cover and anchored at
+  // Sky: engraved cloudscape (technique like the reference "engraved clouds"), scaled to cover and anchored at
   // the bottom so the cloud banks sit at the lower edge. When opening, the strokes appear by brightness:
   // first the brightest lines, then the fine ones, as if the engraving were being drawn right now.
   float texA = uPortrait > .5 ? .5625 : 1.7778;

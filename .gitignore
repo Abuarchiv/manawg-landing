@@ -11,9 +11,5 @@ node_modules
 !.env.example
 .vercel
 
-# Local agent and graph data
-.claude/
-graphify-out/
-
 # System
 .DS_Store
