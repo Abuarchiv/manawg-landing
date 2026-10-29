@@ -2,7 +2,7 @@
 // masks are the layers of the cloud loader (landing-konzept/wolke). No curtain and no scroll opening; the clouds billow slowly, the pointer is wind.
 
 import { isLight } from '@/lib/theme';
-import { dprFor, sizeBacking } from '../../core/canvas';
+import { buildProgram, dprFor, sizeBacking } from '../../core/canvas';
 import { type SceneState, loop, register } from '../../core/loop';
 import { cl } from '../../core/math';
 
@@ -91,26 +91,6 @@ interface SkyState extends SceneState {
 	pointer: [number, number, number];
 }
 
-function program(gl: WebGL2RenderingContext): WebGLProgram | null {
-	const p = gl.createProgram();
-	for (const [kind, src] of [
-		[gl.VERTEX_SHADER, VS],
-		[gl.FRAGMENT_SHADER, FS],
-	] as const) {
-		const sh = gl.createShader(kind);
-		if (!sh || !p) return null;
-		gl.shaderSource(sh, src);
-		gl.compileShader(sh);
-		if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-			console.error('sky', gl.getShaderInfoLog(sh));
-			return null;
-		}
-		gl.attachShader(p, sh);
-	}
-	gl.linkProgram(p);
-	return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null;
-}
-
 /** Load an image, flip it and decode it off the main thread: the texture upload then only copies. */
 async function loadImage(src: string): Promise<ImageBitmap> {
 	const blob = await (await fetch(src)).blob();
@@ -135,7 +115,7 @@ async function load(s: SkyState): Promise<void> {
 	});
 	if (!gl) return;
 	await pause();
-	const p = program(gl);
+	const p = buildProgram(gl, VS, FS, 'sky');
 	if (!p) return;
 	gl.useProgram(p);
 	const u = (n: string) => gl.getUniformLocation(p, n);

@@ -3,7 +3,7 @@
 // the class selects the glyph ramp (floorboards . : -, rug up to @, plants ; * &), the brightness selects the glyph.
 // It is drawn into a separate WebGL canvas that flat.ts takes over as its backdrop.
 
-import { sizeBacking } from '../../core/canvas';
+import { buildProgram, sizeBacking } from '../../core/canvas';
 import { loop } from '../../core/loop';
 
 /** Render dimensions: S image pixels per grid unit, origin (OX, OY), size, height of the height encoding. */
@@ -185,23 +185,8 @@ async function load(): Promise<void> {
 	const cv = document.createElement('canvas');
 	const gl = cv.getContext('webgl2', { antialias: false, depth: false, alpha: false });
 	if (!gl) return;
-	const p = gl.createProgram();
-	for (const [kind, src] of [
-		[gl.VERTEX_SHADER, VS],
-		[gl.FRAGMENT_SHADER, FS],
-	] as const) {
-		const sh = gl.createShader(kind);
-		if (!sh) return;
-		gl.shaderSource(sh, src);
-		gl.compileShader(sh);
-		if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-			console.error('flat', gl.getShaderInfoLog(sh));
-			return;
-		}
-		gl.attachShader(p, sh);
-	}
-	gl.linkProgram(p);
-	if (!gl.getProgramParameter(p, gl.LINK_STATUS)) return;
+	const p = buildProgram(gl, VS, FS, 'flat');
+	if (!p) return;
 	gl.useProgram(p);
 	const u = (n: string) => gl.getUniformLocation(p, n);
 	tex(gl, 0, lum, true);

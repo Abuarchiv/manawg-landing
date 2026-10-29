@@ -7,7 +7,7 @@
 // through an offscreen canvas into the visible 2D canvas.
 
 import { isLight } from '@/lib/theme';
-import { glSoftware, glVisible, sizeBacking } from '../../core/canvas';
+import { buildProgram, glSoftware, glVisible, sizeBacking } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import type { HeroMarks, StageContext } from './types';
 
@@ -224,25 +224,13 @@ export function createHero(cv: HTMLCanvasElement) {
 			return false;
 		}
 		G.gl = gl;
-		const sh = (t: number, src: string, k: string): WebGLShader => {
-			const s = gl.createShader(t);
-			if (!s) throw new Error(`shader ${k}: not created`);
-			gl.shaderSource(s, src);
-			gl.compileShader(s);
-			if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
-				console.error(`shader ${k}`, gl.getShaderInfoLog(s));
-			return s;
-		};
-		const vs = sh(gl.VERTEX_SHADER, VS, 'vs');
-		const prog = <K extends string>(src: string, names: readonly K[], k: string): Program<K> => {
-			const pr = gl.createProgram();
-			if (!pr) throw new Error(`program ${k}: not created`);
-			gl.attachShader(pr, vs);
-			gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, src, k));
-			gl.bindAttribLocation(pr, 0, 'a');
-			gl.linkProgram(pr);
-			if (!gl.getProgramParameter(pr, gl.LINK_STATUS))
-				console.error(`link ${k}`, gl.getProgramInfoLog(pr));
+		const prog = <K extends string>(
+			src: string,
+			names: readonly K[],
+			k: string,
+		): Program<K> | null => {
+			const pr = buildProgram(gl, VS, src, `hero ${k}`, 'a');
+			if (!pr) return null;
 			const U = {} as Record<K, WebGLUniformLocation | null>;
 			for (const n of names) U[n] = gl.getUniformLocation(pr, n);
 			return { pr, U };
@@ -271,6 +259,10 @@ export function createHero(cv: HTMLCanvasElement) {
 			'scene',
 		);
 		G.Pp = prog(POST, ['uT', 'uR', 'uS', 'uD', 'uL', 'uMx', 'uSt', 'uHo', 'uPad'], 'post');
+		if (!G.S || !G.Pp) {
+			G.gl = null;
+			return false;
+		}
 		gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 		gl.enableVertexAttribArray(0);

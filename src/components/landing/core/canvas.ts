@@ -137,3 +137,38 @@ export function observe(el: Element, fn: (W: number, H: number) => void): () => 
 	ro.observe(el);
 	return () => ro.disconnect();
 }
+
+/**
+ * Compile and link a program from vertex and fragment source. Returns null if a step fails and
+ * logs the driver's message under `label`; the scenes then fall back to their 2D drawing.
+ * `attrib` binds that vertex attribute to location 0 before linking.
+ */
+export function buildProgram(
+	gl: WebGL2RenderingContext,
+	vs: string,
+	fs: string,
+	label: string,
+	attrib?: string,
+): WebGLProgram | null {
+	const p = gl.createProgram();
+	if (!p) return null;
+	for (const [kind, src] of [
+		[gl.VERTEX_SHADER, vs],
+		[gl.FRAGMENT_SHADER, fs],
+	] as const) {
+		const sh = gl.createShader(kind);
+		if (!sh) return null;
+		gl.shaderSource(sh, src);
+		gl.compileShader(sh);
+		if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+			console.error(`${label}: shader`, gl.getShaderInfoLog(sh));
+			return null;
+		}
+		gl.attachShader(p, sh);
+	}
+	if (attrib) gl.bindAttribLocation(p, 0, attrib);
+	gl.linkProgram(p);
+	if (gl.getProgramParameter(p, gl.LINK_STATUS)) return p;
+	console.error(`${label}: link`, gl.getProgramInfoLog(p));
+	return null;
+}
