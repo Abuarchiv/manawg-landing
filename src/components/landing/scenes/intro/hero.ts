@@ -6,7 +6,6 @@
 // (not a fixed 1280 x 800), in portrait the image section is framed (uZ), and the output goes
 // through an offscreen canvas into the visible 2D canvas.
 
-import { isLight, onTheme } from '@/lib/theme';
 import { glSoftware, glVisible } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import type { HeroMarks, StageContext } from './types';
@@ -195,21 +194,11 @@ export function createHero(cv: HTMLCanvasElement) {
 		fetch(src)
 			.then((r) => r.blob())
 			.then((b) => createImageBitmap(b, { imageOrientation: 'flipY' }));
-	// Light mode: a separate Codex engraving (dark lines on paper), stored as its negative because the canvas is
-	// CSS-inverted in light mode; after the filter the page shows that drawing, not the dark one turned over.
-	const loadPhoto = () =>
-		Promise.all([
-			bitmap(isLight() ? '/hero/berg-hell.webp' : '/hero/berg.webp'),
-			bitmap('/hero/berg-maske.webp'),
-		])
-			.then(([img, mask]) => {
-				if (G.photoTx) for (const t of G.photoTx) G.gl?.deleteTexture(t);
-				G.photoTx = null;
-				G.photo = { img, mask };
-			})
-			.catch(() => {});
-	loadPhoto();
-	const offTheme = onTheme(loadPhoto);
+	Promise.all([bitmap('/hero/berg.webp'), bitmap('/hero/berg-maske.webp')])
+		.then(([img, mask]) => {
+			G.photo = { img, mask };
+		})
+		.catch(() => {});
 	const fb = { x: 0, y: 0, ok: false }; // fallback: trailing light
 
 	const initGL = (gcv: HTMLCanvasElement): boolean => {
@@ -604,7 +593,6 @@ export function createHero(cv: HTMLCanvasElement) {
 		},
 		destroy() {
 			gone = true;
-			offTheme();
 			G.gl?.getExtension('WEBGL_lose_context')?.loseContext();
 		},
 	};
