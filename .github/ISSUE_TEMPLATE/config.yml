@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Problem with the app
+    url: https://github.com/Abuarchiv/manawg/issues/new/choose
+    about: Bugs and ideas for ManaWG itself go to the app repository.
+  - name: Question or idea
+    url: https://github.com/Abuarchiv/manawg/discussions
+    about: Ask about ManaWG or talk an idea through.
+  - name: Security vulnerability
+    url: https://github.com/Abuarchiv/manawg/security/advisories/new
+    about: Report security problems privately, never in a public issue.

@@ -61,4 +61,7 @@ The home page implements the design template `final.dc.html` one to one: the lay
 
 ## Contributing
 
-Issues and pull requests are welcome. Keep changes small, write code comments in English, and keep German and English pages in step: a change to one language should come with the matching change to the other, or a note saying why not.
+Issues and pull requests are welcome. Keep changes small, write code comments in English, and keep German and English pages in step: a change to one language should come with the matching change to the other, or a note saying why not. Details are in [CONTRIBUTING.md](CONTRIBUTING.md); security problems go through [SECURITY.md](SECURITY.md).
+## License
+
+The website is open source under the [Apache License 2.0](LICENSE), like [the app](https://github.com/Abuarchiv/manawg). The fonts keep their own licences, see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md). The licence does not grant rights to the name ManaWG or its logo; forks that publish a site of their own use their own name and logo.

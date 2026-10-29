@@ -1,0 +1,27 @@
+name: Website problem
+description: A wrong fact, a typo, a translation error, a broken link or a page that does not work.
+labels: [website]
+body:
+  - type: markdown
+    attributes:
+      value: English or German is fine. Problems with the app itself belong in the app repository.
+  - type: input
+    id: url
+    attributes:
+      label: Page
+      placeholder: https://manawg.com/en/cleaning-rota
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What is wrong
+      description: What does the page say or do, and what should it say or do instead?
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and browser
+      description: Only if the page does not work or looks broken.
+      placeholder: iPhone 15, iOS 26, Safari

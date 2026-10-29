@@ -2,6 +2,10 @@
 	"name": "manawg-landing",
 	"version": "0.1.0",
 	"private": true,
+	"description": "Website of ManaWG (manawg.com), the free, open-source app for shared flats",
+	"license": "Apache-2.0",
+	"repository": "github:Abuarchiv/manawg-landing",
+	"homepage": "https://manawg.com",
 	"packageManager": "pnpm@9.0.0",
 	"engines": {
 		"node": ">=22",
