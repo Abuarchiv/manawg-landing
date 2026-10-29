@@ -1,6 +1,7 @@
 'use client';
 
 import type { Locale } from '@/lib/locale';
+import { INTL_LOCALE } from '@/lib/locale';
 import { useState } from 'react';
 import { euro, mieteAnteile, zahl } from './miete-rechner';
 
@@ -10,24 +11,71 @@ const knopf =
 const zelle = 'px-3 py-2 border-b border-white/10';
 const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
 
+const TEXT: Record<
+	Locale,
+	{
+		rent: string;
+		common: string;
+		rooms: string;
+		roomLabel: (n: number) => string;
+		add: string;
+		remove: string;
+		caption: string;
+		room: string;
+		area: string;
+		share: string;
+		total: string;
+		hint: string;
+	}
+> = {
+	de: {
+		rent: 'Miete im Monat in Euro',
+		common: 'Gemeinschaftsfläche in m²',
+		rooms: 'Zimmer in m² (2 bis 8)',
+		roomLabel: (n) => `Zimmer ${n} in m²`,
+		add: 'Zimmer hinzufügen',
+		remove: 'Zimmer entfernen',
+		caption: 'Mietanteil je Zimmer',
+		room: 'Zimmer',
+		area: 'Fläche',
+		share: 'Miete im Monat',
+		total: 'Summe',
+		hint: 'Tragt die Miete und für jedes Zimmer eine Fläche größer als 0 ein.',
+	},
+	en: {
+		rent: 'Monthly rent in euros',
+		common: 'Shared area in m²',
+		rooms: 'Room sizes in m² (2 to 8)',
+		roomLabel: (n) => `Room ${n} in m²`,
+		add: 'Add a room',
+		remove: 'Remove a room',
+		caption: 'Rent share per room',
+		room: 'Room',
+		area: 'Area',
+		share: 'Monthly rent',
+		total: 'Total',
+		hint: 'Enter the rent and an area above 0 for each room.',
+	},
+};
+
 // Ohne Speicherung und Konto: Eingaben und Ergebnis leben nur im Browser.
-// `locale` is accepted for the English rollout and not used yet.
-export default function MieteRechner(_props: { locale: Locale }) {
+export default function MieteRechner({ locale }: { locale: Locale }) {
+	const t = TEXT[locale];
 	const [miete, setMiete] = useState('900');
 	const [flaechen, setFlaechen] = useState(['12', '18', '24']);
 	const [gemeinschaft, setGemeinschaft] = useState('18');
 
-	const zimmer = flaechen.map((f) => zahl(f)).filter((m) => m > 0);
-	const mieteCent = Math.round(zahl(miete) * 100);
+	const zimmer = flaechen.map((f) => zahl(f, locale)).filter((m) => m > 0);
+	const mieteCent = Math.round(zahl(miete, locale) * 100);
 	const ok = mieteCent > 0 && zimmer.length >= 2 && zimmer.length === flaechen.length;
-	const anteile = ok ? mieteAnteile(mieteCent, zimmer, zahl(gemeinschaft)) : [];
+	const anteile = ok ? mieteAnteile(mieteCent, zimmer, zahl(gemeinschaft, locale)) : [];
 
 	return (
 		<div className="pb-10 md:pb-14 md:grid md:grid-cols-12 md:gap-8">
 			<div className="md:col-start-6 md:col-span-6 min-w-0">
 				<div className="mb-6 grid grid-cols-2 gap-3">
 					<label className="flex flex-col gap-2">
-						<span className={mono}>Miete im Monat in Euro</span>
+						<span className={mono}>{t.rent}</span>
 						<input
 							className={feld}
 							type="text"
@@ -37,7 +85,7 @@ export default function MieteRechner(_props: { locale: Locale }) {
 						/>
 					</label>
 					<label className="flex flex-col gap-2">
-						<span className={mono}>Gemeinschaftsfläche in m²</span>
+						<span className={mono}>{t.common}</span>
 						<input
 							className={feld}
 							type="text"
@@ -48,7 +96,7 @@ export default function MieteRechner(_props: { locale: Locale }) {
 					</label>
 				</div>
 				<fieldset className="m-0 mb-6 p-0 border-0">
-					<legend className={`${mono} mb-3 p-0`}>Zimmer in m² (2 bis 8)</legend>
+					<legend className={`${mono} mb-3 p-0`}>{t.rooms}</legend>
 					<div className="grid grid-cols-2 gap-3">
 						{flaechen.map((f, i) => (
 							<input
@@ -57,7 +105,7 @@ export default function MieteRechner(_props: { locale: Locale }) {
 								type="text"
 								inputMode="decimal"
 								value={f}
-								aria-label={`Zimmer ${i + 1} in m²`}
+								aria-label={t.roomLabel(i + 1)}
 								onChange={(e) =>
 									setFlaechen(flaechen.map((x, j) => (j === i ? e.target.value : x)))
 								}
@@ -71,7 +119,7 @@ export default function MieteRechner(_props: { locale: Locale }) {
 							disabled={flaechen.length >= 8}
 							onClick={() => setFlaechen([...flaechen, ''])}
 						>
-							Zimmer hinzufügen
+							{t.add}
 						</button>
 						<button
 							type="button"
@@ -79,7 +127,7 @@ export default function MieteRechner(_props: { locale: Locale }) {
 							disabled={flaechen.length <= 2}
 							onClick={() => setFlaechen(flaechen.slice(0, -1))}
 						>
-							Zimmer entfernen
+							{t.remove}
 						</button>
 					</div>
 				</fieldset>
@@ -89,17 +137,17 @@ export default function MieteRechner(_props: { locale: Locale }) {
 				{ok ? (
 					<div className="overflow-x-auto">
 						<table className="w-full min-w-[540px] border-collapse text-left">
-							<caption className="sr-only">Mietanteil je Zimmer</caption>
+							<caption className="sr-only">{t.caption}</caption>
 							<thead>
 								<tr>
 									<th scope="col" className={`${zelle} text-left font-normal`}>
-										Zimmer
+										{t.room}
 									</th>
 									<th scope="col" className={`${zelle} text-left font-normal`}>
-										Fläche
+										{t.area}
 									</th>
 									<th scope="col" className={`${zelle} text-left font-normal`}>
-										Miete im Monat
+										{t.share}
 									</th>
 								</tr>
 							</thead>
@@ -107,26 +155,24 @@ export default function MieteRechner(_props: { locale: Locale }) {
 								{zimmer.map((m, i) => (
 									<tr key={i}>
 										<th scope="row" className={`${zelle} text-left font-normal`}>
-											Zimmer {i + 1}
+											{t.room} {i + 1}
 										</th>
-										<td className={zelle}>{m.toLocaleString('de-DE')} m²</td>
-										<td className={zelle}>{euro(anteile[i] ?? 0)}</td>
+										<td className={zelle}>{m.toLocaleString(INTL_LOCALE[locale])} m²</td>
+										<td className={zelle}>{euro(anteile[i] ?? 0, locale)}</td>
 									</tr>
 								))}
 								<tr>
 									<th scope="row" className={`${zelle} text-left font-normal`}>
-										Summe
+										{t.total}
 									</th>
 									<td className={zelle} />
-									<td className={zelle}>{euro(mieteCent)}</td>
+									<td className={zelle}>{euro(mieteCent, locale)}</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				) : (
-					<p className={`${mono} m-0`}>
-						Tragt die Miete und für jedes Zimmer eine Fläche größer als 0 ein.
-					</p>
+					<p className={`${mono} m-0`}>{t.hint}</p>
 				)}
 			</div>
 		</div>
