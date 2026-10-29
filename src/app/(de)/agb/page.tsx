@@ -145,9 +145,10 @@ export default function AgbPage() {
 							8. Lizenz / Quellcode
 						</h2>
 						<p>
-							Der Quellcode von ManaWG wird nicht als Open-Source-Software angeboten. Die Nutzung
-							der App überträgt dir keine Rechte zur Weitergabe oder kommerziellen Verwertung des
-							Quellcodes. Gesetzlich erlaubte Nutzungen bleiben unberührt.
+							Der Quellcode von ManaWG ist als Open-Source-Software unter der Apache-Lizenz 2.0
+							veröffentlicht. Für Nutzung, Weitergabe und Änderung des Quellcodes gelten die
+							Bedingungen dieser Lizenz. Die Nutzung des gehosteten Dienstes richtet sich nach
+							diesen AGB.
 						</p>
 					</section>
 

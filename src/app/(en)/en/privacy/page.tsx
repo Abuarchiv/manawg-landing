@@ -86,7 +86,7 @@ export default function PrivacyPage() {
 							personal data and we do not show ads. For product analytics we send only the details
 							described in section 4f to PostHog Cloud EU. The accounts you create to sign in and to
 							be a member of your flat are separate from this; section 4a has more on them. The
-							source code is not published.
+							app's source code is published as open source under the Apache License 2.0.
 						</p>
 					</section>
 

@@ -149,9 +149,9 @@ export default function TermsPage() {
 							8. Licence / source code
 						</h2>
 						<p>
-							The source code of ManaWG is not offered as open-source software. Using the app does
-							not give you any right to pass on or commercially exploit the source code. Uses that
-							the law permits remain unaffected.
+							The source code of ManaWG is published as open-source software under the Apache
+							License 2.0. Use, distribution and modification of the source code are governed by the
+							terms of that licence. Use of the hosted service is governed by these terms.
 						</p>
 					</section>
 

@@ -79,7 +79,8 @@ export default function DatenschutzPage() {
 							Daten und schalten keine Werbung. Für die Produktanalyse übermitteln wir nur die in
 							Abschnitt 4f beschriebenen Angaben an PostHog Cloud EU. Die Konten, die du zur
 							Anmeldung und für deine WG-Mitgliedschaft anlegst, sind davon getrennt; dazu steht
-							mehr in Abschnitt 4a. Der Quellcode wird nicht veröffentlicht.
+							mehr in Abschnitt 4a. Der Quellcode der App ist als Open Source unter der
+							Apache-Lizenz 2.0 veröffentlicht.
 						</p>
 					</section>
 
