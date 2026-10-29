@@ -11,7 +11,7 @@ import { loop, onFrame, qa } from './loop';
 const SEC = '[data-sec]';
 
 /** Gemessener Abschnitt in Dokumentkoordinaten. */
-interface Mass {
+interface SectionMeasure {
 	el: HTMLElement;
 	id: string;
 	top: number;
@@ -19,12 +19,12 @@ interface Mass {
 }
 
 /** Stelle im Dokument: Abschnittsindex i und Anteil p darin. */
-interface Anker {
+interface Anchor {
 	i: number;
 	p: number;
 }
 
-function measureAll(list: HTMLElement[]): Mass[] {
+function measureAll(list: HTMLElement[]): SectionMeasure[] {
 	const y = window.scrollY;
 	return list.map((el) => {
 		const r = el.getBoundingClientRect();
@@ -32,7 +32,7 @@ function measureAll(list: HTMLElement[]): Mass[] {
 	});
 }
 
-function anchorOf(m: Mass[], y: number): Anker | null {
+function anchorOf(m: SectionMeasure[], y: number): Anchor | null {
 	let i = m.length - 1;
 	for (let k = 0; k < m.length; k++) {
 		const a = m[k];
@@ -72,7 +72,7 @@ export function initScroll(root: HTMLElement): () => void {
 	let lenis: Lenis | null = null;
 	let stopFrame = () => {};
 	const mqRed = matchMedia('(prefers-reduced-motion: reduce)');
-	const lenisAn = () => {
+	const enableLenis = () => {
 		if (lenis || mqRed.matches) return;
 		// Rad und Trackpad mit Lerp statt Dauer-Kurve: die Kurve startete bei jedem Rad-Ereignis neu mit einem
 		// Geschwindigkeitssprung (Trackpads senden viele kleine Ereignisse, das stotterte). Lerp gleicht je Bild
@@ -86,17 +86,17 @@ export function initScroll(root: HTMLElement): () => void {
 		qa.lenis = lenis;
 		stopFrame = onFrame((_t, _dt, now) => lenis?.raf(now * 1000), true);
 	};
-	const lenisAus = () => {
+	const disableLenis = () => {
 		stopFrame();
 		lenis?.destroy();
 		lenis = null;
 		qa.lenis = undefined;
 	};
-	const onReduced = () => (mqRed.matches ? lenisAus() : lenisAn());
+	const onReduced = () => (mqRed.matches ? disableLenis() : enableLenis());
 	mqRed.addEventListener('change', onReduced);
-	lenisAn();
+	enableLenis();
 	/** Sofort an eine Stelle (Stelle halten, Sprung hinter dem Schleier). */
-	const setze = (y: number) => {
+	const setY = (y: number) => {
 		if (lenis) {
 			lenis.resize();
 			lenis.scrollTo(y, { immediate: true, force: true });
@@ -123,7 +123,7 @@ export function initScroll(root: HTMLElement): () => void {
 				(a, i) => Math.abs(a.top - (m[i]?.top ?? 0)) > 1 || Math.abs(a.h - (m[i]?.h ?? 0)) > 1,
 			);
 		const a = anchor && nm[anchor.i];
-		if (changed && anchor && a) setze(Math.round(a.top + anchor.p * a.h));
+		if (changed && anchor && a) setY(Math.round(a.top + anchor.p * a.h));
 		m = changed ? measureAll(list) : nm;
 		w0 = innerWidth;
 		h0 = innerHeight;
@@ -171,7 +171,7 @@ export function initScroll(root: HTMLElement): () => void {
 		const a = v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 80, fill: 'forwards' });
 		a.finished
 			.then(() => {
-				setze(y);
+				setY(y);
 				return v.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 80, fill: 'forwards' })
 					.finished;
 			})
@@ -188,7 +188,7 @@ export function initScroll(root: HTMLElement): () => void {
 		e.preventDefault();
 		const y = targetY(target);
 		const d = Math.abs(y - window.scrollY);
-		if (loop.reduced) setze(y);
+		if (loop.reduced) setY(y);
 		else if (d > 3 * innerHeight) jump(y);
 		else if (lenis)
 			lenis.scrollTo(y, { duration: 1.1 + 0.35 * Math.min(3, d / innerHeight), easing: expoOut });
@@ -208,6 +208,6 @@ export function initScroll(root: HTMLElement): () => void {
 		ro.disconnect();
 		veil?.remove();
 		mqRed.removeEventListener('change', onReduced);
-		lenisAus();
+		disableLenis();
 	};
 }

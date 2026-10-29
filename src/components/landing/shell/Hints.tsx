@@ -10,26 +10,26 @@ import { useDict } from '../dict';
 
 const CH = '@%#*+=-:';
 
-export function Hinweise() {
+export function Hints() {
 	const dict = useDict();
 	const busy = useRef(false);
 	const scramble = (e: React.PointerEvent<HTMLElement>) => {
 		const el = e.currentTarget;
 		if (busy.current) return;
-		const orig = el.textContent ?? '';
+		const original = el.textContent ?? '';
 		busy.current = true;
 		let fr = 0;
 		const run = () => {
 			fr++;
-			el.textContent = orig
+			el.textContent = original
 				.split('')
 				.map((c, i) =>
 					c === ' ' || i < fr / 2 ? c : (CH[Math.floor(Math.random() * CH.length)] as string),
 				)
 				.join('');
-			if (fr / 2 < orig.length) requestAnimationFrame(run);
+			if (fr / 2 < original.length) requestAnimationFrame(run);
 			else {
-				el.textContent = orig;
+				el.textContent = original;
 				busy.current = false;
 			}
 		};

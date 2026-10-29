@@ -6,7 +6,7 @@
 // der CSS-Größe des Canvas (nicht mehr fest 1280 x 800), im Hochformat wird der Bildausschnitt
 // gerahmt (uZ), die Ausgabe läuft über einen Offscreen-Canvas in das sichtbare 2D-Canvas.
 
-import { glSichtbar, glSoftware } from '../../core/canvas';
+import { glSoftware, glVisible } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import type { BuehnenKontext, HeroMarken } from './types';
 
@@ -205,7 +205,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		const gl = gcv.getContext('webgl2', { antialias: false, preserveDrawingBuffer: false });
 		if (!gl) return false;
 		// Treiber, deren Ausgabe leer bleibt, gelten wie fehlendes WebGL2 (Halbton-Fallback)
-		if (!glSichtbar(gl, gcv)) {
+		if (!glVisible(gl, gcv)) {
 			// biome-ignore lint/suspicious/noConsole: Diagnose auf Debug-Stufe
 			console.debug('hero: WebGL-Ausgabe bleibt leer, 2D-Fallback');
 			G.gl = null;

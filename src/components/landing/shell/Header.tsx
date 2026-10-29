@@ -5,7 +5,7 @@ import { useDict } from '../dict';
 // Kopf: Logo links, Knopf rechts, fest am Fenster. Während die Ende-Ebene der Intro den Kopfbereich deckt,
 // blendet --kopf-aus ihn aus (stage.js). Safe-Area-Abstände für Notch und Ecken.
 
-export function Kopf() {
+export function Header() {
 	const dict = useDict();
 	return (
 		<header

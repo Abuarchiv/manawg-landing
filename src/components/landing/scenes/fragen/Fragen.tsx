@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { css } from '../../core/dc';
-import { ZEICHEN } from '../../core/entschluesseln';
+import { GLYPHS } from '../../core/decode';
 import { useDict } from '../../dict';
 
 // Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
@@ -34,7 +34,7 @@ function Antwort({ text, an }: { text: string; an: boolean }) {
 	}, [an, text]);
 	if (k >= text.length) return <p>{text}</p>;
 	const kopf = [...text.slice(k, k + KOPF)]
-		.map((c) => (c === ' ' ? c : ZEICHEN[Math.floor(Math.random() * ZEICHEN.length)]))
+		.map((c) => (c === ' ' ? c : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]))
 		.join('');
 	return (
 		<p>

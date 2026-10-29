@@ -14,7 +14,7 @@ export interface Fit {
 }
 
 /** Sichtbare Fläche im Szenenraum. */
-export interface Flaeche {
+export interface Area {
 	x0: number;
 	y0: number;
 	x1: number;
@@ -22,7 +22,7 @@ export interface Flaeche {
 }
 
 /** Zeigerposition in CSS-Pixeln der Canvas-Fläche (px, py) und in Szenenkoordinaten (x, y). */
-export interface Zeiger {
+export interface Pointer {
 	px: number;
 	py: number;
 	x: number;
@@ -36,7 +36,7 @@ export function fitBox(W: number, H: number, bw = 1280, bh = 800, max = FIT_MAX)
 }
 
 /** Sichtbare Fläche im Szenenraum: von (x0, y0) bis (x1, y1). Füllt die ganze Canvas-Fläche. */
-export function area(W: number, H: number, fit: Fit): Flaeche {
+export function area(W: number, H: number, fit: Fit): Area {
 	return {
 		x0: -fit.ox / fit.f,
 		y0: -fit.oy / fit.f,
@@ -53,10 +53,10 @@ export function isTouch(): boolean {
 }
 
 /** Haken der Schleife: wird bei jeder Größenänderung gerufen (weckt ruhende Szenen). */
-export const regung: { fn: () => void } = { fn() {} };
+export const wakeHook: { fn: () => void } = { fn() {} };
 
 /** Auflösungsstufe aus der Bildzeit (loop.js senkt sie bei dauerhaft langsamen Bildern, 1 = voll). */
-export const qual = { f: 1 };
+export const quality = { f: 1 };
 
 /** Höchstfläche eines Backings in Pixeln (8 MP = 32 MB): große Vollflächen auf 4K/5K bekommen einen kleineren Faktor. */
 const MAX_PX = 8e6;
@@ -65,14 +65,14 @@ const MAX_PX = 8e6;
 export function dprFor(cap = 2, touchCap = cap, W = 0, H = 0): number {
 	let d = Math.min(window.devicePixelRatio || 1, isTouch() ? touchCap : cap);
 	if (W * H > 0) d = Math.min(d, Math.sqrt(MAX_PX / (W * H)));
-	return Math.max(1, d * qual.f);
+	return Math.max(1, d * quality.f);
 }
 
 /**
  * Prüft, ob ein WebGL-Canvas Bildpunkte bis in ein 2D-Canvas bringt (Treiber mit kaputter Ausgabe, z. B. Emulator,
  * liefern leere Flächen): rot löschen, in 1 x 1 Pixel kopieren, Deckkraft lesen.
  */
-export function glSichtbar(
+export function glVisible(
 	gl: WebGLRenderingContext | WebGL2RenderingContext,
 	cv: HTMLCanvasElement,
 ): boolean {
@@ -100,12 +100,12 @@ export function glSoftware(): Promise<boolean> {
 	soft ??= new Promise((res) => {
 		if (typeof Worker !== 'function' || typeof OffscreenCanvas !== 'function') return res(false);
 		const w = new Worker('/gl-probe.js');
-		const fertig = (r: unknown) => {
+		const done = (r: unknown) => {
 			res(/swiftshader|llvmpipe|softpipe|software|basic render/i.test(String(r)));
 			w.terminate();
 		};
-		w.onmessage = (e) => fertig(e.data);
-		w.onerror = () => fertig('');
+		w.onmessage = (e) => done(e.data);
+		w.onerror = () => done('');
 	});
 	return soft;
 }
@@ -135,7 +135,7 @@ export function pointerIn(
 	e: Pick<PointerEvent, 'clientX' | 'clientY'>,
 	rect: Pick<DOMRect, 'left' | 'top'>,
 	fit: Fit,
-): Zeiger {
+): Pointer {
 	const px = e.clientX - rect.left;
 	const py = e.clientY - rect.top;
 	return { px, py, x: (px - fit.ox) / fit.f, y: (py - fit.oy) / fit.f };
@@ -149,7 +149,7 @@ export function observe(el: Element, fn: (W: number, H: number) => void): () => 
 	fn(el.clientWidth, el.clientHeight);
 	if (typeof ResizeObserver === 'undefined') return () => {};
 	const ro = new ResizeObserver(() => {
-		regung.fn();
+		wakeHook.fn();
 		fn(el.clientWidth, el.clientHeight);
 	});
 	ro.observe(el);

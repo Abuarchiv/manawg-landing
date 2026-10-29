@@ -102,7 +102,7 @@ export const uc = (
 };
 
 // Ein Kreis des Zeichens als (x, y, r).
-export type Kreis = readonly [x: number, y: number, r: number];
+export type Circle = readonly [x: number, y: number, r: number];
 
 // Das ManaWG-Zeichen: acht Kreise (x, y, r) im Raster 416 x 346, Mittelpunkt (208, 173).
 export const AB = [
@@ -114,7 +114,7 @@ export const AB = [
 	[288, 70, 42],
 	[360, 177, 56],
 	[42, 239, 44],
-] as const satisfies readonly Kreis[];
+] as const satisfies readonly Circle[];
 
 // Abstandsfeld des Zeichens, negativ innen.
 export const aMark = (x: number, y: number): number => {
@@ -124,9 +124,9 @@ export const aMark = (x: number, y: number): number => {
 };
 
 // Ruhelagen der acht Kreise: zweidimensional (Berg, Sonne) und dreidimensional (Organ).
-export const HOME: readonly Kreis[] = AB.map(
-	(b): Kreis => [(b[0] - 208) / 600, -(b[1] - 173) / 600, b[2] / 600],
+export const HOME: readonly Circle[] = AB.map(
+	(b): Circle => [(b[0] - 208) / 600, -(b[1] - 173) / 600, b[2] / 600],
 );
-export const HOME3: readonly Kreis[] = AB.map(
-	(b): Kreis => [(b[0] - 208) / 110, -(b[1] - 173) / 110, b[2] / 110],
+export const HOME3: readonly Circle[] = AB.map(
+	(b): Circle => [(b[0] - 208) / 110, -(b[1] - 173) / 110, b[2] / 110],
 );

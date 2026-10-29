@@ -1,5 +1,5 @@
 // Fragen der Startseite; auch Quelle für das FAQPage-Schema in app/page.tsx.
-export const FRAGEN: [string, string][] = [
+export const FAQ_DE: [string, string][] = [
 	[
 		'Wie kommen meine Mitbewohner in die WG?',
 		'Du erstellst die WG und teilst den Einladungslink. Deine Mitbewohner melden sich mit Google oder E-Mail und Passwort an und treten über den Link bei.',

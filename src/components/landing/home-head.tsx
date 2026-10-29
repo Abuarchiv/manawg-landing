@@ -7,7 +7,7 @@ import { schemaIds } from '@/lib/schema-ids';
 // Shared by the German and the English home page: the inline mode script, the noscript style and the JSON-LD.
 
 // Before the first paint: class "js" and mode (portrait/landscape) on the document so the layout does not jump.
-export const MODUS =
+export const MODE_SCRIPT =
 	"(function(){var d=document.documentElement,w=d.clientWidth,h=innerHeight;d.classList.add('js');d.setAttribute('data-mode',w/h<=1||w<700?'hoch':'quer')})()";
 
 export const NOSCRIPT_STYLE =
@@ -19,10 +19,10 @@ export function homeSchemas(locale: Locale) {
 	const faqSchema = {
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
-		mainEntity: dict.faq.map(([frage, antwort]) => ({
+		mainEntity: dict.faq.map(([question, answer]) => ({
 			'@type': 'Question',
-			name: frage,
-			acceptedAnswer: { '@type': 'Answer', text: antwort },
+			name: question,
+			acceptedAnswer: { '@type': 'Answer', text: answer },
 		})),
 	};
 	// Only on the home page: the app is a separate product on its own origin.
@@ -51,7 +51,7 @@ export function HomeHead({ locale }: { locale: Locale }) {
 	return (
 		<>
 			{/* biome-ignore lint/security/noDangerouslySetInnerHtml: static string, no user content */}
-			<script dangerouslySetInnerHTML={{ __html: MODUS }} />
+			<script dangerouslySetInnerHTML={{ __html: MODE_SCRIPT }} />
 			<noscript
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: static string, no user content
 				dangerouslySetInnerHTML={{ __html: NOSCRIPT_STYLE }}

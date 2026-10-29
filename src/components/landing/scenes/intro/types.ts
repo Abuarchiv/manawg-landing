@@ -1,7 +1,7 @@
 // Gemeinsame Typen der Intro-Bühne: Kontext je Bild (c), Marken des Heros (h) und Rechtecke aus dem DOM.
 
 import type { Fit } from '../../core/canvas';
-import type { Modus } from '../../core/loop';
+import type { Mode } from '../../core/loop';
 
 /** Rechteck eines DOM-Elements mit data-loch in Bühnen-CSS-Pixeln. art: 'logo', 'cta', 'hinweis', 'text'. */
 export interface Loch {
@@ -42,7 +42,7 @@ export interface BuehnenKontext {
 	H: number;
 	safeH: number;
 	dpr: number;
-	mode: Modus;
+	mode: Mode;
 	reduced: boolean;
 	fit: Fit;
 	m: BuehnenZeiger;

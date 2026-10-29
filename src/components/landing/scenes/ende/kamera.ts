@@ -5,7 +5,7 @@
 // Ende.tsx setzt daraus --ende-x/-y/-f, hand.draw nutzt dieselbe Funktion (ein Vertrag).
 
 import { type Fit, fitBox } from '../../core/canvas';
-import type { Modus } from '../../core/loop';
+import type { Mode } from '../../core/loop';
 
 /** Hochformat, wie in core/loop.ts modeOf: Breite/Höhe <= 1 oder Breite < 700. */
 export const istHoch = (W: number, H: number): boolean => W / H <= 1 || W < 700;
@@ -43,7 +43,7 @@ export function titelPlatz(W: number, _safeH: number): number {
 	return oben + fs + 16 + 40 + 20;
 }
 
-export function kamera(W: number, H: number, safeH: number, _mode: Modus): Fit {
+export function kamera(W: number, H: number, safeH: number, _mode: Mode): Fit {
 	if (!istHoch(W, H)) return fitBox(W, safeH, 1280, 800, 1.25);
 	const top = titelPlatz(W, safeH);
 	// Daumen links (x 584) und Fingerkuppen rechts (x 998) bleiben mit mindestens 8 px Rand im Bild

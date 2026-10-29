@@ -1,4 +1,4 @@
-import { FRAGEN } from '../../components/landing/scenes/fragen/fragenDaten.ts';
+import { FAQ_DE } from './faq-de.ts';
 import type { HomeDict } from './types.ts';
 
 // German copy of the home page, moved verbatim from the components.
@@ -229,7 +229,7 @@ export const de: HomeDict = {
 			dialogInstall: 'Installieren',
 		},
 	},
-	faq: FRAGEN,
+	faq: FAQ_DE,
 	questions: { prefix: '[ 07 ] ', title: 'FRAGEN' },
 	finale: { title: ['Zieht', 'ein.'], create: 'WG erstellen', invite: 'Einladung einlösen' },
 	footer: {

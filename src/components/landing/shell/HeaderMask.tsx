@@ -1,28 +1,28 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { onLies } from '../core/loop';
+import { onRead } from '../core/loop';
 
 // Inhalt im Kopfband ausblenden: Läuft Text unter Logo und Knopf durch, deckt dieser Verlauf in der Farbe des
 // Abschnitts das Band (Kopfunterkante plus 28 px weicher Auslauf). Er wirkt nur, solange das Band im Inhalt
 // liegt (So geht's, Körper, Installieren, Fragen, Finale), nie über den Szenen aus Flut, Wohnung und Tiefe.
 const IDS = ['flutband', 'so-gehts', 'installieren', 'fragen', 'finale'];
 // Hochformat: auch Tiefe, dort läuft sonst das Wortbild unter dem festen Kopf durch
-const IDS_HOCH = [...IDS, 'funktionen'];
+const IDS_PORTRAIT = [...IDS, 'funktionen'];
 
-export function KopfMaske() {
+export function HeaderMask() {
 	const ref = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		const el = ref.current as HTMLDivElement;
-		const kopf = document.querySelector('[data-kopf]') as HTMLElement | null;
+		const header = document.querySelector('[data-kopf]') as HTMLElement | null;
 		// Liest in der Lesephase der Bildschleife: als eigener rAF nach den Szenen erzwang jedes Lesen ein Layout
 		let h = '';
 		let o = '';
-		const rechne = () => {
-			const band = (kopf?.getBoundingClientRect().bottom ?? 64) + 10;
+		const measure = () => {
+			const band = (header?.getBoundingClientRect().bottom ?? 64) + 10;
 			let v = 0;
-			const hoch = document.getElementById('final')?.dataset.mode === 'hoch';
-			for (const id of hoch ? IDS_HOCH : IDS) {
+			const portrait = document.getElementById('final')?.dataset.mode === 'hoch';
+			for (const id of portrait ? IDS_PORTRAIT : IDS) {
 				const s = document.getElementById(id);
 				if (!s) continue;
 				const r = s.getBoundingClientRect();
@@ -31,7 +31,7 @@ export function KopfMaske() {
 				v = Math.max(v, e);
 			}
 			// Hochformat, Ende-Ebene der Intro: läuft die Bühne nach oben weg, schiebt sich das Handy unter das Band
-			if (hoch && document.getElementById('final')?.dataset.phase === 'ende') {
+			if (portrait && document.getElementById('final')?.dataset.phase === 'ende') {
 				const b = document.querySelector('[data-buehne]');
 				if (b) v = Math.max(v, Math.min(1, Math.max(0, -b.getBoundingClientRect().top / 24)));
 			}
@@ -41,8 +41,8 @@ export function KopfMaske() {
 			if (hn !== h) el.style.height = h = hn;
 			if (on !== o) el.style.opacity = o = on;
 		};
-		rechne();
-		return onLies(rechne);
+		measure();
+		return onRead(measure);
 	}, []);
 	return (
 		<div

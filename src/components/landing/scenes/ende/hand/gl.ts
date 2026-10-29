@@ -1,6 +1,6 @@
 // WebGL2-Weg der Hände: Eignungsprüfung, Ebenen (Programme, Texturen) und die zwei Durchgänge je Bild.
 
-import { glSichtbar } from '../../../core/canvas';
+import { glVisible } from '../../../core/canvas';
 import type { Fit } from '../../../core/canvas';
 import { qa } from '../../../core/loop';
 import { atlanten, divArray, tileArray } from './atlas';
@@ -67,7 +67,7 @@ export function glTaugtEnde({ cv, gl, progs }: Probe, sofort = false): boolean |
 			console.warn('hand: Shader nicht verwendbar', gl.getShaderInfoLog(fs));
 		}
 	}
-	if (ok && !glSichtbar(gl, cv)) {
+	if (ok && !glVisible(gl, cv)) {
 		ok = false;
 		// biome-ignore lint/suspicious/noConsole: Diagnose für Geräte mit leerer WebGL-Ausgabe
 		console.debug('hand: WebGL-Ausgabe bleibt leer, 2D-Hand');
