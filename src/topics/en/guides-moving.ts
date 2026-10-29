@@ -3,7 +3,7 @@ import type { Thema } from '../themen.ts';
 // English guides for starting, moving into and leaving a flat share in Germany (batch C).
 // German law (BGB, BMG) is cited with its German sources; only the German text is binding.
 
-const BGB_EN: [string, string] = [
+export const BGB_EN: [string, string] = [
 	'German Civil Code (BGB), English translation (for information, only the German text is binding)',
 	'https://www.gesetze-im-internet.de/englisch_bgb/',
 ];
@@ -54,7 +54,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'6. Register and set up contracts',
-				'After moving in, everyone has to register their address with the local citizens’ office (Bürgeramt) within two weeks. This is the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in) issued by the landlord, or by the main tenant if you sublet. The [guide to the Anmeldung](/anmeldung-shared-flat) explains how. Electricity and internet usually run in one person’s name, and you split the costs. The [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) is due once per flat, not per person: one person registers and the others give that person’s contribution number. Everyone should have their own personal liability insurance (Haftpflichtversicherung) and check whether their contents insurance (Hausratversicherung) covers a flat share.',
+				'After moving in, everyone has to register their address with the local citizens’ office (Bürgeramt) within two weeks. This is the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in) issued by the landlord, or by the main tenant if you sublet. The [guide to the Anmeldung](/anmeldung-shared-flat) explains how. Electricity and internet usually run in one person’s name, and you split the costs. The [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) is due once per flat, not per person: one person registers, and the others deregister, quoting that person’s contribution number. Everyone should have their own personal liability insurance (Haftpflichtversicherung) and check whether their contents insurance (Hausratversicherung) covers a flat share.',
 			],
 			[
 				'7. Settle the money',
@@ -395,7 +395,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'Before moving in: contract and paperwork',
-				'Find out whether you get your own tenancy agreement with the landlord or a [sublease](/flat-share-tenancy-agreement) with a flatmate. Ask about the amount and repayment of the Kaution (deposit): it may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Also ask whether the rent is quoted warm (including heating and utilities) or cold. Have the rooms, cupboards and fridge shelves that are yours pointed out to you. Ask about the existing [house rules](/house-rules) on quiet, visitors and cleaning, and how costs are split.',
+				'Find out whether you get your own tenancy agreement with the landlord or a [sublease](/flat-share-tenancy-agreement) with a flatmate. Ask about the amount and repayment of the Kaution (deposit): it may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Also ask whether the rent is quoted as Warmmiete (including heating and other utilities) or Kaltmiete (excluding them). Have the rooms, cupboards and fridge shelves that are yours pointed out to you. Ask about the existing [house rules](/house-rules) on quiet, visitors and cleaning, and how costs are split.',
 			],
 			[
 				'On move-in day',
@@ -403,7 +403,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'In the first week',
-				'Get to know your flatmates, ideally over a shared dinner. Have rubbish separation, collection days and washing machine times explained. Add yourself to the cleaning rota and ask how the rotation works. If there is none yet, the guide to [making a cleaning rota](/make-a-cleaning-rota) helps, and a [printable cleaning rota template](/cleaning-rota-template) saves you the start. If the flat share uses [ManaWG as its flat-share app](/flat-share-app), you join with an invite link and immediately see the cleaning rota, shopping list, calendar and noticeboard.',
+				'Get to know your flatmates, ideally over a shared dinner. Have rubbish separation, collection days and washing machine times explained. Add yourself to the cleaning rota and ask how the rotation works. If there is none yet, the guide to [making a cleaning rota](/make-a-cleaning-rota) helps, and a [printable cleaning rota template](/cleaning-rota-template) gets you started. If the flat share uses [ManaWG as its flat-share app](/flat-share-app), you join with an invite link and immediately see the cleaning rota, shopping list, calendar and noticeboard.',
 			],
 			[
 				'Settle the money from the start',
@@ -474,7 +474,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'If the main tenant refuses the confirmation',
-				'Under § 19 BMG, the Wohnungsgeber is obliged to cooperate in the registration. If they refuse or the confirmation does not arrive in time, you have to tell the registration authority without delay (§ 19 para. 2 BMG). A Wohnungsgeber who confirms a move-in not at all, incorrectly or late commits an administrative offence (Ordnungswidrigkeit) that can be fined up to €1,000 (§ 54 BMG). Here is how to proceed. Ask the main tenant in writing for the confirmation, so you can prove it. Set a short deadline that ends before the two weeks are up. If nothing comes, inform the registration authority and ask them how to proceed.',
+				'Under § 19 BMG, the Wohnungsgeber is obliged to cooperate in the registration. If they refuse or the confirmation does not arrive in time, you have to tell the registration authority without delay (§ 19 para. 2 BMG). A Wohnungsgeber who does not confirm a move-in, or confirms it incorrectly or late commits an administrative offence (Ordnungswidrigkeit) that can be fined up to €1,000 (§ 54 BMG). What to do: ask the main tenant in writing for the confirmation, so you can prove it. Set a short deadline that ends before the two weeks are up. If nothing comes, inform the registration authority and ask how to continue.',
 			],
 			[
 				'Model: what the confirmation contains',
@@ -482,7 +482,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Electronic confirmation',
-				'The Wohnungsgeber can also confirm the move-in electronically to the registration authority (§ 19 para. 1 BMG). They then receive an assignment code (Zuordnungsmerkmal) that they pass on to the person registering, who quotes it at the Anmeldung (§ 19 para. 4 BMG). Whether your registration authority offers this route is something to ask them.',
+				'The Wohnungsgeber can also confirm the move-in electronically to the registration authority (§ 19 para. 1 BMG). They then receive an assignment code (Zuordnungsmerkmal) that they pass on to the person registering, who quotes it at the Anmeldung (§ 19 para. 4 BMG). Ask your registration authority whether it offers this route.',
 			],
 			[
 				'What to bring to the appointment',
@@ -615,7 +615,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Model: notice to a subtenant',
-				'Sender: name and address of the main tenant\nRecipient: name of the subtenant and address of the flat\nDate: place and day of the letter\nText: “I hereby give notice of the sublease of the room … to take effect on …” (a German-language letter is usual in Germany: „Hiermit kündige ich das Untermietverhältnis über das Zimmer … zum …“)\nBasis: reference to § 573a BGB or § 549 para. 2 no. 2 BGB, depending on the case\nSignature: handwritten\nWritten form: signed by hand, not by email or WhatsApp (§ 568 BGB).',
+				'Sender: name and address of the main tenant\nRecipient: name of the subtenant and address of the flat\nDate: place and day of the letter\nText: “I hereby give notice to terminate the sublease of the room … with effect from …” (a German-language letter is usual in Germany: „Hiermit kündige ich das Untermietverhältnis über das Zimmer … zum …“)\nBasis: reference to § 573a BGB or § 549 para. 2 no. 2 BGB, depending on the case\nSignature: handwritten\nWritten form: signed by hand, not by email or WhatsApp (§ 568 BGB).',
 			],
 			[
 				'If the flatmate does not want to leave',
@@ -808,7 +808,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'Model: notice on a flat-share room',
-				'Sender: your name and your address in the flat share\nRecipient: the main tenant if you sublet, otherwise the landlord, with address\nDate: place and day of the letter\nSubject: notice of the tenancy for the room in the flat at …\nText: “I hereby give notice of the tenancy for the room … in due time to …, or alternatively to the next possible date.”\nRequest: confirmation of the notice, a date for the handover and repayment of the deposit to the account …\nSignature: handwritten, from everyone named in the contract if there are several\nLanguage: towards German landlords and main tenants, a German letter is usual and avoids misunderstandings. You can use this text as a guide and ask a German speaker to check it. A German version of the key sentence: „Hiermit kündige ich das Mietverhältnis über das Zimmer … fristgerecht zum …, hilfsweise zum nächstmöglichen Termin.“',
+				'Sender: your name and your address in the flat share\nRecipient: the main tenant if you sublet, otherwise the landlord, with address\nDate: place and day of the letter\nSubject: notice of the tenancy for the room in the flat at …\nText: “I hereby give notice to terminate the tenancy of the room … with effect from …, or failing that, on the next permissible date.”\nRequest: confirmation of the notice, a date for the handover and repayment of the deposit to the account …\nSignature: handwritten, from everyone named in the contract if there are several\nLanguage: towards German landlords and main tenants, a German letter is usual and avoids misunderstandings. You can use this text as a guide and ask a German speaker to check it. A German version of the key sentence: „Hiermit kündige ich das Mietverhältnis über das Zimmer … fristgerecht zum …, hilfsweise zum nächstmöglichen Termin.“',
 			],
 			[
 				'After giving notice',
@@ -910,7 +910,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			'Checklist for leaving a WG (shared flat) in Germany: notice, replacement tenant, deposit, open costs, Rundfunkbeitrag, registration and handover.',
 		h1: 'Moving out of a flat share in Germany: the checklist',
 		einleitung:
-			'Leaving a WG (shared flat) in Germany involves more than packing boxes: notice, a successor for the room, the deposit, open amounts and contracts in your name. If you tackle the points early, you leave without open bills and without arguments.',
+			'Leaving a WG (shared flat) in Germany involves more than packing boxes: notice, a successor for the room, the deposit, open amounts and contracts in your name. If you tackle the points early, you leave without unpaid bills and without arguments.',
 		abschnitte: [
 			[
 				'Notice and deadlines',

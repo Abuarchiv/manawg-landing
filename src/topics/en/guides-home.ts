@@ -242,7 +242,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Cleaning rota generator: enter names, print the plan',
-				'Enter two to six names, choose the tasks and the number of weeks, and the plan appears. You can print it, save it as a PDF too, or download it as a CSV. Nothing is stored and you do not need an account. The generator rotates in turn. The app also shares tasks by what is overdue and skips anyone who is away.',
+				'Enter two to six names, choose the tasks and the number of weeks, and the plan appears. You can print it, save it as a PDF too, or download it as a CSV. Nothing is stored and you do not need an account. The generator rotates in turn. The ManaWG app instead assigns each task by workload, where overdue tasks count for more, and skips anyone who is away.',
 			],
 			[
 				'Template for three and five people',
@@ -331,7 +331,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'PDF or CSV, which should I use?',
-				'For the display on the wall, print it: in the browser’s print dialog you can also save the plan as a PDF. The CSV file is for anyone who wants to keep editing the plan in a spreadsheet or maintain it in a shared file.',
+				'To put it up on the wall, print it: in the browser’s print dialog you can also save the plan as a PDF. The CSV file is for anyone who wants to keep editing the plan in a spreadsheet or maintain it in a shared file.',
 			],
 			[
 				'What does a cleaning rota for two people look like?',
@@ -453,7 +453,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Housework and cleanliness',
-				'Record who does which task and when, and what “clean” means. A cleaning rota with fixed tasks and reminders replaces discussions. How it comes about is in [making a cleaning rota](/make-a-cleaning-rota), and a [cleaning rota template to print](/cleaning-rota-template) is a good start. Dishes do not belong in the sink overnight and shared rooms stay usable: mini-rules like these prevent most conflicts.',
+				'Record who does which task and when, and what “clean” means. A cleaning rota with fixed tasks and reminders replaces discussions. How to set one up is covered in [making a cleaning rota](/make-a-cleaning-rota), and a [cleaning rota template to print](/cleaning-rota-template) is a good start. Dishes do not belong in the sink overnight and shared rooms stay usable: mini-rules like these prevent most conflicts.',
 			],
 			[
 				'The shared kitty and shopping',
@@ -632,11 +632,11 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		],
 		fragen: [
 			[
-				'Do you have to do your cleaning duty in a flat share on holiday?',
+				'Do I still have cleaning duties while I am on holiday?',
 				'That is up to your flat. It is usual to skip people who are away. In ManaWG this is covered by the time away feature.',
 			],
 			[
-				'Do you pay utilities in a flat share while on holiday?',
+				'Do I still pay utilities while I am on holiday?',
 				'Fixed costs such as rent and internet carry on. For usage-based costs you can agree something different.',
 			],
 			[
@@ -666,7 +666,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'The ten most important questions',
-				'1. What does a normal day look like for you?\n2. When do you get up and when do you go to bed?\n3. Do you like cooking, alone or with others?\n4. What does a clean kitchen mean to you?\n5. Have you lived with a cleaning rota before, and how did it go?\n6. Share shopping or each buy for yourself?\n7. How often do you have visitors, including overnight?\n8. Do you smoke, do you have pets or plan to?\n9. Are you looking for a practical flat share or shared evenings?\n10. Roughly how long would you like to live here?',
+				'1. What does a normal day look like for you?\n2. When do you get up and when do you go to bed?\n3. Do you like cooking, alone or with others?\n4. What does a clean kitchen mean to you?\n5. Have you lived with a cleaning rota before, and how did it go?\n6. Would you rather share the shopping or buy for yourself?\n7. How often do you have visitors, including overnight?\n8. Do you smoke, do you have pets or plan to?\n9. Are you looking for a practical flat share or shared evenings?\n10. Roughly how long would you like to live here?',
 			],
 			[
 				'Questions about daily life and rhythm',
@@ -751,7 +751,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 					[
 						'How long would you like to stay?',
 						'Whether you will have to search again soon.',
-						'“I plan on a few years for now, because of studies or work. If that changes, I will say so early.”',
+						'“For now I am planning on a few years, for my studies or work. If that changes, I will say so early.”',
 					],
 					[
 						'Do you smoke, do you have pets?',
@@ -761,7 +761,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 					[
 						'Why would you like to join us?',
 						'Whether you know the flat or are just looking for any room.',
-						'“I like that you cook together and still leave each other peace. That is the kind of flat I am looking for.”',
+						'“I like that you cook together and still give each other space. That is the kind of flat I am looking for.”',
 					],
 				],
 			},
@@ -797,7 +797,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 					[
 						'10 to 20',
 						'Conversation with the flat’s questions',
-						'listen, open questions instead of yes or no questions',
+						'listen, and ask open questions rather than yes/no ones',
 					],
 					[
 						'20 to 27',
@@ -825,7 +825,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'How do you decline after a WG-Casting?',
-				'Briefly, kindly and on the same day as the offer: thanks for the chat, the choice fell on someone else, good luck with the search. A template is on this page.',
+				'Briefly, kindly and on the same day as the offer: thanks for the chat, you have chosen someone else, good luck with the search. A template is on this page.',
 			],
 			[
 				'What do you ask at a WG-Casting?',
@@ -876,7 +876,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'The sublease',
-				'1. The names of the main tenant (Hauptmieter) or tenant and the subtenant\n2. The exact period with start and end date\n3. Rent including utilities, internet and the broadcasting fee share\n4. The deposit (Kaution) and when it is paid back\n5. Which furniture and items stay in the room\n6. That the flat’s rules apply, such as the cleaning rota and quiet hours\n7. A written handover record (Übergabeprotokoll) with photos at the start and at the end',
+				'1. The names of the main tenant (Hauptmieter) and the subtenant\n2. The exact period with start and end date\n3. Rent including utilities, internet and the broadcasting fee share\n4. The deposit (Kaution) and when it is paid back\n5. Which furniture and items stay in the room\n6. That the flat’s rules apply, such as the cleaning rota and quiet hours\n7. A written handover record (Übergabeprotokoll) with photos at the start and at the end',
 			],
 			[
 				'Rent and deposit',
@@ -915,7 +915,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 		],
 		quellen: [
 			[
-				'§ 540 BGB, letting third parties use the home (in German)',
+				'§ 540 BGB, letting to third parties (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__540.html',
 			],
 			[

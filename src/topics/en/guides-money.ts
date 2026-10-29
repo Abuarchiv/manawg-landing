@@ -2,6 +2,7 @@
 // counterparts live in ../ratgeber.ts and ../ratgeber-geld.ts. Links are prefix-free.
 import { euro, mieteAnteile } from '../miete-rechner.ts';
 import type { Thema } from '../themen.ts';
+import { BGB_EN } from './guides-moving.ts';
 
 // Rent example of the calculator page: values come from mieteAnteile, not from hand.
 const EXAMPLE_ROOMS = [12, 18, 24];
@@ -217,10 +218,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'§ 556 BGB, agreements on utility costs (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__556.html',
 			],
-			[
-				'German Civil Code (BGB), English translation (may lag behind the current law)',
-				'https://www.gesetze-im-internet.de/englisch_bgb/',
-			],
+			BGB_EN,
 			[
 				'Rundfunkbeitrag: one contribution per dwelling (English)',
 				'https://www.rundfunkbeitrag.de/welcome/english',
@@ -260,7 +258,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Exemption',
-				'An exemption or reduction is not automatic. It is only granted on application, with proof. The Beitragsservice sets out on its page about exceptions who is entitled and under what conditions, and its English pages explain the main cases, including students on BAföG (student finance). An exemption only covers the whole flat if everyone living there meets the conditions. Otherwise, the person who does not qualify registers in their own name. You apply using the form “Befreiung oder Ermäßigung beantragen” (apply for exemption or reduction). If in doubt, ask the Beitragsservice how one person’s exemption affects the dwelling.',
+				'An exemption or reduction is not automatic. It is only granted on application, with proof. The Beitragsservice sets out on its page about exceptions who is entitled and under what conditions, and its English pages explain the main cases, including students on BAföG (student finance). One person’s exemption does not usually cover their flatmates. If anyone in the flat is not exempt, the fee for the dwelling is still due, and that person pays it. You apply using the form “Befreiung oder Ermäßigung beantragen” (apply for exemption or reduction). If in doubt, ask the Beitragsservice how one person’s exemption affects the dwelling.',
 			],
 			[
 				'As a fixed cost in ManaWG',
@@ -394,14 +392,14 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 		erschienen: '2026-10-29',
 		titel: 'Settling debts between flatmates and friends | ManaWG',
 		beschreibung:
-			'Owed money between flatmates or friends in Germany? How to record it, raise it, settle up and when claims expire under German law. With a worked example.',
+			'Money owed between flatmates or friends in Germany? How to record it, raise it, settle up and when claims expire under German law. With a worked example.',
 		h1: 'Settling debts between flatmates and friends in Germany',
 		einleitung:
 			'Small amounts are easy to forget, which is exactly why they pile up. After a few months nobody knows who owes whom, and the mood suffers. That applies among friends as much as in a flat share. This guide covers how to record, raise and settle debts, what applies to borrowed money and when claims expire. The legal parts describe the position in Germany; this is an overview and not legal advice.',
 		abschnitte: [
 			[
 				'Why debts build up',
-				'Everyone pays for everyone now and then: pizza, shopping, a repair, the back payment on electricity. Without a record, after a month neither creditor nor debtor knows how much is open. Whoever pays more often feels taken advantage of, and whoever pays less often does not notice. The problem is rarely ill will, but a missing overview.',
+				'Everyone pays for everyone now and then: pizza, shopping, a repair, the back payment on electricity. Without a record, after a month neither creditor nor debtor knows how much is open. Whoever pays more often feels taken advantage of, and whoever pays less often does not notice. The problem is rarely ill will. Usually nobody has an overview.',
 			],
 			[
 				'Record it straight away',
@@ -471,10 +469,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 		],
 		quellen: [
-			[
-				'German Civil Code (BGB), English translation (may lag behind the current law)',
-				'https://www.gesetze-im-internet.de/englisch_bgb/',
-			],
+			BGB_EN,
 			['§ 421 BGB, joint debtors (in German)', 'https://www.gesetze-im-internet.de/bgb/__421.html'],
 			[
 				'§ 426 BGB, contribution between joint debtors, transfer of the claim (in German)',
@@ -744,7 +739,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Length, photos and common mistakes',
-				'Length: according to WG-Gesucht, rooms in ads of 150 words or more are let fastest. The example above is shorter, and your ad can be longer as long as it stays concrete.\nPhotos: room, kitchen, bathroom and hallway, in daylight and tidy.\nFiller: “nice flat share” says nothing, while numbers and examples do.\nRent: always state it all-in and say what is included.\nFixed term: if it is missing from the ad, it only comes out in the conversation and costs both sides time.\nNo-gos: two or three real dealbreakers are enough, a long list puts people off.\nReplies: if you leave applications unanswered, you lose the right ones to other flat shares. For the conversation afterwards, see the [guide to WG viewings](/wg-casting-questions).',
+				'Length: according to WG-Gesucht, rooms in ads of 150 words or more are let fastest. The example above is shorter, and your ad can be longer as long as it stays concrete.\nPhotos: room, kitchen, bathroom and hallway, in daylight and tidy.\nFiller: “nice flat share” says nothing, while numbers and examples do.\nRent: always state it all-in and say what is included.\nFixed term: if it is missing from the ad, it only comes out in the conversation and costs both sides time.\nNo-gos: two or three real dealbreakers are enough, a long list puts people off.\nReplies: if you leave applications unanswered, you lose the right ones to other flat shares. For the conversation afterwards, see the [WG-Casting guide](/wg-casting-questions).',
 			],
 			[
 				'Choosing without chaos',
@@ -841,11 +836,11 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'WG-Gesucht: place a listing (in German)',
-				'https://www.wg-gesucht.de/en/artikel/angebot-aufgeben-so-inserieren-sie-erfolgreich-ihre-wg-wohnung',
+				'https://www.wg-gesucht.de/artikel/angebot-aufgeben-so-inserieren-sie-erfolgreich-ihre-wg-wohnung',
 			],
 			[
 				'WG-Gesucht: advertise a shared flat (in German)',
-				'https://www.wg-gesucht.de/en/ic/wg-inserieren.html',
+				'https://www.wg-gesucht.de/ic/wg-inserieren.html',
 			],
 		],
 	},

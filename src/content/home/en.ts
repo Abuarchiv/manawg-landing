@@ -12,7 +12,7 @@ export const en: HomeDict = {
 	links: {
 		create: '/signup?action=create',
 		invite: '/login',
-		inviteFooter: '/login',
+		inviteFooter: '/signup',
 		login: '/login',
 		guides: '/en/guides',
 		legalNotice: '/en/legal-notice',

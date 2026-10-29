@@ -51,7 +51,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			'ManaWG is the free app for everyday flat life, not a room search: expenses, cleaning rota, shopping list, calendar and chat in your browser, no app store.',
 		h1: 'The flat-share app for money, cleaning, shopping and plans',
 		einleitung:
-			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many a WG (shared flat). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app, in English and German.',
+			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many shared flats (WGs, as they are called in Germany). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app, in English and German.',
 		abschnitte: [
 			[
 				'Why an app instead of notes and WhatsApp',
@@ -203,7 +203,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Reminders on your phone',
-				'Every day ManaWG sends a push notification for assigned tasks that are due today or up to seven days overdue. It arrives at most every 18 hours for each task. Each member can switch off the cleaning rota channel if they would rather not get notices. The app asks for permission before sending push. Tasks without an assigned person trigger no reminder.',
+				'Every day ManaWG sends a push notification for assigned tasks that are due today or up to seven days overdue. It arrives at most every 18 hours for each task. Each member can switch off cleaning rota notifications. The app asks for permission before sending push. Tasks without an assigned person trigger no reminder.',
 			],
 			[
 				'Template or app',
@@ -282,7 +282,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Reminders without the friction',
-				'On the Reminders page a member can send a payment reminder with the Remind button. A cooling-off period limits how often that can happen in a row, and a rate limit stops too many requests. The balance stays visible to everyone at any time, for example in the monthly statement. The page is its own area of the flat, next to expenses, statement and activity. How to bring up open amounts without an argument is covered in [Flatmate debts](/flatmate-debts).',
+				'On the Reminders page a member can send a payment reminder with the Remind button. The same reminder can go out at most once every 48 hours, so nobody gets pestered. The balance stays visible to everyone at any time, for example in the monthly statement. The page is its own area of the flat, next to expenses, statement and activity. How to bring up open amounts without an argument is covered in [Flatmate debts](/flatmate-debts).',
 			],
 			[
 				'Moving over from Splitwise or Splid',
@@ -469,7 +469,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'5. Does everyone have to install an app?',
-				'The higher the hurdle, the likelier someone does not join in. A web app that runs in the browser and is joined by link lowers that hurdle. ManaWG runs without an app store and can be added to the home screen.',
+				'The higher the hurdle, the likelier someone does not join in. A web app that runs in the browser, which people join through a link, lowers that hurdle. ManaWG runs without an app store and can be added to the home screen.',
 			],
 			[
 				'6. Privacy and language',
@@ -613,7 +613,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 		abschnitte: [
 			[
 				'What Splid does, per the provider',
-				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. Details of the feature set are there as of 14 October 2026. In ManaWG, each person signs in with Google or with email and password. That way, expenses, balances and history stay tied to your flat, and flatmates join through an invite link or an email invitation.',
+				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. The full feature list is on that page (checked on 14 October 2026). ManaWG, by contrast, asks each person to sign in. In return, expenses, balances and history stay tied to your flat, and flatmates join through an invite link or an email invitation.',
 			],
 			[
 				'Expenses and household in one app',
@@ -759,7 +759,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'No. ManaWG runs in the browser at app.manawg.com and can be added to the home screen on iPhone and Android. No store download is needed.',
 			],
 			[
-				'How precisely can reminders be set?',
+				'Can I choose which notifications I get?',
 				'Each member switches push notifications off for each area, for example cleaning rota, expenses or chat. Emails such as the monthly statement and payment reminders have an unsubscribe link.',
 			],
 			[
@@ -808,7 +808,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'When ManaWG fits better',
-				'You live together long term and split expenses every month.\nYou enter rent, internet and electricity once as fixed costs, repeating in whole months. ManaWG books them automatically.\nThe monthly statement shows the total, expenses per category and suggested transfers with few payments.\nYou can remind people of open amounts, with a cooling-off period against constant nagging.\nCleaning rota, shopping list and calendar are in the same app, along with noticeboard and chat. The expenses are described in detail on [Shared expenses](/shared-expenses).',
+				'You live together long term and split expenses every month.\nYou enter rent, internet and electricity once as fixed costs, repeating in whole months. ManaWG books them automatically.\nThe monthly statement shows the total, expenses per category and suggested transfers with few payments.\nYou can remind people of open amounts, with a waiting time between reminders so nobody gets nagged.\nCleaning rota, shopping list and calendar are in the same app, along with noticeboard and chat. The expenses are described in detail on [Shared expenses](/shared-expenses).',
 			],
 			[
 				'Honest limits',
@@ -816,7 +816,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'Switching from Tricount',
-				'It is best to settle open amounts in Tricount and start in ManaWG with a clean slate. If you want to carry the balance over, read in a screenshot of the expense list in the import. ManaWG shows a preview you can correct and recognises euro amounts only. Or someone enters, for each person who is still owed money, an expense with them as the payer and splits it by hand across those who owe. How an import works is explained in the guide [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).',
+				'It is best to settle open amounts in Tricount and start in ManaWG with a clean slate. If you want to carry the balance over, read in a screenshot of the expense list in the import. ManaWG shows a preview you can correct and recognises euro amounts only. Alternatively, for each person who is still owed money, enter one expense with that person as the payer and split it by hand across those who owe. How an import works is explained in the guide [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).',
 			],
 		],
 		fragen: [
@@ -979,7 +979,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			[
 				'How do I remind flatmates to pay?',
-				'On the Reminders page there is a Remind button. For the same two people, a reminder goes out at most every 48 hours.',
+				'On the Reminders page there is a Remind button. A reminder about the same debt between the same two people can go out at most once every 48 hours.',
 			],
 			[
 				'How do I install ManaWG on an iPhone?',
