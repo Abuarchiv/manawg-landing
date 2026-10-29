@@ -34,7 +34,7 @@ pnpm dev                                                 # http://localhost:3100
 - **Legal pages.** The German imprint, privacy policy and terms are the binding versions. Changes
   to them need an issue first; the English pages translate them.
 - **Home page design.** The layout, scene order, sizes and motion of the home page follow a fixed
-  design template. Copy fixes are welcome; layout changes are not accepted.
+  design. Copy fixes are welcome; changes to layout or motion need an issue first.
 
 ## Before you open the pull request
 
