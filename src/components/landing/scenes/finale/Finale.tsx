@@ -57,7 +57,7 @@ export function Finale() {
 			</div>
 			<div className={s.content}>
 				<div className={s.block}>
-					<h2 id="finale-titel" className={s.title} data-entschluesseln="">
+					<h2 id="finale-titel" className={s.title}>
 						<BrLines lines={finale.title} />
 					</h2>
 					<div data-knoepfe="1" className={s.buttons}>

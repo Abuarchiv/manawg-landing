@@ -3,7 +3,6 @@
 import type { Locale } from '@/lib/locale';
 import { useEffect } from 'react';
 import './landing.css';
-import { startDecode } from './core/decode';
 import { loop, modeOf, qa, setMode, start } from './core/loop';
 import { initScroll, sectionBox } from './core/scroll';
 import { DictProvider, useDict } from './dict';
@@ -60,14 +59,12 @@ function LandingInner() {
 		};
 		let stopScroll = () => {};
 		let stop = () => {};
-		let stopDecode = () => {};
 		// Start only after the first frame: the title shows immediately and the engine does not block LCP.
 		const id = requestAnimationFrame(() => {
 			applyMode();
 			window.addEventListener('resize', applyMode);
 			stopScroll = initScroll(root);
 			stop = start();
-			stopDecode = startDecode(root);
 			if (new URLSearchParams(location.search).get('qa') === '1') installQaHook(root);
 		});
 		return () => {
@@ -75,7 +72,6 @@ function LandingInner() {
 			window.removeEventListener('resize', applyMode);
 			stopScroll();
 			stop();
-			stopDecode();
 			window.__landing = undefined;
 		};
 	}, []);

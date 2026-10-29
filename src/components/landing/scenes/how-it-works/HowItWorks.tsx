@@ -21,7 +21,7 @@ export function HowItWorks() {
 			aria-labelledby="so-gehts-titel"
 			className={s.section}
 		>
-			<h2 id="so-gehts-titel" className={`label ${s.title}`} data-entschluesseln="">
+			<h2 id="so-gehts-titel" className={`label ${s.title}`}>
 				<span aria-hidden="true">{howItWorks.prefix}</span>
 				{howItWorks.title}
 			</h2>

@@ -171,10 +171,8 @@ export function Install() {
 			className={s.section}
 		>
 			<div className={s.text}>
-				<span className="label" data-entschluesseln="">
-					{`${install.prefix}${install.title}`}
-				</span>
-				<h2 id="installieren-titel" className={s.title} data-entschluesseln="">
+				<span className="label">{`${install.prefix}${install.title}`}</span>
+				<h2 id="installieren-titel" className={s.title}>
 					{install.heading[0]}
 					<br />
 					<span className={s.nowrap}>{install.heading[1]}</span>
