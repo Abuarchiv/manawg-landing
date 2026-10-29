@@ -30,6 +30,12 @@
 	}
 }
 
+.cta {
+	align-self: flex-start;
+	margin-top: var(--sp-12);
+	pointer-events: auto;
+}
+
 /* Subline: says in one sentence what the app does. Fades out with the title (parent element). */
 .sub {
 	margin: 6px 0 0;

@@ -91,6 +91,7 @@ export function createStage({
 	const header = root.querySelector<HTMLElement>('[data-kopf]');
 	const headerCta = header?.querySelector<HTMLElement>('[data-loch="cta"]');
 	const endTitle = stageEl.querySelector<HTMLElement>('[data-ende-titel]');
+	const heroCta = stageEl.querySelector<HTMLElement>('[data-held-cta]');
 	const introOnly = [...root.querySelectorAll<HTMLElement>('[data-nur-intro]')];
 	const hints = root.querySelector<HTMLElement>('[data-hinweise]');
 	const endEl = stageEl.querySelector<HTMLElement>('[data-ende]');
@@ -333,6 +334,12 @@ export function createStage({
 			const v = ctaOn ? 'auto' : 'none';
 			if (el.style.pointerEvents !== v) el.style.pointerEvents = v;
 			if (el.inert === ctaOn) el.inert = !ctaOn;
+		}
+		// Hero button: only while the title is visible (it fades out until P 0.086, HeroTitle.tsx)
+		const heroOff = P >= 0.07;
+		if (heroCta && heroCta.inert !== heroOff) {
+			heroCta.inert = heroOff;
+			heroCta.style.pointerEvents = heroOff ? 'none' : '';
 		}
 		const hintOff = endA >= 0.72 || phase === 'nach';
 		for (const el of introOnly) if (el.inert !== hintOff) el.inert = hintOff;

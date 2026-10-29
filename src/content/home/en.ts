@@ -31,6 +31,7 @@ export const en: HomeDict = {
 	hero: {
 		title: ['The flat app ', 'for your flat.'],
 		sub: 'The free flat-share app: expenses, shopping and cleaning rota. In the browser.',
+		install: 'Install',
 	},
 	rooms: [
 		{

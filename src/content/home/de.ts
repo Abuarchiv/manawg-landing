@@ -32,6 +32,7 @@ export const de: HomeDict = {
 	hero: {
 		title: ['Die WG-App ', 'für eure WG.'],
 		sub: 'Die kostenlose WG-App: Ausgaben, Einkauf und Putzplan. Im Browser.',
+		install: 'Installieren',
 	},
 	rooms: [
 		{

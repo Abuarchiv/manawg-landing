@@ -141,7 +141,7 @@ export interface HomeDict {
 		tryApp: string;
 		scroll: string;
 	};
-	hero: { title: Lines; sub: string };
+	hero: { title: Lines; sub: string; install: string };
 	/** The four room cards. */
 	rooms: readonly [RoomCard, RoomCard, RoomCard, RoomCard];
 	/** Mono labels in the canvas, order of the floor plan: kitchen, bathroom, Jona, hallway, living room, Lea, Lina, Mika. */

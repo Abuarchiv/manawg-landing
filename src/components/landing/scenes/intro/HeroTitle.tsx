@@ -25,6 +25,10 @@ export function HeroTitle() {
 					<BrLines lines={hero.title} />
 				</h1>
 				<p className={s.sub}>{hero.sub}</p>
+				{/* Jumps to the install guide; stage.ts makes it inert once the title has faded */}
+				<a href="#installieren" data-held-cta="" className={`cta cta--voll ${s.cta}`}>
+					{hero.install}
+				</a>
 			</div>
 		</div>
 	);
