@@ -1,4 +1,4 @@
-.sektion {
+.section {
 	position: relative;
 	min-height: 100lvh;
 	background: #0a0a0a;
@@ -17,7 +17,7 @@
 	gap: var(--sp-24);
 	min-width: 0;
 }
-.titel {
+.title {
 	margin: 0;
 	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
 	font-weight: 600;
@@ -44,7 +44,7 @@
 	max-width: 100%;
 }
 .tab:focus-visible,
-.schritt:focus-visible {
+.step:focus-visible {
 	outline: 2px solid #fafafa;
 	outline-offset: 2px;
 }
@@ -54,7 +54,7 @@
 	gap: var(--sp-16);
 	max-width: var(--w-520);
 }
-.schritte {
+.steps {
 	display: flex;
 	flex-direction: column;
 	margin: 0;
@@ -62,10 +62,10 @@
 	list-style: none;
 	border-top: 1px solid var(--haar);
 }
-.schritte li {
+.steps li {
 	display: block;
 }
-.schritt {
+.step {
 	position: relative;
 	display: grid;
 	grid-template-columns: 48px minmax(0, 1fr);
@@ -83,12 +83,12 @@
 	opacity: 0.55;
 	transition: opacity 0.3s;
 }
-.schritt[data-aktiv],
-.schritt:hover {
+.step[data-aktiv],
+.step:hover {
 	opacity: 1;
 }
 /* Fortschritt im aktiven Schritt: die Haarlinie darunter füllt sich, solange das Gerät den Schritt zeigt */
-.schritt::after {
+.step::after {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -101,7 +101,7 @@
 	opacity: 0;
 	transition: opacity 0.3s;
 }
-.schritt[data-aktiv]::after {
+.step[data-aktiv]::after {
 	opacity: 0.9;
 	transform: scaleX(var(--fort, 0));
 }
@@ -109,7 +109,7 @@
 	font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
 	font-size: 13px;
 }
-.zeile {
+.row {
 	font-size: var(--t-19);
 	font-weight: 500;
 	line-height: 1.3;
@@ -117,12 +117,12 @@
 .cta {
 	align-self: flex-start;
 }
-.weitere {
+.more {
 	margin: 0;
 	line-height: 1.6;
 	text-transform: none;
 }
-.buehne {
+.stage {
 	/* oben und unten mindestens das Kopfband, damit das Handy im Ruhezustand ganz unter dem Kopf steht */
 	--luft: calc(var(--kopf-unten) + 28px);
 	padding-top: var(--luft);
@@ -137,19 +137,19 @@
 }
 /* Rechner im Querformat: das Fenster endet auf dem Seitenrand (rechts wie der Titel links), nicht mittig in der Spalte */
 @media (min-aspect-ratio: 1 / 1) and (min-width: 900px) {
-	.buehne:has(.rahmen[data-tab="2"]) {
+	.stage:has(.frame[data-tab="2"]) {
 		justify-content: flex-end;
 		box-sizing: border-box;
 		padding-right: var(--rand);
 	}
 }
-.skala {
+.scale {
 	position: relative;
 	width: 300px;
 	height: 620px;
 	transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.rahmen {
+.frame {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -166,7 +166,7 @@
 	transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
 		border-radius 0.6s, padding 0.6s;
 }
-.rahmen:not([data-tab="2"]) {
+.frame:not([data-tab="2"]) {
 	border: 0;
 	background: linear-gradient(
 		145deg,
@@ -180,14 +180,14 @@
 		rgba(0, 0, 0, 0.7), 0 0 90px rgba(250, 250, 250, 0.1);
 }
 /* Pixel: etwas weniger runde Ecken als das iPhone, sonst dasselbe Gehäuse */
-.rahmen[data-tab="1"] {
+.frame[data-tab="1"] {
 	border-radius: 40px;
 	padding: 9px;
 }
-.rahmen[data-tab="1"] .schirm {
+.frame[data-tab="1"] .screen {
 	border-radius: 32px;
 }
-.rahmen[data-tab="2"] {
+.frame[data-tab="2"] {
 	width: 600px;
 	height: 400px;
 	padding: 8px;
@@ -195,7 +195,7 @@
 	border-color: rgba(250, 250, 250, 0.18);
 	box-shadow: 0 50px 120px rgba(0, 0, 0, 0.7), 0 0 90px rgba(250, 250, 250, 0.08);
 }
-.taste {
+.key {
 	position: absolute;
 	width: 3px;
 	border-radius: 2px 0 0 2px;
@@ -203,51 +203,51 @@
 	left: -3px;
 	display: none;
 }
-.taste[data-t="ios-seite"],
-.taste[data-t="ios-kamera"],
-.taste[data-t^="and-"] {
+.key[data-t="ios-seite"],
+.key[data-t="ios-kamera"],
+.key[data-t^="and-"] {
 	left: auto;
 	right: -3px;
 	border-radius: 0 2px 2px 0;
 	background: linear-gradient(270deg, #737373, #262626);
 }
-.rahmen[data-tab="0"] .taste[data-t^="ios-"],
-.rahmen[data-tab="1"] .taste[data-t^="and-"] {
+.frame[data-tab="0"] .key[data-t^="ios-"],
+.frame[data-tab="1"] .key[data-t^="and-"] {
 	display: block;
 }
-.taste[data-t="ios-aktion"] {
+.key[data-t="ios-aktion"] {
 	top: 112px;
 	height: 28px;
 }
-.taste[data-t="ios-laut1"] {
+.key[data-t="ios-laut1"] {
 	top: 158px;
 	height: 50px;
 }
-.taste[data-t="ios-laut2"] {
+.key[data-t="ios-laut2"] {
 	top: 218px;
 	height: 50px;
 }
-.taste[data-t="ios-seite"] {
+.key[data-t="ios-seite"] {
 	top: 176px;
 	height: 78px;
 }
 /* Kamerasteuerung: flach im Rahmen, dunkles Saphirglas */
-.taste[data-t="ios-kamera"] {
+.key[data-t="ios-kamera"] {
 	top: 330px;
 	height: 44px;
 	width: 2px;
 	right: -2px;
 	background: linear-gradient(270deg, #404040, #0a0a0a);
 }
-.taste[data-t="and-ein"] {
+.key[data-t="and-ein"] {
 	top: 150px;
 	height: 52px;
 }
-.taste[data-t="and-laut"] {
+.key[data-t="and-laut"] {
 	top: 226px;
 	height: 92px;
 }
-.schirm {
+.screen {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -257,17 +257,17 @@
 	isolation: isolate;
 	transition: border-radius 0.6s;
 }
-.rahmen[data-tab="2"] .schirm {
+.frame[data-tab="2"] .screen {
 	border-radius: 8px;
 }
-.geraet {
+.device {
 	position: absolute;
 	inset: 0;
 }
-.geraet[hidden] {
+.device[hidden] {
 	display: none;
 }
-.schleier {
+.veil {
 	position: absolute;
 	inset: 0;
 	background: #0a0a0a;
@@ -275,7 +275,7 @@
 	pointer-events: none;
 	z-index: 20;
 }
-.tipp {
+.tap {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -291,7 +291,7 @@
 	z-index: 21;
 }
 /* Rechner: macOS-Pfeil, die Spitze liegt auf dem Ziel */
-.tipp[data-z="maus"] {
+.tap[data-z="maus"] {
 	width: 17px;
 	height: 25px;
 	border: 0;
@@ -303,18 +303,18 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.skala,
-	.rahmen,
-	.schirm,
+	.scale,
+	.frame,
+	.screen,
 	.tab,
-	.schritt {
+	.step {
 		transition: none;
 	}
 }
 
 /* Hochformat: Label, Titel, Absatz, Tabs, Gerät mit Bildunterschrift (alles in einem Bild), CTA. Die volle
    Schrittliste bleibt für Screenreader und erscheint bei Fokus. */
-.kurz {
+.caption {
 	display: none;
 	position: relative;
 	margin: 0;
@@ -328,7 +328,7 @@
 }
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px),
 	(orientation: landscape) and (max-height: 499px) {
-	.sektion {
+	.section {
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
@@ -365,7 +365,7 @@
 	.cta {
 		order: 4;
 	}
-	.buehne {
+	.stage {
 		order: 1;
 		height: max(
 			340px,
@@ -375,21 +375,21 @@
 		box-sizing: border-box;
 	}
 	/* Rechner: das Fenster ist flach, die Bühne nur so hoch wie das Fenster (kein Loch zwischen Tabs und Fenster) */
-	.buehne:has(.rahmen[data-tab="2"]) {
+	.stage:has(.frame[data-tab="2"]) {
 		height: auto;
 	}
-	.kurz {
+	.caption {
 		order: 2;
 		display: block;
 	}
 	/* Schrittnummer über der Zeile und eine Linie, die sich mit dem Schritt füllt (wie die Liste im Querformat) */
-	.kurz [data-kurz-nr] {
+	.caption [data-kurz-nr] {
 		display: block;
 		margin-bottom: 6px;
 		opacity: 0.55;
 	}
-	.kurz::before,
-	.kurz::after {
+	.caption::before,
+	.caption::after {
 		content: "";
 		position: absolute;
 		top: 0;
@@ -399,7 +399,7 @@
 		margin-left: -48px;
 		background: var(--haar);
 	}
-	.kurz::after {
+	.caption::after {
 		background: #fafafa;
 		transform-origin: 0 50%;
 		transform: scaleX(var(--fort, 0));
@@ -407,7 +407,7 @@
 }
 /* Handy quer: zwei Spalten. Links Titel, Tabs und Schritte (scrollen), rechts das Handy fest unter dem Kopf. */
 @media (orientation: landscape) and (max-height: 499px) {
-	.sektion {
+	.section {
 		display: grid;
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 		column-gap: var(--sp-32);
@@ -432,10 +432,10 @@
 		white-space: normal;
 		max-width: none;
 	}
-	.schritt {
+	.step {
 		padding: var(--sp-10) 0;
 	}
-	.buehne {
+	.stage {
 		order: 0;
 		position: sticky;
 		align-self: start;
@@ -443,18 +443,18 @@
 		height: calc(100svh - var(--kopf-unten) - 24px);
 		padding: 0;
 	}
-	.kurz {
+	.caption {
 		display: none;
 	}
 }
 @media (max-width: 420px) {
-	.titel {
+	.title {
 		font-size: 38px;
 	}
 }
 
 /* Symbol im Schritttext: in Höhe der x-Höhe, auf der Grundlinie */
-.ikone {
+.icon {
 	display: inline-block;
 	vertical-align: -0.18em;
 	margin-inline: 0.12em;

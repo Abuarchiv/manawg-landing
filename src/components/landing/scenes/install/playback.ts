@@ -7,25 +7,25 @@
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { plan as android } from './android-plan';
+import { plan as desktop } from './desktop-plan';
 import { plan as ios } from './ios-plan';
-import { plan as rechner } from './rechner-plan';
-import { put } from './stil';
-import type { Elemente, TabIndex } from './types';
-import { tipp } from './zeit';
+import { put } from './style';
+import { tapAt } from './timing';
+import type { Elements, TabIndex } from './types';
 
-const PLAENE = [ios, android, rechner] as const;
-const VORLAUF = 0.12; // kurzer Halt auf dem Startbild beim Tabwechsel, bevor der Ablauf beginnt
+const PLANS = [ios, android, desktop] as const;
+const LEAD_IN = 0.12; // kurzer Halt auf dem Startbild beim Tabwechsel, bevor der Ablauf beginnt
 
 /** Zustand des Ablaufs im Gerät. */
-interface AblaufState extends SceneState {
+interface PlaybackState extends SceneState {
 	/** Elemente des Geräts nach data-k. */
-	E: Elemente;
+	E: Elements;
 	/** Tipp-Anzeige (Ring am Handy, Zeiger am Rechner). */
 	tap: HTMLElement | null;
 	/** Schrittliste neben dem Gerät (wechselt mit dem Tab). */
 	steps: HTMLElement[];
 	/** Bildunterschrift im Hochformat. */
-	kurz: HTMLElement | null;
+	caption: HTMLElement | null;
 	/** Gewählter Reiter, -1 vor dem ersten Bild. */
 	tab: TabIndex | -1;
 	/** Uhr des Ablaufs in Sekunden (negativ im Vorlauf). */
@@ -35,37 +35,37 @@ interface AblaufState extends SceneState {
 	/** Standbild-Schritt (reduce). */
 	still: number;
 	/** Aktiver Schritt, -1 = noch keiner markiert. */
-	aktiv: number;
+	active: number;
 	/** Fortschritt im aktiven Schritt (0..1), zuletzt geschrieben. */
-	fort: number;
+	progress: number;
 	dirty: boolean;
-	frisch: boolean;
+	fresh: boolean;
 	wasReduced: boolean;
 	/** Uhr angehalten (Messhaken). */
 	halt: boolean;
 }
 
 /** Rechenzeit je Bild (Messhaken, Abnahme I-9). */
-const zeit = { n: 0, sum: 0, max: 0 };
+const timing = { n: 0, sum: 0, max: 0 };
 
 /**
  * fr: Gerätrahmen [data-ins="frame"], sec: Abschnitt, getTab(): 0 iPhone, 1 Android, 2 Rechner.
  * Gibt { stop, sprung(i), schritte() } zurück.
  */
-export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => TabIndex) {
+export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () => TabIndex) {
 	// Fortschritt im aktiven Schritt als Linie (Schrittliste) und Segment (Bildunterschrift im Hochformat)
-	const fortschritt = (s: AblaufState, pl: (typeof PLAENE)[number], t: number) => {
-		const a0 = pl.sprung[s.aktiv] ?? 0;
-		const a1 = pl.sprung[s.aktiv + 1] ?? pl.loop;
+	const drawProgress = (s: PlaybackState, pl: (typeof PLANS)[number], t: number) => {
+		const a0 = pl.jumps[s.active] ?? 0;
+		const a1 = pl.jumps[s.active + 1] ?? pl.loop;
 		const f = s.reduced ? 1 : Math.min(1, Math.max(0, (t - a0) / Math.max(0.01, a1 - a0)));
-		if (Math.abs(f - s.fort) < 0.004 && f !== 1) return;
-		s.fort = f;
+		if (Math.abs(f - s.progress) < 0.004 && f !== 1) return;
+		s.progress = f;
 		const v = f.toFixed(3);
-		s.steps[s.aktiv]?.style.setProperty('--fort', v);
-		s.kurz?.style.setProperty('--fort', v);
+		s.steps[s.active]?.style.setProperty('--fort', v);
+		s.caption?.style.setProperty('--fort', v);
 	};
-	let st: AblaufState | null = null;
-	const aus = register<AblaufState>({
+	let st: PlaybackState | null = null;
+	const off = register<PlaybackState>({
 		name: 'installieren',
 		el: fr,
 		host: fr,
@@ -78,28 +78,28 @@ export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => 
 			}
 			s.tap = fr.querySelector<HTMLElement>('[data-ins="tap"]');
 			s.steps = [...sec.querySelectorAll<HTMLElement>('[data-istep]')];
-			s.kurz = sec.querySelector<HTMLElement>('[data-kurz]');
+			s.caption = sec.querySelector<HTMLElement>('[data-kurz]');
 			s.tab = -1;
 			s.clk = 0;
 			s.n = 0;
 			s.still = 0;
-			s.aktiv = -1;
-			s.fort = -1;
+			s.active = -1;
+			s.progress = -1;
 			s.dirty = true;
-			s.frisch = false;
+			s.fresh = false;
 			s.wasReduced = false;
 			s.halt = false;
 		},
 		frame(s, _t, dt) {
 			const m0 = performance.now();
 			const tab = getTab();
-			const pl = PLAENE[tab];
+			const pl = PLANS[tab];
 			const gap = loop.n - s.n > 2; // war nicht im Bild
 			s.n = loop.n;
 			if (tab !== s.tab) {
 				s.tab = tab;
-				s.frisch = true;
-				s.clk = -VORLAUF;
+				s.fresh = true;
+				s.clk = -LEAD_IN;
 				s.still = 0;
 				s.dirty = true;
 			} else if (gap) {
@@ -123,56 +123,56 @@ export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => 
 			pl.render(Math.max(t, 0), s.E);
 			// Beim Tabwechsel bleibt der Schirm dunkel, bis der Rahmen steht, und blendet dann ein. Der Neustart der
 			// Schleife ist ein harter Schnitt (kein Bild halb überblendet, kein leeres Bild).
-			if (t > 0.3) s.frisch = false;
+			if (t > 0.3) s.fresh = false;
 			// Kein Schleier: beim Tabwechsel steht sofort das Startbild des neuen Plans (pl.render(0)), nie ein leerer Schirm
 			put(s.E.veil, { o: 0 });
 			// Tipp-Anzeige: am Handy ein halbtransparenter Ring, am Rechner der macOS-Zeiger (Spitze auf dem Ziel)
 			if (s.tap) {
-				const maus = tab === 2;
-				const k = s.reduced ? { o: 0, x: 0, y: 0, s: 1 } : tipp(pl.taps, t);
-				const off = maus ? 0 : 18;
-				if (s.tap.dataset.z !== (maus ? 'maus' : 'touch'))
-					s.tap.dataset.z = maus ? 'maus' : 'touch';
+				const mouse = tab === 2;
+				const k = s.reduced ? { o: 0, x: 0, y: 0, s: 1 } : tapAt(pl.taps, t);
+				const ringOffset = mouse ? 0 : 18;
+				if (s.tap.dataset.z !== (mouse ? 'maus' : 'touch'))
+					s.tap.dataset.z = mouse ? 'maus' : 'touch';
 				put(s.tap, {
-					o: maus ? k.o : k.o * 0.95,
-					t: `translate(${(k.x * ks - off).toFixed(1)}px,${(k.y * ks - off).toFixed(1)}px) scale(${(maus ? 1 - (1 - k.s) * 0.67 : k.s).toFixed(3)})`,
+					o: mouse ? k.o : k.o * 0.95,
+					t: `translate(${(k.x * ks - ringOffset).toFixed(1)}px,${(k.y * ks - ringOffset).toFixed(1)}px) scale(${(mouse ? 1 - (1 - k.s) * 0.67 : k.s).toFixed(3)})`,
 				});
 			}
 			// aktiver Schritt (die Liste wechselt mit dem Tab)
 			if (!s.steps[0]?.isConnected) {
 				s.steps = [...sec.querySelectorAll<HTMLElement>('[data-istep]')];
-				s.aktiv = -1;
+				s.active = -1;
 			}
 			let a = 0;
-			for (let i = 0; i < pl.sprung.length; i++) if (t >= (pl.sprung[i] ?? 0)) a = i;
+			for (let i = 0; i < pl.jumps.length; i++) if (t >= (pl.jumps[i] ?? 0)) a = i;
 			if (s.reduced) a = s.still;
 			// Rechenzeit je Bild (Messhaken, Abnahme I-9)
 			const mz = performance.now() - m0;
-			zeit.n++;
-			zeit.sum += mz;
-			if (mz > zeit.max) zeit.max = mz;
-			if (a !== s.aktiv) {
-				s.aktiv = a;
+			timing.n++;
+			timing.sum += mz;
+			if (mz > timing.max) timing.max = mz;
+			if (a !== s.active) {
+				s.active = a;
 				// Bildunterschrift im Hochformat: der aktive Schritt als eine Zeile unter dem Gerät
 				const z = s.steps[a]?.querySelector('[data-zeile]');
-				if (s.kurz && z) {
+				if (s.caption && z) {
 					const nr = document.createElement('span');
 					nr.className = 'label';
 					nr.dataset.kurzNr = '';
-					nr.textContent = `0${a + 1} / 0${pl.sprung.length}`;
-					s.kurz.replaceChildren(nr, ...z.cloneNode(true).childNodes);
-					s.kurz.dataset.schritt = String(a);
+					nr.textContent = `0${a + 1} / 0${pl.jumps.length}`;
+					s.caption.replaceChildren(nr, ...z.cloneNode(true).childNodes);
+					s.caption.dataset.schritt = String(a);
 				}
 				for (const el of s.steps) {
-					const an = Number(el.getAttribute('data-istep')) === a;
-					el.toggleAttribute('data-aktiv', an);
-					if (an) el.setAttribute('aria-current', 'step');
+					const isActive = Number(el.getAttribute('data-istep')) === a;
+					el.toggleAttribute('data-aktiv', isActive);
+					if (isActive) el.setAttribute('aria-current', 'step');
 					else el.removeAttribute('aria-current');
-					if (!an) el.style.removeProperty('--fort');
+					if (!isActive) el.style.removeProperty('--fort');
 				}
-				s.fort = -1;
+				s.progress = -1;
 			}
-			fortschritt(s, pl, t);
+			drawProgress(s, pl, t);
 		},
 	});
 	// Messhaken für landing-konzept/werkzeuge/qa (nur mit ?qa=1 gelesen): Uhr anhalten und setzen, Zustand je Zeit prüfen
@@ -184,34 +184,34 @@ export function registerAblauf(fr: HTMLElement, sec: HTMLElement, getTab: () => 
 			if (st) st.clk = x;
 		},
 		uhr: () => st?.clk ?? 0,
-		zeit: () => ({ ...zeit, mittel: zeit.sum / Math.max(1, zeit.n) }),
+		zeit: () => ({ ...timing, mittel: timing.sum / Math.max(1, timing.n) }),
 		zeitNull() {
-			zeit.n = 0;
-			zeit.sum = 0;
-			zeit.max = 0;
+			timing.n = 0;
+			timing.sum = 0;
+			timing.max = 0;
 		},
 		tab: () => st?.tab ?? -1,
 		plan: (i: TabIndex) => ({
-			loop: PLAENE[i].loop,
-			sprung: PLAENE[i].sprung,
-			taps: PLAENE[i].taps,
+			loop: PLANS[i].loop,
+			sprung: PLANS[i].jumps,
+			taps: PLANS[i].taps,
 		}),
 	};
 	return {
-		stop: aus,
+		stop: off,
 		/** Springt an den Anfang von Schritt i (reduce: zeigt dessen Standbild). */
-		sprung(i: number) {
+		jumpTo(i: number) {
 			if (!st) return;
-			const pl = PLAENE[st.tab === -1 ? getTab() : st.tab];
-			st.clk = pl.sprung[i] ?? 0;
+			const pl = PLANS[st.tab === -1 ? getTab() : st.tab];
+			st.clk = pl.jumps[i] ?? 0;
 			st.still = i;
 			st.dirty = true;
 		},
 		/** Schritte neu einsammeln (nach Tabwechsel ändert sich die Liste). */
-		schritte() {
+		collectSteps() {
 			if (!st) return;
 			st.steps = [...sec.querySelectorAll<HTMLElement>('[data-istep]')];
-			st.aktiv = -1;
+			st.active = -1;
 		},
 	};
 }

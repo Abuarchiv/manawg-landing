@@ -14,26 +14,26 @@ import {
 } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { useDict } from '../../dict';
-import s from './Rechner.module.css';
+import s from './Desktop.module.css';
 
 const ICON = '/icon-512.png';
-const APPSEITE = 'var(--b-app)';
+const APP_PAGE = 'var(--b-app)';
 
-const scheibe = (y0: number, y1: number, top: number, left: number): CSSProperties => ({
+const glass = (y0: number, y1: number, top: number, left: number): CSSProperties => ({
 	position: 'absolute',
 	left,
 	top,
 	width: 390,
 	height: y1 - y0,
-	backgroundImage: APPSEITE,
+	backgroundImage: APP_PAGE,
 	backgroundSize: '390px 844px',
 	backgroundPosition: `0 ${-y0}px`,
 	backgroundRepeat: 'no-repeat',
 });
 
-function Ampel() {
+function TrafficLights() {
 	return (
-		<span className={s.dk_ampel}>
+		<span className={s.dk_lights}>
 			<i style={{ background: '#ff5f57' }} />
 			<i style={{ background: '#febc2e' }} />
 			<i style={{ background: '#28c840' }} />
@@ -41,7 +41,7 @@ function Ampel() {
 	);
 }
 
-export function Rechner() {
+export function Desktop() {
 	const t = useDict().install.desktop;
 	return (
 		<div
@@ -50,16 +50,16 @@ export function Rechner() {
 			style={{ fontFamily: '"Google Sans", Roboto, Inter, system-ui, sans-serif' }}
 		>
 			{/* Browserfenster */}
-			<div className={s.dk_fenster} data-k="dk-fenster">
-				<div className={s.dk_leiste}>
-					<Ampel />
+			<div className={s.dk_window} data-k="dk-fenster">
+				<div className={s.dk_bar}>
+					<TrafficLights />
 					<div className={s.dk_tab}>
 						<img loading="lazy" src={ICON} alt="" width="16" height="16" />
 						<span>ManaWG</span>
 						<X size={14} strokeWidth={2} aria-hidden="true" />
 					</div>
 				</div>
-				<div className={s.dk_werkzeug}>
+				<div className={s.dk_tools}>
 					<ArrowLeft size={18} strokeWidth={1.9} style={{ left: 22 }} aria-hidden="true" />
 					<ArrowRight
 						size={18}
@@ -77,43 +77,43 @@ export function Rechner() {
 							<MonitorDown size={17} strokeWidth={1.9} aria-hidden="true" />
 							<b data-k="dk-chip-t">{t.chip}</b>
 						</div>
-						<Star size={17} strokeWidth={1.8} className={s.dk_stern} aria-hidden="true" />
+						<Star size={17} strokeWidth={1.8} className={s.dk_star} aria-hidden="true" />
 					</div>
 					<Puzzle size={18} strokeWidth={1.8} style={{ left: 706 }} aria-hidden="true" />
-					<span className={s.dk_profil} />
+					<span className={s.dk_profile} />
 					<EllipsisVertical size={18} strokeWidth={2.2} style={{ left: 786 }} aria-hidden="true" />
 				</div>
-				<div className={s.dk_seite}>
-					<div style={scheibe(0, 454, 0, 215)} />
+				<div className={s.dk_page}>
+					<div style={glass(0, 454, 0, 215)} />
 				</div>
 				<div className={s.dk_tip} data-k="dk-tip">
 					{t.tooltip}
 				</div>
 				<div className={s.dk_dlg} data-k="dk-dlg">
 					<div className={s.dk_dlg_t}>{t.dialogTitle}</div>
-					<div className={s.dk_zeile}>
+					<div className={s.dk_row}>
 						<img loading="lazy" src={ICON} alt="" width="40" height="40" />
 						<div>
 							<b>ManaWG</b>
 							<span>app.manawg.com</span>
 						</div>
 					</div>
-					<div className={s.dk_knoepfe}>
-						<span className={s.dk_knopf}>{t.dialogCancel}</span>
-						<span className={`${s.dk_knopf} ${s.dk_voll}`}>{t.dialogInstall}</span>
+					<div className={s.dk_buttons}>
+						<span className={s.dk_button}>{t.dialogCancel}</span>
+						<span className={`${s.dk_button} ${s.dk_full}`}>{t.dialogInstall}</span>
 					</div>
 				</div>
 			</div>
 
 			{/* eigenes App-Fenster */}
 			<div className={s.dk_app} data-k="dk-app">
-				<div className={s.dk_titel}>
-					<Ampel />
+				<div className={s.dk_title}>
+					<TrafficLights />
 					<span>ManaWG</span>
 					<EllipsisVertical size={16} strokeWidth={2.2} aria-hidden="true" />
 				</div>
-				<div style={scheibe(0, 445, 28, 215)} />
-				<div style={scheibe(779, 844, 473, 215)} />
+				<div style={glass(0, 445, 28, 215)} />
+				<div style={glass(779, 844, 473, 215)} />
 			</div>
 		</div>
 	);

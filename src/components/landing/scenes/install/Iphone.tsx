@@ -35,11 +35,11 @@ import s from './Iphone.module.css';
 const SF = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif';
 const ICON = '/apple-touch-icon.png';
 // Bilder laden erst, wenn der Abschnitt nahe kommt (Variablen setzt Installieren.tsx)
-const SEITE = 'var(--b-ios)';
-const APPSEITE = 'var(--b-app)';
+const PAGE = 'var(--b-ios)';
+const APP_PAGE = 'var(--b-app)';
 
 const abs = (o: CSSProperties): CSSProperties => ({ position: 'absolute', ...o });
-const scheibe = (y0: number, y1: number, top: number, src = SEITE): CSSProperties =>
+const glass = (y0: number, y1: number, top: number, src = PAGE): CSSProperties =>
 	abs({
 		left: 0,
 		top,
@@ -56,7 +56,7 @@ function Status() {
 	const c = '#fff';
 	return (
 		<div className={s.ios_status} style={{ color: c }}>
-			<span className={s.ios_zeit}>09:41</span>
+			<span className={s.ios_time}>09:41</span>
 			<svg width="68" height="14" viewBox="0 0 68 14" fill={c} aria-hidden="true">
 				<rect x="0" y="8" width="3.4" height="5" rx="1" />
 				<rect x="5" y="5.5" width="3.4" height="7.5" rx="1" />
@@ -80,20 +80,16 @@ function Status() {
 	);
 }
 
-function Zeile({ ic, t, tag }: { ic: ReactNode; t: string; tag?: string }) {
+function Row({ ic, t, tag }: { ic: ReactNode; t: string; tag?: string }) {
 	return (
-		<div className={s.ios_zeile} data-tag={tag}>
-			<span className={s.ios_zeile_t}>{t}</span>
-			<span className={s.ios_zeile_i}>{ic}</span>
+		<div className={s.ios_row} data-tag={tag}>
+			<span className={s.ios_row_t}>{t}</span>
+			<span className={s.ios_row_i}>{ic}</span>
 		</div>
 	);
 }
 
-function Kachel({
-	k,
-	children,
-	style,
-}: { k?: string; children?: ReactNode; style?: CSSProperties }) {
+function Tile({ k, children, style }: { k?: string; children?: ReactNode; style?: CSSProperties }) {
 	return (
 		<span className={s.ios_app} data-k={k} style={style}>
 			{children}
@@ -110,18 +106,18 @@ export function Iphone() {
 				<div className={s.ios_wall} />
 				<div className={s.ios_grid}>
 					<div className={s.ios_cell} style={{ left: 31, top: 69 }}>
-						<Kachel>
+						<Tile>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								<rect width="60" height="60" fill="#0b0b0b" />
 								<circle cx="30" cy="30" r="22" fill="none" stroke="#fa114f" strokeWidth="7" />
 								<circle cx="30" cy="30" r="14.500" fill="none" stroke="#a6ff00" strokeWidth="7" />
 								<circle cx="30" cy="30" r="7" fill="none" stroke="#00e1d0" strokeWidth="6" />
 							</svg>
-						</Kachel>
+						</Tile>
 						<em>{t.homeFitness}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 122, top: 69 }}>
-						<Kachel style={{ background: '#0b0b0b' }}>
+						<Tile style={{ background: '#0b0b0b' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								<rect
 									x="17"
@@ -135,11 +131,11 @@ export function Iphone() {
 								/>
 								<rect x="20" y="16" width="20" height="28" rx="6" fill="#050505" />
 							</svg>
-						</Kachel>
+						</Tile>
 						<em>{t.homeWatch}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 211, top: 69 }}>
-						<Kachel style={{ background: '#fff' }}>
+						<Tile style={{ background: '#fff' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								{[16, 30, 44].map((y, i) => (
 									<g key={y}>
@@ -155,11 +151,11 @@ export function Iphone() {
 									</g>
 								))}
 							</svg>
-						</Kachel>
+						</Tile>
 						<em>{t.homeReminders}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 301, top: 69 }}>
-						<Kachel style={{ background: '#fff' }}>
+						<Tile style={{ background: '#fff' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								<path
 									d="M10 20a4 4 0 0 1 4-4h11l5 5h16a4 4 0 0 1 4 4v19a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4Z"
@@ -167,21 +163,21 @@ export function Iphone() {
 								/>
 								<path d="M10 25h40v19a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4Z" fill="#59b1ff" />
 							</svg>
-						</Kachel>
+						</Tile>
 						<em>{t.homeFiles}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 31, top: 165 }}>
-						<Kachel style={{ background: 'linear-gradient(160deg,#f6f1ff,#cfe3ff)' }}>
+						<Tile style={{ background: 'linear-gradient(160deg,#f6f1ff,#cfe3ff)' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								<circle cx="33" cy="35" r="12" fill="#3b4a66" />
 								<circle cx="33" cy="35" r="7" fill="#7a8cff" />
 								<rect x="12" y="14" width="22" height="16" rx="4" fill="#ff5d7a" opacity=".85" />
 							</svg>
-						</Kachel>
+						</Tile>
 						<em>{t.homePreview}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 122, top: 165 }}>
-						<Kachel style={{ background: 'linear-gradient(160deg,#8b7a6d,#5e4f45)' }}>
+						<Tile style={{ background: 'linear-gradient(160deg,#8b7a6d,#5e4f45)' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								{[0, 1, 2, 3].map((i) => (
 									<rect
@@ -195,20 +191,20 @@ export function Iphone() {
 									/>
 								))}
 							</svg>
-						</Kachel>
+						</Tile>
 						<em>{t.homeUtilities}</em>
 					</div>
 					<div className={s.ios_cell} style={{ left: 211, top: 165 }}>
-						<Kachel style={{ background: 'linear-gradient(180deg,#d6d7da,#a9abb0)' }}>
+						<Tile style={{ background: 'linear-gradient(180deg,#d6d7da,#a9abb0)' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								<circle cx="30" cy="23" r="9" fill="#fff" />
 								<path d="M12 52a18 14 0 0 1 36 0Z" fill="#fff" />
 							</svg>
-						</Kachel>
+						</Tile>
 						<em>{t.homeContacts}</em>
 					</div>
 					<div className={s.ios_cell} data-k="ios-icon" style={{ left: 301, top: 165 }}>
-						<Kachel>
+						<Tile>
 							<img
 								loading="lazy"
 								src={ICON}
@@ -217,13 +213,13 @@ export function Iphone() {
 								height="60"
 								data-k="ios-icon-img"
 							/>
-						</Kachel>
+						</Tile>
 						<em>ManaWG</em>
 					</div>
 				</div>
 				<div className={s.ios_dock}>
 					<div className={s.ios_dockapp} style={{ left: 119 }}>
-						<Kachel style={{ background: '#fff' }}>
+						<Tile style={{ background: '#fff' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								<circle cx="30" cy="30" r="22" fill="#2b88f5" />
 								<circle
@@ -238,20 +234,20 @@ export function Iphone() {
 								<path d="m38 22-5.500 11.500L22 38l5.500-11.500Z" fill="#fff" />
 								<path d="m38 22-5.500 11.500L28 28Z" fill="#ff4b3e" />
 							</svg>
-						</Kachel>
+						</Tile>
 					</div>
 					<div className={s.ios_dockapp} style={{ left: 210 }}>
-						<Kachel style={{ background: 'linear-gradient(180deg,#5ee66f,#1fc23b)' }}>
+						<Tile style={{ background: 'linear-gradient(180deg,#5ee66f,#1fc23b)' }}>
 							<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 								<path
 									d="M30 15c-9.400 0-17 6.100-17 13.600 0 4.300 2.500 8.100 6.400 10.600L17.500 46l7.600-3.700c1.600.4 3.200.6 4.900.6 9.400 0 17-6.100 17-13.600S39.400 15 30 15Z"
 									fill="#fff"
 								/>
 							</svg>
-						</Kachel>
+						</Tile>
 					</div>
 				</div>
-				<div className={s.ios_suche}>
+				<div className={s.ios_search}>
 					<Search size={12} strokeWidth={2.4} aria-hidden="true" />
 					{` ${t.search}`}
 				</div>
@@ -260,14 +256,14 @@ export function Iphone() {
 			{/* Seite mit Safari-Leisten und allem, was darüber liegt */}
 			<div className={s.ios_stack} data-k="ios-stack">
 				<div style={abs({ inset: 0, background: '#0a0a0a' })} />
-				<div style={scheibe(0, 490, 54)} />
+				<div style={glass(0, 490, 54)} />
 
-				<div style={scheibe(676, 844, 580)} />
+				<div style={glass(676, 844, 580)} />
 				<div className={s.ios_bar} data-k="ios-bar">
-					<span className={s.ios_rund} style={{ left: 33 }}>
+					<span className={s.ios_round} style={{ left: 33 }}>
 						<ChevronLeft size={24} strokeWidth={1.8} color="#a3a3a8" aria-hidden="true" />
 					</span>
-					<div className={s.ios_pille}>
+					<div className={s.ios_pill}>
 						<Menu
 							size={22}
 							strokeWidth={2}
@@ -278,7 +274,7 @@ export function Iphone() {
 						<span>app.manawg.com</span>
 						<RotateCw size={19} strokeWidth={2} aria-hidden="true" />
 					</div>
-					<span className={s.ios_rund} style={{ left: 306 }}>
+					<span className={s.ios_round} style={{ left: 306 }}>
 						<span className={s.ios_tabs} />
 					</span>
 				</div>
@@ -287,26 +283,26 @@ export function Iphone() {
 				{/* Seitenmenü */}
 				<div className={s.ios_menu} data-k="ios-menu">
 					<div className={s.ios_menu_in} data-k="ios-menu-in">
-						<Zeile ic={<Share size={22} strokeWidth={1.7} />} t={t.menuShare} tag="teilen" />
-						<Zeile ic={<Bookmark size={21} strokeWidth={1.7} />} t={t.menuAddBookmark} />
-						<Zeile ic={<BookMarked size={22} strokeWidth={1.7} />} t={t.menuAddBookmarkTo} />
-						<i className={s.ios_trenner} />
-						<Zeile ic={<FileSearch size={22} strokeWidth={1.7} />} t={t.menuFind} />
-						<Zeile ic={<ZoomIn size={22} strokeWidth={1.7} />} t={t.menuZoom} />
-						<Zeile ic={<BellRing size={21} strokeWidth={1.7} />} t={t.menuNotify} />
-						<Zeile ic={<EyeOff size={22} strokeWidth={1.7} />} t={t.menuHideItems} />
-						<i className={s.ios_trenner} />
-						<Zeile ic={<SquarePlus size={22} strokeWidth={1.7} />} t={t.menuExtension} />
+						<Row ic={<Share size={22} strokeWidth={1.7} />} t={t.menuShare} tag="teilen" />
+						<Row ic={<Bookmark size={21} strokeWidth={1.7} />} t={t.menuAddBookmark} />
+						<Row ic={<BookMarked size={22} strokeWidth={1.7} />} t={t.menuAddBookmarkTo} />
+						<i className={s.ios_divider} />
+						<Row ic={<FileSearch size={22} strokeWidth={1.7} />} t={t.menuFind} />
+						<Row ic={<ZoomIn size={22} strokeWidth={1.7} />} t={t.menuZoom} />
+						<Row ic={<BellRing size={21} strokeWidth={1.7} />} t={t.menuNotify} />
+						<Row ic={<EyeOff size={22} strokeWidth={1.7} />} t={t.menuHideItems} />
+						<i className={s.ios_divider} />
+						<Row ic={<SquarePlus size={22} strokeWidth={1.7} />} t={t.menuExtension} />
 					</div>
 				</div>
 
 				{/* Share-Sheet (kompakt, dann erweitert) */}
 				<div className={s.ios_share} data-k="ios-share">
-					<div className={s.ios_kopf}>
+					<div className={s.ios_head}>
 						<span className={s.ios_tile}>
 							<img loading="lazy" src={ICON} alt="" width="60" height="60" />
 						</span>
-						<div className={s.ios_kopf_t}>
+						<div className={s.ios_head_t}>
 							<b className={t.sheetTitle.length > 20 ? s.ios_clip : undefined}>{t.sheetTitle}</b>
 							<span>app.manawg.com</span>
 							<em>
@@ -318,8 +314,8 @@ export function Iphone() {
 							<X size={22} strokeWidth={2.4} aria-hidden="true" />
 						</span>
 					</div>
-					<i className={s.ios_haar} style={{ top: 146 }} />
-					<div className={s.ios_reihe} style={{ top: 160 }}>
+					<i className={s.ios_hairline} style={{ top: 146 }} />
+					<div className={s.ios_actions} style={{ top: 160 }}>
 						<div>
 							<span
 								className={s.ios_gk}
@@ -372,13 +368,13 @@ export function Iphone() {
 						</div>
 						<div>
 							<span className={s.ios_gk} style={{ background: '#3a3a3c' }}>
-								<b className={s.ios_punkte}>•••</b>
+								<b className={s.ios_dots}>•••</b>
 							</span>
 							<em>{t.sheetMore}</em>
 						</div>
 					</div>
-					<i className={s.ios_haar} style={{ top: 256 }} />
-					<div className={s.ios_reihe} style={{ top: 270 }}>
+					<i className={s.ios_hairline} style={{ top: 256 }} />
+					<div className={s.ios_actions} style={{ top: 270 }}>
 						<div>
 							<span className={s.ios_gr}>
 								<Copy size={28} strokeWidth={1.5} aria-hidden="true" />
@@ -425,16 +421,16 @@ export function Iphone() {
 							</em>
 						</div>
 					</div>
-					<div className={s.ios_gruppe} style={{ top: 410 }}>
-						<Zeile ic={<BookOpen size={22} strokeWidth={1.7} />} t={t.listAddBookmarkTo} />
-						<Zeile ic={<Star size={22} strokeWidth={1.7} />} t={t.listFavourites} />
-						<Zeile ic={<FileSearch size={22} strokeWidth={1.7} />} t={t.listFind} />
-						<Zeile ic={<SquarePlus size={22} strokeWidth={1.7} />} t={t.listAddToHome} tag="home" />
+					<div className={s.ios_group} style={{ top: 410 }}>
+						<Row ic={<BookOpen size={22} strokeWidth={1.7} />} t={t.listAddBookmarkTo} />
+						<Row ic={<Star size={22} strokeWidth={1.7} />} t={t.listFavourites} />
+						<Row ic={<FileSearch size={22} strokeWidth={1.7} />} t={t.listFind} />
+						<Row ic={<SquarePlus size={22} strokeWidth={1.7} />} t={t.listAddToHome} tag="home" />
 					</div>
-					<div className={s.ios_gruppe} style={{ top: 626 }}>
-						<Zeile ic={<PenLine size={22} strokeWidth={1.7} />} t={t.listMarkup} />
-						<Zeile ic={<Printer size={22} strokeWidth={1.7} />} t={t.listPrint} />
-						<Zeile ic={<Compass size={22} strokeWidth={1.7} />} t={t.listOpenInSafari} />
+					<div className={s.ios_group} style={{ top: 626 }}>
+						<Row ic={<PenLine size={22} strokeWidth={1.7} />} t={t.listMarkup} />
+						<Row ic={<Printer size={22} strokeWidth={1.7} />} t={t.listPrint} />
+						<Row ic={<Compass size={22} strokeWidth={1.7} />} t={t.listOpenInSafari} />
 					</div>
 				</div>
 
@@ -442,17 +438,17 @@ export function Iphone() {
 
 				{/* Dialog „Zum Home-Bildschirm“ */}
 				<div className={s.ios_dlg} data-k="ios-dlg">
-					<div className={s.ios_dlg_kopf}>
+					<div className={s.ios_dlg_head}>
 						<span className={s.ios_x2}>
 							<X size={22} strokeWidth={2.4} aria-hidden="true" />
 						</span>
 						<b>{t.dialogTitle}</b>
-						<span className={s.ios_blau} data-k="ios-hinzu">
+						<span className={s.ios_blue} data-k="ios-hinzu">
 							{t.dialogAdd}
 						</span>
 					</div>
 					<div data-k="ios-dlg-in" style={abs({ inset: 0 })}>
-						<div className={s.ios_karte}>
+						<div className={s.ios_card}>
 							<img
 								loading="lazy"
 								src={ICON}
@@ -461,7 +457,7 @@ export function Iphone() {
 								height="60"
 								className={s.ios_dlg_icon}
 							/>
-							<div className={s.ios_feld}>
+							<div className={s.ios_field}>
 								<span>
 									ManaWG
 									<i className={s.ios_caret} data-k="ios-caret" />
@@ -472,19 +468,19 @@ export function Iphone() {
 							</div>
 							<div className={s.ios_url}>https://app.manawg.com/</div>
 						</div>
-						<div className={s.ios_schalter_zeile}>
+						<div className={s.ios_switch_row}>
 							<span>{t.dialogWebApp}</span>
 							<i className={s.ios_switch}>
 								<b />
 							</i>
 						</div>
-						<p className={s.ios_fuss}>{t.dialogFoot}</p>
+						<p className={s.ios_foot}>{t.dialogFoot}</p>
 					</div>
 				</div>
 
 				{/* Tastatur (QWERTZ im Deutschen, QWERTY im Englischen) */}
 				<div className={s.ios_kbd} data-k="ios-kbd">
-					<div className={s.ios_vorschlag}>
+					<div className={s.ios_suggestion}>
 						<span>{t.keySuggestion}</span>
 					</div>
 					{t.keyRows.map((r, ri) => (
@@ -498,31 +494,31 @@ export function Iphone() {
 							}}
 						>
 							{ri === 2 && (
-								<span className={s.ios_taste_s} style={{ width: 44 }}>
+								<span className={s.ios_key_s} style={{ width: 44 }}>
 									<ArrowBigUp size={20} strokeWidth={1.8} aria-hidden="true" />
 								</span>
 							)}
 							{r.split('').map((c) => (
-								<span className={s.ios_taste} key={c}>
+								<span className={s.ios_key} key={c}>
 									{c}
 								</span>
 							))}
 							{ri === 2 && (
-								<span className={s.ios_taste_s} style={{ width: 44 }}>
+								<span className={s.ios_key_s} style={{ width: 44 }}>
 									<X size={18} strokeWidth={1.8} aria-hidden="true" />
 								</span>
 							)}
 						</div>
 					))}
 					<div className={s.ios_krow} style={{ top: 211, paddingLeft: 3, paddingRight: 3 }}>
-						<span className={s.ios_taste_s} style={{ width: 90 }}>
+						<span className={s.ios_key_s} style={{ width: 90 }}>
 							123
 						</span>
-						<span className={s.ios_taste_s} style={{ flex: 1, fontSize: 15 }}>
+						<span className={s.ios_key_s} style={{ flex: 1, fontSize: 15 }}>
 							{t.keySpace}
 						</span>
 						<span
-							className={s.ios_taste_s}
+							className={s.ios_key_s}
 							style={{ width: 90, background: '#0a84ff', color: '#fff' }}
 						>
 							✓
@@ -535,7 +531,7 @@ export function Iphone() {
 						<Mic size={22} strokeWidth={1.6} aria-hidden="true" />
 					</span>
 				</div>
-				<div className={s.ios_indikator} />
+				<div className={s.ios_indicator} />
 			</div>
 
 			{/* Start der installierten App */}
@@ -550,16 +546,16 @@ export function Iphone() {
 					data-k="ios-launch-logo"
 				/>
 			</div>
-			<div className={s.ios_app_ebene} data-k="ios-app">
-				<div style={scheibe(0, 699, 54, APPSEITE)} />
-				<div style={scheibe(779, 844, 753, APPSEITE)} />
-				<div className={s.ios_indikator} />
+			<div className={s.ios_app_layer} data-k="ios-app">
+				<div style={glass(0, 699, 54, APP_PAGE)} />
+				<div style={glass(779, 844, 753, APP_PAGE)} />
+				<div className={s.ios_indicator} />
 			</div>
 
 			<div className={s.ios_st}>
 				<Status />
 			</div>
-			<span className={s.ios_insel} />
+			<span className={s.ios_island} />
 		</div>
 	);
 }

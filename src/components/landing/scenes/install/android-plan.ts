@@ -1,9 +1,9 @@
 // Android: Chrome ab 150 (Menü nach Chromium 157), Schleife ≈ 14,3 s. Zeiten nach INSTALL-FLOWS 3.2, 3.3, 3.4:
 // Menü 0,45–0,65 s gestaffelt, Dialog 0,2 s, Meldungen „wird installiert…“ ≈ 2 s. Alles reine Funktionen von t.
 
-import { fl, put, tf } from './stil';
-import type { Ablaufplan } from './types';
-import { aus, cl, feder, io, mat, mix, seg } from './zeit';
+import { fl, put, tf } from './style';
+import { cl, easeOut, io, mat, mix, seg, spring } from './timing';
+import type { PlaybackPlan } from './types';
 
 const T1 = 1.2; // ⋮
 const T2 = 3.1; // „Installieren und Verknüpfung erstellen“
@@ -12,12 +12,12 @@ const T4 = 6.2; // im Dialog „Installieren“
 const TH = 9.1; // Wechsel auf den Startbildschirm
 const T5 = 11.0; // Icon antippen
 export const LOOP = 14.3; // die laufende App bleibt 2,3 s stehen, bevor die Schleife neu beginnt
-const ZEILEN = 17;
+const ROWS = 17;
 
-export const plan: Ablaufplan = {
+export const plan: PlaybackPlan = {
 	loop: LOOP,
 	ks: 278 / 411,
-	sprung: [0, T2 - 0.9, T4 - 1.3] as const,
+	jumps: [0, T2 - 0.9, T4 - 1.3] as const,
 	still: [T2 - 0.5, T4 - 0.5, T5 - 0.4] as const,
 	taps: [
 		{ t: T1, x: 359, y: 830, g: 0 },
@@ -36,13 +36,13 @@ export const plan: Ablaufplan = {
 			o: m * mo,
 			t: tf(0, 0, mix(0.86, 1, m), mix(0.55, 1, m)),
 		});
-		for (let i = 0; i < ZEILEN; i++) {
-			const p = aus(seg(h, 0.05 + i * 0.019, 0.17));
+		for (let i = 0; i < ROWS; i++) {
+			const p = easeOut(seg(h, 0.05 + i * 0.019, 0.17));
 			put(E[`and-r${i}`], { o: p, t: tf(0, (1 - p) * 10) });
 		}
 
 		// ---------- Bottom-Sheet ----------
-		const sIn = aus(seg(t, T2 + 0.12, 0.3));
+		const sIn = easeOut(seg(t, T2 + 0.12, 0.3));
 		const sOut = io(seg(t, T3 + 0.02, 0.2));
 		put(E['and-sheet'], {
 			d: t > T2 + 0.11 && t < T3 + 0.23 ? 'block' : '',
@@ -50,7 +50,7 @@ export const plan: Ablaufplan = {
 		});
 
 		// ---------- Dialog „App installieren“ (0,2 s) ----------
-		const dIn = aus(seg(t, T3 + 0.1, 0.3));
+		const dIn = easeOut(seg(t, T3 + 0.1, 0.3));
 		const dOut = seg(t, T4 + 0.02, 0.19);
 		put(E['and-dlg'], {
 			d: t > T3 + 0.1 && t < T4 + 0.22 ? 'block' : '',
@@ -61,7 +61,7 @@ export const plan: Ablaufplan = {
 			o: t > T3 + 0.3 && t < T4 && Math.floor((t - T3) * 1.9) % 2 === 0 ? 1 : 0,
 		});
 		// Abdunkelung: Sheet 50 %, Dialog 65 % (Seite auf 35 % Helligkeit)
-		const sc1 = 0.5 * aus(seg(t, T2 + 0.1, 0.3));
+		const sc1 = 0.5 * easeOut(seg(t, T2 + 0.1, 0.3));
 		const scrim =
 			t < T3 + 0.02
 				? sc1
@@ -86,18 +86,18 @@ export const plan: Ablaufplan = {
 			o: 1 - seg(t, TH + 0.15, 0.2),
 			borderRadius: `${36 * hp}px`,
 		});
-		const hv = aus(seg(t, TH, 0.3));
+		const hv = easeOut(seg(t, TH, 0.3));
 		put(E['and-home'], {
 			d: t > TH - 0.01 && t < T5 + 1.3 ? 'block' : '',
 			o: hv,
 			f: fl(0, 1),
 			t: tf(0, 0, mix(1.06, 1, hv)),
 		});
-		const ip = feder(t - (TH + 0.33), 0.6, 20);
+		const ip = spring(t - (TH + 0.33), 0.6, 20);
 		put(E['and-icon'], { t: tf(0, 0, t < TH + 0.33 ? 1 : mix(0.8, 1, Math.min(ip, 1.15))) });
 
 		// ---------- Start: Karte wächst aus dem Icon, Splash, Überblendung ----------
-		const lz = aus(seg(t, T5, 0.4));
+		const lz = easeOut(seg(t, T5, 0.4));
 		const aF = seg(t, T5 + 1.0, 0.25);
 		put(E['and-launch'], {
 			d: t > T5 && t < T5 + 1.3 ? 'flex' : '',

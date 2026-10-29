@@ -11,7 +11,7 @@ import { Finale } from './scenes/finale/Finale';
 import { FlutBand } from './scenes/flutband/FlutBand';
 import { Fragen } from './scenes/fragen/Fragen';
 import { Fusszeile } from './scenes/fusszeile/Fusszeile';
-import { Installieren } from './scenes/installieren/Installieren';
+import { Install } from './scenes/install/Install';
 import { Intro } from './scenes/intro/Intro';
 import { live } from './scenes/intro/stage';
 import { SoGehts } from './scenes/sogehts/SoGehts';
@@ -94,7 +94,7 @@ function LandingInner() {
 				<FlutBand />
 				<SoGehts />
 				<Tiefe />
-				<Installieren />
+				<Install />
 				<Fragen />
 				<Finale />
 				<Fusszeile />

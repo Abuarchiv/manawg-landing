@@ -27,13 +27,13 @@ import { BrLines, useDict } from '../../dict';
 import s from './Android.module.css';
 
 const ICON = '/icon-512.png';
-const MARKE = '/manawg-mark-weiss.png';
-const SEITE = 'var(--b-and)';
-const APPSEITE = 'var(--b-app)';
+const BRAND = '/manawg-mark-weiss.png';
+const PAGE = 'var(--b-and)';
+const APP_PAGE = 'var(--b-app)';
 const F = 411 / 390;
 
 const abs = (o: CSSProperties): CSSProperties => ({ position: 'absolute', ...o });
-const scheibe = (y0: number, y1: number, top: number, src = SEITE): CSSProperties =>
+const glass = (y0: number, y1: number, top: number, src = PAGE): CSSProperties =>
 	abs({
 		left: 0,
 		top,
@@ -68,7 +68,7 @@ function Status() {
 }
 
 /** Icons of the Chrome menu in the order of the dictionary's menu entries; null is a separator. */
-const MENUE_ICONS: ((() => ReactNode) | null)[] = [
+const MENU_ICONS: ((() => ReactNode) | null)[] = [
 	() => <Plus size={22} strokeWidth={1.7} />,
 	() => <VenetianMask size={22} strokeWidth={1.7} />,
 	() => <LayoutGrid size={22} strokeWidth={1.7} />,
@@ -99,7 +99,7 @@ const CHROME = (
 		<circle cx="30" cy="30" r="8.500" fill="#4285f4" stroke="#fff" strokeWidth="3" />
 	</svg>
 );
-const TELEFON = (
+const PHONE = (
 	<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 		<circle cx="30" cy="30" r="30" fill="#fff" />
 		<path
@@ -108,7 +108,7 @@ const TELEFON = (
 		/>
 	</svg>
 );
-const NACHRICHTEN = (
+const MESSAGES = (
 	<svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
 		<circle cx="30" cy="30" r="30" fill="#fff" />
 		<path
@@ -132,7 +132,7 @@ const PLAY = (
 
 export function Android() {
 	const t = useDict().install.android;
-	let zeile = 0;
+	let row = 0;
 	return (
 		<div
 			className={s.and}
@@ -148,18 +148,18 @@ export function Android() {
 					style={{ left: 34, top: 74, transformOrigin: '30px 30px' }}
 				>
 					{/* WebAPK nach „Installieren“: eigenes Symbol ohne Chrome-Abzeichen (INSTALL-FLOWS 3.4) */}
-					<i className={s.and_hrund}>
+					<i className={s.and_hround}>
 						<img loading="lazy" src={ICON} alt="ManaWG" width="36" height="36" />
 					</i>
 					<em>ManaWG</em>
 				</div>
 				<div className={s.and_dock}>
-					<span style={{ left: 34 }}>{TELEFON}</span>
-					<span style={{ left: 128 }}>{NACHRICHTEN}</span>
+					<span style={{ left: 34 }}>{PHONE}</span>
+					<span style={{ left: 128 }}>{MESSAGES}</span>
 					<span style={{ left: 222 }}>{CHROME}</span>
 					<span style={{ left: 316 }}>{PLAY}</span>
 				</div>
-				<div className={s.and_suche}>
+				<div className={s.and_search}>
 					<b>G</b>
 				</div>
 			</div>
@@ -167,32 +167,32 @@ export function Android() {
 			{/* Chrome mit allem, was darüber liegt */}
 			<div className={s.and_stack} data-k="and-stack">
 				<div style={abs({ left: 0, top: 108, width: 411, height: 692, background: '#0a0a0a' })} />
-				<div style={scheibe(0, 481, 108)} />
+				<div style={glass(0, 481, 108)} />
 
-				<div style={scheibe(676, 844, 623)} />
-				<div className={s.and_oben}>
-					<div className={s.and_pille}>
+				<div style={glass(676, 844, 623)} />
+				<div className={s.and_top}>
+					<div className={s.and_pill}>
 						<ArrowLeft size={24} strokeWidth={1.9} aria-hidden="true" />
 						<span>app.manawg.com</span>
 						<Share2 size={22} strokeWidth={1.8} aria-hidden="true" />
 					</div>
 				</div>
-				<div className={s.and_unten}>
+				<div className={s.and_bottom}>
 					<House size={25} strokeWidth={1.8} style={{ left: 39 }} aria-hidden="true" />
 					<Plus size={27} strokeWidth={1.8} style={{ left: 141 }} aria-hidden="true" />
 					<span className={s.and_tabs} style={{ left: 244 }}>
 						1
 					</span>
 					<EllipsisVertical size={25} strokeWidth={2.4} style={{ left: 346 }} aria-hidden="true" />
-					<i className={s.and_geste} />
+					<i className={s.and_gesture} />
 				</div>
 				<div className={s.and_scrim} data-k="and-scrim" />
 
 				{/* Menü */}
 				<div className={s.and_menu} data-k="and-menu">
-					<div className={s.and_kreise}>
+					<div className={s.and_circles}>
 						{[ArrowLeft, ArrowRight, Star, Download, RotateCw].map((I, i) => {
-							const k = zeile++;
+							const k = row++;
 							return (
 								<span
 									key={i}
@@ -204,13 +204,13 @@ export function Android() {
 							);
 						})}
 					</div>
-					<div className={s.and_liste}>
-						{MENUE_ICONS.map((ic, i) => {
+					<div className={s.and_list}>
+						{MENU_ICONS.map((ic, i) => {
 							const text = t.menu[i] ?? '';
-							if (!ic) return <i key={i} className={s.and_trenner} />;
-							const k = zeile++;
+							if (!ic) return <i key={i} className={s.and_divider} />;
+							const k = row++;
 							return (
-								<div key={text} className={s.and_eintrag} data-k={`and-r${k}`}>
+								<div key={text} className={s.and_entry} data-k={`and-r${k}`}>
 									<span>{ic()}</span>
 									{text}
 								</div>
@@ -248,17 +248,17 @@ export function Android() {
 				{/* Dialog „App installieren“ */}
 				<div className={s.and_dlg} data-k="and-dlg">
 					<div className={s.and_dlg_t}>{t.dialogTitle}</div>
-					<div className={s.and_dzeile}>
+					<div className={s.and_drow}>
 						<img loading="lazy" src={ICON} alt="" width="48" height="48" />
 						<div>
-							<div className={s.and_feld}>
+							<div className={s.and_field}>
 								ManaWG
 								<i data-k="and-caret" />
 							</div>
 							<span>app.manawg.com</span>
 						</div>
 					</div>
-					<div className={s.and_knoepfe}>
+					<div className={s.and_buttons}>
 						<span>{t.dialogCancel}</span>
 						<span data-k="and-ok">{t.dialogInstall}</span>
 					</div>
@@ -274,12 +274,12 @@ export function Android() {
 
 			{/* Start der installierten App */}
 			<div className={s.and_launch} data-k="and-launch">
-				<img loading="lazy" src={MARKE} alt="" width="72" height="60" data-k="and-launch-logo" />
+				<img loading="lazy" src={BRAND} alt="" width="72" height="60" data-k="and-launch-logo" />
 			</div>
 			<div className={s.and_app} data-k="and-app">
 				<div style={abs({ left: 0, top: 0, width: 411, height: 48, background: '#0a0a0a' })} />
-				<div style={scheibe(0, 702, 48, APPSEITE)} />
-				<div style={scheibe(779, 844, 788, APPSEITE)} />
+				<div style={glass(0, 702, 48, APP_PAGE)} />
+				<div style={glass(779, 844, 788, APP_PAGE)} />
 				<div style={abs({ left: 0, top: 856, width: 411, height: 28, background: '#000' })} />
 			</div>
 			<div className={s.and_nav} data-k="and-nav">
@@ -288,7 +288,7 @@ export function Android() {
 			<div className={s.and_st}>
 				<Status />
 			</div>
-			<span className={s.and_kamera} />
+			<span className={s.and_camera} />
 		</div>
 	);
 }

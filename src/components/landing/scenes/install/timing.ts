@@ -1,16 +1,16 @@
 // Zeitfunktionen der Installationsabläufe: Federn, Kurven, Tipp-Weg. Alles reine Funktionen der Zeit t (Sekunden),
 // damit ein Sprung auf einen Schritt jederzeit denselben Zustand ergibt wie der durchlaufene Ablauf.
 
-import type { Tipp } from './types';
+import type { Tap } from './types';
 
 export const cl = (x: number, a = 0, b = 1): number => (x < a ? a : x > b ? b : x);
 export const mix = (a: number, b: number, p: number): number => a + (b - a) * p;
 
 /** Kurve x(0..1) -> y. */
-type Kurve = (x: number) => number;
+type Curve = (x: number) => number;
 
 /** CSS-cubic-bezier als Funktion x(0..1) -> y. Newton mit Rückfall auf Bisektion. */
-export function bez(x1: number, y1: number, x2: number, y2: number): Kurve {
+export function bez(x1: number, y1: number, x2: number, y2: number): Curve {
 	const cx = 3 * x1;
 	const bx = 3 * (x2 - x1) - cx;
 	const ax = 1 - cx - bx;
@@ -46,7 +46,7 @@ export function bez(x1: number, y1: number, x2: number, y2: number): Kurve {
 }
 
 /** Auslauf wie bei iOS-Blättern (schnell, langer Schwanz), ohne Überschwinger. */
-export const aus = bez(0.22, 1, 0.36, 1);
+export const easeOut = bez(0.22, 1, 0.36, 1);
 /** Weiches Ein- und Ausgleiten (Tipp-Wege, Systemübergänge). */
 export const io = bez(0.42, 0, 0.2, 1);
 /** Material „emphasized decelerate“. */
@@ -56,7 +56,7 @@ export const mat = bez(0.05, 0.7, 0.1, 1);
  * Gedämpfte Feder aus der Ruhe auf 1: ζ Dämpfungsgrad, wn Eigenfrequenz in rad/s, tau Sekunden seit Beginn.
  * ζ 0,59 und ωn 16,6 ergeben 10 % Überschwinger nach 235 ms (gemessenes iOS-Seitenmenü, INSTALL-FLOWS 2.6).
  */
-export function feder(tau: number, z = 0.59, wn = 16.6): number {
+export function spring(tau: number, z = 0.59, wn = 16.6): number {
 	if (tau <= 0) return 0;
 	const wd = wn * Math.sqrt(1 - z * z);
 	return 1 - Math.exp(-z * wn * tau) * (Math.cos(wd * tau) + ((z * wn) / wd) * Math.sin(wd * tau));
@@ -66,7 +66,7 @@ export function feder(tau: number, z = 0.59, wn = 16.6): number {
 export const seg = (t: number, t0: number, d: number): number => cl((t - t0) / d);
 
 /** Zustand der Tipp-Anzeige: Deckkraft, Lage, Druck-Skalierung. */
-export interface TippZustand {
+export interface TapState {
 	o: number;
 	x: number;
 	y: number;
@@ -78,7 +78,7 @@ export interface TippZustand {
  * Ergebnis { o, x, y, s } zur Zeit t. Ankunft 150 ms vor dem Tipp, Druck 1 -> 0,85 -> 1 in 160 ms,
  * Wege als gebogene Kurve mit ease-in-out, zwischen den Gruppen ausgeblendet.
  */
-export function tipp(taps: readonly Tipp[], t: number): TippZustand {
+export function tapAt(taps: readonly Tap[], t: number): TapState {
 	let o = 0;
 	let x = 0;
 	let y = 0;

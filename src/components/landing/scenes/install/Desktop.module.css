@@ -20,7 +20,7 @@
 .dk img {
 	display: block;
 }
-.dk_fenster,
+.dk_window,
 .dk_app {
 	position: absolute;
 	inset: 0;
@@ -32,20 +32,20 @@
 	opacity: 0;
 	display: none;
 }
-.dk_ampel {
+.dk_lights {
 	position: absolute;
 	left: 14px;
 	top: 14px;
 	display: flex;
 	gap: 8px;
 }
-.dk_ampel i {
+.dk_lights i {
 	display: block;
 	width: 12px;
 	height: 12px;
 	border-radius: 50%;
 }
-.dk_leiste {
+.dk_bar {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -77,7 +77,7 @@
 .dk_tab svg {
 	color: #c4c7c5;
 }
-.dk_werkzeug {
+.dk_tools {
 	position: absolute;
 	left: 0;
 	top: 40px;
@@ -88,7 +88,7 @@
 	box-sizing: border-box;
 	color: #c4c7c5;
 }
-.dk_werkzeug > svg {
+.dk_tools > svg {
 	position: absolute;
 	top: 13px;
 }
@@ -121,7 +121,7 @@
 	line-height: 18px;
 	color: #e3e3e3;
 }
-.dk_stern {
+.dk_star {
 	position: absolute;
 	right: 12px;
 	top: 8px;
@@ -153,7 +153,7 @@
 	font-weight: 500;
 	opacity: 0;
 }
-.dk_profil {
+.dk_profile {
 	position: absolute;
 	left: 738px;
 	top: 11px;
@@ -163,7 +163,7 @@
 	background: radial-gradient(circle at 50% 38%, #4a7fb5 0 21%, transparent 23%),
 		radial-gradient(ellipse at 50% 108%, #4a7fb5 0 46%, transparent 48%), #d3e3fd;
 }
-.dk_seite {
+.dk_page {
 	position: absolute;
 	left: 0;
 	top: 84px;
@@ -207,35 +207,35 @@
 	font-weight: 500;
 	color: #e3e3e3;
 }
-.dk_zeile {
+.dk_row {
 	display: flex;
 	align-items: center;
 	gap: 14px;
 }
-.dk_zeile img {
+.dk_row img {
 	width: 40px;
 	height: 40px;
 	border-radius: 9px;
 }
-.dk_zeile b {
+.dk_row b {
 	display: block;
 	font-size: 14px;
 	line-height: 20px;
 	font-weight: 500;
 }
-.dk_zeile span {
+.dk_row span {
 	display: block;
 	font-size: 12.5px;
 	line-height: 18px;
 	color: #c4c7c5;
 }
-.dk_knoepfe {
+.dk_buttons {
 	display: flex;
 	justify-content: flex-end;
 	gap: 8px;
 	margin-top: 22px;
 }
-.dk_knopf {
+.dk_button {
 	height: 32px;
 	padding: 0 16px;
 	border-radius: 16px;
@@ -246,13 +246,13 @@
 	font-weight: 500;
 	line-height: 30px;
 }
-.dk_voll {
+.dk_full {
 	background: #a8c7fa;
 	border-color: #a8c7fa;
 	color: #062e6f;
 }
 
-.dk_titel {
+.dk_title {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -264,15 +264,15 @@
 	text-align: center;
 	line-height: 28px;
 }
-.dk_titel .dk_ampel {
+.dk_title .dk_lights {
 	top: 8px;
 	left: 12px;
 }
-.dk_titel .dk_ampel i {
+.dk_title .dk_lights i {
 	width: 12px;
 	height: 12px;
 }
-.dk_titel svg {
+.dk_title svg {
 	position: absolute;
 	right: 12px;
 	top: 6px;

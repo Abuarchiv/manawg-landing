@@ -4,10 +4,10 @@
 export type TabIndex = 0 | 1 | 2;
 
 /** Elemente des Geräts nach ihrem data-k. Fehlende Einträge werden von put übergangen. */
-export type Elemente = Record<string, HTMLElement>;
+export type Elements = Record<string, HTMLElement>;
 
 /** Ein Fingertipp (Handy) oder Klick (Rechner): Zeit, Ziel in Geräteeinheiten, g = Gruppe (gleicher Schritt). */
-export interface Tipp {
+export interface Tap {
 	readonly t: number;
 	readonly x: number;
 	readonly y: number;
@@ -15,15 +15,15 @@ export interface Tipp {
 }
 
 /** Ablaufplan eines Geräts. Der Zustand ist eine reine Funktion der Zeit. */
-export interface Ablaufplan {
+export interface PlaybackPlan {
 	/** Länge der Schleife in Sekunden. */
 	readonly loop: number;
 	/** Maßstab Gerät -> Tipp-Anzeige. */
 	readonly ks: number;
 	/** Beginn der Schritte (Ruhezustände, ein Tipp steht kurz bevor). */
-	readonly sprung: readonly number[];
+	readonly jumps: readonly number[];
 	/** Standbilder für reduzierte Bewegung: Ruhelage je Schritt. */
 	readonly still: readonly number[];
-	readonly taps: readonly Tipp[];
-	render(t: number, E: Elemente): void;
+	readonly taps: readonly Tap[];
+	render(t: number, E: Elements): void;
 }
