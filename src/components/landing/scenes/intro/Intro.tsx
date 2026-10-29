@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
+import { useDict } from '../../dict';
 import { Ende } from '../ende/Ende';
 import { HeroTitel } from './HeroTitel';
 import { Raeume } from './Raeume';
@@ -15,6 +16,7 @@ import { INTRO_SCREENS, unwarp } from './zeitachse';
 const FLAECHE = 'position:absolute;inset:0;width:100%;height:100%;display:block';
 
 export function Intro() {
+	const { aria, canvasRooms, people } = useDict();
 	const secRef = useRef<HTMLElement>(null);
 	const buehneRef = useRef<HTMLDivElement>(null);
 
@@ -22,9 +24,11 @@ export function Intro() {
 		const stage = createStage({
 			sec: secRef.current as HTMLElement,
 			buehne: buehneRef.current as HTMLDivElement,
+			rooms: canvasRooms,
+			people,
 		});
 		return () => stage.destroy();
-	}, []);
+	}, [canvasRooms, people]);
 
 	return (
 		<section
@@ -32,7 +36,7 @@ export function Intro() {
 			data-sec="intro"
 			tabIndex={-1}
 			ref={secRef}
-			aria-label="Intro"
+			aria-label={aria.intro}
 			style={css(`position:relative;z-index:1;height:calc(${1 + INTRO_SCREENS} * 100lvh)`)}
 		>
 			{/* Sprungziel der App-Vorschau (Fokusanker): Beginn der Ende-Ebene, P 0,985 */}
@@ -40,7 +44,7 @@ export function Intro() {
 				id="app-demo"
 				role="region"
 				tabIndex={-1}
-				aria-label="App-Vorschau"
+				aria-label={aria.appPreview}
 				style={css(
 					`position:absolute;left:0;width:1px;height:1px;top:calc((100% - 100lvh) * ${(unwarp(0.985) ?? 0).toFixed(4)})`,
 				)}

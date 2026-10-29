@@ -1,10 +1,12 @@
 'use client';
 
+import type { Locale } from '@/lib/locale';
 import { useEffect } from 'react';
 import './landing.css';
 import { startEntschluesseln } from './core/entschluesseln';
 import { loop, modeOf, qa, setMode, start } from './core/loop';
 import { initScroll, sectionBox } from './core/scroll';
+import { DictProvider, useDict } from './dict';
 import { Finale } from './scenes/finale/Finale';
 import { FlutBand } from './scenes/flutband/FlutBand';
 import { Fragen } from './scenes/fragen/Fragen';
@@ -45,7 +47,8 @@ function qaHaken(root: HTMLElement) {
 	};
 }
 
-export function Landing() {
+function LandingInner() {
+	const dict = useDict();
 	useEffect(() => {
 		const root = document.getElementById('final') as HTMLElement;
 		const applyMode = () => {
@@ -81,7 +84,7 @@ export function Landing() {
 		<div id="final" data-mode={loop.mode} data-phase="intro" suppressHydrationWarning>
 			{/* Sprunglink als erster Tab-Stopp, sichtbar nur bei Fokus (landing.css .sprung) */}
 			<a className="label sprung" href="#inhalt">
-				Zum Inhalt springen
+				{dict.skip}
 			</a>
 			<KopfMaske />
 			<Kopf />
@@ -99,5 +102,13 @@ export function Landing() {
 			<Zerfall />
 			<Lader />
 		</div>
+	);
+}
+
+export function Landing({ locale }: { locale: Locale }) {
+	return (
+		<DictProvider locale={locale}>
+			<LandingInner />
+		</DictProvider>
 	);
 }

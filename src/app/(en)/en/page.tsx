@@ -1,8 +1,11 @@
-// Skeleton: the home package replaces this page with the English landing page.
+import { Landing } from '@/components/landing/Landing';
+import { HomeHead } from '@/components/landing/home-head';
+
 export default function Page() {
 	return (
-		<main id="main">
-			<h1>ManaWG</h1>
-		</main>
+		<>
+			<HomeHead locale="en" />
+			<Landing locale="en" />
+		</>
 	);
 }

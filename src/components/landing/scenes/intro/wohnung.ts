@@ -11,19 +11,20 @@ import { wohnungsZeichen } from './wohnung-gl';
 
 const mono = (px: number) => `500 ${px}px "JetBrains Mono", monospace`;
 
-/** Raum im Raster: Name, x, y, Breite, Tiefe, Zeile. */
-type Raum = readonly [name: string, x: number, y: number, w: number, d: number, zeile: string];
+/** Raum im Raster: x, y, Breite, Tiefe. Die Namen kommen aus dem Wörterbuch (createStage: rooms) in derselben Reihenfolge. */
+type Raum = readonly [x: number, y: number, w: number, d: number];
 
 // Raster = halbe Meter der Blender-Wohnung (landing-konzept/wohnung-iso, Böden Boden_*)
+// Reihenfolge: Küche, Bad, Zimmer Jona, Flur, Wohnzimmer, Zimmer Lea, Zimmer Lina, Zimmer Mika (wie canvasRooms)
 const ROOMS = [
-	['KÜCHE', 0, 0, 8, 7.2, 'Einkäufe · Vorräte'],
-	['BAD', 18, 0, 6, 7.2, 'Putzplan'],
-	['ZIMMER · JONA', 12, 10, 6, 6.4, ''],
-	['FLUR', 0, 7.2, 24, 2.8, 'Pinnwand · Chat'],
-	['WOHNZIMMER', 8, 0, 10, 7.2, 'Ausgaben · Fixkosten'],
-	['ZIMMER · LEA', 0, 10, 6, 6.4, ''],
-	['ZIMMER · LINA', 18, 10, 6, 6.4, ''],
-	['ZIMMER · MIKA', 6, 10, 6, 6.4, ''],
+	[0, 0, 8, 7.2],
+	[18, 0, 6, 7.2],
+	[12, 10, 6, 6.4],
+	[0, 7.2, 24, 2.8],
+	[8, 0, 10, 7.2],
+	[0, 10, 6, 6.4],
+	[18, 10, 6, 6.4],
+	[6, 10, 6, 6.4],
 ] as const satisfies readonly Raum[];
 
 /** Blickpunkt: Mitte im Raster (cx, cy), Maßstab u, Ursprung der Projektion (ox, oy), Raum (-1 = keiner). */
@@ -49,10 +50,10 @@ type Wand = [number, number, number, number];
 
 const WALLS: Wand[] = [];
 for (const r of ROOMS) {
-	const x = r[1];
-	const y = r[2];
-	const w = r[3];
-	const hh = r[4];
+	const x = r[0];
+	const y = r[1];
+	const w = r[2];
+	const hh = r[3];
 	WALLS.push(
 		[x, y, x + w, y],
 		[x + w, y, x + w, y + hh],
@@ -61,13 +62,8 @@ for (const r of ROOMS) {
 	);
 }
 WALLS.sort((a, b) => a[0] + a[1] + a[2] + a[3] - (b[0] + b[1] + b[2] + b[3]));
-/** Bewohner: Name und Größe der Scheibe (in Rastereinheiten). */
-const PEOC = [
-	['LINA', 0.62],
-	['MIKA', 0.5],
-	['JONA', 0.42],
-	['LEA', 0.34],
-] as const;
+/** Bewohner: Größe der Scheibe (in Rastereinheiten); die Namen kommen aus dem Wörterbuch (createStage: people). */
+const PEOC = [0.62, 0.5, 0.42, 0.34] as const;
 
 /**
  * Deckkraft der vier Raumkarten bei Fortschritt P, am Scroll geführt wie im Entwurf (--c0..3): Karte j steht
@@ -257,7 +253,12 @@ function messeDom(st: WohnungsZustand, cv: HTMLCanvasElement): DomMasse {
 }
 
 /** Zeichnet die Wohnung in das 2D-Canvas. c: Kontext der Bühne. */
-export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
+export function draw(
+	cv: HTMLCanvasElement,
+	c: BuehnenKontext,
+	rooms: readonly string[],
+	people: readonly string[],
+): void {
 	let st = states.get(cv);
 	if (!st) {
 		const ctx0 = cv.getContext('2d');
@@ -379,7 +380,7 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		x0: tx + f * (ox - (cx - cy) * 0.866 * u),
 		y0: ty + f * (oy - (cx + cy) * 0.5 * u),
 		bau,
-		raeume: ROOMS.map((r) => [r[1], r[2], r[3], r[4]] as const),
+		raeume: ROOMS.map((r) => [r[0], r[1], r[2], r[3]] as const),
 		licht: lit,
 		zeiger: m.in ? [tx + mx * f, ty + my * f, FL * f] : [0, 0, 0],
 	});
@@ -397,10 +398,10 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	const kv = 0.5 * u;
 	if (!bild)
 		ROOMS.forEach((r, ri) => {
-			const x = r[1];
-			const y = r[2];
-			const w = r[3];
-			const hh = r[4];
+			const x = r[0];
+			const y = r[1];
+			const w = r[2];
+			const hh = r[3];
 			const base = 0.06 + 0.8 * (lit[ri] ?? 0);
 			for (let gy = 0, yy = y + stp / 2; yy < y + hh; yy += stp, gy++) {
 				const dy = yy - cy;
@@ -425,8 +426,8 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		});
 	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
 	if (!st.pp)
-		st.pp = PEOC.map(([name, rel], k) => ({
-			name,
+		st.pp = PEOC.map((rel, k) => ({
+			name: people[k] ?? '',
 			rel,
 			x: 2 + k * 4,
 			y: 7.5,
@@ -439,13 +440,13 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 	st.pp.forEach((pp, k) => {
 		if (fokusRaum && (lit[focus] ?? 0) > 0.5) {
 			const r = fokusRaum;
-			pp.tx = r[1] + r[3] * (0.3 + 0.4 * (k % 2));
-			pp.ty = r[2] + r[4] * (0.3 + 0.4 * (k > 1 ? 1 : 0));
+			pp.tx = r[0] + r[2] * (0.3 + 0.4 * (k % 2));
+			pp.ty = r[1] + r[3] * (0.3 + 0.4 * (k > 1 ? 1 : 0));
 		} else if (now > pp.nt) {
 			const r = ROOMS[Math.floor(Math.random() * ROOMS.length)];
 			if (!r) return;
-			pp.tx = r[1] + r[3] * (0.25 + Math.random() * 0.5);
-			pp.ty = r[2] + r[4] * (0.25 + Math.random() * 0.5);
+			pp.tx = r[0] + r[2] * (0.25 + Math.random() * 0.5);
+			pp.ty = r[1] + r[3] * (0.25 + Math.random() * 0.5);
 			pp.nt = now + 2.5 + Math.random() * 3;
 		}
 		pp.x += (pp.tx - pp.x) * kp;
@@ -558,9 +559,9 @@ export function draw(cv: HTMLCanvasElement, c: BuehnenKontext): void {
 		});
 	});
 	ROOMS.forEach((r, ri) => {
-		const pt = P(r[1] + r[3] / 2, r[2] + r[4] / 2, 0);
+		const pt = P(r[0] + r[2] / 2, r[1] + r[3] / 2, 0);
 		items.push({
-			text: r[0],
+			text: rooms[ri] ?? '',
 			x: tx + pt[0] * f,
 			y: ty + pt[1] * f,
 			size,

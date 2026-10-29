@@ -2,10 +2,12 @@
 
 import { appUrl } from '@/lib/app-origin';
 import { useEffect, useRef } from 'react';
+import { BrLines, useDict } from '../../dict';
 import s from './Finale.module.css';
 import { registerHimmel } from './himmel';
 
 export function Finale() {
+	const { finale, links } = useDict();
 	const sec = useRef<HTMLElement>(null);
 	const ebene = useRef<HTMLDivElement>(null);
 	const himmel = useRef<HTMLCanvasElement>(null);
@@ -56,19 +58,14 @@ export function Finale() {
 			<div className={s.inhalt}>
 				<div className={s.block}>
 					<h2 id="finale-titel" className={s.titel} data-entschluesseln="">
-						Zieht
-						<br />
-						ein.
+						<BrLines lines={finale.title} />
 					</h2>
 					<div data-knoepfe="1" className={s.knoepfe}>
-						<a
-							href={appUrl('/registrieren?action=create')}
-							className={`cta cta--voll cta--gross ${s.knopf}`}
-						>
-							WG erstellen
+						<a href={appUrl(links.create)} className={`cta cta--voll cta--gross ${s.knopf}`}>
+							{finale.create}
 						</a>
-						<a href={appUrl('/neu')} className={`cta cta--dunkel cta--gross ${s.knopf}`}>
-							Einladung einlösen
+						<a href={appUrl(links.invite)} className={`cta cta--dunkel cta--gross ${s.knopf}`}>
+							{finale.invite}
 						</a>
 					</div>
 				</div>

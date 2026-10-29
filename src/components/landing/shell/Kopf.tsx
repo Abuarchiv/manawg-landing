@@ -1,10 +1,12 @@
 import { appUrl } from '@/lib/app-origin';
 import { css } from '../core/dc';
+import { useDict } from '../dict';
 
 // Kopf: Logo links, Knopf rechts, fest am Fenster. Während die Ende-Ebene der Intro den Kopfbereich deckt,
 // blendet --kopf-aus ihn aus (stage.js). Safe-Area-Abstände für Notch und Ecken.
 
 export function Kopf() {
+	const dict = useDict();
 	return (
 		<header
 			data-kopf="1"
@@ -30,11 +32,11 @@ export function Kopf() {
 			</div>
 			<a
 				data-loch="cta"
-				href={appUrl('/registrieren?action=create')}
+				href={appUrl(dict.links.create)}
 				className="cta cta--voll"
 				style={css('pointer-events:auto;opacity:calc(1 - var(--kopf-cta-aus,0))')}
 			>
-				WG erstellen
+				{dict.header.cta}
 			</a>
 		</header>
 	);

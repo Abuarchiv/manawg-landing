@@ -4,6 +4,7 @@ import { appUrl } from '@/lib/app-origin';
 import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
 import { modeOf } from '../../core/loop';
+import { BrLines, useDict } from '../../dict';
 import s from './Ende.module.css';
 import { Phone } from './Phone';
 import { kamera } from './kamera';
@@ -14,6 +15,7 @@ import { kamera } from './kamera';
 // Handy, damit Shift+Tab aus dem App-iframe auf dem Knopf landet (nicht auf dem Body); Kopf und Hinweise sind im Ende inert.
 
 export function Ende() {
+	const { end, links, aria } = useDict();
 	const spaceRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -37,7 +39,7 @@ export function Ende() {
 	return (
 		<section
 			data-ende="1"
-			aria-label="App-Vorschau"
+			aria-label={aria.appPreview}
 			style={css(
 				'position:absolute;inset:0;opacity:clamp(0, (var(--e,0) - 0.35) * 1.54, 1);pointer-events:none;background:#0A0A0A',
 			)}
@@ -53,16 +55,15 @@ export function Ende() {
 			>
 				<div className={s.titel} data-ende-titel="1">
 					<h2 data-quiet="1" className={s.h}>
-						Alltag <br />
-						teilen.
+						<BrLines lines={end.title} />
 					</h2>
 					<a
 						data-cta="1"
 						data-quiet="1"
 						className={`cta cta--voll cta--gross ${s.knopf}`}
-						href={appUrl('/registrieren?action=create')}
+						href={appUrl(links.create)}
 					>
-						WG erstellen
+						{end.cta}
 					</a>
 				</div>
 			</div>
