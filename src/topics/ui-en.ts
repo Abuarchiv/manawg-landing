@@ -1,7 +1,5 @@
 import type { TopicUi } from './ui.ts';
 
-const PROPER_NOUN = /^(Splitwise|Splid|Flatastic|Tricount|OurHome|ManaWG)/;
-
 // English topic frame strings. German terms stay out of the frame; pages explain them once.
 export const UI_EN: TopicUi = {
 	homeLabel: 'ManaWG, to the home page',
@@ -14,11 +12,8 @@ export const UI_EN: TopicUi = {
 	authorName: 'Abubakar Abditube (ManaWG)',
 	published: 'Published',
 	updated: 'Updated',
-	// The FAQ page is itself called “Frequently asked questions”; it keeps that title.
-	faqHeading: (link) =>
-		/^(faq|frequently asked)/i.test(link)
-			? 'Frequently asked questions'
-			: `Questions about ${PROPER_NOUN.test(link) ? link : link.charAt(0).toLowerCase() + link.slice(1)}`,
+	// One fixed section title; deriving it from the page link reads badly for verb phrases and German nouns.
+	faqHeading: () => 'Frequently asked questions',
 	sources: (date) => `Sources (as of ${date})`,
 	guideNoteLabel: 'About this guide',
 	guideNote:
