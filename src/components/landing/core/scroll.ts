@@ -1,8 +1,8 @@
-// Scroll-Kern (PLAN-V2 4.5): Abschnittsmaße, Stelle halten bei Größenwechsel und Drehen,
-// Sprunglinks nach Entscheidung 12. Nativer Dokument-Scroll, Mausrad und Trackpad gleiten über Lenis.
-// Lenis hat keine eigene rAF-Schleife, es läuft im Bild-Takt der Seite (onFrame zuerst, vor den Szenen).
-// Touch bleibt nativ (syncTouch aus), bei reduzierter Bewegung gibt es kein Lenis.
-// Eigene Scrollflächen markiert man mit data-lenis-prevent.
+// Scroll core (PLAN-V2 4.5): section measures, holding the position on resize and rotation,
+// jump links per decision 12. Native document scroll; mouse wheel and trackpad glide through Lenis.
+// Lenis has no rAF loop of its own, it runs on the page's frame clock (onFrame first, before the scenes).
+// Touch stays native (syncTouch off); with reduced motion there is no Lenis.
+// Mark custom scroll areas with data-lenis-prevent.
 
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
@@ -10,7 +10,7 @@ import { loop, onFrame, qa } from './loop';
 
 const SEC = '[data-sec]';
 
-/** Gemessener Abschnitt in Dokumentkoordinaten. */
+/** Measured section in document coordinates. */
 interface SectionMeasure {
 	el: HTMLElement;
 	id: string;
@@ -18,7 +18,7 @@ interface SectionMeasure {
 	h: number;
 }
 
-/** Stelle im Dokument: Abschnittsindex i und Anteil p darin. */
+/** Position in the document: section index i and fraction p within it. */
 interface Anchor {
 	i: number;
 	p: number;
@@ -45,7 +45,7 @@ function anchorOf(m: SectionMeasure[], y: number): Anchor | null {
 	return a ? { i, p: (y - a.top) / Math.max(1, a.h) } : null;
 }
 
-/** Abschnitt per Id: { top, height } in Dokumentkoordinaten. */
+/** Section by id: { top, height } in document coordinates. */
 export function sectionBox(id: string): { top: number; height: number } | null {
 	const el = document.getElementById(id);
 	if (!el) return null;
@@ -53,7 +53,7 @@ export function sectionBox(id: string): { top: number; height: number } | null {
 	return { top: r.top + window.scrollY, height: r.height };
 }
 
-/** Fortschritt in einem Sticky-Abschnitt: 0 am Anfang, 1 wenn die Bühne am Ende loslässt. */
+/** Progress within a sticky section: 0 at the start, 1 when the stage lets go at the end. */
 export function stickP(sec: Element, stageH: number): number {
 	const r = sec.getBoundingClientRect();
 	return Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - stageH)));
@@ -68,15 +68,15 @@ const expoOut = (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t));
 
 export function initScroll(root: HTMLElement): () => void {
 	history.scrollRestoration = 'auto';
-	// Lenis: Dauer 1,1 s, ease-out-expo. Aus bei reduzierter Bewegung (auch wenn die Einstellung später wechselt).
+	// Lenis: duration 1.1 s, ease-out-expo. Off with reduced motion (also when the setting changes later).
 	let lenis: Lenis | null = null;
 	let stopFrame = () => {};
 	const mqRed = matchMedia('(prefers-reduced-motion: reduce)');
 	const enableLenis = () => {
 		if (lenis || mqRed.matches) return;
-		// Rad und Trackpad mit Lerp statt Dauer-Kurve: die Kurve startete bei jedem Rad-Ereignis neu mit einem
-		// Geschwindigkeitssprung (Trackpads senden viele kleine Ereignisse, das stotterte). Lerp gleicht je Bild
-		// stetig und bildratenunabhängig nach. Klicks auf Abschnitts-Links behalten ihre eigene Kurve (onClick unten).
+		// Wheel and trackpad use lerp instead of a duration curve: the curve restarted on every wheel event with a
+		// jump in speed (trackpads send many small events, which made it stutter). Lerp catches up
+		// steadily per frame and independently of the frame rate. Clicks on section links keep their own curve (onClick below).
 		lenis = new Lenis({
 			autoRaf: false,
 			lerp: 0.1,
@@ -95,7 +95,7 @@ export function initScroll(root: HTMLElement): () => void {
 	const onReduced = () => (mqRed.matches ? disableLenis() : enableLenis());
 	mqRed.addEventListener('change', onReduced);
 	enableLenis();
-	/** Sofort an eine Stelle (Stelle halten, Sprung hinter dem Schleier). */
+	/** Jump to a position immediately (holding the position, jump behind the veil). */
 	const setY = (y: number) => {
 		if (lenis) {
 			lenis.resize();
@@ -114,7 +114,7 @@ export function initScroll(root: HTMLElement): () => void {
 		if (!pending) anchor = anchorOf(m, window.scrollY);
 	};
 
-	// Nach dem Layout: haben sich die Abschnittsmaße geändert, dieselbe Stelle wieder setzen.
+	// After layout: if the section measures changed, restore the same position.
 	const settle = () => {
 		const nm = measureAll(list);
 		const changed =
@@ -132,7 +132,7 @@ export function initScroll(root: HTMLElement): () => void {
 	};
 
 	const onResize = () => {
-		// URL-Leiste auf dem Handy (kleine Höhenänderung, gleiche Breite): nichts anfassen, kein Anker-Rücksprung
+		// Phone URL bar (small height change, same width): leave everything alone, no anchor jump-back
 		if (innerWidth === w0 && Math.abs(innerHeight - h0) < 150) return;
 		pending = true;
 		cancelAnimationFrame(settleRaf);
@@ -141,7 +141,7 @@ export function initScroll(root: HTMLElement): () => void {
 		});
 	};
 
-	// Inhaltshöhe ändert sich (Fragen aufklappen, Schriften geladen): Maße nachziehen, nichts verschieben.
+	// Content height changes (questions expand, fonts loaded): update the measures, move nothing.
 	const ro = new ResizeObserver(() => {
 		if (pending) return;
 		m = measureAll(list);
@@ -155,7 +155,7 @@ export function initScroll(root: HTMLElement): () => void {
 		}
 	});
 
-	// Sprunglinks: bis 3 Bildschirmhöhen weich, darüber sofort mit kurzer Überblendung über #0A0A0A.
+	// Jump links: smooth up to 3 screen heights, beyond that immediate with a short crossfade over #0A0A0A.
 	let veil: HTMLDivElement | null = null;
 	const veilEl = (): HTMLDivElement => {
 		if (veil) return veil;

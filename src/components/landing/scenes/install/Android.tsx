@@ -1,5 +1,5 @@
-// Android-Bildschirm (Chrome ab 150, Adressleiste oben, Menü nach Chromium 157) als DOM nach INSTALL-FLOWS 3.
-// Bühne 411 x 884 dp (Gerät 411 x 914 dp, hier an das Seitenverhältnis des Rahmens angepasst).
+// Android screen (Chrome 150 and later, address bar at the top, menu per Chromium 157) as DOM per INSTALL-FLOWS 3.
+// Stage 411 x 884 dp (device 411 x 914 dp, adapted here to the frame's aspect ratio).
 
 import {
 	ArrowLeft,
@@ -147,7 +147,7 @@ export function Android() {
 					data-k="and-icon"
 					style={{ left: 34, top: 74, transformOrigin: '30px 30px' }}
 				>
-					{/* WebAPK nach „Installieren“: eigenes Symbol ohne Chrome-Abzeichen (INSTALL-FLOWS 3.4) */}
+					{/* WebAPK after "Install": own icon without Chrome badge (INSTALL-FLOWS 3.4) */}
 					<i className={s.and_hround}>
 						<img loading="lazy" src={ICON} alt="ManaWG" width="36" height="36" />
 					</i>
@@ -164,7 +164,7 @@ export function Android() {
 				</div>
 			</div>
 
-			{/* Chrome mit allem, was darüber liegt */}
+			{/* Chrome with everything above it */}
 			<div className={s.and_stack} data-k="and-stack">
 				<div style={abs({ left: 0, top: 108, width: 411, height: 692, background: '#0a0a0a' })} />
 				<div style={glass(0, 481, 108)} />
@@ -188,7 +188,7 @@ export function Android() {
 				</div>
 				<div className={s.and_scrim} data-k="and-scrim" />
 
-				{/* Menü */}
+				{/* Menu */}
 				<div className={s.and_menu} data-k="and-menu">
 					<div className={s.and_circles}>
 						{[ArrowLeft, ArrowRight, Star, Download, RotateCw].map((I, i) => {
@@ -219,7 +219,7 @@ export function Android() {
 					</div>
 				</div>
 
-				{/* Sheet „Installieren und Verknüpfung erstellen“ */}
+				{/* "Install and create shortcut" sheet */}
 				<div className={s.and_sheet} data-k="and-sheet">
 					<div className={s.and_sheet_t}>
 						<BrLines lines={t.sheetTitle} />
@@ -245,7 +245,7 @@ export function Android() {
 					</div>
 				</div>
 
-				{/* Dialog „App installieren“ */}
+				{/* "Install app" dialog */}
 				<div className={s.and_dlg} data-k="and-dlg">
 					<div className={s.and_dlg_t}>{t.dialogTitle}</div>
 					<div className={s.and_drow}>
@@ -272,7 +272,7 @@ export function Android() {
 				</div>
 			</div>
 
-			{/* Start der installierten App */}
+			{/* Launch of the installed app */}
 			<div className={s.and_launch} data-k="and-launch">
 				<img loading="lazy" src={BRAND} alt="" width="72" height="60" data-k="and-launch-logo" />
 			</div>

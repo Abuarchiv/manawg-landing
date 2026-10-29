@@ -1,5 +1,5 @@
-// Gemeinsame Mathematik aller Szenen. Werte und Formeln 1:1 aus dem Entwurf (final.dc.html),
-// die zwei Fassungen aus hero.js und art.js sind zusammengeführt.
+// Shared math of all scenes. Values and formulas 1:1 from the design (final.dc.html);
+// the two variants from hero.js and art.js are merged.
 
 export const cl = (x: number, a = 0, b = 1): number => Math.min(b, Math.max(a, x));
 export const ss = (x: number): number => {
@@ -7,12 +7,12 @@ export const ss = (x: number): number => {
 	return c * c * (3 - 2 * c);
 };
 export const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
-/** Glättungsfaktor k je 60-Hz-Schritt auf die Bilddauer dt umgerechnet: gleiches Tempo bei jeder Bildrate. */
+/** Smoothing factor k per 60 Hz step converted to the frame duration dt: same pace at any frame rate. */
 export const lag = (k: number, dt: number): number => 1 - (1 - k) ** (dt * 60);
 export const ease = (x: number): number => 1 - (1 - cl(x)) ** 4;
 
-// Sinus und Kosinus aus einer Tabelle (4096 Stützstellen, linear, Fehler unter 1e-6), gut doppelt so schnell wie
-// Math.sin in Schleifen über tausende Punkte je Bild (Strömungsfeld der Tiefe).
+// Sine and cosine from a table (4096 sample points, linear, error below 1e-6), more than twice as fast as
+// Math.sin in loops over thousands of points per frame (flow field of the depth scene).
 const SN = 4096;
 const SK = SN / (2 * Math.PI);
 const STAB = new Float64Array(SN + 1).map((_, i) => Math.sin(i / SK));
@@ -25,10 +25,10 @@ export const sn = (v: number): number => {
 };
 export const cs = (v: number): number => sn(v + Math.PI / 2);
 
-// 4x4-Bayer-Matrix für das Dithering der Halbton-Flächen.
+// 4x4 Bayer matrix for dithering the halftone areas.
 export const BAYER: readonly number[] = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 
-// Ganzzahl-Hash und Value-Noise (stabil, ohne Math.random).
+// Integer hash and value noise (stable, without Math.random).
 export const hsh = (i: number, j: number): number => {
 	let h = (i * 374761393 + j * 668265263) | 0;
 	h = Math.imul(h ^ (h >>> 13), 1274126177);
@@ -48,13 +48,13 @@ export const vnz = (x: number, y: number): number => {
 	return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
 };
 
-// Weiches Minimum (Abstandsfelder).
+// Smooth minimum (distance fields).
 export const smn = (a: number, b: number, k: number): number => {
 	const h = Math.max(k - Math.abs(a - b), 0) / k;
 	return Math.min(a, b) - h * h * k * 0.25;
 };
 
-// Abstand zur Kapsel (px, py) -> (ax, ay)-(bx, by) mit Radius r.
+// Distance of (px, py) to the capsule (ax, ay)-(bx, by) with radius r.
 export const cap = (
 	px: number,
 	py: number,
@@ -72,7 +72,7 @@ export const cap = (
 	return Math.hypot(pax - bax * h, pay - bay * h) - r;
 };
 
-// Abstand zur ungleichen Kapsel (Radius ra bei a, rb bei b).
+// Distance to the uneven capsule (radius ra at a, rb at b).
 export const uc = (
 	px: number,
 	py: number,
@@ -101,10 +101,10 @@ export const uc = (
 	return m - ra;
 };
 
-// Ein Kreis des Zeichens als (x, y, r).
+// One circle of the mark as (x, y, r).
 export type Circle = readonly [x: number, y: number, r: number];
 
-// Das ManaWG-Zeichen: acht Kreise (x, y, r) im Raster 416 x 346, Mittelpunkt (208, 173).
+// The ManaWG mark: eight circles (x, y, r) on a 416 x 346 grid, centre (208, 173).
 export const AB = [
 	[200, 198, 80],
 	[77, 105, 52],
@@ -116,14 +116,14 @@ export const AB = [
 	[42, 239, 44],
 ] as const satisfies readonly Circle[];
 
-// Abstandsfeld des Zeichens, negativ innen.
+// Distance field of the mark, negative inside.
 export const aMark = (x: number, y: number): number => {
 	let d = 1e9;
 	for (const c of AB) d = smn(d, Math.hypot(x - c[0], y - c[1]) - c[2], 38);
 	return Math.max(d, 23 - Math.hypot(x - 207, y - 175));
 };
 
-// Ruhelagen der acht Kreise: zweidimensional (Berg, Sonne) und dreidimensional (Organ).
+// Rest positions of the eight circles: two-dimensional (mountain, sun) and three-dimensional (organ).
 export const HOME: readonly Circle[] = AB.map(
 	(b): Circle => [(b[0] - 208) / 600, -(b[1] - 173) / 600, b[2] / 600],
 );

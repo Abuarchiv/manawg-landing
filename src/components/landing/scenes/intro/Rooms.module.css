@@ -1,5 +1,5 @@
-/* Die Spalte der Raumkarten. Die vier Karten liegen im selben Gitterfeld übereinander, die Spalte ist
-   so hoch wie die höchste Karte. Quer: links neben der Wohnung. Hoch: volle Breite unter dem Kopf. */
+/* The column of room cards. The four cards stack in the same grid cell, the column is
+   as tall as the tallest card. Landscape: left of the flat. Portrait: full width below the header. */
 .column {
 	position: absolute;
 	left: var(--rand);

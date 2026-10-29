@@ -1,5 +1,5 @@
-// Rechner: Chrome 154 auf macOS (INSTALL-FLOWS 4.1). Bühne 820 x 538 px. Aufbau und Reihenfolge belegt, Pixelmaße
-// und Zeiten des Rechner-Teils sind nicht gemessen (INSTALL-FLOWS 4, 8.4).
+// Desktop: Chrome 154 on macOS (INSTALL-FLOWS 4.1). Stage 820 x 538 px. Structure and order are documented,
+// pixel dimensions and timings of the desktop part are not measured (INSTALL-FLOWS 4, 8.4).
 
 import {
 	ArrowLeft,
@@ -49,7 +49,7 @@ export function Desktop() {
 			data-k="dk"
 			style={{ fontFamily: '"Google Sans", Roboto, Inter, system-ui, sans-serif' }}
 		>
-			{/* Browserfenster */}
+			{/* Browser window */}
 			<div className={s.dk_window} data-k="dk-fenster">
 				<div className={s.dk_bar}>
 					<TrafficLights />
@@ -105,7 +105,7 @@ export function Desktop() {
 				</div>
 			</div>
 
-			{/* eigenes App-Fenster */}
+			{/* Standalone app window */}
 			<div className={s.dk_app} data-k="dk-app">
 				<div className={s.dk_title}>
 					<TrafficLights />

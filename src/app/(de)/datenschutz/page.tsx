@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 		canonical: '/datenschutz',
 		languages: languageAlternates('/datenschutz', '/en/privacy') ?? {},
 	},
-	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
+	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
 	openGraph: {
 		title: 'Datenschutzerklärung von ManaWG',
 		description:
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
 				<h1 className="text-2xl font-bold text-[var(--text-1)] mb-8">Datenschutzerklärung</h1>
 
 				<div className="prose prose-sm max-w-none text-[var(--text-2)] space-y-6 leading-relaxed [&_a]:text-[var(--accent)] [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-none [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-[var(--accent)] [&_a:focus-visible]:rounded-sm">
-					{/* 1. Verantwortlicher */}
+					{/* 1. Controller */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Verantwortlicher</h2>
 						<p>Abubakar Abditube</p>
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 2. Datenschutzbeauftragter */}
+					{/* 2. Data protection officer */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							2. Datenschutzbeauftragter
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 3. Wer wir sind */}
+					{/* 3. Who we are */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">3. Wer wir sind</h2>
 						<p>
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 4. Verarbeitungstätigkeiten */}
+					{/* 4. Processing activities */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							4. Verarbeitungstätigkeiten
@@ -363,7 +363,7 @@ export default function PrivacyPage() {
 						</ul>
 					</section>
 
-					{/* 5. Empfänger und Auftragsverarbeiter */}
+					{/* 5. Recipients and processors */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							5. Empfänger und Auftragsverarbeiter
@@ -418,7 +418,7 @@ export default function PrivacyPage() {
 						</ul>
 					</section>
 
-					{/* 6. Keine Werbung und keine Werbeprofile */}
+					{/* 6. No advertising and no advertising profiles */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							6. Keine Werbung und keine Werbeprofile
@@ -433,7 +433,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 7. Cookies & Local Storage */}
+					{/* 7. Cookies & local storage */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							7. Cookies und lokaler Browser-Speicher
@@ -447,7 +447,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 8. Betroffenenrechte */}
+					{/* 8. Data subject rights */}
 					<section>
 						<h2 id="rechte" className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							8. Deine Rechte (Betroffenenrechte)
@@ -531,7 +531,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 9. Keine automatisierte Entscheidung */}
+					{/* 9. No automated decision-making */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							9. Keine automatisierte Entscheidungsfindung / Profiling
@@ -543,7 +543,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 10. Pflicht zur Bereitstellung */}
+					{/* 10. Obligation to provide data */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							10. Pflicht zur Bereitstellung der Daten
@@ -556,7 +556,7 @@ export default function PrivacyPage() {
 						</p>
 					</section>
 
-					{/* 11. Aktualisierungen */}
+					{/* 11. Updates */}
 					<section>
 						<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
 							11. Aktualisierungen dieser Erklärung

@@ -1,25 +1,25 @@
-// iPhone: iOS 27, Safari im Layout „Kompakt“. Zeiten nach INSTALL-FLOWS 2.2, 2.6 und 8.3 (gemessen am Simulator),
-// Schleife ≈ 13,5 s. Alle Werte sind reine Funktionen der Zeit t.
+// iPhone: iOS 27, Safari in the "Compact" layout. Timings per INSTALL-FLOWS 2.2, 2.6 and 8.3 (measured on the simulator),
+// loop ≈ 13.5 s. All values are pure functions of time t.
 
 import { fl, put, tf } from './style';
 import { cl, easeOut, io, mix, seg, spring } from './timing';
 import type { PlaybackPlan } from './types';
 
-// Tippzeiten: ≡, Teilen, Mehr anzeigen, Zum Home-Bildschirm, Hinzufügen, Icon
+// Tap times: ≡, Share, Show More, Add to Home Screen, Add, icon
 const T1 = 1.3;
 const T2 = 2.9;
 const T3 = 4.5;
 const T4 = 6.1;
 const T5 = 8.1;
 const T6 = 10.35;
-export const LOOP = 13.45; // die laufende App bleibt 2,3 s stehen, bevor die Schleife neu beginnt
+export const LOOP = 13.45; // the running app stays for 2.3 s before the loop restarts
 
 export const plan: PlaybackPlan = {
 	loop: LOOP,
 	ks: 278 / 390,
-	// Beginn der drei Schritte (Ruhezustände, ein Fingertipp steht kurz bevor)
+	// Start of the three steps (resting states, a finger tap is about to happen)
 	jumps: [0, T3 - 0.9, T5 - 1.2] as const,
-	// Standbilder für „reduce“: Ruhelage je Schritt
+	// Still frames for "reduce": resting position per step
 	still: [T2 - 0.6, T4 - 0.5, T5 + 1.2] as const,
 	taps: [
 		{ t: T1, x: 115, y: 786, g: 0 },
@@ -30,7 +30,7 @@ export const plan: PlaybackPlan = {
 		{ t: T6, x: 329, y: 196, g: 3 },
 	] as const,
 	render(t, E) {
-		// ---------- Seitenmenü: Feder aus der Taste (ζ 0,59, ωn 16,6 rad/s) ----------
+		// ---------- Side menu: spring out of the button (ζ 0.59, ωn 16.6 rad/s) ----------
 		const h1 = t - (T1 + 0.05);
 		const closing = seg(t, T2 + 0.03, 0.2);
 		const ms = t < T2 + 0.03 ? spring(h1) : (1 - io(closing)) * spring(T2 - T1);
@@ -41,7 +41,7 @@ export const plan: PlaybackPlan = {
 			f: fl(t < T2 ? 8 * (1 - cl(h1 / 0.2)) : 0),
 		});
 
-		// ---------- Share-Sheet: aufsteigen, dann auf Vollhöhe ----------
+		// ---------- Share sheet: rises, then expands to full height ----------
 		const sIn = easeOut(seg(t, T2 + 0.2, 0.42));
 		const e = easeOut(seg(t, T3 + 0.065, 0.58));
 		const top = 438 - 390 * e;
@@ -53,7 +53,7 @@ export const plan: PlaybackPlan = {
 			t: tf(0, (1 - sIn) * 420),
 		});
 		put(E['ios-share-x'], { o: cl((e - 0.3) / 0.7) });
-		// „Mehr anzeigen“: der Pfeil dreht sich über 350 ms, die Beschriftung blendet über
+		// "Show More": the arrow rotates over 350 ms while the label crossfades
 		const mr = seg(t, T3 + 0.065, 0.35);
 		put(E['ios-mehr-t'], { o: 1 - mr });
 		put(E['ios-weniger-t'], { o: mr });
@@ -61,7 +61,7 @@ export const plan: PlaybackPlan = {
 		put(E['ios-weniger-pfeil'], { o: 0 });
 		put(E['ios-scrim1'], { o: 0.18 * e });
 
-		// ---------- Dialog „Zum Home-Bildschirm“ ----------
+		// ---------- "Add to Home Screen" dialog ----------
 		const dIn = easeOut(seg(t, T4, 0.58));
 		const dh = easeOut(seg(t, T5, 0.2));
 		put(E['ios-scrim2'], { o: 0.26 * dIn });
@@ -82,9 +82,9 @@ export const plan: PlaybackPlan = {
 			t: tf(0, (1 - kIn) * 329 + kOut * 329),
 		});
 
-		// ---------- Hinzufügen: der ganze Stapel (Safari, Teilen-Blatt, Dialog) zieht sich in 200 ms klein in Richtung
-		// der Symbolzelle und blendet aus; darunter steht der Home-Bildschirm deckend (nur unscharf), nie zwei
-		// halbdurchsichtige Ebenen. Erst wenn der Stapel weg ist, wird Home scharf und das Symbol springt in die Zelle ----------
+		// ---------- Add: the whole stack (Safari, share sheet, dialog) shrinks toward the icon cell in 200 ms
+		// and fades out; the home screen below stays opaque (only blurred), never two
+		// semi-transparent layers. Only once the stack is gone does home come into focus and the icon bounce into the cell ----------
 		const sp = io(seg(t, T5 + 0.1, 0.2));
 		const sc = 1 - 0.9 * sp;
 		const stackOn = t < T5 + 0.31;
@@ -103,14 +103,14 @@ export const plan: PlaybackPlan = {
 			f: fl(14 * (1 - he) + 14 * lz, mix(0.7, 1, he) * (1 - 0.35 * lz)),
 			t: tf(0, 0, 1.08 - 0.08 * he - 0.05 * lz),
 		});
-		// das Symbol kommt erst in die Zelle, wenn der Home-Bildschirm scharf ist, mit weicher Feder 0,7 -> 1
+		// the icon enters the cell only once the home screen is in focus, with a soft spring 0.7 -> 1
 		const ip = spring(t - (T5 + 0.62), 0.6, 20);
 		put(E['ios-icon'], {
 			o: seg(t, T5 + 0.6, 0.12),
 			t: tf(0, 0, mix(0.7, 1, Math.min(ip, 1.15))),
 		});
 
-		// ---------- Start der App: Karte wächst aus dem Icon, schwarzes Startbild, Überblendung ----------
+		// ---------- App launch: card grows out of the icon, black launch screen, crossfade ----------
 		const aF = seg(t, T6 + 0.8, 0.3);
 		put(E['ios-launch'], {
 			d: t > T6 && t < T6 + 1.15 ? 'flex' : '',
@@ -121,7 +121,7 @@ export const plan: PlaybackPlan = {
 			height: `${60 + 784 * lz}px`,
 			borderRadius: `${14 + 28 * lz}px`,
 		});
-		// das Zeichen steht auf dem schwarzen Startbild und ist weg, bevor die App einblendet
+		// the mark sits on the black launch screen and is gone before the app fades in
 		put(E['ios-launch-logo'], { o: seg(t, T6 + 0.25, 0.25) * (1 - seg(t, T6 + 0.6, 0.2)) });
 		put(E['ios-app'], { d: t > T6 + 0.8 ? 'block' : '', o: aF });
 	},

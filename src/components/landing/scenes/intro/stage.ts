@@ -1,9 +1,9 @@
-// Die Intro-Bühne: eine Sticky-Fläche in voller Fenstergröße, auf der Berg, Zeichen, Organ, Flut,
-// Wohnung und die Ende-Szene nacheinander laufen (PLAN-V2 2.4 und 4.1).
+// The intro stage: a sticky area at full window size on which mountain, mark, organ, flood,
+// flat and the end scene run one after another (PLAN-V2 2.4 and 4.1).
 //
-// stage.ts liest je Bild die Scroll-Strecke s, macht daraus den Fortschritt P (zeitachse.ts), setzt die
-// CSS-Variablen und data-phase an #final und ruft die Teilrenderer auf. Die Variablen werden JEDES
-// Bild gesetzt, auch wenn nichts gezeichnet wird, damit nach Sprüngen nichts stehen bleibt.
+// stage.ts reads the scroll distance s each frame, turns it into the progress P (timeline.ts), sets the
+// CSS variables and data-phase on #final and calls the sub-renderers. The variables are set EVERY
+// frame, even when nothing is drawn, so nothing is left stale after jumps.
 
 import { type Fit, dprFor, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
@@ -17,52 +17,52 @@ import { drawStars } from './stars';
 import { unwarp, warp } from './timeline';
 import type { HeroMarks, Hole, StageContext, StagePointer } from './types';
 
-/** Phase der Bühne (data-phase an #final): Intro, Ende-Ebene oder vorbeigescrollt. */
+/** Phase of the stage (data-phase on #final): intro, end layer or scrolled past. */
 type Phase = 'intro' | 'ende' | 'nach';
 
-/** Zustand der Bühne (für QA-Haken und Landing). */
+/** State of the stage (for the QA hook and the landing page). */
 export interface StageState {
-	/** Geglätteter Fortschritt. */
+	/** Smoothed progress. */
 	sp: number;
 	init: boolean;
-	/** Beginn des Aufbaus des Zeichens. */
+	/** Start of the mark build-up. */
 	a0: number | null;
-	/** Geglätteter Zeiger (-1..1). */
+	/** Smoothed pointer (-1..1). */
 	sm: [number, number];
-	/** Adaptive Auflösung des Szenenpuffers. */
+	/** Adaptive resolution of the scene buffer. */
 	ad: number;
-	/** Letzte 15 Bilddauern. */
+	/** Last 15 frame durations. */
 	rb: number[];
 	ready: boolean;
 	endOn: boolean;
 	handsLoaded: boolean;
-	/** Zeitgeglättete Deckkraft der Raumkarten. */
+	/** Time-smoothed opacity of the room cards. */
 	kv: number[];
 	P: number;
 	s: number;
 	phase: Phase;
-	/** Zeitpunkt, seit dem die Bühne ganz aus dem Bild ist (null: sichtbar). */
+	/** Time since which the stage has been fully out of view (null: visible). */
 	goneSince: number | null;
-	/** Pufferspeicher der Ebenen freigegeben. */
+	/** Layer buffer memory released. */
 	released: boolean;
 }
 
-/** Die laufende Bühne. */
+/** The running stage. */
 export interface Stage {
 	state: StageState;
-	/** y-Position im Dokument für den Fortschritt P (QA). */
+	/** y position in the document for progress P (QA). */
 	yForP: (P: number) => number;
 	destroy: () => void;
 }
 
-/** Die laufende Bühne (für QA-Haken und Landing). */
+/** The running stage (for the QA hook and the landing page). */
 export const live: { stage: Stage | null } = { stage: null };
 
-/** Der Klick aus der App im Handy (Phone.tsx) trägt direkt = true. */
+/** The click from the app in the phone (Phone.tsx) carries direct = true. */
 type StagePointerEvent = PointerEvent & { direct?: boolean };
 
 function required<T>(el: T | null, name: string): T {
-	if (!el) throw new Error(`stage: ${name} fehlt`);
+	if (!el) throw new Error(`stage: ${name} missing`);
 	return el;
 }
 
@@ -74,7 +74,7 @@ export function createStage({
 }: {
 	sec: HTMLElement;
 	stageEl: HTMLElement;
-	/** Mono labels of the rooms in the floor plan, in the order of wohnung.ts. */
+	/** Mono labels of the rooms in the floor plan, in the order of flat.ts. */
 	rooms: readonly string[];
 	/** Names of the flatmates walking through the plan. */
 	people: readonly string[];
@@ -99,7 +99,7 @@ export function createStage({
 
 	let W = stageEl.clientWidth;
 	let H = stageEl.clientHeight;
-	// Scroll-Strecke der Bühne: Abschnittshöhe minus Bühne (bei reduzierter Bewegung kürzer, landing.css)
+	// Scroll distance of the stage: section height minus stage (shorter with reduced motion, landing.css)
 	const travel = () => Math.max(1, sec.offsetHeight - H);
 	let safeH = safe.clientHeight;
 	let dpr = dprFor(2, 1.5, W, H);
@@ -107,18 +107,18 @@ export function createStage({
 	let cam: Fit = camera(W, H, safeH, loop.mode);
 	let holes: Hole[] = [];
 
-	// Zustand der Bühne
+	// State of the stage
 	const st: StageState = {
-		sp: 0, // geglätteter Fortschritt
+		sp: 0, // smoothed progress
 		init: false,
-		a0: null, // Beginn des Aufbaus des Zeichens
-		sm: [0.3, 0.1], // geglätteter Zeiger (-1..1)
-		ad: 1, // adaptive Auflösung des Szenenpuffers
-		rb: [], // letzte 15 Bilddauern
+		a0: null, // start of the mark build-up
+		sm: [0.3, 0.1], // smoothed pointer (-1..1)
+		ad: 1, // adaptive resolution of the scene buffer
+		rb: [], // last 15 frame durations
 		ready: false,
 		endOn: false,
 		handsLoaded: false,
-		kv: [0, 0, 0, 0], // zeitgeglättete Deckkraft der Raumkarten
+		kv: [0, 0, 0, 0], // time-smoothed opacity of the room cards
 		P: 0,
 		s: 0,
 		phase: 'intro',
@@ -163,8 +163,8 @@ export function createStage({
 	};
 	let syPrev = window.scrollY;
 
-	// Variablen nur an die Elemente, die sie lesen, nicht an #final oder die ganze Bühne: ein neuer Wert lässt die
-	// Stile aller Nachfahren des Trägers neu berechnen, im Intro jedes Bild.
+	// Variables only on the elements that read them, not on #final or the whole stage: a new value makes the
+	// styles of all descendants of the carrier recompute, in the intro every frame.
 	const cache: Record<string, string> = {};
 	const setVar = (k: string, v: string, targets: (HTMLElement | null)[] = [stageEl]) => {
 		if (cache[k] === v) return;
@@ -198,7 +198,7 @@ export function createStage({
 	};
 	const stops = [observe(stageEl, resize), observe(safe, resize)];
 
-	// Zeiger: Listener an der ganzen Seite, Koordinaten in Bühnen-CSS-Pixeln
+	// Pointer: listener on the whole page, coordinates in stage CSS pixels
 	const place = (e: PointerEvent) => {
 		const r = stageEl.getBoundingClientRect();
 		m.x = e.clientX - r.left;
@@ -213,10 +213,10 @@ export function createStage({
 	const onDown = (e: StagePointerEvent) => {
 		place(e);
 		m.down = true;
-		// direkt: der Klick kam aus der App im Handy (Phone.tsx) und ist dort schon angekommen, die Hand drückt nur mit
+		// direct: the click came from the app in the phone (Phone.tsx) and has already arrived there, the hand only presses along
 		m.direct = !!e.direct;
 		const tt = performance.now() / 1000;
-		// Maus und Stift: der Klick gilt sofort. Touch: erst beim Loslassen und nur ohne Wisch (siehe onUp).
+		// Mouse and pen: the click counts immediately. Touch: only on release and only without a swipe (see onUp).
 		if (m.type !== 'touch') m.clickT = tt;
 		m.x0 = m.x;
 		m.y0 = m.y;
@@ -242,7 +242,7 @@ export function createStage({
 		document.dispatchEvent(new CustomEvent('landing:bereit'));
 	};
 
-	/** Fortschritt glätten. Sofort übernehmen beim ersten Bild und solange die Bühne nicht zu sehen ist. */
+	/** Smooths the progress. Takes the value immediately on the first frame and while the stage is not visible. */
 	const smooth = (Pz: number, dt: number, visible: boolean): number => {
 		if (!st.init || !visible) {
 			st.sp = Pz;
@@ -255,8 +255,8 @@ export function createStage({
 	};
 
 	/**
-	 * Seit 2 s ganz aus dem Bild: Pufferspeicher der Ebenen freigeben (5K-Fläche: 59 MB je Canvas), beim
-	 * Wiedereintritt neu messen. Die Ebenen passen ihre Größe beim Zeichnen selbst an.
+	 * Fully out of view for 2 s: release the buffer memory of the layers (5K area: 59 MB per canvas), measure
+	 * again on re-entry. The layers adjust their size themselves when drawing.
 	 */
 	const manageMemory = (visible: boolean, now: number) => {
 		if (!visible) {
@@ -275,7 +275,7 @@ export function createStage({
 		}
 	};
 
-	/** CSS-Variablen, Phase und Bedienbarkeit, jedes Bild. Gibt die Phase zurück. */
+	/** CSS variables, phase and operability, every frame. Returns the phase. */
 	const setStyle = (
 		P: number,
 		fpA: number,
@@ -287,35 +287,35 @@ export function createStage({
 		headerBottom: number,
 		titleTop: number,
 	): Phase => {
-		// Titel und Hinweis brauchen --p nur bis 0,09 (danach sind sie ganz weg). Weiter oben würde jeder neue Wert
-		// im Intro die Stile aller Nachfahren von #final neu berechnen (ca. 1,5 ms je Bild).
+		// Title and hint need --p only up to 0.09 (after that they are gone entirely). Above that, every new value
+		// in the intro would recompute the styles of all descendants of #final (about 1.5 ms per frame).
 		setVar('--p', Math.min(P, 0.1).toFixed(4), [stageEl, hints]);
-		// Phone.tsx lädt Standbild und App ab hier, weit vor der Ende-Ebene (der Aufbau der App-Seite dauert 20 bis 60 ms):
-		// am liebsten in der ersten Scroll-Pause ab P 0,2 (der Aufbau im Scrollen ruckelt), spätestens bei P 0,55
+		// Phone.tsx loads still image and app from here on, well before the end layer (building the app page takes 20 to 60 ms):
+		// preferably in the first scroll pause from P 0.2 (building while scrolling stutters), at the latest at P 0.55
 		if (root.dataset.nah !== '1' && (P > 0.55 || (P > 0.2 && loop.now - loop.act > 0.5)))
 			root.dataset.nah = '1';
 		setVar('--g', (1 - fpA).toFixed(3), [cvHero]);
-		// Wohnung ist bei endA 0,5 weg, die Ende-Ebene beginnt erst bei 0,35: kaum Überlapp, kein grauer Schleier
+		// The flat is gone at endA 0.5, the end layer only begins at 0.35: hardly any overlap, no grey veil
 		setVar('--f', (Math.max(fpA, cl(portal * 8)) * (1 - cl(endA * 2))).toFixed(3), [cvFlat]);
-		// Portal: die Wohnung öffnet sich als Kreis im Loch des Organs, kein schwarzes Bild zwischen Tauchgang und Wohnung
+		// Portal: the flat opens as a circle in the hole of the organ, no black frame between dive and flat
 		setVar('--por', portal.toFixed(3), [cvFlat]);
 		setVar('--e', endA.toFixed(3), [endEl, hints]);
-		// Raumkarten am Scroll geführt wie im Entwurf (Kurve und Überlappfreiheit: wohnung.karten)
+		// Room cards driven by scroll as in the design (curve and overlap freedom: cardOpacity in flat.ts)
 		for (const [j, k] of cards.entries()) {
 			st.kv[j] = k;
 			setVar(`--c${j}`, k.toFixed(3), [roomsEl]);
 		}
-		// Hochformat: der Kopf bleibt sichtbar (Titel steht darunter), sonst bliebe nach dem Ausblenden der Knopf allein
+		// Portrait: the header stays visible (the title sits below it), otherwise the button would be left alone after fading out
 		const headerOff = loop.mode === 'hoch' ? 0 : endA * (rb.bottom > headerBottom ? 1 : 0);
 		setVar('--kopf-aus', headerOff.toFixed(3), [header]);
-		// Hochformat: Titel und Knopf der Ende-Ebene blenden aus, sobald sie beim Hinausscrollen das Kopfband
-		// erreichen (kein Text über dem Logo); in demselben Maß kommt der Kopf-Knopf zurück
+		// Portrait: title and button of the end layer fade out as soon as they reach the header band
+		// while scrolling out (no text over the logo); to the same degree the header button returns
 		let titleOff = 0;
 		if (loop.mode === 'hoch' && endTitle && endA > 0) {
 			titleOff = 1 - cl((titleTop - headerBottom) / 16);
 		}
 		setVar('--ende-titel-aus', titleOff.toFixed(3), [endTitle]);
-		// Hochformat: der Kopf bleibt, aber sein Knopf geht, solange der Knopf der Ende-Ebene im Bild steht (kein Doppel)
+		// Portrait: the header stays but its button goes while the button of the end layer is in view (no duplicate)
 		const headerCtaOff =
 			loop.mode === 'hoch' ? endA * (rb.bottom > headerBottom ? 1 : 0) * (1 - titleOff) : 0;
 		setVar('--kopf-cta-aus', headerCtaOff.toFixed(3), [header]);
@@ -327,7 +327,7 @@ export function createStage({
 			root.dataset.phase = phase;
 		}
 
-		// Bedienelemente der Ende-Ebene nur bedienbar, wenn sie zu sehen sind
+		// Controls of the end layer are operable only when visible
 		const ctaOn = endA > 0.6 && visible;
 		for (const el of ctas) {
 			const v = ctaOn ? 'auto' : 'none';
@@ -340,8 +340,8 @@ export function createStage({
 	};
 
 	/**
-	 * Auflösung des Szenenpuffers (F-07): Ausreißer über 0,25 s (Tab-Wechsel, Pause) zählen nicht.
-	 * Abgesenkt wird nur, wenn das gleitende Mittel über 15 Bilder über 0,05 s liegt, erholt bei ruhigem Lauf.
+	 * Resolution of the scene buffer (F-07): outliers above 0.25 s (tab switch, pause) do not count.
+	 * It is lowered only when the moving average over 15 frames exceeds 0.05 s, and recovers when running calmly.
 	 */
 	const adaptResolution = (raw: number) => {
 		if (raw <= 0.25) {
@@ -354,19 +354,19 @@ export function createStage({
 	};
 
 	const frame = (t0: number, dt: number, now: number, raw: number) => {
-		const t = loop.reduced ? 0 : t0; // reduce: Hero-Zeit und Autopilot stehen still
-		if (dprFor(2, 1.5, W, H) !== dpr) resize(); // Auflösungsstufe (loop.ts) hat sich geändert
+		const t = loop.reduced ? 0 : t0; // reduce: hero time and autopilot stand still
+		if (dprFor(2, 1.5, W, H) !== dpr) resize(); // resolution level (loop.ts) has changed
 		const rb = stageEl.getBoundingClientRect();
 		const rs = sec.getBoundingClientRect();
 		const visible = rb.bottom > 0 && rb.top < loop.vh;
-		// alle Lagen lesen, bevor setzeStil schreibt (sonst erzwingt jedes Lesen eine Stilberechnung mitten im Bild)
+		// read all layouts before setStyle writes (otherwise every read forces a style recalculation mid-frame)
 		const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
 		const titleTop = endTitle ? endTitle.getBoundingClientRect().top : 0;
 		const s = cl(-rs.top / travel());
 		const Pz = warp(s);
 		const P = smooth(Pz, dt, visible);
 		manageMemory(visible, now);
-		// Scrollgeschwindigkeit (px/s), geglättet: Handy und Hände hängen dem Scroll nach (hand/index.ts)
+		// Scroll speed (px/s), smoothed: phone and hands lag behind the scroll (hand/index.ts)
 		const sy = window.scrollY;
 		const svRaw = dt > 0 ? cl((sy - syPrev) / Math.max(dt, 0.004), -4000, 4000) : 0;
 		syPrev = sy;
@@ -378,7 +378,7 @@ export function createStage({
 		const dive = ss((P - 0.48) / 0.12);
 		const fpA = ss((P - 0.58) / 0.05);
 		const portal = loop.reduced ? 1 : ss((P - 0.54) / 0.06);
-		if (P > 0.3) preloadFlat(); // Render und Shader laden, lange bevor die Wohnung ab P 0,54 erscheint
+		if (P > 0.3) preloadFlat(); // load render and shader long before the flat appears at P 0.54
 		const endA = ss((P - 0.9) / 0.05);
 		const cards = flat.cardOpacity(P);
 		st.P = P;
@@ -407,7 +407,7 @@ export function createStage({
 			});
 			c.fpA = fpA;
 			c.endA = endA;
-			// Zerfall der Hände: beginnt, sobald die Bühne nach oben weggeschoben wird (rb.top < 0), Rückwärts setzt zusammen
+			// Decay of the hands: begins as soon as the stage is pushed up (rb.top < 0), running backwards reassembles them
 			c.decay = loop.reduced ? 0 : ss(cl(-rb.top / (0.6 * H)));
 			c.endOn = st.endOn;
 			c.stageTop = rb.top;
@@ -415,11 +415,11 @@ export function createStage({
 			c.holes = holes;
 			if (loop.n % 30 === 1) measureHoles();
 
-			// Zeiger (-1..1) für Berg und Organ, ohne Zeiger läuft ein Autopilot
+			// Pointer (-1..1) for mountain and organ, without a pointer an autopilot runs
 			const tm: [number, number] = m.in
 				? [(m.x - W / 2) / (W / 2), (H / 2 - m.y) / (H / 2)]
 				: [0.5 * Math.cos(t * 0.12), 0.4 * Math.sin(t * 0.16)];
-			// Konstante des Entwurfs 0,06 je Bild bei 120 Hz, auf dt umgerechnet
+			// Design constant 0.06 per frame at 120 Hz, converted to dt
 			const ks = 1 - Math.exp(-7.43 * dt);
 			st.sm[0] += (tm[0] - st.sm[0]) * ks;
 			st.sm[1] += (tm[1] - st.sm[1]) * ks;

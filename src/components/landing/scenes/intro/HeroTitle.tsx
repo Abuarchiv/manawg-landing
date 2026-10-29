@@ -2,8 +2,8 @@ import { css } from '../../core/dc';
 import { BrLines, useDict } from '../../dict';
 import s from './HeroTitle.module.css';
 
-// Titel der Intro: Sternenfeld (sterne.ts) und die Überschrift der Seite. Voll bis P 0,04, null bei
-// P 0,086 (T-09: Plateau statt sofortigem Verblassen).
+// Title of the intro: star field (stars.ts) and the page heading. Full until P 0.04, zero at
+// P 0.086 (T-09: plateau instead of an immediate fade).
 
 export function HeroTitle() {
 	const { hero } = useDict();

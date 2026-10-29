@@ -1,4 +1,4 @@
-// Lauf: pnpm test (Node-Testrunner, kein Framework)
+// Run with: pnpm test (node test runner, no framework)
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { relatedSlugs } from '../groups.ts';
@@ -6,7 +6,7 @@ import { TOPICS_DE } from './index.ts';
 
 const slugs = Object.keys(TOPICS_DE);
 
-test('Weiterlesen: drei verschiedene, vorhandene Seiten ohne die eigene', () => {
+test('further reading: three distinct, existing pages excluding the page itself', () => {
 	for (const slug of slugs) {
 		const v = relatedSlugs(slug);
 		assert.equal(v.length, 3, slug);
@@ -18,7 +18,7 @@ test('Weiterlesen: drei verschiedene, vorhandene Seiten ohne die eigene', () => 
 	}
 });
 
-test('Tabellen hängen an der Einleitung oder an einer vorhandenen Abschnittsüberschrift', () => {
+test('tables attach to the intro or to an existing section heading', () => {
 	for (const [slug, t] of Object.entries(TOPICS_DE))
 		for (const tab of t.tables ?? [])
 			assert.ok(
@@ -27,7 +27,7 @@ test('Tabellen hängen an der Einleitung oder an einer vorhandenen Abschnittsüb
 			);
 });
 
-test('Markdown-Links im Text zeigen auf vorhandene Seiten', () => {
+test('markdown links in the text point to existing pages', () => {
 	const ok = (target: string) =>
 		target === '/' || target === '/ratgeber' || target.slice(1) in TOPICS_DE;
 	for (const [slug, t] of Object.entries(TOPICS_DE)) {

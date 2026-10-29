@@ -1,17 +1,17 @@
-// Android: Chrome ab 150 (Menü nach Chromium 157), Schleife ≈ 14,3 s. Zeiten nach INSTALL-FLOWS 3.2, 3.3, 3.4:
-// Menü 0,45–0,65 s gestaffelt, Dialog 0,2 s, Meldungen „wird installiert…“ ≈ 2 s. Alles reine Funktionen von t.
+// Android: Chrome 150 and later (menu per Chromium 157), loop ≈ 14.3 s. Timings per INSTALL-FLOWS 3.2, 3.3, 3.4:
+// menu staggered over 0.45–0.65 s, dialog 0.2 s, "installing…" messages ≈ 2 s. All pure functions of t.
 
 import { fl, put, tf } from './style';
 import { cl, easeOut, io, mat, mix, seg, spring } from './timing';
 import type { PlaybackPlan } from './types';
 
 const T1 = 1.2; // ⋮
-const T2 = 3.1; // „Installieren und Verknüpfung erstellen“
-const T3 = 4.6; // im Sheet „Installieren“
-const T4 = 6.2; // im Dialog „Installieren“
-const TH = 9.1; // Wechsel auf den Startbildschirm
-const T5 = 11.0; // Icon antippen
-export const LOOP = 14.3; // die laufende App bleibt 2,3 s stehen, bevor die Schleife neu beginnt
+const T2 = 3.1; // "Install and create shortcut"
+const T3 = 4.6; // "Install" in the sheet
+const T4 = 6.2; // "Install" in the dialog
+const TH = 9.1; // switch to the home screen
+const T5 = 11.0; // tap the icon
+export const LOOP = 14.3; // the running app stays for 2.3 s before the loop restarts
 const ROWS = 17;
 
 export const plan: PlaybackPlan = {
@@ -27,7 +27,7 @@ export const plan: PlaybackPlan = {
 		{ t: T5, x: 64, y: 104, g: 3 },
 	] as const,
 	render(t, E) {
-		// ---------- Menü: Popup rechts, Zeilen gestaffelt ----------
+		// ---------- Menu: popup on the right, rows staggered ----------
 		const h = t - (T1 + 0.05);
 		const m = mat(seg(t, T1 + 0.05, 0.3));
 		const mo = 1 - seg(t, T2 + 0.03, 0.07);
@@ -49,7 +49,7 @@ export const plan: PlaybackPlan = {
 			t: tf(0, (1 - sIn + sOut) * 264),
 		});
 
-		// ---------- Dialog „App installieren“ (0,2 s) ----------
+		// ---------- "Install app" dialog (0.2 s) ----------
 		const dIn = easeOut(seg(t, T3 + 0.1, 0.3));
 		const dOut = seg(t, T4 + 0.02, 0.19);
 		put(E['and-dlg'], {
@@ -60,7 +60,7 @@ export const plan: PlaybackPlan = {
 		put(E['and-caret'], {
 			o: t > T3 + 0.3 && t < T4 && Math.floor((t - T3) * 1.9) % 2 === 0 ? 1 : 0,
 		});
-		// Abdunkelung: Sheet 50 %, Dialog 65 % (Seite auf 35 % Helligkeit)
+		// Scrim: sheet 50 %, dialog 65 % (page at 35 % brightness)
 		const sc1 = 0.5 * easeOut(seg(t, T2 + 0.1, 0.3));
 		const scrim =
 			t < T3 + 0.02
@@ -70,12 +70,12 @@ export const plan: PlaybackPlan = {
 					: 0.65 * (1 - seg(t, T4 + 0.02, 0.19));
 		put(E['and-scrim'], { o: scrim });
 
-		// ---------- Meldungen ----------
+		// ---------- Messages ----------
 		put(E['and-toast1'], { o: seg(t, T4 + 0.2, 0.2) * (1 - seg(t, T4 + 1.9, 0.2)) });
 		put(E['and-toast2'], { o: seg(t, T4 + 2.0, 0.2) * (1 - seg(t, T4 + 2.9, 0.2)) });
 
-		// ---------- Home: Chrome schrumpft in 350 ms auf das ManaWG-Symbol oben links (Mitte 64, 104) und blendet
-		// dabei aus, danach springt das Symbol kurz (Feder) ----------
+		// ---------- Home: Chrome shrinks in 350 ms onto the ManaWG icon at the top left (center 64, 104) and fades
+		// out while doing so, then the icon bounces briefly (spring) ----------
 		const hp = io(seg(t, TH, 0.35));
 		const sc = 1 - 0.9 * hp;
 		const cx = mix(205.5, 64, hp);
@@ -96,7 +96,7 @@ export const plan: PlaybackPlan = {
 		const ip = spring(t - (TH + 0.33), 0.6, 20);
 		put(E['and-icon'], { t: tf(0, 0, t < TH + 0.33 ? 1 : mix(0.8, 1, Math.min(ip, 1.15))) });
 
-		// ---------- Start: Karte wächst aus dem Icon, Splash, Überblendung ----------
+		// ---------- Launch: card grows out of the icon, splash, crossfade ----------
 		const lz = easeOut(seg(t, T5, 0.4));
 		const aF = seg(t, T5 + 1.0, 0.25);
 		put(E['and-launch'], {

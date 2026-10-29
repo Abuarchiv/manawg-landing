@@ -1,5 +1,5 @@
-// Themenseiten für Suchanfragen, die die Startseite allein nicht abdeckt.
-// Nur Funktionen nennen, die es in manawg-app wirklich gibt.
+// Topic pages for search queries that the home page alone does not cover.
+// Only name features that really exist in manawg-app.
 import type { Topic } from '../types.ts';
 import { NOT_CHECKED, comparisonTable } from './comparison.ts';
 

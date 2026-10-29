@@ -2,7 +2,7 @@ import { type CSSProperties, type ElementType, type KeyboardEvent, useState } fr
 
 const cache = new Map<string, CSSProperties>();
 
-/** Inline-Style-String der Vorlage 1:1 als React-Style (Werte bleiben Strings, keine px-Umrechnung). */
+/** Inline style string of the template 1:1 as a React style (values stay strings, no px conversion). */
 export function css(s: string): CSSProperties {
 	let r = cache.get(s);
 	if (!r) {
@@ -22,7 +22,7 @@ export function css(s: string): CSSProperties {
 	return r;
 }
 
-/** style-hover / style-active der Vorlage: Stil = Basis + Hover + Active (Semantik aus support.js). */
+/** style-hover / style-active of the template: style = base + hover + active (semantics from support.js). */
 export function Dc({
 	as: Tag = 'div',
 	style,
@@ -34,7 +34,7 @@ export function Dc({
 	style: string;
 	hover?: string;
 	active?: string;
-	// biome-ignore lint/suspicious/noExplicitAny: beliebige Element-Props
+	// biome-ignore lint/suspicious/noExplicitAny: arbitrary element props
 	[k: string]: any;
 }) {
 	const [h, setH] = useState(0);
@@ -56,7 +56,7 @@ export function Dc({
 	return <Tag {...rest} {...ev} style={css(s)} />;
 }
 
-/** Klickbare div wie ein Button bedienbar machen (Enter/Leertaste), Box bleibt unverändert. */
+/** Makes a clickable div operable like a button (Enter/Space); the box stays unchanged. */
 export function press(f: () => void) {
 	return {
 		role: 'button',

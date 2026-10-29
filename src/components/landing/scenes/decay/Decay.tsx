@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { css } from '../../core/dc';
 import { startDecay } from '../decay/glyphs';
 
-// Fest am Fenster über dem Inhalt, unter dem Kopf: die Zeichen des Übergangs Handy → So geht's (zeichen.ts).
+// Fixed to the window above the content, below the header: the characters of the phone → How it works transition (glyphs.ts).
 export function Decay() {
 	const ref = useRef<HTMLCanvasElement>(null);
 	useEffect(() => startDecay(ref.current as HTMLCanvasElement), []);

@@ -1,4 +1,4 @@
-// WebGL2-Weg der Hände: Eignungsprüfung, Ebenen (Programme, Texturen) und die zwei Durchgänge je Bild.
+// WebGL2 path of the hands: suitability check, layers (programs, textures) and the two passes per frame.
 
 import { glVisible } from '../../../core/canvas';
 import type { Fit } from '../../../core/canvas';
@@ -10,13 +10,13 @@ import type { AtlasMeta, CellGrid, DrawValues, HoldMeta, Layer, Uniforms } from 
 
 function compile(gl: WebGL2RenderingContext, type: number, src: string): WebGLShader {
 	const s = gl.createShader(type);
-	if (!s) throw new Error('hand: Shader nicht erzeugt');
+	if (!s) throw new Error('hand: shader not created');
 	gl.shaderSource(s, src);
 	gl.compileShader(s);
 	return s;
 }
 
-/** Programm für einen Durchgang (Vertex-Shader plus Fragment-Shader), gelinkt wird asynchron weitergeprüft. */
+/** Program for one pass (vertex shader plus fragment shader); linking continues to be polled asynchronously. */
 function linkProgram(
 	gl: WebGL2RenderingContext,
 	pass1: boolean,
@@ -24,21 +24,21 @@ function linkProgram(
 	const fs = compile(gl, gl.FRAGMENT_SHADER, fsSrc(pass1));
 	const vs = compile(gl, gl.VERTEX_SHADER, VS);
 	const pr = gl.createProgram();
-	if (!pr) throw new Error('hand: Programm nicht erzeugt');
+	if (!pr) throw new Error('hand: program not created');
 	gl.attachShader(pr, vs);
 	gl.attachShader(pr, fs);
 	gl.linkProgram(pr);
 	return { pr, fs };
 }
 
-/** Laufende Eignungsprüfung: Wegwerf-Kontext mit den angestoßenen Programmen (siehe glTaugtStart). */
+/** Running suitability check: throwaway context with the programs it has kicked off (see glProbeStart). */
 export interface Probe {
 	cv: HTMLCanvasElement;
 	gl: WebGL2RenderingContext;
 	progs: { pr: WebGLProgram; fs: WebGLShader }[];
 }
 
-/** Teil 1 der Eignungsprüfung: Kontext anlegen, Texturgröße prüfen, beide Programme anstoßen. false = untauglich. */
+/** Part 1 of the suitability check: create the context, check the texture size, kick off both programs. false = unsuitable. */
 export function glProbeStart(metaH: HoldMeta, metaP: AtlasMeta): Probe | false {
 	const cv = document.createElement('canvas');
 	const gl = cv.getContext('webgl2');
@@ -49,8 +49,8 @@ export function glProbeStart(metaH: HoldMeta, metaP: AtlasMeta): Probe | false {
 }
 
 /**
- * Teil 2: Ergebnis der Programme und der Ausgabe prüfen. undefined, solange der Treiber noch übersetzt
- * (KHR_parallel_shader_compile), dann in einem späteren Bild erneut rufen.
+ * Part 2: check the result of the programs and of the output. undefined while the driver is still compiling
+ * (KHR_parallel_shader_compile), then call again in a later frame.
  */
 export function glProbeEnd({ cv, gl, progs }: Probe, immediate = false): boolean | undefined {
 	const ext = gl.getExtension('KHR_parallel_shader_compile');
@@ -64,19 +64,19 @@ export function glProbeEnd({ cv, gl, progs }: Probe, immediate = false): boolean
 	for (const { pr, fs } of progs) {
 		if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
 			ok = false;
-			console.warn('hand: Shader nicht verwendbar', gl.getShaderInfoLog(fs));
+			console.warn('hand: shader not usable', gl.getShaderInfoLog(fs));
 		}
 	}
 	if (ok && !glVisible(gl, cv)) {
 		ok = false;
-		// biome-ignore lint/suspicious/noConsole: Diagnose für Geräte mit leerer WebGL-Ausgabe
-		console.debug('hand: WebGL-Ausgabe bleibt leer, 2D-Hand');
+		// biome-ignore lint/suspicious/noConsole: diagnostics for devices with empty WebGL output
+		console.debug('hand: WebGL output stays empty, 2D hand');
 	}
 	gl.getExtension('WEBGL_lose_context')?.loseContext();
 	return ok;
 }
 
-/** Prüft einmalig, ob WebGL2 mit dem Shader und den Texturgrößen taugt (in einem Zug). */
+/** Checks once whether WebGL2 works with the shader and the texture sizes (in a single step). */
 export function glUsable(metaH: HoldMeta, metaP: AtlasMeta): boolean {
 	const p = glProbeStart(metaH, metaP);
 	return p ? (glProbeEnd(p, true) ?? false) : false;
@@ -113,10 +113,10 @@ const uniformTable = (f: (name: string) => WebGLUniformLocation | null): Uniform
 const uniformLocations = (gl: WebGL2RenderingContext, pr: WebGLProgram): Uniforms =>
 	uniformTable((n) => gl.getUniformLocation(pr, n));
 
-/** Platzhalter, bis initProgram die Orte nach dem Linken holt. */
+/** Placeholders until initProgram fetches the locations after linking. */
 const noLocations = (): Uniforms => uniformTable(() => null);
 
-/** Programme, Zellpuffer und Zustand einer Ebene (beim Anlegen und nach wiederhergestelltem Kontext). */
+/** Programs, cell buffer and state of a layer (on creation and after a restored context). */
 function freshLayer(
 	gl: WebGL2RenderingContext,
 ): Pick<
@@ -124,7 +124,7 @@ function freshLayer(
 	'dead' | 'ready' | 'stage' | 'row' | 'last' | 'prs' | 'cells' | 'ext' | 'u' | 'vao'
 > {
 	const vao = gl.createVertexArray();
-	if (!vao) throw new Error('hand: Vertex-Array nicht erzeugt');
+	if (!vao) throw new Error('hand: vertex array not created');
 	return {
 		dead: false,
 		ready: false,
@@ -169,7 +169,7 @@ export function makeLayer(cv: HTMLCanvasElement, front: boolean): Layer | null {
 	return L;
 }
 
-/** Textur für einen Atlas anlegen (leer, Größe des Bildes) und binden. */
+/** Create a texture for an atlas (empty, size of the image) and bind it. */
 function createTexture(
 	gl: WebGL2RenderingContext,
 	unit: number,
@@ -189,9 +189,9 @@ function createTexture(
 	return tx;
 }
 
-const STRIP_ROWS = 160; // Zeilen je Aufruf: ein ganzer Atlas (8 MP) auf einmal kostet 20 bis 30 ms, 330 Zeilen noch 4 bis 5 ms je Bild
+const STRIP_ROWS = 160; // rows per call: a whole atlas (8 MP) at once costs 20 to 30 ms, 330 rows still 4 to 5 ms per frame
 
-/** Nächsten Streifen des Atlas in die gebundene Textur kopieren (UNPACK_SKIP_ROWS). true, wenn der Atlas komplett ist. */
+/** Copy the next strip of the atlas into the bound texture (UNPACK_SKIP_ROWS). true when the atlas is complete. */
 function uploadStrip(
 	gl: WebGL2RenderingContext,
 	unit: number,
@@ -257,7 +257,7 @@ function initProgram(L: Layer, k: 0 | 1): void {
 	gl.uniform1i(u.uFront, L.front ? 1 : 0);
 }
 
-/** Umschließendes Rechteck beider Hände im Ende-Raum: [x0, y0, x1, y1]. */
+/** Bounding rectangle of both hands in the end space: [x0, y0, x1, y1]. */
 function handBox(S: DrawValues): [number, number, number, number] {
 	const { hold, point } = atlases();
 	const mh = hold.meta;
@@ -293,7 +293,7 @@ function handBox(S: DrawValues): [number, number, number, number] {
 	return [Math.min(hb[0], bx0), Math.min(hb[1], by0), Math.max(hb[2], bx1), Math.max(hb[3], by1)];
 }
 
-/** Ein Schritt je Bild bis die Ebene bereit ist (Shader gelinkt, Texturen hochgeladen). true, wenn bereit. */
+/** One step per frame until the layer is ready (shader linked, textures uploaded). true when ready. */
 export function readyStep(L: Layer): boolean {
 	const { gl } = L;
 	if (L.dead || gl.isContextLost()) return false;
@@ -311,7 +311,7 @@ export function readyStep(L: Layer): boolean {
 			L.th = createTexture(gl, 0, atlases().hold.bmp);
 			return false;
 		}
-		// Atlanten streifenweise hochladen: ein Streifen je Bild (Hand, dann Zeigehand)
+		// Upload atlases in strips: one strip per frame (hand, then pointing hand)
 		if (L.stage === 1) {
 			if (uploadStrip(gl, 0, L.th, atlases().hold.bmp, L)) {
 				L.stage = 2;
@@ -341,7 +341,7 @@ export function readyStep(L: Layer): boolean {
 	return true;
 }
 
-/** Zeichnet eine Ebene in zwei Durchgängen (Ton je Zelle, dann Punkte). false, solange sie nicht bereit ist. */
+/** Draws a layer in two passes (tone per cell, then dots). false while it is not ready. */
 export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number): boolean {
 	const { gl, cv } = L;
 	if (!readyStep(L)) return false;
@@ -373,13 +373,13 @@ export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number)
 	const bkey = [S.br.x, S.br.y, S.br.r];
 	const same =
 		L.last !== null && L.last.length === key.length && L.last.every((v, i) => v === key[i]);
-	// Atmen ändert nur Durchgang 2 (Punkte), der Ton je Zelle bleibt
+	// Breathing changes only pass 2 (dots), the tone per cell stays
 	const nur2 = same && L.lastB !== null && !L.lastB.every((v, i) => v === bkey[i]);
 	if (same && L.lastB !== null && !nur2) return true;
 	L.last = key;
 	L.lastB = bkey;
 
-	// sichtbares Raster im Ende-Raum
+	// visible grid in the end space
 	const i0 = Math.floor(-cam.ox / cam.f / STEP);
 	const j0 = Math.floor(-cam.oy / cam.f / STEP);
 	const cw = Math.floor((W - cam.ox) / cam.f / STEP) - i0 + 1;
@@ -396,7 +396,7 @@ export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number)
 		C.h = ch;
 	}
 
-	// Messhaken (nur QA): GPU-Zeit je Ebene über EXT_disjoint_timer_query_webgl2
+	// Measurement hook (QA only): GPU time per layer via EXT_disjoint_timer_query_webgl2
 	if (qa.gpuT && !L.tq) L.tq = gl.getExtension('EXT_disjoint_timer_query_webgl2');
 	const T = qa.gpuT ? L.tq : null;
 	let q: WebGLQuery | null = null;
@@ -411,7 +411,7 @@ export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number)
 		q = gl.createQuery();
 		if (q) gl.beginQuery(T.TIME_ELAPSED_EXT, q);
 	}
-	// Durchgang 1: Ton je Zelle in die Textur
+	// Pass 1: tone per cell into the texture
 	if (!nur2) {
 		gl.bindFramebuffer(gl.FRAMEBUFFER, C.fbo);
 		gl.viewport(0, 0, cw, ch);
@@ -419,14 +419,14 @@ export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number)
 		setUniforms(L, L.u[0], S, cam, W, w, h, cells);
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 	}
-	// Durchgang 2: Punkte auf die Leinwand
+	// Pass 2: dots onto the canvas
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 	gl.viewport(0, 0, w, h);
 	gl.useProgram(L.prs[1]);
 	setUniforms(L, L.u[1], S, cam, W, w, h, cells);
-	// nur dort rastern, wo eine Hand liegen kann (Haltehand-Kachel und Sprite der Zeigehand), Rest bleibt leer
+	// rasterize only where a hand can be (holding-hand tile and pointing-hand sprite), the rest stays empty
 	const bb = handBox(S);
-	// Staub weht nach oben rechts über die Kachel hinaus
+	// Dust drifts to the top right beyond the tile
 	if (S.decay > 0) {
 		bb[2] += 260;
 		bb[1] -= 260;

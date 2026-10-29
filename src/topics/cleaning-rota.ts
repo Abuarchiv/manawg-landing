@@ -1,7 +1,7 @@
 /**
- * Rundlauf-Rotation: In Woche w übernimmt Person (a - w) mod n die Aufgabe a.
- * Jede Woche rückt jede Person eine Aufgabe weiter. Bei mehr Aufgaben als Personen
- * trägt eine Person mehrere Aufgaben pro Woche, bei mehr Personen hat jemand frei.
+ * Round-robin rotation: in week w, person (a - w) mod n takes task a.
+ * Every week each person moves on by one task. With more tasks than people,
+ * a person carries several tasks per week; with more people, someone has the week off.
  */
 export function cleaningRota(
 	names: string[],
@@ -19,7 +19,7 @@ export function cleaningRota(
 	};
 }
 
-/** Tabelle als CSV (Trenner `sep`, Standard Semikolon; CRLF, BOM vorn), von Generator und Download gemeinsam genutzt. */
+/** Table as CSV (separator `sep`, semicolon by default; CRLF, BOM first), shared by the generator and the download. */
 export function tableToCsv(header: string[], rows: string[][], sep = ';'): string {
 	const field = (value: string): string =>
 		value.includes(sep) || /["\r\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;

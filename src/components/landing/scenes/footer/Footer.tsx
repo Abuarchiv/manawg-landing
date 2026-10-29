@@ -4,7 +4,7 @@ import { css } from '../../core/dc';
 import { useDict, useLocale } from '../../dict';
 import s from './Footer.module.css';
 
-// Kurz gehalten: alle Themenseiten erreicht man über /ratgeber und die Sitemap.
+// Kept short: all topic pages are reachable via /ratgeber and the sitemap.
 export function Footer() {
 	const { footer, links } = useDict();
 	const locale = useLocale();

@@ -1,4 +1,4 @@
-// Gliederung der Themenseiten für Breadcrumb, "Weiterlesen" und Fußzeile.
+// Structure of the topic pages for breadcrumb, "further reading" and footer.
 
 export const GROUPS: Array<{
 	id: 'features' | 'compare' | 'guides' | 'about';
@@ -57,7 +57,7 @@ export const GROUPS: Array<{
 
 export const groupOfSlug = (slug: string) => GROUPS.find((g) => g.slugs.includes(slug));
 
-/** Funktionsseite je Ratgeber: Ratgeber und Funktion verweisen in „Weiterlesen“ aufeinander (Themen-Cluster). */
+/** Feature page per guide: guide and feature link to each other in "further reading" (topic cluster). */
 export const FEATURE_GUIDES: Record<string, string[]> = {
 	'wg-kasse': [
 		'splitwise-splid-wechseln',
@@ -89,7 +89,7 @@ export const FEATURE_GUIDES: Record<string, string[]> = {
 const featureOf = (slug: string) =>
 	Object.keys(FEATURE_GUIDES).find((f) => FEATURE_GUIDES[f]?.includes(slug));
 
-/** Feste, thematisch gewählte „Weiterlesen“-Ziele; alle anderen Seiten nehmen den Rückfall in verwandte(). */
+/** Fixed, topically chosen "further reading" targets; all other pages fall back to relatedSlugs(). */
 const READ_NEXT: Record<string, string[]> = {
 	'wg-miete-rechner': ['wg-kasse', 'wg-kosten-aufteilen', 'wg-nebenkosten'],
 	'wg-nebenkosten': ['wg-kasse', 'wg-miete-rechner', 'rundfunkbeitrag-wg'],
@@ -121,7 +121,7 @@ const READ_NEXT: Record<string, string[]> = {
 	'ueber-manawg': ['faq', 'wg-app', 'beste-wg-app'],
 };
 
-/** Drei verwandte Seiten: Ratgeber zuerst die passende Funktionsseite, Funktionen zuerst ihre Ratgeber, dann die eigene Gruppe. */
+/** Three related pages: guides first get the matching feature page, features first get their guides, then the page's own group. */
 export function relatedSlugs(slug: string): string[] {
 	const w = READ_NEXT[slug];
 	if (w) return w;

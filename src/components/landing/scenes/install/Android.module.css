@@ -1,4 +1,4 @@
-/* Android, Bühne 411 x 884 dp, per Transform in den Rahmen skaliert. */
+/* Android, stage 411 x 884 dp, scaled into the frame via transform. */
 
 .and {
 	position: absolute;
@@ -31,7 +31,7 @@
 	height: 48px;
 	bottom: auto;
 }
-/* Kameraloch des Pixel, mittig über der Statusleiste */
+/* Pixel camera cutout, centered above the status bar */
 .and_camera {
 	z-index: 10;
 	inset: auto;
@@ -62,7 +62,7 @@
 .and_wall {
 	position: absolute;
 	inset: 0;
-	/* derselbe dunkle Hintergrund wie am iPhone */
+	/* same dark background as on the iPhone */
 	background: radial-gradient(80% 34% at 72% 14%, #6a6a6a 0%, rgba(106, 106, 106, 0) 72%),
 		linear-gradient(180deg, #353535 0%, #141414 36%, #0b0b0b 100%);
 }
@@ -129,7 +129,7 @@
 	z-index: 2;
 }
 .and_top {
-	/* Chrome dunkel: Statusleiste und Adressleiste in einer Fläche, wie die Leiste unten */
+	/* Chrome dark: status bar and address bar on one surface, like the bar at the bottom */
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -426,7 +426,7 @@
 	width: 60px;
 	height: 60px;
 	border-radius: 30px;
-	background: #0a0a0a; /* Startbild der installierten App: Zeichen auf Schwarz (wie iPhone) */
+	background: #0a0a0a; /* Launch screen of the installed app: mark on black (as on iPhone) */
 	opacity: 0;
 	overflow: hidden;
 	display: flex;

@@ -1,6 +1,6 @@
-/* Titel und Knopf der Ende-Szene. Quer unten links wie im Entwurf, hoch oben über dem Handy
-   (Platz dafür reserviert kamera.js, titelPlatz). Sie erscheinen erst, wenn der dunkle Grund steht
-   (T-05): Deckkraft = clamp(0, (--e - 0,5) * 2,5, 1). */
+/* Title and button of the end scene. Landscape: bottom left as in the draft, portrait: at the top above the phone
+   (camera.ts, titleSlot reserves the space). They appear only once the dark ground is in place
+   (T-05): opacity = clamp(0, (--e - 0.5) * 2.5, 1). */
 .title {
 	position: absolute;
 	left: var(--rand);
@@ -26,13 +26,13 @@
 }
 
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
-	/* Hoch: unter dem Kopf (der bleibt sichtbar), Titel eine Zeile, Knopf in der Höhe des Kopf-Knopfs.
-	   Muss zu kamera.js titelPlatz passen. */
+	/* Portrait: below the header (which stays visible), title on one line, button at the height of the header button.
+	   Must match camera.ts titleSlot. */
 	.title {
 		bottom: auto;
 		top: max(72px, calc(env(safe-area-inset-top, 0px) + 56px));
 		gap: 16px;
-		/* beim Hinausscrollen weg, bevor der Titel das Kopfband erreicht (stage.js) */
+		/* fades out while scrolling away, before the title reaches the header band (stage.js) */
 		opacity: calc(clamp(0, calc((var(--e, 0) - 0.5) * 2.5), 1) * (1 - var(--ende-titel-aus, 0)));
 	}
 	.h {

@@ -1,5 +1,5 @@
-// Der Himmel hinter dem Finale: ein Kupferstich-Wolkenhimmel in Graustufen mit der Marke als Wolke. Himmel, Wolke und
-// Masken sind die Ebenen des Wolken-Loaders (landing-konzept/wolke). Ohne Vorhang und ohne Scroll-Öffnung; die Wolken quellen langsam, der Zeiger ist Wind.
+// The sky behind the finale: an engraved-style cloudscape in gray tones with the brand as a cloud. Sky, cloud and
+// masks are the layers of the cloud loader (landing-konzept/wolke). No curtain and no scroll opening; the clouds billow slowly, the pointer is wind.
 
 import { dprFor } from '../../core/canvas';
 import { type SceneState, loop, register } from '../../core/loop';
@@ -14,8 +14,8 @@ uniform sampler2D uSkyQ, uSkyH, uFein, uGrob;
 uniform float uHoch, uDprH;
 uniform vec2 uRes, uCC;
 uniform float uT, uOpen, uCS;
-uniform vec3 uZg; // Zeiger in uv und Stärke: Wind, der die Wolken teilt
-uniform vec4 uTxt; // Textfeld in uv (x0, y0, x1, y1), dort bleibt der Himmel ruhig und dunkler
+uniform vec3 uZg; // pointer in uv and strength: wind that parts the clouds
+uniform vec4 uTxt; // text box in uv (x0, y0, x1, y1), the sky stays calm and darker there
 out vec4 o;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float noise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
@@ -24,14 +24,14 @@ float fbm(vec2 p){ float s = 0., a = .5; for(int i = 0; i < 5; i++){ s += a*nois
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes;
   float asp = uRes.x / uRes.y;
-  // Himmel: gestochener Wolkenhimmel (Codex, Technik wie Referenz „gestochene Wolken“), deckend skaliert und unten
-  // verankert, damit die Wolkenbänke am unteren Rand stehen. Die Striche erscheinen beim Öffnen nach Helligkeit:
-  // erst die hellsten Linien, dann die feinen, als würde der Stich gerade gezogen.
+  // Sky: engraved cloudscape (Codex, technique like the reference "engraved clouds"), scaled to cover and anchored at
+  // the bottom so the cloud banks sit at the lower edge. When opening, the strokes appear by brightness:
+  // first the brightest lines, then the fine ones, as if the engraving were being drawn right now.
   float texA = uHoch > .5 ? .5625 : 1.7778;
   vec2 sc = vec2(min(asp / texA, 1.), min(texA / asp, 1.));
   vec2 suv = vec2((uv.x - .5) * sc.x + .5, uv.y * sc.y);
-  // Wolken quellen: zweistufig verzerrtes Feld, oben schneller als in den Bänken unten. Der Zeiger ist Wind: er schiebt
-  // die Striche um sich herum auseinander, wie ein Loch, das in die Wolkendecke gedrückt wird.
+  // Clouds billow: two-stage distorted field, faster at the top than in the banks below. The pointer is wind: it pushes
+  // the strokes apart around itself, like a hole pressed into the cloud cover.
   vec2 q = vec2(fbm(suv * 2.2 + vec2(uT * .035, 0.)), fbm(suv * 2.2 + vec2(5.2, -uT * .03)));
   vec2 qw = vec2(fbm(suv * 4. + q * 1.7 + uT * .05), fbm(suv * 4. + q * 1.7 + 3.3 - uT * .04)) - .5;
   suv += qw * (.009 + .012 * uv.y);
@@ -42,7 +42,7 @@ void main(){
   float zug = smoothstep(.05, .85, uOpen);
   float th = 1.05 - zug * 1.1;
   float sky = L * smoothstep(th, th + .18, L + hash(floor(gl_FragCoord.xy / 2.)) * .05);
-  // Marke: exakte Silhouette aus den Masken des Loaders, gefüllt mit dem dichtesten Teil des gestochenen Wolkenhimmels
+  // Brand: exact silhouette from the masks of the loader, filled with the densest part of the engraved cloudscape
   float c = smoothstep(.35, .95, uOpen);
   vec2 cuv = (uv - uCC) * vec2(asp, 1.) / uCS + .5;
   float rot = sin(uT * .35) * .02;
@@ -58,14 +58,14 @@ void main(){
   float thf = 1.05 - c * 1.1;
   fill *= smoothstep(thf, thf + .18, fill + hash(floor(gl_FragCoord.xy / 2.) + 7.) * .05);
   float a = m * inside;
-  // Licht von oben: die Marke ist oben heller, unten dichter wie ein Wolkenballen
+  // Light from above: the brand is brighter at the top, denser at the bottom like a cloud mass
   float hell = .7 + .45 * clamp(cuv.y, 0., 1.);
   vec3 col = vec3(mix(.035 + sky * .95, .03 + min(fill * 1.35 * hell, 1.), a));
-  // Unter dem Text: Striche gedämpft, damit Weiß lesbar bleibt
+  // Under the text: strokes muted so white stays readable
   vec2 tb = smoothstep(vec2(-.15), vec2(.02), min(uv - uTxt.xy, uTxt.zw - uv));
   float tm = tb.x * tb.y;
   col = mix(col, vec3(.035), tm * .7);
-  // Unterkante: Wolken laufen in den Grund der Fußzeile aus (keine Kante an der Naht)
+  // Bottom edge: clouds fade into the footer background (no edge at the seam)
   col *= mix(.0, 1., smoothstep(0., 110. / uRes.y * uDprH, uv.y));
   col += (hash(gl_FragCoord.xy + fract(uT) * 91.) - .5) * .03;
   o = vec4(col, 1.);
@@ -82,7 +82,7 @@ interface SkyState extends SceneState {
 	g: Gl | null;
 	ready: boolean;
 	open: number;
-	/** geglätteter Zeiger in uv und Stärke */
+	/** smoothed pointer in uv and strength */
 	zg: [number, number, number];
 }
 
@@ -97,7 +97,7 @@ function program(gl: WebGL2RenderingContext): WebGLProgram | null {
 		gl.shaderSource(sh, src);
 		gl.compileShader(sh);
 		if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-			console.error('himmel', gl.getShaderInfoLog(sh));
+			console.error('sky', gl.getShaderInfoLog(sh));
 			return null;
 		}
 		gl.attachShader(p, sh);
@@ -106,18 +106,18 @@ function program(gl: WebGL2RenderingContext): WebGLProgram | null {
 	return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null;
 }
 
-/** Bild laden, kippen und abseits des Hauptthreads dekodieren: der Texturupload kopiert danach nur noch. */
+/** Load an image, flip it and decode it off the main thread: the texture upload then only copies. */
 async function loadImage(src: string): Promise<ImageBitmap> {
 	const blob = await (await fetch(src)).blob();
 	return createImageBitmap(blob, { imageOrientation: 'flipY', premultiplyAlpha: 'none' });
 }
 
-/** Nächste Aufgabe abwarten: Shader, Texturen und Kontext landen in verschiedenen Bildern, nicht in einem. */
+/** Wait for the next task: shader, textures and context end up in different frames, not in one. */
 const pause = () => new Promise<void>((ok) => setTimeout(ok, 0));
 
 async function load(s: SkyState): Promise<void> {
 	const names = ['uSkyQ', 'uSkyH', 'uFein', 'uGrob'];
-	// Dekodieren läuft parallel und ohne den Hauptthread, während Kontext und Shader entstehen
+	// Decoding runs in parallel and without the main thread while context and shader are created
 	const images = Promise.all(
 		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) =>
 			loadImage(`/himmel/${n}.webp`),
@@ -148,7 +148,7 @@ async function load(s: SkyState): Promise<void> {
 		gl.uniform1i(u(names[i] ?? ''), i);
 		img.close();
 	}
-	// Ein Zeichenaufruf in 1 x 1 Pixel zwingt den Treiber, das Programm schon jetzt fertig zu übersetzen
+	// A draw call in 1 x 1 pixel forces the driver to finish compiling the program now
 	await pause();
 	gl.viewport(0, 0, 1, 1);
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -156,7 +156,7 @@ async function load(s: SkyState): Promise<void> {
 	s.ready = true;
 }
 
-/** Enges Rechteck um Titel und Knöpfe (CSS-px relativ zur Fläche). */
+/** Tight rectangle around title and buttons (CSS px measured from the area). */
 function textBox(sec: HTMLElement, r0: DOMRect): [number, number, number, number] | null {
 	const h = sec.querySelector('h2');
 	const k = sec.querySelector('[data-knoepfe]');
@@ -173,7 +173,7 @@ function textBox(sec: HTMLElement, r0: DOMRect): [number, number, number, number
 	];
 }
 
-/** Meldet den Himmel an. ebene: Element über der ASCII-Sonne, darin das WebGL-Canvas. */
+/** Registers the sky. ebene: element above the ASCII sun, containing the WebGL canvas. */
 export function registerSky(
 	layer: HTMLElement,
 	cv: HTMLCanvasElement,
@@ -204,7 +204,7 @@ export function registerSky(
 				cv.height = h;
 				gl.viewport(0, 0, w, h);
 			}
-			// Kein Vorhang mehr: der Himmel steht von Anfang an offen
+			// No curtain anymore: the sky stands open from the start
 			const r0 = s.el.getBoundingClientRect();
 			s.open = 1;
 			const portrait = s.mode === 'hoch';
@@ -213,16 +213,16 @@ export function registerSky(
 			gl.uniform2f(u('uRes'), w, h);
 			gl.uniform1f(u('uT'), s.reduced ? 4 : loop.t);
 			gl.uniform1f(u('uOpen'), s.open);
-			const bottom = cl((r0.bottom - loop.vh) / s.H, 0, 1); // Teil der Fläche unter dem Fensterrand
+			const bottom = cl((r0.bottom - loop.vh) / s.H, 0, 1); // part of the area below the window edge
 			if (portrait) {
-				// Hoch: fest im Abschnitt über dem Titel, scrollt mit dem Text weg (im Endbild ist oben kein Platz)
+				// Portrait: fixed in the section above the title, scrolls away with the text (no room at the top in the final view)
 				gl.uniform2f(u('uCC'), 0.5, 0.74);
 				gl.uniform1f(u('uCS'), Math.min(0.42, 0.62 * (s.W / s.H)));
 			} else {
 				gl.uniform2f(u('uCC'), 0.72, bottom + (1 - bottom) * 0.55);
 				gl.uniform1f(u('uCS'), 0.62);
 			}
-			// Zeiger als Wind; ohne Zeiger (Handy) zieht eine langsame Böe über den Himmel
+			// Pointer as wind; without pointer (phone) a slow gust drifts across the sky
 			const t = loop.t;
 			const da = s.m.in && !s.reduced;
 			const zx = da ? s.m.px / s.W : 0.5 + 0.38 * Math.sin(t * 0.13);

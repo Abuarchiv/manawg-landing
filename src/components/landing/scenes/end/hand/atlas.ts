@@ -1,4 +1,4 @@
-// Pässe der Hände laden: je Hand ein Atlas (.webp) mit Leuchtdichte, Alpha, Normale und Tiefe plus .json mit Lage.
+// Load the hand passes: one atlas (.webp) per hand with luminance, alpha, normal and depth plus a .json with the layout.
 
 import { HAND_V, TILES } from './constants';
 import type { Atlas, AtlasMeta, Atlases, HoldMeta } from './types';
@@ -22,7 +22,7 @@ async function ladeAtlas<M extends AtlasMeta>(name: string): Promise<Atlas<M>> {
 	return { meta, bmp, cpu: null };
 }
 
-/** Lädt die Pässe der Hände (einmal). stage.js ruft das ab P > 0,75 auf. */
+/** Loads the hand passes (once). stage.js calls this from P > 0.75. */
 export function load(): Promise<void> {
 	if (!A.p)
 		A.p = Promise.all([ladeAtlas<HoldMeta>('hold'), ladeAtlas<AtlasMeta>('point')])
@@ -32,21 +32,21 @@ export function load(): Promise<void> {
 			})
 			.catch((e) => {
 				A.err = true;
-				console.error('hand: Pässe nicht geladen', e);
+				console.error('hand: passes not loaded', e);
 			});
 	return A.p;
 }
 
-/** Pässe geladen? Erst dann sind atlanten() und alle Zeichenwege gültig. */
+/** Passes loaded? Only then are atlases() and all draw paths valid. */
 export const isReady = (): boolean => A.ready;
 
-/** Die geladenen Pässe. Nur nach bereit() aufrufen. */
+/** The loaded passes. Call only after isReady(). */
 export function atlases(): Atlases {
-	if (!A.data) throw new Error('hand: Pässe nicht geladen');
+	if (!A.data) throw new Error('hand: passes not loaded');
 	return A.data;
 }
 
-/** Kacheln eines Atlas als uniform vec4[5]: x, y, w, h je Kachel. */
+/** Tiles of an atlas as uniform vec4[5]: x, y, w, h per tile. */
 export const tileArray = (meta: AtlasMeta): Float32Array => {
 	const a = new Float32Array(20);
 	TILES.forEach((n, i) => {

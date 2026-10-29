@@ -1,9 +1,9 @@
-// Übergang Handy → "So geht's": beim Weiterscrollen zerfällt die App im Handy in Mono-Zeichen. Jedes Zeichen
-// sitzt erst dort, wo in der App Text oder ein Symbol steht, löst sich dann mit dem Scroll, fliegt in einem
-// Bogen nach unten und landet als Zelle der großen Ziffern 01 bis 03. Danach übernehmen die Ziffern selbst
-// (sogehts/ziffern.ts, uebergang.verdeckt). Alles hängt am Scroll und läuft rückwärts genauso.
+// Transition phone → "How it works": while scrolling on, the app in the phone dissolves into mono characters. Each character
+// first sits where the app shows text or an icon, then detaches with the scroll, flies in an
+// arc downward and lands as a cell of the large digits 01 to 03. After that the digits take over
+// (how-it-works/digits.ts) once the transition is done. Everything follows the scroll and runs backwards the same way.
 //
-// Fortschritt T: 0, solange die Intro-Bühne klebt; 1, wenn die erste Ziffer bei 30 % der Fensterhöhe steht.
+// Progress T: 0 while the intro stage is sticky; 1 when the first digit sits at 30 % of the window height.
 
 import { loop, onFrame } from '../../core/loop';
 import { cl, hsh, ss } from '../../core/math';
@@ -11,11 +11,11 @@ import { buildGrid, digitMetrics, handover } from '../how-it-works/digits';
 
 const RAMP = '@%#*+=-:';
 const DIGITS = ['01', '02', '03'];
-const DISSOLVE_END = 0.18; // bis hier zerfällt die App an Ort und Stelle in Zeichen
-const TARGET_Y = 0.3; // Lage der Ziffern-Oberkante (Anteil der Fensterhöhe) bei T = 1
-const DEPTH = 2; // Abstand Bildschirm → Ziffern in Bildschirmtiefen
+const DISSOLVE_END = 0.18; // up to here the app dissolves into characters in place
+const TARGET_Y = 0.3; // position of the digits' top edge (fraction of the window height) at T = 1
+const DEPTH = 2; // distance screen → digits in screen depths
 
-/** Ein Zeichen: Quelle in der App (u, v relativ zum iframe), Ziel als Zelle der Ziffer z, Start d, Schwung w. */
+/** One character: source in the app (u, v measured from the iframe), target as cell of digit z, start d, swing w. */
 interface Particle {
 	u: number;
 	v: number;
@@ -27,7 +27,7 @@ interface Particle {
 	w: number;
 }
 
-/** Punkte mit Inhalt in der App: Rechtecke von Text und Symbolen, gewichtet nach Fläche (relativ 0..1). */
+/** Points with content in the app: rectangles of text and icons, weighted by area (fraction 0..1). */
 function sources(
 	fr: HTMLIFrameElement | null,
 ): { r: [number, number, number, number]; g: number }[] {
@@ -51,7 +51,7 @@ function sources(
 	return out;
 }
 
-/** Zeichenblatt der Rampe in Gerätepixeln. */
+/** Glyph sheet of the ramp in device pixels. */
 function buildSheet(gl: number, dpr: number): { cv: HTMLCanvasElement; z: number } {
 	const z = Math.ceil((gl + 4) * dpr);
 	const cv = document.createElement('canvas');
@@ -74,13 +74,13 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 	let particles: Particle[] = [];
 	let key = '';
 	let sheet: { cv: HTMLCanvasElement; z: number } | null = null;
-	let large: { cv: HTMLCanvasElement; z: number } | null = null; // vierfach, damit nahe Zeichen scharf bleiben
+	let large: { cv: HTMLCanvasElement; z: number } | null = null; // four times, so near characters stay sharp
 	let sheetKey = '';
 	let prevT = 0;
 	let blank = true;
 	let appOffValue = '';
-	// --app-aus nur am Bildschirm des Handys (Standbild und iframe), nicht an #final: eine geerbte Variable an der
-	// Wurzel ließe in jedem Bild den Stil der ganzen Szene neu berechnen. Nur bei Änderung schreiben.
+	// --app-aus only on the phone screen (still image and iframe), not on #final: an inherited variable on the
+	// root would recompute the style of the whole scene in every frame. Write only on change.
 	const setAppOff = (v: string) => {
 		if (v === appOffValue) return;
 		appOffValue = v;
@@ -99,7 +99,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		}
 	};
 
-	// Elemente einmal suchen, nicht jedes Bild (läuft auch, solange das Intro klebt)
+	// Look up elements once, not every frame (also runs while the intro is sticky)
 	let stageEl: HTMLElement | null = null;
 	let digits: HTMLCanvasElement[] = [];
 	let rect = { end: 0, height: 0, digitsTop: 0 };
@@ -116,9 +116,9 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		if (!ctx || !stageEl || digits.length < DIGITS.length || loop.reduced) return idleFrame(1);
 		const H = loop.vh;
 		const W = loop.vw;
-		// Lagen im Dokument nur bei Größenwechsel und etwa einmal je Sekunde lesen: ein getBoundingClientRect in
-		// jedem Bild erzwang nach den Stil-Schreibern der Bühne eine eigene Layout-Runde (am Handy der größte Posten
-		// beim Scrollen durch das Demo-Handy). Die Bühne klebt (sticky), ihr Rand folgt aus dem Ende des Abschnitts.
+		// Read layout positions only on resize and about once per second: a getBoundingClientRect in
+		// every frame forced its own layout pass after the stage's style writers (the biggest item on the phone
+		// while scrolling through the demo phone). The stage sticks, its edge follows from the end of the section.
 		const sy = window.scrollY;
 		const lk = `${W}x${H}`;
 		if (lk !== rectKey || loop.now - rectTime > 1) {
@@ -134,8 +134,8 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		const next = prevT <= 0;
 		prevT = T;
 		if (T <= 0) {
-			// Kurz vor dem Übergang die Quellen in einer Leerlaufpause messen (alle Rechtecke der App kosten am Handy
-			// ein ganzes Bild), dann startet der Zerfall ohne Hänger
+			// Shortly before the transition, measure the sources in an idle pause (all rectangles of the app cost
+			// a whole frame on the phone), so the dissolve starts without a hitch
 			if (rect.end - sy - rect.height < H && !preMeasure && loop.now - sourceTime > 0.6) {
 				preMeasure = true;
 				const measure = () => {
@@ -153,7 +153,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		const portrait = loop.mode === 'hoch';
 		const { cs, gl } = digitMetrics(portrait);
 		const fr = document.querySelector<HTMLIFrameElement>('iframe[title="ManaWG-App"]');
-		// Ziele (Zellen der drei Ziffern) und Quellen (Inhalt der App) beim Eintritt oder nach Größenwechsel neu
+		// Rebuild targets (cells of the three digits) and sources (content of the app) on entry or after a resize
 		const k = `${W}x${H}|${loop.fv}|${digits.map((c) => `${c.clientWidth}x${c.clientHeight}`).join()}`;
 		if (next || k !== key) {
 			key = k;
@@ -169,7 +169,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 				).entries()) {
 					const h1 = hsh(i + zi * 997, 11);
 					const h2 = hsh(i + zi * 997, 23);
-					// Quelle nach Fläche ziehen; ohne geladene App: gleichmäßig über den Bildschirm
+					// Draw source by area; without a loaded app: evenly across the screen
 					let u = h1;
 					let v = h2;
 					if (total > 0) {
@@ -194,7 +194,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 						x: z.x,
 						y: z.y,
 						tone: z.tone,
-						// oben in der App löst sich zuerst, dazu Streuung
+						// the top of the app dissolves first, plus scatter
 						d: DISSOLVE_END + v * 0.22 + hsh(i, zi + 5) * 0.12,
 						w: (hsh(i, zi + 9) - 0.5) * 2,
 					});
@@ -203,8 +203,8 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		}
 		handover.covered = true;
 
-		// Höchstens 1,5-fach: die Fläche ist bildschirmgroß und tausende Zeichen fliegen schnell, bei 2-fach war die
-		// Grafikkarte auf Retina-Desktops die Grenze (44 % weniger Pixel, im Flug nicht zu sehen)
+		// At most 1.5x: the area is screen-sized and thousands of characters fly fast; at 2x the
+		// GPU was the limit on Retina desktops (44 % fewer pixels, not visible in flight)
 		const dpr = Math.min(1.5, devicePixelRatio || 1);
 		if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) {
 			cv.width = Math.round(W * dpr);
@@ -221,15 +221,15 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		blank = false;
 		const ra = fr?.getBoundingClientRect() ?? stageEl.getBoundingClientRect();
 		const zr = digits.map((c) => c.getBoundingClientRect());
-		// erst lesen, dann schreiben: sonst erzwingt das Lesen der Lagen eine zweite Layout-Runde je Bild
+		// read first, then write: otherwise reading the positions forces a second layout pass per frame
 		setAppOff(ss(T / DISSOLVE_END).toFixed(3));
-		const rise = ss(T / (DISSOLVE_END * 0.6)); // Zeichen erscheinen, während die App ausblendet
+		const rise = ss(T / (DISSOLVE_END * 0.6)); // characters appear while the app fades out
 		const tq = Math.floor(loop.now / 0.09);
-		// Durchstich: eine Kamera fliegt durch den Bildschirm des Handys (Ebene z = 1) auf die Ziffern zu (Ebene
-		// z = 1 + TIEFE). Bildlage p = C + (P - C) / (z - kz): die App-Zeichen platzen nach außen, die Ziffern wachsen
-		// aus dem Fluchtpunkt, ihre Zellen liegen erst als Wolke in der Tiefe und ziehen sich zur Ebene zusammen.
+		// Punch-through: a camera flies through the phone screen (plane z = 1) toward the digits (plane
+		// z = 1 + DEPTH). Image position p = C + (P - C) / (z - kz): the app characters burst outward, the digits scale up
+		// out of the vanishing point, their cells first form a cloud in depth and contract onto the plane.
 		const u = cl((T - DISSOLVE_END * 0.7) / (1 - DISSOLVE_END * 0.7));
-		// Kamera so, dass die Ziffern gleichmäßig (logarithmisch) wachsen, kurz über das Ziel hinaus, dann sitzen
+		// Camera so that the digits scale up evenly (logarithmically), slightly past the target, then they sit
 		const camZOf = (v: number) => {
 			const sd =
 				(1 + DEPTH) ** -(1 - ss(v)) * (1 + 0.04 * Math.sin(Math.PI * cl((v - 0.72) / 0.28)));
@@ -241,11 +241,11 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		const by = ra.top + ra.height / 2;
 		const cx = bx + (W / 2 - bx) * ss(u);
 		const cy = by + (H * 0.46 - by) * ss(u);
-		const spin = 0.2 * (1 - ss(u)) ** 2; // die Ziffern drehen sich im Anflug ein
+		const spin = 0.2 * (1 - ss(u)) ** 2; // the digits rotate in during the approach
 		const dc = Math.cos(spin);
 		const ds = Math.sin(spin);
-		// Grund: der Bildschirm wächst mit der Kamera, bis er das Fenster füllt; ab dem Anflug blendet er aus,
-		// damit Überschriften und Texte von "So geht's" schon darunter stehen
+		// Backdrop: the screen grows with the camera until it fills the window; from the approach on it fades out
+		// so headings and texts of "How it works" already stand beneath it
 		const sb = 1 / Math.max(0.001, 1 - camZ);
 		const base = rise * (1 - ss((u - 0.78) / 0.2));
 		if (base > 0.01) {
@@ -257,7 +257,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 				const rw = ra.width * sb * dpr;
 				const rh = ra.height * sb * dpr;
 				ctx.fillRect(x0, y0, rw, rh);
-				// Rahmen des Bildschirms als dünne Linie, er fliegt mit am Betrachter vorbei
+				// Frame of the screen as a thin line, it flies past the viewer too
 				ctx.strokeStyle = `rgba(250,250,250,${(0.35 * rise * (1 - camZ)).toFixed(3)})`;
 				ctx.lineWidth = dpr;
 				ctx.strokeRect(x0, y0, rw, rh);
@@ -266,7 +266,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		const z2 = sheet.z;
 		const kl = sheet;
 		const gr = large ?? sheet;
-		// Spur aus echten Zeichen statt Bewegungsunschärfe: bis zu fünf Wiederholungen zwischen alter und neuer Lage
+		// Trail of real characters instead of motion blur: up to five repeats between old and new position
 		const draw = (
 			x: number,
 			y: number,
@@ -299,7 +299,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		};
 		for (const [i, p] of particles.entries()) {
 			const run = Math.floor(hsh(i + tq, p.z) * RAMP.length) % RAMP.length;
-			// App-Zeichen auf der Ebene des Bildschirms
+			// App characters on the plane of the screen
 			if (camZ < 0.97) {
 				const sx = ra.left + p.u * ra.width;
 				const sy = ra.top + p.v * ra.height;
@@ -317,7 +317,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 					g,
 				);
 			}
-			// Zellen der Ziffern: erst eine Wolke in der Tiefe (Streuung je Zelle), die sich zur Ebene zusammenzieht
+			// Cells of the digits: first a cloud in depth (scatter per cell) that contracts onto the plane
 			const r = zr[p.z];
 			if (!r) continue;
 			const tx = r.left + p.x + cs / 2;
@@ -338,7 +338,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 				cy + (qy - cy) * s1,
 				cx + (qx - cx) * s0,
 				cy + (qy - cy) * s0,
-				// die Zellen rasten nacheinander auf ihr Zeichen ein, die Ziffern werden schon im Flug lesbar
+				// the cells lock onto their character one after another, the digits become readable in flight
 				done || hsh(i, 7) < (u - 0.35) / 0.45 ? (p.tone === 0 ? 0 : 2) : run,
 				a,
 				g,

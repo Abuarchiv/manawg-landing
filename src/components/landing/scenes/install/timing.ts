@@ -1,15 +1,15 @@
-// Zeitfunktionen der Installationsabläufe: Federn, Kurven, Tipp-Weg. Alles reine Funktionen der Zeit t (Sekunden),
-// damit ein Sprung auf einen Schritt jederzeit denselben Zustand ergibt wie der durchlaufene Ablauf.
+// Timing functions of the install flows: springs, curves, tap path. All pure functions of time t (seconds),
+// so jumping to a step always yields the same state as the played-through flow.
 
 import type { Tap } from './types';
 
 export const cl = (x: number, a = 0, b = 1): number => (x < a ? a : x > b ? b : x);
 export const mix = (a: number, b: number, p: number): number => a + (b - a) * p;
 
-/** Kurve x(0..1) -> y. */
+/** Curve x(0..1) -> y. */
 type Curve = (x: number) => number;
 
-/** CSS-cubic-bezier als Funktion x(0..1) -> y. Newton mit Rückfall auf Bisektion. */
+/** CSS cubic-bezier as a function x(0..1) -> y. Newton with bisection fallback. */
 export function bez(x1: number, y1: number, x2: number, y2: number): Curve {
 	const cx = 3 * x1;
 	const bx = 3 * (x2 - x1) - cx;
@@ -45,16 +45,16 @@ export function bez(x1: number, y1: number, x2: number, y2: number): Curve {
 	};
 }
 
-/** Auslauf wie bei iOS-Blättern (schnell, langer Schwanz), ohne Überschwinger. */
+/** Ease-out like iOS sheets (fast, long tail), without overshoot. */
 export const easeOut = bez(0.22, 1, 0.36, 1);
-/** Weiches Ein- und Ausgleiten (Tipp-Wege, Systemübergänge). */
+/** Soft easing in and out (tap paths, system transitions). */
 export const io = bez(0.42, 0, 0.2, 1);
-/** Material „emphasized decelerate“. */
+/** Material "emphasized decelerate". */
 export const mat = bez(0.05, 0.7, 0.1, 1);
 
 /**
- * Gedämpfte Feder aus der Ruhe auf 1: ζ Dämpfungsgrad, wn Eigenfrequenz in rad/s, tau Sekunden seit Beginn.
- * ζ 0,59 und ωn 16,6 ergeben 10 % Überschwinger nach 235 ms (gemessenes iOS-Seitenmenü, INSTALL-FLOWS 2.6).
+ * Damped spring from rest to 1: ζ damping ratio, wn natural frequency in rad/s, tau seconds since start.
+ * ζ 0.59 and ωn 16.6 give 10 % overshoot after 235 ms (measured iOS side menu, INSTALL-FLOWS 2.6).
  */
 export function spring(tau: number, z = 0.59, wn = 16.6): number {
 	if (tau <= 0) return 0;
@@ -62,10 +62,10 @@ export function spring(tau: number, z = 0.59, wn = 16.6): number {
 	return 1 - Math.exp(-z * wn * tau) * (Math.cos(wd * tau) + ((z * wn) / wd) * Math.sin(wd * tau));
 }
 
-/** Fortschritt 0..1 eines Abschnitts [t0, t0 + d]. */
+/** Progress 0..1 of a segment [t0, t0 + d]. */
 export const seg = (t: number, t0: number, d: number): number => cl((t - t0) / d);
 
-/** Zustand der Tipp-Anzeige: Deckkraft, Lage, Druck-Skalierung. */
+/** State of the tap indicator: opacity, position, press scale. */
 export interface TapState {
 	o: number;
 	x: number;
@@ -74,9 +74,9 @@ export interface TapState {
 }
 
 /**
- * Tipp-Anzeige. taps: [{ t, x, y, g }] in Zeitfolge, g = Gruppe (gleicher Schritt, der Finger wandert von Ziel zu Ziel).
- * Ergebnis { o, x, y, s } zur Zeit t. Ankunft 150 ms vor dem Tipp, Druck 1 -> 0,85 -> 1 in 160 ms,
- * Wege als gebogene Kurve mit ease-in-out, zwischen den Gruppen ausgeblendet.
+ * Tap indicator. taps: [{ t, x, y, g }] in time order, g = group (same step, the finger moves from target to target).
+ * Result { o, x, y, s } at time t. Arrival 150 ms before the tap, press 1 -> 0.85 -> 1 in 160 ms,
+ * paths as a curved line with ease-in-out, faded out between groups.
  */
 export function tapAt(taps: readonly Tap[], t: number): TapState {
 	let o = 0;
@@ -91,12 +91,12 @@ export function tapAt(taps: readonly Tap[], t: number): TapState {
 		const first = !prev || prev.g !== c.g;
 		const last = !next || next.g !== c.g;
 		const t1 = c.t - 0.15;
-		// Bereich dieses Tipps: von der Anreise bis zum nächsten Tipp oder zum Ausblenden
+		// Range of this tap: from the approach until the next tap or the fade-out
 		const start = prev && !first ? prev.t + 0.2 : c.t - 0.62;
 		const stop = next && !last ? next.t - 0.62 : c.t + 0.55;
 		if (t < start || t > stop) continue;
 		if (prev && !first) {
-			// Weg vom vorigen Ziel, mit Wartezeit am Anfang, falls der Abstand der Tipps groß ist
+			// Path from the previous target, with a wait at the start if the taps are far apart in time
 			const dur = Math.min(0.75, Math.max(0.25, c.t - prev.t - 0.4));
 			const p = io(seg(t, t1 - dur, dur));
 			const dx = c.x - prev.x;

@@ -16,7 +16,7 @@ import { topics, ui } from './registry';
 
 type ClusterId = 'money' | 'household' | 'together' | 'moving' | 'more';
 
-// Themen der Übersicht; was hier fehlt, landet unter „Weitere“, damit kein Ratgeber verschwindet.
+// Topics of the overview; whatever is missing here lands under "More" so no guide disappears.
 const CLUSTERS: Array<[ClusterId, string[]]> = [
 	[
 		'money',
@@ -149,12 +149,12 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 		>
 			<script
 				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
 			/>
 			<script
 				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(collection) }}
 			/>
 

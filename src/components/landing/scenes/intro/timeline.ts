@@ -1,12 +1,12 @@
-// Zeitachse der Intro-Bühne (PLAN-V2 2.4).
+// Timeline of the intro stage (PLAN-V2 2.4).
 //
-// Die Bühne klebt über INTRO_SCREENS Bildschirmhöhen am Fenster. Aus der Scroll-Strecke s (0..1)
-// wird der Fortschritt P der Choreografie: P = warp(s). Alle Marken der Szenen (look, mx, split,
-// zoom, dive, fpA, endA, Flut-Deckung, Kartenkurve) bleiben in P definiert.
+// The stage sticks to the window over INTRO_SCREENS screen heights. The scroll distance s (0..1)
+// maps to the choreography progress P: P = warp(s). All scene marks (look, mx, split,
+// zoom, dive, fpA, endA, flood coverage, card curve) stay defined in P.
 
 export const INTRO_SCREENS = 10;
 
-// Stückweise lineare Abbildung s -> P, Knoten (s, P).
+// Piecewise linear mapping s -> P, knots (s, P).
 export const KNOTS = [
 	[0, 0],
 	[0.496, 0.62],
@@ -15,7 +15,7 @@ export const KNOTS = [
 	[1, 1],
 ] as const satisfies readonly (readonly [s: number, P: number])[];
 
-/** Spalte der Knoten: 0 = Scroll-Strecke s, 1 = Fortschritt P. */
+/** Knot column: 0 = scroll distance s, 1 = progress P. */
 type Column = 0 | 1;
 
 function map(x: number, from: Column, to: Column): number {
@@ -34,8 +34,8 @@ function map(x: number, from: Column, to: Column): number {
 	return b[b.length - 1] ?? 0;
 }
 
-/** Scroll-Strecke s (0..1) -> Fortschritt P (0..1). */
+/** Scroll distance s (0..1) -> progress P (0..1). */
 export const warp = (s: number): number => map(s, 0, 1);
 
-/** Fortschritt P -> Scroll-Strecke s, Umkehrung von warp. */
+/** Progress P -> scroll distance s, inverse of warp. */
 export const unwarp = (P: number): number => map(P, 1, 0);

@@ -1,27 +1,27 @@
 export interface Topic {
-	/** Kurzer Linktext für Querverweise. */
+	/** Short link text for cross references. */
 	link: string;
 	title: string;
 	description: string;
 	h1: string;
 	intro: string;
 	sections: Array<[string, string]>;
-	/** Tabellen als Daten; `nach` ist die Abschnittsüberschrift, hinter der die Tabelle steht. */
+	/** Tables as data; `after` is the section heading the table follows. */
 	tables?: Array<{
 		after: string;
 		title: string;
 		header: string[];
 		rows: string[][];
-		/** Fußnote unter der Tabelle. */
+		/** Footnote below the table. */
 		note?: string;
 	}>;
-	/** Wird zusätzlich als FAQPage-JSON-LD ausgegeben. */
+	/** Additionally emitted as FAQPage JSON-LD. */
 	faq?: Array<[string, string]>;
-	/** Letzte inhaltliche Änderung (ISO-Datum), für lastmod in der Sitemap. */
+	/** Last content change (ISO date), for lastmod in the sitemap. */
 	updated: string;
-	/** Erste Veröffentlichung (ISO-Datum), für datePublished. */
+	/** First publication (ISO date), for datePublished. */
 	published: string;
-	/** Belege als [Name, URL]; erscheinen als Quellenliste, Article-citation und llms-full. */
+	/** Sources as [name, URL]; shown as the source list, Article citation and llms-full. */
 	sources?: Array<[string, string]>;
 	/** Interactive tool rendered after the section with the exact heading `after`; `csv` adds a download and print link. */
 	widget?: { after: string; kind: 'rota-generator' | 'rent-calculator'; csv?: string };

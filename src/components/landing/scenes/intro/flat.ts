@@ -1,8 +1,8 @@
-// Die Wohnung: isometrischer Grundriss aus Punktraster und Wänden, vier Räume werden nacheinander
-// angefahren. Dazu die Kurve der Raumkarten (karten) für die Texte der Bühne.
+// The flat: isometric floor plan made of a dot grid and walls, four rooms are visited one after
+// another. Also the curve of the room cards (cardOpacity) for the texts of the stage.
 //
-// Szenenraum: Die Komposition liegt in der Bezugsbox 1280 x 800 (c.fit), das Punktraster und die
-// Wände laufen über die ganze Fläche.
+// Scene space: the composition lies in the reference box 1280 x 800 (c.fit), the dot grid and the
+// walls run across the whole area.
 
 import { loop, qa } from '../../core/loop';
 import { BAYER, cl, lag, lerp, ss } from '../../core/math';
@@ -11,11 +11,11 @@ import type { StageContext } from './types';
 
 const mono = (px: number) => `500 ${px}px "JetBrains Mono", monospace`;
 
-/** Raum im Raster: x, y, Breite, Tiefe. Die Namen kommen aus dem Wörterbuch (createStage: rooms) in derselben Reihenfolge. */
+/** Room in the grid: x, y, width, depth. The names come from the dictionary (createStage: rooms) in the same order. */
 type Room = readonly [x: number, y: number, w: number, d: number];
 
-// Raster = halbe Meter der Blender-Wohnung (landing-konzept/wohnung-iso, Böden Boden_*)
-// Reihenfolge: Küche, Bad, Zimmer Jona, Flur, Wohnzimmer, Zimmer Lea, Zimmer Lina, Zimmer Mika (wie canvasRooms)
+// Grid = half metres of the Blender flat (landing-konzept/wohnung-iso, floors Boden_*)
+// Order: kitchen, bathroom, Jona's room, hallway, living room, Lea's room, Lina's room, Mika's room (as canvasRooms)
 const ROOMS = [
 	[0, 0, 8, 7.2],
 	[18, 0, 6, 7.2],
@@ -27,7 +27,7 @@ const ROOMS = [
 	[6, 10, 6, 6.4],
 ] as const satisfies readonly Room[];
 
-/** Blickpunkt: Mitte im Raster (cx, cy), Maßstab u, Ursprung der Projektion (ox, oy), Raum (-1 = keiner). */
+/** Viewpoint: center in the grid (cx, cy), scale u, projection origin (ox, oy), room (-1 = none). */
 interface View {
 	cx: number;
 	cy: number;
@@ -45,7 +45,7 @@ const STOPS: readonly View[] = [
 	{ cx: 12, cy: 8.6, u: 42, ox: 840, oy: 420, room: 3 },
 	{ cx: 12, cy: 8.2, u: 21, ox: 640, oy: 300, room: -1 },
 ];
-/** Wand: Anfang (x, y) und Ende (x, y) im Raster. */
+/** Wall: start (x, y) and end (x, y) in the grid. */
 type Wall = [number, number, number, number];
 
 const WALLS: Wall[] = [];
@@ -62,21 +62,21 @@ for (const r of ROOMS) {
 	);
 }
 WALLS.sort((a, b) => a[0] + a[1] + a[2] + a[3] - (b[0] + b[1] + b[2] + b[3]));
-/** Bewohner: Größe der Scheibe (in Rastereinheiten); die Namen kommen aus dem Wörterbuch (createStage: people). */
+/** Resident: size of the disc (in grid units); the names come from the dictionary (createStage: people). */
 const PEOC = [0.62, 0.5, 0.42, 0.34] as const;
 
 /**
- * Deckkraft der vier Raumkarten bei Fortschritt P, am Scroll geführt wie im Entwurf (--c0..3): Karte j steht
- * um fs = j + 1 (Plateau 0,5 Stopps breit), blendet davor und danach in 0,25 Stopps ein und aus. Anders als im
- * Entwurf überlappen sich die Blenden nie (an der Grenze der Karten ist die Summe 0): kein Text über Text.
+ * Opacity of the four room cards at progress P, driven by scroll as in the design (--c0..3): card j sits
+ * at fs = j + 1 (plateau 0.5 stops wide), fades in and out over 0.25 stops before and after. Unlike the
+ * design, the fades never overlap (at the boundary between cards the sum is 0): no text over text.
  */
 export function cardOpacity(P: number): number[] {
 	const fpA = ss((P - 0.58) / 0.05);
 	const fs = cl((P - 0.62) / 0.28) * 5;
 	return [0, 1, 2, 3].map((j) => {
 		const d = Math.abs(fs - (j + 1));
-		// die letzte Karte (Pinnwand & Chat) bleibt während der Fahrt zur Übersicht und geht mit deren Ende (P 0,9),
-		// sonst stünde sie grau über der sich auflösenden Wohnung; Titel und Handy der Ende-Ebene kommen danach
+		// the last card (bulletin board & chat) stays during the move to the overview and leaves with its end (P 0.9),
+		// otherwise it would stand grey over the dissolving flat; title and phone of the end layer follow after
 		if (j === 3 && fs > 4) return fpA * (1 - ss((P - 0.87) / 0.03));
 		return fpA * ss((0.5 - d) / 0.25);
 	});
@@ -84,7 +84,7 @@ export function cardOpacity(P: number): number[] {
 
 qa.karten = cardOpacity;
 
-/** Rechteck in CSS-Pixeln des Canvas. */
+/** Rectangle in CSS pixels of the canvas. */
 interface Rect {
 	x0: number;
 	y0: number;
@@ -92,7 +92,7 @@ interface Rect {
 	y1: number;
 }
 
-/** Beschriftung (Raumname oder Bewohner) vor und nach dem Setzen. */
+/** Label (room name or resident) before and after placement. */
 interface Label {
 	text: string;
 	x: number;
@@ -100,14 +100,14 @@ interface Label {
 	size: number;
 	a: number;
 	kind: 'name' | 'room';
-	/** Ganz außerhalb des Blickfelds: wird nicht gezeigt. */
+	/** Entirely outside the field of view: not shown. */
 	off: boolean;
 	w: number;
-	/** Belegte Fläche nach setzeLabels (null, solange nicht gesetzt). */
+	/** Occupied area after placeLabels (null while not placed). */
 	rect: Rect | null;
 }
 
-/** Bewohner, der zwischen den Räumen läuft (Ziel tx, ty; nt = Zeitpunkt des nächsten Ziels). */
+/** Resident walking between the rooms (target tx, ty; nt = time of the next target). */
 interface Person {
 	name: string;
 	rel: number;
@@ -118,16 +118,16 @@ interface Person {
 	nt: number;
 }
 
-/** Rechtecke der DOM-Elemente mit data-loch: die Kartenspalte und alles, dem Beschriftungen ausweichen. */
+/** Rectangles of the DOM elements with data-loch: the card column and everything the labels avoid. */
 interface DomRects {
 	column: Rect | null;
 	avoid: Rect[];
 }
 
-/** Zustand der Wohnung je Canvas. */
+/** State of the flat per canvas. */
 interface FlatState {
 	ctx: CanvasRenderingContext2D;
-	/** Nachlaufender Zeiger in Szenenkoordinaten. */
+	/** Trailing pointer in scene coordinates. */
 	sm: { x: number; y: number };
 	pp: Person[] | null;
 	labels: Label[];
@@ -140,7 +140,7 @@ interface FlatState {
 
 const states = new WeakMap<HTMLCanvasElement, FlatState>();
 
-// Zeichen-Maße für Beschriftungen
+// Glyph metrics for labels
 const widths = new Map<string, number>();
 function textWidth(ctx: CanvasRenderingContext2D, font: string, text: string): number {
 	const k = `${font}|${text}`;
@@ -155,8 +155,8 @@ function textWidth(ctx: CanvasRenderingContext2D, font: string, text: string): n
 const intersects = (a: Rect, b: Rect) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
 
 /**
- * Beschriftungen setzen (CSS-Pixel, Identität): in den sichtbaren Bereich klemmen, Rechtecken aus dem
- * DOM (Kartenspalte, Kopf, Hinweis) und anderen Beschriftungen ausweichen.
+ * Places labels (CSS pixels, identity): clamp them into the visible area, avoid rectangles from the
+ * DOM (card column, header, hint) and other labels.
  */
 function placeLabels(
 	ctx: CanvasRenderingContext2D,
@@ -169,7 +169,7 @@ function placeLabels(
 		const font = mono(it.size);
 		const w = textWidth(ctx, font, it.text);
 		const h = it.size;
-		// Ganz außerhalb des Blickfelds: nicht zeigen. Teilweise draußen: hineinklemmen.
+		// Entirely outside the field of view: do not show. Partly outside: clamp inside.
 		if (
 			it.x < bounds.x0 - w / 2 ||
 			it.x > bounds.x1 + w / 2 ||
@@ -186,7 +186,7 @@ function placeLabels(
 			const r = rect();
 			const m = avoid.find((q) => intersects(r, q));
 			if (m) {
-				// zur näheren freien Seite schieben, sonst unter das Hindernis
+				// push to the nearer free side, otherwise below the obstacle
 				const right = m.x1 + 4 + w / 2 + 2;
 				const left = m.x0 - 4 - w / 2 - 2;
 				const okR = right <= bounds.x1 - 8 - w / 2;
@@ -213,16 +213,16 @@ function placeLabels(
 	return items;
 }
 
-// Hochformat: die Wohnung steht unter der Kartenspalte in einer eigenen Box 900 x 560 (Szenenraum
-// 190..1090 x 120..680), jeder Blickpunkt sitzt in der Mitte der Box.
+// Portrait: the flat sits below the card column in its own box 900 x 560 (scene space
+// 190..1090 x 120..680), every viewpoint sits in the middle of the box.
 const PORTRAIT_BOX = { bw: 900, bh: 560, x0: 190, y0: 120, ox: 640, oy: 410 };
 
-/** Hochformat: Oberkante und Unterkante der Wohnungsbox unter der Kartenspalte (CSS-px). Auch die Flut spart sie aus. */
+/** Portrait: top and bottom edge of the flat box below the card column (CSS px). The flood leaves it out as well. */
 export function portraitTop(textBottom: number, safeH: number): { top: number; bot: number } {
 	return { top: Math.min(textBottom + 10, safeH * 0.62), bot: safeH - 56 };
 }
 
-/** Rechtecke der DOM-Elemente mit data-loch relativ zum Canvas (alle 20 Bilder neu gemessen). */
+/** Rectangles of the DOM elements with data-loch measured from the canvas (re-measured every 20 frames). */
 function measureDom(st: FlatState, cv: HTMLCanvasElement): DomRects {
 	if (st.dom && loop.n - st.domN < 20) return st.dom;
 	const r0 = cv.getBoundingClientRect();
@@ -252,7 +252,7 @@ function measureDom(st: FlatState, cv: HTMLCanvasElement): DomRects {
 	return dom;
 }
 
-/** Zeichnet die Wohnung in das 2D-Canvas. c: Kontext der Bühne. */
+/** Draws the flat onto the 2D canvas. c: stage context. */
 export function draw(
 	cv: HTMLCanvasElement,
 	c: StageContext,
@@ -288,7 +288,7 @@ export function draw(
 	st.W = W;
 	st.H = H;
 	const dom = measureDom(st, cv);
-	// Avatare und Beschriftungen blenden in ca. 120 ms aus, solange sie die Raumtext-Spalte (samt Rand links) schneiden
+	// Avatars and labels fade out within about 120 ms while they intersect the room text column (including the margin on the left)
 	const zone =
 		dom.column && Math.max(...cardOpacity(c.P)) > 0.01
 			? { x0: 0, x1: dom.column.x1 + 8, y0: dom.column.y0 - 8, y1: dom.column.y1 + 8 }
@@ -304,7 +304,7 @@ export function draw(
 		return st.fade[key];
 	};
 	const portrait = c.mode === 'hoch';
-	// Abbildung Szenenraum -> Canvas-CSS-Pixel: X = tx + x * f, Y = ty + y * f
+	// Mapping scene space -> canvas CSS pixels: X = tx + x * f, Y = ty + y * f
 	let f: number;
 	let tx: number;
 	let ty: number;
@@ -317,7 +317,7 @@ export function draw(
 		f = Math.min(W / PORTRAIT_BOX.bw, bh / PORTRAIT_BOX.bh, 1.25);
 		tx = (W - PORTRAIT_BOX.bw * f) / 2 - PORTRAIT_BOX.x0 * f;
 		ty = boxTop + (bh - PORTRAIT_BOX.bh * f) / 2 - PORTRAIT_BOX.y0 * f;
-		// Übersicht mittig im Bild, erst mit der ersten Raumkarte rückt die Wohnung unter die Textspalte
+		// Overview centered in the frame, only with the first room card does the flat move below the text column
 		const mid = c.reduced ? 0 : 1 - ss((c.P - 0.62) / 0.04);
 		ty = lerp(ty, (c.safeH - PORTRAIT_BOX.bh * f) / 2 - PORTRAIT_BOX.y0 * f, mid);
 		boxTop *= 1 - mid;
@@ -327,17 +327,17 @@ export function draw(
 		ty = c.fit.oy;
 	}
 	const x0 = -tx / f;
-	const y0 = (0 - ty) / f; // die Wohnung läuft auch im Hochformat bis zum oberen Rand
+	const y0 = (0 - ty) / f; // the flat runs up to the top edge in portrait too
 	const x1 = (W - tx) / f;
 	const y1 = (H - ty) / f;
 	const sp = cl((c.P - 0.62) / 0.28);
-	// Aufbau am Scroll: erst ziehen sich die Wände, dann füllen sich die Böden im Bayer-Raster, zuletzt kommen
-	// Bewohner und Beschriftungen. Zur Ende-Ebene baut sich die Wohnung in umgekehrter Reihenfolge ab.
+	// Build-up on scroll: first the walls draw themselves, then the floors fill in a Bayer grid, last come
+	// residents and labels. Towards the end layer the flat dismantles in reverse order.
 	const build = c.reduced ? 1 : cl((c.P - 0.54) / 0.09) * (1 - cl((c.P - 0.885) / 0.05));
 	const buildWalls = cl(build / 0.55);
 	const buildFloor = cl((build - 0.3) / 0.55);
 	const buildRest = cl((build - 0.75) / 0.25);
-	// Zeiger in Szenenkoordinaten, der Lichtkegel läuft nach
+	// Pointer in scene coordinates, the light cone trails behind
 	if (m.in) {
 		const k = lag(0.25, c.dt ?? 0.016);
 		st.sm.x += ((m.x - tx) / f - st.sm.x) * k;
@@ -351,7 +351,7 @@ export function draw(
 	if (!A || !Bs) return;
 	const cx = lerp(A.cx, Bs.cx, e);
 	const cy = lerp(A.cy, Bs.cy, e);
-	// Übersicht: quer bildfüllend, hoch kleiner, sonst schneidet die schmale Box die Wohnung ab
+	// Overview: fills the frame in landscape, smaller in portrait, otherwise the narrow box cuts off the flat
 	const uOf = (S: View) => (portrait && S === STOPS[0] ? 26 : S.u);
 	const u = Math.exp(lerp(Math.log(uOf(A)), Math.log(uOf(Bs)), e));
 	const ox = portrait ? PORTRAIT_BOX.ox : lerp(A.ox, Bs.ox, e);
@@ -371,7 +371,7 @@ export function draw(
 	const mx = st.sm.x;
 	const my = st.sm.y;
 	const FL = 210;
-	// Blender-Schnitt als Zeichen (wohnung-gl.ts); bis er geladen ist, Punktböden und Linienwände wie bisher
+	// Blender cutaway as glyphs (flat-gl.ts); until it has loaded, dot floors and line walls as before
 	const frame = drawFlatGlyphs({
 		W,
 		H,
@@ -393,7 +393,7 @@ export function draw(
 	ctx.setTransform(dpr * f, 0, 0, dpr * f, dpr * tx, dpr * ty);
 	const stp = Math.max(0.12, 5.5 / u);
 	ctx.fillStyle = '#FAFAFA';
-	// Bodenpunkte: tausende je Bild, daher P(x, y, 0) ausgeschrieben (ohne Array je Punkt) und das Bayer-Raster zuerst
+	// Floor dots: thousands per frame, hence P(x, y, 0) written out (no array per dot) and the Bayer grid first
 	const ku = 0.866 * u;
 	const kv = 0.5 * u;
 	if (!frame)
@@ -424,7 +424,7 @@ export function draw(
 				}
 			}
 		});
-	// Bewohner laufen zwischen den Räumen, im angefahrenen Raum bleiben sie stehen
+	// Residents walk between the rooms, in the room being visited they stand still
 	if (!st.pp)
 		st.pp = PEOC.map((rel, k) => ({
 			name: people[k] ?? '',
@@ -455,7 +455,7 @@ export function draw(
 	const HW = 1.1;
 	if (!frame)
 		for (const [k, wl] of WALLS.entries()) {
-			// jede Wand zieht sich versetzt von ihrem Anfang aus, die Höhe wächst mit
+			// each wall draws itself staggered from its start, the height grows along
 			const w = ss(cl(buildWalls * 1.6 - (k / WALLS.length) * 0.6));
 			if (w <= 0) continue;
 			const ex = wl[0] + (wl[2] - wl[0]) * w;
@@ -511,9 +511,9 @@ export function draw(
 		ctx.globalAlpha = 1;
 		return { pt, r };
 	});
-	// Alles Weitere in CSS-Pixeln: Hochformat deckt oberhalb der Box ab, dann die Beschriftungen
+	// Everything else in CSS pixels: portrait covers above the box, then the labels
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-	// Hochformat: nur hinter dem Textblock abdunkeln, weich auslaufend (keine Schnittkante bei boxTop)
+	// Portrait: darken only behind the text block, fading out softly (no cut edge at boxTop)
 	if (portrait && dom.column) {
 		const viewH = Math.max(...cardOpacity(c.P));
 		if (viewH > 0.01) {
@@ -528,8 +528,8 @@ export function draw(
 			ctx.fillRect(0, 0, W, bottom + 90);
 		}
 	}
-	// Quer: links neben der Kartenspalte dunkelt die Wohnung weich ab, damit keine Wand und kein Punkt
-	// durch den Kartentext läuft (T-02, T-15)
+	// Landscape: left of the card column the flat darkens softly so that no wall and no dot
+	// runs through the card text (T-02, T-15)
 	const view = Math.max(...cardOpacity(c.P));
 	if (!portrait && dom.column && view > 0.01) {
 		const right = dom.column.x1 + 28;
@@ -573,7 +573,7 @@ export function draw(
 			rect: null,
 		});
 	});
-	// Räume zuerst setzen (feste Plätze), Namen weichen aus
+	// Place rooms first (fixed positions), names make way
 	items.sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'room' ? -1 : 1));
 	const shown: Rect = { x0: 0, x1: W, y0: portrait ? boxTop : 0, y1: c.safeH };
 	placeLabels(ctx, items, shown, dom.avoid);
@@ -581,7 +581,7 @@ export function draw(
 	ctx.textBaseline = 'alphabetic';
 	ctx.lineJoin = 'round';
 	ctx.lineWidth = 3;
-	// ctx.font nur bei Wechsel setzen: der Setter parst den Schrift-String jedes Mal neu (teuer je Bild)
+	// Set ctx.font only on change: the setter re-parses the font string every time (expensive per frame)
 	let font = '';
 	for (const it of items) {
 		if (it.off || !it.rect) continue;

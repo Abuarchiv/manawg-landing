@@ -1,20 +1,20 @@
-// Stile je Bild setzen, nur bei Änderung schreiben (billig, auch bei 30 Elementen je Bild).
+// Sets styles per frame and writes only on change (cheap, even with 30 elements per frame).
 
 const r2 = (v: number): number => Math.round(v * 100) / 100;
 
-/** Transform-Zeichenkette: Verschiebung (px) und Skalierung. */
+/** Transform string: translation (px) and scale. */
 export const tf = (x = 0, y = 0, sc = 1, sy = sc): string =>
 	x === 0 && y === 0 && sc === 1 && sy === 1
 		? 'none'
 		: `translate(${r2(x)}px,${r2(y)}px) scale(${r2(sc)},${r2(sy)})`;
 
-/** Filter aus Unschärfe (px) und Helligkeit. */
+/** Filter from blur (px) and brightness. */
 export const fl = (blur = 0, brightness = 1): string =>
 	blur < 0.05 && brightness === 1
 		? 'none'
 		: `${blur >= 0.05 ? `blur(${r2(blur)}px) ` : ''}${brightness !== 1 ? `brightness(${r2(brightness)})` : ''}`.trim();
 
-/** CSS-Eigenschaften, die put direkt unter ihrem Namen setzt (Zeichenketten mit Einheit). */
+/** CSS properties that put sets under their own name (strings with unit). */
 type CssProp =
 	| 'transform'
 	| 'top'
@@ -27,8 +27,8 @@ type CssProp =
 	| 'background';
 
 /**
- * Stilwerte für put: d display ('' = aus, sonst Wert), o Deckkraft, t transform, f filter,
- * dazu CSS-Eigenschaften unter ihrem Namen.
+ * Style values for put: d display ('' = off, otherwise value), o opacity, t transform, f filter,
+ * plus CSS properties under their own name.
  */
 export type Style = {
 	d?: '' | 'block' | 'flex';
@@ -39,11 +39,11 @@ export type Style = {
 
 type StyleName = 'display' | 'opacity' | 'filter' | CssProp;
 
-/** Zuletzt geschriebene Werte je Element. */
+/** Last written values per element. */
 const lastWritten = new WeakMap<HTMLElement, Partial<Record<StyleName, string>>>();
 
 /**
- * Zahlen für Deckkraft werden auf 3 Stellen gerundet. Fehlende Elemente werden übergangen.
+ * Opacity numbers are rounded to 3 decimals. Missing elements are skipped.
  */
 export function put(el: HTMLElement | null | undefined, o: Style): void {
 	if (!el) return;

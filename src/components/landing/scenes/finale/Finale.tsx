@@ -20,9 +20,9 @@ export function Finale() {
 			),
 		[],
 	);
-	// Höhe der Fußzeile als --fuss, damit der Titel im Endbild unter dem Kopf steht. Passt die Fußzeile samt
-	// Titelblock nicht in den Viewport (Fußzeile mit Kurztext ist höher als ein Bildschirm), gilt die Endbild-Regel
-	// nicht: dann steht der Titel in der Mitte des Finales und die Fußzeile folgt darunter.
+	// Footer height as --fuss, so the title sits below the header in the final view. If the footer together with the
+	// title block does not fit in the viewport (footer with short text is taller than a screen), the final-view rule
+	// does not apply: then the title sits in the middle of the finale and the footer follows below.
 	useEffect(() => {
 		const foot = document.getElementById('fusszeile');
 		const el = sec.current;

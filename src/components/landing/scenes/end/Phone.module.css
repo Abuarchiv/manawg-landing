@@ -1,4 +1,4 @@
-/* Handy-Bildschirm 278 x 598: die App läuft in 390 x 839 CSS-Pixeln und wird um die linke obere Ecke skaliert. */
+/* Phone screen 278 x 598: the app runs at 390 x 839 CSS pixels and is scaled around the top left corner. */
 .surface,
 .status {
 	position: absolute;
@@ -15,7 +15,7 @@
 	position: absolute;
 	left: 0;
 	top: 0;
-	/* Logische Breite der App: 390, im Hochformat 360 (größere Schrift auf dem kleinen Handy) */
+	/* Logical width of the app: 390, in portrait 360 (larger type on the small phone) */
 	width: calc(var(--lwn, 390) * 1px);
 	height: calc(var(--lwn, 390) * 2.15128px);
 	transform: scale(calc(278 / var(--lwn, 390)));

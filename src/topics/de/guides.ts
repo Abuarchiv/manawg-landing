@@ -1,22 +1,22 @@
-// Ratgeberseiten für Suchanfragen rund um das WG-Leben. Allgemeine Tipps, kein Rechtsrat.
-// ManaWG-Funktionen nur nennen, wenn es sie in manawg-app wirklich gibt (siehe themen.ts).
+// Guide pages for search queries about living in a flat share. General tips, not legal advice.
+// Only name ManaWG features where manawg-app really has them (see topics.ts).
 import type { Topic } from '../types.ts';
 
 import { cleaningRota, tableToCsv } from '../cleaning-rota.ts';
-// Die reinen Funktionen liegen in einer kleinen Datei, damit der Generator nicht alle Ratgebertexte lädt.
+// The pure functions live in a small file so the generator does not load all guide texts.
 import { COMPARISON_ROWS, MANAWG_CELLS, NOT_CHECKED } from './comparison.ts';
 
 const TASKS_FOUR = ['Bad', 'Küche', 'Böden', 'Müll und Flur'];
 const TASKS_THREE = ['Bad', 'Küche', 'Böden und Müll'];
 const TASKS_FIVE = [...TASKS_FOUR, 'Wohnzimmer und Balkon'];
 
-/** Einzige Quelle der Vorlagen: HTML-Tabellen, CSV und Markdown lesen hier. A bis E stehen für Beispielpersonen. */
+/** Single source of the templates: HTML tables, CSV and Markdown all read from here. A to E stand for example flatmates. */
 export const TEMPLATE_FOUR = cleaningRota(['A', 'B', 'C', 'D'], TASKS_FOUR);
 const TEMPLATE_TWO = cleaningRota(['A', 'B'], ['Bad', 'Böden', 'Küche', 'Müll und Flur']);
 const TEMPLATE_THREE = cleaningRota(['A', 'B', 'C'], TASKS_THREE);
 const TEMPLATE_FIVE = cleaningRota(['A', 'B', 'C', 'D', 'E'], TASKS_FIVE);
 
-/** Dieselben Vorlagendaten als CSV. Statisch, keine Nutzereingaben. */
+/** The same template data as a CSV. Static, no user input. */
 export function cleaningRotaTemplateCsv(): string {
 	return tableToCsv(TEMPLATE_FOUR.header, TEMPLATE_FOUR.rows);
 }
@@ -1065,7 +1065,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 				after: 'intro',
 				title: 'WG-Apps im Vergleich',
 				header: ['Merkmal', 'Flatastic', 'ManaWG', 'OurHome', 'Splid', 'Splitwise', 'Tricount'],
-				// Spalten alphabetisch, damit die Tabelle keine Rangfolge nahelegt.
+				// Columns are alphabetical so the table does not suggest a ranking.
 				rows: COMPARISON_ROWS.map((z, i) => [
 					z,
 					...[

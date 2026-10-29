@@ -1,9 +1,9 @@
-// Ablauf der Installation im Gerät: zeitgesteuerte Schleife, solange der Abschnitt im Bild ist.
+// Install playback on the device: time-driven loop while the section is in view.
 //
-// - Der Zustand ist eine reine Funktion der Zeit (plan.render), ein Sprung auf einen Schritt ist daher exakt.
-// - Pause außerhalb des Bildes (die Seitenschleife ruft frame nur bei sichtbarem Gerät auf), Neustart beim
-//   Wiedereintritt und bei jedem Tabwechsel.
-// - reduce: keine Schleife, je Schritt ein Standbild.
+// - The state is a pure function of time (plan.render), so jumping to a step is exact.
+// - Pauses off screen (the page loop calls frame only while the device is visible), restarts on
+//   re-entry and on every tab switch.
+// - reduce: no loop, one still frame per step.
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { plan as android } from './android-plan';
@@ -14,46 +14,46 @@ import { tapAt } from './timing';
 import type { Elements, TabIndex } from './types';
 
 const PLANS = [ios, android, desktop] as const;
-const LEAD_IN = 0.12; // kurzer Halt auf dem Startbild beim Tabwechsel, bevor der Ablauf beginnt
+const LEAD_IN = 0.12; // short hold on the start frame on tab switch, before playback begins
 
-/** Zustand des Ablaufs im Gerät. */
+/** State of the playback on the device. */
 interface PlaybackState extends SceneState {
-	/** Elemente des Geräts nach data-k. */
+	/** Device elements by data-k. */
 	E: Elements;
-	/** Tipp-Anzeige (Ring am Handy, Zeiger am Rechner). */
+	/** Tap indicator (ring on the phone, pointer on the desktop). */
 	tap: HTMLElement | null;
-	/** Schrittliste neben dem Gerät (wechselt mit dem Tab). */
+	/** Step list next to the device (changes with the tab). */
 	steps: HTMLElement[];
-	/** Bildunterschrift im Hochformat. */
+	/** Caption in portrait layout. */
 	caption: HTMLElement | null;
-	/** Gewählter Reiter, -1 vor dem ersten Bild. */
+	/** Selected tab, -1 before the first frame. */
 	tab: TabIndex | -1;
-	/** Uhr des Ablaufs in Sekunden (negativ im Vorlauf). */
+	/** Playback clock in seconds (negative during the lead-in). */
 	clk: number;
-	/** Bildzähler der Schleife beim letzten Bild dieser Szene (erkennt Zeiten außer Sicht). */
+	/** Loop frame counter at this scene's last frame (detects time spent off screen). */
 	n: number;
-	/** Standbild-Schritt (reduce). */
+	/** Still-frame step (reduce). */
 	still: number;
-	/** Aktiver Schritt, -1 = noch keiner markiert. */
+	/** Active step, -1 = none marked yet. */
 	active: number;
-	/** Fortschritt im aktiven Schritt (0..1), zuletzt geschrieben. */
+	/** Progress within the active step (0..1), last written. */
 	progress: number;
 	dirty: boolean;
 	fresh: boolean;
 	wasReduced: boolean;
-	/** Uhr angehalten (Messhaken). */
+	/** Clock halted (measurement hook). */
 	halt: boolean;
 }
 
-/** Rechenzeit je Bild (Messhaken, Abnahme I-9). */
+/** Compute time per frame (measurement hook, acceptance I-9). */
 const timing = { n: 0, sum: 0, max: 0 };
 
 /**
- * fr: Gerätrahmen [data-ins="frame"], sec: Abschnitt, getTab(): 0 iPhone, 1 Android, 2 Rechner.
- * Gibt { stop, sprung(i), schritte() } zurück.
+ * fr: device frame [data-ins="frame"], sec: section, getTab(): 0 iPhone, 1 Android, 2 desktop.
+ * Returns { stop, jumpTo(i), collectSteps() }.
  */
 export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () => TabIndex) {
-	// Fortschritt im aktiven Schritt als Linie (Schrittliste) und Segment (Bildunterschrift im Hochformat)
+	// Progress within the active step as a line (step list) and segment (caption in portrait layout)
 	const drawProgress = (s: PlaybackState, pl: (typeof PLANS)[number], t: number) => {
 		const a0 = pl.jumps[s.active] ?? 0;
 		const a1 = pl.jumps[s.active + 1] ?? pl.loop;
@@ -94,7 +94,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			const m0 = performance.now();
 			const tab = getTab();
 			const pl = PLANS[tab];
-			const gap = loop.n - s.n > 2; // war nicht im Bild
+			const gap = loop.n - s.n > 2; // was not in view
 			s.n = loop.n;
 			if (tab !== s.tab) {
 				s.tab = tab;
@@ -108,7 +108,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			}
 			let t: number;
 			if (s.reduced) {
-				// Standbild des gewählten Schritts, nur bei Änderung zeichnen
+				// Still frame of the selected step, drawn only on change
 				if (!s.dirty && s.wasReduced) return;
 				s.wasReduced = true;
 				t = pl.still[s.still] ?? 0;
@@ -121,12 +121,12 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			}
 			const ks = pl.ks;
 			pl.render(Math.max(t, 0), s.E);
-			// Beim Tabwechsel bleibt der Schirm dunkel, bis der Rahmen steht, und blendet dann ein. Der Neustart der
-			// Schleife ist ein harter Schnitt (kein Bild halb überblendet, kein leeres Bild).
+			// On tab switch the screen stays dark until the frame is settled, then fades in. The loop restart
+			// is a hard cut (no half-blended frame, no empty frame).
 			if (t > 0.3) s.fresh = false;
-			// Kein Schleier: beim Tabwechsel steht sofort das Startbild des neuen Plans (pl.render(0)), nie ein leerer Schirm
+			// No veil: on tab switch the start frame of the new plan (pl.render(0)) shows immediately, never an empty screen
 			put(s.E.veil, { o: 0 });
-			// Tipp-Anzeige: am Handy ein halbtransparenter Ring, am Rechner der macOS-Zeiger (Spitze auf dem Ziel)
+			// Tap indicator: a semi-transparent ring on the phone, the macOS pointer on the desktop (tip on the target)
 			if (s.tap) {
 				const mouse = tab === 2;
 				const k = s.reduced ? { o: 0, x: 0, y: 0, s: 1 } : tapAt(pl.taps, t);
@@ -138,7 +138,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 					t: `translate(${(k.x * ks - ringOffset).toFixed(1)}px,${(k.y * ks - ringOffset).toFixed(1)}px) scale(${(mouse ? 1 - (1 - k.s) * 0.67 : k.s).toFixed(3)})`,
 				});
 			}
-			// aktiver Schritt (die Liste wechselt mit dem Tab)
+			// active step (the list changes with the tab)
 			if (!s.steps[0]?.isConnected) {
 				s.steps = [...sec.querySelectorAll<HTMLElement>('[data-istep]')];
 				s.active = -1;
@@ -146,14 +146,14 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			let a = 0;
 			for (let i = 0; i < pl.jumps.length; i++) if (t >= (pl.jumps[i] ?? 0)) a = i;
 			if (s.reduced) a = s.still;
-			// Rechenzeit je Bild (Messhaken, Abnahme I-9)
+			// Compute time per frame (measurement hook, acceptance I-9)
 			const mz = performance.now() - m0;
 			timing.n++;
 			timing.sum += mz;
 			if (mz > timing.max) timing.max = mz;
 			if (a !== s.active) {
 				s.active = a;
-				// Bildunterschrift im Hochformat: der aktive Schritt als eine Zeile unter dem Gerät
+				// Caption in portrait layout: the active step as one line below the device
 				const z = s.steps[a]?.querySelector('[data-zeile]');
 				if (s.caption && z) {
 					const nr = document.createElement('span');
@@ -175,7 +175,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			drawProgress(s, pl, t);
 		},
 	});
-	// Messhaken für landing-konzept/werkzeuge/qa (nur mit ?qa=1 gelesen): Uhr anhalten und setzen, Zustand je Zeit prüfen
+	// Measurement hook for landing-konzept/werkzeuge/qa (read only with ?qa=1): halt and set the clock, check the state per time
 	qa.install = {
 		halte(b: unknown) {
 			if (st) st.halt = !!b;
@@ -199,7 +199,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 	};
 	return {
 		stop: off,
-		/** Springt an den Anfang von Schritt i (reduce: zeigt dessen Standbild). */
+		/** Jumps to the start of step i (reduce: shows its still frame). */
 		jumpTo(i: number) {
 			if (!st) return;
 			const pl = PLANS[st.tab === -1 ? getTab() : st.tab];
@@ -207,7 +207,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			st.still = i;
 			st.dirty = true;
 		},
-		/** Schritte neu einsammeln (nach Tabwechsel ändert sich die Liste). */
+		/** Re-collects the steps (the list changes after a tab switch). */
 		collectSteps() {
 			if (!st) return;
 			st.steps = [...sec.querySelectorAll<HTMLElement>('[data-istep]')];

@@ -2,8 +2,8 @@ import { cleaningRotaTemplateCsv } from '@/topics/de/guides';
 
 export const dynamic = 'force-static';
 
-// Dieselben Vorlagendaten wie die Tabelle auf /putzplan-vorlage:
-// Semikolon, CRLF, UTF-8 mit BOM, als Datei-Download.
+// Same template data as the table on /putzplan-vorlage:
+// semicolon separated, CRLF, UTF-8 with BOM, served as a download.
 export function GET() {
 	return new Response(cleaningRotaTemplateCsv(), {
 		headers: {

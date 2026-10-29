@@ -11,7 +11,7 @@ const newest = (data: Record<string, { updated: string }>) =>
 		Object.values(data).reduce((latest, t) => (t.updated > latest ? t.updated : latest), ''),
 	);
 
-// Only topic, guide pages and the guide indexes carry their known Stand date.
+// Only topic, guide pages and the guide indexes carry their known last-updated date.
 // Home page and legal pages have no known date and get none;
 // priority/changefreq are dropped (Google ignores them).
 export default function sitemap(): MetadataRoute.Sitemap {

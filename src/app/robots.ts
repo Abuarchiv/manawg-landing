@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
 	const appUrl = getAppUrl();
 	return {
 		rules: [
-			// KI-Crawler und Suchassistenten ausdrücklich erlaubt, damit ManaWG in Antworten vorkommen kann.
+			// AI crawlers and search assistants are explicitly allowed so ManaWG can appear in answers.
 			{
 				userAgent: [
 					'GPTBot',
@@ -26,7 +26,7 @@ export default function robots(): MetadataRoute.Robots {
 			{
 				userAgent: '*',
 				allow: ['/'],
-				// /wg, /neu und /offline bleiben crawlbar, damit die 308-Weiterleitungen (next.config.ts) gesehen werden.
+				// /wg, /neu and /offline stay crawlable so the 308 redirects (next.config.ts) are seen.
 				disallow: ['/api/'],
 			},
 		],

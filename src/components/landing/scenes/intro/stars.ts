@@ -1,15 +1,15 @@
-// Hintergrundpunkte des Hero-Titels: 220 Sterne in der oberen Hälfte, flackern leise.
-// Das Feld füllt die ganze Fläche (nicht nur 1280 x 800), bei 1280 x 800 liegen die Punkte wie im Entwurf.
+// Background dots of the hero title: 220 stars in the upper half, flickering softly.
+// The field fills the whole area (not just 1280 x 800); at 1280 x 800 the dots sit as in the design.
 
 import { hsh } from '../../core/math';
 
 export const STAR_COUNT = 220;
-// Dichte des Entwurfs (220 Punkte auf 1280 x 360 px) bleibt auf jeder Fläche gleich.
+// The design density (220 dots on 1280 x 360 px) stays the same on every area.
 const DENSITY = STAR_COUNT / (1280 * 360);
 
 const contexts = new WeakMap<HTMLCanvasElement, CanvasRenderingContext2D>();
 
-/** Zeichnet die Sterne. cv: sichtbares 2D-Canvas, W und H in CSS-Pixeln, dpr Pixelfaktor, t Sekunden. */
+/** Draws the stars. cv: visible 2D canvas, W and H in CSS pixels, dpr pixel ratio, t seconds. */
 export function drawStars(
 	cv: HTMLCanvasElement,
 	W: number,

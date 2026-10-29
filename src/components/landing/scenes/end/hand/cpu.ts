@@ -1,5 +1,5 @@
-// Fallback ohne WebGL2: der Halbton wird einmal je Größenänderung auf 2D vorberechnet (ohne Zeigerlicht,
-// die Zeigehand als Sprite).
+// Fallback without WebGL2: the halftone is precomputed in 2D once per resize (without pointer light,
+// the pointing hand as a sprite).
 
 import type { Fit } from '../../../core/canvas';
 import { BAYER as HB, cl, hsh, ss } from '../../../core/math';
@@ -22,7 +22,7 @@ function ctx2d(
 	opt?: CanvasRenderingContext2DSettings,
 ): CanvasRenderingContext2D {
 	const g = cv.getContext('2d', opt);
-	if (!g) throw new Error('hand: 2D-Kontext nicht verfügbar');
+	if (!g) throw new Error('hand: 2D context not available');
 	return g;
 }
 
@@ -33,7 +33,7 @@ const sdfRR = (x: number, y: number, R: Rect, r: number): number => {
 	return Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) + Math.min(Math.max(qx, qy), 0) - r;
 };
 
-/** Kacheln eines Atlas als Byte-Felder plus bilinearer Zugriff (einmal je Atlas). */
+/** Tiles of an atlas as byte arrays plus bilinear access (once per atlas). */
 function cpuAtlas<M extends AtlasMeta>(at: Atlas<M>): CpuAtlas {
 	if (at.cpu) return at.cpu;
 	const { bmp, meta } = at;
@@ -80,7 +80,7 @@ function cpuAtlas<M extends AtlasMeta>(at: Atlas<M>): CpuAtlas {
 
 const gradeL = (L: number): number => cl(0.5 + (L ** GAM - 0.5) * CON);
 
-/** Haltehand an der Stelle (x, y) ohne Zeigerlicht: [Ton, Ebene] (Ebene 1 hinten, 2 vorn) oder null. */
+/** Holding hand at (x, y) without pointer light: [tone, layer] (layer 1 back, 2 front) or null. */
 let cpuBottom = 1400;
 function holdCpu(x: number, y: number): [number, number] | null {
 	const { T, samp } = cpuAtlas(atlases().hold);
@@ -116,7 +116,7 @@ function holdCpu(x: number, y: number): [number, number] | null {
 	return [v * cov, front ? 2 : 1];
 }
 
-/** Zeigehand im Sprite-Raum: [Ton normal, Ton als Tinte über dem Bildschirm] */
+/** Pointing hand in sprite space: [normal tone, tone as ink over the screen] */
 function pointCpu(a: number, b: number, ps: number, lf: number): [number, number] | null {
 	const { T, samp } = cpuAtlas(atlases().point);
 	const al = samp(T.a, a, b);
@@ -138,7 +138,7 @@ function pointCpu(a: number, b: number, ps: number, lf: number): [number, number
 	return [Math.max(v, edge ? EDV * lf * al : 0) * cov * fade, vd * cov * fadeIn];
 }
 
-/** Bayer-Schwelle der Zelle (i, j). */
+/** Bayer threshold of cell (i, j). */
 const threshold = (i: number, j: number): number => (HB[(j & 3) * 4 + (i & 3)] ?? 0) / 16 + 0.035;
 
 function dotRect(
@@ -173,7 +173,7 @@ function rrPath(g: CanvasRenderingContext2D, R: Rect, r: number): void {
 	g.closePath();
 }
 
-/** Haltehand: Punkte von hinten (cb, direkt auf back) und von vorn (cf, in ein eigenes Bild). */
+/** Holding hand: dots from behind (cb, directly on back) and from the front (cf, into a separate image). */
 function bakeHoldHand(
 	st: HandState,
 	W: number,
@@ -215,7 +215,7 @@ function bakeHoldHand(
 	return held;
 }
 
-/** Zeige-Sprite (Maßstab PS, Licht an einer festen Stelle): [normal, Tinte über dem Bildschirm]. */
+/** Pointing sprite (scale PS, light at a fixed spot): [normal, ink over the screen]. */
 function bakeSprites(m: number): [HTMLCanvasElement, HTMLCanvasElement] {
 	const mp = atlases().point.meta;
 	const sw = Math.ceil((mp.tile[0] / mp.scale) * PS * m);
@@ -249,7 +249,7 @@ function bakeSprites(m: number): [HTMLCanvasElement, HTMLCanvasElement] {
 	return sp;
 }
 
-/** Fallback: Haltehand und Zeige-Sprite für diese Größe vorrechnen. */
+/** Fallback: precompute the holding hand and pointing sprite for this size. */
 function bakeCpu(st: HandState, W: number, H: number, dpr: number, cam: Fit): CpuBaked {
 	cpuBottom = Math.min(atlases().hold.meta.bottomY, (H - cam.oy) / cam.f + 10);
 	const w = Math.max(1, Math.round(W * dpr));
@@ -330,7 +330,7 @@ export function cpuFrame(
 	}
 }
 
-/** Löscht beide Ebenen im 2D-Fallback. */
+/** Clears both layers in the 2D fallback. */
 export function cpuClear(st: HandState): void {
 	for (const cv of [st.back, st.front]) {
 		const g = ctx2d(cv);

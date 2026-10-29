@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 		canonical: '/agb',
 		languages: languageAlternates('/agb', '/en/terms') ?? {},
 	},
-	// openGraph wird nicht mit dem Layout gemischt, daher vollständig: og:url zeigte sonst auf die Startseite.
+	// openGraph is not merged with the layout, so it is spelled out in full: og:url would point at the home page otherwise.
 	openGraph: {
 		title: 'Nutzungsbedingungen von ManaWG',
 		description:

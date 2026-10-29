@@ -10,16 +10,16 @@ import { live } from '../intro/stage';
 import s from './Phone.module.css';
 import { dateLines } from './date';
 
-// Das Handy der Ende-Szene mit der echten ManaWG-App: ein gleich-originiges iframe auf
-// /app-demo/index.html (Standalone-DOM und CSS der App, Zustandsautomat in demo.js). Hülle und Geometrie
-// wie im Entwurf (650/90, 300 x 620, Radius 48, Bildschirm Inset 11, Radius 37). Der Bildschirm ist 278 x 598,
-// die App läuft in 390 x 839 CSS-Pixeln und wird per scale(278/390) eingepasst. Die Statusleiste (iOS 27)
-// liegt als SVG darüber, die App rechnet ihre Safe-Area aus --sai-t / --sai-b (siehe app-demo/demo.js).
+// The phone of the end scene with the real ManaWG app: a same-origin iframe on
+// /app-demo/index.html (standalone DOM and CSS of the app, state machine in demo.js). Shell and geometry
+// as in the draft (650/90, 300 x 620, radius 48, screen inset 11, radius 37). The screen is 278 x 598,
+// the app runs at 390 x 839 CSS pixels and is fitted with scale(278/390). The status bar (iOS 27)
+// sits on top as SVG, the app computes its safe area from --sai-t / --sai-b (see app-demo/demo.js).
 
 /**
- * Scroll-Choreografie: auf dem letzten Stück der Bühne (P 0,95 bis 1) tippt die Zeigehand mit dem Scroll durch die
- * vier Tabs der App (ein Viertel je Tab), rückwärts wieder zurück. Ohne Zeigehand (Touch, reduzierte Bewegung)
- * schaltet die App direkt um. Der erste eigene Tipp beendet die Choreografie (benutzt).
+ * Scroll choreography: on the last stretch of the stage (P 0.95 to 1) the pointing hand taps through the
+ * four tabs of the app as the page scrolls (a quarter per tab), and back again in reverse. Without a pointing hand (touch, reduced motion)
+ * the app switches directly. The first tap by the visitor ends the choreography (used).
  */
 const TABS = [
 	['Start', '/|'],
@@ -28,7 +28,7 @@ const TABS = [
 	['Austausch', '/chat|'],
 ] as const;
 
-/** Zustandsautomat der App im iframe (app-demo/demo.js). */
+/** State machine of the app in the iframe (app-demo/demo.js). */
 interface Demo {
 	enter: (
 		w: string,
@@ -39,7 +39,7 @@ interface Demo {
 	vorwaermen?: (ids: string[]) => void;
 }
 
-/** Statusleiste einer installierten PWA unter iOS 27: 09:41, Dynamic Island, Signal, WLAN, Akku. */
+/** Status bar of an installed PWA on iOS 27: 09:41, Dynamic Island, signal, Wi-Fi, battery. */
 function StatusBar() {
 	return (
 		<div className={s.status} aria-hidden="true">
@@ -104,9 +104,9 @@ export function Phone() {
 	const [used, setUsed] = useState(false);
 	useEffect(() => setLines(dateLines(lang)), [lang]);
 
-	// Vorführung der Zeigehand (hand.js, demo): die Hand fährt zum Ziel und meldet die Berührung (hand:kontakt),
-	// erst dann geht ein synthetischer Klick in die gleich-originige App. Eigene Klicks, Tastatur und Fokus gehen
-	// direkt in die App (keine Fangschicht), die Zeigehand folgt dem Zeiger über das Glas (siehe onLoad).
+	// Demo of the pointing hand (hand.js, demo): the hand moves to the target and reports the touch (hand:kontakt),
+	// only then a synthetic click goes into the same-origin app. The visitor's own clicks, keyboard and focus go
+	// straight into the app (no catch layer), the pointing hand follows the pointer over the glass (see onLoad).
 	useEffect(() => {
 		const el = rootRef.current as HTMLDivElement;
 		const host = el.closest('[data-buehne]');
@@ -139,7 +139,7 @@ export function Phone() {
 		return () => host.removeEventListener('hand:kontakt', onContact);
 	}, []);
 
-	// Scroll-Choreografie, Bild für Bild am Fortschritt der Bühne
+	// Scroll choreography, frame by frame from the progress of the stage
 	useEffect(() => {
 		if (!ready || used) return;
 		let step = -1;
@@ -148,7 +148,7 @@ export function Phone() {
 			const st = live.stage?.state;
 			const fr = frameRef.current;
 			const demo = (fr?.contentWindow as (Window & { __demo?: Demo }) | null)?.__demo;
-			// Die Seiten der Choreografie im Leerlauf vorbauen, damit der erste Wechsel im Scroll nicht ruckelt
+			// Prebuild the pages of the choreography while idle so the first switch while scrolling does not stutter
 			if (demo && !warm) {
 				warm = true;
 				demo.vorwaermen?.(TABS.map(([, id]) => id));
@@ -156,18 +156,18 @@ export function Phone() {
 			if (!st || !demo || !st.endOn) return;
 			const next = Math.min(TABS.length - 1, Math.floor(cl((st.P - 0.95) / 0.05) * TABS.length));
 			if (next === step) return;
-			// Erstes Bild: nur merken, die App steht schon richtig (Start)
+			// First frame: just remember, the app already shows the right tab (Start)
 			const first = step < 0;
 			step = next;
 			if (first && next === 0) return;
-			// Der Scroll schaltet sofort um (kein Anfahren der Zeigehand: das wirkte verzögert)
+			// Scrolling switches immediately (no approach of the pointing hand: that felt delayed)
 			const [, id] = TABS[next] ?? TABS[0];
 			demo.enter('-', id, { vt: false });
 		});
 		return off;
 	}, [ready, used]);
 
-	// Standbild und iframe-src erst ab P 0,55 setzen (stage.ts setzt data-nah am #final)
+	// Set the still image and the iframe src only from P 0.55 (stage.ts sets data-nah on #final)
 	useEffect(() => {
 		const el = rootRef.current as HTMLDivElement;
 		const root = el.closest('#final') as HTMLElement | null;
@@ -175,8 +175,8 @@ export function Phone() {
 		const check = () => {
 			if (root.dataset.nah === '1') {
 				mo.disconnect();
-				setStill(STILL); // Standbild gleichzeitig mit dem Zählen ab P 0,55, nicht schon beim Erstladen
-				// Das iframe läuft im selben Hauptthread wie die Landing: Laden und Aufbau in einer Leerlaufpause
+				setStill(STILL); // still image together with the counting from P 0.55, not on first load
+				// The iframe runs on the same main thread as the landing page: load and build during an idle period
 				const startLoad = () => setSrc(SRC);
 				if ('requestIdleCallback' in window)
 					window.requestIdleCallback(startLoad, { timeout: 2000 });
@@ -193,7 +193,7 @@ export function Phone() {
 		<div
 			ref={rootRef}
 			data-cta="1"
-			// biome-ignore lint/a11y/useSemanticElements: div bleibt div (gleiche Box, kein fieldset)
+			// biome-ignore lint/a11y/useSemanticElements: div stays div (same box, no fieldset)
 			role="group"
 			aria-label={phone.aria}
 			style={css(
@@ -231,7 +231,7 @@ export function Phone() {
 						'position:relative;width:100%;height:100%;background:#0A0A0A;border-radius:37px;overflow:hidden;box-shadow:0 0 0 1px #000',
 					)}
 				>
-					{/* Standbild: derselbe Zustand und dieselben Insets wie das iframe, liegt darunter und bleibt bis zum Laden stehen */}
+					{/* Still image: same state and same insets as the iframe, sits underneath and stays until the iframe has loaded */}
 					<div
 						className={s.surface}
 						style={{ opacity: ready ? 0 : 'calc(1 - var(--app-aus, 0))' }}
@@ -268,12 +268,12 @@ export function Phone() {
 								const fr = e.currentTarget;
 								const doc = fr.contentDocument;
 								if (doc) {
-									// Der erste eigene Tipp beendet den Hinweis
+									// The first tap by the visitor ends the hint
 									doc.addEventListener('pointerdown', () => setUsed(true), { once: true });
 									doc.addEventListener('keydown', () => setUsed(true), { once: true });
-									// Zeigerereignisse steigen nicht aus dem iframe auf: Maus und Stift werden mit Fensterkoordinaten
-									// an die Bühne gemeldet (als direkt markiert), damit die Zeigehand folgt und beim Klick drückt,
-									// ohne den Klick ein zweites Mal auszulösen (stage.js, hand.js)
+									// Pointer events do not bubble out of the iframe: mouse and pen are reported to the stage
+									// with window coordinates (marked as direct) so the pointing hand follows and presses on click
+									// without triggering the click a second time (stage.js, hand.js)
 									const proceed = (ev: Event) => {
 										const pe = ev as PointerEvent;
 										if (pe.pointerType === 'touch') return;
@@ -291,14 +291,14 @@ export function Phone() {
 									};
 									for (const t of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel'])
 										doc.addEventListener(t, proceed);
-									// Über dem Glas ersetzt die gezeichnete Fingerspitze den Zeiger (hand.js setzt data-hand)
+									// Over the glass the drawn fingertip replaces the pointer (hand.js sets data-hand)
 									const st = doc.createElement('style');
 									st.textContent = 'html[data-hand] *{cursor:none!important}';
 									doc.head.appendChild(st);
 								}
 								requestAnimationFrame(() => requestAnimationFrame(() => setReady(true)));
 							}}
-							// Übergang: die App zerfällt in Zeichen (scenes/zerfall setzt --app-aus)
+							// Transition: the app disintegrates into characters (scenes/zerfall sets --app-aus)
 							style={{ border: 0, background: '#0A0A0A', opacity: 'calc(1 - var(--app-aus, 0))' }}
 						/>
 					)}
@@ -309,7 +309,7 @@ export function Phone() {
 						)}
 					/>
 				</div>
-				{/* Hinweis unter dem Handy: bis zum ersten eigenen Tipp */}
+				{/* Hint under the phone: until the visitor's first tap */}
 				<span
 					className="label"
 					data-ende-hinweis="1"

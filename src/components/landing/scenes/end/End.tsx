@@ -9,10 +9,10 @@ import s from './End.module.css';
 import { Phone } from './Phone';
 import { camera } from './camera';
 
-// Ende-Ebene der Intro-Bühne: Handy und Hände auf #0A0A0A, darunter Titel und Knopf. Die Ebene liegt in
-// der Sticky-Bühne und scrollt mit ihr weg. Der Ende-Raum [data-ende-space] ist 1280 x 800 groß und wird
-// über --ende-x, --ende-y und --ende-f per kamera() in die Bühne eingepasst. Titel und Knopf stehen im DOM vor dem
-// Handy, damit Shift+Tab aus dem App-iframe auf dem Knopf landet (nicht auf dem Body); Kopf und Hinweise sind im Ende inert.
+// End layer of the intro stage: phone and hands on #0A0A0A, title and button below. The layer sits in
+// the sticky stage and scrolls away with it. The end space [data-ende-space] is 1280 x 800 and is fitted
+// into the stage via --ende-x, --ende-y and --ende-f by camera(). Title and button precede the phone in the
+// DOM so that Shift+Tab from the app iframe lands on the button (not on the body); header and hints are inert in the end.
 
 export function End() {
 	const { end, links, aria } = useDict();

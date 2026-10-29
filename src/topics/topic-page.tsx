@@ -20,7 +20,7 @@ import { TopicFooter, TopicHeader, gutter, mono } from './frame';
 import { counterpartOf, groupName, groupOf, related, topics, ui } from './registry';
 import type { Topic } from './types';
 
-// Anker-ID aus einer Überschrift (Umlaute umschrieben), für Inhaltsverzeichnis und Sprunglinks.
+// Anchor id from a heading (umlauts transliterated), for the table of contents and jump links.
 const anchorId = (s: string) =>
 	s
 		.toLowerCase()
@@ -71,7 +71,7 @@ const cellClsEn = 'px-2 md:px-3 py-2 border-b border-white/10';
 
 type TableData = NonNullable<Topic['tables']>[number];
 
-// Tabelle als Daten: scrollbare, beschriftete Region mit Spaltenköpfen und Zeilenkopf in der ersten Spalte.
+// Table as data: scrollable, labelled region with column headers and a row header in the first column.
 function Table({ t, locale }: { t: TableData; locale: Locale }) {
 	// Long cells would wrap to one or two words per line on a phone, so those tables keep the scroll region.
 	const compact =
@@ -85,10 +85,10 @@ function Table({ t, locale }: { t: TableData; locale: Locale }) {
 			</h2>
 			<div
 				className="min-w-0 overflow-x-auto"
-				// biome-ignore lint/a11y/useSemanticElements: scrollbare Tabelle braucht beschriftete Region statt Section
+				// biome-ignore lint/a11y/useSemanticElements: scrollable table needs a labelled region instead of a section
 				role="region"
 				aria-label={t.title}
-				// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollbare Region muss per Tastatur erreichbar sein
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollable region must be reachable by keyboard
 				tabIndex={0}
 			>
 				<table
@@ -128,7 +128,7 @@ function Table({ t, locale }: { t: TableData; locale: Locale }) {
 	);
 }
 
-/** Google verlangt Datum mit Uhrzeit und Zeitzone (Rich Results Test: „Zeitzone fehlt“). */
+/** Google requires a date with time and time zone (Rich Results Test: "time zone missing"). */
 const isoDateTime = (tag: string) => `${tag}T00:00:00+00:00`;
 
 /** Slugs to prerender for a language. */
@@ -180,7 +180,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 	const deSlug = locale === 'de' ? topicSlug : (toGermanSlug(topicSlug) ?? topicSlug);
 	const groupId = groupOf(locale, topicSlug)?.id;
 	const path = pathOf(locale, topicSlug);
-	// Der Fließtext (größtes Element, LCP) steht in Inter; das Layout lädt nur Inter Tight und Mono vor.
+	// The running text (largest element, LCP) is set in Inter; the layout only preloads Inter Tight and Mono.
 	preload('/fonts/inter-latin.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
 
 	const faqSchema = t.faq && {
@@ -214,16 +214,16 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 		dateModified: isoDateTime(t.updated),
 		mainEntityOfPage: { '@type': 'WebPage', '@id': `${site}${path}` },
 		isAccessibleForFree: true,
-		// Autor ist der Betreiber (Name steht im Impressum); Herausgeber bleibt die Organisation.
+		// The author is the operator (name is in the legal notice); the publisher stays the organisation.
 		author: {
 			'@type': 'Person',
 			name: 'Abubakar Abditube',
 			url: `${site}${locale === 'de' ? '/ueber-manawg' : '/en/about-manawg'}`,
 		},
-		// Name und URL direkt mit, damit der Artikel auch ohne aufgelöste @id vollständig ist (Rich Results Test).
+		// Name and URL included directly so the article is complete even without a resolved @id (Rich Results Test).
 		publisher: { '@type': 'Organization', '@id': orgId, name: 'ManaWG', url: site },
 		isPartOf: { '@id': websiteId },
-		// Produktseiten und die Umstiegsanleitung handeln von der App; Rechts- und Alltagsratgeber nicht.
+		// Product pages and the switching guide are about the app; legal and everyday guides are not.
 		...(groupId !== 'guides' || deSlug === 'splitwise-splid-wechseln'
 			? { about: { '@id': ids.app } }
 			: {}),
@@ -293,18 +293,18 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 		>
 			<script
 				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
 			/>
 			<script
 				type="application/ld+json"
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
 			/>
 			{faqSchema && (
 				<script
 					type="application/ld+json"
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify statischer Konstanten, kein Nutzerinhalt
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON.stringify of static constants, no user content
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
 				/>
 			)}
@@ -357,7 +357,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				)}
 				{isComparison && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{notice}</p>}
 
-				{/* Tabellen mit after: 'intro' stehen direkt unter dem Einleitungstext. */}
+				{/* Tables with after: 'intro' sit directly below the intro text. */}
 				{t.tables
 					?.filter((tab) => tab.after === 'intro')
 					.map((tab) => (
@@ -387,7 +387,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 
 				<div className={t.sections.length >= 4 ? 'mt-10 md:mt-16' : 'mt-20 md:mt-32'}>
 					{t.sections.map(([heading, text]) => {
-						// Nur Zeilen, die alle mit "1. " beginnen, sind eine Nummerierung; sonst eine Aufzählung.
+						// Only lines that all start with "1. " form a numbered list; otherwise it is a bullet list.
 						const lines = text.split('\n');
 						const numbered = lines.length > 1 && lines.every((z) => /^\d+\.\s/.test(z));
 						const ListTag = numbered ? 'ol' : 'ul';

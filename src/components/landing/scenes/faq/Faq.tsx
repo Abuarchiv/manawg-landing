@@ -5,17 +5,17 @@ import { css } from '../../core/dc';
 import { GLYPHS } from '../../core/decode';
 import { useDict } from '../../dict';
 
-// Akkordeon: je Frage ein Knopf mit aria-expanded und aria-controls, die Antwort ist eine Region.
-// Die Höhe läuft über grid-template-rows (landing.css .faq-antwort), nur eine Antwort ist offen.
+// Accordion: one button per question with aria-expanded and aria-controls, the answer is a region.
+// The height runs via grid-template-rows (landing.css .faq-antwort), only one answer is open.
 
-const FRONT_WIDTH = 10; // Breite der Entschlüsselungs-Front in Zeichen
+const FRONT_WIDTH = 10; // width of the decryption front in characters
 
-/** Antwort entschlüsselt sich beim Öffnen von vorn nach hinten; der Rest bleibt unsichtbar reserviert, damit nichts umbricht. */
+/** The answer decrypts from front to back when opened; the rest stays invisibly reserved so nothing reflows. */
 function Answer({ text, open }: { text: string; open: boolean }) {
 	const [revealed, setRevealed] = useState(text.length);
 	const first = useRef(true);
 	useEffect(() => {
-		// beim ersten Rendern (erste Frage offen) und bei reduzierter Bewegung steht der Text sofort
+		// on first render (first question open) and with reduced motion the text appears immediately
 		if (first.current || !open || matchMedia('(prefers-reduced-motion: reduce)').matches) {
 			first.current = false;
 			setRevealed(text.length);

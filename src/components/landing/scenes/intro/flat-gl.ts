@@ -1,11 +1,11 @@
-// Die Wohnung als Zeichen: ein isometrischer Blender-Schnitt (landing-konzept/wohnung-iso) liegt als Helligkeit
-// (lum.webp), Klasse, Höhe und Deckung (meta.png) und Maße (wohnung.json) vor. Je Zeichenzelle (6 x 10 CSS-px)
-// wählt die Klasse die Zeichenreihe (Dielen . : -, Perser bis @, Pflanzen ; * &), die Helligkeit das Zeichen.
-// Gezeichnet wird in ein eigenes WebGL-Canvas, das wohnung.ts als Untergrund übernimmt.
+// The flat as glyphs: an isometric Blender cutaway (landing-konzept/wohnung-iso) is available as brightness
+// (lum.webp), class, height and coverage (meta.png) and dimensions (wohnung.json). For each glyph cell (6 x 10 CSS px)
+// the class selects the glyph ramp (floorboards . : -, rug up to @, plants ; * &), the brightness selects the glyph.
+// It is drawn into a separate WebGL canvas that flat.ts takes over as its backdrop.
 
 import { loop } from '../../core/loop';
 
-/** Maße des Renders: S Bildpixel je Rastereinheit, Ursprung (OX, OY), Größe, Höhe der Höhenkodierung. */
+/** Render dimensions: S image pixels per grid unit, origin (OX, OY), size, height of the height encoding. */
 interface FlatMetrics {
 	S: number;
 	OX: number;
@@ -15,44 +15,44 @@ interface FlatMetrics {
 	hMax: number;
 }
 
-/** Eingaben je Bild: Abbildung Bildpixel -> CSS-px (k, bx, by), Aufbau, Räume mit Licht, Zeiger. */
+/** Inputs per frame: mapping image pixels -> CSS px (k, bx, by), build-up, rooms with light, pointer. */
 export interface GlyphInput {
 	W: number;
 	H: number;
 	dpr: number;
-	/** CSS-px je Rastereinheit (f * u) und CSS-Lage des Rasterursprungs (0, 0, 0). */
+	/** CSS px per grid unit (f * u) and CSS position of the grid origin (0, 0, 0). */
 	ku: number;
 	x0: number;
 	y0: number;
 	build: number;
-	/** Räume im Raster (x, y, w, d) und ihr Licht 0..1, höchstens acht. */
+	/** Rooms in the grid (x, y, w, d) and their light 0..1, at most eight. */
 	rooms: readonly (readonly [number, number, number, number])[];
 	light: readonly number[];
-	/** Zeiger in CSS-px und Radius des Lichtkegels (0 = aus). */
+	/** Pointer in CSS px and radius of the light cone (0 = off). */
 	pointer: readonly [number, number, number];
 }
 
-// Zelle in CSS-px: quer 6 x 10, Handy feiner (4,5 x 7,5), sonst wird die Übersicht zu grob
+// Cell in CSS px: landscape 6 x 10, phone finer (4.5 x 7.5), otherwise the overview gets too coarse
 const cellSize = (W: number): [number, number] => (W < 700 ? [4.5, 7.5] : [6, 10]);
 const ATLAS = " .:-=+*#%@~oO0|&;,/'";
-// Zeichenreihen je Klasse (Code aus meta.png) von leer nach voll, dazu die Helligkeit: Böden und Wände treten
-// zurück (Punktraster wie bisher), Möbel, Perser und Pflanzen tragen das Bild. 14 = Mauerkrone (Schnittkante).
+// Glyph ramps per class (code from meta.png) from empty to full, plus the brightness: floors and walls recede
+// (dot grid as before), furniture, rug and plants carry the image. 14 = wall crown (cut edge).
 const RAMPS: readonly (readonly [string, number])[] = [
 	['', 0],
-	['  ..:', 0.5], // Dielen
-	[' ..:+', 0.55], // Fliesen
-	[' ..:', 0.32], // Wände
-	[' .:-=+*#%@', 1], // Perser
-	[' .:oO0@', 1], // Polster, Leder
-	[' .~-=', 0.95], // Bettwäsche, Stoff
-	[' .:=#%', 0.9], // Holzmöbel
-	[' .-=|#', 0.9], // Metall
-	[' .oO0', 1], // Keramik
-	[' .,;*&', 1], // Pflanzen
-	[' .:|#', 0.9], // Bücher, Deko
-	[" .'/", 0.8], // Glas
-	['*@', 1], // Lampen
-	['==#', 0.95], // Mauerkrone
+	['  ..:', 0.5], // Floorboards
+	[' ..:+', 0.55], // Tiles
+	[' ..:', 0.32], // Walls
+	[' .:-=+*#%@', 1], // Rug
+	[' .:oO0@', 1], // Upholstery, leather
+	[' .~-=', 0.95], // Bedding, fabric
+	[' .:=#%', 0.9], // Wooden furniture
+	[' .-=|#', 0.9], // Metal
+	[' .oO0', 1], // Ceramics
+	[' .,;*&', 1], // Plants
+	[' .:|#', 0.9], // Books, decor
+	[" .'/", 0.8], // Glass
+	['*@', 1], // Lamps
+	['==#', 0.95], // Wall crown
 ];
 
 const VS = `#version 300 es
@@ -63,13 +63,13 @@ precision highp float;
 uniform sampler2D uLum, uMeta, uGly, uRamp;
 uniform vec2 uRes;
 uniform float uDpr, uS, uHmax, uBau, uLod, uN;
-uniform vec3 uMap;   // CSS-px je Bildpixel, Bild-Ursprung in CSS-px
-uniform vec4 uImg;   // Breite, Höhe, OX, OY (Bildpixel)
+uniform vec3 uMap;   // CSS px per image pixel, image origin in CSS px
+uniform vec4 uImg;   // width, height, OX, OY (image pixels)
 uniform vec4 uRm[8];
 uniform float uLt[8];
 uniform vec3 uZg;
 out vec4 o;
-uniform vec2 Z;      // Zelle in CSS-px
+uniform vec2 Z;      // cell in CSS px
 const float BY[16] = float[16](0., 8., 2., 10., 12., 4., 14., 6., 3., 11., 1., 9., 15., 7., 13., 5.);
 float bayer(vec2 c){
   ivec2 b = ivec2(mod(c, 4.));
@@ -88,9 +88,9 @@ void main(){
   int cls = int(mt.r * 255. / 16. + .5);
   float gz = mt.g * uHmax;
   if (cls == 3 && gz > 2.05) cls = 14;
-  // Aufbau: Böden zuerst, Hohes zuletzt, im Bayer-Raster
+  // Build-up: floors first, tall things last, in a Bayer grid
   if (bayer(ci) >= uBau * 1.6 - gz / uHmax * .6) return;
-  // Rasterlage der Fläche (über die Höhe zurückgerechnet) -> Raum und sein Licht
+  // Grid position of the surface (back-computed via the height) -> room and its light
   float d = (I.x - uImg.z) / (.8660254 * uS);
   float s = (I.y - uImg.w) / (.5 * uS) + 2. * gz;
   vec2 g = vec2(s + d, s - d) * .5;
@@ -103,7 +103,7 @@ void main(){
   float L = textureLod(uLum, uv, uLod).r;
   float n = texelFetch(uRamp, ivec2(0, cls), 0).r * 255.;
   if (n < .5) return;
-  // Umriss: Möbelzellen, deren Nachbar deutlich tiefer liegt, werden dicht und hell (Figur vor Grund)
+  // Outline: furniture cells whose neighbour lies clearly lower become dense and bright (figure against ground)
   float kante = 0.;
   if (cls > 3 && cls < 14) {
     vec2 dz = Z / uMap.x / uImg.xy;
@@ -158,7 +158,7 @@ function tex(
 	return t;
 }
 
-/** Zeichenblatt: alle Glyphen des Atlas nebeneinander (48 x 80 px je Zeichen), neu bei geladener Schrift. */
+/** Glyph sheet: all glyphs of the atlas side by side (48 x 80 px per glyph), rebuilt when the font loads. */
 function buildSheet(g: Gl): void {
 	const cv = document.createElement('canvas');
 	cv.width = 48 * ATLAS.length;
@@ -194,7 +194,7 @@ async function load(): Promise<void> {
 		gl.shaderSource(sh, src);
 		gl.compileShader(sh);
 		if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-			console.error('wohnung', gl.getShaderInfoLog(sh));
+			console.error('flat', gl.getShaderInfoLog(sh));
 			return;
 		}
 		gl.attachShader(p, sh);
@@ -207,7 +207,7 @@ async function load(): Promise<void> {
 	tex(gl, 1, meta, false);
 	lum.close();
 	meta.close();
-	// Rampen als Tabelle: Zeile = Klasse, Spalte 0 = Länge, danach die Atlas-Stellen
+	// Ramps as a table: row = class, column 0 = length, then the atlas positions
 	const R = new Uint8Array(16 * RAMPS.length * 4);
 	RAMPS.forEach(([r, brightness], k) => {
 		R[k * 64] = r.length;
@@ -229,11 +229,11 @@ async function load(): Promise<void> {
 	gl.uniform1f(u('uHmax'), m.hMax);
 	gl.uniform4f(u('uImg'), m.w, m.h, m.OX, m.OY);
 	const g: Gl = { cv, gl, u, m, glyphs: null, fv: -1 };
-	// Zeichenblatt und erster Zeichenaufruf (dabei übersetzt der Treiber den Shader) in einer Leerlaufpause statt im
-	// ersten sichtbaren Bild: dort kostete das beim Scrollen einen Ruckler
+	// Glyph sheet and first draw call (the driver compiles the shader then) in an idle pause instead of in the
+	// first visible frame: there it cost a stutter while scrolling
 	const warm = () => {
 		buildSheet(g);
-		// in Fenstergröße: so liegt auch der Puffer schon an
+		// at window size: so the buffer is already allocated too
 		cv.width = Math.round(loop.vw * Math.min(2, devicePixelRatio || 1)) || 1;
 		cv.height = Math.round(loop.vh * Math.min(2, devicePixelRatio || 1)) || 1;
 		gl.viewport(0, 0, cv.width, cv.height);
@@ -244,14 +244,14 @@ async function load(): Promise<void> {
 	else setTimeout(warm, 0);
 }
 
-/** Render und Shader im Hintergrund laden, bevor die Wohnung zu sehen ist (stage.ts ruft das vorab). */
+/** Loads render and shader in the background before the flat is visible (stage.ts calls this ahead of time). */
 export function preloadFlat(): void {
 	if (started) return;
 	started = true;
 	load().catch(() => {});
 }
 
-/** Zeichnet die Wohnung als Zeichen und gibt das Canvas zurück, solange Render und Shader noch laden null. */
+/** Draws the flat as glyphs and returns the canvas, or null while render and shader are still loading. */
 export function drawFlatGlyphs(e: GlyphInput): HTMLCanvasElement | null {
 	preloadFlat();
 	const g = glState;

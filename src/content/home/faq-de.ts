@@ -1,4 +1,4 @@
-// Fragen der Startseite; auch Quelle für das FAQPage-Schema in app/page.tsx.
+// Questions of the home page; also the source of the FAQPage schema in app/page.tsx.
 export const FAQ_DE: [string, string][] = [
 	[
 		'Wie kommen meine Mitbewohner in die WG?',

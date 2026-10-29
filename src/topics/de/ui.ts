@@ -12,7 +12,7 @@ export const UI_DE: TopicUi = {
 	authorName: 'Abubakar Abditube (ManaWG)',
 	published: 'Veröffentlicht am',
 	updated: 'Aktualisiert am',
-	// Die FAQ-Seite heißt selbst „Häufige Fragen“; dort bleibt es bei diesem Titel.
+	// The FAQ page is itself called "Häufige Fragen"; it keeps this title there.
 	faqHeading: (link) => (link.startsWith('Häufige Fragen') ? link : `Häufige Fragen zu ${link}`),
 	sources: (date) => `Quellen (Stand ${date})`,
 	guideNoteLabel: 'Über diesen Ratgeber',

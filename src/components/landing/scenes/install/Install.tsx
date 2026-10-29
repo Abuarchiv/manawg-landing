@@ -12,10 +12,10 @@ import { Iphone } from './Iphone';
 import { registerPlayback } from './playback';
 import type { TabIndex } from './types';
 
-// Szene [07] INSTALLIEREN: je Plattform der echte Installationsablauf (INSTALL-FLOWS), zeitgesteuerte Schleife
-// im Gerät, Schrittliste synchron und klickbar, Tabs als Tablist mit Pfeiltasten.
+// Scene [07] INSTALL: the real install flow per platform (INSTALL-FLOWS), time-driven loop
+// on the device, step list in sync and clickable, tabs as a tablist with arrow keys.
 
-// Die Symbole der Schritte sind dieselben Zeichnungen wie im Gerät (Safari iOS 27: Seitenmenü ≡ links in der Adresspille, Chrome: drei Punkte)
+// The step icons are the same drawings as on the device (Safari iOS 27: side menu ≡ at the left of the address pill, Chrome: three dots)
 function icon(symbol: string, menuAria: string, dotsAria: string): ReactNode {
 	if (symbol === '≡')
 		return (
@@ -34,14 +34,14 @@ function icon(symbol: string, menuAria: string, dotsAria: string): ReactNode {
 	return null;
 }
 
-// Rahmen des Designs: Handy 300 x 620, Rechner 600 x 400
+// Design frames: phone 300 x 620, desktop 600 x 400
 const FRAMES = [
 	[300, 620],
 	[300, 620],
 	[600, 400],
 ];
 
-/** Das Token (deutsch „Home-Bildschirm“) nie trennen, Symbolzeichen durch die echte Zeichnung ersetzen. */
+/** Never split the token (German "Home-Bildschirm"), replace symbol characters with the real drawing. */
 function keepTogether(t: string, nowrap: string, menuAria: string, dotsAria: string) {
 	return t.split(/([≡⋮])/).flatMap((q, k) => {
 		const ic = icon(q, menuAria, dotsAria);
@@ -73,7 +73,7 @@ export function Install() {
 	const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 	const api = useRef<ReturnType<typeof registerPlayback> | null>(null);
 
-	// Gerätbilder erst laden, wenn der Abschnitt höchstens zwei Bildschirmhöhen entfernt ist (Erstladen bleibt schlank)
+	// Load device images only once the section is at most two screen heights away (keeps the initial load lean)
 	useEffect(() => {
 		const el = secRef.current as HTMLElement;
 		const io = new IntersectionObserver(
@@ -103,24 +103,24 @@ export function Install() {
 		return () => a.stop();
 	}, []);
 
-	// Gerät in die Spalte einpassen: im Hochformat 78 % der Breite, quer bis 78 % der Höhe, höchstens 1,4-fach
+	// Fit the device into the column: 78 % of the width in portrait, up to 78 % of the height in landscape, at most 1.4x
 	useEffect(() => {
 		const bu = stageRef.current as HTMLDivElement;
 		const sk = scaleRef.current as HTMLDivElement;
 		const fit = () => {
 			const [fw, fh] = FRAMES[inst] as number[];
-			// Hochformat und Handy quer: die Bühne hat feste Höhe, das Gerät passt ganz hinein
+			// Portrait and phone landscape: the stage has a fixed height, the device fits entirely
 			const portrait = matchMedia(
 				'(max-aspect-ratio: 1/1), (max-width: 699px), (orientation: landscape) and (max-height: 499px)',
 			).matches;
 			const cs = getComputedStyle(bu);
 			const w =
 				bu.clientWidth - Number.parseFloat(cs.paddingLeft) - Number.parseFloat(cs.paddingRight);
-			// Auf großen Bildschirmen darf das Gerät über seine Entwurfsgröße wachsen (bis 78 % der Fensterhöhe)
-			// Hochformat: die Bühne hat feste Höhe (100svh minus Kopf, Tabs, Zeile), das Gerät passt ganz hinein
+			// On large screens the device may exceed its design size (up to 78 % of the window height)
+			// Portrait: the stage has a fixed height (100svh minus header, tabs, row), the device fits entirely
 			const hh =
 				bu.clientHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom);
-			// Breitformat: Fensterhöhe minus Polster der Bühne (Kopfband oben und unten)
+			// Landscape: window height minus the stage padding (header band at top and bottom)
 			const free =
 				innerHeight - Number.parseFloat(cs.paddingTop) - Number.parseFloat(cs.paddingBottom) - 8;
 			const z = Math.min(
@@ -229,7 +229,7 @@ export function Install() {
 			<div aria-hidden="true" inert className={s.stage} ref={stageRef}>
 				<div className={s.scale} ref={scaleRef}>
 					<div ref={frameRef} data-ins="frame" data-tab={inst} className={s.frame}>
-						{/* Tasten am Gehäuse: iPhone 17 (Aktion, Lautstärke links; Seitentaste, Kamerasteuerung rechts), Pixel (rechts) */}
+						{/* Buttons on the casing: iPhone 17 (action, volume left; side button, camera control right), Pixel (right) */}
 						<i className={s.key} data-t="ios-aktion" />
 						<i className={s.key} data-t="ios-laut1" />
 						<i className={s.key} data-t="ios-laut2" />

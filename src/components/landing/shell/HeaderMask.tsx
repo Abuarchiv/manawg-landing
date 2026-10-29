@@ -3,11 +3,11 @@
 import { useEffect, useRef } from 'react';
 import { onRead } from '../core/loop';
 
-// Inhalt im Kopfband ausblenden: Läuft Text unter Logo und Knopf durch, deckt dieser Verlauf in der Farbe des
-// Abschnitts das Band (Kopfunterkante plus 28 px weicher Auslauf). Er wirkt nur, solange das Band im Inhalt
-// liegt (So geht's, Körper, Installieren, Fragen, Finale), nie über den Szenen aus Flut, Wohnung und Tiefe.
+// Hide content in the header band: when text runs under the logo and the button, this gradient covers the band
+// in the colour of the section (header bottom edge plus 28 px of soft falloff). It only acts while the band
+// lies in content (How it works, Body, Install, FAQ, Finale), never over the scenes of flood, flat and depth.
 const IDS = ['flutband', 'so-gehts', 'installieren', 'fragen', 'finale'];
-// Hochformat: auch Tiefe, dort läuft sonst das Wortbild unter dem festen Kopf durch
+// Portrait: depth as well, where the word image would otherwise run under the fixed header
 const IDS_PORTRAIT = [...IDS, 'funktionen'];
 
 export function HeaderMask() {
@@ -15,7 +15,7 @@ export function HeaderMask() {
 	useEffect(() => {
 		const el = ref.current as HTMLDivElement;
 		const header = document.querySelector('[data-kopf]') as HTMLElement | null;
-		// Liest in der Lesephase der Bildschleife: als eigener rAF nach den Szenen erzwang jedes Lesen ein Layout
+		// Reads in the read phase of the frame loop: as an rAF of its own after the scenes, every read forced a layout
 		let h = '';
 		let o = '';
 		const measure = () => {
@@ -30,12 +30,12 @@ export function HeaderMask() {
 				const e = Math.min(1, Math.max(0, d / band));
 				v = Math.max(v, e);
 			}
-			// Hochformat, Ende-Ebene der Intro: läuft die Bühne nach oben weg, schiebt sich das Handy unter das Band
+			// Portrait, end layer of the intro: when the stage scrolls away upwards, the phone slides under the band
 			if (portrait && document.getElementById('final')?.dataset.phase === 'ende') {
 				const b = document.querySelector('[data-buehne]');
 				if (b) v = Math.max(v, Math.min(1, Math.max(0, -b.getBoundingClientRect().top / 24)));
 			}
-			// nur geänderte Werte schreiben
+			// write changed values only
 			const hn = `${band + 28}px`;
 			const on = v.toFixed(3);
 			if (hn !== h) el.style.height = h = hn;

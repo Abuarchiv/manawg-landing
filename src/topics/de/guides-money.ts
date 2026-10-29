@@ -1,9 +1,9 @@
-// Ratgeber rund ums Geld in der WG; wird in themen.ts eingebunden.
-// Nur Funktionen nennen, die es in manawg-app wirklich gibt.
+// Guides about money in a flat share; included in topics.ts.
+// Only name features that really exist in manawg-app.
 import { euro, rentShares } from '../rent-calculator.ts';
 import type { Topic } from '../types.ts';
 
-// Beispiel der Mietseite: Werte kommen aus mieteAnteile, nicht von Hand.
+// Rent example of the calculator page: values come from rentShares, not from hand.
 const EXAMPLE_ROOMS = [12, 18, 24];
 const EXAMPLE_SHARED = 18;
 const EXAMPLE_RENT_CENT = 90000;
@@ -11,11 +11,11 @@ const without = rentShares(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, 0);
 const withShared = rentShares(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, EXAMPLE_SHARED);
 const total = (a: number[]) => euro(a.reduce((s, x) => s + x, 0));
 
-// Rundfunkbeitrag je Wohnung laut rundfunkbeitrag.de (Stand 27.10.2026), in Cent.
+// Rundfunkbeitrag per dwelling according to rundfunkbeitrag.de (as of 27 Oct 2026), in cents.
 const LICENCE_FEE_MONTH_CENT = 1836;
 const LICENCE_FEE_QUARTER_CENT = LICENCE_FEE_MONTH_CENT * 3;
 
-// Kostenlose Ausgaben pro Tag laut Splitwise-Hilfe (kb.splitwise.com/pro/what-is-splitwise-pro, Stand 27.10.2026).
+// Free expenses per day according to the Splitwise help centre (kb.splitwise.com/pro/what-is-splitwise-pro, as of 27 Oct 2026).
 const SPLITWISE_DAILY_LIMIT = 4;
 
 export const GUIDES_DE_MONEY: Record<string, Topic> = {

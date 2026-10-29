@@ -1,13 +1,13 @@
-// Rechner: Chrome 154 auf macOS. Reihenfolge und Beschriftungen belegt (INSTALL-FLOWS 4.1), die Zeiten des
-// Rechner-Teils sind NICHT gemessen und bewusst zurückhaltend gewählt (geschätzt): Chip klappt in 0,4 s aus,
-// Dialog 0,18 s, Fensterwechsel 0,32 s ease-out.
+// Desktop: Chrome 154 on macOS. Order and labels are documented (INSTALL-FLOWS 4.1); the timings of the
+// desktop part are NOT measured and deliberately conservative (estimated): the chip expands in 0.4 s,
+// the dialog takes 0.18 s, the window switch 0.32 s ease-out.
 
 import { put, tf } from './style';
 import { easeOut, io, mix, seg } from './timing';
 import type { PlaybackPlan } from './types';
 
-const T1 = 1.8; // Klick auf das Installieren-Symbol (Chip)
-const T2 = 4.1; // Klick auf „Installieren“ im Dialog
+const T1 = 1.8; // click on the install icon (chip)
+const T2 = 4.1; // click on "Install" in the dialog
 export const LOOP = 6.5;
 
 export const plan: PlaybackPlan = {
@@ -20,7 +20,7 @@ export const plan: PlaybackPlan = {
 		{ t: T2, x: 510, y: 218, g: 1 },
 	] as const,
 	render(t, E) {
-		// Chip „Installieren“ klappt neben dem Symbol aus (geschätzt)
+		// The "Install" chip expands next to the icon (estimated)
 		const ce = easeOut(seg(t, 0.45, 0.4));
 		put(E['dk-chip'], { background: `rgba(168,199,250,${(ce * 0.24).toFixed(3)})` });
 		put(E['dk-chip-t'], {
@@ -28,9 +28,9 @@ export const plan: PlaybackPlan = {
 			paddingLeft: `${(6 * ce).toFixed(1)}px`,
 			o: ce,
 		});
-		// Tooltip „ManaWG installieren“ beim Anfahren
+		// Tooltip "Install ManaWG" while the pointer approaches
 		put(E['dk-tip'], { o: seg(t, T1 - 0.55, 0.12) * (1 - seg(t, T1 + 0.02, 0.06)) });
-		// Dialog „App installieren“: tab-modal, oben mittig, ohne Pfeil (geschätzt 0,18 s)
+		// "Install app" dialog: tab-modal, top center, no arrow (estimated 0.18 s)
 		const dIn = easeOut(seg(t, T1 + 0.05, 0.18));
 		const dOut = io(seg(t, T2 + 0.03, 0.12));
 		put(E['dk-dlg'], {
@@ -38,7 +38,7 @@ export const plan: PlaybackPlan = {
 			o: dIn * (1 - dOut),
 			t: tf(0, (1 - dIn) * -8, mix(0.97, 1, dIn)),
 		});
-		// Der Tab wandert in ein eigenes App-Fenster ohne Adressleiste (geschätzt 0,32 s ease-out)
+		// The tab moves into its own app window without an address bar (estimated 0.32 s ease-out)
 		const wa = easeOut(seg(t, T2 + 0.1, 0.32));
 		const af = seg(t, T2 + 0.1, 0.03);
 		put(E['dk-app'], { d: t > T2 + 0.09 ? 'block' : '', o: af, t: tf(0, 0, mix(0.94, 1, wa)) });

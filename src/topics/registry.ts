@@ -23,7 +23,7 @@ export const groupOf = (locale: Locale, slug: string) =>
 
 export const groupName = (locale: Locale, id: GroupId): string => ui(locale).groupNames[id];
 
-/** Three related slugs. English mirrors German `verwandte()` through the slug map. */
+/** Three related slugs. English mirrors German `relatedSlugs()` through the slug map. */
 export function related(locale: Locale, slug: string): string[] {
 	const de = relatedSlugs(germanSlug(locale, slug));
 	return locale === 'de' ? de : de.map((s) => toEnglishSlug(s) ?? s);

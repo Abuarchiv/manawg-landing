@@ -3,14 +3,14 @@
 	min-height: 100lvh;
 	background: #0a0a0a;
 	color: #fafafa;
-	overflow: clip; /* kein Scroll-Container: das Handy im Querformat bleibt sticky */
+	overflow: clip; /* not a scroll container: the phone stays sticky in landscape */
 	display: grid;
 	grid-template-columns: calc(var(--rand) + var(--w-520)) minmax(0, 1fr);
 	column-gap: var(--sp-60);
 	padding: 0;
 }
 .text {
-	/* Oberkante unter dem Kopfband (Kopf + 28 px Verlauf der KopfMaske), sonst verdeckt es Label und Handy */
+	/* Top edge below the header band (header + 28 px gradient of the header mask), otherwise it covers the label and phone */
 	padding: max(var(--sp-96), calc(var(--kopf-unten) + 24px)) 0 var(--sp-32) var(--rand);
 	display: flex;
 	flex-direction: column;
@@ -87,7 +87,7 @@
 .step:hover {
 	opacity: 1;
 }
-/* Fortschritt im aktiven Schritt: die Haarlinie darunter füllt sich, solange das Gerät den Schritt zeigt */
+/* Progress within the active step: the hairline below fills while the device shows the step */
 .step::after {
 	content: "";
 	position: absolute;
@@ -123,7 +123,7 @@
 	text-transform: none;
 }
 .stage {
-	/* oben und unten mindestens das Kopfband, damit das Handy im Ruhezustand ganz unter dem Kopf steht */
+	/* at least the header band at top and bottom, so the phone at rest sits entirely below the header */
 	--luft: calc(var(--kopf-unten) + 28px);
 	padding-top: var(--luft);
 	padding-bottom: max(calc(var(--sp-96) - var(--sp-32)), var(--luft));
@@ -135,7 +135,7 @@
 	justify-content: center;
 	width: 100%;
 }
-/* Rechner im Querformat: das Fenster endet auf dem Seitenrand (rechts wie der Titel links), nicht mittig in der Spalte */
+/* Desktop in landscape: the window ends at the page margin (right, like the title on the left), not centered in the column */
 @media (min-aspect-ratio: 1 / 1) and (min-width: 900px) {
 	.stage:has(.frame[data-tab="2"]) {
 		justify-content: flex-end;
@@ -179,7 +179,7 @@
 	box-shadow: inset 0 0 0 1px rgba(250, 250, 250, 0.35), inset 0 0 0 3px #0a0a0a, 0 50px 120px
 		rgba(0, 0, 0, 0.7), 0 0 90px rgba(250, 250, 250, 0.1);
 }
-/* Pixel: etwas weniger runde Ecken als das iPhone, sonst dasselbe Gehäuse */
+/* Pixel: slightly less rounded corners than the iPhone, otherwise the same casing */
 .frame[data-tab="1"] {
 	border-radius: 40px;
 	padding: 9px;
@@ -231,7 +231,7 @@
 	top: 176px;
 	height: 78px;
 }
-/* Kamerasteuerung: flach im Rahmen, dunkles Saphirglas */
+/* Camera control: flush in the frame, dark sapphire glass */
 .key[data-t="ios-kamera"] {
 	top: 330px;
 	height: 44px;
@@ -290,7 +290,7 @@
 	pointer-events: none;
 	z-index: 21;
 }
-/* Rechner: macOS-Pfeil, die Spitze liegt auf dem Ziel */
+/* Desktop: macOS pointer, the tip sits on the target */
 .tap[data-z="maus"] {
 	width: 17px;
 	height: 25px;
@@ -312,8 +312,8 @@
 	}
 }
 
-/* Hochformat: Label, Titel, Absatz, Tabs, Gerät mit Bildunterschrift (alles in einem Bild), CTA. Die volle
-   Schrittliste bleibt für Screenreader und erscheint bei Fokus. */
+/* Portrait: label, title, paragraph, tabs, device with caption (all in one view), CTA. The full
+   step list stays available to screen readers and appears on focus. */
 .caption {
 	display: none;
 	position: relative;
@@ -334,7 +334,7 @@
 		align-items: stretch;
 		gap: var(--sp-16);
 		min-height: 0;
-		/* unten knapper als die Textszenen: nach dem Knopf folgt nur noch das Label von Fragen */
+		/* tighter at the bottom than the text scenes: only the questions label follows the button */
 		padding: max(var(--abschnitt-oben), calc(var(--kopf-unten) + 24px)) var(--rand) var(--sp-64);
 		box-sizing: border-box;
 	}
@@ -374,7 +374,7 @@
 		padding: var(--sp-8, 8px) 0;
 		box-sizing: border-box;
 	}
-	/* Rechner: das Fenster ist flach, die Bühne nur so hoch wie das Fenster (kein Loch zwischen Tabs und Fenster) */
+	/* Desktop: the window is flat, the stage only as tall as the window (no gap between tabs and window) */
 	.stage:has(.frame[data-tab="2"]) {
 		height: auto;
 	}
@@ -382,7 +382,7 @@
 		order: 2;
 		display: block;
 	}
-	/* Schrittnummer über der Zeile und eine Linie, die sich mit dem Schritt füllt (wie die Liste im Querformat) */
+	/* Step number above the row and a line that fills with the step (like the list in landscape) */
 	.caption [data-kurz-nr] {
 		display: block;
 		margin-bottom: 6px;
@@ -405,7 +405,7 @@
 		transform: scaleX(var(--fort, 0));
 	}
 }
-/* Handy quer: zwei Spalten. Links Titel, Tabs und Schritte (scrollen), rechts das Handy fest unter dem Kopf. */
+/* Phone landscape: two columns. Title, tabs and steps on the left (scrolling), the phone fixed below the header on the right. */
 @media (orientation: landscape) and (max-height: 499px) {
 	.section {
 		display: grid;
@@ -453,7 +453,7 @@
 	}
 }
 
-/* Symbol im Schritttext: in Höhe der x-Höhe, auf der Grundlinie */
+/* Icon in the step text: at x-height, on the baseline */
 .icon {
 	display: inline-block;
 	vertical-align: -0.18em;

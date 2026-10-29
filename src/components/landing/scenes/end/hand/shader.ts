@@ -1,5 +1,5 @@
-// GLSL-Quelltexte der Hände (Fragment-Shader mit zwei Durchgängen, Vertex-Shader für das Vollbilddreieck).
-// Die Konstanten kommen aus konstanten.ts und werden beim Zusammensetzen eingesetzt.
+// GLSL sources of the hands (fragment shader with two passes, vertex shader for the full-screen triangle).
+// The constants come from constants.ts and are inserted when the source is assembled.
 
 import {
 	CON,
@@ -29,20 +29,20 @@ uniform vec3 uHO;
 uniform vec3 uPO;
 uniform vec4 uPhone;
 uniform vec4 uScreen;
-uniform vec4 uPR;      // Radius Handy, Radius Bildschirm, bottomY, Zeigerlicht 0..1
-uniform vec4 uLight;   // Zeigerlicht (Ende-Raum) x, y
-uniform vec4 uTipU;    // Spitze x, y, Armrichtung x, y
-uniform vec4 uPS;      // Maßstab der Zeigehand, Deckkraft, 0, 0
-uniform vec4 uRing;    // Radius, Deckkraft, aktiv, Druck der Zeigehand 0..1
-uniform vec4 uBr;      // Atmen: x, y (Bühnen-px), Winkel (rad), 0
-uniform vec4 uQ[2];    // ruhige Rechtecke (Titel, Knopf) im Ende-Raum
+uniform vec4 uPR;      // phone radius, screen radius, bottomY, pointer light 0..1
+uniform vec4 uLight;   // pointer light (end space) x, y
+uniform vec4 uTipU;    // tip x, y, arm direction x, y
+uniform vec4 uPS;      // scale of the pointing hand, opacity, 0, 0
+uniform vec4 uRing;    // radius, opacity, active, press of the pointing hand 0..1
+uniform vec4 uBr;      // breathing: x, y (stage px), angle (rad), 0
+uniform vec4 uQ[2];    // quiet rectangles (title, button) in the end space
 uniform vec3 uCam;     // f, ox, oy
-uniform vec3 uBack;    // Backing je CSS-px x, y, Backing-Höhe
+uniform vec3 uBack;    // backing store per CSS px x, y, backing height
 uniform int uFront;
 uniform sampler2D uTone;
 uniform ivec2 uCell0;
 uniform ivec2 uCellN;
-uniform float uZer;    // Zerfall 0..1: die Hände lösen sich vom Rand her in Staub
+uniform float uZer;    // decay 0..1: the hands dissolve into dust from the edge inward
 out vec4 o;
 
 float cl(float x){ return clamp(x, 0., 1.); }
@@ -66,17 +66,17 @@ float lightF(vec2 p){ return .45 + .55 * cl(1. - ((p.x - 450.) + (p.y - 120.)) /
 #define SH(i, X) samp(uTH, uHT[i], uDiv[i], uHO, X)
 #define SP(i, X) samp(uTP, uPT[i], uDiv[i], uPO, X)
 
-// Haltehand: x = Ton, y = Ebene (0 keine, 1 hinten, 2 vorn)
+// Holding hand: x = tone, y = layer (0 none, 1 back, 2 front)
 float dil(sampler2D tx, vec4 T, float dv, vec3 O, vec2 C, float e){
   return max(max(samp(tx, T, dv, O, C), samp(tx, T, dv, O, C + vec2(e, 0.))), max(max(samp(tx, T, dv, O, C - vec2(e, 0.)), samp(tx, T, dv, O, C + vec2(0., e))), samp(tx, T, dv, O, C - vec2(0., e))));
 }
 vec2 holdTone(vec2 C){
-  // Alpha leicht gedehnt: die Zelle liefert Ton bis über die Kante, die exakte Silhouette schneidet Pass 2 je Pixel
+  // Alpha dilated slightly: the cell yields tone beyond the edge, pass 2 cuts the exact silhouette per pixel
   float al = dil(uTH, uHT[1], uDiv[1], uHO, C, 1.5);
   if (al < .04) return vec2(0.);
   float zmm = SH(4, C) * 200. - 100.;
   float sdf = sdfRR(C, uPhone, uPR.x);
-  // Finger rechts legen sich 4 bis 8 px über die Gehäusekante: vorn, mit weichem Kontaktschatten am Gehäuse
+  // Fingers on the right rest 4 to 8 px over the case edge: in front, with a soft contact shading on the case
   bool fing = C.x > 800. && sdf < 4.;
   bool front = (sdf < 4. && zmm < 1.5) || fing;
   float L = SH(0, C);
@@ -101,9 +101,9 @@ vec2 holdTone(vec2 C){
   bool edge = eA < .5 && abs(sdf) >= 7. && !fing;
   float cov = ss((al - .02) / .25) * ss((uPR.z - C.y) / 140.);
   float sdS = sdfRR(C, uScreen, uPR.y);
-  // Finger bleiben auf Gehäuse und Rand, nie auf dem Glas
+  // Fingers stay on the case and rim, never on the glass
   if (fing && sdS < -1.) return vec2(0.);
-  // weicher Übergang statt harter Kante am Glasrand: Ton und Tinte gehen über 18 px ineinander über
+  // soft transition instead of a hard edge at the glass rim: tone and ink blend into each other over 18 px
   float gk = front ? ss(-sdS / 10.) : 0.;
   float vo = v;
   if (edge) vo = max(vo, ${EDV.toFixed(1)} * lf * al);
@@ -112,23 +112,23 @@ vec2 holdTone(vec2 C){
     float tn = .04 + .86 * pow(cl(v), 1.35);
     float vd = pow(1. - tn, .45);
     if (edge) vd = max(vd, .95);
-    // auf dem Glas nur ein schmaler Streifen am Rand: Tab-Leiste und Inhalt bleiben frei
+    // on the glass only a narrow strip at the edge: tab bar and content stay clear
     float ri = C.x < 800. ? ${(EDGE_THUMB - 4).toFixed(1)} : ${(EDGE_IN - 4).toFixed(1)};
     float ti = vd * cov * (1. - ss((-sdS - ri) / 7.));
     tone = mix(tone, ti, gk);
   }
-  // Gehäuserand (zwischen Glas und Außenkante): Daumenkuppe nicht als weiße Fläche ausbrennen
+  // Case rim (between glass and outer edge): do not blow out the thumb pad as a white area
   if (front && sdf < 0. && sdS > 0.) tone = min(tone, .5);
   return vec2(tone, front ? 2. : 1.);
 }
 
-// Zeigehand (Sprite), immer vorn
+// Pointing hand (sprite), always in front
 vec2 pointTone(vec2 C, bool full){
   if (uPS.y <= 0.) return vec2(0.);
   vec2 d = C - uTipU.xy;
   float dist = length(d);
   float gk = ss(-sdfRR(C, uScreen, uPR.y) / 24.);
-  // auf dem Glas bleibt die Hand bis zum Handgelenk deckend, der Arm läuft danach schneller aus
+  // on the glass the hand stays opaque up to the wrist, the arm fades out faster after that
   float fade = mix(cl(1. - (dist - 300.) / 420.), cl(1. - (dist - 300.) / 140.), gk);
   if (fade <= 0.) return vec2(0.);
   vec2 u = uTipU.zw;
@@ -143,7 +143,7 @@ vec2 pointTone(vec2 C, bool full){
   float v = L * (.62 + .5 * lf);
   float e = ${EDW.toFixed(1)} / uPS.x;
   float eA = min(min(SP(1, ab - vec2(e, 0.)), SP(1, ab + vec2(e, 0.))), min(SP(1, ab - vec2(0., e)), SP(1, ab + vec2(0., e))));
-  // keine Kontur: die Hand ist reine Fläche aus Ton, am Rand nur die weiche Silhouette
+  // no contour: the hand is a pure area of tone, only the soft silhouette at the edge
   float vo = v;
   float tn = .04 + .86 * pow(cl(v), 1.35);
   float vd = pow(1. - tn, .7);
@@ -168,14 +168,14 @@ vec2 pSprite(vec2 S){
   vec2 u = uTipU.zw;
   return vec2(dot(d, u), -d.x * u.y + d.y * u.x) / uPS.x;
 }
-// Pixel-Alpha der Hände (Haltehand und, vorn, Zeigehand) für die weiche Silhouette
+// Pixel alpha of the hands (holding hand and, in front, pointing hand) for the soft silhouette
 float pixA(vec2 S){
   float a = SH(1, S);
   if (uFront == 1 && uPS.y > 0.) a = max(a, SP(1, pSprite(S)));
   return a;
 }
 
-// Zerfall: Randnähe 0..1 aus der Silhouette (1 am Rand, 0 ab etwa 30 px Tiefe)
+// Decay: edge proximity 0..1 from the silhouette (1 at the edge, 0 from about 30 px depth)
 float randNaehe(vec2 C){
   float em = 0.;
   for (int i = 0; i < 8; i++) {
@@ -192,14 +192,14 @@ float vn(vec2 p){
   ivec2 c = ivec2(i);
   return mix(mix(hsh(c), hsh(c + ivec2(1, 0)), f.x), mix(hsh(c + ivec2(0, 1)), hsh(c + ivec2(1, 1)), f.x), f.y);
 }
-// Lösegrad 0..1 einer Zelle: Ränder zuerst, dazu Rauschen, damit die Front ausfranst
+// Release degree 0..1 of a cell: edges first, plus noise so the front frays
 float loes(vec2 C, ivec2 cell){
   float thr = (1. - randNaehe(C)) * .5 + (vn(C / 36.) * .55 + hsh(cell) * .45) * .4;
   return clamp((uZer * 1.3 - thr) / .4, 0., 1.);
 }
 
 #ifdef PASS1
-// Pass 1: ein Texel je Zelle des Rasters (Ton nach Zeigerlicht, Verdeckung und Ruhe)
+// Pass 1: one texel per grid cell (tone after pointer light, occlusion and quiet zones)
 void main(){
   ivec2 cell = uCell0 + ivec2(gl_FragCoord.xy);
   vec2 C = (vec2(cell) + .5) * ${STEP.toFixed(2)};
@@ -215,7 +215,7 @@ void main(){
   o = vec4(tone, lg, 0., 1.);
 }
 #else
-// Zeigehand: weich geglättete Silhouette (5 Abtastungen), mit Ausblenden zum Arm hin und Deckkraft
+// Pointing hand: softly smoothed silhouette (5 samples), with fade toward the arm and opacity
 float pointSil(vec2 S){
   if (uPS.y <= 0.) return 0.;
   float dist = length(S - uTipU.xy);
@@ -227,12 +227,12 @@ float pointSil(vec2 S){
   float a = (2. * SP(1, ab) + SP(1, ab + vec2(r, 0.)) + SP(1, ab - vec2(r, 0.)) + SP(1, ab + vec2(0., r)) + SP(1, ab - vec2(0., r))) / 6.;
   return clamp((a - .5) / .18 + .5, 0., 1.) * fade * uPS.y;
 }
-// Pass 2: Punkte je Zelle (Bayer, Hash-Zufall), scharf auf Gerätepixel, Silhouette per Pixel-Alpha geglättet.
-// Vorn (Zeigehand) zusätzlich: deckende Grundfläche in der Silhouette und ein weicher Schatten aufs Glas.
+// Pass 2: dots per cell (Bayer, hash randomness), sharp on device pixels, silhouette smoothed by pixel alpha.
+// In front (pointing hand) additionally: opaque base area within the silhouette and a soft shading on the glass.
 void main(){
   vec2 css = vec2(gl_FragCoord.x / uBack.x, (uBack.z - gl_FragCoord.y) / uBack.y);
   vec2 S = (css - uCam.yz) / uCam.x;
-  // Atmen: Handy und Hände bewegen sich gemeinsam, hier die Umkehrung in den Objektraum
+  // Breathing: phone and hands move together, here the inverse into object space
   {
     vec2 pv = vec2(800., 400.);
     vec2 q = S - uBr.xy - pv;
@@ -250,7 +250,7 @@ void main(){
     tone = tz.x * (1. - ss(tz.y / .2));
   }
   float gk = uFront == 1 ? ss(-sdfRR(S, uScreen, uPR.y) / 24.) : 0.;
-  // Staub: gelöste Zellen fliegen schräg nach oben rechts (Quelle je Ziel-Zelle entlang dreier Windrichtungen gesucht)
+  // Dust: released cells fly diagonally to the top right (source searched per target cell along three wind directions)
   float dust = 0.;
   if (uZer > 0.) {
     for (int k = 1; k <= 13; k++) {
@@ -267,7 +267,7 @@ void main(){
         if (abs(ts - d) < .45 * d + .6) dust = max(dust, tz.x * pow(1. - tz.y, 1.1));
       }
     }
-    dust *= 1. - gk; // über dem Glas bleibt die App frei
+    dust *= 1. - gk; // the app stays clear over the glass
   }
   bool istStaub = dust > tone;
   tone = max(tone, dust);
@@ -280,7 +280,7 @@ void main(){
   float thr = float((by & 1) * 12 + (by >> 1) * 3 + (1 - 2 * (by & 1)) * 8 * (bx & 1) + (1 - 2 * (by >> 1)) * 2 * (bx >> 1)) / 16. + .035;
   float c = 0.;
   if (tone > thr || tone > .8) {
-    // Punkte berühren sich nie (Kante höchstens 0,92 Zellen); im Glanzlicht (ab .8) kippt das Raster zu dunklen Löchern in heller Fläche
+    // Dots never touch (edge at most 0.92 cells); in the highlight (from .8) the grid flips to dark holes in a light area
     float z = min(${STEP.toFixed(2)} * (.5 + .5 * min(1., tone)), ${STEP.toFixed(2)} * .92);
     vec2 dd = abs(S - C);
     c = clamp((z * .5 - max(dd.x, dd.y)) / px + .5, 0., 1.);
@@ -305,9 +305,9 @@ void main(){
   float base = 0.;
   float sh = 0.;
   if (pt && gk > 0.) {
-    float zf = 1. - ss(uZer * 6.); // Grundfläche und Schatten der Zeigehand lösen sich zuerst, übrig bleiben die Punkte
+    float zf = 1. - ss(uZer * 6.); // base area and shading of the pointing hand dissolve first, the dots remain
     base = pointSil(S) * gk * zf;
-    // weicher Schatten der Zeigehand aufs Glas: je näher der Finger (Druck), desto enger und dunkler
+    // soft shading of the pointing hand on the glass: the closer the finger (press), the tighter and darker
     vec2 off = vec2(7., 11.) * (1. - .55 * uRing.w);
     float s0 = pointSil(S - off) + pointSil(S - off + vec2(7., 0.)) + pointSil(S - off - vec2(7., 0.)) + pointSil(S - off + vec2(0., 7.)) + pointSil(S - off - vec2(0., 7.));
     sh = s0 / 5. * gk * (.15 + .1 * uRing.w) * zf;
@@ -326,6 +326,6 @@ void main(){
   gl_Position = vec4(p * 2. - 1., 0., 1.);
 }`;
 
-/** Fragment-Shader eines Durchgangs: pass1 = Ton je Zelle, sonst Punkte auf die Leinwand. */
+/** Fragment shader of one pass: pass1 = tone per cell, otherwise dots onto the canvas. */
 export const fsSrc = (pass1: boolean): string =>
 	FS.replace('#pragma DEFS', pass1 ? '#define PASS1' : '');

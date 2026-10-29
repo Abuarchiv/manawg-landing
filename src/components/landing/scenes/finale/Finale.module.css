@@ -4,7 +4,7 @@
 	--knoepfe-h: 32px;
 	--luecke: var(--sp-32);
 	--pad-oben: calc(max(var(--rand-kopf), env(safe-area-inset-top, 0px) + 8px) + var(--cta-h) + 24px);
-	/* Mindesthöhe aus dem Inhalt: Kopfpolster, Titel (2 Zeilen), Lücke, Knöpfe, Fußpolster */
+	/* Minimum height from the content: header padding, title (2 lines), gap, buttons, footer padding */
 	--noetig: calc(
 		var(--pad-oben) +
 		1.76 *
@@ -26,9 +26,9 @@
 	height: 100%;
 	display: block;
 }
-/* Der Inhalt liegt in dem Teil des Finales, der im Endbild der Seite über der Fußzeile zu sehen ist
-   (--fuss = Höhe der Fußzeile, von Finale.tsx gesetzt), mit dem Kopf als Oberkante. So steht der
-   Titel am Ende der Seite ganz unter dem Kopf (T-06). */
+/* The content sits in the part of the finale that is visible above the footer in the final view of the page
+   (--fuss = footer height, set by Finale.tsx), with the header as top edge. This way the
+   title at the end of the page sits entirely below the header (T-06). */
 .content {
 	position: absolute;
 	left: 0;
@@ -66,8 +66,8 @@
 }
 
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
-	/* Im Endbild müssen Titel, Knöpfe und Fußzeile zusammen in den Viewport passen (Safari mit Leisten ist
-	   niedriger als 100svh am Rechner): der Titel schrumpft bis 64 px, die Knöpfe stehen nebeneinander. */
+	/* In the final view, title, buttons and footer together must fit in the viewport (Safari with bars is
+	   shorter than 100svh on desktop): the title shrinks down to 64 px, the buttons sit side by side. */
 	.section {
 		--luecke: var(--sp-24);
 		--frei: calc(
@@ -83,7 +83,7 @@
 	.title {
 		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
 	}
-	/* beide Knöpfe in einer Zeile: engere Sperrung und Klammerabstand */
+	/* both buttons in one row: tighter tracking and bracket spacing */
 	.buttons {
 		max-width: 520px;
 		gap: 4px 14px;
@@ -100,7 +100,7 @@
 	}
 }
 
-/* Handy quer: wenig Höhe, Titel kleiner, damit er über der Fußzeile ganz Platz hat */
+/* Phone landscape: little height, smaller title so it fits entirely above the footer */
 @media (orientation: landscape) and (max-height: 499px) {
 	.section {
 		--titel-fs: clamp(48px, 15svh, 64px);

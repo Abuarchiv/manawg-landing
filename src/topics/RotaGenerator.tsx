@@ -74,7 +74,7 @@ const fieldCls = 'min-h-[44px] px-3 rounded border border-white/20 bg-transparen
 const cellCls = 'px-3 py-2 border-b border-white/10';
 const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
 
-// Ohne Speicherung und Konto: Eingaben und Plan leben nur im Browser.
+// No storage and no account: inputs and plan live in the browser only.
 export default function RotaGenerator({ locale }: { locale: Locale }) {
 	const t = TEXT[locale];
 	const allTasks = t.tasks;
@@ -91,7 +91,7 @@ export default function RotaGenerator({ locale }: { locale: Locale }) {
 	const perPerson = Math.ceil(chosen.length / Math.max(people.length, 1));
 
 	const print = () => {
-		// Nur der Plan kommt aufs Papier (siehe globals.css).
+		// Only the plan goes to paper (see globals.css).
 		document.body.classList.add('plan-drucken');
 		window.addEventListener('afterprint', () => document.body.classList.remove('plan-drucken'), {
 			once: true,

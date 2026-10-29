@@ -58,7 +58,7 @@ const TEXT: Record<
 	},
 };
 
-// Ohne Speicherung und Konto: Eingaben und Ergebnis leben nur im Browser.
+// No storage and no account: inputs and result live in the browser only.
 export default function RentCalculator({ locale }: { locale: Locale }) {
 	const t = TEXT[locale];
 	const [rent, setRent] = useState('900');

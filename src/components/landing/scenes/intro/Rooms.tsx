@@ -2,7 +2,7 @@ import { css } from '../../core/dc';
 import { useDict } from '../../dict';
 import st from './Rooms.module.css';
 
-// Die vier Raumkarten der Wohnung. Jede Karte blendet über --c0..3 ein und aus (wohnung.karten).
+// The four room cards of the flat. Each card fades in and out via --c0..3 (flat scene cards).
 
 export function Rooms() {
 	const { rooms, aria } = useDict();

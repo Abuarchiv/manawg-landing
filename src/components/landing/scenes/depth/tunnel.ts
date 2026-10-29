@@ -1,20 +1,20 @@
-// Die Tiefe: Fahrt durch eine Punktwolke, in der die drei Wörter aus dem Wörterbuch (tunnelWords) als Inseln
-// liegen. Die Kamera hängt am Scroll-Fortschritt des Abschnitts.
-// Szenenraum: quer Bezugsbox 1280 x 800, hoch eigene Box von 640 Einheiten Breite (die Wörter stehen bei
-// Tiefe 9 auf 40 bis 50 % der Breite und passen so in jedes Format). Gezeichnet wird in CSS-px.
+// The depth: a drive through a point cloud in which the three words from the dictionary (tunnelWords) lie as islands.
+// The camera hangs on the scroll progress of the section.
+// Scene space: landscape reference box 1280 x 800, portrait its own box 640 units wide (the words sit at
+// depth 9 at 40 to 50 % of the width and so fit every format). Drawing happens in CSS px.
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { cl, cs, hsh, lag, lerp, sn, ss } from '../../core/math';
 
 const MONO = '"JetBrains Mono", monospace';
 const TT = '"Inter Tight", sans-serif';
-const F = 720; // Brennweite in Szenen-Einheiten
-const SPACING = 0.065; // Punktabstand der Wörter in Welt-Einheiten (nur Hochformat)
-const SP = 26; // Abstand der Wort-Inseln in der Tiefe, wie im Entwurf
+const F = 720; // focal length in scene units
+const SPACING = 0.065; // point spacing of the words in world units (portrait only)
+const SP = 26; // spacing of the word islands in depth, as in the draft
 const ISLAND_X = [-4.5, 4.5, -4.5] as const;
 const ISLAND_Y = [0.8, -0.8, 0.8] as const;
 
-/** Abgetastete Wortmaske: Alphakanal d (w x h), Mitte (cx, cy) und Breite der belegten Fläche. */
+/** Sampled word mask: alpha channel d (w x h), center (cx, cy) and width of the occupied area. */
 interface Mask {
 	d: Uint8ClampedArray;
 	w: number;
@@ -26,7 +26,7 @@ interface Mask {
 
 type Pt = [x: number, y: number];
 
-/** Wort-Insel: Tiefe z, Mitte (x, y), Maßstab sc, Punkte relativ zur Mitte, halbe Wortbreite hw. */
+/** Word island: depth z, center (x, y), scale sc, points measured from the center, half word width hw. */
 interface Island {
 	z: number;
 	x: number;
@@ -36,9 +36,9 @@ interface Island {
 	hw: number;
 }
 
-/** Punkt der Wolke: x, y, z, Zeichen, Insel (-1 = Staub). */
-// streuX/streuY/streuZ: Startversatz im Tunnel, aus dem der Punkt in die Wortform strömt (einmal beim Aufbau gerechnet);
-// ph: Phase fürs Atmen, h: Staffelung (wer früher ankommt und früher geht)
+/** Point of the cloud: x, y, z, character, island (-1 = dust). */
+// streuX/streuY/streuZ: start offset in the tunnel from which the point streams into the word shape (computed once at build);
+// ph: breathing phase, h: staggering (who arrives earlier and leaves earlier)
 type Point = [
 	x: number,
 	y: number,
@@ -53,7 +53,7 @@ type Point = [
 	h: number,
 ];
 
-/** Die Wolke spaltenweise (je Feld ein Zahlenfeld): die Punktschleife liest so rund doppelt so schnell wie aus Tupeln. */
+/** The cloud column-wise (one number array per field): the point loop reads about twice as fast as from tuples. */
 interface Cloud {
 	n: number;
 	x: Float64Array;
@@ -100,7 +100,7 @@ const pack = (P: Point[]): Cloud => {
 	return w;
 };
 
-/** Ausschlusszone um eine Unterzeile (DOM-Rechteck) samt Deckkraft w. */
+/** Exclusion zone around a subline (DOM rectangle) with opacity w. */
 interface Zone {
 	x0: number;
 	y0: number;
@@ -109,19 +109,19 @@ interface Zone {
 	w: number;
 }
 
-/** Klemmung eines Worts am Bildschirmrand: Verschiebung dx (Szenen-Einheiten), Stauchung k. */
+/** Clamping of a word at the screen edge: shift dx (scene units), squeeze k. */
 interface Clamp {
 	dx: number;
 	k: number;
 }
 
-/** Zeichen einer Schriftstufe: Positionen und Deckkraft (x, y, a je Zeichen) getrennt von den Zeichen. */
+/** Characters of a font size step: positions and opacity (x, y, a per character) separate from the characters. */
 interface Bucket {
 	xya: number[];
 	ch: string[];
 }
 
-/** Zustand des letzten gezeichneten Bildes (im Stand bleibt es stehen). */
+/** State of the last drawn frame (the frame stays as is when idle). */
 interface LastDraw {
 	p: number;
 	smx: number;
@@ -134,7 +134,7 @@ interface LastDraw {
 }
 
 interface DepthState extends SceneState {
-	// resize läuft schon beim Anmelden, vor init: cx, cy setzt resize selbst
+	// resize already runs at registration, before init: resize sets cx, cy itself
 	cx: number;
 	cy: number;
 	sm: { x: number; y: number };
@@ -151,30 +151,30 @@ interface DepthState extends SceneState {
 	fl: number;
 	dX: number;
 	dY: number;
-	/** Schlüssel des Aufbaus (Modus und Fläche), null = neu abtasten. */
+	/** Key of the build (mode and area), null = sample again. */
 	bm: string | null;
 	kk: LastDraw;
 	nb: Bucket[];
-	/** Zeigergeschwindigkeit für die Abstoßung (a = Stärke). */
+	/** Pointer velocity for the repulsion (a = strength). */
 	pv?: { x: number; y: number; a: number };
 	zones: Zone[];
-	/** Klemmung je Insel, build legt sie an. */
+	/** Clamping per island, build creates it. */
 	clamps: Clamp[];
-	/** DOM-Lagen aus lies (Viewport-Pixel): Kopfunterkante, Canvas oben, Abschnitt oben und Höhe, Etiketten oben. */
+	/** DOM positions from lies (viewport pixels): header bottom edge, canvas top, section top and height, labels top. */
 	layout: { header: number; el: number; sec: number; secH: number; caps: number[] };
 }
 
-// Wort aus der Schrift abtasten (wie im Entwurf: Schrift 200 px auf 1600 x 270, Grundlinie 0,82). Die Maske
-// bleibt erhalten, damit je Format mit anderem Raster abgetastet werden kann.
+// Sample a word from the font (as in the draft: font 200 px on 1600 x 270, baseline 0.82). The mask
+// is kept so each format can be sampled with a different grid.
 const sampleT = (word: string, px: number): Mask => {
 	const w = 1600;
 	const h = Math.ceil(px * 1.35);
 	const oc = document.createElement('canvas');
 	oc.width = w;
 	oc.height = h;
-	// willReadFrequently: Maske im Hauptspeicher, getImageData ohne Rücklesen von der Grafikkarte (sonst rund 30 ms je Wort)
+	// willReadFrequently: mask in main memory, getImageData without reading back from the GPU (otherwise about 30 ms per word)
 	const o = oc.getContext('2d', { willReadFrequently: true });
-	if (!o) throw new Error('Kein 2D-Kontext für die Wortmaske');
+	if (!o) throw new Error('No 2D context for the word mask');
 	o.font = `600 ${px}px ${TT}`;
 	o.textAlign = 'center';
 	o.fillStyle = '#000';
@@ -194,7 +194,7 @@ const sampleT = (word: string, px: number): Mask => {
 			}
 	return { d, w, h, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, width: x1 - x0 };
 };
-// Punkte der Maske im Raster step, bezogen auf (ox, oy)
+// Points of the mask on grid step, measured from (ox, oy)
 const gridPoints = (r: Mask, step: number, ox: number, oy: number): Pt[] => {
 	const pts: Pt[] = [];
 	for (let y = 0; y < r.h; y += step)
@@ -203,7 +203,7 @@ const gridPoints = (r: Mask, step: number, ox: number, oy: number): Pt[] => {
 	return pts;
 };
 
-// Inline-Stil nur bei geändertem Wert schreiben (jedes Schreiben macht den Stil des Elements ungültig)
+// Write inline style only when the value changes (every write invalidates the element style)
 const lastStyle = new WeakMap<HTMLElement, Record<string, string>>();
 function setStyle(el: HTMLElement, k: string, v: string) {
 	let alt = lastStyle.get(el);
@@ -216,30 +216,30 @@ function setStyle(el: HTMLElement, k: string, v: string) {
 	el.style.setProperty(k, v);
 }
 
-// Deckkraft des Untertitels aus der Tiefe dz seiner Insel. Im Entwurf ein Dreieck um dz 9 (Breite 5 nach
-// beiden Seiten); hier dieselben Grenzen, aber mit Plateau (voll für |dz - 9| <= 3,5), damit der Satz lesbar steht.
+// Opacity of the subtitle from the depth dz of its island. In the draft a triangle around dz 9 (width 5 to
+// both sides); here the same limits, but with a plateau (full for |dz - 9| <= 3.5) so the sentence reads steadily.
 const plateauOf = (dz: number): number => cl((5 - Math.abs(dz - 9)) / 1.5);
-// Dichte des Worts aus seiner Tiefe: ab dz 34 da, ab dz 22 voll, nach dem Durchflug (dz < 1) blendet der Abflug aus
+// Density of the word from its depth: present from dz 34, full from dz 22, after the fly-through (dz < 1) the departure fades out
 const wordDensity = (dz: number): number => cl((34 - dz) / 12) * (1 - ss((1 - dz) / 12));
 
-// Hochformat: Staubmenge und Punktgröße wachsen mit der Bildschirmfläche (Bezug 1440 x 900), gerastert, damit nicht
-// jede Größenänderung neu baut. Querformat: feste Menge wie im Entwurf (die Bühne skaliert als Ganzes).
+// Portrait: dust amount and point size scale with the screen area (reference 1440 x 900), quantized so not
+// every resize rebuilds. Landscape: fixed amount as in the draft (the stage scales as a whole).
 const area = (s: DepthState): number =>
 	s.mode === 'hoch' ? Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4 : 1;
 const buildKey = (s: DepthState): string => `${s.mode}${area(s)}`;
 
 function build(s: DepthState) {
 	const portrait = s.mode === 'hoch';
-	const k = portrait ? 0.5 : 1; // Streuung der Inseln und des Zeigerversatzes an die Boxbreite anpassen
-	const target = ((portrait ? 0.82 : 0.5) * s.bw * 9) / F; // Wortbreite in Welt-Einheiten bei Tiefe 9 (hoch: 82 % der Breite)
+	const k = portrait ? 0.5 : 1; // adapt the scatter of the islands and of the pointer offset to the box width
+	const target = ((portrait ? 0.82 : 0.5) * s.bw * 9) / F; // word width in world units at depth 9 (portrait: 82 % of the width)
 	s.isl = s.raw.map((r, i): Island => {
-		// Querformat wie im Entwurf: Maßstab 1, Raster 5 px, Mitte der Abtast-Fläche. Hochformat: Wort an die Breite angepasst.
+		// Landscape as in the draft: scale 1, grid 5 px, center of the sampling area. Portrait: word fitted to the width.
 		const sc = portrait ? cl(target / (r.width / 85), 0.25, 1.5) : 1;
 		const raw = portrait
 			? gridPoints(r, 2 * Math.max(1, Math.round((SPACING * 85) / (sc * 2))), r.cx, r.cy)
 			: gridPoints(r, 5, r.w / 2, r.h / 2);
 		const pts = raw.map((p): Pt => [(p[0] / 85) * sc, (p[1] / 85) * sc]);
-		// hw: halbe Wortbreite in Welt-Einheiten (für die Klemmung am Bildschirmrand)
+		// hw: half word width in world units (for clamping at the screen edge)
 		return {
 			z: SP * i,
 			x: (ISLAND_X[i] ?? 0) * k,
@@ -256,7 +256,7 @@ function build(s: DepthState) {
 	s.isl.forEach((I, kk) => {
 		I.pts.forEach((p, q) => {
 			const w = hsh(q, kk + 17) * Math.PI * 2;
-			const r = 2.5 + hsh(q, kk + 29) * 8; // Start im Tunnel, weit um die Achse verteilt
+			const r = 2.5 + hsh(q, kk + 29) * 8; // start in the tunnel, spread widely around the axis
 			P.push([
 				I.x + p[0],
 				I.y + p[1],
@@ -272,8 +272,8 @@ function build(s: DepthState) {
 			]);
 		});
 	});
-	// Staub: Querformat 1600 Punkte in 60 x 36 Einheiten wie im Entwurf; Hochformat schmaler, höher und dichter,
-	// die Kanten des Staubkastens blenden dort weich aus (siehe frame)
+	// Dust: landscape 1600 points in 60 x 36 units as in the draft; portrait narrower, taller and denser,
+	// the edges of the dust box fade out softly there (see frame)
 	const fl = area(s);
 	s.fl = Math.sqrt(fl);
 	const nd = portrait ? Math.round(7000 * fl) : 1000;
@@ -297,10 +297,10 @@ function build(s: DepthState) {
 	s.bm = buildKey(s);
 }
 
-// Klemmung je Wort: die Kamera driftet seitlich zum nächsten Wort, während das aktuelle noch groß ist. Die
-// Wortbox bleibt immer innerhalb von Viewport minus 16 px Rand (Verschiebung in Szenen-Einheiten) und wird
-// auf höchstens 92 % der Breite skaliert statt angeschnitten (dz < 5: Durchflug, dort blendet der Rand aus).
-// Nur Hochformat: im Querformat fliegen die Wörter wie im Entwurf frei durchs Bild.
+// Clamping per word: the camera drifts sideways to the next word while the current one is still large. The
+// word box always stays within viewport minus 16 px margin (shift in scene units) and is
+// scaled to at most 92 % of the width instead of being cut off (dz < 5: fly-through, the edge fades out there).
+// Portrait only: in landscape the words fly freely through the image as in the draft.
 function applyClamps(s: DepthState, clamps: Clamp[], camZ: number, camX: number) {
 	const { f, ox, cx } = s;
 	const portrait = s.mode === 'hoch';
@@ -330,7 +330,7 @@ function applyClamps(s: DepthState, clamps: Clamp[], camZ: number, camX: number)
 	});
 }
 
-/** Alles, was die Punktschleife je Bild von der Kamera und dem Zeiger braucht. */
+/** Everything the point loop needs per frame from the camera and the pointer. */
 interface View {
 	camX: number;
 	camY: number;
@@ -338,19 +338,19 @@ interface View {
 	headerY: number;
 	mx: number;
 	my: number;
-	/** Stärke der Zeigerabstoßung (0 = keine) und Radius für Staub. */
+	/** Strength of the pointer repulsion (0 = none) and radius for dust. */
 	rep: number;
 	rad: number;
 	zones: Zone[];
 	clamps: Clamp[];
-	/** Phase des Strömungsfelds (hängt am Scroll) und Atemzeit in Sekunden (gestuft, 0 = still). */
+	/** Phase of the flow field (follows the scroll) and breathing time in seconds (stepped, 0 = still). */
 	phase: number;
 	time: number;
 }
 
-// Strömungsfeld des Schwarms: divergenzfreies Feld aus zwei Oktaven einer Stromfunktion (billiger Pseudo-Curl,
-// jeder Punkt kennt nur seine Ruhelage). Ergebnis in cvx, cvy; die Phase fase läuft mit dem Scroll, rückwärts
-// scrollen dreht die Strömung zurück.
+// Flow field of the swarm: divergence-free field from two octaves of a stream function (cheap pseudo-curl,
+// every point only knows its rest position). Result in cvx, cvy; the phase fase runs with the scroll, scrolling
+// backwards turns the flow back.
 let cvx = 0;
 let cvy = 0;
 function curl(x: number, y: number, phase: number) {
@@ -362,8 +362,8 @@ function curl(x: number, y: number, phase: number) {
 	cvy = -0.7 * cs(a) * sn(b) - 0.68 * cs(c) * sn(d);
 }
 
-// Lage eines Wortpunkts im Fluss: u = Ankunft (0 im Tunnel, 1 in der Wortform), o = Abflug (0 im Wort, 1 weit voraus
-// zum nächsten Wort). Dazwischen krümmt das Strömungsfeld den Weg; im Wort atmet der Punkt fein.
+// Position of a word point in the flow: u = arrival (0 in the tunnel, 1 in the word shape), o = departure (0 in the word, 1 far ahead
+// toward the next word). In between the flow field bends the path; in the word the point breathes finely.
 let ox = 0;
 let oy = 0;
 let oz = 0;
@@ -396,9 +396,9 @@ function flow(
 		const b = 12 * o * (1 - o);
 		x += cvx * b + (N.x - I.x) * 0.9 * o2 + (w.sx[i] as number) * 0.5 * o2;
 		y += cvy * b + (N.y - I.y) * 0.9 * o2 + (w.sy[i] as number) * 0.5 * o2;
-		z += o2 * (8 + 10 * (w.h[i] as number)); // zieht in die Tiefe voraus, statt an der Kamera vorbeizufliegen
+		z += o2 * (8 + 10 * (w.h[i] as number)); // pulls ahead into the depth instead of flying past the camera
 	} else if (time > 0) {
-		// Atmen: kleine Welle über das Wort, je Punkt leicht versetzt
+		// Breathing: small wave across the word, slightly offset per point
 		const wl = time * 1.5 + x * 1.7 + y * 1.1 + (w.ph[i] as number) * 2.5;
 		x += 0.028 * sn(wl);
 		y += 0.028 * cs(wl * 1.3);
@@ -408,8 +408,8 @@ function flow(
 	oz = z;
 }
 
-// Alle Punkte projizieren: Punkte als Quadrate, nahe Zeichen in Eimern je Schriftstufe (8, 11, 16, 23, 32, 45 px
-// wie im Entwurf), danach die Eimer gezeichnet.
+// Project all points: points as squares, near characters in buckets per font size step (8, 11, 16, 23, 32, 45 px
+// as in the draft), then draw the buckets.
 function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 	const ctx = s.ctx;
 	if (!ctx) return;
@@ -435,14 +435,14 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 		let o = 0;
 		let I: Island | undefined;
 		if (word) {
-			// Wort sichtbar von dz 34 bis weit hinter der Kamera (Abflug zieht voraus)
+			// Word visible from dz 34 to far behind the camera (departure pulls ahead)
 			if (dz > 34 || dz < -14) continue;
 			I = s.isl[qi];
 			const kl = clamps[qi];
 			if (!I || !kl) continue;
 			kx = kl.k;
 			ddx = kl.dx;
-			// Ankunft zwischen dz 38 und 14 (je Punkt gestaffelt), Abflug ab dz 7,5 (ebenso), bevor die Zeichen zu groß werden
+			// Arrival between dz 38 and 14 (staggered per point), departure from dz 7.5 (likewise), before the characters get too large
 			u = ss((38 - dz - 8 * qh) / 16);
 			o = ss((7.5 + 1.5 * qh - dz) / 6);
 			flow(W, i, I, s.isl[qi + 1] ?? I, u, o, phase, time);
@@ -464,7 +464,7 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 			const d = Math.hypot(dx, dy);
 			const R = word ? 54 : rad;
 			if (d < R) {
-				// Staub wird weggedrückt, der Schwarm eher verwirbelt (Tangente)
+				// Dust is pushed away, the swarm rather swirled (tangent)
 				const g = (1 - d / R) * 46 * f * rep * (word ? 0.4 : 1);
 				const nx = dx / (d + 0.1);
 				const ny = dy / (d + 0.1);
@@ -472,13 +472,13 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 				Y += ny * g * (word ? 0.4 : 1) + (word ? nx * g * 0.9 : 0);
 			}
 		}
-		if (qa.nurWort != null && qi !== qa.nurWort) continue; // Messhaken: nur ein Wort zeichnen
-		// Wörter und Staub wie im Entwurf: Wort ab dz 34 da und ab 22 voll, Staub blendet in der Ferne aus
+		if (qa.nurWort != null && qi !== qa.nurWort) continue; // Measurement hook: draw only one word
+		// Words and dust as in the draft: word present from dz 34 and full from 22, dust fades out in the distance
 		let al: number;
 		if (word) {
 			const d0 = qz - camZ;
-			// Tiefe: ferne Punkte dunkler, nahe heller; im Fluss gedämpft, in der Wortform voll; scharfes Flimmern
-			// bei wenigen Punkten je Stufe
+			// Depth: far points darker, near brighter; muted in the flow, full in the word shape; sharp flicker
+			// with few points per step
 			al =
 				wordDensity(d0) *
 				cl((dz - 1.2) / 2.8) *
@@ -496,12 +496,12 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 						0.6
 					: cl((110 - dz) / 50) * 0.55);
 		al *= cl((Y - headerY) / 28);
-		// Hochformat: nahe Wörter (dz < 5) blenden am Bildrand weich aus, statt hart angeschnitten zu wirken.
-		// Querformat: Zeichen fliegen unverändert aus dem Bild.
+		// Portrait: near words (dz < 5) fade out softly at the image edge instead of looking cut off hard.
+		// Landscape: characters fly out of the image unchanged.
 		if (portrait && word && dz < 5)
 			al *= cl(Math.min(X, s.W - X) / 48) * cl(Math.min(Y, s.H - Y) / 48);
 		if (al <= 0.01) continue;
-		// Ausschlusszone um die Unterzeile (DOM-Rechteck plus 28 px): Partikel und Zeichen laufen dort aus
+		// Exclusion zone around the subline (DOM rectangle plus 28 px): particles and characters fade out there
 		for (const z of zones) {
 			if (z.w < 0.02) continue;
 			const zx = Math.max(z.x0 - X, X - z.x1, 0);
@@ -509,16 +509,16 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 			al *= 1 - z.w * (1 - cl(Math.hypot(zx, zy) / 28));
 		}
 		if (al <= 0.01) continue;
-		const sz = cl(0.07 * fz, 0.8, 64); // Zeichengröße in Szenen-Einheiten (Entwurf)
-		// Staub wird nie zum großen Symbol: ab etwa 6 Einheiten blendet er aus
+		const sz = cl(0.07 * fz, 0.8, 64); // character size in scene units (draft)
+		// Dust never becomes a large symbol: it fades out from about 6 units
 		if (!word) al *= cl((9 - sz) / 3);
 		if (al <= 0.01) continue;
 		if (sz < 6) {
-			// Punkt: Quadrat der Kantenlänge 0,55 x sz; im Hochformat mit Mindestgröße
+			// Point: square with edge length 0.55 x sz; in portrait with a minimum size
 			const side = portrait ? Math.max(word ? 1 : 1.5 * s.fl, sz * 0.8 * f) : sz * 0.55 * f;
 			ctx.globalAlpha = al;
 			ctx.fillRect(X, Y, side, side);
-			// Spur: im Fluss blasse Wiederholungen des Punkts auf seinem Weg (jeder vierte Punkt)
+			// Trail: in the flow, faint repeats of the point on its path (every fourth point)
 			if (I && (qn & 3) === 0 && ((u > 0.03 && u < 0.97) || (o > 0.03 && o < 0.97))) {
 				const N = s.isl[qi + 1] ?? I;
 				for (let k = 1; k <= 2; k++) {
@@ -558,8 +558,8 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 }
 
 /**
- * Wortmasken abtasten und Wolke bauen, je Aufruf ein Schritt (ein Wort oder der Aufbau), true wenn alles aktuell ist.
- * Das Vorwärmen (warm) ruft das je Bild einmal, frame holt Fehlendes in einem Zug nach (Schrift oder Format neu).
+ * Sample word masks and build the cloud, one step per call (one word or the build), true when everything is up to date.
+ * The warm-up (warm) calls this once per frame, frame catches up on anything missing in one go (new font or format).
  */
 function prepare(s: DepthState, words: readonly string[]): boolean {
 	if (s.built !== loop.fv) {
@@ -580,7 +580,7 @@ function prepare(s: DepthState, words: readonly string[]): boolean {
 	return true;
 }
 
-/** Meldet die Tiefe-Szene an. sec: Abschnitt mit Sticky-Bühne. Gibt die Abmeldung zurück. */
+/** Registers the depth scene. sec: section with sticky stage. Returns the unregister function. */
 export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: readonly string[]) {
 	const root = cv.parentElement ?? cv;
 	return register<DepthState>({
@@ -633,7 +633,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			const r = sec.getBoundingClientRect();
 			L.sec = r.top;
 			L.secH = r.height;
-			// Etiketten: Lage und Ausschlusszone (DOM-Rechteck plus 28 px)
+			// Labels: position and exclusion zone (DOM rectangle plus 28 px)
 			s.caps.forEach((el, i) => {
 				L.caps[i] = el.getBoundingClientRect().top;
 				const z = s.zones[i];
@@ -650,12 +650,12 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			if (!ctx) return;
 			while (!prepare(s, words));
 			const { f, cx, cy } = s;
-			// Beim Hinausscrollen läuft die Szene unter den fixen Kopf: Wortbild und Zeile blenden über den obersten
-			// 28 px unter dem Kopfband aus (Kopfunterkante in Canvas-Koordinaten)
+			// When scrolling out, the scene runs under the fixed header: word image and line fade out over the topmost
+			// 28 px below the header band (header bottom edge in canvas coordinates)
 			const L = s.layout;
 			const headerY = L.header - L.el;
 			const sp = cl(-L.sec / Math.max(1, L.secH - s.H));
-			// Mit reduzierter Bewegung folgt die Kamera dem Scroll ohne Nachlauf
+			// With reduced motion the camera follows the scroll without lag
 			if (s.reduced) s.dp = sp;
 			else s.dp = Math.abs(sp - s.dp) < 1e-5 ? sp : s.dp + (sp - s.dp) * lag(0.1, dt);
 			const p = s.dp;
@@ -672,11 +672,11 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 					s.sm.y = s.m.y;
 				}
 			}
-			// Atmen/Flimmern: nur solange ein Wort in Ruhe steht, in 14 Schritten je Sekunde (spart Bilder);
-			// mit reduzierter Bewegung gibt es keins
+			// Breathing/flicker: only while a word stands still, in 14 steps per second (saves frames);
+			// with reduced motion there is none
 			const idle = !s.reduced && s.isl.some((I) => plateauOf(I.z - camZ) > 0.02);
 			const time = idle ? Math.floor(t * 14) / 14 : 0;
-			// Im Stand (gleicher Scroll, ruhender Zeiger, gleiche Größe und Schrift) bleibt das letzte Bild stehen
+			// When idle (same scroll, resting pointer, same size and font) the last frame stays
 			const kk = s.kk;
 			const same =
 				!s.stale &&
@@ -708,7 +708,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			ctx.fillStyle = '#FAFAFA';
-			// Nahzeichen je Schriftstufe in wiederverwendeten Eimern
+			// Near characters per font size step in reused buckets
 			const nb = s.nb;
 			for (const e of nb) {
 				e.xya.length = 0;
@@ -717,8 +717,8 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			const m = s.m;
 			const mx = m.in ? m.x : 0;
 			const my = m.in ? m.y : 0;
-			// Abstoßung des Zeigers nur bei Bewegung: Stärke aus der Geschwindigkeit, ruhend in ca. 300 ms weg.
-			// Solange ein Satz steht, halber Radius; Wörter in voller Größe (dz < 34) bleiben unberührt.
+			// Pointer repulsion only while moving: strength from the speed, gone within about 300 ms at rest.
+			// While a sentence stands, half the radius; words at full size (dz < 34) stay untouched.
 			const pv = s.pv ?? { x: m.x, y: m.y, a: 0 };
 			s.pv = pv;
 			if (m.in) {
@@ -730,7 +730,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			const rep = pv.a > 0.01 ? pv.a : 0;
 			const plat = Math.max(...s.isl.map((I) => plateauOf(I.z - camZ)));
 			const rad = 120 * (1 - 0.5 * plat);
-			// Unterzeilen: Deckkraft (das Rechteck der Ausschlusszone liest lies)
+			// Sublines: opacity (lies reads the rectangle of the exclusion zone)
 			const zones = s.zones;
 			zones.forEach((z, i) => {
 				const I = s.isl[i];
@@ -752,25 +752,25 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 				phase: camZ * 0.22,
 				time,
 			});
-			// Am Ende der Fahrt scrollt die Bühne nach oben weg: Wortzeile und Tiefenzähler blenden dabei aus, sonst
-			// fährt der letzte Satz über den Titel der nächsten Szene
-			// Lagen stammen aus lies, hier nur geänderte Werte schreiben
+			// At the end of the drive the stage scrolls away upward: word line and depth counter fade out, otherwise
+			// the last sentence drives over the title of the next scene
+			// Positions come from lies, write only changed values here
 			const top = -L.el;
 			const fade = 1 - cl(top / (0.12 * s.H));
-			// ganzes Etikett „TIEFE 000“, nicht nur die Zahl
+			// whole label "TIEFE 000", not just the number
 			if (s.dep?.parentElement) setStyle(s.dep.parentElement, 'opacity', fade.toFixed(3));
-			// Wortbild langsamer: sonst steht beim Zurückscrollen das letzte Wort über „Installieren“
+			// Word image slower: otherwise the last word stands over "Installieren" when scrolling back
 			setStyle(ctx.canvas, 'opacity', (1 - cl(top / (0.4 * s.H))).toFixed(3));
 			s.caps.forEach((el, i) => {
 				const op = ((zones[i]?.w ?? 0) * cl(((L.caps[i] ?? 0) - L.header) / 28) * fade).toFixed(3);
 				setStyle(el, 'opacity', op);
-				setStyle(el, '--k', op); // Leitlinie zeichnet mit der Deckkraft (landing.css .leit)
+				setStyle(el, '--k', op); // guide line draws with the opacity (landing.css .leit)
 			});
-			// Hinweis „weiter scrollen“ nur am Anfang der Fahrt, danach ganz weg
+			// "keep scrolling" hint only at the start of the drive, then gone completely
 			if (s.hint) setStyle(s.hint, 'opacity', (1 - ss(p / 0.06)).toFixed(3));
 			if (s.dep) {
 				const depth = String(Math.max(0, Math.round((camZ + 14) * 10))).padStart(3, '0');
-				// nur die Zeichen des vorhandenen Textknotens ändern: textContent hängt jedes Bild einen neuen Knoten ein
+				// change only the characters of the existing text node: textContent attaches a new node every frame
 				const tk = s.dep.firstChild;
 				if (tk instanceof Text) {
 					if (tk.data !== depth) tk.data = depth;

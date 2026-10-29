@@ -1,21 +1,21 @@
-// Eine einzige requestAnimationFrame-Schleife für die ganze Seite (PLAN-V2 2.5, 4.3).
+// A single requestAnimationFrame loop for the whole page (PLAN-V2 2.5, 4.3).
 //
-// - dt = min(0,05 s, Abstand zum letzten Bild), Pause bei document.hidden.
-// - Szenen registrieren sich im useEffect ihrer Komponente (register) und melden sich beim Abbau ab.
-// - Die Intro-Bühne hängt sich als Bild-Abonnent ein (onFrame), sie hat mehrere Ebenen.
-// - Jede sichtbare Szene bekommt jedes Bild (frame). Simulationen laufen über s.step mit festem Schritt.
-// - Zeiger kommen in Szenenkoordinaten an. Die Listener hängen an der ganzen Szenenfläche.
+// - dt = min(0.05 s, gap to the last frame), paused while document.hidden.
+// - Scenes register in the useEffect of their component (register) and unregister on teardown.
+// - The intro stage hooks in as a frame subscriber (onFrame); it has several layers.
+// - Every visible scene gets every frame (frame). Simulations run through s.step with a fixed step.
+// - Pointers arrive in scene coordinates. The listeners attach to the whole scene area.
 //
-// Eine Szene mit eigenen Feldern am Zustand `s` erweitert SceneState und gibt das Interface an register:
+// A scene with its own fields on the state `s` extends SceneState and passes the interface to register:
 //
-//   interface TiefeState extends SceneState {
-//   	dp: number; // eigene Felder: in init(s) setzen, nicht im Literal von register
-//   	pv?: { a: number }; // Felder, die resize (läuft schon beim Anmelden, vor init) liest, optional halten
+//   interface DepthState extends SceneState {
+//   	dp: number; // own fields: set them in init(s), not in the literal passed to register
+//   	pv?: { a: number }; // fields that resize reads (it already runs on registration, before init) stay optional
 //   }
-//   register<TiefeState>({ el, init(s) { s.dp = 0; }, frame(s, t, dt) { s.dp += dt; } });
+//   register<DepthState>({ el, init(s) { s.dp = 0; }, frame(s, t, dt) { s.dp += dt; } });
 //
-// register legt s nur mit den Feldern von SceneState an. Eigene Felder existieren erst, wenn init sie setzt
-// (init läuft vor dem ersten frame, resize davor).
+// register creates s with the fields of SceneState only. Own fields exist once init sets them
+// (init runs before the first frame, resize before that).
 
 import {
 	type Fit,
@@ -30,10 +30,10 @@ import {
 	wakeHook,
 } from './canvas';
 
-/** Seitenmodus: Hochformat oder Querformat. */
+/** Page mode: portrait or landscape. */
 export type Mode = 'hoch' | 'quer';
 
-/** Bild-Abonnent der Schleife: (t, dt, now, raw). */
+/** Frame subscriber of the loop: (t, dt, now, raw). */
 export type FrameFn = (t: number, dt: number, now: number, raw: number) => void;
 
 interface Loop {
@@ -52,26 +52,26 @@ interface Loop {
 }
 
 export const loop: Loop = {
-	n: 0, // Bildzähler seit dem Start, beginnt bei 1
-	fv: 0, // Schrift-Version, zählt hoch, wenn Schriften fertig geladen sind (Text-Raster neu aufbauen)
-	t: 0, // Sekunden seit dem Start
-	dt: 0.016, // auf 0,05 s begrenzter Abstand
-	raw: 0.016, // ungekürzter Abstand (Ruckler erkennen)
-	now: 0, // performance.now() in Sekunden
+	n: 0, // frame counter since the start, begins at 1
+	fv: 0, // font version, counts up when fonts finish loading (rebuild the text raster)
+	t: 0, // seconds since the start
+	dt: 0.016, // gap limited to 0.05 s
+	raw: 0.016, // unclamped gap (detects stutters)
+	now: 0, // performance.now() in seconds
 	reduced: false,
 	mode: 'quer', // 'hoch' | 'quer'
-	short: false, // Handy quer
-	act: 0, // letzte Eingabe oder Bewegung (Sekunden, performance.now()): Scroll, Zeiger, Taste, Größenänderung
-	// Fenstergröße, einmal am Anfang jedes Bilds gelesen. In Bild-Rückrufen statt innerWidth/innerHeight nutzen:
-	// die erzwingen nach jedem Stil-Schreiben einer anderen Szene eine neue Layout-Berechnung.
+	short: false, // phone in landscape
+	act: 0, // last input or movement (seconds, performance.now()): scroll, pointer, key, resize
+	// Window size, read once at the start of every frame. Use it in frame callbacks instead of innerWidth/innerHeight:
+	// those force a new layout calculation after every style write of another scene.
 	vw: 0,
 	vh: 0,
 };
 
-/** Messhaken der Szenen für landing-konzept/werkzeuge/qa (nur lesend), hängt an window.__landing.dbg. */
+/** Measurement hook of the scenes for landing-konzept/werkzeuge/qa (read-only), attached to window.__landing.dbg. */
 export const qa: Record<string, unknown> = {};
 
-/** Zeigerzustand einer Szene (Szenenkoordinaten x, y; CSS-Pixel px, py). */
+/** Pointer state of a scene (scene coordinates x, y; CSS pixels px, py). */
 export interface ScenePointer {
 	x: number;
 	y: number;
@@ -82,7 +82,7 @@ export interface ScenePointer {
 	type: string;
 }
 
-/** Zustand `s`, den register für jede Szene anlegt und allen Rückrufen übergibt. */
+/** State `s` that register creates for every scene and passes to all callbacks. */
 export interface SceneState extends Fit {
 	el: HTMLElement;
 	host: HTMLElement;
@@ -97,22 +97,22 @@ export interface SceneState extends Fit {
 	mode: Mode;
 	reduced: boolean;
 	visible: boolean;
-	/** Backing neu gesetzt: Szenen, die im Stand nicht zeichnen, müssen einmal neu zeichnen. */
+	/** Backing store was reset: scenes that do not draw while idle must redraw once. */
 	stale: boolean;
-	/** Pufferspeicher freigegeben (weit außer Sicht). */
+	/** Buffer memory released (far out of view). */
 	released: boolean;
-	/** Akkumulator von step. */
+	/** Accumulator of step. */
 	acc: number;
 	m: ScenePointer;
-	/** Transform für vollflächige Hintergründe (CSS-Pixel). */
+	/** Transform for full-bleed backgrounds (CSS pixels). */
 	full(): void;
-	/** Transform für die Komposition im Szenenraum. */
+	/** Transform for the composition in scene space. */
 	scene(): void;
-	/** Fester Schritt h mit Akkumulator, höchstens 4 Schritte je Bild. Gibt die Zahl der Schritte zurück. */
+	/** Fixed step h with an accumulator, at most 4 steps per frame. Returns the number of steps. */
 	step(dt: number, h: number, fn: () => void): number;
 }
 
-/** Bezugsbox der Komposition. */
+/** Reference box of the composition. */
 export interface Box {
 	bw: number;
 	bh: number;
@@ -120,7 +120,7 @@ export interface Box {
 	max?: number | undefined;
 }
 
-/** Anmeldung einer Szene (siehe register). Die Rückrufe sind Methoden, damit SceneDef<S> auch als SceneDef<SceneState> gilt. */
+/** Registration of a scene (see register). The callbacks are methods so that SceneDef<S> also counts as SceneDef<SceneState>. */
 export interface SceneDef<S extends SceneState = SceneState> {
 	name?: string | undefined;
 	el: HTMLElement;
@@ -132,13 +132,13 @@ export interface SceneDef<S extends SceneState = SceneState> {
 	init?(s: S): void;
 	frame?(s: S, t: number, dt: number): void;
 	/**
-	 * Vorwärmen in Schritten: wird kurz vor dem Eintritt je Bild einmal gerufen (höchstens eine Szene je Bild),
-	 * bis es true meldet. Ohne warm zeichnet die Szene stattdessen einmal unsichtbar (frame).
+	 * Warm-up in steps: called once per frame shortly before entry (at most one scene per frame)
+	 * until it returns true. Without warm the scene instead draws once invisibly (frame).
 	 */
 	warm?(s: S): boolean;
 	/**
-	 * Weitere DOM-Lagen lesen (sichtbare Szenen, in der gemeinsamen Lesephase vor allen frame-Aufrufen): einzeln in
-	 * frame gelesen erzwingt jedes Lesen nach den Stil-Schreibern davor eine eigene Layout-Berechnung.
+	 * Read further DOM positions (visible scenes, in the shared read phase before all frame calls): read one by one
+	 * in frame, every read after the preceding style writers forces a layout calculation of its own.
 	 */
 	read?(s: S): void;
 	resize?(s: S): void;
@@ -154,14 +154,14 @@ interface Registration<S extends SceneState = SceneState> {
 	host: HTMLElement;
 	inited: boolean;
 	farSince: number;
-	/** Einmal vor dem Eintritt unsichtbar gezeichnet (Aufbau der Puffer, Raster, Shader), bis die nächste Messung kommt. */
+	/** Drawn once invisibly before entry (building buffers, rasters, shaders) until the next measurement. */
 	warm: boolean;
 }
 
 const scenes = new Set<Registration>();
 const subs = new Set<FrameFn>();
-const readers = new Set<() => void>(); // siehe onRead
-const firstSubs = new Set<FrameFn>(); // vor den anderen Abonnenten und den Szenen (Lenis setzt hier die Scrollposition)
+const readers = new Set<() => void>(); // see onRead
+const firstSubs = new Set<FrameFn>(); // before the other subscribers and the scenes (Lenis sets the scroll position here)
 let raf = 0;
 let last = 0;
 let t0 = 0;
@@ -173,20 +173,20 @@ let visHook: (() => void) | null = null;
 let offMq: (() => void) | null = null;
 let offFonts: (() => void) | null = null;
 
-// Ruhephasen (Szenen ohne Eingabe und ohne Scrollbewegung): Bildrate auf 60 Hz begrenzt, bei reduzierter
-// Bewegung nach einer Sekunde ganz still, bis wieder etwas passiert.
+// Idle phases (scenes without input and without scrolling): frame rate capped at 60 Hz, with reduced
+// motion fully still after one second until something happens again.
 const IDLE_AFTER = 0.3;
 const IDLE_AFTER_REDUCED = 1;
-const MIN_FRAME_GAP = 0.0105; // unter 10,5 ms (Anzeigen über 95 Hz) wird im Stand jedes zweite Bild ausgelassen
-const RELEASE_AFTER = 2; // Sekunden außer Sicht, bis der Pufferspeicher einer Szene freigegeben wird
-const WARM_DISTANCE = 2.2; // Fensterhöhen vor dem Eintritt, ab denen eine Szene einmal unsichtbar vorgewärmt wird
-let warmSlotFree = true; // höchstens eine Szene je Bild wärmt vor (der Aufbau einer Szene kann 20 bis 40 ms kosten)
+const MIN_FRAME_GAP = 0.0105; // below 10.5 ms (displays above 95 Hz) every second frame is skipped while idle
+const RELEASE_AFTER = 2; // seconds out of view until the buffer memory of a scene is released
+const WARM_DISTANCE = 2.2; // window heights before entry from which a scene is warmed up once invisibly
+let warmSlotFree = true; // at most one scene warms up per frame (building a scene can cost 20 to 40 ms)
 const wake = () => {
 	loop.act = performance.now() / 1000;
 };
 wakeHook.fn = wake;
 
-/** Modus aus der Fenstergröße (gleiche Regel wie die Medienabfragen in landing.css). */
+/** Mode from the window size (same rule as the media queries in landing.css). */
 export function modeOf(W: number, H: number): { mode: Mode; short: boolean } {
 	const portrait = W / H <= 1 || W < 700;
 	return { mode: portrait ? 'hoch' : 'quer', short: !portrait && H < 500 };
@@ -207,7 +207,7 @@ function measure(r: Registration, W: number, H: number) {
 	s.mode = loop.mode;
 	s.dpr = dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2, W, H);
 	wake();
-	s.stale = true; // Backing neu gesetzt: Szenen, die im Stand nicht zeichnen, müssen einmal neu zeichnen
+	s.stale = true; // backing store was reset: scenes that do not draw while idle must redraw once
 	s.released = false;
 	r.warm = false;
 	const b: Box = def.box ? def.box(W, H, s.safeH, s.mode) : { bw: 1280, bh: 800 };
@@ -229,7 +229,7 @@ function frameScene(r: Registration, t: number, dt: number, rc: DOMRect) {
 		s.dpr !== dprFor(def.dprCap ?? 2, def.touchCap ?? def.dprCap ?? 2, s.W, s.H)
 	)
 		measure(r, s.el.clientWidth, s.el.clientHeight);
-	// Weit weg (mehr als eine Fensterhöhe): nach RELEASE_AFTER Sekunden Pufferspeicher freigeben, bei Annäherung neu messen
+	// Far away (more than one window height): release the buffer memory after RELEASE_AFTER seconds, measure again on approach
 	if (s.cv) {
 		const far = rc.bottom < -loop.vh || rc.top > 2 * loop.vh;
 		if (!far) {
@@ -243,14 +243,14 @@ function frameScene(r: Registration, t: number, dt: number, rc: DOMRect) {
 			}
 		}
 	}
-	// minVisible: Anteil der Fensterhöhe, ab dem eine große Fläche überhaupt gezeichnet wird (ein 50-px-Streifen
-	// einer 4-MP-Fläche kostet sonst das ganze Bild)
+	// minVisible: fraction of the window height from which a large area is drawn at all (a 50 px strip
+	// of a 4 MP area otherwise costs the whole frame)
 	const visiblePx = Math.min(rc.bottom, loop.vh) - Math.max(rc.top, 0);
 	s.visible =
 		!(rc.bottom < 0 || rc.top > loop.vh || rc.right < 0 || rc.left > loop.vw || rc.width < 2) &&
 		visiblePx >= (def.minVisible ?? 0) * loop.vh;
-	// Vorwärmen: kurz vor dem Eintritt unsichtbar aufbauen, damit der erste sichtbare Frame nicht den ganzen Aufbau
-	// trägt (Wortbild der Tiefe, Zeichenblatt und Raster der Sonne). Nicht in den ersten Sekunden.
+	// Warm-up: build invisibly shortly before entry so that the first visible frame does not carry the whole build
+	// (word image of the depth scene, drawing sheet and raster of the sun). Not in the first seconds.
 	if (
 		!s.visible &&
 		!r.warm &&
@@ -281,8 +281,8 @@ function initOnce(r: Registration) {
 	r.def.init?.(r.s);
 }
 
-// Auflösungsstufe nach Bildzeit: Liegt der Median zweier Fenster zu je 45 Bildern über 22 ms (unter 45 Bilder/s),
-// sinkt der Pixelfaktor aller Canvas um eine Stufe (dprFor). Erholt wird nicht, sonst pendelte die Schärfe.
+// Resolution step by frame time: if the median of two windows of 45 frames each is above 22 ms (below 45 frames/s),
+// the pixel factor of all canvases drops by one step (dprFor). It does not recover, otherwise the sharpness would oscillate.
 const QUALITY_STEPS = [1, 0.8, 0.65, 0.5];
 const qb: number[] = [];
 let qi = 0;
@@ -316,7 +316,7 @@ function tick() {
 		loop.act = now;
 	}
 	const idle = now - loop.act;
-	// Reduzierte Bewegung: im Stand nicht zeichnen (die ersten 2 s nach dem Start laufen immer)
+	// Reduced motion: do not draw while idle (the first 2 s after the start always run)
 	if (loop.reduced && idle > IDLE_AFTER_REDUCED && loop.n > 120) {
 		last = 0;
 		return;
@@ -347,7 +347,7 @@ function tick() {
 		try {
 			fn(loop.t, loop.dt, now, raw);
 		} catch (e) {
-			report('vorn', e);
+			report('first', e);
 		}
 		mark(`vorn:${fn.name || '?'}`);
 	}
@@ -355,13 +355,13 @@ function tick() {
 		try {
 			fn(loop.t, loop.dt, now, raw);
 		} catch (e) {
-			report('bühne', e);
+			report('stage', e);
 		}
 		mark(`sub:${fn.name || '?'}`);
 	}
 	warmSlotFree = true;
-	// Lagen aller Szenen gesammelt lesen, bevor eine Szene Stile schreibt: einzeln dazwischen gelesen erzwang
-	// jedes Lesen eine eigene Stilberechnung der Seite
+	// Read the positions of all scenes together before any scene writes styles: read one by one in between, every
+	// read forced a style calculation of its own for the page
 	const rects = new Map<Registration, DOMRect>();
 	for (const r of scenes) {
 		const rc = r.s.el.getBoundingClientRect();
@@ -374,7 +374,7 @@ function tick() {
 		try {
 			frameScene(r, loop.t, loop.dt, rc);
 		} catch (e) {
-			report(`szene ${r.def.name ?? ''}`, e);
+			report(`scene ${r.def.name ?? ''}`, e);
 		}
 		mark(r.def.name ?? '?');
 	}
@@ -383,7 +383,7 @@ function tick() {
 		if (sum > 6) spikes.push({ y: Math.round(sy), ms: Math.round(sum), teile: parts });
 	}
 }
-/** Messhaken: Bilder mit mehr als 6 ms Rechenzeit, aufgeteilt nach Szene (qa.spitzen = [] setzt ihn scharf). */
+/** Measurement hook: frames with more than 6 ms of compute time, split by scene (qa.spitzen = [] arms it). */
 interface Spike {
 	y: number;
 	ms: number;
@@ -417,12 +417,12 @@ function hook() {
 		window.addEventListener(ev, wake, { passive: true });
 }
 
-/** Alle Szenen neu messen (Modus- oder Pixelfaktor-Wechsel). */
+/** Measure all scenes again (mode or pixel factor change). */
 export function refresh() {
 	for (const r of scenes) measure(r, r.s.el.clientWidth, r.s.el.clientHeight);
 }
 
-/** Modus setzen und Szenen darüber informieren. */
+/** Set the mode and inform the scenes. */
 export function setMode(mode: Mode, short: boolean) {
 	if (loop.mode === mode && loop.short === short) return;
 	loop.mode = mode;
@@ -431,8 +431,8 @@ export function setMode(mode: Mode, short: boolean) {
 }
 
 /**
- * Bild-Abonnent (Intro-Bühne). fn(t, dt, now, raw). Gibt die Abmeldung zurück.
- * zuerst: läuft vor allen anderen Abonnenten und Szenen im selben Bild.
+ * Frame subscriber (intro stage). fn(t, dt, now, raw). Returns the unsubscribe function.
+ * first: runs before all other subscribers and scenes in the same frame.
  */
 export function onFrame(fn: FrameFn, first = false): () => void {
 	const set = first ? firstSubs : subs;
@@ -441,8 +441,8 @@ export function onFrame(fn: FrameFn, first = false): () => void {
 }
 
 /**
- * Leser: läuft je Bild in der gemeinsamen Lesephase (nach den Lagen der Szenen, vor ihren frame-Aufrufen). Für
- * DOM-Lesen außerhalb der Szenen, das sonst nach den Stil-Schreibern ein eigenes Layout erzwingt.
+ * Reader: runs every frame in the shared read phase (after the scene positions, before their frame calls). For
+ * DOM reads outside the scenes, which would otherwise force a layout of their own after the style writers.
  */
 export function onRead(fn: () => void): () => void {
 	readers.add(fn);
@@ -450,20 +450,20 @@ export function onRead(fn: () => void): () => void {
 }
 
 /**
- * Szene anmelden (PLAN-V2 4.3).
- *   el      Element der Szene (meist ein Canvas), seine CSS-Box ist die Szenenfläche
- *   host    Element für die Zeiger-Listener (Standard: Elternelement)
- *   box     (W, H, safeH, mode) -> { bw, bh, align?, max? }, Bezugsbox der Komposition
- *   dprCap  Deckel des Pixelfaktors (Standard 2), touchCap: Deckel auf Touch-Geräten
+ * Register a scene (PLAN-V2 4.3).
+ *   el      element of the scene (usually a canvas), its CSS box is the scene area
+ *   host    element for the pointer listeners (default: parent element)
+ *   box     (W, H, safeH, mode) -> { bw, bh, align?, max? }, reference box of the composition
+ *   dprCap  cap of the pixel factor (default 2), touchCap: cap on touch devices
  *   init, frame, resize, onDown, onMove, onUp
- * Gibt die Abmeldung zurück.
+ * Returns the unregister function.
  */
 export function register<S extends SceneState>(def: SceneDef<S>): () => void {
 	hook();
 	const el = def.el;
 	const host = def.host ?? el.parentElement ?? el;
 	const isCanvas = typeof HTMLCanvasElement !== 'undefined' && el instanceof HTMLCanvasElement;
-	// Der Zustand startet nur mit den Feldern von SceneState, eigene Felder von S setzt die Szene in init.
+	// The state starts with the fields of SceneState only; the scene sets its own fields of S in init.
 	const s = {
 		el,
 		host,
@@ -491,7 +491,7 @@ export function register<S extends SceneState>(def: SceneDef<S>): () => void {
 		scene() {
 			if (this.ctx) scene(this.ctx, this.dpr, this);
 		},
-		// Fester Schritt h mit Akkumulator, höchstens 4 Schritte je Bild.
+		// Fixed step h with an accumulator, at most 4 steps per frame.
 		step(dt, h, fn) {
 			this.acc = (this.acc || 0) + dt;
 			let n = 0;
@@ -543,7 +543,7 @@ export function register<S extends SceneState>(def: SceneDef<S>): () => void {
 	};
 }
 
-/** Schleife starten. Gibt die Abmeldung zurück. */
+/** Start the loop. Returns the stop function. */
 export function start(): () => void {
 	if (started) return stop;
 	started = true;
@@ -562,11 +562,11 @@ export function start(): () => void {
 	document.fonts?.addEventListener?.('loadingdone', onFonts);
 	offFonts = () => document.fonts?.removeEventListener?.('loadingdone', onFonts);
 	t0 = performance.now() / 1000;
-	loop.act = t0 + 2.5; // die ersten Sekunden (Aufbau des Zeichens) laufen mit voller Bildrate
+	loop.act = t0 + 2.5; // the first seconds (building the mark) run at full frame rate
 	last = 0;
 	loop.n = 0;
 	raf = requestAnimationFrame(tick);
-	// Im Hintergrund ganz anhalten (kein Wecken je Bild), beim Zurückkehren neu starten
+	// Stop completely in the background (no wake-up per frame), restart on return
 	visHook = () => {
 		cancelAnimationFrame(raf);
 		if (!document.hidden && started) {

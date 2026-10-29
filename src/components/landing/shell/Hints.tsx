@@ -4,9 +4,9 @@ import { useRef } from 'react';
 import { css } from '../core/dc';
 import { useDict } from '../dict';
 
-// Hinweise am unteren Rand: Sprunglink aus der Intro und das Wort SCROLLEN. Beim Überfahren des
-// Sprunglinks läuft die Zeichen-Verwürfelung des Entwurfs. Der Link steht auf einer kleinen Fläche
-// (landing.css .hinweis), damit er auf Himmel, Flut und Skulptur lesbar bleibt.
+// Hints at the bottom edge: skip link out of the intro and the word SCROLLEN. Hovering the
+// skip link runs the character scramble of the design. The link sits on a small area
+// (landing.css .hinweis) so it stays legible over sky, flood and sculpture.
 
 const CH = '@%#*+=-:';
 
@@ -36,7 +36,7 @@ export function Hints() {
 		run();
 	};
 	return (
-		// display:contents: nur Träger der Variablen --p und --e (intro/stage.ts), ohne eigenen Kasten
+		// display:contents: only carries the variables --p and --e (intro/stage.ts), no box of its own
 		<div data-hinweise="" style={css('display:contents')}>
 			<a
 				className="label hinweis"
@@ -48,7 +48,7 @@ export function Hints() {
 			>
 				{dict.hints.skipIntro}
 			</a>
-			{/* Fokusanker für Tastatur und Screenreader: springt zur App-Vorschau am Ende der Intro (sichtbar nur bei Fokus) */}
+			{/* Focus anchor for keyboard and screen reader: jumps to the app preview at the end of the intro (visible only on focus) */}
 			<a className="label fokus-anker" data-nur-intro="1" href="#app-demo">
 				{dict.hints.tryApp}
 			</a>

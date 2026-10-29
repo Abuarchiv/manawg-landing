@@ -1,12 +1,12 @@
-// Gemeinsame Typen der Installationsabläufe (iPhone, Android, Rechner).
+// Shared types of the install flows (iPhone, Android, desktop).
 
-/** Reiter: 0 iPhone, 1 Android, 2 Rechner. */
+/** Tab: 0 iPhone, 1 Android, 2 desktop. */
 export type TabIndex = 0 | 1 | 2;
 
-/** Elemente des Geräts nach ihrem data-k. Fehlende Einträge werden von put übergangen. */
+/** Device elements by their data-k. put skips missing entries. */
 export type Elements = Record<string, HTMLElement>;
 
-/** Ein Fingertipp (Handy) oder Klick (Rechner): Zeit, Ziel in Geräteeinheiten, g = Gruppe (gleicher Schritt). */
+/** A finger tap (phone) or click (desktop): time, target in device units, g = group (same step). */
 export interface Tap {
 	readonly t: number;
 	readonly x: number;
@@ -14,15 +14,15 @@ export interface Tap {
 	readonly g: number;
 }
 
-/** Ablaufplan eines Geräts. Der Zustand ist eine reine Funktion der Zeit. */
+/** Playback plan of a device. The state is a pure function of time. */
 export interface PlaybackPlan {
-	/** Länge der Schleife in Sekunden. */
+	/** Loop length in seconds. */
 	readonly loop: number;
-	/** Maßstab Gerät -> Tipp-Anzeige. */
+	/** Scale from device to tap indicator. */
 	readonly ks: number;
-	/** Beginn der Schritte (Ruhezustände, ein Tipp steht kurz bevor). */
+	/** Start of the steps (resting states, a tap is about to happen). */
 	readonly jumps: readonly number[];
-	/** Standbilder für reduzierte Bewegung: Ruhelage je Schritt. */
+	/** Still frames for reduced motion: resting position per step. */
 	readonly still: readonly number[];
 	readonly taps: readonly Tap[];
 	render(t: number, E: Elements): void;

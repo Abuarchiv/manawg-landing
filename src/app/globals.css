@@ -85,7 +85,7 @@ a:hover {
 	--bg-base: #0a0a0a;
 }
 @tailwind utilities;
-/* Themenseiten: kein Preflight, daher Box-Modell und Haarlinie hier festlegen */
+/* Topic pages: no preflight, so set the box model and the hairline here */
 .thema,
 .thema *,
 .thema *::before,
@@ -97,7 +97,7 @@ a:hover {
 	border-top-width: 1px;
 }
 
-/* Druck der Themenseiten: A4 quer, schwarz auf weiß, ohne Kopf, Fuß, Navigation und Buttons */
+/* Printing the topic pages: A4 landscape, black on white, without header, footer, navigation and buttons */
 @media print {
 	@page {
 		size: A4 landscape;
@@ -127,7 +127,7 @@ a:hover {
 	.thema :is(th, td) {
 		border-color: #000 !important;
 	}
-	/* Nach Klick auf „Drucken“ bleibt nur der erzeugte Plan stehen. */
+	/* After clicking "Print" only the generated plan remains. */
 	body.plan-drucken .thema *:not(.plan-druck, .plan-druck *, :has(.plan-druck)) {
 		display: none !important;
 	}

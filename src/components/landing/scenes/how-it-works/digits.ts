@@ -1,7 +1,7 @@
-// Die Ziffern 01 bis 03 von "So geht's": große Schrift als Raster aus Mono-Zeichen (Zelle 7 px, Glyph 8 px).
-// Die Zellen liegen in festen CSS-Pixeln. Der Zeiger stößt die
-// Zellen weg, Federn holen sie zurück. Unterwegs (Einlauf, Zeiger) wechseln die Zeichen einer Zelle im Takt von
-// 90 ms durch die Rampe, in Ruhe steht die Ziffer ruhig: heller Rand aus @, Körper aus gedämpften #.
+// The digits 01 to 03 of "How it works": large type as a grid of mono characters (cell 7 px, glyph 8 px).
+// The cells sit in fixed CSS pixels. The pointer pushes the
+// cells away, springs pull them back. While in motion (intro, pointer) the characters of a cell cycle through the ramp every
+// 90 ms; at rest the digit stays still: bright edge of @, body of muted #.
 
 import { type SceneState, loop, qa, register } from '../../core/loop';
 import { hsh } from '../../core/math';
@@ -9,11 +9,11 @@ import { hsh } from '../../core/math';
 const RAMP = '@%#*+=-:';
 qa.masse = { ...(qa.masse as Record<string, unknown> | undefined), zifferZelle: 7, zifferGlyph: 8 };
 
-/** Eine Rasterzelle der Ziffer: Ruhelage (x, y), Ton in der Rampe, Auslenkung (ox, oy) und Tempo (vx, vy). */
+/** One grid cell of the digit: rest position (x, y), tone in the ramp, displacement (ox, oy) and velocity (vx, vy). */
 interface Cell {
 	x: number;
 	y: number;
-	/** Zeichen in Ruhe: 0 am Rand (@, hell), 2 innen (#, gedämpft). */
+	/** Character at rest: 0 on the edge (@, bright), 2 inside (#, muted). */
 	tone: 0 | 2;
 	ox: number;
 	oy: number;
@@ -21,7 +21,7 @@ interface Cell {
 	vy: number;
 }
 
-/** Vorgerendertes Zeichenblatt: ein Streifen mit den Glyphen der Rampe, z = Kantenlänge einer Glyphe in Gerätepixeln. */
+/** Pre-rendered glyph sheet: a strip with the glyphs of the ramp, z = edge length of one glyph in device pixels. */
 interface Sheet {
 	cv: HTMLCanvasElement;
 	z: number;
@@ -29,10 +29,10 @@ interface Sheet {
 
 interface DigitState extends SceneState {
 	cells: Cell[];
-	/** Schlüssel des letzten Rasteraufbaus (Text, Schriftstand, Größe, Pixelfaktor, Zelle). */
+	/** Key of the last grid build (text, font state, size, pixel ratio, cell). */
 	key: string;
 	dirty: boolean;
-	/** Im letzten gezeichneten Bild waren Zellen in Bewegung. */
+	/** The last drawn frame had cells in motion. */
 	moving: boolean;
 	sheetKey: string;
 	sheet: Sheet | null;
@@ -40,33 +40,33 @@ interface DigitState extends SceneState {
 
 interface DigitOptions {
 	text: string;
-	/** Zelle in CSS-Pixeln. */
+	/** Cell in CSS pixels. */
 	cs?: number;
-	/** Glyph in CSS-Pixeln. */
+	/** Glyph in CSS pixels. */
 	gl?: number;
 }
 
-/** Eine Zelle des Rasters in Ruhe: Lage in CSS-px und Ton (0 Rand, 2 innen). */
+/** One grid cell of the digit at rest: position in CSS px and tone (0 edge, 2 inside). */
 export interface GridCell {
 	x: number;
 	y: number;
 	tone: 0 | 2;
 }
 
-/** Zellen einer Ziffer auf der Fläche W x H (CSS-px) mit Zelle cs. Rein, auch für den Übergang (scenes/zerfall). */
+/** Cells of one digit on the area W x H (CSS px) with cell size cs. Pure, also used for the transition (scenes/decay). */
 export function buildGrid(txt: string, W0: number, H0: number, cs: number): GridCell[] {
 	const W = Math.max(1, Math.round(W0));
 	const H = Math.max(1, Math.round(H0));
-	const fs = H * 1.28; // Ziffernhöhe (0,73 em) füllt rund 94 % der Fläche
+	const fs = H * 1.28; // digit height (0.73 em) fills about 94 % of the area
 	const cols = Math.ceil(W / cs);
 	const rows = Math.ceil(H / cs);
 	const oc = document.createElement('canvas');
 	oc.width = cols;
 	oc.height = rows;
-	const o = oc.getContext('2d', { willReadFrequently: true }); // getImageData ohne Rücklesen von der Grafikkarte
+	const o = oc.getContext('2d', { willReadFrequently: true }); // getImageData without reading back from the GPU
 	if (!o) return [];
 	o.fillStyle = '#000';
-	// Die Form kommt aus Inter Tight (ohne den Punkt in der Null der Mono-Schrift), gefüllt wird mit Mono-Zeichen
+	// The shape comes from Inter Tight (without the dot in the zero of the mono font), filled with mono characters
 	o.font = `600 ${fs / cs}px "Inter Tight", sans-serif`;
 	o.textBaseline = 'alphabetic';
 	txt.split('|').forEach((ln, i) => o.fillText(ln, 0, (H * 0.97 + i * fs * 0.9) / cs));
@@ -90,11 +90,11 @@ export function buildGrid(txt: string, W0: number, H0: number, cs: number): Grid
 	return out;
 }
 
-/** Zellgröße und Glyphe je Modus (hoch etwas feiner). */
+/** Cell size and glyph per mode (portrait slightly finer). */
 export const digitMetrics = (portrait: boolean): { cs: number; gl: number } =>
 	portrait ? { cs: 6, gl: 7 } : { cs: 7, gl: 8 };
 
-/** Solange der Übergang aus dem Handy läuft, zeichnet er die Ziffern (scenes/zerfall), die Ziffern selbst ruhen. */
+/** While the transition out of the phone runs, it draws the digits (scenes/decay); the digits themselves rest. */
 export const handover = { covered: false };
 
 function build(s: DigitState, txt: string, cs: number) {
@@ -111,7 +111,7 @@ function build(s: DigitState, txt: string, cs: number) {
 	});
 }
 
-// Zeichenblatt: die acht Glyphen einmal vorgerendert, je Pixelfaktor und Schriftstand
+// Glyph sheet: the eight glyphs pre-rendered once per pixel ratio and font state
 function buildSheet(s: DigitState, gl: number): Sheet {
 	const key = `${s.dpr}|${loop.fv}|${gl}`;
 	if (s.sheet && s.sheetKey === key) return s.sheet;
@@ -132,7 +132,7 @@ function buildSheet(s: DigitState, gl: number): Sheet {
 	return s.sheet;
 }
 
-/** Meldet eine Ziffer an. Gibt die Abmeldung zurück. */
+/** Registers a digit. Returns the unregister function. */
 export function registerDigit(
 	cv: HTMLCanvasElement,
 	{ text, cs: cs0 = 7, gl: gl0 = 8 }: DigitOptions,
@@ -152,7 +152,7 @@ export function registerDigit(
 			s.sheet = null;
 		},
 		frame(s, _t, dt) {
-			// Hochformat: etwas feineres Raster (Zelle 6, Glyph 7), die Ziffer bleibt eine Form
+			// Portrait: slightly finer grid (cell 6, glyph 7), the digit stays one shape
 			const cs = s.mode === 'hoch' ? digitMetrics(true).cs : cs0;
 			const gl = s.mode === 'hoch' ? digitMetrics(true).gl : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
@@ -161,7 +161,7 @@ export function registerDigit(
 				build(s, text, cs);
 				s.dirty = true;
 			}
-			// Der Übergang zeichnet die Ziffer: hier leer lassen und in Ruhelage halten, damit sie beim Übergeben steht
+			// The transition draws the digit: leave empty here and hold at rest so it stands when handed over
 			if (handover.covered) {
 				for (const c of s.cells) c.ox = c.oy = c.vx = c.vy = 0;
 				if (!s.dirty) s.ctx?.clearRect(0, 0, s.cv?.width ?? 0, s.cv?.height ?? 0);
@@ -170,7 +170,7 @@ export function registerDigit(
 			}
 			const R = 110;
 			let moving = false;
-			// Federn im festen 60-Hz-Schritt
+			// Springs in a fixed 60 Hz step
 			s.step(dt, 1 / 60, () => {
 				for (const c of s.cells) {
 					if (s.m.in) {
@@ -194,12 +194,12 @@ export function registerDigit(
 						moving = true;
 				}
 			});
-			// Backing wurde neu gesetzt (Pufferspeicher nach Abwesenheit freigegeben, Größenänderung): neu zeichnen
+			// Backing store was reset (buffer released after absence, resize): redraw
 			if (s.stale) {
 				s.stale = false;
 				s.dirty = true;
 			}
-			// Ruhende Ziffer ohne Zeiger: nichts neu zeichnen
+			// Resting digit without pointer: nothing to redraw
 			if (!(s.dirty || moving || s.m.in || s.moving)) return;
 			s.moving = moving;
 			s.dirty = false;
@@ -214,10 +214,10 @@ export function registerDigit(
 			for (const c of s.cells) {
 				const dx = Math.round((c.x + c.ox + cs / 2) * dpr - z / 2);
 				const dy = Math.round((c.y + c.oy + cs / 2) * dpr - z / 2);
-				// Unterwegs (Entwurf: Abstand über 3 px oder Tempo über 0,5): Zeichen wechselt alle 90 ms, sonst fest
+				// In motion (draft: distance over 3 px or speed over 0.5): character changes every 90 ms, otherwise fixed
 				const inMotion = Math.abs(c.ox) + Math.abs(c.oy) > 3 || Math.hypot(c.vx, c.vy) > 0.5;
 				const tone = inMotion ? Math.floor(hsh(c.x + tq, c.y) * RAMP.length) % RAMP.length : c.tone;
-				// Körper der Ziffer gedämpft, Rand hell: so liest sich die Form sofort
+				// Body of the digit muted, edge bright: the shape reads at once
 				ctx.globalAlpha = inMotion || c.tone === 0 ? 1 : 0.42;
 				ctx.drawImage(sheet, z * tone, 0, z, z, dx, dy, z, z);
 			}

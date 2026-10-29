@@ -16,11 +16,11 @@
 	line-height: 0.92;
 	letter-spacing: -0.05em;
 	overflow-wrap: break-word;
-	/* weicher Schatten: der Titel bleibt auch über der hellen Schneeflanke lesbar */
+	/* soft shadow: the title stays legible over the bright snow flank */
 	text-shadow: 0 2px 28px rgba(10, 10, 10, 0.8), 0 1px 3px rgba(10, 10, 10, 0.4);
 }
 
-/* Hoch: über dem Sprunglink, größer, damit die Zeile die Breite füllt */
+/* Portrait: above the jump link, larger so the line fills the width */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
 	.title {
 		bottom: max(var(--sp-64), calc(env(safe-area-inset-bottom, 0px) + 84px));
@@ -30,7 +30,7 @@
 	}
 }
 
-/* Unterzeile: sagt in einem Satz, was die App tut. Blendet mit dem Titel aus (Elternelement). */
+/* Subline: says in one sentence what the app does. Fades out with the title (parent element). */
 .sub {
 	margin: 6px 0 0;
 	text-wrap: balance;

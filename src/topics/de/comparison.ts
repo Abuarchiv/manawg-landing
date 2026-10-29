@@ -1,10 +1,10 @@
 import type { Topic } from '../types.ts';
 
-/** Anbieterhinweis für Vergleichsseiten: keine unabhängige Rangliste; Belege stehen in den verlinkten Quellen, Unverifiziertes ist als solches gekennzeichnet. Ohne Stichtag, die Seite zeigt t.stand. */
+/** Provider notice for comparison pages: not an independent ranking; evidence is in the linked sources, unverified claims are marked as such. Without a cut-off date, the page shows t.updated. */
 export const COMPARISON_NOTICE =
 	'Dieser Vergleich wurde von ManaWG, dem Anbieter der hier vorgestellten WG-App, erstellt und ist keine unabhängige Rangliste. Bestätigte Aussagen zu anderen Anbietern verweisen auf die verlinkten Quellen; nicht verifizierte Angaben sind als solche gekennzeichnet. Prüft den aktuellen Stand bei den Anbietern selbst.';
 
-/** Zeilen und ManaWG-Spalte der Vergleichstabellen; Zellen zu ManaWG nur aus der App belegt. */
+/** Rows and ManaWG column of the comparison tables; ManaWG cells are only backed by the app. */
 export const COMPARISON_ROWS = [
 	'Ausgaben teilen',
 	'Putzplan',
@@ -23,10 +23,10 @@ export const MANAWG_CELLS = [
 	'nur Euro',
 	'kostenlos, ohne Werbung',
 ];
-/** Alles, was die Quellen der Seite nicht belegen, steht so in der Tabelle. */
+/** Anything the page's sources do not support reads like this in the table. */
 export const NOT_CHECKED = 'nicht geprüft';
 
-/** Tabelle ManaWG gegen einen Anbieter; `zellen` folgt VERGLEICH_ZEILEN, Fehlendes wird „nicht geprüft“. */
+/** Table of ManaWG against one provider; `cells` follows COMPARISON_ROWS, missing cells read "not checked". */
 export function comparisonTable(
 	provider: string,
 	cells: string[],

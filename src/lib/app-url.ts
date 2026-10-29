@@ -28,6 +28,6 @@ export function getAppUrl(): string {
 		return withHttps(rawVercelUrl).replace(/\/$/, '');
 	}
 
-	// Ein Produktions-Build ohne Variablen (lokal, vercel build --prebuilt) bäckt sonst localhost in Canonical und OG ein
+	// A production build without variables (local, vercel build --prebuilt) would otherwise bake localhost into canonical and OG
 	return process.env.NODE_ENV === 'production' ? 'https://manawg.com' : 'http://localhost:3100';
 }

@@ -1,15 +1,15 @@
-// Die Hände der Ende-Szene: eine Hand hält das Handy, die andere wartet unten außerhalb des Bildschirms und
-// fährt nur zum Tippen über das Ziel. Beide kommen aus gerenderten Daten-Pässen (public/hand/, landing-konzept/design/HAND.md):
-// Leuchtdichte, Alpha, Normale und Tiefe. Gezeichnet wird als feiner Halbton (Zellraster 1,25 Bühnen-px,
-// Bayer 4 x 4), die Silhouette per Pixel-Alpha geglättet, im WebGL2-Fragment-Shader. Ohne WebGL2 wird der Halbton
-// einmal je Größenänderung auf 2D vorberechnet (ohne Zeigerlicht, die Zeigehand als Sprite).
+// The hands of the end scene: one hand holds the phone, the other waits below the screen outside it and
+// moves over the target only to tap. Both come from rendered data passes (public/hand/, landing-konzept/design/HAND.md):
+// luminance, alpha, normal and depth. They are drawn as a fine halftone (cell grid 1.25 stage px,
+// Bayer 4 x 4) with the silhouette smoothed by pixel alpha, in the WebGL2 fragment shader. Without WebGL2 the halftone
+// is precomputed in 2D once per resize (without pointer light, the pointing hand as a sprite).
 //
-// back liegt unter dem Handy, front darüber (normaler Blend, über dem Glas dunkle Punkte). Vorn und hinten
-// folgt aus der Tiefe z und der Handy-Silhouette: vorne sind Daumen und Fingerkuppen, die über den Rand
-// auf den Bildschirm ragen, sowie die Zeigehand.
+// back sits under the phone, front above it (normal blend, dark dots over the glass). Front versus back
+// follows from the depth z and the phone silhouette: in front are the thumb and fingertips that extend over the edge
+// onto the screen, as well as the pointing hand.
 //
-// Aufbau: atlas.ts (Pässe laden), shader.ts (GLSL), gl.ts (WebGL2-Weg), cpu.ts (2D-Fallback), zeige.ts
-// (Zeigehand-Steuerung, Vorführung, Kontakt), typen.ts, konstanten.ts. Hier: die öffentliche Schnittstelle.
+// Structure: atlas.ts (load passes), shader.ts (GLSL), gl.ts (WebGL2 path), cpu.ts (2D fallback), pointing.ts
+// (pointing-hand control, demo, contact), types.ts, constants.ts. Here: the public interface.
 
 import { type Fit, dprFor, sizeBacking } from '../../../core/canvas';
 import { qa } from '../../../core/loop';
@@ -22,8 +22,8 @@ import type { HandContext, HandState } from './types';
 export { load } from './atlas';
 
 /**
- * Zeichenart einmal festlegen (WebGL2 mit beiden Ebenen oder 2D-Fallback). Mit schritt höchstens ein teurer
- * Teil je Aufruf (Eignungsprüfung, erste Ebene, zweite Ebene), damit das Vorwärmen kein Bild sprengt.
+ * Choose the draw mode once (WebGL2 with both layers or 2D fallback). With step at most one expensive
+ * part per call (suitability check, first layer, second layer) so that warming up does not blow a frame.
  */
 function chooseMode(
 	st: HandState,
@@ -39,7 +39,7 @@ function chooseMode(
 				? (glProbeEnd(st.probe, true) ?? false)
 				: glUsable(hold.meta, point.meta);
 		} else if (!st.probe) {
-			// Teil 1 in diesem Bild, Teil 2 in einem späteren (der Treiber übersetzt dazwischen)
+			// Part 1 in this frame, part 2 in a later one (the driver compiles in between)
 			const p = glProbeStart(hold.meta, point.meta);
 			if (p) st.probe = p;
 			else st.usable = false;
@@ -83,8 +83,8 @@ function clearAll(st: HandState): void {
 }
 
 /**
- * Zeichnet beide Hände. back liegt unter dem Handy, front darüber.
- * c: Kontext der Bühne, cam: { f, ox, oy } aus kamera().
+ * Draws both hands. back sits under the phone, front above it.
+ * c: stage context, cam: { f, ox, oy } from camera().
  */
 export function draw(
 	back: HTMLCanvasElement,
@@ -115,11 +115,11 @@ function drawIn(back: HTMLCanvasElement, front: HTMLCanvasElement, c: HandContex
 		});
 	}
 	const host = st.host;
-	// Vorwärmen: schon vor dem Eintritt Shader linken und Texturen hochladen (ein Schritt je Bild), damit der
-	// erste sichtbare Frame der Hand keinen Ruckler auslöst
+	// Warm-up: link shaders and upload textures before entering (one step per frame) so the
+	// first visible frame of the hand does not cause a stutter
 	if (isReady() && !(c.endA > 0.01) && c.P > 0.5 && !st.warm) {
 		chooseMode(st, back, front, true);
-		// Ein Schritt je Bild und nur bis die Ebenen bereit sind
+		// One step per frame and only until the layers are ready
 		if (st.layers)
 			st.warm = st.layers.map(readyStep).every(Boolean) || st.layers.some((L) => L.dead);
 	}
@@ -138,9 +138,9 @@ function drawIn(back: HTMLCanvasElement, front: HTMLCanvasElement, c: HandContex
 	chooseMode(st, back, front);
 	for (const cv of [back, front]) sizeBacking(cv, W, H, dpr);
 
-	// Atmen: Handy und Hände bewegen sich gemeinsam um ±1,5 px und ±0,4° (Periode 4 bis 6 s), nur Transform
+	// Breathing: phone and hands move together by ±1.5 px and ±0.4° (period 4 to 6 s), transform only
 	const br = c.reduced || st.mode !== 'gl' ? { x: 0, y: 0, r: 0 } : breath(t);
-	// Nachhängen: beim Scrollen bleiben Handy und Hände bis 6 px hinter der Seite zurück (Gewicht in der Hand)
+	// Lag: while scrolling, phone and hands trail up to 6 px behind the page (weight in the hand)
 	if (!c.reduced) br.y += Math.max(-6, Math.min(6, c.sv * 0.005));
 	if (!st.space)
 		st.space = back.parentElement?.querySelector<HTMLElement>('[data-ende-space]') ?? null;
@@ -156,7 +156,7 @@ function drawIn(back: HTMLCanvasElement, front: HTMLCanvasElement, c: HandContex
 		for (const L of st.layers) glFrame(L, S, cam, W, H);
 	} else {
 		cpuFrame(st, S, cam, W, H, dpr);
-		// 2D-Fallback: kein Staub, die Hände blenden beim Wegscrollen nur aus
+		// 2D fallback: no dust, the hands only fade out when scrolling away
 		const o = String(1 - c.decay);
 		back.style.opacity = o;
 		front.style.opacity = o;

@@ -9,14 +9,14 @@ export const dynamic = 'force-static';
 
 const cell = (value: string) => value.replace(/\|/g, '\\|');
 
-// Tabelle aus den Themendaten als Markdown, mit Titel und Fußnote.
+// A table from the topic data as Markdown, with its title and footnote.
 function markdownTable({ title, header, rows, note }: NonNullable<Topic['tables']>[number]) {
 	const row = (fields: string[]) => `| ${fields.map(cell).join(' | ')} |`;
 	const table = [row(header), row(header.map(() => '---')), ...rows.map(row)].join('\n');
 	return `### ${title}\n\n${table}${note ? `\n\n${note}` : ''}`;
 }
 
-// Alle Themen- und Ratgeberseiten als ein Markdown-Text, damit KI-Systeme den Inhalt ohne Crawl lesen können.
+// All German topic and guide pages as one Markdown text, so AI systems can read the content without crawling.
 export function GET() {
 	const base = getAppUrl();
 	const pages = Object.entries(TOPICS_DE).map(([slug, t]) => {

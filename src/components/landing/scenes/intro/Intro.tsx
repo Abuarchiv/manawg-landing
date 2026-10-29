@@ -9,9 +9,9 @@ import { Rooms } from './Rooms';
 import { createStage } from './stage';
 import { INTRO_SCREENS, unwarp } from './timeline';
 
-// Intro: eine Sticky-Bühne in voller Fenstergröße (100lvh) über (1 + INTRO_SCREENS) Bildschirmhöhen.
-// Ebenen von unten nach oben: Berg und Zeichen (Hero), Wohnung, sicherer Kasten mit Titel und
-// Raumkarten (100svh), Ende-Ebene. Die Ende-Ebene scrollt mit der Bühne natürlich weg.
+// Intro: a sticky stage at full window size (100lvh) over (1 + INTRO_SCREENS) screen heights.
+// Layers from bottom to top: mountain and mark (hero), flat, safe box with title and
+// room cards (100svh), end layer. The end layer scrolls away naturally with the stage.
 
 const FILL = 'position:absolute;inset:0;width:100%;height:100%;display:block';
 
@@ -39,7 +39,7 @@ export function Intro() {
 			aria-label={aria.intro}
 			style={css(`position:relative;z-index:1;height:calc(${1 + INTRO_SCREENS} * 100lvh)`)}
 		>
-			{/* Sprungziel der App-Vorschau (Fokusanker): Beginn der Ende-Ebene, P 0,985 */}
+			{/* Jump target of the app preview (focus anchor): start of the end layer, P 0.985 */}
 			<div
 				id="app-demo"
 				role="region"

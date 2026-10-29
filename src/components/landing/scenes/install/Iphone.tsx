@@ -1,5 +1,5 @@
-// iPhone-Bildschirm (iOS 27, Safari im Layout „Kompakt“) als DOM nach INSTALL-FLOWS 2. Bühne 390 x 844 pt.
-// Alle bewegten Teile tragen data-k, ablauf.js setzt ihre Stile je Bild. Keine Bildschirmfotos von Apple.
+// iPhone screen (iOS 27, Safari in the "Compact" layout) as DOM per INSTALL-FLOWS 2. Stage 390 x 844 pt.
+// All moving parts carry data-k, playback.ts sets their styles per frame. No screenshots from Apple.
 
 import {
 	ArrowBigUp,
@@ -34,7 +34,7 @@ import s from './Iphone.module.css';
 
 const SF = '-apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif';
 const ICON = '/apple-touch-icon.png';
-// Bilder laden erst, wenn der Abschnitt nahe kommt (Variablen setzt Installieren.tsx)
+// Images load only when the section approaches (Install.tsx sets the variables)
 const PAGE = 'var(--b-ios)';
 const APP_PAGE = 'var(--b-app)';
 
@@ -51,7 +51,7 @@ const glass = (y0: number, y1: number, top: number, src = PAGE): CSSProperties =
 		backgroundRepeat: 'no-repeat',
 	});
 
-/** Statusleiste: Dunkelmodus, weiße Schrift über Seite, Blättern und Dialog. */
+/** Status bar: dark mode, white text over page, sheets and dialog. */
 function Status() {
 	const c = '#fff';
 	return (
@@ -101,7 +101,7 @@ export function Iphone() {
 	const t = useDict().install.ios;
 	return (
 		<div className={s.ios} data-k="ios" style={{ fontFamily: SF }}>
-			{/* Home-Bildschirm hinter allem */}
+			{/* Home screen behind everything */}
 			<div className={s.ios_home} data-k="ios-home">
 				<div className={s.ios_wall} />
 				<div className={s.ios_grid}>
@@ -253,7 +253,7 @@ export function Iphone() {
 				</div>
 			</div>
 
-			{/* Seite mit Safari-Leisten und allem, was darüber liegt */}
+			{/* Page with Safari bars and everything above it */}
 			<div className={s.ios_stack} data-k="ios-stack">
 				<div style={abs({ inset: 0, background: '#0a0a0a' })} />
 				<div style={glass(0, 490, 54)} />
@@ -280,7 +280,7 @@ export function Iphone() {
 				</div>
 				<div className={s.ios_scrim} data-k="ios-scrim1" />
 
-				{/* Seitenmenü */}
+				{/* Side menu */}
 				<div className={s.ios_menu} data-k="ios-menu">
 					<div className={s.ios_menu_in} data-k="ios-menu-in">
 						<Row ic={<Share size={22} strokeWidth={1.7} />} t={t.menuShare} tag="teilen" />
@@ -296,7 +296,7 @@ export function Iphone() {
 					</div>
 				</div>
 
-				{/* Share-Sheet (kompakt, dann erweitert) */}
+				{/* Share sheet (compact, then expanded) */}
 				<div className={s.ios_share} data-k="ios-share">
 					<div className={s.ios_head}>
 						<span className={s.ios_tile}>
@@ -436,7 +436,7 @@ export function Iphone() {
 
 				<div className={s.ios_scrim} data-k="ios-scrim2" />
 
-				{/* Dialog „Zum Home-Bildschirm“ */}
+				{/* "Add to Home Screen" dialog */}
 				<div className={s.ios_dlg} data-k="ios-dlg">
 					<div className={s.ios_dlg_head}>
 						<span className={s.ios_x2}>
@@ -478,7 +478,7 @@ export function Iphone() {
 					</div>
 				</div>
 
-				{/* Tastatur (QWERTZ im Deutschen, QWERTY im Englischen) */}
+				{/* Keyboard (QWERTZ in German, QWERTY in English) */}
 				<div className={s.ios_kbd} data-k="ios-kbd">
 					<div className={s.ios_suggestion}>
 						<span>{t.keySuggestion}</span>
@@ -534,7 +534,7 @@ export function Iphone() {
 				<div className={s.ios_indicator} />
 			</div>
 
-			{/* Start der installierten App */}
+			{/* Launch of the installed app */}
 			<div className={s.ios_launch} data-k="ios-launch">
 				<img
 					loading="lazy"

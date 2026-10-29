@@ -1,10 +1,10 @@
-// Hero der Intro-Bühne: Berg, Zeichen, Organ und Tauchgang als WebGL2-Shader mit Halbton-Ausgabe.
-// Ohne WebGL2 zeichnet der Halbton-Fallback (tone) das Zeichen im 2D-Canvas.
+// Hero of the intro stage: mountain, mark, organ and dive as WebGL2 shaders with halftone output.
+// Without WebGL2 the halftone fallback (tone) draws the mark on the 2D canvas.
 //
-// Aufbau wie im Entwurf: Szenen-Pass in kleiner Auflösung in eine Textur, danach der Halbton-Pass
-// in voller Backing-Auflösung. Neu gegenüber der Portierung: Texturgröße und Szenenpuffer folgen
-// der CSS-Größe des Canvas (nicht mehr fest 1280 x 800), im Hochformat wird der Bildausschnitt
-// gerahmt (uZ), die Ausgabe läuft über einen Offscreen-Canvas in das sichtbare 2D-Canvas.
+// Structure as in the design: scene pass at low resolution into a texture, then the halftone pass
+// at full backing resolution. Texture size and scene buffer follow the CSS size of the canvas
+// (not a fixed 1280 x 800), in portrait the image section is framed (uZ), and the output goes
+// through an offscreen canvas into the visible 2D canvas.
 
 import { glSoftware, glVisible } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
@@ -42,30 +42,30 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
 uniform sampler2D uImg, uMsk; uniform float uFoto, uAb;
-// Berg: Kupferstich (Codex, Technik wie der Himmel des Finales) als Kamerafahrt. Bildausschnitt deckend, im Hochformat enger um den
-// Gipfel; der Blick nach oben (uLook) schiebt den Ausschnitt bis in den dunklen Himmel. Wolken ziehen leicht, der
-// Zeiger ist Licht auf dem Schnee, die Marke steht als Sonne im Himmel.
+// Mountain: copper engraving (Codex, technique like the sky of the finale) as a camera move. Image section covers, tighter around the
+// summit in portrait; looking up (uLook) shifts the section into the dark sky. Clouds drift slightly, the
+// pointer is light on the snow, the mark stands as the sun in the sky.
 const float IMGA = 2560. / 3200.;
 vec2 fotoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
   float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
   float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
   return c + vec2((s.x - .5) * wN, (.5 - s.y) * hN) / z; }
 float fotoBerg(vec2 uv){
-  vec2 iu = fotoUV(gl_FragCoord.xy); iu.y = 1. - iu.y; float msk = texture(uMsk, iu).r; float himmel = 1. - texture(uMsk, iu, 2.5).r; // Bild gekippt hochgeladen
+  vec2 iu = fotoUV(gl_FragCoord.xy); iu.y = 1. - iu.y; float msk = texture(uMsk, iu).r; float himmel = 1. - texture(uMsk, iu, 2.5).r; // image uploaded flipped
   vec2 wv = (vec2(nz(iu * vec2(6., 14.) + vec2(T * .05, 0.)), nz(iu * vec2(6., 14.) + vec2(3.7, T * .03))) - .5) * .006 * himmel;
   float v = texture(uImg, iu + wv).r;
-  // Tonkurve wie Schwarzweiß-Abzug: tiefes Schwarz im Fels, Schnee bleibt hell; unten dunkler Grund für die Schrift
+  // Tone curve like a black-and-white print: deep black in the rock, snow stays bright; dark ground at the bottom for the text
   v = smoothstep(.04, .97, pow(v, 1.18)); vec2 sv = gl_FragCoord.xy / uR;
-  // Beim Öffnen zeichnet sich der Stich nach Helligkeit: erst die hellen Striche, dann die feinen
-  // Rückzug (uAb): die Schwelle läuft zurück, erst gehen die dunklen, zuletzt die hellen Striche
+  // On opening, the engraving draws itself by brightness: first the bright strokes, then the fine ones
+  // Retreat (uAb): the threshold runs back, the dark strokes go first, the bright ones last
   float th = 1.05 - uFoto * 1.1 + uAb * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
   v *= mix(1., .5, smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook)));
-  // Zeiger als Licht: der Schnee unter ihm hellt weich auf, Fels bleibt dunkel
+  // Pointer as light: the snow beneath it brightens softly, rock stays dark
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   float lm = exp(-length(uv - uM * vec2(.9, .5)) * 3.2); v += smoothstep(.45, .85, v) * msk * lm * .12;
   float d = sunD(uv, sp, sc); float sun = (1. - msk) * smoothstep(.002, -.002, d); v = mix(v, .9, sun);
   v += (1. - msk) * exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .07 * (1. + uLook * 3.);
-  return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.); } // ohne Körnung, sobald Linien den Ton tragen: sie würden flimmern
+  return clamp(v + (hash(gl_FragCoord.xy + fract(T) * 61.) - .5) * .025 * (1. - smoothstep(0., .12, uLook)), 0., 1.); } // no grain once lines carry the tone: they would flicker
 float mountain(vec2 uv){
   if(uFoto > .001) return fotoBerg(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
@@ -79,9 +79,9 @@ float alb = mix(rockA(p) * .5, .95, sn); float amb = .5 + .5 * n.y; v = alb * (d
   if(uSt < .5 && uLook < .7){ float ff = 1. - uLook / .7; for(int L2 = 0; L2 < 2; L2++){ float fl = float(L2); float sx = uv.x * (10. + fl * 6.) + T * (.05 + fl * .08) + fl * 3.7; float id = floor(sx); float fx = fract(sx) - .5; float hgt = (.1 + .12 * hash(vec2(id, fl))) * (1. + fl * .5); float base = -.36 - fl * .08; float tri = base + hgt - abs(fx) * hgt * 2.6; if(uv.y < tri){ float br = step(.5, fract((uv.y - base) * 60. + abs(fx) * 8.)); v = mix(v, .1 + .22 * br, ff); } } }
   if(abs(uSt - 4.) < .5){ for(int L3 = 0; L3 < 2; L3++){ float fl = float(L3); vec2 q = uv * vec2(1.6, 2.6) + vec2(T * (.02 + fl * .02) + fl * 4., fl * .7); float c = fbm(q) + fbm(q * 2.3) * .35; float band = smoothstep(.16, .02, abs(uv.y - (-.02 - fl * .2))); float m = smoothstep(.6, .68, c * band + .1); float fp = sin(fbm(q * 5. + c * 2.) * 90.); float tone = .82 * (.55 + .45 * step(0., fp)) * (.6 + .4 * smoothstep(.6, .9, c)); v = mix(v, tone, m * (1. - uLook)); } }
   return v; }
-// Organ: weiches Gewebe statt glatter Kugeln. Feine Falten wandern über die Haut (drei Sinus-Felder), der Zeiger
-// drückt eine Delle; Licht mit Durchschimmern (wrap), Glanzpunkt, Höhlen-Schatten und Poren, die der Halbton als
-// wechselnde Punktgrößen zeigt.
+// Organ: soft tissue instead of smooth spheres. Fine folds travel across the skin (three sine fields), the pointer
+// presses a dent; light with translucency (wrap), specular highlight, cavity shading and pores, which the halftone shows as
+// varying dot sizes.
 float falte(vec3 p){ return sin(p.x * 9. + T * .7 + sin(p.y * 5. - T * .4) * 1.6) * sin(p.y * 8. - T * .5 + sin(p.z * 6.) * 1.4) * sin(p.z * 7. + p.x * 3. + T * .3); }
 float omap(vec3 p){ float d = 1e5; for(int i = 0; i < 8; i++) d = smin(d, length(p - uO[i].xyz) - uO[i].w, uK);
   d += falte(p * 2.6) * .016 + exp(-dot(p.xy - uM * 1.6, p.xy - uM * 1.6) * 6.) * .03; return max(d, -(length(p.xy - uH.xy) - uH.z)); }
@@ -93,12 +93,12 @@ if(d < .0015){ vec3 n = onrm(p); vec3 l = normalize(vec3(uM.x * 2.4 - .6, uM.y *
   float ao = clamp(omap(p + n * .06) / .06, 0., 1.) * .5 + clamp(omap(p + n * .22) / .22, 0., 1.) * .5;
   float rim = pow(1. - max(dot(n, -rd), 0.), 3.); float sp = pow(max(dot(reflect(-l, n), -rd), 0.), 36.);
   float por = .78 + .22 * nz(p.xy * 26. + p.z * 9.);
-  float hinten = pow(max(dot(n, normalize(vec3(-l.x, -l.y, -.4))), 0.), 2.) * .25; // Gegenlicht am Rand
+  float hinten = pow(max(dot(n, normalize(vec3(-l.x, -l.y, -.4))), 0.), 2.) * .25; // backlight at the edge
   return clamp(df * .85 * por * (.3 + .7 * ao) + .04 + rim * .2 + hinten + sp * .9, 0., 1.); }
 t += d * .82; if(t > 40.) break; }
   return exp(-md * 7.) * .45 * step(.88, hash(floor(gl_FragCoord.xy) + 3.1)); }
 void main(){ vec2 uv = UV(); float v = 0.; if(uMix < .999) v = mountain(uv); if(uMix > .001) v = mix(v, organ(uv), uMix); o = vec4(v, v, v, 1.); }`;
-// Halbton-Zelle: im Hochformat feiner (nach der Breite), sonst trägt das Organ am Handy nur zehn Punkte.
+// Halftone cell: finer in portrait (by width), otherwise the organ carries only ten dots on a phone.
 const POST = `#version 300 es
 precision highp float; out vec4 o; uniform sampler2D uT; uniform vec2 uR, uS; uniform float uD, uL, uMx, uSt; uniform vec4 uHo[4]; uniform float uPad;
 void main(){ vec2 fc = gl_FragCoord.xy; float vr = texture(uT, fc / uR * uS).r;
@@ -111,7 +111,7 @@ const B = new Float32Array(32);
 const O = new Float32Array(32);
 const HO = new Float32Array(16);
 
-/** Gelinktes Shader-Programm mit den Orten seiner Uniforms. */
+/** Linked shader program with the locations of its uniforms. */
 interface Program<K extends string> {
 	pr: WebGLProgram;
 	U: Record<K, WebGLUniformLocation | null>;
@@ -136,7 +136,7 @@ type SceneU =
 	| 'uAb';
 type PostU = 'uT' | 'uR' | 'uS' | 'uD' | 'uL' | 'uMx' | 'uSt' | 'uHo' | 'uPad';
 
-/** WebGL-Zustand des Heros: Offscreen-Canvas, Kontext, Programme, Szenentextur samt Framebuffer. */
+/** WebGL state of the hero: offscreen canvas, context, programs, scene texture with framebuffer. */
 interface HeroGL {
 	cv: HTMLCanvasElement | null;
 	gl: WebGL2RenderingContext | null;
@@ -151,23 +151,23 @@ interface HeroGL {
 	th: number;
 	S: Program<SceneU> | null;
 	Pp: Program<PostU> | null;
-	/** Hilfs-Canvas zum Lesen eines Pixels (willReadFrequently). */
+	/** Helper canvas for reading a pixel (willReadFrequently). */
 	pr: CanvasRenderingContext2D | null;
-	/** Foto-Berg: Bild und Maske, sobald geladen und dekodiert. */
+	/** Photo mountain: image and mask once loaded and decoded. */
 	photo: { img: ImageBitmap; mask: ImageBitmap } | null;
 	photoTx: [WebGLTexture, WebGLTexture] | null;
-	/** Einblendung des Fotos 0..1 (über den Rechen-Berg, falls das Bild spät kommt). */
+	/** Fade-in of the photo 0..1 (over the computed mountain if the image arrives late). */
 	photoA: number;
 }
 
 /**
- * Hero an ein sichtbares 2D-Canvas hängen.
- * frame(c, h) zeichnet ein Bild. c ist der Kontext der Bühne (W, H, dpr, t, now, P, m, ...),
- * h trägt die abgeleiteten Marken { look, mx, split, zoom, dive, sm, a0, ad }.
+ * Attaches the hero to a visible 2D canvas.
+ * frame(c, h) draws one frame. c is the stage context (W, H, dpr, t, now, P, m, ...),
+ * h carries the derived marks { look, mx, split, zoom, dive, sm, a0, ad }.
  */
 export function createHero(cv: HTMLCanvasElement) {
 	const ctx = cv.getContext('2d');
-	if (!ctx) throw new Error('hero: kein 2D-Kontext');
+	if (!ctx) throw new Error('hero: no 2D context');
 	const G: HeroGL = {
 		cv: null,
 		gl: null,
@@ -187,8 +187,8 @@ export function createHero(cv: HTMLCanvasElement) {
 		photoTx: null,
 		photoA: 0,
 	};
-	// Foto-Berg laden (Dekodieren abseits des Hauptthreads). Höchstens 2,5 s hält der Hero das erste Bild zurück,
-	// damit der Lader direkt auf das Foto öffnet; kommt es später, blendet es über den Rechen-Berg ein.
+	// Load the photo mountain (decoding off the main thread). The hero holds back the first frame for at most 2.5 s
+	// so the loader opens directly on the photo; if it arrives later, it fades in over the computed mountain.
 	const t0 = performance.now();
 	const bitmap = (src: string) =>
 		fetch(src)
@@ -199,22 +199,22 @@ export function createHero(cv: HTMLCanvasElement) {
 			G.photo = { img, mask };
 		})
 		.catch(() => {});
-	const fb = { x: 0, y: 0, ok: false }; // Fallback: nachlaufendes Licht
+	const fb = { x: 0, y: 0, ok: false }; // fallback: trailing light
 
 	const initGL = (gcv: HTMLCanvasElement): boolean => {
 		const gl = gcv.getContext('webgl2', { antialias: false, preserveDrawingBuffer: false });
 		if (!gl) return false;
-		// Treiber, deren Ausgabe leer bleibt, gelten wie fehlendes WebGL2 (Halbton-Fallback)
+		// Drivers whose output stays empty count as missing WebGL2 (halftone fallback)
 		if (!glVisible(gl, gcv)) {
-			// biome-ignore lint/suspicious/noConsole: Diagnose auf Debug-Stufe
-			console.debug('hero: WebGL-Ausgabe bleibt leer, 2D-Fallback');
+			// biome-ignore lint/suspicious/noConsole: diagnostics at debug level
+			console.debug('hero: WebGL output stays empty, 2D fallback');
 			G.gl = null;
 			return false;
 		}
 		G.gl = gl;
 		const sh = (t: number, src: string, k: string): WebGLShader => {
 			const s = gl.createShader(t);
-			if (!s) throw new Error(`shader ${k}: nicht angelegt`);
+			if (!s) throw new Error(`shader ${k}: not created`);
 			gl.shaderSource(s, src);
 			gl.compileShader(s);
 			if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
@@ -224,7 +224,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		const vs = sh(gl.VERTEX_SHADER, VS, 'vs');
 		const prog = <K extends string>(src: string, names: readonly K[], k: string): Program<K> => {
 			const pr = gl.createProgram();
-			if (!pr) throw new Error(`programm ${k}: nicht angelegt`);
+			if (!pr) throw new Error(`program ${k}: not created`);
 			gl.attachShader(pr, vs);
 			gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, src, k));
 			gl.bindAttribLocation(pr, 0, 'a');
@@ -270,12 +270,12 @@ export function createHero(cv: HTMLCanvasElement) {
 		return true;
 	};
 
-	// Foto und Maske als Texturen (Maske mit Mipmaps: weiche Himmelsgewichtung über die Bias-Stufe).
+	// Photo and mask as textures (mask with mipmaps: soft sky weighting via the bias level).
 	const photoTex = (gl: WebGL2RenderingContext) => {
 		if (G.photoTx || !G.photo) return;
 		const mk = (b: ImageBitmap, mip: boolean): WebGLTexture => {
 			const t = gl.createTexture();
-			if (!t) throw new Error('hero: Textur nicht angelegt');
+			if (!t) throw new Error('hero: texture not created');
 			gl.bindTexture(gl.TEXTURE_2D, t);
 			gl.texImage2D(gl.TEXTURE_2D, 0, gl.R8, gl.RED, gl.UNSIGNED_BYTE, b);
 			gl.texParameteri(
@@ -292,7 +292,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		G.photoTx = [mk(G.photo.img, false), mk(G.photo.mask, true)];
 	};
 
-	// Textur und Framebuffer des Szenenpuffers, bei Größenwechsel neu anlegen.
+	// Texture and framebuffer of the scene buffer, recreated on size change.
 	const ensureTex = (gl: WebGL2RenderingContext, tw: number, th: number) => {
 		if (G.tx && G.tw === tw && G.th === th) return;
 		if (G.tx) gl.deleteTexture(G.tx);
@@ -312,7 +312,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		G.th = th;
 	};
 
-	// Frischer Offscreen-Canvas (auch nach verlorenem Kontext). Ohne WebGL2 gilt dauerhaft der Fallback.
+	// Fresh offscreen canvas (also after a lost context). Without WebGL2 the fallback applies permanently.
 	let everOk = false;
 	const fresh = () => {
 		const gcv = document.createElement('canvas');
@@ -331,7 +331,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			if (!everOk || G.fails >= 3) G.noGL = true;
 		}
 	};
-	// Ohne Grafikchip rechnet der Berg-Shader auf dem Hauptprozessor (Sekunden je Bild): dann gleich der Halbton-Fallback
+	// Without a graphics chip the mountain shader runs on the CPU (seconds per frame): use the halftone fallback right away
 	let checked = false;
 	let gone = false;
 	glSoftware().then((sw) => {
@@ -341,9 +341,9 @@ export function createHero(cv: HTMLCanvasElement) {
 		else fresh();
 	});
 
-	// Halbton-Fallback ohne WebGL2: das Zeichen als Punktraster mit nachlaufendem Licht.
-	// Abstand und Normale je Zelle hängen nur an der Größe: einmal rechnen, je Bild nur noch das Licht.
-	// Je Zelle 8 Werte: x, y, i, j, Abstand, Normale x/y samt Länge, Höhe^0,3.
+	// Halftone fallback without WebGL2: the mark as a dot grid with trailing light.
+	// Distance and normal per cell depend only on the size: computed once, per frame only the light.
+	// 8 values per cell: x, y, i, j, distance, normal x/y with length, height^0.3.
 	const field = { W: 0, H: 0, n: 0, z: new Float32Array(0) };
 	const buildField = (W: number, H: number, sc: number) => {
 		const step = 6;
@@ -388,7 +388,7 @@ export function createHero(cv: HTMLCanvasElement) {
 			fb.y = tg[1];
 			fb.ok = true;
 		}
-		const kf = 1 - Math.exp(-10 * c.dt); // 0,08 je Bild bei 120 Hz
+		const kf = 1 - Math.exp(-10 * c.dt); // 0.08 per frame at 120 Hz
 		fb.x += (tg[0] - fb.x) * kf;
 		fb.y += (tg[1] - fb.y) * kf;
 		sizeTo(c.W, c.H, dpr);
@@ -397,7 +397,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		ctx.fillStyle = '#0A0A0A';
 		ctx.fillRect(0, 0, W, H);
 		ctx.fillStyle = '#FAFAFA';
-		// Atmen als Skalierung um die Mitte, das Licht in Feld-Koordinaten
+		// Breathing as scaling around the center, the light in field coordinates
 		const br = 1 + 0.025 * Math.sin((t * Math.PI) / 3);
 		ctx.setTransform(dpr * br, 0, 0, dpr * br, dpr * cx * (1 - br), dpr * cy * (1 - br));
 		const lx0 = (fb.x - cx) / br + cx;
@@ -437,7 +437,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		}
 	};
 
-	// Ein Bild. Gibt true zurück, wenn gezeichnet wurde.
+	// One frame. Returns true if something was drawn.
 	const frame = (c: StageContext, h: HeroMarks): boolean => {
 		if (!checked) return false;
 		if (G.noGL) {
@@ -488,14 +488,14 @@ export function createHero(cv: HTMLCanvasElement) {
 		const hr = 0.2 * (1 + dive * 2.2);
 		const cz = lerp(lerp(17, 6, zoom), -2.5, dive ** 1.6);
 		const allDots = mx >= 0.999;
-		// Ausgabe in voller Backing-Auflösung, Szenenpuffer klein und adaptiv
+		// Output at full backing resolution, scene buffer small and adaptive
 		const w = Math.max(1, Math.round(W * dpr));
 		const hh = Math.max(1, Math.round(H * dpr));
 		sizeTo(W, H, dpr);
 		const cs = (6 * hh) / 800;
-		// Berg-Phase (ruhiges Bild): feinerer Szenenpuffer, die Grate zeigen sonst Treppenstufen; die adaptive Stufe (ad) fängt Last ab
+		// Mountain phase (calm image): finer scene buffer, the ridges otherwise show stair steps; the adaptive level (ad) absorbs load
 		const fk = mx < 0.05 ? 0.78 : 0.42;
-		// Foto-Berg: nur Texturzugriffe, deshalb in voller Backing-Auflösung (scharfes Gestein und Schnee)
+		// Photo mountain: texture reads only, hence at full backing resolution (sharp rock and snow)
 		const photo = G.photoA > 0.001 && mx < 0.05;
 		const fw = allDots
 			? Math.ceil(w / cs)
@@ -506,7 +506,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		const tw = Math.min(4096, Math.max(960, w));
 		const th = Math.max(fh, Math.round((tw * hh) / w));
 		ensureTex(gl, tw, th);
-		// Hochformat: waagerechte Bewegung dämpfen und den Ausschnitt weiter fassen
+		// Portrait: damp horizontal motion and widen the section
 		const ax = Math.min(1, W / H / 1.6);
 		const uz = Math.min(1, W / H / 0.9);
 		gl.bindFramebuffer(gl.FRAMEBUFFER, G.fb);
@@ -554,7 +554,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(Q.uL, 0);
 		gl.uniform1f(Q.uMx, mx);
 		gl.uniform1f(Q.uSt, 1);
-		// Löcher: Logo, Knopf und Hinweis bleiben im Halbton dunkel (Zellen im Rechteck plus 8 px), damit ihre Schrift lesbar ist
+		// Holes: logo, button and hint stay dark in the halftone (cells in the rectangle plus 8 px) so their text is legible
 		HO.fill(0);
 		let ho = 0;
 		for (const l of c.holes ?? []) {
@@ -570,8 +570,8 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.drawArrays(gl.TRIANGLES, 0, 3);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.drawImage(gcv, 0, gcv.height - hh, w, hh, 0, 0, w, hh);
-		// Die ersten Bilder prüfen: bleibt ein Streifen der Fläche leer (Deckkraft 0), zeichnet der Fallback.
-		// Gelesen wird aus einem kleinen Hilfs-Canvas, damit das sichtbare nicht auf Software-Zeichnen kippt.
+		// Check the first frames: if a strip of the area stays empty (opacity 0), the fallback draws.
+		// Reading goes through a small helper canvas so the visible one does not switch to software drawing.
 		if (G.chk < 4 && ++G.chk > 1) {
 			G.pr ||= document.createElement('canvas').getContext('2d', { willReadFrequently: true });
 			if (G.pr) {
@@ -584,7 +584,7 @@ export function createHero(cv: HTMLCanvasElement) {
 
 	return {
 		frame,
-		/** GL-Puffer freigeben (wächst beim nächsten Bild wieder auf die nötige Größe). */
+		/** Releases the GL buffer (grows back to the needed size on the next frame). */
 		release() {
 			if (G.cv && !G.noGL) G.cv.width = G.cv.height = 1;
 		},

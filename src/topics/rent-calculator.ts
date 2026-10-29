@@ -1,9 +1,9 @@
 import { INTL_LOCALE, type Locale } from '../lib/locale.ts';
 
 /**
- * Mietanteil je Zimmer in Cent: Miete × (Zimmer + Gemeinschaft / n) / (Σ Zimmer + Gemeinschaft).
- * Flächen in m², auf 0,1 m² gerundet. Gerundet wird auf Cent, der Rest geht an die größten
- * Nachkommaanteile, sodass die Summe immer genau der Miete entspricht.
+ * Rent share per room in cents: rent × (room + shared / n) / (Σ rooms + shared).
+ * Areas in m², rounded to 0.1 m². Shares are rounded to cents, the remainder goes to the largest
+ * fractional parts, so the sum always equals the rent exactly.
  */
 export function rentShares(rentCent: number, rooms: number[], shared: number): number[] {
 	const n = rooms.length;
@@ -19,7 +19,7 @@ export function rentShares(rentCent: number, rooms: number[], shared: number): n
 	return shares;
 }
 
-/** Cent als Euro-Text, z. B. 22500 wird zu "225,00 €" (de) beziehungsweise "€225.00" (en). */
+/** Cents as euro text, e.g. 22500 becomes "225,00 €" (de) or "€225.00" (en). */
 export const euro = (cent: number, locale: Locale = 'de'): string => {
 	if (locale === 'de') {
 		return `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2 }).format(cent / 100)} €`;
@@ -31,8 +31,8 @@ export const euro = (cent: number, locale: Locale = 'de'): string => {
 };
 
 /**
- * Zahl in deutscher Schreibweise: Punkte vor drei Ziffern sind Tausendertrenner ("1.200" ist 1200),
- * ein Komma ist das Dezimalzeichen. Leer oder ungültig ergibt 0.
+ * Number in German notation: points before three digits are thousands separators ("1.200" is 1200),
+ * a comma is the decimal separator. Empty or invalid input yields 0.
  */
 export function parseAmount(s: string, locale: Locale = 'de'): number {
 	const t = s.trim();

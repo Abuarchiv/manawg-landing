@@ -1,5 +1,5 @@
-// Zeigehand-Steuerung: Zustand, Zeiger im Ende-Raum, Tipps (Maus, Touch), Vorführung, Kontakt und die
-// Bildwerte, die daraus für beide Zeichenwege entstehen.
+// Pointing-hand control: state, pointer in the end space, taps (mouse, touch), demo, contact and the
+// frame values that result from them for both draw paths.
 
 import type { Fit } from '../../../core/canvas';
 import { isTouch } from '../../../core/canvas';
@@ -9,10 +9,10 @@ import { atlases } from './atlas';
 import { ARM, PS, RING_T } from './constants';
 import type { Breath, DemoRun, DrawValues, HandContext, HandState, Point, Tap } from './types';
 
-/** Zeigerlage im Ende-Raum (Objektraum der Hände, ohne Atmen) aus Bühnen-CSS-px. */
+/** Pointer position in the end space (object space of the hands, without breathing) from stage CSS px. */
 type ObjFn = (x: number, y: number) => [number, number];
 
-/** Zeiger und Eingabeart eines Bildes, im Ende-Raum. */
+/** Pointer and input type of a frame, in the end space. */
 interface Input {
 	obj: ObjFn;
 	mx: number;
@@ -20,7 +20,7 @@ interface Input {
 	touch: boolean;
 }
 
-/** Ziel der Zeigehand in diesem Bild und wie stark sie dorthin zieht. */
+/** Target of the pointing hand in this frame and how strongly it is drawn there. */
 interface Target {
 	tg: readonly [number, number];
 	k: number;
@@ -29,12 +29,12 @@ interface Target {
 }
 
 // ----------------------------------------------------------------------------------------------------
-// Zustand
+// State
 // ----------------------------------------------------------------------------------------------------
 
 export const states = new WeakMap<HTMLCanvasElement, HandState>();
 
-/** Leises Atmen (Sinus plus langsames Rauschen): x, y in Bühnen-px, r in rad. Perioden 4 bis 6 s. */
+/** Quiet breathing (sine plus slow noise): x, y in stage px, r in rad. Periods 4 to 6 s. */
 export function breath(t: number): Breath {
 	const w = 1.2; // 5,2 s
 	const x = 0.65 * Math.sin(t * w) + 0.35 * Math.sin(t * 1.55 + 1.3);
@@ -43,7 +43,7 @@ export function breath(t: number): Breath {
 	return { x: 1.5 * x, y: 1.5 * y, r: ((0.4 * Math.PI) / 180) * r };
 }
 
-/** Autopilot im Fenster x 780-860, y 330-470: Dreieckswelle senkrecht, nie lange über derselben Textzeile. */
+/** Autopilot in the window x 780-860, y 330-470: vertical triangle wave, never lingering over the same text line. */
 function autopilot(t: number): [number, number] {
 	const p = (t / 8) % 1;
 	const tri = p < 0.5 ? -1 + 4 * p : 3 - 4 * p;
@@ -75,7 +75,7 @@ export function newState(back: HTMLCanvasElement, front: HTMLCanvasElement): Han
 	};
 }
 
-/** Ruhige Rechtecke (Titel, Knopf) im Ende-Raum und Knopf-Rechtecke in Bühnen-px neu messen. */
+/** Re-measure the quiet rectangles (title, button) in the end space and the button rectangles in stage px. */
 function measure(st: HandState, cam: Fit): void {
 	const root = st.back.parentElement;
 	if (!root) return;
@@ -100,7 +100,7 @@ function measure(st: HandState, cam: Fit): void {
 	);
 }
 
-/** Vorführung schon gesehen (einmal je Sitzung)? Mit setzen = merken. */
+/** Demo already seen (once per session)? With set = remember. */
 function demoDone(set?: boolean): boolean {
 	try {
 		if (set) sessionStorage.setItem('mwg-demo', '1');
@@ -110,7 +110,7 @@ function demoDone(set?: boolean): boolean {
 	}
 }
 
-/** Mitte der Tab-Taste (Name) in der App-Vorschau als Ziel der Zeigehand: Objektraum plus Fensterkoordinaten. */
+/** Center of the tab button (name) in the app preview as the target of the pointing hand: object space plus window coordinates. */
 function demoTarget(
 	st: HandState,
 	name: string,
@@ -134,7 +134,7 @@ function demoTarget(
 }
 
 // ----------------------------------------------------------------------------------------------------
-// Ein Bild der Steuerung
+// One frame of the control
 // ----------------------------------------------------------------------------------------------------
 
 const onGlass = (x: number, y: number): boolean => {
@@ -142,7 +142,7 @@ const onGlass = (x: number, y: number): boolean => {
 	return x > sc.x - 4 && x < sc.x + sc.w + 4 && y > sc.y - 4 && y < sc.y + sc.h + 4;
 };
 
-/** Zeiger im Ende-Raum (Objektraum der Hände, ohne das Atmen). */
+/** Pointer in the end space (object space of the hands, without breathing). */
 function objectSpace(cam: Fit, br: Breath): ObjFn {
 	return (x, y) => {
 		const qx = (x - cam.ox) / cam.f - br.x - 800;
@@ -154,31 +154,31 @@ function objectSpace(cam: Fit, br: Breath): ObjFn {
 }
 
 /**
- * Ein Tipp auf den Bildschirm. Maus und Stift: die Zeigehand steht schon am Zeiger (oder fährt hin), erst bei
- * Berührung läuft der Druck, der Ring und der Klick in die App. Touch: es tippt der echte Finger, nur der Ring
- * markiert die Kontaktstelle (die App reagiert sofort, nichts wird verzögert).
+ * A tap on the screen. Mouse and pen: the pointing hand is already at the pointer (or moving there), only on
+ * contact do the press, the ring and the click into the app run. Touch: the real finger taps, only the ring
+ * marks the contact point (the app reacts immediately, nothing is delayed).
  */
 function tap(st: HandState, c: HandContext, e: Input, dm: DemoRun): void {
 	const { now } = c;
 	if (c.m.clickT === st.lastClick) return;
 	st.lastClick = c.m.clickT;
 	if (c.endOn && onGlass(e.mx, e.my)) {
-		dm.off = true; // eigener Tipp: die Vorführung ist überflüssig
-		// Touch: es tippt der echte Finger. direkt: der Klick ist schon in der App angekommen (Phone.tsx), die
-		// Zeigehand drückt nur noch mit und der Ring markiert die Stelle.
+		dm.off = true; // the visitor's own tap: the demo is superfluous
+		// Touch: the real finger taps. direct: the click has already reached the app (Phone.tsx), the
+		// pointing hand only presses along and the ring marks the spot.
 		if (e.touch || c.m.direct) {
 			st.tap = [e.mx, e.my];
 			st.contactT = now;
 		} else {
 			const r0 = st.back.getBoundingClientRect();
-			// Läuft noch ein Tipp, geht er sofort in die App: Tipps werden nie verworfen
+			// If a tap is still running it goes into the app immediately: taps are never discarded
 			if (st.pending && !st.pending.demo) {
 				const q = st.pending;
 				st.tap = [q.x, q.y];
 				st.contactT = now;
 				st.host?.dispatchEvent(new CustomEvent('hand:kontakt', { detail: { x: q.cx, y: q.cy } }));
 			}
-			// Die Spitze steht schon am Zeiger: der Klick geht sofort in die App, die Hand drückt nur mit
+			// The tip is already at the pointer: the click goes into the app immediately, the hand only presses along
 			st.tap = [e.mx, e.my];
 			st.contactT = now;
 			st.host?.dispatchEvent(
@@ -189,15 +189,15 @@ function tap(st: HandState, c: HandContext, e: Input, dm: DemoRun): void {
 }
 
 /**
- * Vorführung: bleibt der Besucher nach dem Eintritt 2,5 s untätig, tippt die Zeigehand einmal pro Sitzung auf „Haushalt“
- * und drei Sekunden später auf „Start“ (über denselben Kontakt-Pfad wie ein echter Tipp). Hover über dem Glas, ein Tipp
- * oder Touch beenden sie. Bei reduzierter Bewegung läuft sie nicht (nur der Hinweis unter dem Handy).
+ * Demo: if the visitor stays idle for 2.5 s after entering, the pointing hand taps "Haushalt" once per session
+ * and three seconds later "Start" (via the same contact path as a real tap). Hovering over the glass, a tap
+ * or touch ends it. It does not run with reduced motion (only the hint under the phone).
  */
 function runDemo(st: HandState, c: HandContext, e: Input, dm: DemoRun): void {
 	const { now } = c;
 	if (c.endOn && !e.touch && c.m.in && onGlass(e.mx, e.my) && now - (c.m.moveT ?? -9) < 1.4)
 		dm.off = true;
-	// Fokus im App-iframe (Tastatur, Screenreader): der Besucher bedient die App, die Vorführung bleibt aus
+	// Focus in the app iframe (keyboard, screen reader): the visitor operates the app, the demo stays off
 	if (document.activeElement?.tagName === 'IFRAME') dm.off = true;
 	if (dm.off || c.reduced || e.touch || isTouch() || !c.endOn || dm.n >= 2) {
 		if (!c.endOn) dm.idleSince = null;
@@ -212,11 +212,11 @@ function runDemo(st: HandState, c: HandContext, e: Input, dm: DemoRun): void {
 	}
 }
 
-/** Wohin die Zeigehand zieht: anstehender Tipp, Zeiger über dem Glas oder Parkplatz. */
+/** Where the pointing hand moves: pending tap, pointer over the glass or parking spot. */
 function chooseTarget(st: HandState, c: HandContext, e: Input): Target {
 	const pend = st.pending;
-	// Nach dem Kontakt zieht sich die Hand nach 0,35 s zurück, damit das Ergebnis des Tipps zu sehen ist
-	// Über dem Glas klebt die Fingerspitze am Zeiger, solange er dort ist (kein Rückzug, kein Zeitlimit)
+	// After contact the hand withdraws after 0.35 s so that the result of the tap is visible
+	// Over the glass the fingertip sticks to the pointer as long as it is there (no withdrawal, no time limit)
 	const follows = c.endOn && !e.touch && c.m.in && onGlass(e.mx, e.my);
 	let tg: readonly [number, number] = st.park;
 	let k = 7;
@@ -230,22 +230,22 @@ function chooseTarget(st: HandState, c: HandContext, e: Input): Target {
 	return { tg, k, follows, pend };
 }
 
-/** Fingerspitze und Zeigerlicht ans Ziel ziehen; bei Ankunft des Tipps Kontakt auslösen. */
+/** Move the fingertip and the pointer light to the target; trigger contact when the tap arrives. */
 function move(st: HandState, c: HandContext, cam: Fit, e: Input, z: Target, dm: DemoRun): Point {
 	const { H, t, now, dt } = c;
-	// Zeigerlicht: folgt der Maus, sonst ein ruhiger Autopilot
+	// Pointer light: follows the mouse, otherwise a calm autopilot
 	const lg: [number, number] =
 		c.endOn && c.m.in && !e.touch ? [e.mx, e.my] : c.reduced ? [820, 400] : autopilot(t);
 	const parkY = Math.max(1000, (H - cam.oy) / cam.f + 340);
 	st.park = [940, parkY];
 	if (!st.ht) st.ht = { x: st.park[0], y: st.park[1] };
 	const ht = st.ht;
-	// k = unendlich: ohne Nachziehen genau am Zeiger (die Spitze ersetzt den Mauszeiger)
+	// k = infinity: exactly at the pointer without easing (the tip replaces the mouse cursor)
 	const kk = Number.isFinite(z.k) ? 1 - Math.exp(-z.k * Math.min(dt, 0.05)) : 1;
 	ht.x += (z.tg[0] - ht.x) * kk;
 	ht.y += (z.tg[1] - ht.y) * kk;
 	const pend = z.pend;
-	// Berührung: die Spitze ist angekommen (oder 0,3 s sind um), jetzt Druck, Ring und Klick
+	// Contact: the tip has arrived (or 0.3 s are up), now press, ring and click
 	if (
 		pend &&
 		(Math.hypot(ht.x - pend.x, ht.y - pend.y) < 8 || now - pend.t0 > (pend.slow ? 0.9 : 0.12))
@@ -269,7 +269,7 @@ function move(st: HandState, c: HandContext, cam: Fit, e: Input, z: Target, dm: 
 	return ht;
 }
 
-/** Cursor: über dem Glas ersetzt die Fingerspitze den Zeiger (auch im Dokument der App, Phone.tsx). */
+/** Cursor: over the glass the fingertip replaces the pointer (also in the document of the app, Phone.tsx). */
 function setCursor(st: HandState, follow: boolean): void {
 	if (st.host) st.host.toggleAttribute('data-hand-folgt', follow);
 	if (!st.appDoc?.isConnected)
@@ -278,7 +278,7 @@ function setCursor(st: HandState, follow: boolean): void {
 		st.appDoc.toggleAttribute('data-hand', follow);
 }
 
-/** Bildwerte aus dem Zustand: Spitze, Armrichtung, Druck, Ring, Licht (auf 4 px gerastert). */
+/** Frame values from the state: tip, arm direction, press, ring, light (snapped to 4 px). */
 function buildValues(
 	st: HandState,
 	c: HandContext,
@@ -298,21 +298,21 @@ function buildValues(
 	const uy = ay / AL;
 	if (st.frames++ % 15 === 0) measure(st, cam);
 	const lt = st.lt;
-	// Das Licht wird gerastert (4 px), damit ruhiges Licht keinen neuen Durchgang auslöst
+	// The light is snapped (4 px) so that calm light does not trigger a new pass
 	return {
 		light: { x: Math.round(lt.x / 4) * 4, y: Math.round(lt.y / 4) * 4 },
 		ringAt: { x: st.tap ? st.tap[0] : 0, y: st.tap ? st.tap[1] : 0 },
 		lightPow: st.mode === 'gl' ? 1 : 0,
-		// Unterarm löst sich am unteren Bildrand auf (Verlauf statt harter Kante)
+		// The forearm fades out at the bottom edge of the frame (gradient instead of a hard edge)
 		bottomY: Math.min(atlases().hold.meta.bottomY, (H - cam.oy) / cam.f + 10),
-		// Die Spitze steht exakt am Ziel, beim Druck geht sie leicht in Armrichtung
+		// The tip sits exactly at the target, on press it moves slightly along the arm direction
 		tip: {
 			x: Math.round((ht.x + ux * push * 4) * 2) / 2,
 			y: Math.round((ht.y + uy * push * 4) * 2) / 2,
 		},
 		u: { x: ux, y: uy },
 		sc: PS * (W <= 768 ? 0.75 : 1) * (1 - push * 0.06),
-		// Touch: keine gezeichnete Zeigehand, dort tippt der echte Finger
+		// Touch: no drawn pointing hand, the real finger taps there
 		pa: qa.noPoint || touch ? 0 : 1,
 		push: Math.round(push * 20) / 20,
 		decay: Math.round(c.decay * 200) / 200,
@@ -324,8 +324,8 @@ function buildValues(
 }
 
 /**
- * Ein Bild der Zeigehand-Steuerung (Reihenfolge wie im Ablauf): Tipp, Vorführung, Ziel, Bewegung, Cursor, Werte.
- * br: Atmen dieses Bildes.
+ * One frame of the pointing-hand control (in execution order): tap, demo, target, movement, cursor, values.
+ * br: breathing of this frame.
  */
 export function pointStep(st: HandState, c: HandContext, cam: Fit, br: Breath): DrawValues {
 	const obj = objectSpace(cam, br);

@@ -1,7 +1,8 @@
-/* Tokens, Modi und Klassen der Landing (PLAN-V2 2.2, 2.6, 2.7).
-   Regel für einen Entwurfswert d: clamp(MIN, min(d/12,8 vw, d/8 svh), MAX). Bei 1280 x 800 ergibt das genau d. */
-/* Atem der Ende-Ebene (scenes/ende/hand setzt sie jedes Bild am Handy-Träger): nicht vererbt, sonst rechnet der
-   Browser jedes Bild die Stile der ganzen Handy-Ebene neu, obwohl nur der Transform des Trägers sie liest */
+/* Tokens, modes and classes of the landing (PLAN-V2 2.2, 2.6, 2.7).
+   Rule for a design value d: clamp(MIN, min(d/12,8 vw, d/8 svh), MAX). At 1280 x 800 this yields exactly d. */
+/* Breathing of the end layer (scenes/end/hand sets it every frame on the phone carrier): not inherited,
+   otherwise the browser recalculates the styles of the whole phone layer every frame although only the
+   carrier's transform reads them */
 @property --ax {
 	syntax: "<length>";
 	inherits: false;
@@ -18,8 +19,8 @@
 	initial-value: 0deg;
 }
 :root {
-	/* Schrift */
-	--t-label: 11px; /* eine Mono-Stufe für alle Beschriftungen (nichts unter 10 px) */
+	/* Type */
+	--t-label: 11px; /* one mono step for all labels (nothing below 10 px) */
 	--t-13: 13px;
 	--t-14: 14px;
 	--t-15: 15px;
@@ -37,10 +38,10 @@
 	--t-72: clamp(40px, min(5.625vw, 9svh), 80px);
 	--t-80: clamp(46px, min(6.25vw, 10svh), 88px);
 	--t-96: clamp(54px, min(7.5vw, 12svh), 104px);
-	--t-176: clamp(88px, min(10.9vw, 17.5svh), 140px); /* Lader-Ziffer, höchstens 140 px */
+	--t-176: clamp(88px, min(10.9vw, 17.5svh), 140px); /* loader digit, at most 140 px */
 	--t-200: clamp(80px, min(15.625vw, 25svh), 216px);
 
-	/* Ränder und Abschnittsabstände */
+	/* Margins and section spacing */
 	--rand: clamp(20px, min(3.125vw, 5svh), 48px);
 	--rand-kopf: clamp(16px, min(2.1875vw, 3.5svh), 32px);
 	--abschnitt-oben: clamp(56px, min(7.5vw, 12svh), 105.6px);
@@ -49,7 +50,7 @@
 	--kopf-oben: max(var(--rand-kopf), calc(env(safe-area-inset-top) + 8px));
 	--kopf-unten: calc(var(--kopf-oben) + 40px + 8px);
 
-	/* Abstände und Breiten */
+	/* Spacing and widths */
 	--sp-10: clamp(5px, min(0.78125vw, 1.25svh), 11px);
 	--sp-12: clamp(6px, min(0.9375vw, 1.5svh), 13.2px);
 	--sp-14: clamp(7px, min(1.09375vw, 1.75svh), 15.4px);
@@ -81,17 +82,17 @@
 	--h-150: clamp(75px, min(11.71875vw, 18.75svh), 165px);
 	--h-520: clamp(260px, min(40.625vw, 65svh), 572px);
 
-	/* Bedienelemente */
+	/* Controls */
 	--cta-h: 32px;
 	--cta-fs: 12px;
 	--cta-gross-h: 32px;
 	--cta-gross-fs: 13px;
 	--faq-marke: clamp(20px, 1.7vw, 22px);
-	--zeit: 140ms; /* Übergänge der Bedienzustände, 120 bis 160 ms */
+	--zeit: 140ms; /* transitions of the interaction states, 120 to 160 ms */
 	--haar: rgba(250, 250, 250, 0.18);
 }
 
-/* Grundstile des früheren Rahmens */
+/* Base styles of the frame */
 #final {
 	position: relative;
 	background: #0a0a0a;
@@ -105,16 +106,16 @@
 #final [data-sec] {
 	scroll-margin-top: var(--anker);
 }
-/* Tastaturfokus: Bedienelemente landen unter dem Kopfband, nicht darunter verdeckt */
+/* Keyboard focus: controls land below the header band instead of being hidden behind it */
 #final :is(a, button, input, [tabindex="0"]):not([data-sec]) {
 	scroll-margin-top: calc(var(--kopf-unten) + 16px);
 }
 
-/* Klassen-Vertrag (PLAN-V2 2.7). Hover, Fokus und Aktiv gestaltet SHELL hier zentral.
-   Knöpfe sind feiner Mono-Text in Klammern, ohne Füllfläche und ohne Kasten: sichtbare Höhe 32 px,
-   Trefferfläche 44 px (je 6 px Polster oben und unten, durch negativen Rand ausgeglichen).
-   Der Hauptknopf (--voll) steht hell mit Haarlinie, die anderen gedämpft. Hover und Fokus: Klammern öffnen sich,
-   Linie läuft ein, Schrift volle Helligkeit. */
+/* Class contract (PLAN-V2 2.7). SHELL styles hover, focus and active centrally here.
+   Buttons are fine mono text in brackets, without fill and without a box: visible height 32 px,
+   hit area 44 px (6 px padding above and below, offset by a negative margin).
+   The primary button (--voll) is bright with a hairline, the others are muted. Hover and focus: the brackets
+   open, the line runs in, the text goes to full brightness. */
 .cta,
 .tab {
 	box-sizing: border-box;
@@ -136,7 +137,7 @@
 	cursor: pointer;
 	text-decoration: none;
 	color: rgba(250, 250, 250, 0.7);
-	/* ohne Fläche: Lesbarkeit über Kunst (Berg, Hand, ASCII) aus einem weichen dunklen Schatten */
+	/* no fill: legibility over the artwork (mountain, hand, ASCII) comes from a soft dark shadow */
 	text-shadow: 0 0 10px rgba(10, 10, 10, 0.85), 0 0 2px rgba(10, 10, 10, 0.6);
 	background: transparent no-repeat;
 	border: 0;
@@ -162,7 +163,7 @@
 .tab::after {
 	content: "]";
 }
-/* Tabs: nur der gewählte zeigt Klammern, die übrigen sind schlichter Text */
+/* Tabs: only the selected one shows brackets, the others are plain text */
 .tab:not([aria-selected="true"])::before,
 .tab:not([aria-selected="true"])::after {
 	content: none;
@@ -218,7 +219,7 @@
 	height: 1px;
 	background: var(--haar);
 }
-/* Fragen: Akkordeon mit Höhenanimation über grid-template-rows */
+/* Questions: accordion with height animation via grid-template-rows */
 .faq-zeile {
 	border-top: 1px solid var(--haar);
 	padding-bottom: var(--sp-26);
@@ -262,7 +263,7 @@
 	margin-top: calc(0.6 * var(--t-32) - var(--faq-marke) / 2);
 	transition: transform var(--zeit) ease;
 }
-/* Plus aus zwei 1-px-Strichen; offen skaliert der senkrechte auf 0 (200 ms): Plus und Minus haben dieselbe Metrik */
+/* Plus made of two 1 px strokes; when open the vertical one scales to 0 (200 ms): plus and minus share the same metrics */
 .faq-marke i {
 	position: absolute;
 	background: currentColor;
@@ -324,7 +325,7 @@
 	max-width: var(--w-640);
 }
 
-/* Fußzeilen-Links: Trefferhöhe 44 px */
+/* Footer links: hit height 44 px */
 .fuss-link {
 	display: flex;
 	align-items: center;
@@ -336,7 +337,7 @@
 	transition: opacity var(--zeit) ease;
 }
 
-/* nur für Screenreader */
+/* screen readers only */
 .sr-only {
 	position: absolute;
 	width: 1px;
@@ -349,9 +350,9 @@
 	border: 0;
 }
 
-/* Hinweis „Intro überspringen“: Mono-Stufe der Labels, 11 px, Sperrung 0,12 em, ohne Hintergrund. Die Lesbarkeit
-   über Berg, Halbton und Isometrie kommt aus einem weichen dunklen Schatten. Die Trefferfläche von 44 px liefert
-   ::after, die Flut lässt um die Zeile nur eine schmale Lücke. Hover und Fokus: Unterstrich. */
+/* "Skip intro" hint: mono step of the labels, 11 px, letter spacing 0.12 em, no background. Legibility
+   over mountain, halftone and isometry comes from a soft dark shadow. The 44 px hit area comes from
+   ::after; the flood leaves only a narrow gap around the line. Hover and focus: underline. */
 .hinweis {
 	position: fixed;
 	left: calc(var(--rand) + env(safe-area-inset-left));
@@ -371,7 +372,7 @@
 	text-decoration: underline;
 	text-underline-offset: 4px;
 }
-/* Handy quer: neben SCROLLEN rechts unten, damit die Raumkarten links frei bleiben */
+/* Phone in landscape: bottom right next to SCROLLEN so the room cards stay clear on the left */
 #final[data-flach] .hinweis {
 	left: auto;
 	right: calc(var(--rand) + env(safe-area-inset-right) + 96px);
@@ -410,7 +411,7 @@
 	outline: 2px solid #fafafa;
 	outline-offset: 2px;
 }
-/* Sprunglink „Zum Inhalt springen“: erster Tab-Stopp, unter dem Kopfband nur bei Tastaturfokus sichtbar */
+/* Skip link "Skip to content": first tab stop, visible below the header band only on keyboard focus */
 .sprung {
 	position: fixed;
 	left: calc(var(--rand) + env(safe-area-inset-left));
@@ -449,20 +450,20 @@
 	visibility: hidden;
 }
 
-/* Kopf: kein Schleier über der Kunst, sie läuft randlos bis zum oberen Rand. Läuft Inhalt (Text) unter dem Kopf
-   durch, blendet KopfMaske das Band aus. Das Logo hat keinen eigenen Grund mehr. */
+/* Header: no veil over the artwork, which runs edge to edge up to the top. When content (text) runs under the
+   header, HeaderMask fades out the band. The logo has no background of its own. */
 
 [data-kopf][inert] {
 	visibility: hidden;
 }
 
-/* Fokus auf hellen Flächen */
+/* Focus on light surfaces */
 [data-hell]:focus-visible,
 [data-hell] :focus-visible {
 	outline-color: #0a0a0a;
 }
 
-/* Hover nur mit Zeiger, Aktiv überall */
+/* Hover only with a pointer, active everywhere */
 @media (hover: hover) {
 	.cta:hover,
 	.tab:hover {
@@ -495,8 +496,8 @@
 	transform: scale(0.98);
 }
 
-/* Reduzierte Bewegung: keine Übergangsanimation außer Deckkraft, Intro auf vier Bildschirme gekürzt
-   (die Bühne liest ihre Strecke aus der Abschnittshöhe, stage.js) */
+/* Reduced motion: no transition animation except opacity, intro shortened to four screens
+   (the stage reads its distance from the section height, stage.ts) */
 @media (prefers-reduced-motion: reduce) {
 	#intro {
 		height: calc(5 * 100lvh) !important;
@@ -519,15 +520,15 @@
 	}
 }
 
-/* Hinweis über dem Handy der Ende-Szene: im Hochformat sitzt das Handy dicht unter dem Knopf */
+/* Hint above the phone of the end scene: in portrait the phone sits right below the button */
 #final[data-mode="hoch"] [data-ende-hinweis] {
 	top: -17px !important;
 	font-size: 10px;
 	letter-spacing: 0.07em;
 }
 
-/* lenis.css sperrt iframes, solange die Seite gleitet; die App im Handy reicht das Rad selbst weiter (demo.js),
-   also bleibt sie klickbar, auch direkt nach dem Scrollen */
+/* lenis.css blocks iframes while the page glides; the app in the phone passes the wheel on itself,
+   so it stays clickable, even right after scrolling */
 .lenis.lenis-smooth iframe[title="ManaWG-App"] {
 	pointer-events: auto;
 }

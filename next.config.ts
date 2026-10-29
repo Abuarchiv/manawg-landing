@@ -1,8 +1,8 @@
 import type { NextConfig } from 'next';
 import { APP_ORIGIN } from './src/lib/app-origin';
 
-// HSTS und upgrade-insecure-requests nur auf Vercel (https). Ein lokaler Prod-Start über http bliebe sonst
-// für WebKit/Chrome auf Geräten unerreichbar (Subressourcen werden auf https hochgestuft).
+// HSTS and upgrade-insecure-requests only on Vercel (https). A local production start over http would
+// otherwise be unreachable for WebKit/Chrome on devices (subresources get upgraded to https).
 const hsts = process.env.VERCEL
 	? [{ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' }]
 	: [];
@@ -55,13 +55,13 @@ const nextConfig: NextConfig = {
 		ignoreDuringBuilds: false,
 	},
 	async headers() {
-		// Die letzte Regel mit gleichem Schlüssel gewinnt: das Demo-Dokument der App darf im eigenen
-		// Ursprung eingebettet werden (Handy der Ende-Szene), alles andere bleibt DENY.
+		// The last rule with the same key wins: the app's demo document may be embedded from its own
+		// origin (phone in the end scene), everything else stays DENY.
 		return [
 			{ source: '/:path*', headers: securityHeaders },
 			{ source: '/app-demo/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
 			{ source: '/app-demo-en/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
-			// Das Demo-Dokument liegt außerhalb der Middleware (Punkt im Pfad), daher hier eine eigene CSP.
+			// The demo document sits outside the middleware (dot in the path), so it gets its own CSP here.
 			{
 				source: '/app-demo/index.html',
 				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
@@ -70,7 +70,7 @@ const nextConfig: NextConfig = {
 				source: '/app-demo-en/index.html',
 				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
 			},
-			// Dateien aus public ohne Hash im Namen: einen Tag frisch, danach im Hintergrund erneuern (F-18.8).
+			// Files from public without a hash in the name: fresh for one day, then revalidated in the background (F-18.8).
 			...[
 				'/manawg-mark.svg',
 				'/icon-512.png',
@@ -90,16 +90,16 @@ const nextConfig: NextConfig = {
 				'/favicon-192.png',
 				'/icon-192.png',
 			].map((source) => ({ source, headers: [{ key: 'Cache-Control', value: publicCache }] })),
-			// Schriften ändern sich nie unter gleichem Namen: ein Jahr fest. Neue Schriftdatei = neuer Dateiname.
+			// Fonts never change under the same name: cache for one year. A new font file means a new file name.
 			{
 				source: '/fonts/:path*',
 				headers: [
 					{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-					// Google hatte die Schriftdateien als „Seiten“ im Index-Bericht; sie sollen nie in die Suche.
+					// Google listed the font files as "pages" in the index report; they must never enter search.
 					{ key: 'X-Robots-Tag', value: 'noindex' },
 				],
 			},
-			// Demo-Dateien ohne Hash im Namen: immer per ETag prüfen, damit index.html, demo.js und app.css zusammenpassen.
+			// Demo files without a hash in the name: always revalidate via ETag so index.html, demo.js and app.css match.
 			{
 				source: '/app-demo/:path*',
 				headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],

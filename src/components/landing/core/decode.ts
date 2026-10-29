@@ -1,7 +1,7 @@
-// Überschriften und Etiketten mit data-entschluesseln entschlüsseln sich einmal, sobald sie ins Bild kommen:
-// jedes Zeichen läuft erst als Mono-Zeichen und rastet dann ein, grob von vorn nach hinten (dasselbe Motiv
-// wie die FAQ-Antworten). Nur die Textknoten ändern sich, am Ende steht wieder der Originaltext. Ohne JS und
-// bei reduzierter Bewegung bleibt der Text, wie er ist.
+// Headings and labels with data-entschluesseln decode once as soon as they come into view:
+// each character first cycles as a mono glyph and then locks in, roughly from front to back (the same motif
+// as the FAQ answers). Only the text nodes change; in the end the original text is back. Without JS and
+// with reduced motion the text stays as it is.
 
 export const GLYPHS = '#%&*+=/<>|01';
 const DURATION = 900; // ms
@@ -12,7 +12,7 @@ function run(el: HTMLElement): () => void {
 	while (w.nextNode()) nodes.push(w.currentNode as Text);
 	const text = nodes.map((n) => [...n.data]);
 	const total = text.reduce((a, t) => a + t.length, 0);
-	// Einrastzeit je Zeichen: Lage im Text plus Streuung
+	// Lock-in time per character: position in the text plus jitter
 	const settleAt = Array.from(
 		{ length: total },
 		(_, i) => (i / total) * 0.65 + Math.random() * 0.35,

@@ -2,8 +2,8 @@ import { appUrl } from '@/lib/app-origin';
 import { css } from '../core/dc';
 import { useDict } from '../dict';
 
-// Kopf: Logo links, Knopf rechts, fest am Fenster. Während die Ende-Ebene der Intro den Kopfbereich deckt,
-// blendet --kopf-aus ihn aus (stage.js). Safe-Area-Abstände für Notch und Ecken.
+// Header: logo on the left, button on the right, fixed to the window. While the end layer of the intro covers the
+// header area, --kopf-aus fades it out (stage.ts). Safe-area insets for notch and corners.
 
 export function Header() {
 	const dict = useDict();

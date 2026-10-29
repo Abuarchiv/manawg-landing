@@ -22,9 +22,9 @@ import { HeaderMask } from './shell/HeaderMask';
 import { Hints } from './shell/Hints';
 import { Loader } from './shell/Loader';
 
-// Wurzel der Landing: Kopf und Hinweise fest am Fenster, danach der Inhalt im normalen Dokumentfluss,
-// zuletzt der Lader. Dokument-Scroll, keine skalierte Bühne. Szenen melden sich selbst bei der
-// Schleife an (core/loop.js), die Intro-Bühne hängt an der Zeitachse (scenes/intro).
+// Root of the landing: header and hints are fixed to the window, the content follows in the normal
+// document flow, the loader comes last. Document scroll, no scaled stage. Scenes register themselves
+// with the loop (core/loop.js); the intro stage hangs off the timeline (scenes/intro).
 
 declare global {
 	interface Window {
@@ -32,7 +32,7 @@ declare global {
 	}
 }
 
-// Nur lesender Haken für die Prüfwerkzeuge (?qa=1), ohne Einfluss auf das Verhalten.
+// Read-only hook for the QA tools (?qa=1); does not affect behaviour.
 function installQaHook(root: HTMLElement) {
 	window.__landing = {
 		P: () => live.stage?.state.P ?? 0,
@@ -61,7 +61,7 @@ function LandingInner() {
 		let stopScroll = () => {};
 		let stop = () => {};
 		let stopDecode = () => {};
-		// Erst nach dem ersten Bild starten: der Titel steht dann sofort, die Engine blockiert LCP nicht.
+		// Start only after the first frame: the title shows immediately and the engine does not block LCP.
 		const id = requestAnimationFrame(() => {
 			applyMode();
 			window.addEventListener('resize', applyMode);
@@ -82,7 +82,7 @@ function LandingInner() {
 
 	return (
 		<div id="final" data-mode={loop.mode} data-phase="intro" suppressHydrationWarning>
-			{/* Sprunglink als erster Tab-Stopp, sichtbar nur bei Fokus (landing.css .sprung) */}
+			{/* Skip link as the first tab stop, visible only on focus (landing.css .sprung) */}
 			<a className="label sprung" href="#inhalt">
 				{dict.skip}
 			</a>
