@@ -19,7 +19,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 		erschienen: '2026-10-29',
 		titel: 'Start a flat share in Germany: steps and checklist | ManaWG',
 		beschreibung:
-			'Start a WG (shared flat) in Germany step by step: order of play, budget, tenancy type, deposit, flat agreement and Anmeldung. With a tick-off checklist.',
+			'Start a WG (shared flat) in Germany step by step: the right order, budget, tenancy type, deposit, flat agreement and Anmeldung. With a tick-off checklist.',
 		h1: 'Start a flat share in Germany: steps and checklist',
 		einleitung:
 			'Starting a WG (Wohngemeinschaft, a shared flat) in Germany is mostly about getting the order and the responsibilities right: who moves in, what the flat may cost, which type of tenancy applies and who pays which share when. This checklist runs from the first conversation to the first flat meeting after move-in, with a worked deposit example and a list to tick off at the end. It is general information, not legal advice, least of all on tenancy agreements.',
@@ -193,7 +193,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 					['On move-in day', 'Handover record with photos, meter readings, keys', '4'],
 					[
 						'In the first two weeks',
-						'Anmeldung at the Bürgeramt, electricity, internet, Rundfunkbeitrag',
+						'Anmeldung (address registration) at the Bürgeramt, electricity, internet, Rundfunkbeitrag',
 						'6',
 					],
 					[
@@ -399,7 +399,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 			],
 			[
 				'On move-in day',
-				'Have the keys handed over and note how many there are. Look at the room together with the person handing over, and photograph any damage. That protects you when you move out. Ask about the wifi, the fuse box, the main water tap and where to keep bicycles. For your Anmeldung (address registration) at the Bürgeramt (citizens’ office), you need a Wohnungsgeberbestätigung (landlord’s confirmation) in Germany, issued by the landlord or the main tenant. The registration is due within two weeks of moving in.',
+				'Have the keys handed over and note how many there are. Look at the room together with the person handing over, and photograph any damage. That protects you when you move out. Ask about the wifi, the fuse box, the main water tap and where to keep bicycles. For your Anmeldung (address registration) in Germany at the Bürgeramt (citizens’ office), you need a Wohnungsgeberbestätigung (landlord’s confirmation), issued by the landlord or the main tenant. The registration is due within two weeks of moving in.',
 			],
 			[
 				'In the first week',
