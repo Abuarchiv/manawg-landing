@@ -13,15 +13,15 @@ test('900 euro for 12, 18 and 24 m² with 18 m² shared area', () => {
 
 test('sum always equals the rent, the remainder goes to the largest fractional parts', () => {
 	assert.deepEqual(rentShares(100000, [15, 15, 15], 0), [33334, 33333, 33333]);
-	for (const [miete, zimmer, gemeinsam] of [
+	for (const [rent, rooms, shared] of [
 		[123457, [11.5, 17.3, 23.9, 9], 14.7],
 		[99999, [10, 10, 10, 10, 10, 10, 10], 3],
 		[1, [10, 20, 30], 0],
 	] as const) {
-		const a = rentShares(miete, [...zimmer], gemeinsam);
+		const a = rentShares(rent, [...rooms], shared);
 		assert.equal(
 			a.reduce((s, x) => s + x, 0),
-			miete,
+			rent,
 		);
 	}
 });

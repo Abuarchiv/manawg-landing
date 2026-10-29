@@ -67,7 +67,7 @@ uniform vec3 uMap;   // CSS px per image pixel, image origin in CSS px
 uniform vec4 uImg;   // width, height, OX, OY (image pixels)
 uniform vec4 uRm[8];
 uniform float uLt[8];
-uniform vec3 uZg;
+uniform vec3 uPointer;
 out vec4 o;
 uniform vec2 Z;      // cell in CSS px
 const float BY[16] = float[16](0., 8., 2., 10., 12., 4., 14., 6., 3., 11., 1., 9., 15., 7., 13., 5.);
@@ -99,7 +99,7 @@ void main(){
     vec4 r = uRm[i];
     if (g.x >= r.x && g.y >= r.y && g.x < r.x + r.z && g.y < r.y + r.w) lit = uLt[i];
   }
-  float li = uZg.z > 0. ? pow(max(0., 1. - length((ci + .5) * Z - uZg.xy) / uZg.z), 2.) : 0.;
+  float li = uPointer.z > 0. ? pow(max(0., 1. - length((ci + .5) * Z - uPointer.xy) / uPointer.z), 2.) : 0.;
   float L = textureLod(uLum, uv, uLod).r;
   float n = texelFetch(uRamp, ivec2(0, cls), 0).r * 255.;
   if (n < .5) return;
@@ -281,7 +281,7 @@ export function drawFlatGlyphs(e: GlyphInput): HTMLCanvasElement | null {
 	});
 	gl.uniform4fv(u('uRm'), rm);
 	gl.uniform1fv(u('uLt'), lt);
-	gl.uniform3f(u('uZg'), ...e.pointer);
+	gl.uniform3f(u('uPointer'), ...e.pointer);
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
 	return g.cv;
 }

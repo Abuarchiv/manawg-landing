@@ -374,8 +374,8 @@ export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number)
 	const same =
 		L.last !== null && L.last.length === key.length && L.last.every((v, i) => v === key[i]);
 	// Breathing changes only pass 2 (dots), the tone per cell stays
-	const nur2 = same && L.lastB !== null && !L.lastB.every((v, i) => v === bkey[i]);
-	if (same && L.lastB !== null && !nur2) return true;
+	const onlyBreathing = same && L.lastB !== null && !L.lastB.every((v, i) => v === bkey[i]);
+	if (same && L.lastB !== null && !onlyBreathing) return true;
 	L.last = key;
 	L.lastB = bkey;
 
@@ -412,7 +412,7 @@ export function glFrame(L: Layer, S: DrawValues, cam: Fit, W: number, H: number)
 		if (q) gl.beginQuery(T.TIME_ELAPSED_EXT, q);
 	}
 	// Pass 1: tone per cell into the texture
-	if (!nur2) {
+	if (!onlyBreathing) {
 		gl.bindFramebuffer(gl.FRAMEBUFFER, C.fbo);
 		gl.viewport(0, 0, cw, ch);
 		gl.useProgram(L.prs[0]);

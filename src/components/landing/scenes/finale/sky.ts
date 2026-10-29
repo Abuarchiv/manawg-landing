@@ -14,7 +14,7 @@ uniform sampler2D uSkyQ, uSkyH, uFine, uCoarse;
 uniform float uPortrait, uDprH;
 uniform vec2 uRes, uCC;
 uniform float uT, uOpen, uCS;
-uniform vec3 uZg; // pointer in uv and strength: wind that parts the clouds
+uniform vec3 uPointer; // pointer in uv and strength: wind that parts the clouds
 uniform vec4 uTxt; // text box in uv (x0, y0, x1, y1), the sky stays calm and darker there
 out vec4 o;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -35,8 +35,8 @@ void main(){
   vec2 q = vec2(fbm(suv * 2.2 + vec2(uT * .035, 0.)), fbm(suv * 2.2 + vec2(5.2, -uT * .03)));
   vec2 qw = vec2(fbm(suv * 4. + q * 1.7 + uT * .05), fbm(suv * 4. + q * 1.7 + 3.3 - uT * .04)) - .5;
   suv += qw * (.009 + .012 * uv.y);
-  vec2 zd = (uv - uZg.xy) * vec2(asp, 1.); float zr = dot(zd, zd);
-  vec2 wind = zd / (sqrt(zr) + .02) * exp(-zr * 14.) * .032 * uZg.z;
+  vec2 zd = (uv - uPointer.xy) * vec2(asp, 1.); float zr = dot(zd, zd);
+  vec2 wind = zd / (sqrt(zr) + .02) * exp(-zr * 14.) * .032 * uPointer.z;
   suv -= wind * vec2(sc.x / asp, sc.y);
   float L = uPortrait > .5 ? texture(uSkyH, suv).r : texture(uSkyQ, suv).r;
   float progress = smoothstep(.05, .85, uOpen);
@@ -83,7 +83,7 @@ interface SkyState extends SceneState {
 	ready: boolean;
 	open: number;
 	/** smoothed pointer in uv and strength */
-	zg: [number, number, number];
+	pointer: [number, number, number];
 }
 
 function program(gl: WebGL2RenderingContext): WebGLProgram | null {
@@ -189,7 +189,7 @@ export function registerSky(
 			s.g = null;
 			s.ready = false;
 			s.open = 0;
-			s.zg = [0.5, 0.5, 0];
+			s.pointer = [0.5, 0.5, 0];
 			load(s).catch(() => {});
 		},
 		frame(s) {
@@ -228,10 +228,10 @@ export function registerSky(
 			const zx = da ? s.m.px / s.W : 0.5 + 0.38 * Math.sin(t * 0.13);
 			const zy = da ? 1 - s.m.py / s.H : 0.32 + 0.14 * Math.sin(t * 0.21 + 1.3);
 			const k = 1 - Math.exp(-loop.dt * 4);
-			s.zg[0] += (zx - s.zg[0]) * k;
-			s.zg[1] += (zy - s.zg[1]) * k;
-			s.zg[2] += ((s.reduced ? 0 : da ? 1 : 0.55) - s.zg[2]) * k;
-			gl.uniform3f(u('uZg'), s.zg[0], s.zg[1], s.zg[2]);
+			s.pointer[0] += (zx - s.pointer[0]) * k;
+			s.pointer[1] += (zy - s.pointer[1]) * k;
+			s.pointer[2] += ((s.reduced ? 0 : da ? 1 : 0.55) - s.pointer[2]) * k;
+			gl.uniform3f(u('uPointer'), s.pointer[0], s.pointer[1], s.pointer[2]);
 			const tf = textBox(sec, r0);
 			if (tf) gl.uniform4f(u('uTxt'), tf[0] / s.W, 1 - tf[3] / s.H, tf[2] / s.W, 1 - tf[1] / s.H);
 			else gl.uniform4f(u('uTxt'), 0, 0, 0, 0);
