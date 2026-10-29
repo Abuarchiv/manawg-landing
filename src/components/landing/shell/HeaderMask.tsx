@@ -21,7 +21,6 @@ export function HeaderMask() {
 		const measure = () => {
 			const band = (header?.getBoundingClientRect().bottom ?? 64) + 10;
 			let v = 0;
-			let dark = false; // the band lies mostly in a dark island (finale): mask in its colour
 			const portrait = document.getElementById('final')?.dataset.mode === 'hoch';
 			for (const id of portrait ? IDS_PORTRAIT : IDS) {
 				const s = document.getElementById(id);
@@ -29,7 +28,6 @@ export function HeaderMask() {
 				const r = s.getBoundingClientRect();
 				const d = Math.min(r.bottom, band) - Math.max(r.top, 0);
 				const e = Math.min(1, Math.max(0, d / band));
-				if (e > v) dark = s.hasAttribute('data-dunkel');
 				v = Math.max(v, e);
 			}
 			// Portrait, end layer of the intro: when the stage scrolls away upwards, the phone slides under the band
@@ -42,7 +40,6 @@ export function HeaderMask() {
 			const on = v.toFixed(3);
 			if (hn !== h) el.style.height = h = hn;
 			if (on !== o) el.style.opacity = o = on;
-			if (dark !== el.hasAttribute('data-dunkel')) el.toggleAttribute('data-dunkel', dark);
 		};
 		measure();
 		return onRead(measure);

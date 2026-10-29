@@ -47,7 +47,6 @@ export function Finale() {
 		<section
 			id="finale"
 			data-sec="finale"
-			data-dunkel=""
 			tabIndex={-1}
 			ref={sec}
 			aria-labelledby="finale-titel"

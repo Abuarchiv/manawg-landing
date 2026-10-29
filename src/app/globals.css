@@ -79,11 +79,8 @@ a:hover {
 }
 /* Theme: ink on paper. Dark is the default; html[data-theme="light"] (set before the first paint by
    THEME_SCRIPT in lib/theme.ts) swaps both. The light values are the exact inverse of the dark ones, so the
-   art canvases, inverted by a filter, meet the CSS surfaces without a seam.
-   [data-dunkel] keeps dark in both themes: the engraved mountain and sky stay as they are (inverted they look
-   wrong on paper), together with the text standing on them. */
-:root,
-:root[data-theme="light"] [data-dunkel] {
+   art canvases, inverted by a filter, meet the CSS surfaces without a seam. */
+:root {
 	--paper: #0a0a0a;
 	--ink: #fafafa;
 	--paper-rgb: 10 10 10;
@@ -108,15 +105,10 @@ a:hover {
 :root[data-theme="light"] [data-only="dark"] {
 	display: none;
 }
-/* Monochrome art (WebGL and 2D canvases, white mark) inverted: ink on paper, except in the dark islands */
-:root[data-theme="light"] #final canvas:not([data-dunkel], [data-dunkel] *),
-:root[data-theme="light"] [data-invert]:not([data-dunkel], [data-dunkel] *) {
+/* Monochrome art (WebGL and 2D canvases, white mark) inverted: ink on paper */
+:root[data-theme="light"] #final canvas,
+:root[data-theme="light"] [data-invert] {
 	filter: invert(1);
-}
-/* Fixed chrome over changing ground (header, skip hint): drawn white and set by difference in light mode, so it
-   reads as ink on paper and as white over the dark islands without knowing what lies beneath */
-:root[data-theme="light"] [data-dunkel="differenz"] {
-	mix-blend-mode: difference;
 }
 @tailwind utilities;
 /* Topic pages: no preflight, so set the box model and the hairline here */

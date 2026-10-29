@@ -9,7 +9,6 @@ export function HeroTitle() {
 	const { hero } = useDict();
 	return (
 		<div
-			data-dunkel=""
 			style={css(
 				'position:absolute;inset:0;z-index:2;pointer-events:none;opacity:calc(1.9 - var(--p,0) * 22)',
 			)}
