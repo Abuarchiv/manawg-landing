@@ -79,7 +79,7 @@ function Table({ t, locale }: { t: TableData; locale: Locale }) {
 	const cellClass = compact ? cellClsEn : cellCls;
 	const id = `tabelle-${anchorId(t.title)}`;
 	return (
-		<section aria-labelledby={id} className="linie pt-10 md:pt-14">
+		<section aria-labelledby={id} className="divider pt-10 md:pt-14">
 			<h2 id={id} className={`${mono} m-0 mb-8 font-normal`}>
 				{t.title}
 			</h2>
@@ -284,13 +284,13 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 	const isComparison = groupId === 'compare';
 	const notice = txt.comparisonNotice;
 
-	const lineCls = 'linie';
+	const lineCls = 'divider';
 
 	return (
 		<main
 			id="main"
 			tabIndex={-1}
-			className="thema min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
+			className="topic-page min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
 		>
 			<script
 				type="application/ld+json"
@@ -368,8 +368,8 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 					))}
 
 				{t.sections.length >= 4 && (
-					<nav aria-labelledby="inhalt" className={`${lineCls} mt-20 md:mt-32 pt-10`}>
-						<h2 id="inhalt" className={`${mono} m-0 mb-6 font-normal`}>
+					<nav aria-labelledby="contents" className={`${lineCls} mt-20 md:mt-32 pt-10`}>
+						<h2 id="contents" className={`${mono} m-0 mb-6 font-normal`}>
 							{txt.contents}
 						</h2>
 						<ol className="list-none m-0 p-0">

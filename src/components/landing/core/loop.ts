@@ -31,10 +31,10 @@ import {
 } from './canvas';
 
 /** Page mode: portrait or landscape. */
-export type Mode = 'hoch' | 'quer';
+export type Mode = 'portrait' | 'landscape';
 
 /** Frame subscriber of the loop: (t, dt, now, raw). */
-export type FrameFn = (t: number, dt: number, now: number, raw: number) => void;
+type FrameFn = (t: number, dt: number, now: number, raw: number) => void;
 
 interface Loop {
 	n: number;
@@ -59,7 +59,7 @@ export const loop: Loop = {
 	raw: 0.016, // unclamped gap (detects stutters)
 	now: 0, // performance.now() in seconds
 	reduced: false,
-	mode: 'quer', // 'hoch' | 'quer'
+	mode: 'landscape', // 'portrait' | 'landscape'
 	short: false, // phone in landscape
 	act: 0, // last input or movement (seconds, performance.now()): scroll, pointer, key, resize
 	// Window size, read once at the start of every frame. Use it in frame callbacks instead of innerWidth/innerHeight:
@@ -113,7 +113,7 @@ export interface SceneState extends Fit {
 }
 
 /** Reference box of the composition. */
-export interface Box {
+interface Box {
 	bw: number;
 	bh: number;
 	align?: 'top' | 'bottom' | undefined;
@@ -121,7 +121,7 @@ export interface Box {
 }
 
 /** Registration of a scene (see register). The callbacks are methods so that SceneDef<S> also counts as SceneDef<SceneState>. */
-export interface SceneDef<S extends SceneState = SceneState> {
+interface SceneDef<S extends SceneState = SceneState> {
 	name?: string | undefined;
 	el: HTMLElement;
 	host?: HTMLElement | undefined;
@@ -189,7 +189,7 @@ wakeHook.fn = wake;
 /** Mode from the window size (same rule as the media queries in landing.css). */
 export function modeOf(W: number, H: number): { mode: Mode; short: boolean } {
 	const portrait = W / H <= 1 || W < 700;
-	return { mode: portrait ? 'hoch' : 'quer', short: !portrait && H < 500 };
+	return { mode: portrait ? 'portrait' : 'landscape', short: !portrait && H < 500 };
 }
 
 const reported = new Set<string>();
@@ -334,7 +334,7 @@ function tick() {
 		lastDpr = window.devicePixelRatio;
 		refresh();
 	}
-	const spikes = qa.spitzen as Spike[] | undefined;
+	const spikes = qa.spikes as Spike[] | undefined;
 	let m0 = spikes ? performance.now() : 0;
 	const parts: [string, number][] = [];
 	const mark = (n: string) => {
@@ -349,7 +349,7 @@ function tick() {
 		} catch (e) {
 			report('first', e);
 		}
-		mark(`vorn:${fn.name || '?'}`);
+		mark(`first:${fn.name || '?'}`);
 	}
 	for (const fn of subs) {
 		try {
@@ -380,14 +380,14 @@ function tick() {
 	}
 	if (spikes) {
 		const sum = parts.reduce((t, x) => t + x[1], 0);
-		if (sum > 6) spikes.push({ y: Math.round(sy), ms: Math.round(sum), teile: parts });
+		if (sum > 6) spikes.push({ y: Math.round(sy), ms: Math.round(sum), parts });
 	}
 }
-/** Measurement hook: frames with more than 6 ms of compute time, split by scene (qa.spitzen = [] arms it). */
+/** Measurement hook: frames with more than 6 ms of compute time, split by scene (qa.spikes = [] arms it). */
 interface Spike {
 	y: number;
 	ms: number;
-	teile: [string, number][];
+	parts: [string, number][];
 }
 
 function onUp(e: PointerEvent) {
@@ -418,7 +418,7 @@ function hook() {
 }
 
 /** Measure all scenes again (mode or pixel factor change). */
-export function refresh() {
+function refresh() {
 	for (const r of scenes) measure(r, r.s.el.clientWidth, r.s.el.clientHeight);
 }
 
@@ -580,7 +580,7 @@ export function start(): () => void {
 	return stop;
 }
 
-export function stop(): void {
+function stop(): void {
 	cancelAnimationFrame(raf);
 	if (visHook) document.removeEventListener('visibilitychange', visHook);
 	started = false;

@@ -14,14 +14,14 @@ export function HeaderMask() {
 	const ref = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		const el = ref.current as HTMLDivElement;
-		const header = document.querySelector('[data-kopf]') as HTMLElement | null;
+		const header = document.querySelector('[data-header]') as HTMLElement | null;
 		// Reads in the read phase of the frame loop: as an rAF of its own after the scenes, every read forced a layout
 		let h = '';
 		let o = '';
 		const measure = () => {
 			const band = (header?.getBoundingClientRect().bottom ?? 64) + 10;
 			let v = 0;
-			const portrait = document.getElementById('final')?.dataset.mode === 'hoch';
+			const portrait = document.getElementById('final')?.dataset.mode === 'portrait';
 			for (const id of portrait ? IDS_PORTRAIT : IDS) {
 				const s = document.getElementById(id);
 				if (!s) continue;
@@ -31,8 +31,8 @@ export function HeaderMask() {
 				v = Math.max(v, e);
 			}
 			// Portrait, end layer of the intro: when the stage scrolls away upwards, the phone slides under the band
-			if (portrait && document.getElementById('final')?.dataset.phase === 'ende') {
-				const b = document.querySelector('[data-buehne]');
+			if (portrait && document.getElementById('final')?.dataset.phase === 'end') {
+				const b = document.querySelector('[data-stage]');
 				if (b) v = Math.max(v, Math.min(1, Math.max(0, -b.getBoundingClientRect().top / 24)));
 			}
 			// write changed values only

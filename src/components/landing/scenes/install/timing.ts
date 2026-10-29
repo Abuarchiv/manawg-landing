@@ -8,7 +8,7 @@ import type { Tap } from './types';
 type Curve = (x: number) => number;
 
 /** CSS cubic-bezier as a function x(0..1) -> y. Newton with bisection fallback. */
-export function bezier(x1: number, y1: number, x2: number, y2: number): Curve {
+function bezier(x1: number, y1: number, x2: number, y2: number): Curve {
 	const cx = 3 * x1;
 	const bx = 3 * (x2 - x1) - cx;
 	const ax = 1 - cx - bx;
@@ -64,7 +64,7 @@ export function spring(tau: number, z = 0.59, wn = 16.6): number {
 export const seg = (t: number, t0: number, d: number): number => cl((t - t0) / d);
 
 /** State of the tap indicator: opacity, position, press scale. */
-export interface TapState {
+interface TapState {
 	o: number;
 	x: number;
 	y: number;

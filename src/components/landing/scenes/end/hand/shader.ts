@@ -16,7 +16,7 @@ import {
 	STEP,
 } from './constants';
 
-export const FS = `#version 300 es
+const FS = `#version 300 es
 #pragma DEFS
 precision highp float;
 precision highp int;

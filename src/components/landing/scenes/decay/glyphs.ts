@@ -5,6 +5,7 @@
 //
 // Progress T: 0 while the intro stage is sticky; 1 when the first digit sits at 30 % of the window height.
 
+import { sizeBacking } from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
 import { cl, hsh, ss } from '../../core/math';
 import { buildGrid, digitMetrics, handover } from '../how-it-works/digits';
@@ -110,7 +111,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 	let sourceTime = -9;
 	const off = onFrame(() => {
 		if (!stageEl?.isConnected)
-			stageEl = document.querySelector<HTMLElement>('[data-buehne="intro"]');
+			stageEl = document.querySelector<HTMLElement>('[data-stage="intro"]');
 		if (digits.length < DIGITS.length || !digits[0]?.isConnected)
 			digits = [...document.querySelectorAll<HTMLCanvasElement>('#so-gehts canvas')];
 		if (!ctx || !stageEl || digits.length < DIGITS.length || loop.reduced) return idleFrame(1);
@@ -150,7 +151,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		}
 		if (T >= 1) return idleFrame(T);
 
-		const portrait = loop.mode === 'hoch';
+		const portrait = loop.mode === 'portrait';
 		const { cs, gl } = digitMetrics(portrait);
 		const fr = document.querySelector<HTMLIFrameElement>('iframe[title="ManaWG-App"]');
 		// Rebuild targets (cells of the three digits) and sources (content of the app) on entry or after a resize
@@ -206,10 +207,7 @@ export function startDecay(cv: HTMLCanvasElement): () => void {
 		// At most 1.5x: the area is screen-sized and thousands of characters fly fast; at 2x the
 		// GPU was the limit on Retina desktops (44 % fewer pixels, not visible in flight)
 		const dpr = Math.min(1.5, devicePixelRatio || 1);
-		if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) {
-			cv.width = Math.round(W * dpr);
-			cv.height = Math.round(H * dpr);
-		}
+		sizeBacking(cv, W, H, dpr);
 		const sk = `${gl}|${dpr}|${loop.fv}`;
 		if (!sheet || sk !== sheetKey) {
 			sheet = buildSheet(gl, dpr);

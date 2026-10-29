@@ -78,7 +78,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			}
 			s.tap = fr.querySelector<HTMLElement>('[data-ins="tap"]');
 			s.steps = [...sec.querySelectorAll<HTMLElement>('[data-istep]')];
-			s.caption = sec.querySelector<HTMLElement>('[data-kurz]');
+			s.caption = sec.querySelector<HTMLElement>('[data-caption]');
 			s.tab = -1;
 			s.clk = 0;
 			s.n = 0;
@@ -153,18 +153,18 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			if (a !== s.active) {
 				s.active = a;
 				// Caption in portrait layout: the active step as one line below the device
-				const z = s.steps[a]?.querySelector('[data-zeile]');
+				const z = s.steps[a]?.querySelector('[data-row]');
 				if (s.caption && z) {
 					const nr = document.createElement('span');
 					nr.className = 'label';
-					nr.dataset.kurzNr = '';
+					nr.dataset.captionNum = '';
 					nr.textContent = `0${a + 1} / 0${pl.jumps.length}`;
 					s.caption.replaceChildren(nr, ...z.cloneNode(true).childNodes);
-					s.caption.dataset.schritt = String(a);
+					s.caption.dataset.step = String(a);
 				}
 				for (const el of s.steps) {
 					const isActive = Number(el.getAttribute('data-istep')) === a;
-					el.toggleAttribute('data-aktiv', isActive);
+					el.toggleAttribute('data-active', isActive);
 					if (isActive) el.setAttribute('aria-current', 'step');
 					else el.removeAttribute('aria-current');
 					if (!isActive) el.style.removeProperty('--progress');
@@ -176,15 +176,15 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 	});
 	// Measurement hook for landing-konzept/werkzeuge/qa (read only with ?qa=1): halt and set the clock, check the state per time
 	qa.install = {
-		halte(b: unknown) {
+		hold(b: unknown) {
 			if (st) st.halt = !!b;
 		},
-		setze(x: number) {
+		setClock(x: number) {
 			if (st) st.clk = x;
 		},
-		uhr: () => st?.clk ?? 0,
-		zeit: () => ({ ...timing, mittel: timing.sum / Math.max(1, timing.n) }),
-		zeitNull() {
+		clock: () => st?.clk ?? 0,
+		timing: () => ({ ...timing, mean: timing.sum / Math.max(1, timing.n) }),
+		resetTiming() {
 			timing.n = 0;
 			timing.sum = 0;
 			timing.max = 0;
@@ -192,7 +192,7 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 		tab: () => st?.tab ?? -1,
 		plan: (i: TabIndex) => ({
 			loop: PLANS[i].loop,
-			sprung: PLANS[i].jumps,
+			jumps: PLANS[i].jumps,
 			taps: PLANS[i].taps,
 		}),
 	};

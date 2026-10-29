@@ -178,19 +178,18 @@
 	background-image: linear-gradient(rgb(var(--ink-rgb) / 0.45), rgb(var(--ink-rgb) / 0.45));
 	background-size: 100% 1px;
 }
-.cta--voll {
+.cta--solid {
 	color: var(--ink);
 	background-image: linear-gradient(var(--ink), var(--ink)),
 		linear-gradient(rgb(var(--ink-rgb) / 0.45), rgb(var(--ink-rgb) / 0.45));
 	background-position: 0 29px, 0 29px;
 	background-size: 0 1px, 100% 1px;
 }
-.cta--voll::before,
-.cta--voll::after {
+.cta--solid::before,
+.cta--solid::after {
 	opacity: 0.85;
 }
-.cta--rand,
-.cta--dunkel {
+.cta--dark {
 	color: rgb(var(--ink-rgb) / 0.88);
 }
 .cta:focus-visible,
@@ -205,7 +204,7 @@
 .cta:focus-visible::after {
 	opacity: 1;
 }
-.cta--gross {
+.cta--large {
 	font-size: var(--cta-large-fs);
 }
 .label {
@@ -215,16 +214,16 @@
 	letter-spacing: 0.1em;
 	color: var(--text-3);
 }
-.haar {
+.hairline {
 	height: 1px;
 	background: var(--hairline);
 }
 /* Questions: accordion with height animation via grid-template-rows */
-.faq-zeile {
+.faq-row {
 	border-top: 1px solid var(--hairline);
 	padding-bottom: var(--sp-26);
 }
-.faq-frage {
+.faq-question {
 	all: unset;
 	box-sizing: border-box;
 	width: 100%;
@@ -244,17 +243,17 @@
 	opacity: 0.72;
 	transition: opacity var(--time) ease;
 }
-.faq-frage > span:first-child {
+.faq-question > span:first-child {
 	min-width: 0;
 }
-.faq-frage:focus-visible {
+.faq-question:focus-visible {
 	outline: 2px solid var(--ink);
 	outline-offset: 3px;
 }
-.faq-frage[aria-expanded="true"] {
+.faq-question[aria-expanded="true"] {
 	opacity: 1;
 }
-.faq-marke {
+.faq-mark {
 	flex-shrink: 0;
 	position: relative;
 	width: var(--faq-mark);
@@ -264,52 +263,52 @@
 	transition: transform var(--time) ease;
 }
 /* Plus made of two 1 px strokes; when open the vertical one scales to 0 (200 ms): plus and minus share the same metrics */
-.faq-marke i {
+.faq-mark i {
 	position: absolute;
 	background: currentColor;
 }
-.faq-marke i:first-child {
+.faq-mark i:first-child {
 	left: 15%;
 	right: 15%;
 	top: calc(50% - 0.5px);
 	height: 1px;
 }
-.faq-marke i:last-child {
+.faq-mark i:last-child {
 	top: 15%;
 	bottom: 15%;
 	left: calc(50% - 0.5px);
 	width: 1px;
 	transition: transform 0.2s ease;
 }
-.faq-frage[aria-expanded="true"] .faq-marke i:last-child {
+.faq-question[aria-expanded="true"] .faq-mark i:last-child {
 	transform: scaleY(0);
 }
-.faq-antwort {
+.faq-answer {
 	display: grid;
 	grid-template-rows: 0fr;
 	visibility: hidden;
 	transition: grid-template-rows 0.3s ease, visibility 0s linear 0.3s;
 }
-.faq-antwort[data-offen="true"] {
+.faq-answer[data-open="true"] {
 	grid-template-rows: 1fr;
 	visibility: visible;
 	transition-delay: 0s;
 }
-.faq-innen {
+.faq-inner {
 	min-height: 0;
 	overflow: hidden;
 }
-.faq-nr {
+.faq-num {
 	display: inline-block;
 	min-width: 3.2em;
 	vertical-align: 0.5em;
 	/* The closed question dims to 0.72; these keep the number at 4.5:1 against the paper. */
 	color: #a6a6a6;
 }
-:root[data-theme="light"] .faq-nr {
+:root[data-theme="light"] .faq-num {
 	color: #3d3d3d;
 }
-.faq-innen p {
+.faq-inner p {
 	margin: 0;
 	padding-top: var(--sp-14);
 	font-size: var(--t-17);
@@ -319,7 +318,7 @@
 }
 
 /* Footer links: hit height 44 px */
-.fuss-link {
+.footer-link {
 	display: flex;
 	align-items: center;
 	min-height: 44px;
@@ -346,7 +345,7 @@
 /* "Skip intro" hint: mono step of the labels, 11 px, letter spacing 0.12 em, no background. Legibility
    over mountain, halftone and isometry comes from a soft dark shadow. The 44 px hit area comes from
    ::after; the flood leaves only a narrow gap around the line. Hover and focus: underline. */
-.hinweis {
+.hint {
 	position: fixed;
 	left: calc(var(--margin) + env(safe-area-inset-left));
 	bottom: max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px));
@@ -361,16 +360,16 @@
 	opacity: calc(0.85 * (1 - var(--e, 0) * 1.38));
 	transition: opacity var(--time) ease;
 }
-.hinweis:focus-visible {
+.hint:focus-visible {
 	text-decoration: underline;
 	text-underline-offset: 4px;
 }
 /* Phone in landscape: bottom right next to SCROLLEN so the room cards stay clear on the left */
-#final[data-flach] .hinweis {
+#final[data-short] .hint {
 	left: auto;
 	right: calc(var(--margin) + env(safe-area-inset-right) + 96px);
 }
-.hinweis::after {
+.hint::after {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -379,7 +378,7 @@
 	height: max(100%, 44px);
 	transform: translateY(-50%);
 }
-.fokus-anker {
+.focus-anchor {
 	position: fixed;
 	left: calc(var(--margin) + env(safe-area-inset-left));
 	bottom: calc(max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px)) + 32px);
@@ -392,7 +391,7 @@
 	color: var(--ink);
 	text-decoration: none;
 }
-.fokus-anker:focus-visible {
+.focus-anchor:focus-visible {
 	width: auto;
 	height: auto;
 	overflow: visible;
@@ -405,7 +404,7 @@
 	outline-offset: 2px;
 }
 /* Skip link "Skip to content": first tab stop, visible below the header band only on keyboard focus */
-.sprung {
+.skip-link {
 	position: fixed;
 	left: calc(var(--margin) + env(safe-area-inset-left));
 	top: calc(var(--header-bottom) + 8px);
@@ -418,7 +417,7 @@
 	color: var(--ink);
 	text-decoration: none;
 }
-.sprung:focus-visible {
+.skip-link:focus-visible {
 	width: auto;
 	height: auto;
 	overflow: visible;
@@ -430,23 +429,23 @@
 	outline: 2px solid var(--ink);
 	outline-offset: 2px;
 }
-#inhalt:focus {
+#content:focus {
 	outline: none;
 }
-.fokus-anker[inert],
-[data-phase="nach"] .fokus-anker,
-[data-phase="ende"] .fokus-anker {
+.focus-anchor[inert],
+[data-phase="after"] .focus-anchor,
+[data-phase="end"] .focus-anchor {
 	visibility: hidden;
 }
-[data-phase="nach"] .hinweis,
-.hinweis[inert] {
+[data-phase="after"] .hint,
+.hint[inert] {
 	visibility: hidden;
 }
 
 /* Header: no veil over the artwork, which runs edge to edge up to the top. When content (text) runs under the
    header, HeaderMask fades out the band. The logo has no background of its own. */
 
-[data-kopf][inert] {
+[data-header][inert] {
 	visibility: hidden;
 }
 
@@ -468,18 +467,18 @@
 	.cta:hover::after {
 		opacity: 1;
 	}
-	.faq-frage:hover {
+	.faq-question:hover {
 		opacity: 1;
 	}
-	.faq-frage[aria-expanded="false"]:hover .faq-marke {
+	.faq-question[aria-expanded="false"]:hover .faq-mark {
 		transform: rotate(90deg);
 	}
-	.fuss-link:hover {
+	.footer-link:hover {
 		opacity: 1;
 		text-decoration: underline;
 		text-underline-offset: 3px;
 	}
-	.hinweis:hover {
+	.hint:hover {
 		opacity: calc(1 - var(--e, 0) * 1.38);
 		text-decoration: underline;
 		text-underline-offset: 3px;
@@ -497,24 +496,24 @@
 	}
 	.cta,
 	.tab,
-	.faq-marke,
-	.faq-antwort,
-	.hinweis {
+	.faq-mark,
+	.faq-answer,
+	.hint {
 		transition-property: opacity;
 	}
-	.faq-antwort {
+	.faq-answer {
 		transition-duration: 0s;
 	}
 	.cta:active {
 		transform: none;
 	}
-	.faq-frage[aria-expanded="false"]:hover .faq-marke {
+	.faq-question[aria-expanded="false"]:hover .faq-mark {
 		transform: none;
 	}
 }
 
 /* Hint above the phone of the end scene: in portrait the phone sits right below the button */
-#final[data-mode="hoch"] [data-ende-hinweis] {
+#final[data-mode="portrait"] [data-end-hint] {
 	top: -17px !important;
 	font-size: 10px;
 	letter-spacing: 0.07em;

@@ -397,26 +397,26 @@ export function Iphone() {
 								<BrLines lines={t.actionReadingList} />
 							</em>
 						</div>
-						<div data-tag="mehr">
+						<div data-tag="more">
 							<span className={s.ios_gr}>
 								<ChevronDown
 									size={30}
 									strokeWidth={1.7}
-									data-k="ios-mehr-pfeil"
+									data-k="ios-more-arrow"
 									aria-hidden="true"
 								/>
 								<ChevronUp
 									size={30}
 									strokeWidth={1.7}
-									data-k="ios-weniger-pfeil"
+									data-k="ios-less-arrow"
 									aria-hidden="true"
 									style={{ opacity: 0 }}
 								/>
 							</span>
-							<em data-k="ios-mehr-t">
+							<em data-k="ios-more-t">
 								<BrLines lines={t.actionShowMore} />
 							</em>
-							<em data-k="ios-weniger-t" style={{ opacity: 0 }}>
+							<em data-k="ios-less-t" style={{ opacity: 0 }}>
 								<BrLines lines={t.actionShowLess} />
 							</em>
 						</div>
@@ -443,7 +443,7 @@ export function Iphone() {
 							<X size={22} strokeWidth={2.4} aria-hidden="true" />
 						</span>
 						<b>{t.dialogTitle}</b>
-						<span className={s.ios_blue} data-k="ios-hinzu">
+						<span className={s.ios_blue} data-k="ios-add">
 							{t.dialogAdd}
 						</span>
 					</div>

@@ -50,7 +50,7 @@ export function Desktop() {
 			style={{ fontFamily: '"Google Sans", Roboto, Inter, system-ui, sans-serif' }}
 		>
 			{/* Browser window */}
-			<div className={s.dk_window} data-k="dk-fenster">
+			<div className={s.dk_window} data-k="dk-window">
 				<div className={s.dk_bar}>
 					<TrafficLights />
 					<div className={s.dk_tab}>

@@ -82,7 +82,7 @@ export function cardOpacity(P: number): number[] {
 	});
 }
 
-qa.karten = cardOpacity;
+qa.cards = cardOpacity;
 
 /** Rectangle in CSS pixels of the canvas. */
 interface Rect {
@@ -118,7 +118,7 @@ interface Person {
 	nt: number;
 }
 
-/** Rectangles of the DOM elements with data-loch: the card column and everything the labels avoid. */
+/** Rectangles of the DOM elements with data-hole: the card column and everything the labels avoid. */
 interface DomRects {
 	column: Rect | null;
 	avoid: Rect[];
@@ -218,11 +218,11 @@ function placeLabels(
 const PORTRAIT_BOX = { bw: 900, bh: 560, x0: 190, y0: 120, ox: 640, oy: 410 };
 
 /** Portrait: top and bottom edge of the flat box below the card column (CSS px). The flood leaves it out as well. */
-export function portraitTop(textBottom: number, safeH: number): { top: number; bot: number } {
+function portraitTop(textBottom: number, safeH: number): { top: number; bot: number } {
 	return { top: Math.min(textBottom + 10, safeH * 0.62), bot: safeH - 56 };
 }
 
-/** Rectangles of the DOM elements with data-loch measured from the canvas (re-measured every 20 frames). */
+/** Rectangles of the DOM elements with data-hole measured from the canvas (re-measured every 20 frames). */
 function measureDom(st: FlatState, cv: HTMLCanvasElement): DomRects {
 	if (st.dom && loop.n - st.domN < 20) return st.dom;
 	const r0 = cv.getBoundingClientRect();
@@ -241,9 +241,9 @@ function measureDom(st: FlatState, cv: HTMLCanvasElement): DomRects {
 		avoid: [],
 	};
 	st.dom = dom;
-	for (const el of root.querySelectorAll<HTMLElement>('[data-loch]')) {
+	for (const el of root.querySelectorAll<HTMLElement>('[data-hole]')) {
 		const q = rect(el);
-		if (el.dataset.loch === 'text') {
+		if (el.dataset.hole === 'text') {
 			dom.column = q;
 			dom.avoid.push(q);
 		} else dom.avoid.push({ x0: q.x0 - 6, y0: q.y0 - 6, x1: q.x1 + 6, y1: q.y1 + 6 });
@@ -276,9 +276,9 @@ export function draw(
 		};
 		st = next;
 		states.set(cv, next);
-		qa.wohnungLabels = () => ({
+		qa.flatLabels = () => ({
 			labels: next.labels.map((l) => ({ text: l.text, size: l.size, ...l.rect, cx: l.x, cy: l.y })),
-			spalte: next.dom?.column ?? null,
+			column: next.dom?.column ?? null,
 			W: next.W,
 			H: next.H,
 		});
@@ -303,7 +303,7 @@ export function draw(
 				: v + (z - v) * (1 - Math.exp(-Math.min(c.dt ?? 0.016, 0.1) / 0.04));
 		return st.fade[key];
 	};
-	const portrait = c.mode === 'hoch';
+	const portrait = c.mode === 'portrait';
 	// Mapping scene space -> canvas CSS pixels: X = tx + x * f, Y = ty + y * f
 	let f: number;
 	let tx: number;

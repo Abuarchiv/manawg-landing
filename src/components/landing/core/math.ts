@@ -34,16 +34,16 @@ export const hsh = (i: number, j: number): number => {
 	return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
 };
 // Smooth minimum (distance fields).
-export const smoothMin = (a: number, b: number, k: number): number => {
+const smoothMin = (a: number, b: number, k: number): number => {
 	const h = Math.max(k - Math.abs(a - b), 0) / k;
 	return Math.min(a, b) - h * h * k * 0.25;
 };
 
 // One circle of the mark as (x, y, r).
-export type Circle = readonly [x: number, y: number, r: number];
+type Circle = readonly [x: number, y: number, r: number];
 
 // The ManaWG mark: eight circles (x, y, r) on a 416 x 346 grid, centre (208, 173).
-export const MARK_CIRCLES = [
+const MARK_CIRCLES = [
 	[200, 198, 80],
 	[77, 105, 52],
 	[142, 302, 33],

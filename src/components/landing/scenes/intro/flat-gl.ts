@@ -3,6 +3,7 @@
 // the class selects the glyph ramp (floorboards . : -, rug up to @, plants ; * &), the brightness selects the glyph.
 // It is drawn into a separate WebGL canvas that flat.ts takes over as its backdrop.
 
+import { sizeBacking } from '../../core/canvas';
 import { loop } from '../../core/loop';
 
 /** Render dimensions: S image pixels per grid unit, origin (OX, OY), size, height of the height encoding. */
@@ -16,7 +17,7 @@ interface FlatMetrics {
 }
 
 /** Inputs per frame: mapping image pixels -> CSS px (k, bx, by), build-up, rooms with light, pointer. */
-export interface GlyphInput {
+interface GlyphInput {
 	W: number;
 	H: number;
 	dpr: number;
@@ -177,9 +178,9 @@ function buildSheet(g: Gl): void {
 
 async function load(): Promise<void> {
 	const [m, lum, meta] = await Promise.all([
-		fetch('/wohnung/wohnung.json').then((r) => r.json() as Promise<FlatMetrics>),
-		loadImage('/wohnung/lum.webp'),
-		loadImage('/wohnung/meta.png'),
+		fetch('/flat/flat.json').then((r) => r.json() as Promise<FlatMetrics>),
+		loadImage('/flat/lum.webp'),
+		loadImage('/flat/meta.png'),
 	]);
 	const cv = document.createElement('canvas');
 	const gl = cv.getContext('webgl2', { antialias: false, depth: false, alpha: false });
@@ -258,12 +259,8 @@ export function drawFlatGlyphs(e: GlyphInput): HTMLCanvasElement | null {
 	if (!g) return null;
 	const { gl, u, m } = g;
 	if (g.fv !== loop.fv) buildSheet(g);
-	const w = Math.max(1, Math.round(e.W * e.dpr));
-	const h = Math.max(1, Math.round(e.H * e.dpr));
-	if (g.cv.width !== w || g.cv.height !== h) {
-		g.cv.width = w;
-		g.cv.height = h;
-	}
+	sizeBacking(g.cv, e.W, e.H, e.dpr);
+	const { width: w, height: h } = g.cv;
 	gl.viewport(0, 0, w, h);
 	const k = e.ku / m.S;
 	gl.uniform2f(u('uRes'), w, h);

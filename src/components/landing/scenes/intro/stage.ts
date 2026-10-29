@@ -18,10 +18,10 @@ import { unwarp, warp } from './timeline';
 import type { HeroMarks, Hole, StageContext, StagePointer } from './types';
 
 /** Phase of the stage (data-phase on #final): intro, end layer or scrolled past. */
-type Phase = 'intro' | 'ende' | 'nach';
+type Phase = 'intro' | 'end' | 'after';
 
 /** State of the stage (for the QA hook and the landing page). */
-export interface StageState {
+interface StageState {
 	/** Smoothed progress. */
 	sp: number;
 	init: boolean;
@@ -48,7 +48,7 @@ export interface StageState {
 }
 
 /** The running stage. */
-export interface Stage {
+interface Stage {
 	state: StageState;
 	/** y position in the document for progress P (QA). */
 	yForP: (P: number) => number;
@@ -82,20 +82,20 @@ export function createStage({
 	const root = required(stageEl.closest<HTMLElement>('#final'), '#final');
 	const q = (k: string) => stageEl.querySelector<HTMLCanvasElement>(`[data-intro="${k}"]`);
 	const cvHero = required(q('hero'), 'hero');
-	const cvFlat = required(q('wohnung'), 'wohnung');
+	const cvFlat = required(q('flat'), 'flat');
 	const safe = required(stageEl.querySelector<HTMLElement>('[data-safe]'), '[data-safe]');
-	const cvStars = stageEl.querySelector<HTMLCanvasElement>('canvas[data-sterne]');
+	const cvStars = stageEl.querySelector<HTMLCanvasElement>('canvas[data-stars]');
 	const hb = stageEl.querySelector<HTMLCanvasElement>('[data-hand="back"]');
 	const hf = stageEl.querySelector<HTMLCanvasElement>('[data-hand="front"]');
 	const ctas = [...stageEl.querySelectorAll<HTMLElement>('[data-cta]')];
-	const header = root.querySelector<HTMLElement>('[data-kopf]');
-	const headerCta = header?.querySelector<HTMLElement>('[data-loch="cta"]');
-	const endTitle = stageEl.querySelector<HTMLElement>('[data-ende-titel]');
-	const heroCta = stageEl.querySelector<HTMLElement>('[data-held-cta]');
-	const introOnly = [...root.querySelectorAll<HTMLElement>('[data-nur-intro]')];
-	const hints = root.querySelector<HTMLElement>('[data-hinweise]');
-	const endEl = stageEl.querySelector<HTMLElement>('[data-ende]');
-	const roomsEl = stageEl.querySelector<HTMLElement>('[data-loch="text"]');
+	const header = root.querySelector<HTMLElement>('[data-header]');
+	const headerCta = header?.querySelector<HTMLElement>('[data-hole="cta"]');
+	const endTitle = stageEl.querySelector<HTMLElement>('[data-end-title]');
+	const heroCta = stageEl.querySelector<HTMLElement>('[data-hero-cta]');
+	const introOnly = [...root.querySelectorAll<HTMLElement>('[data-intro-only]')];
+	const hints = root.querySelector<HTMLElement>('[data-hints]');
+	const endEl = stageEl.querySelector<HTMLElement>('[data-end]');
+	const roomsEl = stageEl.querySelector<HTMLElement>('[data-hole="text"]');
 	const hero = createHero(cvHero);
 
 	let W = stageEl.clientWidth;
@@ -175,14 +175,14 @@ export function createStage({
 
 	const measureHoles = () => {
 		const r0 = stageEl.getBoundingClientRect();
-		holes = [...root.querySelectorAll<HTMLElement>('[data-loch]')].map((el) => {
+		holes = [...root.querySelectorAll<HTMLElement>('[data-hole]')].map((el) => {
 			const r = el.getBoundingClientRect();
 			return {
 				x: r.left - r0.left,
 				y: r.top - r0.top,
 				w: r.width,
 				h: r.height,
-				kind: el.dataset.loch ?? '',
+				kind: el.dataset.hole ?? '',
 			};
 		});
 	};
@@ -240,7 +240,7 @@ export function createStage({
 
 	const fireReady = () => {
 		st.ready = true;
-		document.dispatchEvent(new CustomEvent('landing:bereit'));
+		document.dispatchEvent(new CustomEvent('landing:ready'));
 	};
 
 	/** Smooths the progress. Takes the value immediately on the first frame and while the stage is not visible. */
@@ -293,8 +293,8 @@ export function createStage({
 		setVar('--p', Math.min(P, 0.1).toFixed(4), [stageEl, hints]);
 		// Phone.tsx loads still image and app from here on, well before the end layer (building the app page takes 20 to 60 ms):
 		// preferably in the first scroll pause from P 0.2 (building while scrolling stutters), at the latest at P 0.55
-		if (root.dataset.nah !== '1' && (P > 0.55 || (P > 0.2 && loop.now - loop.act > 0.5)))
-			root.dataset.nah = '1';
+		if (root.dataset.near !== '1' && (P > 0.55 || (P > 0.2 && loop.now - loop.act > 0.5)))
+			root.dataset.near = '1';
 		setVar('--g', (1 - fpA).toFixed(3), [cvHero]);
 		// The flat is gone at endA 0.5, the end layer only begins at 0.35: hardly any overlap, no grey veil
 		setVar('--f', (Math.max(fpA, cl(portal * 8)) * (1 - cl(endA * 2))).toFixed(3), [cvFlat]);
@@ -307,22 +307,22 @@ export function createStage({
 			setVar(`--c${j}`, k.toFixed(3), [roomsEl]);
 		}
 		// Portrait: the header stays visible (the title sits below it), otherwise the button would be left alone after fading out
-		const headerOff = loop.mode === 'hoch' ? 0 : endA * (rb.bottom > headerBottom ? 1 : 0);
+		const headerOff = loop.mode === 'portrait' ? 0 : endA * (rb.bottom > headerBottom ? 1 : 0);
 		setVar('--header-off', headerOff.toFixed(3), [header]);
 		// Portrait: title and button of the end layer fade out as soon as they reach the header band
 		// while scrolling out (no text over the logo); to the same degree the header button returns
 		let titleOff = 0;
-		if (loop.mode === 'hoch' && endTitle && endA > 0) {
+		if (loop.mode === 'portrait' && endTitle && endA > 0) {
 			titleOff = 1 - cl((titleTop - headerBottom) / 16);
 		}
 		setVar('--end-title-out', titleOff.toFixed(3), [endTitle]);
 		// Portrait: the header stays but its button goes while the button of the end layer is in view (no duplicate)
 		const headerCtaOff =
-			loop.mode === 'hoch' ? endA * (rb.bottom > headerBottom ? 1 : 0) * (1 - titleOff) : 0;
+			loop.mode === 'portrait' ? endA * (rb.bottom > headerBottom ? 1 : 0) * (1 - titleOff) : 0;
 		setVar('--header-cta-out', headerCtaOff.toFixed(3), [header]);
 		if (headerCta && headerCta.inert !== headerCtaOff >= 0.6) headerCta.inert = headerCtaOff >= 0.6;
 		if (header && header.inert !== headerOff >= 0.6) header.inert = headerOff >= 0.6;
-		const phase: Phase = rb.bottom <= 0 ? 'nach' : P >= 0.9 ? 'ende' : 'intro';
+		const phase: Phase = rb.bottom <= 0 ? 'after' : P >= 0.9 ? 'end' : 'intro';
 		if (st.phase !== phase || root.dataset.phase !== phase) {
 			st.phase = phase;
 			root.dataset.phase = phase;
@@ -341,7 +341,7 @@ export function createStage({
 			heroCta.inert = heroOff;
 			heroCta.style.pointerEvents = heroOff ? 'none' : '';
 		}
-		const hintOff = endA >= 0.72 || phase === 'nach';
+		const hintOff = endA >= 0.72 || phase === 'after';
 		for (const el of introOnly) if (el.inert !== hintOff) el.inert = hintOff;
 		return phase;
 	};

@@ -12,7 +12,7 @@ const T3 = 4.5;
 const T4 = 6.1;
 const T5 = 8.1;
 const T6 = 10.35;
-export const LOOP = 13.45; // the running app stays for 2.3 s before the loop restarts
+const LOOP = 13.45; // the running app stays for 2.3 s before the loop restarts
 
 export const plan: PlaybackPlan = {
 	loop: LOOP,
@@ -55,10 +55,10 @@ export const plan: PlaybackPlan = {
 		put(E['ios-share-x'], { o: cl((e - 0.3) / 0.7) });
 		// "Show More": the arrow rotates over 350 ms while the label crossfades
 		const mr = seg(t, T3 + 0.065, 0.35);
-		put(E['ios-mehr-t'], { o: 1 - mr });
-		put(E['ios-weniger-t'], { o: mr });
-		put(E['ios-mehr-pfeil'], { o: 1, transform: `rotate(${Math.round(180 * io(mr))}deg)` });
-		put(E['ios-weniger-pfeil'], { o: 0 });
+		put(E['ios-more-t'], { o: 1 - mr });
+		put(E['ios-less-t'], { o: mr });
+		put(E['ios-more-arrow'], { o: 1, transform: `rotate(${Math.round(180 * io(mr))}deg)` });
+		put(E['ios-less-arrow'], { o: 0 });
 		put(E['ios-scrim1'], { o: 0.18 * e });
 
 		// ---------- "Add to Home Screen" dialog ----------

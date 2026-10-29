@@ -9,7 +9,7 @@ import type { PlaybackPlan } from './types';
 
 const T1 = 1.8; // click on the install icon (chip)
 const T2 = 4.1; // click on "Install" in the dialog
-export const LOOP = 6.5;
+const LOOP = 6.5;
 
 export const plan: PlaybackPlan = {
 	loop: LOOP,
@@ -43,6 +43,6 @@ export const plan: PlaybackPlan = {
 		const wa = easeOut(seg(t, T2 + 0.1, 0.32));
 		const af = seg(t, T2 + 0.1, 0.03);
 		put(E['dk-app'], { d: t > T2 + 0.09 ? 'block' : '', o: af, t: tf(0, 0, lerp(0.94, 1, wa)) });
-		put(E['dk-fenster'], { d: t < T2 + 0.26 ? 'block' : '' });
+		put(E['dk-window'], { d: t < T2 + 0.26 ? 'block' : '' });
 	},
 };

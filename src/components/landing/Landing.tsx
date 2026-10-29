@@ -40,7 +40,7 @@ function installQaHook(root: HTMLElement) {
 		yForP: (P: number) => live.stage?.yForP(P) ?? 0,
 		section: (id: string) => sectionBox(id),
 		dbg: qa,
-		get bereit() {
+		get ready() {
 			return live.stage?.state.ready ?? false;
 		},
 	};
@@ -53,8 +53,8 @@ function LandingInner() {
 		const applyMode = () => {
 			const { mode, short } = modeOf(window.innerWidth, window.innerHeight);
 			root.dataset.mode = mode;
-			if (short) root.dataset.flach = '';
-			else delete root.dataset.flach;
+			if (short) root.dataset.short = '';
+			else delete root.dataset.short;
 			setMode(mode, short);
 		};
 		let stopScroll = () => {};
@@ -79,13 +79,13 @@ function LandingInner() {
 	return (
 		<div id="final" data-mode={loop.mode} data-phase="intro" suppressHydrationWarning>
 			{/* Skip link as the first tab stop, visible only on focus (landing.css .sprung) */}
-			<a className="label sprung" href="#inhalt">
+			<a className="label skip-link" href="#content">
 				{dict.skip}
 			</a>
 			<HeaderMask />
 			<Header />
 			<Hints />
-			<main id="inhalt" tabIndex={-1}>
+			<main id="content" tabIndex={-1}>
 				<Intro />
 				<FloodBand />
 				<HowItWorks />

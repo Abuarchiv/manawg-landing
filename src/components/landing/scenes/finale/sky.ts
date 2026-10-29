@@ -2,7 +2,7 @@
 // masks are the layers of the cloud loader (landing-konzept/wolke). No curtain and no scroll opening; the clouds billow slowly, the pointer is wind.
 
 import { isLight } from '@/lib/theme';
-import { dprFor } from '../../core/canvas';
+import { dprFor, sizeBacking } from '../../core/canvas';
 import { type SceneState, loop, register } from '../../core/loop';
 import { cl } from '../../core/math';
 
@@ -124,8 +124,8 @@ async function load(s: SkyState): Promise<void> {
 	const names = ['uSkyQ', 'uSkyH', 'uFine', 'uCoarse'];
 	// Decoding runs in parallel and without the main thread while context and shader are created
 	const images = Promise.all(
-		['stich-quer', 'stich-hoch', 'maske-fein', 'maske-grob'].map((n) =>
-			loadImage(`/himmel/${n}.webp`),
+		['engraving-landscape', 'engraving-portrait', 'mask-fine', 'mask-coarse'].map((n) =>
+			loadImage(`/sky/${n}.webp`),
 		),
 	);
 	const gl = s.cv2.getContext('webgl2', {
@@ -164,7 +164,7 @@ async function load(s: SkyState): Promise<void> {
 /** Tight rectangle around title and buttons (CSS px measured from the area). */
 function textBox(sec: HTMLElement, r0: DOMRect): [number, number, number, number] | null {
 	const h = sec.querySelector('h2');
-	const k = sec.querySelector('[data-knoepfe]');
+	const k = sec.querySelector('[data-buttons]');
 	if (!h) return null;
 	const rg = document.createRange();
 	rg.selectNodeContents(h);
@@ -202,17 +202,12 @@ export function registerSky(
 			if (!s.ready || !g) return;
 			const { gl, u } = g;
 			const dpr = dprFor(1.5, 1, s.W, s.H);
-			const w = Math.max(1, Math.round(s.W * dpr));
-			const h = Math.max(1, Math.round(s.H * dpr));
-			if (cv.width !== w || cv.height !== h) {
-				cv.width = w;
-				cv.height = h;
-				gl.viewport(0, 0, w, h);
-			}
+			if (sizeBacking(cv, s.W, s.H, dpr)) gl.viewport(0, 0, cv.width, cv.height);
+			const { width: w, height: h } = cv;
 			// No curtain anymore: the sky stands open from the start
 			const r0 = s.el.getBoundingClientRect();
 			s.open = 1;
-			const portrait = s.mode === 'hoch';
+			const portrait = s.mode === 'portrait';
 			gl.uniform1f(u('uPortrait'), portrait ? 1 : 0);
 			gl.uniform1f(u('uDprH'), dpr);
 			gl.uniform2f(u('uRes'), w, h);

@@ -7,14 +7,14 @@ import { schemaIds } from '@/lib/schema-ids';
 // Shared by the German and the English home page: the inline mode script, the noscript style and the JSON-LD.
 
 // Before the first paint: class "js" and mode (portrait/landscape) on the document so the layout does not jump.
-export const MODE_SCRIPT =
-	"(function(){var d=document.documentElement,w=d.clientWidth,h=innerHeight;d.classList.add('js');d.setAttribute('data-mode',w/h<=1||w<700?'hoch':'quer')})()";
+const MODE_SCRIPT =
+	"(function(){var d=document.documentElement,w=d.clientWidth,h=innerHeight;d.classList.add('js');d.setAttribute('data-mode',w/h<=1||w<700?'portrait':'landscape')})()";
 
-export const NOSCRIPT_STYLE =
-	'<style>[data-loader]{display:none!important}#intro,[data-buehne]{height:100svh!important}</style>';
+const NOSCRIPT_STYLE =
+	'<style>[data-loader]{display:none!important}#intro,[data-stage]{height:100svh!important}</style>';
 
 /** SoftwareApplication and FAQPage of the home page in the given language. */
-export function homeSchemas(locale: Locale) {
+function homeSchemas(locale: Locale) {
 	const dict = HOME_DICT[locale];
 	const faqSchema = {
 		'@context': 'https://schema.org',

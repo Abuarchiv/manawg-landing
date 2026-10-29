@@ -34,14 +34,22 @@
 	const clock = () => REF_NOW;
 	const T0 = clock();
 	const TZ = 'Europe/Berlin';
-	const dtf = (o) => new Intl.DateTimeFormat('de-DE', { timeZone: 'UTC', ...o });
+	// One player for both languages: index.html of app-demo (de) and app-demo-en (en-GB) load this file
+	const EN = root.lang.startsWith('en');
+	const dtf = (o) => new Intl.DateTimeFormat(EN ? 'en-GB' : 'de-DE', { timeZone: 'UTC', ...o });
+	const L = EN
+		? { real: 'This opens in the real app.', typing: 'Typing works in the real app.', skip: /^(Skip to main|Scroll to the end)/,
+			step: /^(Increase|Decrease) .* by one$/, up: 'Increase', reaction: /^(Add|Remove) reaction /, add: 'Add', remove: 'Remove' }
+		: { real: 'Das öffnet sich in der echten App.', typing: 'Eingeben geht in der echten App.', skip: /^Zum (Hauptinhalt|Ende)/,
+			step: /um eins (erhöhen|verringern)$/, up: 'erhöhen', reaction: /-Reaktion (setzen|entfernen): /, add: 'setzen', remove: 'entfernen' };
+	const noDot = (f) => ({ format: (u) => f.format(u).replace(/\.$/, '') });
 	const FMT = {
-		kurz: dtf({ weekday: 'short', day: 'numeric', month: 'short' }), // Do., 8. Okt.
-		wd0: { format: (u) => dtf({ weekday: 'short' }).format(u).replace(/\.$/, '') }, // Mi
+		kurz: dtf({ weekday: 'short', day: 'numeric', month: 'short' }), // Do., 8. Okt. | Thu 8 Oct
+		wd0: noDot(dtf({ weekday: 'short' })), // Mi | Wed
 		d: dtf({ day: 'numeric' }), // 7
-		mon0: { format: (u) => dtf({ month: 'short' }).format(u).replace(/\.$/, '') }, // Okt
+		mon0: noDot(dtf({ month: 'short' })), // Okt | Oct
 		wdlm: dtf({ weekday: 'long', day: 'numeric', month: 'long' }), // Donnerstag, 8. Oktober
-		tm: dtf({ day: '2-digit', month: '2-digit' }), // 13.10.
+		tm: dtf(EN ? { day: 'numeric', month: 'short' } : { day: '2-digit', month: '2-digit' }), // 13.10. | 13 Oct
 		dmy: dtf({ day: 'numeric', month: 'numeric', year: 'numeric' }), // 6.10.2026
 		lang: dtf({ weekday: 'long', day: '2-digit', month: 'long' }), // Dienstag, 06. Oktober
 		voll: dtf({ weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }), // Mittwoch, 7. Oktober 2026
@@ -66,11 +74,20 @@
 	/** Format of the app (formatRelativeTime, core/utils/time.ts, English catalogue common.time) for "n min ago". */
 	const ago = (min) => {
 		const diff = min * 60000;
-		if (diff < 60000) return 'gerade eben';
-		if (diff < 3600000) return `vor ${Math.floor(diff / 60000)} Min`;
-		if (diff < 86400000) return `vor ${Math.floor(diff / 3600000)} Std`;
-		const d = Math.floor(diff / 86400000);
-		return d === 1 ? 'gestern' : `vor ${d} Tagen`;
+		const n = (unit) => Math.floor(diff / unit);
+		if (diff < 60000) return EN ? 'just now' : 'gerade eben';
+		if (diff < 3600000) return EN ? `${n(60000)} min ago` : `vor ${n(60000)} Min`;
+		if (diff < 86400000) return EN ? `${n(3600000)} h ago` : `vor ${n(3600000)} Std`;
+		const d = n(86400000);
+		if (d === 1) return EN ? 'yesterday' : 'gestern';
+		return EN ? `${d} days ago` : `vor ${d} Tagen`;
+	};
+	/** Title of a <time> element: "06.10.2026, 15:51" | "6 Oct 2026, 15:51" (Berlin time). */
+	const stamp = (b) => {
+		const date = EN
+			? dtf({ day: 'numeric', month: 'short', year: 'numeric' }).format(Date.UTC(b.y, b.m - 1, b.d, 12))
+			: `${String(b.d).padStart(2, '0')}.${String(b.m).padStart(2, '0')}.${b.y}`;
+		return `${date}, ${b.hh}:${b.mm}`;
 	};
 	const nextMonth3 = (n) => {
 		// n-th booking "on the 3rd" of the following month: value for {{M:n|tm}} (fixed costs run on the 3rd of every month)
@@ -89,10 +106,8 @@
 					return FMT[a[2]].format(day(+a[1]));
 				case 'F':
 					return FMT[a[1]].format(day(nextFriday()));
-				case 'TF': {
-					const b = berlin(T0 - +a[1] * 60000);
-					return `${String(b.d).padStart(2, '0')}.${String(b.m).padStart(2, '0')}.${b.y}, ${b.hh}:${b.mm}`;
-				}
+				case 'TF':
+					return stamp(berlin(T0 - +a[1] * 60000));
 				case 'MO':
 					return FMT.my.format(Date.UTC(berlin(clock()).y, berlin(clock()).m - 1 + +a[1], 1, 12));
 				case 'M':
@@ -105,8 +120,7 @@
 				}
 				case 'CD': {
 					const ms = +a[1] >= CHAT_AGO.length ? (S.sent ?? clock()) : T0 - CHAT_AGO[+a[1]] * 60000;
-					const b = berlin(ms);
-					return `${String(b.d).padStart(2, '0')}.${String(b.m).padStart(2, '0')}.${b.y}, ${b.hh}:${b.mm}`;
+					return stamp(berlin(ms));
 				}
 				default:
 					return '';
@@ -395,7 +409,7 @@
 		}
 		if (e.msg === 'C') S.sent = clock();
 		// Target without a recorded state (a page of its own in the app): a short notice instead of a dead button
-		if (!enter(w, e.t, { force: !!e.add })) toast('Das öffnet sich in der echten App.');
+		if (!enter(w, e.t, { force: !!e.add })) toast(L.real);
 	};
 
 	const click = async (target) => {
@@ -422,7 +436,7 @@
 		if (/^(input|textarea)\|/.test(k)) {
 			const path = pathTo(st.w, st.id, k);
 			// Field without recorded input: a short notice instead of a dead field (the demo only types what was recorded)
-			if (!path) toast('Eingeben geht in der echten App.');
+			if (!path) toast(L.typing);
 			if (path) {
 				st.busy = true;
 				try {
@@ -469,7 +483,7 @@
 	const micro = (el) => {
 		const lab = el.getAttribute('aria-label') || el.textContent.trim();
 		if (el.disabled || el.hasAttribute('data-disabled') || el.getAttribute('aria-disabled') === 'true') return true;
-		if (/^Zum (Hauptinhalt|Ende)/.test(lab)) return true;
+		if (L.skip.test(lab)) return true;
 		// Tick off (shopping list)
 		if (el.getAttribute('role') === 'checkbox' && el.hasAttribute('aria-checked')) {
 			const on = el.getAttribute('aria-checked') !== 'true';
@@ -483,22 +497,22 @@
 			return true;
 		}
 		// Increase or decrease a supply
-		const v = /um eins (erhöhen|verringern)$/.exec(lab);
+		const v = L.step.exec(lab);
 		if (v) {
 			const d = el.closest('[data-slot=item]')?.querySelector('[data-slot=item-description]');
 			const m = d && /^(\d+)/.exec(d.textContent);
 			if (m) {
-				const n = Math.max(0, +m[1] + (v[1] === 'erhöhen' ? 1 : -1));
+				const n = Math.max(0, +m[1] + (v[1] === L.up ? 1 : -1));
 				d.textContent = d.textContent.replace(/^\d+/, String(n));
 			}
 			return true;
 		}
-		// Set or remove a reaction
-		const r = /-Reaktion (setzen|entfernen): (.*)$/.exec(lab);
+		// Set or remove a reaction. English pinboard buttons ("Reaction “Seen”: …") only toggle aria-pressed.
+		const r = L.reaction.exec(lab) ?? (EN ? /^Reaction “/.exec(lab) : null);
 		if (r && el.hasAttribute('aria-pressed')) {
-			const on = r[1] === 'setzen';
+			const on = el.getAttribute('aria-pressed') !== 'true';
 			el.setAttribute('aria-pressed', String(on));
-			el.setAttribute('aria-label', lab.replace(/(setzen|entfernen)/, on ? 'entfernen' : 'setzen'));
+			if (r[1]) el.setAttribute('aria-label', lab.replace(L.reaction, (m, w) => m.replace(w, on ? L.remove : L.add)));
 			el.style.background = on ? 'var(--secondary)' : '';
 			let c = el.querySelector('span.tabular-nums');
 			if (on && !c) {
@@ -528,7 +542,7 @@
 		}
 		// current tab, heading or selection: nothing to do
 		if (el.getAttribute('aria-current') || el.getAttribute('aria-selected') === 'true' || el.getAttribute('aria-pressed') === 'true') return true;
-		toast('Das öffnet sich in der echten App.');
+		toast(L.real);
 		return true;
 	};
 
@@ -624,7 +638,7 @@
 	 * Build pages invisibly (one per idle pause): the first build of a page costs the style and layout caches
 	 * of the browser, while the landing scrolled that was the stutter on the first tab change. Afterwards it is discarded.
 	 */
-	const vorwaermen = (ids) => {
+	const prewarm = (ids) => {
 		const liste = ids.map((id) => node('-', id)?.p).filter((p, i, a) => p && a.indexOf(p) === i && p !== cur()?.p);
 		const schritt = () => {
 			const p = liste.shift();
@@ -655,8 +669,8 @@
 		let id = M.start;
 		if (ns && M.ref[ns]) [w, id] = M.ref[ns];
 		enter(w, id, { force: true, instant: true });
-		window.__demo = { state: () => ({ w: st.w, id: st.id }), enter, node, vorwaermen, model: M, ref: M.ref, now: clock };
-		document.documentElement.setAttribute('data-bereit', '1');
+		window.__demo = { state: () => ({ w: st.w, id: st.id }), enter, node, prewarm, model: M, ref: M.ref, now: clock };
+		document.documentElement.setAttribute('data-ready', '1');
 	};
 	if (document.fonts?.ready) document.fonts.ready.then(start);
 	else start();

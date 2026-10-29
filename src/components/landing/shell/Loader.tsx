@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { css } from '../core/dc';
 import { useDict } from '../dict';
 import { live } from '../scenes/intro/stage';
 
 // Loader: counter 000 to 100 and bar. The count follows the real readiness (first painted
-// hero frame or fallback = landing:bereit, plus document.fonts.ready), not just time.
+// hero frame or fallback = landing:ready, plus document.fonts.ready), not just time.
 //   - gone 0.8 s after the start at the earliest, 0.3 s after readiness at the latest, hard stop after 4 s
 //   - skipped on back, reload and on a repeat visit in the same session
 //   - gone immediately with reduced motion
@@ -23,7 +22,7 @@ const PRE_PAINT_SCRIPT = `(function(){try{var l=document.querySelector('[data-lo
 
 // Before hydration the dot bar runs via CSS (40 steps) so something moves immediately on a slow network; JS takes over (data-js).
 const FAILSAFE_CSS =
-	'[data-loader]{animation:lader-weg 0s linear 6s forwards}@keyframes lader-weg{to{opacity:0;visibility:hidden;pointer-events:none}}[data-bar]{position:relative}[data-bar]:not([data-js])::after{content:"########################################";position:absolute;left:0;top:0;clip-path:inset(0 100% 0 0);animation:lader-leiste 5s steps(40) forwards}@keyframes lader-leiste{to{clip-path:inset(0 0 0 0)}}';
+	'[data-loader]{animation:loader-out 0s linear 6s forwards}@keyframes loader-out{to{opacity:0;visibility:hidden;pointer-events:none}}[data-bar]{position:relative}[data-bar]:not([data-js])::after{content:"########################################";position:absolute;left:0;top:0;clip-path:inset(0 100% 0 0);animation:lader-leiste 5s steps(40) forwards}@keyframes lader-leiste{to{clip-path:inset(0 0 0 0)}}';
 
 function hide(el: HTMLElement, instant = false) {
 	if (instant) el.style.transition = 'none';
@@ -64,7 +63,7 @@ export function Loader() {
 		const onReady = () => {
 			ready = true;
 		};
-		document.addEventListener('landing:bereit', onReady);
+		document.addEventListener('landing:ready', onReady);
 		document.fonts.ready.then(() => {
 			fonts = true;
 		});
@@ -107,7 +106,7 @@ export function Loader() {
 		tick();
 		return () => {
 			clearInterval(iv);
-			document.removeEventListener('landing:bereit', onReady);
+			document.removeEventListener('landing:ready', onReady);
 		};
 	}, []);
 
@@ -118,24 +117,42 @@ export function Loader() {
 				data-loader="1"
 				aria-hidden="true"
 				suppressHydrationWarning
-				style={css(
-					`position:fixed;inset:0;z-index:100;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;gap:var(--sp-16);padding:var(--margin);transition:opacity ${FADE_MS}ms ease`,
-				)}
+				style={{
+					position: 'fixed',
+					inset: '0',
+					zIndex: '100',
+					background: 'var(--paper)',
+					color: 'var(--ink)',
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'flex-end',
+					gap: 'var(--sp-16)',
+					padding: 'var(--margin)',
+					transition: `opacity ${FADE_MS}ms ease`,
+				}}
 			>
 				<span
 					data-count="1"
-					style={css(
-						"font-family:'JetBrains Mono','JetBrains Mono Fallback',monospace;font-size:var(--t-176);font-weight:500;line-height:0.9;letter-spacing:-0.05em",
-					)}
+					style={{
+						fontFamily: "'JetBrains Mono','JetBrains Mono Fallback',monospace",
+						fontSize: 'var(--t-176)',
+						fontWeight: '500',
+						lineHeight: '0.9',
+						letterSpacing: '-0.05em',
+					}}
 				>
 					000
 				</span>
 				<div
-					style={css(
-						'display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:var(--sp-10) var(--sp-24)',
-					)}
+					style={{
+						display: 'flex',
+						flexWrap: 'wrap',
+						justifyContent: 'space-between',
+						alignItems: 'baseline',
+						gap: 'var(--sp-10) var(--sp-24)',
+					}}
 				>
-					<span data-bar="1" className="label" style={css('white-space:pre;opacity:1')}>
+					<span data-bar="1" className="label" style={{ whiteSpace: 'pre', opacity: '1' }}>
 						........................................
 					</span>
 					<span className="label">{dict.loader.label}</span>

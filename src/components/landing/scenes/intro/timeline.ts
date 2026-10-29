@@ -7,7 +7,7 @@
 export const INTRO_SCREENS = 10;
 
 // Piecewise linear mapping s -> P, knots (s, P).
-export const KNOTS = [
+const KNOTS = [
 	[0, 0],
 	[0.496, 0.62],
 	[0.856, 0.9],

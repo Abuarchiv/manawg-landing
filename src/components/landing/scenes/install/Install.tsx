@@ -171,12 +171,12 @@ export function Install() {
 			data-sec="installieren"
 			tabIndex={-1}
 			ref={secRef}
-			aria-labelledby="installieren-titel"
+			aria-labelledby="install-title"
 			className={s.section}
 		>
 			<div className={s.text}>
 				<span className="label">{`${install.prefix}${install.title}`}</span>
-				<h2 id="installieren-titel" className={s.title}>
+				<h2 id="install-title" className={s.title}>
 					{install.heading[0]}
 					<br />
 					<span className={s.nowrap}>{install.heading[1]}</span>
@@ -210,12 +210,12 @@ export function Install() {
 								<button
 									type="button"
 									data-istep={String(i)}
-									data-aktiv={i === 0 ? '' : undefined}
+									data-active={i === 0 ? '' : undefined}
 									className={s.step}
 									onClick={() => api.current?.jumpTo(i)}
 								>
 									<span className={s.nr}>{`0${i + 1}`}</span>
-									<span className={s.row} data-zeile="">
+									<span className={s.row} data-row="">
 										{keepTogether(t, install.nowrap, install.iconMenuAria, install.iconDotsAria)}
 									</span>
 								</button>
@@ -224,7 +224,7 @@ export function Install() {
 					</ol>
 					{inst === 2 && <p className={`label ${s.more}`}>{install.desktopExtra}</p>}
 				</div>
-				<a href={appUrl('/')} className={`cta cta--voll cta--gross ${s.cta}`}>
+				<a href={appUrl('/')} className={`cta cta--solid cta--large ${s.cta}`}>
 					{install.cta}
 				</a>
 			</div>
@@ -232,13 +232,13 @@ export function Install() {
 				<div className={s.scale} ref={scaleRef}>
 					<div ref={frameRef} data-ins="frame" data-tab={inst} className={s.frame}>
 						{/* Buttons on the casing: iPhone 17 (action, volume left; side button, camera control right), Pixel (right) */}
-						<i className={s.key} data-t="ios-aktion" />
-						<i className={s.key} data-t="ios-laut1" />
-						<i className={s.key} data-t="ios-laut2" />
-						<i className={s.key} data-t="ios-seite" />
-						<i className={s.key} data-t="ios-kamera" />
-						<i className={s.key} data-t="and-ein" />
-						<i className={s.key} data-t="and-laut" />
+						<i className={s.key} data-t="ios-action" />
+						<i className={s.key} data-t="ios-volume1" />
+						<i className={s.key} data-t="ios-volume2" />
+						<i className={s.key} data-t="ios-side" />
+						<i className={s.key} data-t="ios-camera" />
+						<i className={s.key} data-t="and-power" />
+						<i className={s.key} data-t="and-volume" />
 						<div data-ins="screen" className={s.screen}>
 							<div className={s.device} hidden={inst !== 0}>
 								<Iphone />
@@ -255,7 +255,7 @@ export function Install() {
 					</div>
 				</div>
 			</div>
-			<p className={s.caption} data-kurz="" aria-hidden="true" />
+			<p className={s.caption} data-caption="" aria-hidden="true" />
 		</section>
 	);
 }

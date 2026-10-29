@@ -49,7 +49,7 @@ export function Finale() {
 			data-sec="finale"
 			tabIndex={-1}
 			ref={sec}
-			aria-labelledby="finale-titel"
+			aria-labelledby="finale-title"
 			className={s.section}
 		>
 			<div ref={layer} aria-hidden="true" className={s.field}>
@@ -57,14 +57,14 @@ export function Finale() {
 			</div>
 			<div className={s.content}>
 				<div className={s.block}>
-					<h2 id="finale-titel" className={s.title}>
+					<h2 id="finale-title" className={s.title}>
 						<BrLines lines={finale.title} />
 					</h2>
-					<div data-knoepfe="1" className={s.buttons}>
-						<a href={appUrl(links.create)} className={`cta cta--voll cta--gross ${s.button}`}>
+					<div data-buttons="1" className={s.buttons}>
+						<a href={appUrl(links.create)} className={`cta cta--solid cta--large ${s.button}`}>
 							{finale.create}
 						</a>
-						<a href={appUrl(links.invite)} className={`cta cta--dunkel cta--gross ${s.button}`}>
+						<a href={appUrl(links.invite)} className={`cta cta--dark cta--large ${s.button}`}>
 							{finale.invite}
 						</a>
 					</div>

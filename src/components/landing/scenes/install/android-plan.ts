@@ -12,7 +12,7 @@ const T3 = 4.6; // "Install" in the sheet
 const T4 = 6.2; // "Install" in the dialog
 const TH = 9.1; // switch to the home screen
 const T5 = 11.0; // tap the icon
-export const LOOP = 14.3; // the running app stays for 2.3 s before the loop restarts
+const LOOP = 14.3; // the running app stays for 2.3 s before the loop restarts
 const ROWS = 17;
 
 export const plan: PlaybackPlan = {

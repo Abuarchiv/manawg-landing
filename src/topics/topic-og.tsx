@@ -4,7 +4,7 @@ import type { Locale } from '@/lib/locale';
 import { ImageResponse } from 'next/og';
 import { topics, ui } from './registry';
 
-export const ogSize = { width: 1200, height: 630 };
+const ogSize = { width: 1200, height: 630 };
 
 // OG image per topic page: dark ground like the page, mark, H1. Font from src/topics.
 export async function topicOgImage(locale: Locale, slug: string) {
@@ -13,7 +13,7 @@ export async function topicOgImage(locale: Locale, slug: string) {
 
 	const [font, mark] = await Promise.all([
 		readFile(join(process.cwd(), 'src/topics/inter-tight.ttf')),
-		readFile(join(process.cwd(), 'public/manawg-mark-weiss.png')),
+		readFile(join(process.cwd(), 'public/manawg-mark-white.png')),
 	]);
 	const markSrc = `data:image/png;base64,${mark.toString('base64')}`;
 	return new ImageResponse(

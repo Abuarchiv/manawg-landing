@@ -32,7 +32,7 @@ export default function NotFound() {
 			<body>
 				<main className="min-h-dvh bg-[var(--bg-base)] flex flex-col items-center justify-center px-4 text-center">
 					<img
-						src="/manawg-mark-weiss-80.webp"
+						src="/manawg-mark-white-80.webp"
 						data-invert=""
 						alt=""
 						width={72}

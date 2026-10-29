@@ -11,7 +11,7 @@ const TASKS_THREE = ['Bad', 'Küche', 'Böden und Müll'];
 const TASKS_FIVE = [...TASKS_FOUR, 'Wohnzimmer und Balkon'];
 
 /** Single source of the templates: HTML tables, CSV and Markdown all read from here. A to E stand for example flatmates. */
-export const TEMPLATE_FOUR = cleaningRota(['A', 'B', 'C', 'D'], TASKS_FOUR);
+const TEMPLATE_FOUR = cleaningRota(['A', 'B', 'C', 'D'], TASKS_FOUR);
 const TEMPLATE_TWO = cleaningRota(['A', 'B'], ['Bad', 'Böden', 'Küche', 'Müll und Flur']);
 const TEMPLATE_THREE = cleaningRota(['A', 'B', 'C'], TASKS_THREE);
 const TEMPLATE_FIVE = cleaningRota(['A', 'B', 'C', 'D', 'E'], TASKS_FIVE);

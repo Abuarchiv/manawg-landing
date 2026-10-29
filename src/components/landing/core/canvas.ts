@@ -4,7 +4,7 @@
 // Composed objects live in a reference box (default 1280 x 800) that is fitted into the area
 // with "contain". Backgrounds and grids always fill the whole area.
 
-export const FIT_MAX = 1.25;
+const FIT_MAX = 1.25;
 
 /** Fit of a reference box into the area: scale f and offset (ox, oy) in CSS pixels. */
 export interface Fit {
@@ -14,7 +14,7 @@ export interface Fit {
 }
 
 /** Pointer position in CSS pixels of the canvas area (px, py) and in scene coordinates (x, y). */
-export interface Pointer {
+interface Pointer {
 	px: number;
 	py: number;
 	x: number;

@@ -54,7 +54,7 @@ export function newState(back: HTMLCanvasElement, front: HTMLCanvasElement): Han
 	return {
 		back,
 		front,
-		host: back.closest<HTMLElement>('[data-buehne]'),
+		host: back.closest<HTMLElement>('[data-stage]'),
 		ht: null,
 		lt: { x: 820, y: 400 },
 		park: [940, 1000],
@@ -176,13 +176,13 @@ function tap(st: HandState, c: HandContext, e: Input, dm: DemoRun): void {
 				const q = st.pending;
 				st.tap = [q.x, q.y];
 				st.contactT = now;
-				st.host?.dispatchEvent(new CustomEvent('hand:kontakt', { detail: { x: q.cx, y: q.cy } }));
+				st.host?.dispatchEvent(new CustomEvent('hand:contact', { detail: { x: q.cx, y: q.cy } }));
 			}
 			// The tip is already at the pointer: the click goes into the app immediately, the hand only presses along
 			st.tap = [e.mx, e.my];
 			st.contactT = now;
 			st.host?.dispatchEvent(
-				new CustomEvent('hand:kontakt', { detail: { x: r0.left + c.m.x, y: r0.top + c.m.y } }),
+				new CustomEvent('hand:contact', { detail: { x: r0.left + c.m.x, y: r0.top + c.m.y } }),
 			);
 		}
 	}
@@ -259,7 +259,7 @@ function move(st: HandState, c: HandContext, cam: Fit, e: Input, z: Target, dm: 
 		st.tap = [pend.x, pend.y];
 		st.contactT = now;
 		st.host?.dispatchEvent(
-			new CustomEvent('hand:kontakt', { detail: { x: pend.cx, y: pend.cy, demo: !!pend.demo } }),
+			new CustomEvent('hand:contact', { detail: { x: pend.cx, y: pend.cy, demo: !!pend.demo } }),
 		);
 	}
 	const lt = st.lt;
@@ -271,7 +271,7 @@ function move(st: HandState, c: HandContext, cam: Fit, e: Input, z: Target, dm: 
 
 /** Cursor: over the glass the fingertip replaces the pointer (also in the document of the app, Phone.tsx). */
 function setCursor(st: HandState, follow: boolean): void {
-	if (st.host) st.host.toggleAttribute('data-hand-folgt', follow);
+	if (st.host) st.host.toggleAttribute('data-hand-follows', follow);
 	if (!st.appDoc?.isConnected)
 		st.appDoc = st.space?.querySelector('iframe')?.contentDocument?.documentElement ?? null;
 	if (st.appDoc && st.appDoc.hasAttribute('data-hand') !== follow)

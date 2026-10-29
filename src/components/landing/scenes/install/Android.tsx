@@ -27,7 +27,7 @@ import { BrLines, useDict } from '../../dict';
 import s from './Android.module.css';
 
 const ICON = '/icon-512.png';
-const BRAND = '/manawg-mark-weiss.png';
+const BRAND = '/manawg-mark-white.png';
 const PAGE = 'var(--b-and)';
 const APP_PAGE = 'var(--b-app)';
 const F = 411 / 390;

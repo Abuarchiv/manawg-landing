@@ -7,7 +7,7 @@
 // through an offscreen canvas into the visible 2D canvas.
 
 import { isLight } from '@/lib/theme';
-import { glSoftware, glVisible } from '../../core/canvas';
+import { glSoftware, glVisible, sizeBacking } from '../../core/canvas';
 import { HOME, HOME3, aMark, cl, ease, hsh, lerp, ss } from '../../core/math';
 import type { HeroMarks, StageContext } from './types';
 
@@ -206,7 +206,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		fetch(src)
 			.then((r) => r.blob())
 			.then((b) => createImageBitmap(b, { imageOrientation: 'flipY' }));
-	Promise.all([bitmap('/hero/berg.webp'), bitmap('/hero/berg-maske.webp')])
+	Promise.all([bitmap('/hero/mountain.webp'), bitmap('/hero/mountain-mask.webp')])
 		.then(([img, mask]) => {
 			G.photo = { img, mask };
 		})
@@ -441,14 +441,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		}
 	};
 
-	const sizeTo = (W: number, H: number, dpr: number) => {
-		const w = Math.max(1, Math.round(W * dpr));
-		const h = Math.max(1, Math.round(H * dpr));
-		if (cv.width !== w || cv.height !== h) {
-			cv.width = w;
-			cv.height = h;
-		}
-	};
+	const sizeTo = (W: number, H: number, dpr: number) => sizeBacking(cv, W, H, dpr);
 
 	// One frame. Returns true if something was drawn.
 	const frame = (c: StageContext, h: HeroMarks): boolean => {
@@ -572,7 +565,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		HO.fill(0);
 		let ho = 0;
 		for (const l of c.holes ?? []) {
-			if (ho >= 4 || !(l.kind === 'logo' || l.kind === 'cta' || l.kind === 'hinweis')) continue;
+			if (ho >= 4 || !(l.kind === 'logo' || l.kind === 'cta' || l.kind === 'hint')) continue;
 			HO[ho * 4] = (l.x - 8) * dpr;
 			HO[ho * 4 + 1] = hh - (l.y + l.h + 8) * dpr;
 			HO[ho * 4 + 2] = (l.x + l.w + 8) * dpr;

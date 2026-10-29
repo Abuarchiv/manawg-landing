@@ -94,11 +94,12 @@ data. Leave it unset for local work.
 | Path | Contents |
 |---|---|
 | `src/app/` | Routes, split into `(de)` and `(en)` route groups with one root layout each, plus `robots`, `sitemap` and the 404 and error pages |
+| `src/components/` | Shared parts: frame of the legal pages, error view, language link, theme switch |
 | `src/components/landing/` | The home page: frame loop, canvas and scroll code in `core/`, one folder per scene in `scenes/`, header, loader and hints in `shell/` |
 | `src/content/` | Home page copy per language and the app demo paths |
-| `src/topics/` | Topic and guide pages: German data in `de/`, English data in `en/`, shared renderers and UI strings |
-| `src/lib/` | Locale helpers and slug map, app and site URLs, security headers, shared text link style |
-| `public/` | Fonts, image sequences, the embedded app demo and install screenshots, `llms.txt` files |
+| `src/topics/` | Topic and guide pages: German data in `de/`, English data in `en/`, shared renderers, UI strings, and the feeds and `llms-full.txt` built from the data |
+| `src/lib/` | Locale helpers and slug map, app and site URLs, security headers, legal page paths and metadata, shared text link style |
+| `public/` | Fonts, image sequences, the embedded app demo (one player, `app-demo/demo.js`, for both languages) and install screenshots, `llms.txt` files |
 
 ## Stack
 

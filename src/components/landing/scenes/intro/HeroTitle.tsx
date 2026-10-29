@@ -1,4 +1,3 @@
-import { css } from '../../core/dc';
 import { BrLines, useDict } from '../../dict';
 import s from './HeroTitle.module.css';
 
@@ -9,16 +8,25 @@ export function HeroTitle() {
 	const { hero } = useDict();
 	return (
 		<div
-			style={css(
-				'position:absolute;inset:0;z-index:2;pointer-events:none;opacity:calc(1.9 - var(--p,0) * 22)',
-			)}
+			style={{
+				position: 'absolute',
+				inset: '0',
+				zIndex: '2',
+				pointerEvents: 'none',
+				opacity: 'calc(1.9 - var(--p,0) * 22)',
+			}}
 		>
 			<canvas
-				data-sterne="1"
+				data-stars="1"
 				aria-hidden="true"
-				style={css(
-					'position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none',
-				)}
+				style={{
+					position: 'absolute',
+					inset: '0',
+					width: '100%',
+					height: '100%',
+					display: 'block',
+					pointerEvents: 'none',
+				}}
 			/>
 			<div className={s.title}>
 				<h1 className={s.h1}>
@@ -26,7 +34,7 @@ export function HeroTitle() {
 				</h1>
 				<p className={s.sub}>{hero.sub}</p>
 				{/* Jumps to the install guide; stage.ts makes it inert once the title has faded */}
-				<a href="#installieren" data-held-cta="" className={`cta cta--voll ${s.cta}`}>
+				<a href="#installieren" data-hero-cta="" className={`cta cta--solid ${s.cta}`}>
 					{hero.install}
 				</a>
 			</div>

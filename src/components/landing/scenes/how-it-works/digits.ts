@@ -7,7 +7,11 @@ import { type SceneState, loop, qa, register } from '../../core/loop';
 import { hsh } from '../../core/math';
 
 const RAMP = '@%#*+=-:';
-qa.masse = { ...(qa.masse as Record<string, unknown> | undefined), zifferZelle: 7, zifferGlyph: 8 };
+qa.metrics = {
+	...(qa.metrics as Record<string, unknown> | undefined),
+	digitCell: 7,
+	digitGlyph: 8,
+};
 
 /** One grid cell of the digit: rest position (x, y), tone in the ramp, displacement (ox, oy) and velocity (vx, vy). */
 interface Cell {
@@ -47,7 +51,7 @@ interface DigitOptions {
 }
 
 /** One grid cell of the digit at rest: position in CSS px and tone (0 edge, 2 inside). */
-export interface GridCell {
+interface GridCell {
 	x: number;
 	y: number;
 	tone: 0 | 2;
@@ -153,8 +157,8 @@ export function registerDigit(
 		},
 		frame(s, _t, dt) {
 			// Portrait: slightly finer grid (cell 6, glyph 7), the digit stays one shape
-			const cs = s.mode === 'hoch' ? digitMetrics(true).cs : cs0;
-			const gl = s.mode === 'hoch' ? digitMetrics(true).gl : gl0;
+			const cs = s.mode === 'portrait' ? digitMetrics(true).cs : cs0;
+			const gl = s.mode === 'portrait' ? digitMetrics(true).gl : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
 			if (s.key !== key) {
 				s.key = key;

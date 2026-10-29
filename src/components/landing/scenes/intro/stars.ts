@@ -1,9 +1,10 @@
 // Background dots of the hero title: 220 stars in the upper half, flickering softly.
 // The field fills the whole area (not just 1280 x 800); at 1280 x 800 the dots sit as in the design.
 
+import { sizeBacking } from '../../core/canvas';
 import { hsh } from '../../core/math';
 
-export const STAR_COUNT = 220;
+const STAR_COUNT = 220;
 // The design density (220 dots on 1280 x 360 px) stays the same on every area.
 const DENSITY = STAR_COUNT / (1280 * 360);
 
@@ -24,12 +25,7 @@ export function drawStars(
 		ctx = next;
 		contexts.set(cv, ctx);
 	}
-	const w = Math.max(1, Math.round(W * dpr));
-	const h = Math.max(1, Math.round(H * dpr));
-	if (cv.width !== w || cv.height !== h) {
-		cv.width = w;
-		cv.height = h;
-	}
+	sizeBacking(cv, W, H, dpr);
 	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 	ctx.clearRect(0, 0, W, H);
 	ctx.fillStyle = '#FAFAFA';

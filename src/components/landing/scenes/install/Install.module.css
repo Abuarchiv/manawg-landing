@@ -86,7 +86,7 @@
 	opacity: 0.55;
 	transition: opacity 0.3s;
 }
-.step[data-aktiv],
+.step[data-active],
 .step:hover {
 	opacity: 1;
 }
@@ -104,7 +104,7 @@
 	opacity: 0;
 	transition: opacity 0.3s;
 }
-.step[data-aktiv]::after {
+.step[data-active]::after {
 	opacity: 0.9;
 	transform: scaleX(var(--progress, 0));
 }
@@ -206,8 +206,8 @@
 	left: -3px;
 	display: none;
 }
-.key[data-t="ios-seite"],
-.key[data-t="ios-kamera"],
+.key[data-t="ios-side"],
+.key[data-t="ios-camera"],
 .key[data-t^="and-"] {
 	left: auto;
 	right: -3px;
@@ -218,35 +218,35 @@
 .frame[data-tab="1"] .key[data-t^="and-"] {
 	display: block;
 }
-.key[data-t="ios-aktion"] {
+.key[data-t="ios-action"] {
 	top: 112px;
 	height: 28px;
 }
-.key[data-t="ios-laut1"] {
+.key[data-t="ios-volume1"] {
 	top: 158px;
 	height: 50px;
 }
-.key[data-t="ios-laut2"] {
+.key[data-t="ios-volume2"] {
 	top: 218px;
 	height: 50px;
 }
-.key[data-t="ios-seite"] {
+.key[data-t="ios-side"] {
 	top: 176px;
 	height: 78px;
 }
 /* Camera control: flush in the frame, dark sapphire glass */
-.key[data-t="ios-kamera"] {
+.key[data-t="ios-camera"] {
 	top: 330px;
 	height: 44px;
 	width: 2px;
 	right: -2px;
 	background: linear-gradient(270deg, #404040, #0a0a0a);
 }
-.key[data-t="and-ein"] {
+.key[data-t="and-power"] {
 	top: 150px;
 	height: 52px;
 }
-.key[data-t="and-laut"] {
+.key[data-t="and-volume"] {
 	top: 226px;
 	height: 92px;
 }
@@ -386,7 +386,7 @@
 		display: block;
 	}
 	/* Step number above the row and a line that fills with the step (like the list in landscape) */
-	.caption [data-kurz-nr] {
+	.caption [data-caption-num] {
 		display: block;
 		margin-bottom: 6px;
 		opacity: 0.55;

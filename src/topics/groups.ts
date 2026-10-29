@@ -58,10 +58,10 @@ export const GROUPS: Array<{
 	{ id: 'about', name: 'Über ManaWG', slugs: ['ueber-manawg', 'faq'] },
 ];
 
-export const groupOfSlug = (slug: string) => GROUPS.find((g) => g.slugs.includes(slug));
+const groupOfSlug = (slug: string) => GROUPS.find((g) => g.slugs.includes(slug));
 
 /** Feature page per guide: guide and feature link to each other in "further reading" (topic cluster). */
-export const FEATURE_GUIDES: Record<string, string[]> = {
+const FEATURE_GUIDES: Record<string, string[]> = {
 	'wg-kasse': [
 		'splitwise-splid-wechseln',
 		'wg-kosten-aufteilen',

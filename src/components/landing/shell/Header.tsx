@@ -1,5 +1,4 @@
 import { appUrl } from '@/lib/app-origin';
-import { css } from '../core/dc';
 import { useDict } from '../dict';
 
 // Header: logo on the left, button on the right, fixed to the window. While the end layer of the intro covers the
@@ -9,33 +8,45 @@ export function Header() {
 	const dict = useDict();
 	return (
 		<header
-			data-kopf="1"
-			style={css(
-				'position:fixed;z-index:20;top:var(--header-top);left:calc(var(--margin) + env(safe-area-inset-left));right:calc(var(--margin) + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;pointer-events:none;opacity:calc(1 - var(--header-off,0))',
-			)}
+			data-header="1"
+			style={{
+				position: 'fixed',
+				zIndex: '20',
+				top: 'var(--header-top)',
+				left: 'calc(var(--margin) + env(safe-area-inset-left))',
+				right: 'calc(var(--margin) + env(safe-area-inset-right))',
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'space-between',
+				pointerEvents: 'none',
+				opacity: 'calc(1 - var(--header-off,0))',
+			}}
 		>
-			<div data-loch="logo" style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
+			<div data-hole="logo" style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-10)' }}>
 				<img
-					src="/manawg-mark-weiss-80.webp"
+					src="/manawg-mark-white-80.webp"
 					data-invert=""
 					alt=""
 					width={416}
 					height={346}
-					style={css('height:22px;width:auto')}
+					style={{ height: '22px', width: 'auto' }}
 				/>
 				<span
-					style={css(
-						"font-family:'Inter Tight','Inter Tight Fallback',sans-serif;font-weight:600;font-size:var(--t-20);letter-spacing:-0.03em",
-					)}
+					style={{
+						fontFamily: "'Inter Tight','Inter Tight Fallback',sans-serif",
+						fontWeight: '600',
+						fontSize: 'var(--t-20)',
+						letterSpacing: '-0.03em',
+					}}
 				>
 					ManaWG
 				</span>
 			</div>
 			<a
-				data-loch="cta"
+				data-hole="cta"
 				href={appUrl(dict.links.create)}
-				className="cta cta--voll"
-				style={css('pointer-events:auto;opacity:calc(1 - var(--header-cta-out,0))')}
+				className="cta cta--solid"
+				style={{ pointerEvents: 'auto', opacity: 'calc(1 - var(--header-cta-out,0))' }}
 			>
 				{dict.header.cta}
 			</a>

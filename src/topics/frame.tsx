@@ -23,7 +23,7 @@ export function TopicHeader({ locale }: { locale: Locale }) {
 				className="inline-flex items-center gap-3 min-h-[44px] no-underline"
 			>
 				<img
-					src="/manawg-mark-weiss-80.webp"
+					src="/manawg-mark-white-80.webp"
 					data-invert=""
 					alt=""
 					width={416}
@@ -61,7 +61,7 @@ export function TopicFooter({
 	const localSlug = (slug: string) => (locale === 'de' ? slug : TOPIC_SLUG_EN[slug]);
 	return (
 		<footer
-			className={`${gutter} linie mt-24 md:mt-32 pt-12 pb-[max(2rem,env(safe-area-inset-bottom))]`}
+			className={`${gutter} divider mt-24 md:mt-32 pt-12 pb-[max(2rem,env(safe-area-inset-bottom))]`}
 		>
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
 				{GROUPS.map((g) => {

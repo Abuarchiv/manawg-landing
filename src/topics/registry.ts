@@ -6,7 +6,7 @@ import { UI_EN } from './en/ui.ts';
 import { GROUPS, relatedSlugs } from './groups.ts';
 import type { Topic } from './types.ts';
 
-export type GroupId = (typeof GROUPS)[number]['id'];
+type GroupId = (typeof GROUPS)[number]['id'];
 
 export const ui = (locale: Locale) => (locale === 'de' ? UI_DE : UI_EN);
 

@@ -93,8 +93,8 @@ export default function RotaGenerator({ locale }: { locale: Locale }) {
 
 	const print = () => {
 		// Only the plan goes to paper (see globals.css).
-		document.body.classList.add('plan-drucken');
-		window.addEventListener('afterprint', () => document.body.classList.remove('plan-drucken'), {
+		document.body.classList.add('plan-printing');
+		window.addEventListener('afterprint', () => document.body.classList.remove('plan-printing'), {
 			once: true,
 		});
 		window.print();
@@ -171,7 +171,7 @@ export default function RotaGenerator({ locale }: { locale: Locale }) {
 				</fieldset>
 			</div>
 
-			<div className="md:col-span-12 min-w-0 plan-druck" aria-live="polite">
+			<div className="md:col-span-12 min-w-0 plan-print" aria-live="polite">
 				{plan ? (
 					<>
 						<h3 className="m-0 mb-4 font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold text-[20px]">
@@ -222,7 +222,7 @@ export default function RotaGenerator({ locale }: { locale: Locale }) {
 				) : (
 					<p className={`${mono} m-0`}>{t.hint}</p>
 				)}
-				<div className="mt-6 flex flex-wrap gap-3 druck-aus">
+				<div className="mt-6 flex flex-wrap gap-3 no-print">
 					<button type="button" className={buttonCls} onClick={print} disabled={!plan}>
 						{t.print}
 					</button>

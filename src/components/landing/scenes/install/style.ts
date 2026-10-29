@@ -30,7 +30,7 @@ type CssProp =
  * Style values for put: d display ('' = off, otherwise value), o opacity, t transform, f filter,
  * plus CSS properties under their own name.
  */
-export type Style = {
+type Style = {
 	d?: '' | 'block' | 'flex';
 	o?: number;
 	t?: string;

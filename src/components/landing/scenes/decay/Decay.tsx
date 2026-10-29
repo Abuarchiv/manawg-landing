@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { css } from '../../core/dc';
 import { startDecay } from '../decay/glyphs';
 
 // Fixed to the window above the content, below the header: the characters of the phone → How it works transition (glyphs.ts).
@@ -12,9 +11,15 @@ export function Decay() {
 		<canvas
 			ref={ref}
 			aria-hidden="true"
-			style={css(
-				'position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:12',
-			)}
+			style={{
+				position: 'fixed',
+				left: '0',
+				top: '0',
+				width: '100vw',
+				height: '100vh',
+				pointerEvents: 'none',
+				zIndex: '12',
+			}}
 		/>
 	);
 }

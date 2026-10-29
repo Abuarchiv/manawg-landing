@@ -18,10 +18,10 @@ export function HowItWorks() {
 			id="so-gehts"
 			data-sec="so-gehts"
 			tabIndex={-1}
-			aria-labelledby="so-gehts-titel"
+			aria-labelledby="how-it-works-title"
 			className={s.section}
 		>
-			<h2 id="so-gehts-titel" className={`label ${s.title}`}>
+			<h2 id="how-it-works-title" className={`label ${s.title}`}>
 				<span aria-hidden="true">{howItWorks.prefix}</span>
 				{howItWorks.title}
 			</h2>

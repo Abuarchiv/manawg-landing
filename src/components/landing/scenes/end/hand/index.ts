@@ -143,7 +143,7 @@ function drawIn(back: HTMLCanvasElement, front: HTMLCanvasElement, c: HandContex
 	// Lag: while scrolling, phone and hands trail up to 6 px behind the page (weight in the hand)
 	if (!c.reduced) br.y += Math.max(-6, Math.min(6, c.sv * 0.005));
 	if (!st.space)
-		st.space = back.parentElement?.querySelector<HTMLElement>('[data-ende-space]') ?? null;
+		st.space = back.parentElement?.querySelector<HTMLElement>('[data-end-space]') ?? null;
 	if (st.space) {
 		st.space.style.setProperty('--ax', `${br.x.toFixed(3)}px`);
 		st.space.style.setProperty('--ay', `${br.y.toFixed(3)}px`);

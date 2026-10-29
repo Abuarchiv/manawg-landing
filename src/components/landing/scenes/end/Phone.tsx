@@ -2,7 +2,6 @@
 
 import { APP_DEMO } from '@/content/app-demo';
 import { useEffect, useRef, useState } from 'react';
-import { css } from '../../core/dc';
 import { onFrame } from '../../core/loop';
 import { cl } from '../../core/math';
 import { useDict, useLocale } from '../../dict';
@@ -36,7 +35,7 @@ interface Demo {
 		opts?: { force?: boolean; instant?: boolean; vt?: boolean },
 	) => boolean;
 	state: () => { w: string; id: string };
-	vorwaermen?: (ids: string[]) => void;
+	prewarm?: (ids: string[]) => void;
 }
 
 /** Status bar of an installed PWA on iOS 27: 09:41, Dynamic Island, signal, Wi-Fi, battery. */
@@ -104,12 +103,12 @@ export function Phone() {
 	const [used, setUsed] = useState(false);
 	useEffect(() => setLines(dateLines(lang)), [lang]);
 
-	// Demo of the pointing hand (hand.js, demo): the hand moves to the target and reports the touch (hand:kontakt),
+	// Demo of the pointing hand (hand.js, demo): the hand moves to the target and reports the touch (hand:contact),
 	// only then a synthetic click goes into the same-origin app. The visitor's own clicks, keyboard and focus go
 	// straight into the app (no catch layer), the pointing hand follows the pointer over the glass (see onLoad).
 	useEffect(() => {
 		const el = rootRef.current as HTMLDivElement;
-		const host = el.closest('[data-buehne]');
+		const host = el.closest('[data-stage]');
 		if (!host) return;
 		const onContact = (e: Event) => {
 			const { x, y, demo } = (e as CustomEvent<{ x: number; y: number; demo?: boolean }>).detail;
@@ -135,8 +134,8 @@ export function Phone() {
 				}),
 			);
 		};
-		host.addEventListener('hand:kontakt', onContact);
-		return () => host.removeEventListener('hand:kontakt', onContact);
+		host.addEventListener('hand:contact', onContact);
+		return () => host.removeEventListener('hand:contact', onContact);
 	}, []);
 
 	// Scroll choreography, frame by frame from the progress of the stage
@@ -151,7 +150,7 @@ export function Phone() {
 			// Prebuild the pages of the choreography while idle so the first switch while scrolling does not stutter
 			if (demo && !warm) {
 				warm = true;
-				demo.vorwaermen?.(TABS.map(([, id]) => id));
+				demo.prewarm?.(TABS.map(([, id]) => id));
 			}
 			if (!st || !demo || !st.endOn) return;
 			const next = Math.min(TABS.length - 1, Math.floor(cl((st.P - 0.95) / 0.05) * TABS.length));
@@ -167,13 +166,13 @@ export function Phone() {
 		return off;
 	}, [ready, used]);
 
-	// Set the still image and the iframe src only from P 0.55 (stage.ts sets data-nah on #final)
+	// Set the still image and the iframe src only from P 0.55 (stage.ts sets data-near on #final)
 	useEffect(() => {
 		const el = rootRef.current as HTMLDivElement;
 		const root = el.closest('#final') as HTMLElement | null;
 		if (!root) return;
 		const check = () => {
-			if (root.dataset.nah === '1') {
+			if (root.dataset.near === '1') {
 				mo.disconnect();
 				setStill(STILL); // still image together with the counting from P 0.55, not on first load
 				// The iframe runs on the same main thread as the landing page: load and build during an idle period
@@ -184,7 +183,7 @@ export function Phone() {
 			}
 		};
 		const mo = new MutationObserver(check);
-		mo.observe(root, { attributes: true, attributeFilter: ['data-nah'] });
+		mo.observe(root, { attributes: true, attributeFilter: ['data-near'] });
 		check();
 		return () => mo.disconnect();
 	}, [STILL, SRC]);
@@ -196,40 +195,84 @@ export function Phone() {
 			// biome-ignore lint/a11y/useSemanticElements: div stays div (same box, no fieldset)
 			role="group"
 			aria-label={phone.aria}
-			style={css(
-				'position:absolute;left:650px;top:90px;width:300px;height:620px;pointer-events:none',
-			)}
+			style={{
+				position: 'absolute',
+				left: '650px',
+				top: '90px',
+				width: '300px',
+				height: '620px',
+				pointerEvents: 'none',
+			}}
 		>
 			<div
-				style={css(
-					'position:relative;width:100%;height:100%;box-sizing:border-box;background:linear-gradient(145deg,#525252 0%,#171717 18%,#0A0A0A 50%,#262626 82%,#737373 100%);border-radius:48px;padding:11px;box-shadow:inset 0 0 0 1px rgba(250,250,250,0.35),inset 0 0 0 3px #0A0A0A,0 50px 120px rgba(0,0,0,0.7),0 0 90px rgba(250,250,250,0.1)',
-				)}
+				style={{
+					position: 'relative',
+					width: '100%',
+					height: '100%',
+					boxSizing: 'border-box',
+					background:
+						'linear-gradient(145deg,#525252 0%,#171717 18%,#0A0A0A 50%,#262626 82%,#737373 100%)',
+					borderRadius: '48px',
+					padding: '11px',
+					boxShadow:
+						'inset 0 0 0 1px rgba(250,250,250,0.35),inset 0 0 0 3px #0A0A0A,0 50px 120px rgba(0,0,0,0.7),0 0 90px rgba(250,250,250,0.1)',
+				}}
 			>
 				<span
-					style={css(
-						'position:absolute;left:-3px;top:118px;width:3px;height:30px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626)',
-					)}
+					style={{
+						position: 'absolute',
+						left: '-3px',
+						top: '118px',
+						width: '3px',
+						height: '30px',
+						borderRadius: '2px 0 0 2px',
+						background: 'linear-gradient(90deg,#737373,#262626)',
+					}}
 				/>
 				<span
-					style={css(
-						'position:absolute;left:-3px;top:164px;width:3px;height:52px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626)',
-					)}
+					style={{
+						position: 'absolute',
+						left: '-3px',
+						top: '164px',
+						width: '3px',
+						height: '52px',
+						borderRadius: '2px 0 0 2px',
+						background: 'linear-gradient(90deg,#737373,#262626)',
+					}}
 				/>
 				<span
-					style={css(
-						'position:absolute;left:-3px;top:226px;width:3px;height:52px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#737373,#262626)',
-					)}
+					style={{
+						position: 'absolute',
+						left: '-3px',
+						top: '226px',
+						width: '3px',
+						height: '52px',
+						borderRadius: '2px 0 0 2px',
+						background: 'linear-gradient(90deg,#737373,#262626)',
+					}}
 				/>
 				<span
-					style={css(
-						'position:absolute;right:-3px;top:180px;width:3px;height:80px;border-radius:0 2px 2px 0;background:linear-gradient(270deg,#737373,#262626)',
-					)}
+					style={{
+						position: 'absolute',
+						right: '-3px',
+						top: '180px',
+						width: '3px',
+						height: '80px',
+						borderRadius: '0 2px 2px 0',
+						background: 'linear-gradient(270deg,#737373,#262626)',
+					}}
 				/>
 				<div
 					data-lenis-prevent
-					style={css(
-						'position:relative;width:100%;height:100%;background:var(--paper);border-radius:37px;overflow:hidden;box-shadow:0 0 0 1px #000',
-					)}
+					style={{
+						position: 'relative',
+						width: '100%',
+						height: '100%',
+						background: 'var(--paper)',
+						borderRadius: '37px',
+						overflow: 'hidden',
+						boxShadow: '0 0 0 1px #000',
+					}}
 				>
 					{/* Still image: same state and same insets as the iframe, sits underneath and stays until the iframe has loaded */}
 					<div
@@ -320,19 +363,32 @@ export function Phone() {
 					)}
 					<StatusBar />
 					<span
-						style={css(
-							'position:absolute;inset:0;border-radius:37px;background:linear-gradient(118deg,rgba(255,255,255,0.13) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,0.05) 100%);pointer-events:none;z-index:5',
-						)}
+						style={{
+							position: 'absolute',
+							inset: '0',
+							borderRadius: '37px',
+							background:
+								'linear-gradient(118deg,rgba(255,255,255,0.13) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,0.05) 100%)',
+							pointerEvents: 'none',
+							zIndex: '5',
+						}}
 					/>
 				</div>
 				{/* Hint under the phone: until the visitor's first tap */}
 				<span
 					className="label"
-					data-ende-hinweis="1"
+					data-end-hint="1"
 					aria-hidden="true"
-					style={css(
-						`position:absolute;left:-40px;right:-40px;top:-30px;text-align:center;white-space:nowrap;transition:opacity 0.5s ease;opacity:${used ? 0 : 1}`,
-					)}
+					style={{
+						position: 'absolute',
+						left: '-40px',
+						right: '-40px',
+						top: '-30px',
+						textAlign: 'center',
+						whiteSpace: 'nowrap',
+						transition: 'opacity 0.5s ease',
+						opacity: used ? 0 : 1,
+					}}
 				>
 					{phone.hint}
 				</span>

@@ -112,13 +112,13 @@ a:hover {
 }
 @tailwind utilities;
 /* Topic pages: no preflight, so set the box model and the hairline here */
-.thema,
-.thema *,
-.thema *::before,
-.thema *::after {
+.topic-page,
+.topic-page *,
+.topic-page *::before,
+.topic-page *::after {
 	box-sizing: border-box;
 }
-.thema .linie {
+.topic-page .divider {
 	border: 0 solid rgb(var(--ink-rgb) / 0.14);
 	border-top-width: 1px;
 }
@@ -131,30 +131,30 @@ a:hover {
 	}
 	html,
 	body,
-	.thema {
+	.topic-page {
 		background: #fff !important;
 		color: #000 !important;
 		min-height: 0 !important;
 	}
-	.thema header,
-	.thema footer,
-	.thema nav,
-	.thema button,
-	.thema .druck-aus {
+	.topic-page header,
+	.topic-page footer,
+	.topic-page nav,
+	.topic-page button,
+	.topic-page .no-print {
 		display: none !important;
 	}
-	.thema a {
+	.topic-page a {
 		color: #000 !important;
 		text-decoration: none;
 	}
-	.thema :is(p, h1, h2, h3, th, td, caption, li) {
+	.topic-page :is(p, h1, h2, h3, th, td, caption, li) {
 		color: #000 !important;
 	}
-	.thema :is(th, td) {
+	.topic-page :is(th, td) {
 		border-color: #000 !important;
 	}
 	/* After clicking "Print" only the generated plan remains. */
-	body.plan-drucken .thema *:not(.plan-druck, .plan-druck *, :has(.plan-druck)) {
+	body.plan-printing .topic-page *:not(.plan-print, .plan-print *, :has(.plan-print)) {
 		display: none !important;
 	}
 }

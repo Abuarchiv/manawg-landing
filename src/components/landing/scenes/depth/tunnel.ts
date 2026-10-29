@@ -225,11 +225,11 @@ const wordDensity = (dz: number): number => cl((34 - dz) / 12) * (1 - ss((1 - dz
 // Portrait: dust amount and point size scale with the screen area (reference 1440 x 900), quantized so not
 // every resize rebuilds. Landscape: fixed amount (the stage scales as a whole).
 const area = (s: DepthState): number =>
-	s.mode === 'hoch' ? Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4 : 1;
+	s.mode === 'portrait' ? Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4 : 1;
 const buildKey = (s: DepthState): string => `${s.mode}${area(s)}`;
 
 function build(s: DepthState) {
-	const portrait = s.mode === 'hoch';
+	const portrait = s.mode === 'portrait';
 	const k = portrait ? 0.5 : 1; // adapt the scatter of the islands and of the pointer offset to the box width
 	const target = ((portrait ? 0.82 : 0.5) * s.bw * 9) / F; // word width in world units at depth 9 (portrait: 82 % of the width)
 	s.isl = s.raw.map((r, i): Island => {
@@ -303,7 +303,7 @@ function build(s: DepthState) {
 // Portrait only: in landscape the words fly freely through the image.
 function applyClamps(s: DepthState, clamps: Clamp[], camZ: number, camX: number) {
 	const { f, ox, cx } = s;
-	const portrait = s.mode === 'hoch';
+	const portrait = s.mode === 'portrait';
 	s.isl.forEach((I, i) => {
 		const z = clamps[i];
 		if (!z) return;
@@ -415,7 +415,7 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 	if (!ctx) return;
 	const { f, ox: bx, oy: by, cx, cy } = s;
 	const { camX, camY, camZ, headerY, mx, my, rep, rad, zones, clamps, phase, time } = a;
-	const portrait = s.mode === 'hoch';
+	const portrait = s.mode === 'portrait';
 	const tq = Math.round(time * 14);
 	const W = s.P;
 	for (let i = 0; i < W.n; i++) {
@@ -472,7 +472,7 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 				Y += ny * g * (word ? 0.4 : 1) + (word ? nx * g * 0.9 : 0);
 			}
 		}
-		if (qa.nurWort != null && qi !== qa.nurWort) continue; // Measurement hook: draw only one word
+		if (qa.onlyWord != null && qi !== qa.onlyWord) continue; // Measurement hook: draw only one word
 		// Words and dust: word present from dz 34 and full from 22, dust fades out in the distance
 		let al: number;
 		if (word) {
@@ -588,13 +588,13 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 		el: cv,
 		host: root,
 		box: (_W, _H, _safeH, mode) =>
-			mode === 'hoch' ? { bw: 640, bh: 1, align: 'top' } : { bw: 1280, bh: 800 },
+			mode === 'portrait' ? { bw: 640, bh: 1, align: 'top' } : { bw: 1280, bh: 800 },
 		dprCap: 2,
 		touchCap: 1.5,
 		minVisible: 0.1,
 		resize(s) {
 			s.cx = s.bw / 2;
-			s.cy = s.mode === 'hoch' ? (0.44 * s.H) / s.f : s.bh / 2;
+			s.cy = s.mode === 'portrait' ? (0.44 * s.H) / s.f : s.bh / 2;
 		},
 		init(s) {
 			s.sm = { x: s.cx * 1.2, y: s.cy * 0.8 };
@@ -620,7 +620,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			s.zones = s.caps.map((): Zone => ({ x0: 0, y0: 0, x1: 0, y1: 0, w: 0 }));
 			s.dep = root.querySelector<HTMLElement>('[data-depth]');
 			s.hint = root.querySelector<HTMLElement>('[data-hint]');
-			s.header = document.querySelector<HTMLElement>('[data-kopf]');
+			s.header = document.querySelector<HTMLElement>('[data-header]');
 			s.layout = { header: 0, el: 0, sec: 0, secH: 1, caps: s.caps.map(() => 0) };
 		},
 		warm: (s) => prepare(s, words),

@@ -148,7 +148,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 		<main
 			id="main"
 			tabIndex={-1}
-			className="thema min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
+			className="topic-page min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
 		>
 			<script
 				type="application/ld+json"
@@ -186,7 +186,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 
 				<div className="mt-20 md:mt-32">
 					{clusters.map(([name, list]) => (
-						<section key={name} className="linie py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8">
+						<section key={name} className="divider py-10 md:py-14 md:grid md:grid-cols-12 md:gap-8">
 							<h2 className="font-[family-name:'Inter_Tight','Inter_Tight_Fallback',sans-serif] font-semibold m-0 mb-4 md:mb-0 md:col-span-4 text-[22px] leading-[1.15] tracking-[-0.03em]">
 								{name}
 							</h2>
