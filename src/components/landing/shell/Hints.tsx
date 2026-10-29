@@ -16,6 +16,7 @@ export function Hints() {
 				aria-label={dict.hints.skipIntroAria}
 				data-nur-intro="1"
 				data-loch="hinweis"
+				data-dunkel="differenz"
 				href="#so-gehts"
 			>
 				{dict.hints.skipIntro}
@@ -24,8 +25,10 @@ export function Hints() {
 			<a className="label fokus-anker" data-nur-intro="1" href="#app-demo">
 				{dict.hints.tryApp}
 			</a>
+			{/* Only over the mountain (fades out with the title): dark like it */}
 			<div
 				aria-hidden="true"
+				data-dunkel=""
 				className="label"
 				style={css(
 					'position:fixed;right:calc(var(--margin) + env(safe-area-inset-right));bottom:max(var(--sp-28),calc(env(safe-area-inset-bottom) + 8px));opacity:calc(0.72 - var(--p,0) * 10);pointer-events:none;z-index:20',

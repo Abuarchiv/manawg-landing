@@ -54,7 +54,12 @@ export function Intro() {
 				ref={stageRef}
 				style={css('position:sticky;top:0;height:100lvh;overflow-x:clip;overflow-y:visible')}
 			>
-				<canvas data-intro="hero" aria-hidden="true" style={css(`${FILL};opacity:var(--g,1)`)} />
+				<canvas
+					data-intro="hero"
+					data-dunkel=""
+					aria-hidden="true"
+					style={css(`${FILL};opacity:var(--g,1)`)}
+				/>
 				<canvas
 					data-intro="wohnung"
 					aria-hidden="true"
