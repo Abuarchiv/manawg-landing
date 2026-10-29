@@ -1622,9 +1622,9 @@ export const GUIDES_DE: Record<string, Topic> = {
 		link: 'WG-Casting',
 		updated: '2026-10-29',
 		published: '2026-10-19',
-		title: 'WG-Casting: Ablauf, 48 Fragen, Mustertexte | ManaWG',
+		title: 'WG-Casting-Fragen: 48 Fragen, Ablauf, Mustertexte | ManaWG',
 		description:
-			'Was ist ein WG-Casting und wie läuft es ab? 48 Fragen für WG und Bewerber, Tabu-Fragen, Mustertexte für Zu- und Absage und ein Bewertungsbogen.',
+			'WG-Casting-Fragen für WG und Bewerber: 48 Fragen mit Hintergrund, Ablauf, Tabu-Fragen, Mustertexte für Zu- und Absage und ein Bewertungsbogen.',
 		h1: 'WG-Casting: Ablauf und Fragen für WG und Bewerber',
 		intro:
 			'Beim WG-Casting entscheidet sich in zwanzig Minuten, ob ihr die nächsten Jahre gut zusammenlebt. Beide Seiten prüfen einander: die WG die neue Person, die Bewerberin oder der Bewerber die WG. Mit den richtigen Fragen erfahrt ihr, was wirklich zählt, und nicht nur, wer am sympathischsten wirkt. Kurz gesagt: Plant pro Termin 20 bis 30 Minuten, führt Einzeltermine und entscheidet erst danach, getrennt von den Bewerbern.',
@@ -2355,9 +2355,9 @@ export const GUIDES_DE: Record<string, Topic> = {
 		link: 'Anmeldung in der WG',
 		updated: '2026-10-27',
 		published: '2026-10-20',
-		title: 'Anmeldung in der WG: Frist, Bestätigung, Muster | ManaWG',
+		title: 'Anmeldung in der WG: Meldepflicht, Frist, Muster | ManaWG',
 		description:
-			'WG-Zimmer anmelden: zwei Wochen Frist, wer die Wohnungsgeberbestätigung ausstellt, was drinstehen muss (mit Beispiel) und was hilft, wenn sie verweigert wird.',
+			'Meldepflicht in der WG: zwei Wochen Frist, wer die Wohnungsgeberbestätigung ausstellt, was drinstehen muss (mit Beispiel) und was hilft, wenn sie verweigert wird.',
 		h1: 'Anmeldung in der WG: Wohnungsgeberbestätigung und Frist',
 		intro:
 			'Wer in ein WG-Zimmer zieht, muss sich beim Bürgeramt anmelden, und dafür braucht es eine Wohnungsgeberbestätigung. Wer sie ausstellt, hängt vom Mietvertrag ab, und gerade bei Untermiete wissen viele Hauptmieter nicht, dass sie zuständig sind. Diese Seite fasst die Regeln des Bundesmeldegesetzes zusammen und ersetzt keine Rechtsberatung. Einzelheiten wie Formulare und Termine regelt eure Stadt.',
