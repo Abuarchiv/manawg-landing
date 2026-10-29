@@ -53,7 +53,7 @@ export function LegalPage({
 				<h1 className={`text-2xl font-bold text-(--text-1) ${intro ? 'mb-2' : 'mb-8'}`}>{title}</h1>
 				{intro}
 
-				<div className="prose prose-sm max-w-none text-(--text-2) space-y-6 leading-relaxed [&_a]:text-(--accent) [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-hidden [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-(--accent) [&_a:focus-visible]:rounded-sm">
+				<div className="prose prose-sm max-w-none text-(--text-2) space-y-6 leading-relaxed [&_a]:text-(--accent) [&_a]:underline [&_a]:underline-offset-2 [&_a:focus-visible]:outline-hidden [&_a:focus-visible]:ring-2 [&_a:focus-visible]:ring-(--accent) [&_a:focus-visible]:rounded-xs">
 					{children}
 				</div>
 			</div>
