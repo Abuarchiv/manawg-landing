@@ -1,6 +1,7 @@
 import { getAppUrl } from '@/lib/app-url';
 import { type Locale, OG_LOCALE, languageAlternates } from '@/lib/locale';
 import { schemaIds } from '@/lib/schema-ids';
+import { THEME_COLOR, THEME_SCRIPT } from '@/lib/theme';
 import type { Metadata, Viewport } from 'next';
 
 // Parts of the root layout shared by the German and the English tree.
@@ -106,14 +107,18 @@ export const siteViewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1,
 	viewportFit: 'cover',
-	themeColor: '#0a0a0a',
-	colorScheme: 'dark',
+	themeColor: THEME_COLOR.dark,
+	colorScheme: 'dark light',
 };
 
 /** Contents of <head>: preloads for the fonts of the first paint, then the two site-wide JSON-LD blocks. */
 export function SiteHead({ locale }: { locale: Locale }) {
 	return (
 		<head>
+			<script
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: static constant, sets the theme before the first paint
+				dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }}
+			/>
 			{/* Request the fonts of the first paint (H1, loader digits) now, not after the CSS parse */}
 			<link
 				rel="preload"

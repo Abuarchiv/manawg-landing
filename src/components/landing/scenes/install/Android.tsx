@@ -166,7 +166,9 @@ export function Android() {
 
 			{/* Chrome with everything above it */}
 			<div className={s.and_stack} data-k="and-stack">
-				<div style={abs({ left: 0, top: 108, width: 411, height: 692, background: '#0a0a0a' })} />
+				<div
+					style={abs({ left: 0, top: 108, width: 411, height: 692, background: 'var(--and-page)' })}
+				/>
 				<div style={glass(0, 481, 108)} />
 
 				<div style={glass(676, 844, 623)} />
@@ -274,13 +276,25 @@ export function Android() {
 
 			{/* Launch of the installed app */}
 			<div className={s.and_launch} data-k="and-launch">
-				<img loading="lazy" src={BRAND} alt="" width="72" height="60" data-k="and-launch-logo" />
+				<img
+					loading="lazy"
+					src={BRAND}
+					alt=""
+					width="72"
+					height="60"
+					data-k="and-launch-logo"
+					data-invert=""
+				/>
 			</div>
 			<div className={s.and_app} data-k="and-app">
-				<div style={abs({ left: 0, top: 0, width: 411, height: 48, background: '#0a0a0a' })} />
+				<div
+					style={abs({ left: 0, top: 0, width: 411, height: 48, background: 'var(--and-page)' })}
+				/>
 				<div style={glass(0, 702, 48, APP_PAGE)} />
 				<div style={glass(779, 844, 788, APP_PAGE)} />
-				<div style={abs({ left: 0, top: 856, width: 411, height: 28, background: '#000' })} />
+				<div
+					style={abs({ left: 0, top: 856, width: 411, height: 28, background: 'var(--and-nav)' })}
+				/>
 			</div>
 			<div className={s.and_nav} data-k="and-nav">
 				<i />

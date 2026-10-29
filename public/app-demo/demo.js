@@ -12,6 +12,18 @@
 	const root = document.documentElement;
 	const app = document.getElementById('app');
 	const layer = document.getElementById('layer');
+	// Light or dark like the landing page around it (html[data-theme], src/lib/theme.ts); on its own via ?theme= or the system
+	const theme = () => {
+		let light = null;
+		try {
+			if (FRAMED) light = window.parent.document.documentElement.dataset.theme === 'light';
+		} catch {}
+		if (light === null) light = Q.get('theme') ? Q.get('theme') === 'light' : matchMedia('(prefers-color-scheme: light)').matches;
+		root.classList.toggle('dark', !light);
+		root.style.colorScheme = light ? 'light' : 'dark';
+	};
+	theme();
+	if (FRAMED) new MutationObserver(theme).observe(window.parent.document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 	// Transition between pages: a short cross-fade with the curve of the app
 	document.head.insertAdjacentHTML('beforeend', '<style>::view-transition-old(root),::view-transition-new(root){animation-duration:200ms;animation-timing-function:cubic-bezier(.2,0,0,1)}</style>');
 

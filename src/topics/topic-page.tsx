@@ -65,9 +65,9 @@ const markGerman = (part: string, locale: Locale) =>
 				),
 			);
 
-const cellCls = 'px-3 py-2 border-b border-white/10';
+const cellCls = 'px-3 py-2 border-b border-[rgb(var(--ink-rgb)/0.1)]';
 // English strings are longer: with up to three short columns the table fits a phone instead of scrolling sideways.
-const cellClsEn = 'px-2 md:px-3 py-2 border-b border-white/10';
+const cellClsEn = 'px-2 md:px-3 py-2 border-b border-[rgb(var(--ink-rgb)/0.1)]';
 
 type TableData = NonNullable<Topic['tables']>[number];
 
@@ -289,7 +289,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 		<main
 			id="main"
 			tabIndex={-1}
-			className="thema min-h-screen flex flex-col bg-[#0a0a0a] text-[#fafafa] focus:outline-none"
+			className="thema min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
 		>
 			<script
 				type="application/ld+json"
@@ -486,7 +486,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 							href={appUrl(
 								locale === 'de' ? '/registrieren?action=create' : '/signup?action=create',
 							)}
-							className="inline-flex items-center justify-center min-h-[56px] px-8 rounded-full bg-[#fafafa] text-[#0a0a0a] font-semibold no-underline hover:bg-[#d4d4d4] transition-colors"
+							className="inline-flex items-center justify-center min-h-[56px] px-8 rounded-full bg-[var(--ink)] text-[var(--paper)] font-semibold no-underline hover:bg-[rgb(var(--ink-rgb)/0.82)] transition-colors"
 						>
 							{txt.ctaButton}
 						</a>

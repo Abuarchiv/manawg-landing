@@ -17,6 +17,7 @@ export function Header() {
 			<div data-loch="logo" style={css('display:flex;align-items:center;gap:var(--sp-10)')}>
 				<img
 					src="/manawg-mark-weiss-80.webp"
+					data-invert=""
 					alt=""
 					width={416}
 					height={346}

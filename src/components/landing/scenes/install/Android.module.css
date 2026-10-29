@@ -1,6 +1,8 @@
 /* Android, stage 411 x 884 dp, scaled into the frame via transform. */
 
 .and {
+	--and-page: #0a0a0a;
+	--and-nav: #000;
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -462,4 +464,96 @@
 	height: 5px;
 	border-radius: 3px;
 	background: #fff;
+}
+
+/* ---------- Light mode (html[data-theme="light"]): Chrome and Material 3 light colours ---------- */
+:global(:root[data-theme="light"]) .and {
+	--and-page: #fff;
+	--and-nav: #fff;
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .and_status,
+:global(:root[data-theme="light"]) .and_hicon,
+:global(:root[data-theme="light"]) .and_entry,
+:global(:root[data-theme="light"]) .and_srow {
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .and_home {
+	background: #e9eef6;
+}
+:global(:root[data-theme="light"]) .and_wall {
+	background: radial-gradient(80% 34% at 72% 14%, #ffffff 0%, rgba(255, 255, 255, 0) 72%),
+		linear-gradient(180deg, #d8dde6 0%, #eceff4 36%, #f4f6f9 100%);
+}
+:global(:root[data-theme="light"]) .and_hicon em {
+	text-shadow: none;
+}
+:global(:root[data-theme="light"]) .and_search {
+	background: #fff;
+}
+:global(:root[data-theme="light"]) .and_stack,
+:global(:root[data-theme="light"]) .and_launch,
+:global(:root[data-theme="light"]) .and_app,
+:global(:root[data-theme="light"]) .and_top,
+:global(:root[data-theme="light"]) .and_bottom {
+	background: #fff;
+}
+:global(:root[data-theme="light"]) .and_pill {
+	background: #e9eef6;
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .and_bottom {
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .and_tabs {
+	border-color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .and_gesture,
+:global(:root[data-theme="light"]) .and_nav i {
+	background: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .and_nav {
+	background: #fff;
+}
+:global(:root[data-theme="light"]) .and_menu {
+	background: #f8fafd;
+	box-shadow: 0 6px 28px rgba(0, 0, 0, 0.18);
+}
+:global(:root[data-theme="light"]) .and_circles span {
+	background: #e9eef6;
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .and_entry span,
+:global(:root[data-theme="light"]) .and_srow em {
+	color: #444746;
+}
+:global(:root[data-theme="light"]) .and_divider {
+	background: #c4c7c5;
+}
+:global(:root[data-theme="light"]) .and_sheet {
+	background: #f8fafd;
+}
+:global(:root[data-theme="light"]) .and_srow {
+	background: #fff;
+}
+:global(:root[data-theme="light"]) .and_dlg {
+	background: #ece6f0;
+	box-shadow: 0 8px 36px rgba(0, 0, 0, 0.2);
+	color: #1d1b20;
+}
+:global(:root[data-theme="light"]) .and_field {
+	border-bottom-color: #0b57d0;
+}
+:global(:root[data-theme="light"]) .and_field i {
+	background: #0b57d0;
+}
+:global(:root[data-theme="light"]) .and_drow span {
+	color: #49454f;
+}
+:global(:root[data-theme="light"]) .and_buttons {
+	color: #0b57d0;
+}
+:global(:root[data-theme="light"]) .and_toast {
+	background: #313033;
+	color: #f4eff4;
 }

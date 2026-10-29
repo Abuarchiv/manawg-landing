@@ -22,7 +22,9 @@ export function Depth() {
 			tabIndex={-1}
 			ref={secRef}
 			aria-label={depth.srHeading}
-			style={css('position:relative;height:calc(4.5 * 100lvh);background:#0A0A0A;color:#FAFAFA')}
+			style={css(
+				'position:relative;height:calc(4.5 * 100lvh);background:var(--paper);color:var(--ink)',
+			)}
 		>
 			<h2 className="sr-only">{depth.srHeading}</h2>
 			<div style={css('position:sticky;top:0;height:100lvh;overflow:hidden')}>

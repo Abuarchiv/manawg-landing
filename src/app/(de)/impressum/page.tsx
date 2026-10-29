@@ -33,7 +33,7 @@ export default function LegalNoticePage() {
 				<Link
 					href="/"
 					prefetch={false}
-					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+					className="inline-flex items-center gap-2 text-[var(--text-3)] hover:text-[var(--text-2)] mb-8 -ml-2 px-3 py-3 min-h-[44px] rounded-lg hover:bg-[rgb(var(--ink-rgb)/0.04)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
 					aria-label="Zur Startseite"
 				>
 					<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />

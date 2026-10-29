@@ -19,8 +19,8 @@
 	);
 	position: relative;
 	height: max(var(--h), var(--needed));
-	background: #0a0a0a;
-	color: #fafafa;
+	background: var(--paper);
+	color: var(--ink);
 	overflow: hidden;
 }
 .field {
@@ -85,7 +85,7 @@
 		--title-fs: clamp(64px, min(27vw, var(--free) / 1.76), 150px);
 	}
 	.title {
-		text-shadow: 0 2px 24px rgba(10, 10, 10, 0.55);
+		text-shadow: 0 2px 24px rgb(var(--paper-rgb) / 0.55);
 	}
 	/* both buttons in one row: tighter tracking and bracket spacing */
 	.buttons {

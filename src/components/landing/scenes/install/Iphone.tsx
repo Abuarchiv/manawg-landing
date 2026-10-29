@@ -51,9 +51,9 @@ const glass = (y0: number, y1: number, top: number, src = PAGE): CSSProperties =
 		backgroundRepeat: 'no-repeat',
 	});
 
-/** Status bar: dark mode, white text over page, sheets and dialog. */
+/** Status bar: text in the colour of the device mode (.ios colour) over page, sheets and dialog. */
 function Status() {
-	const c = '#fff';
+	const c = 'currentColor';
 	return (
 		<div className={s.ios_status} style={{ color: c }}>
 			<span className={s.ios_time}>09:41</span>
@@ -255,13 +255,13 @@ export function Iphone() {
 
 			{/* Page with Safari bars and everything above it */}
 			<div className={s.ios_stack} data-k="ios-stack">
-				<div style={abs({ inset: 0, background: '#0a0a0a' })} />
+				<div style={abs({ inset: 0, background: 'var(--ios-page)' })} />
 				<div style={glass(0, 490, 54)} />
 
 				<div style={glass(676, 844, 580)} />
 				<div className={s.ios_bar} data-k="ios-bar">
-					<span className={s.ios_round} style={{ left: 33 }}>
-						<ChevronLeft size={24} strokeWidth={1.8} color="#a3a3a8" aria-hidden="true" />
+					<span className={s.ios_round} style={{ left: 33, color: 'var(--ios-dim)' }}>
+						<ChevronLeft size={24} strokeWidth={1.8} aria-hidden="true" />
 					</span>
 					<div className={s.ios_pill}>
 						<Menu
@@ -367,7 +367,7 @@ export function Iphone() {
 							<em>Safari</em>
 						</div>
 						<div>
-							<span className={s.ios_gk} style={{ background: '#3a3a3c' }}>
+							<span className={s.ios_gk} style={{ background: 'var(--ios-more)' }}>
 								<b className={s.ios_dots}>•••</b>
 							</span>
 							<em>{t.sheetMore}</em>
@@ -519,7 +519,7 @@ export function Iphone() {
 						</span>
 						<span
 							className={s.ios_key_s}
-							style={{ width: 90, background: '#0a84ff', color: '#fff' }}
+							style={{ width: 90, background: 'var(--ios-blue)', color: '#fff' }}
 						>
 							✓
 						</span>

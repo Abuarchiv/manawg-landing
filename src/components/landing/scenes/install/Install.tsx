@@ -84,7 +84,11 @@ export function Install() {
 					'--b-and': demo.installAndroid,
 					'--b-app': demo.installApp,
 				};
-				for (const [k, v] of Object.entries(images)) el.style.setProperty(k, `url(${v})`);
+				// Both variants as variables; Install.module.css picks the one of the current theme (only that one loads)
+				for (const [k, v] of Object.entries(images)) {
+					el.style.setProperty(`${k}-d`, `url(${v})`);
+					el.style.setProperty(`${k}-l`, `url(${v.replace('-dark.webp', '-light.webp')})`);
+				}
 				io.disconnect();
 			},
 			{ rootMargin: '200% 0px' },

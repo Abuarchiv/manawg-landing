@@ -58,7 +58,7 @@ export function HeaderMask() {
 				pointerEvents: 'none',
 				opacity: 0,
 				background:
-					'linear-gradient(to bottom, #0a0a0a 0, #0a0a0a calc(100% - 28px), rgba(10,10,10,0) 100%)',
+					'linear-gradient(to bottom, var(--paper) 0, var(--paper) calc(100% - 28px), rgb(var(--paper-rgb) / 0) 100%)',
 			}}
 		/>
 	);

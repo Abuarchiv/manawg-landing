@@ -69,9 +69,10 @@ const TEXT: Record<
 	},
 };
 const buttonCls =
-	'inline-flex items-center justify-center min-h-[44px] px-6 rounded-full bg-[#fafafa] text-[#0a0a0a] font-semibold cursor-pointer border-0 hover:bg-[#d4d4d4] transition-colors disabled:opacity-40';
-const fieldCls = 'min-h-[44px] px-3 rounded border border-white/20 bg-transparent text-[#fafafa]';
-const cellCls = 'px-3 py-2 border-b border-white/10';
+	'inline-flex items-center justify-center min-h-[44px] px-6 rounded-full bg-[var(--ink)] text-[var(--paper)] font-semibold cursor-pointer border-0 hover:bg-[rgb(var(--ink-rgb)/0.82)] transition-colors disabled:opacity-40';
+const fieldCls =
+	'min-h-[44px] px-3 rounded border border-[rgb(var(--ink-rgb)/0.2)] bg-transparent text-[var(--ink)]';
+const cellCls = 'px-3 py-2 border-b border-[rgb(var(--ink-rgb)/0.1)]';
 const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
 
 // No storage and no account: inputs and plan live in the browser only.

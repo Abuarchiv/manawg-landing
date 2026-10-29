@@ -24,6 +24,7 @@ export function TopicHeader({ locale }: { locale: Locale }) {
 			>
 				<img
 					src="/manawg-mark-weiss-80.webp"
+					data-invert=""
 					alt=""
 					width={416}
 					height={346}
@@ -86,7 +87,7 @@ export function TopicFooter({
 											href={localiseHref(locale, `/${slug}`)}
 											prefetch={false}
 											aria-current={slug === active ? 'page' : undefined}
-											className="inline-block py-[7px] text-[14px] text-[var(--text-2)] no-underline hover:text-[#fafafa] aria-[current=page]:text-[#fafafa]"
+											className="inline-block py-[7px] text-[14px] text-[var(--text-2)] no-underline hover:text-[var(--ink)] aria-[current=page]:text-[var(--ink)]"
 										>
 											{data[slug]?.link}
 										</Link>

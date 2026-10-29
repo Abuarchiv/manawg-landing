@@ -2,5 +2,5 @@
 .band {
 	position: relative;
 	height: 55lvh;
-	background: #0a0a0a;
+	background: var(--paper);
 }

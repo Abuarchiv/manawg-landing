@@ -9,7 +9,7 @@ import s from './End.module.css';
 import { Phone } from './Phone';
 import { camera } from './camera';
 
-// End layer of the intro stage: phone and hands on #0A0A0A, title and button below. The layer sits in
+// End layer of the intro stage: phone and hands on var(--paper), title and button below. The layer sits in
 // the sticky stage and scrolls away with it. The end space [data-ende-space] is 1280 x 800 and is fitted
 // into the stage via --end-x, --end-y and --end-f by camera(). Title and button precede the phone in the
 // DOM so that Shift+Tab from the app iframe lands on the button (not on the body); header and hints are inert in the end.
@@ -41,7 +41,7 @@ export function End() {
 			data-ende="1"
 			aria-label={aria.appPreview}
 			style={css(
-				'position:absolute;inset:0;opacity:clamp(0, (var(--e,0) - 0.35) * 1.54, 1);pointer-events:none;background:#0A0A0A',
+				'position:absolute;inset:0;opacity:clamp(0, (var(--e,0) - 0.35) * 1.54, 1);pointer-events:none;background:var(--paper)',
 			)}
 		>
 			<canvas

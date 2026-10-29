@@ -1,4 +1,5 @@
 import { LanguageLink } from '@/components/LanguageLink';
+import { ThemeSwitch } from '@/components/ThemeSwitch';
 import { appUrl } from '@/lib/app-origin';
 import { css } from '../../core/dc';
 import { useDict, useLocale } from '../../dict';
@@ -24,6 +25,7 @@ export function Footer() {
 						className="label"
 						style={css('margin-top:var(--sp-12)')}
 					/>
+					<ThemeSwitch locale={locale} className={`label ${s.theme}`} />
 				</div>
 				<div className={s.column}>
 					<span className={s.head}>{footer.product}</span>

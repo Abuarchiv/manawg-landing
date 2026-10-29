@@ -51,7 +51,7 @@ function StatusBar() {
 				viewBox="0 0 20 12"
 				width="20"
 				height="12"
-				fill="#FAFAFA"
+				fill="currentColor"
 			>
 				<rect x="0" y="8" width="3.6" height="4" rx="1.2" />
 				<rect x="5.4" y="5.5" width="3.6" height="6.5" rx="1.2" />
@@ -64,7 +64,7 @@ function StatusBar() {
 				viewBox="0 0 19 14"
 				width="19"
 				height="14"
-				fill="#FAFAFA"
+				fill="currentColor"
 			>
 				<path d="M9.5 2.6c2.7 0 5.2 1 7.1 2.8.1.1.3.1.4 0l1.1-1.1c.1-.1.1-.3 0-.4C15.7 1.6 12.7.4 9.5.4S3.3 1.6.9 3.9c-.1.1-.1.3 0 .4L2 5.4c.1.1.3.1.4 0 1.9-1.8 4.4-2.8 7.1-2.8Z" />
 				<path d="M9.5 6.9c1.6 0 3.1.6 4.3 1.6.1.1.3.1.4 0l1.1-1.1c.1-.1.1-.3 0-.4a9 9 0 0 0-11.6 0c-.1.1-.1.3 0 .4l1.1 1.1c.1.1.3.1.4 0 1.2-1 2.7-1.6 4.3-1.6Z" />
@@ -78,13 +78,13 @@ function StatusBar() {
 					height="13"
 					rx="4"
 					fill="none"
-					stroke="#FAFAFA"
+					stroke="currentColor"
 					strokeOpacity="0.4"
 				/>
-				<rect x="2" y="2" width="21" height="10" rx="2.8" fill="#FAFAFA" />
+				<rect x="2" y="2" width="21" height="10" rx="2.8" fill="currentColor" />
 				<path
 					d="M26 4.6v4.8c.9-.4 1.5-1.4 1.5-2.4S26.9 5 26 4.6Z"
-					fill="#FAFAFA"
+					fill="currentColor"
 					fillOpacity="0.45"
 				/>
 			</svg>
@@ -228,7 +228,7 @@ export function Phone() {
 				<div
 					data-lenis-prevent
 					style={css(
-						'position:relative;width:100%;height:100%;background:#0A0A0A;border-radius:37px;overflow:hidden;box-shadow:0 0 0 1px #000',
+						'position:relative;width:100%;height:100%;background:var(--paper);border-radius:37px;overflow:hidden;box-shadow:0 0 0 1px #000',
 					)}
 				>
 					{/* Still image: same state and same insets as the iframe, sits underneath and stays until the iframe has loaded */}
@@ -237,6 +237,7 @@ export function Phone() {
 						style={{ opacity: ready ? 0 : 'calc(1 - var(--app-out, 0))' }}
 						aria-hidden="true"
 					>
+						{/* One still per theme; the other one is display:none and is not loaded (globals.css [data-only]) */}
 						<img
 							src={still}
 							alt=""
@@ -245,6 +246,17 @@ export function Phone() {
 							loading="lazy"
 							decoding="async"
 							className={s.still}
+							data-only="dark"
+						/>
+						<img
+							src={still?.replace('start.webp', 'start-light.webp')}
+							alt=""
+							width={390}
+							height={839}
+							loading="lazy"
+							decoding="async"
+							className={s.still}
+							data-only="light"
 						/>
 						{lines && (
 							<>
@@ -299,7 +311,11 @@ export function Phone() {
 								requestAnimationFrame(() => requestAnimationFrame(() => setReady(true)));
 							}}
 							// Transition: the app disintegrates into characters (scenes/decay sets --app-out)
-							style={{ border: 0, background: '#0A0A0A', opacity: 'calc(1 - var(--app-out, 0))' }}
+							style={{
+								border: 0,
+								background: 'var(--paper)',
+								opacity: 'calc(1 - var(--app-out, 0))',
+							}}
 						/>
 					)}
 					<StatusBar />

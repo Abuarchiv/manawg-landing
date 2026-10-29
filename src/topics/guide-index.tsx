@@ -145,7 +145,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 		<main
 			id="main"
 			tabIndex={-1}
-			className="thema min-h-screen flex flex-col bg-[#0a0a0a] text-[#fafafa] focus:outline-none"
+			className="thema min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
 		>
 			<script
 				type="application/ld+json"

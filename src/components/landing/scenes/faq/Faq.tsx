@@ -17,7 +17,7 @@ export function Faq() {
 			tabIndex={-1}
 			aria-labelledby="fragen-titel"
 			style={css(
-				'position:relative;background:#0A0A0A;color:#FAFAFA;padding:var(--section-top) var(--margin) var(--section-bottom);display:flex;flex-direction:column;gap:var(--sp-48)',
+				'position:relative;background:var(--paper);color:var(--ink);padding:var(--section-top) var(--margin) var(--section-bottom);display:flex;flex-direction:column;gap:var(--sp-48)',
 			)}
 		>
 			<h2 id="fragen-titel" className="label" style={css('margin:0')}>

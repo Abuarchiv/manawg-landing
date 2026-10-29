@@ -17,6 +17,10 @@
 
 /* ---------- iPhone, 390 x 844 pt ---------- */
 .ios {
+	--ios-dim: #a3a3a8;
+	--ios-more: #3a3a3c;
+	--ios-blue: #0a84ff;
+	--ios-page: #0a0a0a;
 	width: 390px;
 	height: 844px;
 	background: #000;
@@ -666,4 +670,121 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+/* ---------- Light mode (html[data-theme="light"]): iOS light system colours ---------- */
+:global(:root[data-theme="light"]) .ios {
+	--ios-dim: #8e8e93;
+	--ios-more: #e5e5ea;
+	--ios-blue: #007aff;
+	--ios-page: #fff;
+	color: #000;
+}
+:global(:root[data-theme="light"]) .ios_home {
+	background: #e5e5ea;
+}
+:global(:root[data-theme="light"]) .ios_wall {
+	background: radial-gradient(80% 34% at 72% 14%, #ffffff 0%, rgba(255, 255, 255, 0) 72%),
+		linear-gradient(180deg, #d8d8de 0%, #ececf0 36%, #f4f4f6 100%);
+}
+:global(:root[data-theme="light"]) .ios_cell {
+	color: #000;
+}
+:global(:root[data-theme="light"]) .ios_cell em {
+	text-shadow: none;
+}
+:global(:root[data-theme="light"]) .ios_dock::before {
+	background: rgba(255, 255, 255, 0.55);
+	box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+}
+:global(:root[data-theme="light"]) .ios_search {
+	background: rgba(255, 255, 255, 0.6);
+	color: #000;
+}
+:global(:root[data-theme="light"]) .ios_stack,
+:global(:root[data-theme="light"]) .ios_launch,
+:global(:root[data-theme="light"]) .ios_app_layer {
+	background: #fff;
+}
+:global(:root[data-theme="light"]) .ios_round,
+:global(:root[data-theme="light"]) .ios_pill {
+	background: rgba(255, 255, 255, 0.9);
+	box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+:global(:root[data-theme="light"]) .ios_pill {
+	color: #000;
+}
+:global(:root[data-theme="light"]) .ios_tabs {
+	border-color: #000;
+	box-shadow: 3px -3px 0 -1px #fff, 3px -3px 0 0 #000;
+}
+:global(:root[data-theme="light"]) .ios_menu {
+	background: rgba(249, 249, 249, 0.9);
+	box-shadow: 0 10px 44px rgba(0, 0, 0, 0.18), inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+}
+:global(:root[data-theme="light"]) .ios_row,
+:global(:root[data-theme="light"]) .ios_row_i,
+:global(:root[data-theme="light"]) .ios_actions em,
+:global(:root[data-theme="light"]) .ios_suggestion,
+:global(:root[data-theme="light"]) .ios_key,
+:global(:root[data-theme="light"]) .ios_emoji {
+	color: #000;
+}
+:global(:root[data-theme="light"]) .ios_divider,
+:global(:root[data-theme="light"]) .ios_hairline {
+	background: rgba(60, 60, 67, 0.18);
+}
+:global(:root[data-theme="light"]) .ios_share {
+	background: rgba(242, 242, 247, 0.94);
+	box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16), inset 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+}
+:global(:root[data-theme="light"]) .ios_tile {
+	background: #fff;
+	box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+}
+:global(:root[data-theme="light"]) .ios_head_t span,
+:global(:root[data-theme="light"]) .ios_url,
+:global(:root[data-theme="light"]) .ios_foot {
+	color: #8a8a8e;
+}
+:global(:root[data-theme="light"]) .ios_head_t em {
+	color: rgba(60, 60, 67, 0.6);
+	background: rgba(120, 120, 128, 0.12);
+}
+:global(:root[data-theme="light"]) .ios_x,
+:global(:root[data-theme="light"]) .ios_x2,
+:global(:root[data-theme="light"]) .ios_gr {
+	background: rgba(120, 120, 128, 0.12);
+	color: #3c3c43;
+}
+:global(:root[data-theme="light"]) .ios_dots {
+	color: #3c3c43;
+}
+:global(:root[data-theme="light"]) .ios_group,
+:global(:root[data-theme="light"]) .ios_card,
+:global(:root[data-theme="light"]) .ios_switch_row {
+	background: #fff;
+}
+:global(:root[data-theme="light"]) .ios_dlg {
+	background: #f2f2f7;
+	box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.14);
+}
+:global(:root[data-theme="light"]) .ios_blue,
+:global(:root[data-theme="light"]) .ios_caret {
+	background: #007aff;
+}
+:global(:root[data-theme="light"]) .ios_field {
+	border-bottom-color: rgba(60, 60, 67, 0.29);
+}
+:global(:root[data-theme="light"]) .ios_field u {
+	background: #c7c7cc;
+}
+:global(:root[data-theme="light"]) .ios_kbd {
+	background: #d1d3d9;
+}
+:global(:root[data-theme="light"]) .ios_key_s {
+	background: rgba(255, 255, 255, 0.75);
+}
+:global(:root[data-theme="light"]) .ios_indicator {
+	background: #000;
 }

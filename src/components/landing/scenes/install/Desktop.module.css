@@ -278,3 +278,63 @@
 	top: 6px;
 	color: #d4d4d4;
 }
+
+/* ---------- Light mode (html[data-theme="light"]): Chrome light colours ---------- */
+:global(:root[data-theme="light"]) .dk {
+	background: #dfe3e7;
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .dk_app,
+:global(:root[data-theme="light"]) .dk_page,
+:global(:root[data-theme="light"]) .dk_tools,
+:global(:root[data-theme="light"]) .dk_tab {
+	background: #fff;
+}
+:global(:root[data-theme="light"]) .dk_bar {
+	background: #dfe3e7;
+}
+:global(:root[data-theme="light"]) .dk_tools {
+	border-bottom-color: #dadce0;
+	color: #474747;
+}
+:global(:root[data-theme="light"]) .dk_tab svg,
+:global(:root[data-theme="light"]) .dk_row span {
+	color: #474747;
+}
+:global(:root[data-theme="light"]) .dk_omni {
+	background: #edf2fa;
+}
+:global(:root[data-theme="light"]) .dk_tune {
+	background: #dadce0;
+}
+:global(:root[data-theme="light"]) .dk_url,
+:global(:root[data-theme="light"]) .dk_dlg_t {
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .dk_chip,
+:global(:root[data-theme="light"]) .dk_button {
+	color: #0b57d0;
+}
+:global(:root[data-theme="light"]) .dk_tip {
+	background: #3c4043;
+	color: #fff;
+}
+:global(:root[data-theme="light"]) .dk_dlg {
+	background: #fff;
+	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+:global(:root[data-theme="light"]) .dk_button {
+	border-color: #747775;
+}
+:global(:root[data-theme="light"]) .dk_full {
+	background: #0b57d0;
+	border-color: #0b57d0;
+	color: #fff;
+}
+:global(:root[data-theme="light"]) .dk_title {
+	background: #fff;
+	color: #1f1f1f;
+}
+:global(:root[data-theme="light"]) .dk_title svg {
+	color: #474747;
+}

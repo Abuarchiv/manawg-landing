@@ -28,7 +28,7 @@
 	pointer-events: none;
 	z-index: 4;
 	font-family: Inter, "Inter Fallback", sans-serif;
-	color: #fafafa;
+	color: var(--ink);
 }
 
 .time {
@@ -50,7 +50,7 @@
 	height: 37px;
 	border-radius: 999px;
 	background: #000;
-	box-shadow: 0 0 0 1px rgba(250, 250, 250, 0.12);
+	box-shadow: 0 0 0 1px rgb(var(--ink-rgb) / 0.12);
 }
 
 .signal {
@@ -81,7 +81,12 @@
 	position: absolute;
 	left: 65.6px;
 	font: 400 12px / 18px Inter, sans-serif;
+	/* muted text of the app (--muted-foreground): oklch(0.708) dark, oklch(0.52) light */
 	color: #a3a3a3;
 	white-space: nowrap;
 	font-feature-settings: "cv11", "kern", "ss01";
+}
+
+:global(:root[data-theme="light"]) .date {
+	color: #696969;
 }

@@ -155,14 +155,14 @@ export function initScroll(root: HTMLElement): () => void {
 		}
 	});
 
-	// Jump links: smooth up to 3 screen heights, beyond that immediate with a short crossfade over #0A0A0A.
+	// Jump links: smooth up to 3 screen heights, beyond that immediate with a short crossfade over var(--paper).
 	let veil: HTMLDivElement | null = null;
 	const veilEl = (): HTMLDivElement => {
 		if (veil) return veil;
 		veil = document.createElement('div');
 		veil.setAttribute('aria-hidden', 'true');
 		veil.style.cssText =
-			'position:fixed;inset:0;background:#0A0A0A;opacity:0;pointer-events:none;z-index:90';
+			'position:fixed;inset:0;background:var(--paper);opacity:0;pointer-events:none;z-index:90';
 		root.appendChild(veil);
 		return veil;
 	};
