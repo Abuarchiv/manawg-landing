@@ -6,13 +6,13 @@ import { type NextRequest, NextResponse } from 'next/server';
  * CSP for pages this site actually renders itself. /wg, /api, /neu and
  * /offline redirect to app.manawg.com (see next.config.ts), and
  * /.well-known is rewritten there — the matcher below excludes all of
- * these so this middleware never sets a landing-only CSP header on a
+ * these so this proxy never sets a landing-only CSP header on a
  * response that's about to leave this origin anyway.
  *
  * It also picks the language on arrival (src/lib/language-redirect.ts): a visitor from outside whose
  * system does not prefer German is sent to the English page, and the footer language link stores the choice.
  */
-export function middleware(req: NextRequest): NextResponse {
+export function proxy(req: NextRequest): NextResponse {
 	const language =
 		req.method === 'GET'
 			? languageDecision({

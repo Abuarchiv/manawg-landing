@@ -56,7 +56,7 @@ const nextConfig: NextConfig = {
 			{ source: '/:path*', headers: securityHeaders },
 			{ source: '/app-demo/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
 			{ source: '/app-demo-en/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
-			// The demo document sits outside the middleware (dot in the path), so it gets its own CSP here.
+			// The demo document sits outside the proxy (dot in the path), so it gets its own CSP here.
 			{
 				source: '/app-demo/index.html',
 				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],

@@ -53,6 +53,14 @@
 		}
 	},
 	"files": {
-		"ignore": ["node_modules", ".next", ".next-*", ".vercel", "graphify-out", "public"]
+		"ignore": [
+			"node_modules",
+			".next",
+			".next-*",
+			"next-env.d.ts",
+			".vercel",
+			"graphify-out",
+			"public"
+		]
 	}
 }
