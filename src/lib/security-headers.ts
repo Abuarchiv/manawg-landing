@@ -1,20 +1,11 @@
 /**
- * Content-Security-Policy for this site's own middleware.
+ * CSP of this static site; only same-origin resources are loaded, so 'self'
+ * is enough.
  *
- * Trimmed down from the old shared policy (which covered a full app with a
- * DB, file storage, and API endpoints) to what a static marketing site
- * actually loads: everything is bundled at build time (fonts, three.js), and
- * the only runtime network calls are same-origin (Vercel Analytics / Speed
- * Insights ship via same-origin script/beacon paths), so 'self' covers it.
- *
- * Why 'unsafe-inline' is still in script-src: every page here is statically
- * rendered, and Next.js ships its bootstrap/flight payload as inline
- * scripts whose contents change on every build. The alternative — a
- * per-request nonce — is impossible on a statically rendered page, so it
- * would force all four pages into dynamic rendering and give up CDN caching
- * of the HTML. That trade is not worth taking for a page that renders no
- * user-controlled markup, so the inline allowance stays and the inline
- * *event handler* vector is closed instead via script-src-attr 'none'.
+ * script-src keeps 'unsafe-inline' because Next.js emits inline bootstrap
+ * scripts whose content changes per build, and a per-request nonce would force
+ * dynamic rendering (no CDN caching). Inline event handlers are blocked
+ * instead via script-src-attr 'none'.
  */
 export function contentSecurityPolicy(): string {
 	const scriptSrc = ["'self'", "'unsafe-inline'"];

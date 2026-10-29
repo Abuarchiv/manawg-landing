@@ -1,6 +1,6 @@
 import type { Topic } from '../types.ts';
 
-// English guides for starting, moving into and leaving a flat share in Germany (batch C).
+// English guides for starting, moving into and leaving a flat share in Germany.
 // German law (BGB, BMG) is cited with its German sources; only the German text is binding.
 
 export const BGB_EN: [string, string] = [
@@ -78,7 +78,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'11. Set a date for the flat meeting',
-				'Half an hour once a month is enough. You settle the balances in the [shared expenses](/shared-expenses); the ManaWG monthly statement arrives by email at the start of the month and shows totals per category and settlement suggestions. You also go through dates in the shared calendar and check whether any of your rules need adjusting. Record decisions on the noticeboard so they do not vanish in the chat history. How to raise conflicts is covered in [resolving flatmate conflicts](/flatmate-conflict). People who talk regularly rarely need to escalate.',
+				'Half an hour once a month is enough. You settle the balances in the [shared expenses](/shared-expenses); the ManaWG monthly statement arrives by email at the start of the month and shows totals per category and settlement suggestions. You also go through dates in the shared calendar and check whether any of your rules need adjusting. How to raise conflicts is covered in [resolving flatmate conflicts](/flatmate-conflict). People who talk regularly rarely need to escalate.',
 			],
 			[
 				'When someone moves out or does not pay',
@@ -389,7 +389,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			'Checklist for moving into a WG (shared flat) in Germany: contract, Anmeldung, keys, money, cleaning rota and getting to know your flatmates in the first weeks.',
 		h1: 'Moving into a flat share in Germany: the checklist',
 		intro:
-			'Moving into a WG (shared flat) in Germany means more than carrying boxes: you also learn new habits. The points below are ordered by timing: before moving in, on move-in day, in the first week and in the first month. That way you start without misunderstandings. If you are setting up the flat share yourselves, the whole process from search to registration is in the [checklist for starting a flat share](/start-a-flat-share).',
+			'Moving into a WG (shared flat) in Germany means more than carrying boxes: you also learn new habits. The points below are ordered by timing: before moving in, on move-in day, in the first week and in the first month. If you are setting up the flat share yourselves, the whole process from search to registration is in the [checklist for starting a flat share](/start-a-flat-share).',
 		sections: [
 			[
 				'Before moving in: contract and paperwork',
@@ -408,8 +408,8 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 				'Ask who holds the electricity, internet and Rundfunkbeitrag (broadcasting fee) contracts and how you pay your share. The [Rundfunkbeitrag in a flat share](/rundfunkbeitrag-shared-flat) is due only once per flat, not from each person individually. Find out whether there is a shared [household kitty](/household-kitty), and whether existing items such as the washing machine or kitchen appliances should be bought out. In ManaWG, after joining you see the flat’s fixed costs, expenses and balances, and new expenses are shared with you from then on.',
 			],
 			[
-				'Match up your habits',
-				'Raise early what matters to you: bedtimes, overnight guests, smoking, pets, noise, cooking together. Small differences are easy to settle when they come up early. Someone who first says after three months that something bothers them has a harder time. What the flat share agrees can go on the noticeboard so it does not get lost in the group chat.',
+				'Talk about how you live',
+				'Raise early what matters to you: bedtimes, overnight guests, smoking, pets, noise, cooking together. Small differences are easy to settle when they come up early. Raising a problem only after three months is harder. What the flat share agrees can go on the noticeboard so it does not get lost in the group chat.',
 			],
 			[
 				'What comes with you to the flat-share room',

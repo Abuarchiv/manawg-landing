@@ -10,7 +10,7 @@ const MONO = '"JetBrains Mono", monospace';
 const TT = '"Inter Tight", sans-serif';
 const F = 720; // focal length in scene units
 const SPACING = 0.065; // point spacing of the words in world units (portrait only)
-const SP = 26; // spacing of the word islands in depth, as in the draft
+const SP = 26; // spacing of the word islands in depth
 const ISLAND_X = [-4.5, 4.5, -4.5] as const;
 const ISLAND_Y = [0.8, -0.8, 0.8] as const;
 
@@ -160,11 +160,11 @@ interface DepthState extends SceneState {
 	zones: Zone[];
 	/** Clamping per island, build creates it. */
 	clamps: Clamp[];
-	/** DOM positions from lies (viewport pixels): header bottom edge, canvas top, section top and height, labels top. */
+	/** DOM positions written by read() (viewport pixels): header bottom edge, canvas top, section top and height, labels top. */
 	layout: { header: number; el: number; sec: number; secH: number; caps: number[] };
 }
 
-// Sample a word from the font (as in the draft: font 200 px on 1600 x 270, baseline 0.82). The mask
+// Sample a word from the font (font 200 px on 1600 x 270, baseline 0.82). The mask
 // is kept so each format can be sampled with a different grid.
 const sampleT = (word: string, px: number): Mask => {
 	const w = 1600;
@@ -216,14 +216,14 @@ function setStyle(el: HTMLElement, k: string, v: string) {
 	el.style.setProperty(k, v);
 }
 
-// Opacity of the subtitle from the depth dz of its island. In the draft a triangle around dz 9 (width 5 to
-// both sides); here the same limits, but with a plateau (full for |dz - 9| <= 3.5) so the sentence reads steadily.
+// Opacity of the subtitle from the depth dz of its island. A triangle around dz 9 (width 5 to
+// both sides) with a plateau (full for |dz - 9| <= 3.5) so the sentence reads steadily.
 const plateauOf = (dz: number): number => cl((5 - Math.abs(dz - 9)) / 1.5);
 // Density of the word from its depth: present from dz 34, full from dz 22, after the fly-through (dz < 1) the departure fades out
 const wordDensity = (dz: number): number => cl((34 - dz) / 12) * (1 - ss((1 - dz) / 12));
 
 // Portrait: dust amount and point size scale with the screen area (reference 1440 x 900), quantized so not
-// every resize rebuilds. Landscape: fixed amount as in the draft (the stage scales as a whole).
+// every resize rebuilds. Landscape: fixed amount (the stage scales as a whole).
 const area = (s: DepthState): number =>
 	s.mode === 'hoch' ? Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4 : 1;
 const buildKey = (s: DepthState): string => `${s.mode}${area(s)}`;
@@ -233,7 +233,7 @@ function build(s: DepthState) {
 	const k = portrait ? 0.5 : 1; // adapt the scatter of the islands and of the pointer offset to the box width
 	const target = ((portrait ? 0.82 : 0.5) * s.bw * 9) / F; // word width in world units at depth 9 (portrait: 82 % of the width)
 	s.isl = s.raw.map((r, i): Island => {
-		// Landscape as in the draft: scale 1, grid 5 px, center of the sampling area. Portrait: word fitted to the width.
+		// Landscape: scale 1, grid 5 px, center of the sampling area. Portrait: word fitted to the width.
 		const sc = portrait ? cl(target / (r.width / 85), 0.25, 1.5) : 1;
 		const raw = portrait
 			? gridPoints(r, 2 * Math.max(1, Math.round((SPACING * 85) / (sc * 2))), r.cx, r.cy)
@@ -272,7 +272,7 @@ function build(s: DepthState) {
 			]);
 		});
 	});
-	// Dust: landscape 1600 points in 60 x 36 units as in the draft; portrait narrower, taller and denser,
+	// Dust: landscape 1600 points in 60 x 36 units; portrait narrower, taller and denser,
 	// the edges of the dust box fade out softly there (see frame)
 	const fl = area(s);
 	s.fl = Math.sqrt(fl);
@@ -300,7 +300,7 @@ function build(s: DepthState) {
 // Clamping per word: the camera drifts sideways to the next word while the current one is still large. The
 // word box always stays within viewport minus 16 px margin (shift in scene units) and is
 // scaled to at most 92 % of the width instead of being cut off (dz < 5: fly-through, the edge fades out there).
-// Portrait only: in landscape the words fly freely through the image as in the draft.
+// Portrait only: in landscape the words fly freely through the image.
 function applyClamps(s: DepthState, clamps: Clamp[], camZ: number, camX: number) {
 	const { f, ox, cx } = s;
 	const portrait = s.mode === 'hoch';
@@ -409,7 +409,7 @@ function flow(
 }
 
 // Project all points: points as squares, near characters in buckets per font size step (8, 11, 16, 23, 32, 45 px
-// as in the draft), then draw the buckets.
+// ), then draw the buckets.
 function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 	const ctx = s.ctx;
 	if (!ctx) return;
@@ -473,7 +473,7 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 			}
 		}
 		if (qa.nurWort != null && qi !== qa.nurWort) continue; // Measurement hook: draw only one word
-		// Words and dust as in the draft: word present from dz 34 and full from 22, dust fades out in the distance
+		// Words and dust: word present from dz 34 and full from 22, dust fades out in the distance
 		let al: number;
 		if (word) {
 			const d0 = qz - camZ;
@@ -509,7 +509,7 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 			al *= 1 - z.w * (1 - cl(Math.hypot(zx, zy) / 28));
 		}
 		if (al <= 0.01) continue;
-		const sz = cl(0.07 * fz, 0.8, 64); // character size in scene units (draft)
+		const sz = cl(0.07 * fz, 0.8, 64); // character size in scene units
 		// Dust never becomes a large symbol: it fades out from about 6 units
 		if (!word) al *= cl((9 - sz) / 3);
 		if (al <= 0.01) continue;
@@ -626,7 +626,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 		warm: (s) => prepare(s, words),
 		read(s) {
 			const L = s.layout;
-			// The QA hook can call lies before init has run.
+			// The QA hook can call read() before init has run.
 			if (!L) return;
 			L.header = s.header ? s.header.getBoundingClientRect().bottom : 0;
 			L.el = s.el.getBoundingClientRect().top;
@@ -730,7 +730,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			const rep = pv.a > 0.01 ? pv.a : 0;
 			const plat = Math.max(...s.isl.map((I) => plateauOf(I.z - camZ)));
 			const rad = 120 * (1 - 0.5 * plat);
-			// Sublines: opacity (lies reads the rectangle of the exclusion zone)
+			// Sublines: opacity (read() measures the rectangle of the exclusion zone)
 			const zones = s.zones;
 			zones.forEach((z, i) => {
 				const I = s.isl[i];
@@ -754,7 +754,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			});
 			// At the end of the drive the stage scrolls away upward: word line and depth counter fade out, otherwise
 			// the last sentence drives over the title of the next scene
-			// Positions come from lies, write only changed values here
+			// Positions come from read(), write only changed values here
 			const top = -L.el;
 			const fade = 1 - cl(top / (0.12 * s.H));
 			// whole label "TIEFE 000", not just the number

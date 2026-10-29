@@ -36,8 +36,8 @@ export function comparisonTable(
 		after: 'intro',
 		title: `ManaWG und ${provider} im Vergleich`,
 		header: ['Merkmal', 'ManaWG', provider],
-		rows: COMPARISON_ROWS.map((z, i) => [
-			z,
+		rows: COMPARISON_ROWS.map((row, i) => [
+			row,
 			MANAWG_CELLS[i] ?? NOT_CHECKED,
 			cells[i] ?? NOT_CHECKED,
 		]),

@@ -12,7 +12,7 @@ import { dateLines } from './date';
 
 // The phone of the end scene with the real ManaWG app: a same-origin iframe on
 // /app-demo/index.html (standalone DOM and CSS of the app, state machine in demo.js). Shell and geometry
-// as in the draft (650/90, 300 x 620, radius 48, screen inset 11, radius 37). The screen is 278 x 598,
+// 650/90, 300 x 620, radius 48, screen inset 11, radius 37). The screen is 278 x 598,
 // the app runs at 390 x 839 CSS pixels and is fitted with scale(278/390). The status bar (iOS 27)
 // sits on top as SVG, the app computes its safe area from --sai-t / --sai-b (see app-demo/demo.js).
 

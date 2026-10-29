@@ -1,5 +1,5 @@
-// Scroll core (PLAN-V2 4.5): section measures, holding the position on resize and rotation,
-// jump links per decision 12. Native document scroll; mouse wheel and trackpad glide through Lenis.
+// Scroll core: section measures, holding the position on resize and rotation,
+// jump links. Native document scroll; mouse wheel and trackpad glide through Lenis.
 // Lenis has no rAF loop of its own, it runs on the page's frame clock (onFrame first, before the scenes).
 // Touch stays native (syncTouch off); with reduced motion there is no Lenis.
 // Mark custom scroll areas with data-lenis-prevent.
@@ -51,12 +51,6 @@ export function sectionBox(id: string): { top: number; height: number } | null {
 	if (!el) return null;
 	const r = el.getBoundingClientRect();
 	return { top: r.top + window.scrollY, height: r.height };
-}
-
-/** Progress within a sticky section: 0 at the start, 1 when the stage lets go at the end. */
-export function stickP(sec: Element, stageH: number): number {
-	const r = sec.getBoundingClientRect();
-	return Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - stageH)));
 }
 
 function targetY(el: Element): number {

@@ -26,7 +26,7 @@ export function GET() {
 		const parts = [
 			`# ${t.h1}`,
 			`Quelle: ${base}/${slug} (Stand ${t.updated})`,
-			...(groupOfSlug(slug)?.name === 'Vergleiche' ? [COMPARISON_NOTICE] : []),
+			...(groupOfSlug(slug)?.id === 'compare' ? [COMPARISON_NOTICE] : []),
 			[
 				t.intro.replaceAll('](/', `](${base}/`),
 				...(t.tables ?? []).filter((tab) => tab.after === 'intro').map(markdownTable),
@@ -47,7 +47,7 @@ export function GET() {
 		];
 		return parts.join('\n\n');
 	});
-	const preamble = `# ManaWG: vollständiger Inhalt\n\nManaWG ist eine kostenlose deutschsprachige WG-App (Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand, Chat) und hat nichts mit WireGuard zu tun. Start: ${appUrl('/registrieren?action=create')}`;
+	const preamble = `# ManaWG: vollständiger Inhalt\n\nManaWG ist eine kostenlose deutsch- und englischsprachige WG-App (Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand, Chat) und hat nichts mit WireGuard zu tun. Start: ${appUrl('/registrieren?action=create')}`;
 	return new Response([preamble, ...pages].join('\n\n---\n\n'), {
 		headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
 	});

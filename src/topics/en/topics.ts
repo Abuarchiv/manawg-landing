@@ -55,7 +55,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Why an app instead of notes and WhatsApp',
-				'A note cannot work out a balance, and in a group chat the question about the cleaning rota slips away between other messages. In ManaWG every topic has its place: amounts are calculated, tasks move on, events sit in the calendar. What is done stays traceable, and a new flatmate sees straight away how the flat is organised. That saves follow-up questions and arguments about who promised what. Which criteria matter when choosing an app is covered on [Best flat-share app](/best-flat-share-app).',
+				'A note cannot work out a balance, and in a group chat the question about the cleaning rota slips away between other messages. In ManaWG, amounts are calculated, tasks move on and events sit in the calendar. Everything stays traceable, so a new flatmate sees straight away how the flat is organised. That saves follow-up questions and arguments about who promised what. Which criteria matter when choosing an app is covered on [Best flat-share app](/best-flat-share-app).',
 			],
 			[
 				'Room search or everyday life: what a flat-share app is',
@@ -270,7 +270,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Settling up with few transfers',
-				'ManaWG works out a balance for each person and suggests payments that square the flat with as few transfers as possible. That saves effort. The money moves outside the app, by bank or in cash. Afterwards you mark one share, or several together, as paid. There is no bank connection and no SEPA.',
+				'ManaWG works out a balance for each person and suggests payments that settle everyone’s balance with as few transfers as possible. The money moves outside the app, by bank or in cash. Afterwards you mark one share, or several together, as paid. There is no bank connection and no SEPA.',
 			],
 			[
 				'Booking fixed costs automatically',
@@ -281,7 +281,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 				'The statement shows the total, individual items and the expenses per category with a percentage share. For each member it shows what was paid, what the share was and what the balance is. It also lists the suggested transfers and says whether everything is settled. It arrives by email on the first of the month, and each member can switch that off.',
 			],
 			[
-				'Reminders without the friction',
+				'Payment reminders',
 				'On the Reminders page a member can send a payment reminder with the Remind button. The same reminder can go out at most once every 48 hours, so nobody gets pestered. The balance stays visible to everyone at any time, for example in the monthly statement. The page is its own area of the flat, next to expenses, statement and activity. How to bring up open amounts without an argument is covered in [Flatmate debts](/flatmate-debts).',
 			],
 			[
@@ -452,11 +452,11 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'1. What does the app really cost?',
-				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. It works in euros only, is available in English and German, and is meant for at most 20 active members per flat. Plans and features change, so check the current state with the providers themselves.',
+				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. It works in euros only, is available in English and German, and is meant for at most 20 active members per flat.',
 			],
 			[
 				'2. Does it cover money and household?',
-				'Pure expense apps solve the money problem, household apps organise tasks. If you want money and household in one place, you need an app with expenses, a cleaning rota and a shopping list, such as ManaWG. ManaWG covers both: expenses, fixed costs and a monthly statement on one side, cleaning rota with time away, shopping list with supplies, calendar, noticeboard and chat on the other.',
+				'Pure expense apps solve the money problem, household apps organise tasks. ManaWG covers both: expenses, fixed costs and a monthly statement, plus cleaning rota with time away, shopping list with supplies, calendar, noticeboard and chat.',
 			],
 			[
 				'3. How good is the expense tracking?',
@@ -472,7 +472,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'6. Privacy and language',
-				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). There are no currencies other than the euro. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
+				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). ManaWG supports the euro only. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
 			],
 			[
 				'7. How easy is switching?',
@@ -877,7 +877,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Shopping, supplies and calendar',
-				'The shopping list belongs to the whole flat. Whoever shops sees what is already ticked. After ticking, ManaWG asks whether you want to record the shop straight away as an expense. There is also a supplies overview, a calendar with a subscription for Apple or Google Calendar, a noticeboard and chat. A second app for the household is not needed.',
+				'The shopping list belongs to the whole flat. Whoever shops sees what is already ticked. After ticking, ManaWG asks whether you want to record the shop straight away as an expense. There is also a supplies overview, a calendar with a subscription for Apple or Google Calendar, a noticeboard and chat.',
 			],
 			[
 				'Web instead of a store',
@@ -899,7 +899,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Is ManaWG available in English?',
-				'Yes. The app is available in English and German, follows the language of your device and can be switched in the app. You cannot choose currencies other than the euro.',
+				'Yes. The app is available in English and German, follows the language of your device and can be switched in the app. Amounts are in euros only.',
 			],
 			[
 				'How many people fit in one flat?',
@@ -1019,7 +1019,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'In short',
-				'ManaWG (also written Mana WG) is a household app for shared flats. Flatmates split expenses and settle balances with few transfers, keep a shared shopping list, organise a fairly distributed cleaning rota and record agreements on a noticeboard. The app is free, ad-free and runs in the browser at app.manawg.com.',
+				'ManaWG (also written Mana WG) is a household app for shared flats. Flatmates split expenses and settle balances with few transfers, keep a shared shopping list, keep a cleaning rota that shares tasks fairly and record agreements on a noticeboard. The app is free, ad-free and runs in the browser at app.manawg.com.',
 			],
 			[
 				'Facts at a glance',
@@ -1027,7 +1027,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Features',
-				'Splitting expenses equally or with custom amounts, fixed costs and a monthly statement, import of suitable existing CSV files, shopping list with supplies, cleaning rota with fair rotation and time away, calendar with calendar subscription, noticeboard, chat and push reminders. There is no bank connection and no transfers from the app. The details are on [Flat-share app](/flat-share-app), the comparison with Splitwise is on [Splitwise alternative](/splitwise-alternative), and common questions are answered in the [FAQ](/faq).',
+				'Splitting expenses equally or with custom amounts, fixed costs and a monthly statement, import of suitable existing CSV files, shopping list with supplies, cleaning rota with fair rotation and time away, calendar you can subscribe to, noticeboard, chat and push reminders. There is no bank connection and no transfers from the app. The details are on [Flat-share app](/flat-share-app), the comparison with Splitwise is on [Splitwise alternative](/splitwise-alternative), and common questions are answered in the [FAQ](/faq).',
 			],
 			[
 				'Operator and contact',

@@ -14,7 +14,7 @@ const mono = (px: number) => `500 ${px}px "JetBrains Mono", monospace`;
 /** Room in the grid: x, y, width, depth. The names come from the dictionary (createStage: rooms) in the same order. */
 type Room = readonly [x: number, y: number, w: number, d: number];
 
-// Grid = half metres of the Blender flat (landing-konzept/wohnung-iso, floors Boden_*)
+// Grid = half metres of the Blender flat model (not part of this repo)
 // Order: kitchen, bathroom, Jona's room, hallway, living room, Lea's room, Lina's room, Mika's room (as canvasRooms)
 const ROOMS = [
 	[0, 0, 8, 7.2],
@@ -529,7 +529,7 @@ export function draw(
 		}
 	}
 	// Landscape: left of the card column the flat darkens softly so that no wall and no dot
-	// runs through the card text (T-02, T-15)
+	// runs through the card text
 	const view = Math.max(...cardOpacity(c.P));
 	if (!portrait && dom.column && view > 0.01) {
 		const right = dom.column.x1 + 28;

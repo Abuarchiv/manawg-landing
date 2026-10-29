@@ -1,8 +1,9 @@
 // Android: Chrome 150 and later (menu per Chromium 157), loop ≈ 14.3 s. Timings per INSTALL-FLOWS 3.2, 3.3, 3.4:
 // menu staggered over 0.45–0.65 s, dialog 0.2 s, "installing…" messages ≈ 2 s. All pure functions of t.
 
+import { cl, lerp } from '../../core/math';
 import { fl, put, tf } from './style';
-import { cl, easeOut, io, mat, mix, seg, spring } from './timing';
+import { easeOut, io, mat, seg, spring } from './timing';
 import type { PlaybackPlan } from './types';
 
 const T1 = 1.2; // ⋮
@@ -34,7 +35,7 @@ export const plan: PlaybackPlan = {
 		put(E['and-menu'], {
 			d: t > T1 + 0.04 && t < T2 + 0.11 ? 'block' : '',
 			o: m * mo,
-			t: tf(0, 0, mix(0.86, 1, m), mix(0.55, 1, m)),
+			t: tf(0, 0, lerp(0.86, 1, m), lerp(0.55, 1, m)),
 		});
 		for (let i = 0; i < ROWS; i++) {
 			const p = easeOut(seg(h, 0.05 + i * 0.019, 0.17));
@@ -55,7 +56,7 @@ export const plan: PlaybackPlan = {
 		put(E['and-dlg'], {
 			d: t > T3 + 0.1 && t < T4 + 0.22 ? 'block' : '',
 			o: dIn * (1 - dOut),
-			t: tf(0, 0, mix(0.9, 1, dIn)),
+			t: tf(0, 0, lerp(0.9, 1, dIn)),
 		});
 		put(E['and-caret'], {
 			o: t > T3 + 0.3 && t < T4 && Math.floor((t - T3) * 1.9) % 2 === 0 ? 1 : 0,
@@ -66,7 +67,7 @@ export const plan: PlaybackPlan = {
 			t < T3 + 0.02
 				? sc1
 				: t < T4 + 0.02
-					? mix(0.5, 0.65, seg(t, T3 + 0.05, 0.2))
+					? lerp(0.5, 0.65, seg(t, T3 + 0.05, 0.2))
 					: 0.65 * (1 - seg(t, T4 + 0.02, 0.19));
 		put(E['and-scrim'], { o: scrim });
 
@@ -78,8 +79,8 @@ export const plan: PlaybackPlan = {
 		// out while doing so, then the icon bounces briefly (spring) ----------
 		const hp = io(seg(t, TH, 0.35));
 		const sc = 1 - 0.9 * hp;
-		const cx = mix(205.5, 64, hp);
-		const cy = mix(442, 104, hp);
+		const cx = lerp(205.5, 64, hp);
+		const cy = lerp(442, 104, hp);
 		put(E['and-stack'], {
 			d: t < TH + 0.36 ? 'block' : '',
 			t: tf(cx - sc * 205.5, cy - sc * 442, sc),
@@ -91,10 +92,10 @@ export const plan: PlaybackPlan = {
 			d: t > TH - 0.01 && t < T5 + 1.3 ? 'block' : '',
 			o: hv,
 			f: fl(0, 1),
-			t: tf(0, 0, mix(1.06, 1, hv)),
+			t: tf(0, 0, lerp(1.06, 1, hv)),
 		});
 		const ip = spring(t - (TH + 0.33), 0.6, 20);
-		put(E['and-icon'], { t: tf(0, 0, t < TH + 0.33 ? 1 : mix(0.8, 1, Math.min(ip, 1.15))) });
+		put(E['and-icon'], { t: tf(0, 0, t < TH + 0.33 ? 1 : lerp(0.8, 1, Math.min(ip, 1.15))) });
 
 		// ---------- Launch: card grows out of the icon, splash, crossfade ----------
 		const lz = easeOut(seg(t, T5, 0.4));

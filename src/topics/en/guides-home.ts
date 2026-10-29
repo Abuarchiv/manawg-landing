@@ -1,4 +1,4 @@
-// English guides, batch B: household, rules and living together.
+// English guides on household, rules and living together.
 // General tips, not legal advice. ManaWG features only where the app really has them (see topics.ts).
 import { cleaningRota, tableToCsv } from '../cleaning-rota.ts';
 import type { Topic } from '../types.ts';
@@ -61,11 +61,11 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Step 3: spread them over the week',
-				'Spread the tasks across the days so that not everything lands on the weekend. Keep one day a week free: it is a buffer for anything that slipped, and nobody has to clean on that day. The table shows an example weekly plan that you adjust to your own schedule.',
+				'Spread the tasks across the days so that not everything lands on the weekend. Keep one day a week free: it is a buffer for anything that slipped, and nobody has to clean on that day. The table shows an example weekly plan.',
 			],
 			[
 				'Daily, weekly, monthly: what is due when',
-				'A cleaning rota works on three levels: daily, weekly and less often. Everyone deals with daily jobs as they go, so only shared appliances such as the dishwasher belong in the plan. Weekly jobs make up the weekly plan proper and rotate between people. Anything less frequent is shared out separately, otherwise the week gets too full. The table sorts typical tasks. Adapt the rhythms to your flat.',
+				'A cleaning rota works on three levels: daily, weekly and less often. Everyone deals with daily jobs as they go, so only shared appliances such as the dishwasher belong in the plan. Weekly jobs make up the weekly plan proper and rotate between people. Anything less frequent is shared out separately, otherwise the week gets too full. The table sorts typical tasks.',
 			],
 			[
 				'Step 4: share them out, fixed or rotating',
@@ -208,7 +208,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'How often should which rooms be cleaned?',
-				'Bathroom, kitchen, living room and bins weekly, hallway and fridge every two weeks, oven and windows monthly. The dishwasher is emptied daily. These are examples, so adapt the rhythm to your flat.',
+				'Bathroom, kitchen, living room and bins weekly, hallway and fridge every two weeks, oven and windows monthly. The dishwasher is emptied daily. These are examples.',
 			],
 			[
 				'Can I make a cleaning rota online?',
@@ -352,10 +352,10 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			'House rules template with ten rules on quiet hours, guests, cleaning, the fridge and money. With room to flex, agreed consequences and a fill-in sheet to print.',
 		h1: 'House rules for a flat share: a template with ten rules that work',
 		intro:
-			'Many flat shares have either no rules at all or a long list that nobody keeps to. Good house rules are short, concrete and agreed by everyone, and ten on one page are usually enough. Below is a template with ten rules to take over, then a fill-in-the-blanks sheet, the individual areas and examples of the consequences you can agree if rules are broken.',
+			'Many flat shares have either no rules at all or a long list that nobody keeps to. Good house rules are short, concrete and agreed by everyone, and ten on one page are usually enough. Below is a template with ten rules to copy, then a fill-in-the-blanks sheet, the individual areas and examples of the consequences you can agree if rules are broken.',
 		tables: [
 			{
-				after: 'Template: ten house rules to take over',
+				after: 'Template: ten house rules to copy',
 				title: 'Rules with room to flex',
 				header: ['Area', 'Default in the template', 'Room to flex'],
 				rows: [
@@ -430,7 +430,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 		],
 		sections: [
 			[
-				'Template: ten house rules to take over',
+				'Template: ten house rules to copy',
 				'1. Quiet from 10 pm on weekdays and from midnight at weekends.\n2. Parties are announced at least a day ahead.\n3. Overnight guests are welcome, and anyone staying longer than three nights is agreed in advance.\n4. Dishes are washed up or loaded into the dishwasher on the same day.\n5. The cleaning rota rotates weekly, and anyone who is away is skipped and does not catch up.\n6. Everyone has their own shelf in the fridge, and other people’s food is only eaten after asking.\n7. Cleaning supplies, toilet paper and washing-up liquid are paid for together, private food by each person.\n8. Purchases for the flat over €30 are agreed beforehand.\n9. Expenses are entered at once and settled up on the first of the month.\n10. Once a month there is a short flat meeting where the rules can be adjusted.',
 			],
 			[
@@ -443,7 +443,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Quiet hours and noise',
-				'Set fixed times when it is quiet, for example from 10 pm on weekdays. Part of this is the agreement that parties are announced. A rule of thumb: whoever is having people round says so at least a day ahead and takes account of flatmates with an exam or an early shift.',
+				'Set fixed times when it is quiet, for example from 10 pm on weekdays. That includes announcing parties in advance. A rule of thumb: whoever is having people round says so at least a day ahead and takes account of flatmates with an exam or an early shift.',
 			],
 			[
 				'Guests and overnight visitors',
@@ -455,7 +455,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'The shared kitty and shopping',
-				'Define what is paid for together (cleaning supplies, toilet paper, spices) and what is not. Decide how you settle up: how a shared kitty can be run is in the [household kitty](/household-kitty) guide, and how to divide the costs under [splitting flat costs fairly](/split-flat-costs). With a shared list for [organising flat shopping](/organise-flat-shopping), everyone knows what is missing and double purchases disappear.',
+				'Define what is paid for together (cleaning supplies, toilet paper, spices) and what is not. Decide how you settle up: how a shared kitty can be run is in the [household kitty](/household-kitty) guide, and how to divide the costs under [splitting flat costs fairly](/split-flat-costs). With a shared list for [organising flat shopping](/organise-flat-shopping), everyone knows what is missing and nobody buys the same thing twice.',
 			],
 			[
 				'Bathroom, kitchen and shared rooms',
@@ -479,7 +479,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Rules for new flatmates',
-				'Someone who moves in does not know the agreements that have grown up. Show the rules before they move in, not at the first argument, and ask whether any of them do not suit. After a month a short chat is worthwhile: what feels unfamiliar, what should change? That way new people feel part of the flat and not a guest with duties.',
+				'Someone who moves in does not know the agreements already in place. Show the rules before they move in, not at the first argument, and ask whether any of them do not suit. After a month a short chat is worthwhile: what feels unfamiliar, what should change? That way new people feel part of the flat and not a guest with duties.',
 			],
 			[
 				'Trial period and review',
@@ -617,7 +617,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Longer absence: internship and semester abroad',
-				'With several months, the question of [subletting a room](/subletting-a-room) arises. Whether that is allowed depends on the tenancy agreement, and usually the landlord has to agree. Settle in the flat whether everyone is happy with the person, because they will live with you in that time. The subtenant can join the flat in ManaWG and takes over tasks and costs for the period. Afterwards they leave again.',
+				'With several months, the question of [subletting a room](/subletting-a-room) arises. Whether that is allowed depends on the tenancy agreement, and usually the landlord has to agree. Settle in the flat whether everyone is happy with the person, because they will live with you in that time. The subtenant can join the flat in ManaWG and takes over tasks and costs for the period.',
 			],
 			[
 				'Example: a semester abroad without subletting',
@@ -688,11 +688,11 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Questions applicants ask the flat',
-				'Why is the room becoming free?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and other utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nContract types and deposits are covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ Kaltmiete (rent excluding utilities) and may be paid in three equal monthly instalments.',
+				'Why is the room becoming available?\nIs there a tenancy agreement of your own or a sublease, and who is the main tenant (Hauptmieter)?\nHow high is the Warmmiete (rent including heating and other utilities), and what does it cover?\nHow high is the Kaution (deposit)?\nWhat notice period applies?\nWho decides on the choice, and by when will I hear?\nHow long do the others want to go on living in the flat?\nHow does the cleaning rota work?\nIs there a shared kitty, and how are expenses split?\nHow much does the flat do together?\nContract types and deposits are covered in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement). In short: a deposit for a regular tenancy in Germany is capped at three months’ Kaltmiete (rent excluding utilities) and may be paid in three equal monthly instalments.',
 			],
 			[
 				'Preparing as an applicant',
-				'The ad: read it again and note what you like about the flat, then you have a concrete answer to “Why would you like to join us?”.\nAbout you: three sentences are enough: what you do, what your day looks like and how long you want to stay.\nYour own questions: prepare two or three, for example about the cleaning rota, the kitty and why the room is becoming free.\nBe on time: if you will be late, say so briefly.\nStay honest: anyone who pretends is noticed by the second month at the latest.\nWarning signs: if someone asks for money before a viewing and a contract, stop.',
+				'The ad: read it again and note what you like about the flat, then you have a concrete answer to “Why would you like to join us?”.\nAbout you: three sentences are enough: what you do, what your day looks like and how long you want to stay.\nYour own questions: prepare two or three, for example about the cleaning rota, the kitty and why the room is becoming available.\nBe on time: if you will be late, say so briefly.\nStay honest: anyone who pretends is noticed by the second month at the latest.\nWarning signs: if someone asks for money before a viewing and a contract, stop.',
 			],
 			[
 				'Questions that do not belong in a casting',
@@ -837,7 +837,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'What do I ask as an applicant at a WG-Casting?',
-				'Why the room is becoming free, whether there is a tenancy agreement of your own or a sublease, how high the Warmmiete (rent including heating and other utilities) and the Kaution (deposit) are, how the cleaning rota works, how expenses are split and how long the others want to stay.',
+				'Why the room is becoming available, whether there is a tenancy agreement of your own or a sublease, how high the Warmmiete (rent including heating and other utilities) and the Kaution (deposit) are, how the cleaning rota works, how expenses are split and how long the others want to stay.',
 			],
 			[
 				'Which questions are off limits at a WG-Casting?',

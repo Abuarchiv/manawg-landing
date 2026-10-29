@@ -1,4 +1,4 @@
-// Camera of the end scene (PLAN-V2 4.1 and 4.4, HAND.md section 7).
+// Camera of the end scene.
 //
 // The end space is 1280 x 800 (phone 650/90/300/620, the hand passes lie in this space).
 // camera() says how it fits into the stage: { f, ox, oy } with stage CSS px = end space * f + (ox, oy).
@@ -37,7 +37,7 @@ function safeTop(): number {
  * top offset max(72, safe-top + 56), title (font 40 to 60, one line), gap 16, button 40,
  * gap to the phone 20.
  */
-export function titleSlot(W: number, _safeH: number): number {
+function titleSlot(W: number): number {
 	const top = Math.max(72, 56 + safeTop());
 	const fs = Math.max(40, Math.min(0.08 * W, 60));
 	return top + fs + 16 + 40 + 20;
@@ -45,7 +45,7 @@ export function titleSlot(W: number, _safeH: number): number {
 
 export function camera(W: number, H: number, safeH: number, _mode: Mode): Fit {
 	if (!isPortrait(W, H)) return fitBox(W, safeH, 1280, 800, 1.25);
-	const top = titleSlot(W, safeH);
+	const top = titleSlot(W);
 	// Thumb on the left (x 584) and fingertips on the right (x 998) stay in the frame with at least 8 px margin
 	const f = Math.max(
 		0.2,

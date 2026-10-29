@@ -335,7 +335,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'11. Einen Termin für die WG-Runde festlegen',
-				'Einmal im Monat eine halbe Stunde reicht. Ihr gleicht die Salden in der [WG-Kasse](/wg-kasse) aus; die Monatsabrechnung von ManaWG kommt am Monatsanfang per Mail und zeigt Summen je Kategorie und Überweisungsvorschläge. Dazu besprecht ihr Termine im gemeinsamen Kalender und klärt, ob eine eurer Regeln angepasst werden muss. Beschlüsse haltet ihr auf der Pinnwand fest, damit sie nicht im Chatverlauf verschwinden. Wie ihr Konflikte ansprecht, steht unter [Streit in der WG lösen](/wg-streit-loesen). Wer regelmäßig redet, muss selten eskalieren.',
+				'Einmal im Monat eine halbe Stunde reicht. Ihr gleicht die Salden in der [WG-Kasse](/wg-kasse) aus; die Monatsabrechnung von ManaWG kommt am Monatsanfang per Mail und zeigt Summen je Kategorie und Überweisungsvorschläge. Dazu besprecht ihr Termine im gemeinsamen Kalender und klärt, ob eine eurer Regeln angepasst werden muss. Beschlüsse haltet ihr auf der Pinnwand fest, damit sie nicht im Chatverlauf verschwinden. Wie ihr Konflikte ansprecht, steht unter [Streit in der WG lösen](/wg-streit-loesen).',
 			],
 			[
 				'Wenn jemand auszieht oder nicht zahlt',
@@ -803,7 +803,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Ruhezeiten und Lärm',
-				'Legt feste Zeiten fest, zu denen Ruhe herrscht, zum Beispiel unter der Woche ab 22 Uhr. Dazu gehört die Absprache, dass Feiern angekündigt werden. Eine Faustregel: Wer feiert, sagt es mindestens einen Tag vorher und nimmt Rücksicht auf Mitbewohner mit Prüfung oder Frühschicht.',
+				'Vereinbart feste Zeiten, zu denen Ruhe herrscht, zum Beispiel unter der Woche ab 22 Uhr. Dazu gehört die Absprache, dass Feiern angekündigt werden. Eine Faustregel: Wer feiert, sagt es mindestens einen Tag vorher und nimmt Rücksicht auf Mitbewohner mit Prüfung oder Frühschicht.',
 			],
 			[
 				'Besuch und Übernachtungsgäste',
@@ -1066,8 +1066,8 @@ export const GUIDES_DE: Record<string, Topic> = {
 				title: 'WG-Apps im Vergleich',
 				header: ['Merkmal', 'Flatastic', 'ManaWG', 'OurHome', 'Splid', 'Splitwise', 'Tricount'],
 				// Columns are alphabetical so the table does not suggest a ranking.
-				rows: COMPARISON_ROWS.map((z, i) => [
-					z,
+				rows: COMPARISON_ROWS.map((row, i) => [
+					row,
 					...[
 						[
 							'Finanzen laut Anbieter',
@@ -1115,7 +1115,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 		sections: [
 			[
 				'1. Was kostet die App wirklich?',
-				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. Die [kostenlose WG-App ManaWG](/wg-app) kommt ohne Werbung und ohne Bezahlstufe aus. Splitwise Pro nennt laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Was die [kostenlose Version von Splitwise](/splitwise-kostenlos) begrenzt, steht auf einer eigenen Seite. Splid nennt auf seiner deutschen Seite über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium, unter anderem ohne Werbung und mit Verläufen. ManaWG ist kostenlos und werbefrei und verbindet Kasse, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat, rechnet aber nur in Euro, gibt es auf Deutsch und Englisch und ist für höchstens 20 aktive Mitglieder pro WG gedacht. Tarife und Funktionen ändern sich, prüft den aktuellen Stand deshalb bei den Anbietern selbst.',
+				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. Die [kostenlose WG-App ManaWG](/wg-app) kommt ohne Werbung und ohne Bezahlstufe aus. Splitwise Pro nennt laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Was die [kostenlose Version von Splitwise](/splitwise-kostenlos) begrenzt, steht auf einer eigenen Seite. Splid nennt auf seiner deutschen Seite über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium, unter anderem ohne Werbung und mit Verläufen. ManaWG ist kostenlos und werbefrei und verbindet Kasse, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat, Es rechnet nur in Euro, ist auf Deutsch und Englisch verfügbar und für höchstens 20 aktive Mitglieder pro WG gedacht.',
 			],
 			[
 				'2. Deckt sie Geld und Haushalt ab?',
@@ -1199,7 +1199,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Funktionen',
-				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import bereits vorhandener passender CSV-Dateien, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht. Die Einzelheiten stehen unter [WG-App](/wg-app), der Vergleich mit Splitwise unter [Splitwise-Alternative](/splitwise-alternative), häufige Fragen unter [Häufige Fragen](/faq).',
+				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import von Splitwise- und Splid-CSV-Dateien, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht. Die Einzelheiten stehen unter [WG-App](/wg-app), der Vergleich mit Splitwise unter [Splitwise-Alternative](/splitwise-alternative), häufige Fragen unter [Häufige Fragen](/faq).',
 			],
 			[
 				'Betreiber und Kontakt',
@@ -1244,7 +1244,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 		sections: [
 			[
 				'Vorlage für vier Personen',
-				'Bei vier Personen rotieren Bad, Küche, Böden sowie Müll und Flur. Jede Woche rückt jede Person eine Aufgabe weiter, nach vier Wochen hatte jede alles einmal. A bis D stehen für eure vier Namen.',
+				'Bei vier Personen rotieren Bad, Küche, Böden sowie Müll und Flur. Jede Woche rückt jede Person eine Aufgabe weiter, nach vier Wochen hat jede Person alles einmal gemacht. A bis D stehen für eure vier Namen.',
 			],
 			[
 				'Putzplan-Generator: Namen eintragen, Plan drucken',
@@ -1252,11 +1252,11 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Vorlage für drei und fünf Personen',
-				'Bei drei Personen rotieren drei Aufgaben. Jede Woche rückt jede Person eine Aufgabe weiter, nach drei Wochen hatte jede jede Aufgabe einmal. Bei fünf Personen kommen Wohnzimmer und Balkon als eigene Aufgabe hinzu, die Rotation dauert dann fünf Wochen.',
+				'Bei drei Personen rotieren drei Aufgaben. Jede Woche rückt jede Person eine Aufgabe weiter, nach drei Wochen hat jede Person jede Aufgabe einmal gemacht. Bei fünf Personen kommen Wohnzimmer und Balkon als eigene Aufgabe hinzu, die Rotation dauert dann fünf Wochen.',
 			],
 			[
 				'Vorlage für zwei Personen',
-				'Zu zweit übernimmt jede Person zwei der vier Aufgaben, und jede Woche wird getauscht. Nach zwei Wochen hatte jede alles einmal. Die Aufgaben sind so gepaart, dass beide ungefähr gleich viel zu tun haben: Bad und Küche zusammen, Böden sowie Müll und Flur zusammen. Bleibt ein kleiner Unterschied, gleicht ihn der wöchentliche Tausch aus.',
+				'Zu zweit übernimmt jede Person zwei der vier Aufgaben, und jede Woche wird getauscht. Nach zwei Wochen hat jede Person alles einmal gemacht. Die Aufgaben sind so gepaart, dass beide ungefähr gleich viel zu tun haben: Bad und Küche zusammen, Böden sowie Müll und Flur zusammen. Bleibt ein kleiner Unterschied, gleicht ihn der wöchentliche Tausch aus.',
 			],
 			[
 				'Aufgaben mit Rhythmus',
@@ -1370,7 +1370,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Weg 2: Gemeinschaftskonto',
-				'Ein Konto, auf das alle per Dauerauftrag einzahlen, bietet Transparenz, weil jede Buchung sichtbar ist. Es braucht aber jemanden, der es eröffnet, führt und dafür geradesteht, und bei vielen Banken fallen Gebühren an. Läuft das Konto auf den Namen einer Person, trägt diese das Risiko, wenn andere nicht zahlen. Bei häufigen Wechseln in der WG wird die Verwaltung der Zugänge zudem mühsam.',
+				'Ein Konto, auf das alle per Dauerauftrag einzahlen, macht jede Buchung für alle sichtbar. Es braucht aber jemanden, der es eröffnet, führt und dafür geradesteht, und bei vielen Banken fallen Gebühren an. Läuft das Konto auf den Namen einer Person, trägt diese das Risiko, wenn andere nicht zahlen. Bei häufigen Wechseln in der WG wird die Verwaltung der Zugänge zudem mühsam.',
 			],
 			[
 				'Weg 3: Ausgaben erfassen und ausgleichen',
@@ -1409,7 +1409,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			'Checkliste für den Einzug in eine WG: Vertrag, Anmeldung, Schlüssel, Geld, Putzplan, Mitbewohner kennenlernen und die wichtigsten Dinge in der ersten Woche.',
 		h1: 'Einzug in die WG: die Checkliste',
 		intro:
-			'Wer neu in eine WG zieht, muss nicht nur Kisten tragen, sondern auch Gewohnheiten kennenlernen. Die Punkte unten sind nach Zeitpunkt geordnet: vor dem Einzug, am Einzugstag, in der ersten Woche und im ersten Monat. Damit startet ihr ohne Missverständnisse. Wer die WG erst aufsetzt, findet den ganzen Ablauf von der Suche bis zur Anmeldung in der [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
+			'Wer neu in eine WG zieht, muss nicht nur Kisten tragen, sondern auch Gewohnheiten kennenlernen. Die Punkte unten sind nach Zeitpunkt geordnet: vor dem Einzug, am Einzugstag, in der ersten Woche und im ersten Monat. Wer die WG erst aufsetzt, findet den ganzen Ablauf von der Suche bis zur Anmeldung in der [Checkliste zum WG-Gründen](/wg-gruenden-checkliste).',
 		sections: [
 			[
 				'Vor dem Einzug: Vertrag und Formalien',
@@ -1472,7 +1472,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			'Was gilt in der WG, wenn jemand verreist? Putzplan, Miete, gemeinsame Kosten, Auslandssemester und Absprachen bei längerer Abwesenheit fair regeln.',
 		h1: 'Urlaub und Abwesenheit in der WG',
 		intro:
-			'Wenn jemand wochenlang weg ist, fragen sich die anderen, wer die Aufgaben übernimmt und wer welche Kosten trägt. Ob Urlaub, Praktikum oder Auslandssemester: Mit klaren Regeln, die vorher feststehen, gibt es keinen Streit.',
+			'Wenn jemand wochenlang weg ist, fragen sich die anderen, wer die Aufgaben übernimmt und wer welche Kosten trägt. Ob Urlaub, Praktikum oder Auslandssemester: Klare Regeln, die vorher feststehen, vermeiden die meisten Streitigkeiten.',
 		sections: [
 			[
 				'Putzplan bei Abwesenheit',
@@ -1849,7 +1849,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Beispiel für eine WG-Anzeige',
-				'„Ab 1. Dezember wird in unserer Dreier-WG in Leipzig-Connewitz ein 16-Quadratmeter-Zimmer frei, 420 Euro warm inklusive Internet. Wir sind Mia (26, Pflege) und Jonas (24, Informatik) und suchen jemanden zwischen 21 und 30. Unter der Woche kocht jeder für sich, sonntags essen wir oft zusammen. Geputzt wird nach Plan im Wochenwechsel, gemeinsame Ausgaben rechnen wir in einer App ab. Schreib uns kurz, was du machst und wie du dir WG-Leben vorstellst.“ Solche Angaben sind konkret genug, dass sich die Richtigen melden und die anderen gar nicht erst schreiben.',
+				'„Ab 1. Dezember wird in unserer Dreier-WG in Leipzig-Connewitz ein 16-Quadratmeter-Zimmer frei, 420 Euro warm inklusive Internet. Wir sind Mia (26, Pflege) und Jonas (24, Informatik) und suchen jemanden zwischen 21 und 30. Unter der Woche kocht jeder für sich, sonntags essen wir oft zusammen. Geputzt wird nach Plan im Wochenwechsel, gemeinsame Ausgaben rechnen wir in einer App ab. Schreib uns kurz, was du machst und wie du dir WG-Leben vorstellst.“ Solche konkreten Angaben halten Bewerber ab, die etwas anderes suchen.',
 			],
 			[
 				'Länge, Fotos und typische Fehler',
@@ -1955,7 +1955,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			'Checkliste für den Auszug aus der WG: Kündigung, Nachmieter, Kaution, offene Kosten, Rundfunkbeitrag, Ummeldung und Übergabe ohne Streit.',
 		h1: 'Auszug aus der WG: die Checkliste',
 		intro:
-			'Beim Auszug aus einer WG hängt mehr dran als Kisten packen: Kündigung, ein Nachfolger fürs Zimmer, Kaution, offene Beträge und Verträge, die auf euren Namen laufen. Wer die Punkte früh angeht, geht ohne offene Rechnungen und ohne Streit.',
+			'Beim Auszug aus einer WG hängt mehr dran als Kisten packen: Kündigung, ein Nachfolger fürs Zimmer, Kaution, offene Beträge und Verträge, die auf euren Namen laufen. Wer die Punkte früh angeht, vermeidet offene Rechnungen und Streit.',
 		sections: [
 			[
 				'Kündigung und Fristen',
@@ -2034,7 +2034,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Streit ums Putzen',
-				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein Putzplan mit fester Rotation nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. Wie er entsteht, zeigt [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) hilft beim Start. In der [WG-App ManaWG](/wg-app) wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passive Zettel am Kühlschrank.',
+				'Putzstreit entsteht meist, weil unklar ist, wer wann dran ist, oder weil die Aufgaben ungleich verteilt sind. Ein Putzplan mit fester Rotation nimmt die Diskussion heraus: Es ist sichtbar, wer dran ist und was erledigt wurde. Wie er entsteht, zeigt [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) hilft beim Start. In der [WG-App ManaWG](/wg-app) wandern Aufgaben automatisch weiter, wer verreist ist, wird übersprungen. Wenn eine Person trotzdem dauerhaft nicht putzt, gehört das in die WG-Runde, nicht in passiv-aggressive Zettel am Kühlschrank.',
 			],
 			[
 				'Streit um Lärm und Gäste',
@@ -2046,7 +2046,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Die WG-Runde',
-				'Ein regelmäßiges kurzes Treffen, etwa einmal im Monat, gibt allen einen festen Ort für Themen. Jede Person darf etwas einbringen, Entscheidungen werden festgehalten. Wenn es trotz Gesprächen nicht besser wird, ist es kein Scheitern zu überlegen, ob die Konstellation passt. Manchmal ist ein [Auszug](/wg-auszug-checkliste) die fairste Lösung für alle. Wer wem kündigen darf, hängt am Vertrag, siehe [Mitbewohner kündigen](/mitbewohner-kuendigen).',
+				'Ein regelmäßiges kurzes Treffen, etwa einmal im Monat, gibt allen einen festen Ort für Themen. Jede Person darf etwas einbringen, Entscheidungen werden festgehalten. Wenn es trotz Gesprächen nicht besser wird, ist es kein Scheitern, zu überlegen, ob die Konstellation passt. Manchmal ist ein [Auszug](/wg-auszug-checkliste) die fairste Lösung für alle. Wer wem kündigen darf, hängt am Vertrag, siehe [Mitbewohner kündigen](/mitbewohner-kuendigen).',
 			],
 		],
 		faq: [
@@ -2436,7 +2436,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Wie lange habe ich Zeit, mich in der WG anzumelden?',
-				'Zwei Wochen ab dem Einzug. Ist kein Termin frei, bucht den nächsten möglichen und hebt die Bestätigung auf.',
+				'Zwei Wochen ab dem Einzug. Ist kein Termin frei, bucht den nächsten möglichen und bewahrt die Bestätigung als Beleg auf.',
 			],
 			[
 				'Muss ich mich für ein WG-Zimmer anmelden, wenn ich nur ein paar Monate bleibe?',

@@ -1,5 +1,5 @@
-// Deutsche Seite zur Open-Source-Seite von ManaWG und zum Selbsthosten. Englisches Gegenstück: ../en/open-source.ts.
-// Die Fakten stammen aus dem App-Repository (README.md, docs/self-hosting.md).
+// German open-source and self-hosting page. English counterpart: ../en/open-source.ts.
+// Facts come from the app repository (README.md, docs/self-hosting.md).
 import type { Topic } from '../types.ts';
 
 export const OPEN_SOURCE_DE: Record<string, Topic> = {

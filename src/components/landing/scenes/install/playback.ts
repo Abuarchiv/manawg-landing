@@ -45,7 +45,7 @@ interface PlaybackState extends SceneState {
 	halt: boolean;
 }
 
-/** Compute time per frame (measurement hook, acceptance I-9). */
+/** Compute time per frame (measurement hook). */
 const timing = { n: 0, sum: 0, max: 0 };
 
 /**
@@ -146,7 +146,6 @@ export function registerPlayback(fr: HTMLElement, sec: HTMLElement, getTab: () =
 			let a = 0;
 			for (let i = 0; i < pl.jumps.length; i++) if (t >= (pl.jumps[i] ?? 0)) a = i;
 			if (s.reduced) a = s.still;
-			// Compute time per frame (measurement hook, acceptance I-9)
 			const mz = performance.now() - m0;
 			timing.n++;
 			timing.sum += mz;

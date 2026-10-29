@@ -1,10 +1,8 @@
 // Timing functions of the install flows: springs, curves, tap path. All pure functions of time t (seconds),
 // so jumping to a step always yields the same state as the played-through flow.
 
+import { cl, lerp } from '../../core/math';
 import type { Tap } from './types';
-
-export const cl = (x: number, a = 0, b = 1): number => (x < a ? a : x > b ? b : x);
-export const mix = (a: number, b: number, p: number): number => a + (b - a) * p;
 
 /** Curve x(0..1) -> y. */
 type Curve = (x: number) => number;
@@ -54,7 +52,7 @@ export const mat = bezier(0.05, 0.7, 0.1, 1);
 
 /**
  * Damped spring from rest to 1: ζ damping ratio, wn natural frequency in rad/s, tau seconds since start.
- * ζ 0.59 and ωn 16.6 give 10 % overshoot after 235 ms (measured iOS side menu, INSTALL-FLOWS 2.6).
+ * ζ 0.59 and ωn 16.6 give 10 % overshoot after 235 ms (measured iOS side menu).
  */
 export function spring(tau: number, z = 0.59, wn = 16.6): number {
 	if (tau <= 0) return 0;
@@ -110,14 +108,14 @@ export function tapAt(taps: readonly Tap[], t: number): TapState {
 			o = 1;
 		} else {
 			const p = io(seg(t, c.t - 0.62, 0.47));
-			x = mix(c.x + 26, c.x, p);
-			y = mix(c.y + 48, c.y, p);
+			x = lerp(c.x + 26, c.x, p);
+			y = lerp(c.y + 48, c.y, p);
 			o = cl((t - (c.t - 0.62)) / 0.25);
 		}
 		if (last && t > c.t + 0.2) o = Math.min(o, 1 - cl((t - (c.t + 0.2)) / 0.35));
 		const d = t - c.t;
 		if (d > -0.04 && d < 0.12)
-			s = d < 0.04 ? mix(1, 0.85, (d + 0.04) / 0.08) : mix(0.85, 1, (d - 0.04) / 0.08);
+			s = d < 0.04 ? lerp(1, 0.85, (d + 0.04) / 0.08) : lerp(0.85, 1, (d - 0.04) / 0.08);
 		return { o, x, y, s };
 	}
 	return { o: 0, x, y, s };

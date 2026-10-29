@@ -1,4 +1,4 @@
-/* Tokens, modes and classes of the landing (PLAN-V2 2.2, 2.6, 2.7).
+/* Tokens, modes and classes of the landing.
    Rule for a design value d: clamp(MIN, min(d/12,8 vw, d/8 svh), MAX). At 1280 x 800 this yields exactly d. */
 /* Breathing of the end layer (scenes/end/hand sets it every frame on the phone carrier): not inherited,
    otherwise the browser recalculates the styles of the whole phone layer every frame although only the
@@ -111,7 +111,7 @@
 	scroll-margin-top: calc(var(--header-bottom) + 16px);
 }
 
-/* Class contract (PLAN-V2 2.7). SHELL styles hover, focus and active centrally here.
+/* Class contract. SHELL styles hover, focus and active centrally here.
    Buttons are fine mono text in brackets, without fill and without a box: visible height 32 px,
    hit area 44 px (6 px padding above and below, offset by a negative margin).
    The primary button (--voll) is bright with a hairline, the others are muted. Hover and focus: the brackets

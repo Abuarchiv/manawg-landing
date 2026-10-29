@@ -34,16 +34,11 @@ const demoCsp = [
 const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
 
 // manawg.com is the marketing site only. The app lives on its own origin
-// (app.manawg.com) so that installing the PWA opens the app rather than this
-// page — the multi-zone proxy that used to serve /wg and /neu from here made
-// the install land on the landing page, which is why the two were split.
-//
-// Old app paths still REDIRECT rather than 404, so existing links and
-// bookmarks keep working. They are 308 (permanent) since 2026-10-21:
-// app.manawg.com has been the stable origin since the split, and a permanent
-// redirect lets search engines drop the old URLs instead of re-checking them.
-// The origin itself lives in src/lib/app-origin.ts so the redirects, the
-// sitemap and the in-page CTAs cannot drift apart.
+// (app.manawg.com) so that installing the PWA opens the app, not this site.
+// Old app paths redirect (308) instead of returning 404, so existing links and
+// bookmarks keep working and search engines drop the old URLs.
+// The origin lives in src/lib/app-origin.ts so the redirects, the sitemap and
+// the in-page links cannot drift apart.
 
 const nextConfig: NextConfig = {
 	distDir: process.env.NEXT_DIST_DIR ?? '.next',
@@ -70,7 +65,7 @@ const nextConfig: NextConfig = {
 				source: '/app-demo-en/index.html',
 				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
 			},
-			// Files from public without a hash in the name: fresh for one day, then revalidated in the background (F-18.8).
+			// Files from public without a hash in the name: fresh for one day, then revalidated in the background.
 			...[
 				'/manawg-mark.svg',
 				'/icon-512.png',

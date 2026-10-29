@@ -17,7 +17,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Warum eine App statt Zettel und WhatsApp',
-				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Das spart Nachfragen und Streit darüber, wer was zugesagt hatte. Welche Kriterien bei der Wahl zählen, zeigt die Seite [WG-Apps im Vergleich](/beste-wg-app).',
+				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Welche Kriterien bei der Wahl zählen, zeigt die Seite [WG-Apps im Vergleich](/beste-wg-app).',
 			],
 			[
 				'Zimmersuche oder Alltag: was eine WG-App ist',
@@ -232,7 +232,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Ausgleich mit wenigen Überweisungen',
-				'ManaWG berechnet für jede Person den Saldo und schlägt Zahlungen vor, mit denen die WG mit wenigen Überweisungen quitt ist. Das spart Aufwand. Überwiesen wird außerhalb der App, per Bank oder bar. Danach markiert ihr einen Anteil oder mehrere gemeinsam als bezahlt. Eine Bankanbindung gibt es nicht, auch kein SEPA.',
+				'ManaWG berechnet für jede Person den Saldo und schlägt Zahlungen vor, mit denen die WG mit wenigen Überweisungen quitt ist. Überwiesen wird außerhalb der App, per Bank oder bar. Danach markiert ihr einen Anteil oder mehrere gemeinsam als bezahlt. Eine Bankanbindung gibt es nicht, auch kein SEPA.',
 			],
 			[
 				'Fixkosten automatisch buchen',
@@ -244,7 +244,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Erinnern ohne Streit',
-				'Auf der Seite Mahnungen löst ein Mitglied per Erinnern-Button eine Zahlungserinnerung aus. Eine Abkühlzeit begrenzt, wie oft das hintereinander möglich ist, und ein Rate-Limit bremst zu viele Anfragen. Der Saldo bleibt für alle jederzeit einsehbar, etwa in der Monatsabrechnung. Die Seite ist ein eigener Bereich der WG, neben Ausgaben, Abrechnung und Aktivität. Wie ihr offene Beträge ohne Streit ansprecht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).',
+				'Auf der Seite Mahnungen löst ein Mitglied per Erinnern-Button eine Zahlungserinnerung aus. Eine Abkühlzeit begrenzt, wie oft das hintereinander möglich ist, und ein Rate-Limit bremst zu viele Anfragen. Der Saldo bleibt für alle jederzeit einsehbar, etwa in der Monatsabrechnung. Wie ihr offene Beträge ohne Streit ansprecht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).',
 			],
 			[
 				'Umzug aus Splitwise oder Splid',
@@ -311,7 +311,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Im Supermarkt auch ohne gutes Netz',
-				'ManaWG läuft im Browser unter app.manawg.com und lässt sich ohne App Store auf den Home-Bildschirm legen. Fehlt unterwegs das Netz, merkt die App Aktionen lokal und sendet sie später nach. Nach 7 Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt. Push-Meldungen für Einkauf und Vorräte schaltet jede Person selbst ein oder aus. Was die App sonst noch kann, steht auf der Seite [ManaWG als WG-App](/wg-app).',
+				'ManaWG läuft im Browser unter app.manawg.com und lässt sich ohne App Store auf den Home-Bildschirm legen. Fehlt unterwegs das Netz, merkt die App Aktionen lokal und sendet sie später nach. Nach etwa sieben Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt. Push-Meldungen für Einkauf und Vorräte schaltet jede Person selbst ein oder aus. Was die App sonst noch kann, steht auf der Seite [ManaWG als WG-App](/wg-app).',
 			],
 		],
 		faq: [
@@ -381,7 +381,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'CSV-Import, falls eure Daten als Datei vorliegen',
-				'Falls eure Splitwise-Ausgaben als CSV-Datei vorliegen, öffnet ihr den Import eurer WG und wählt die Quelle. Vor dem Speichern seht ihr eine Vorschau mit allen erkannten Zeilen. Danach steht der Import im Verlauf und lässt sich rückgängig machen, falls etwas nicht stimmt. Ihr prüft also vorher und könnt hinterher zurück. Die Schritte stehen in der Anleitung zum [Umstieg](/splitwise-splid-wechseln). Die Historie anderer Mitglieder importieren dürfen nur WG-Admins.',
+				'Falls eure Splitwise-Ausgaben als CSV-Datei vorliegen, öffnet ihr den Import eurer WG und wählt die Quelle. Vor dem Speichern seht ihr eine Vorschau mit allen erkannten Zeilen. Danach steht der Import im Verlauf und lässt sich rückgängig machen, falls etwas nicht stimmt. Die Schritte stehen in der Anleitung zum [Umstieg](/splitwise-splid-wechseln). Die Historie anderer Mitglieder importieren dürfen nur WG-Admins.',
 			],
 			[
 				'Nur Euro',
@@ -656,7 +656,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 				'Ihr wohnt dauerhaft zusammen und teilt Ausgaben jeden Monat.\nMiete, Internet und Strom legt ihr einmal als Fixkosten an, im Rhythmus ganzer Monate. ManaWG bucht sie automatisch.\nDie Monatsabrechnung zeigt Gesamtsumme, Ausgaben je Kategorie und Überweisungsvorschläge mit wenigen Zahlungen.\nAn offene Beträge könnt ihr die Schuldner erinnern, mit Abkühlzeit gegen Dauerpiepen.\nPutzplan, Einkaufsliste und Kalender stehen in derselben App, dazu Pinnwand und Chat. Die Kasse im Detail beschreibt die Seite [WG-Kasse](/wg-kasse).',
 			],
 			[
-				'Ehrliche Grenzen',
+				'Grenzen',
 				'Beträge nur in Euro, Zeilen in anderen Währungen lehnt der Import einzeln ab.\nManaWG läuft im Browser und lässt sich auf den Home-Bildschirm legen. Eine native App im Store gibt es nicht.\nEine WG fasst höchstens 20 aktive Mitglieder.\nKeine Bankanbindung: Ihr überweist selbst und markiert Beträge danach als bezahlt.\nKein Import aus Tricount: Der Import liest nur CSV-Dateien aus Splitwise und Splid sowie Bildschirmfotos von Ausgabenlisten.',
 			],
 			[
@@ -708,7 +708,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Fairness statt Punkte',
-				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene und überfällige Aufgaben, Überfälliges zählt stärker. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
+				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene und überfällige Aufgaben, Überfälliges zählt stärker. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
 			],
 			[
 				'Putzplan mit festem Rhythmus',
@@ -724,7 +724,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Einkauf, Vorräte und Kalender',
-				'Die Einkaufsliste gehört der ganzen WG. Wer einkauft, sieht, was schon abgehakt ist. Nach dem Abhaken fragt ManaWG, ob ihr den Einkauf direkt als Ausgabe erfassen wollt. Dazu kommen eine Vorratsübersicht, ein Kalender mit Abo für Apple oder Google Kalender, Pinnwand und Chat. Eine zweite App für den Haushalt entfällt.',
+				'Die Einkaufsliste gehört der ganzen WG. Wer einkauft, sieht, was schon abgehakt ist. Nach dem Abhaken fragt ManaWG, ob ihr den Einkauf direkt als Ausgabe erfassen wollt. Dazu kommen eine Vorratsübersicht, ein Kalender mit Abo für Apple oder Google Kalender, Pinnwand und Chat.',
 			],
 			[
 				'Web statt Store',

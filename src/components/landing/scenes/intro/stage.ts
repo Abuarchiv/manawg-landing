@@ -104,7 +104,7 @@ export function createStage({
 	const travel = () => Math.max(1, sec.offsetHeight - H);
 	let safeH = safe.clientHeight;
 	let dpr = dprFor(2, 1.5, W, H);
-	let fit: Fit = fitBox(W, safeH, 1280, 800, 1.25);
+	let fit: Fit = fitBox(W, safeH);
 	let cam: Fit = camera(W, H, safeH, loop.mode);
 	let holes: Hole[] = [];
 
@@ -192,7 +192,7 @@ export function createStage({
 		H = stageEl.clientHeight;
 		safeH = safe.clientHeight;
 		dpr = dprFor(2, 1.5, W, H);
-		fit = fitBox(W, safeH, 1280, 800, 1.25);
+		fit = fitBox(W, safeH);
 		cam = camera(W, H, safeH, loop.mode);
 		sizeBacking(cvFlat, W, H, dpr);
 		measureHoles();
@@ -347,7 +347,7 @@ export function createStage({
 	};
 
 	/**
-	 * Resolution of the scene buffer (F-07): outliers above 0.25 s (tab switch, pause) do not count.
+	 * Resolution of the scene buffer: outliers above 0.25 s (tab switch, pause) do not count.
 	 * It is lowered only when the moving average over 15 frames exceeds 0.05 s, and recovers when running calmly.
 	 */
 	const adaptResolution = (raw: number) => {

@@ -23,7 +23,7 @@ import { Loader } from './shell/Loader';
 
 // Root of the landing: header and hints are fixed to the window, the content follows in the normal
 // document flow, the loader comes last. Document scroll, no scaled stage. Scenes register themselves
-// with the loop (core/loop.js); the intro stage hangs off the timeline (scenes/intro).
+// with the loop (core/loop.ts); the intro stage hangs off the timeline (scenes/intro).
 
 declare global {
 	interface Window {

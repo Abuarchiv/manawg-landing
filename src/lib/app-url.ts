@@ -8,9 +8,8 @@ function withHttps(value: string): string {
 }
 
 /**
- * This site's own public origin (manawg.com) — used for canonical links,
- * sitemap/robots, and OG metadata. Not the app's origin: manawg.com and
- * app.manawg.com are separate origins now, each with their own metadata.
+ * Public origin of this site (manawg.com), used for canonical links, sitemap,
+ * robots and OG metadata. The app has its own origin in app-origin.ts.
  */
 export function getAppUrl(): string {
 	const rawAppUrl = cleanEnvUrl(process.env.NEXT_PUBLIC_APP_URL);

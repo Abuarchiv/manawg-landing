@@ -2,7 +2,7 @@
 // All states (pages and overlays) sit as <script type="text/plain"> in index.html (raw text, no DOM built on load), the graph (click chains, worlds) in
 // <script id="model">. Every element comes from a recording of the app (landing-konzept/werkzeuge/app-demo). Built by
 // landing-konzept/werkzeuge/app-demo/build-demo.mjs. Nothing here invents content: demo.js swaps recordings and animates
-// the transitions with the durations and curves of the app (REF §7) through the app's own CSS (data-open, data-ending-style).
+// the transitions with the durations and curves of the app through the app's own CSS (data-open, data-ending-style).
 (() => {
 	'use strict';
 	const M = JSON.parse(document.getElementById('model').textContent);

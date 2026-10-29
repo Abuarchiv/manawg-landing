@@ -7,8 +7,7 @@ export default function ErrorBoundary({
 	reset,
 }: { error: Error & { digest?: string }; reset: () => void }) {
 	useEffect(() => {
-		// Goes to the platform log (Vercel captures console.error) — no
-		// third-party error tracker, see apps/web/src/lib/observability.ts.
+		// console.error goes to the Vercel platform log; there is no third-party error tracker.
 		console.error('[error]', error, { boundary: 'root' });
 	}, [error]);
 

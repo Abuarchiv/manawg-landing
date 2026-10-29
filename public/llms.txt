@@ -62,8 +62,12 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Streit in der WG lösen](https://manawg.com/wg-streit-loesen): Putzen, Lärm, Geld
 - [WG-Zimmer kündigen](https://manawg.com/wg-zimmer-kuendigen): Fristen, Beispiele mit Datum, Muster, Nachmieter, gemeinsamer Vertrag
 - [Auszug aus der WG](https://manawg.com/wg-auszug-checkliste): Kündigung, Nachmieter, Kaution, Abrechnung
+- [Open-Source-WG-App](https://manawg.com/open-source-wg-app): Apache-2.0, kostenlos nutzen oder per Docker selbst hosten
 
-Alle Seiten als ein Text: https://manawg.com/llms-full.txt
+## Weitere Links
+
+- [Alle Seiten als ein Text](https://manawg.com/llms-full.txt)
+- [Atom-Feed](https://manawg.com/feed.xml)
 - [App öffnen](https://app.manawg.com/)
 - [Datenschutz](https://manawg.com/datenschutz)
 

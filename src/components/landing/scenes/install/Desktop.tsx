@@ -1,5 +1,5 @@
-// Desktop: Chrome 154 on macOS (INSTALL-FLOWS 4.1). Stage 820 x 538 px. Structure and order are documented,
-// pixel dimensions and timings of the desktop part are not measured (INSTALL-FLOWS 4, 8.4).
+// Desktop: Chrome 154 on macOS. Stage 820 x 538 px. Structure and order are documented,
+// pixel dimensions and timings of the desktop part are not measured.
 
 import {
 	ArrowLeft,

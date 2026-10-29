@@ -1,4 +1,4 @@
-// English money and flatmate-search guides (batch A). Keys are English slugs; the German
+// English money and flatmate-search guides. Keys are English slugs; the German
 // counterparts live in ../de/guides.ts and ../de/guides-money.ts. Links are prefix-free.
 import { euro, rentShares } from '../rent-calculator.ts';
 import type { Topic } from '../types.ts';
@@ -33,7 +33,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			'How to split rent and shared shopping in a flat share: three models with worked examples, settling up without a transfer mess, and rules that prevent arguments.',
 		h1: 'How to split flat costs fairly',
 		intro:
-			'Money is the most common source of friction in shared flats, and it is rarely about large sums. Usually there is simply no rule that everyone has agreed on. This guide covers which costs a flat share has, which ways of splitting them work well and how to keep track. It is written for flat shares in Germany, where a shared flat is called a WG (Wohngemeinschaft).',
+			'Money often causes friction in shared flats, and rarely over large sums. Usually there is no rule that everyone has agreed on. This guide covers which costs a flat share has, which ways of splitting them work well and how to keep track. It is written for flat shares in Germany, where a shared flat is called a WG (Wohngemeinschaft).',
 		sections: [
 			[
 				'Which costs a flat share has',
@@ -347,7 +347,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 		sections: [
 			[
 				'What belongs in the household kitty',
-				'Before you discuss the form, settle the content. Typical items are things everyone uses up: loo roll, washing-up liquid, cleaning products, bin bags, light bulbs, spices and staples such as oil, salt or coffee, if you share those. Private groceries, toiletries and things for your own room do not belong in it. Bigger purchases such as a vacuum cleaner are better kept separate, because when someone moves out the question comes up of who owns the appliance.',
+				'Before you discuss the form, settle the content. Typical items are things everyone uses up: loo roll, washing-up liquid, cleaning products, bin bags, light bulbs, spices and staples such as oil, salt or coffee, if you share those. Private groceries, toiletries and things for your own room do not belong in it. Bigger purchases such as a vacuum cleaner are better kept separate, because when someone moves out it is unclear who owns the appliance.',
 			],
 			[
 				'Option 1: a cash tin',
@@ -706,7 +706,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			'Advertise a room in a German WG: WG-Gesucht account, ad titles with examples, the key details as a table, photos, common mistakes, a template and a timeline.',
 		h1: 'Finding a flatmate in Germany: writing and placing a WG ad',
 		intro:
-			'A room is becoming free, and in a few weeks someone new should move in. For it to work out, you need an honest ad, a good selection and clear agreements before the move. This guide covers the process from the ad to the first month together, for a WG (Wohngemeinschaft, a shared flat) in Germany. It also explains the German platforms for people who are new to them.',
+			'A room is becoming available, and in a few weeks someone new should move in. For it to work out, you need an honest ad, a good selection and clear agreements before the move. This guide covers the process from the ad to the first month together, for a WG (Wohngemeinschaft, a shared flat) in Germany. It also explains the German platforms for people who are new to them.',
 		sections: [
 			[
 				'Clear this first: landlord and contract',
@@ -730,7 +730,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'An example WG ad',
-				'“From 1 December, a 16 square metre room is becoming free in our three-person WG in Leipzig-Connewitz, €420 all-in including internet. We are Mia (26, nursing) and Jonas (24, computer science) and are looking for someone between 21 and 30. During the week everyone cooks for themselves, and on Sundays we often eat together. Cleaning follows a rota that changes weekly, and we settle shared expenses in an app. Write and tell us briefly what you do and how you picture life in a WG. English is fine.” Details like these are specific enough that the right people get in touch and the others do not bother writing.',
+				'“From 1 December, a 16 square metre room is available in our three-person WG in Leipzig-Connewitz, €420 all-in including internet. We are Mia (26, nursing) and Jonas (24, computer science) and are looking for someone between 21 and 30. During the week everyone cooks for themselves, and on Sundays we often eat together. Cleaning follows a rota that changes weekly, and we settle shared expenses in an app. Write and tell us briefly what you do and how you picture life in a WG. English is fine.” Details like these are specific enough that the right people get in touch and the others do not bother writing.',
 			],
 			[
 				'For international applicants and English-speaking flats',
@@ -741,7 +741,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 				'Length: according to WG-Gesucht, rooms in ads of 150 words or more are let fastest. The example above is shorter, and your ad can be longer as long as it stays concrete.\nPhotos: room, kitchen, bathroom and hallway, in daylight and tidy.\nFiller: “nice flat share” says nothing, while numbers and examples do.\nRent: always state it all-in and say what is included.\nFixed term: if it is missing from the ad, it only comes out in the conversation and costs both sides time.\nNo-gos: two or three real dealbreakers are enough, a long list puts people off.\nReplies: if you leave applications unanswered, you lose the right ones to other flat shares. For the conversation afterwards, see the [WG-Casting guide](/wg-casting-questions).',
 			],
 			[
-				'Choosing without chaos',
+				'Choosing an applicant',
 				'For popular rooms, dozens of messages come in quickly. Decide who replies and collect the applications in one place. Invite only the people whose message suits the flat to a viewing (a “WG-Casting”, where applicants meet the flat). After the appointments, decide together, as soon as you can, because good applicants often have several offers. Tell everyone you invited who did not get the room. Suitable questions for the conversation are in the [WG-Casting guide](/wg-casting-questions).',
 			],
 			[

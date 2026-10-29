@@ -1,4 +1,4 @@
-// A single requestAnimationFrame loop for the whole page (PLAN-V2 2.5, 4.3).
+// A single requestAnimationFrame loop for the whole page.
 //
 // - dt = min(0.05 s, gap to the last frame), paused while document.hidden.
 // - Scenes register in the useEffect of their component (register) and unregister on teardown.
@@ -450,7 +450,7 @@ export function onRead(fn: () => void): () => void {
 }
 
 /**
- * Register a scene (PLAN-V2 4.3).
+ * Register a scene.
  *   el      element of the scene (usually a canvas), its CSS box is the scene area
  *   host    element for the pointer listeners (default: parent element)
  *   box     (W, H, safeH, mode) -> { bw, bh, align?, max? }, reference box of the composition

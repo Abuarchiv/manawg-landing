@@ -2,8 +2,9 @@
 // desktop part are NOT measured and deliberately conservative (estimated): the chip expands in 0.4 s,
 // the dialog takes 0.18 s, the window switch 0.32 s ease-out.
 
+import { lerp } from '../../core/math';
 import { put, tf } from './style';
-import { easeOut, io, mix, seg } from './timing';
+import { easeOut, io, seg } from './timing';
 import type { PlaybackPlan } from './types';
 
 const T1 = 1.8; // click on the install icon (chip)
@@ -36,12 +37,12 @@ export const plan: PlaybackPlan = {
 		put(E['dk-dlg'], {
 			d: t > T1 + 0.04 && t < T2 + 0.16 ? 'block' : '',
 			o: dIn * (1 - dOut),
-			t: tf(0, (1 - dIn) * -8, mix(0.97, 1, dIn)),
+			t: tf(0, (1 - dIn) * -8, lerp(0.97, 1, dIn)),
 		});
 		// The tab moves into its own app window without an address bar (estimated 0.32 s ease-out)
 		const wa = easeOut(seg(t, T2 + 0.1, 0.32));
 		const af = seg(t, T2 + 0.1, 0.03);
-		put(E['dk-app'], { d: t > T2 + 0.09 ? 'block' : '', o: af, t: tf(0, 0, mix(0.94, 1, wa)) });
+		put(E['dk-app'], { d: t > T2 + 0.09 ? 'block' : '', o: af, t: tf(0, 0, lerp(0.94, 1, wa)) });
 		put(E['dk-fenster'], { d: t < T2 + 0.26 ? 'block' : '' });
 	},
 };

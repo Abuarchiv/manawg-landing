@@ -1,7 +1,7 @@
 import { FAQ_DE } from './faq-de.ts';
 import type { HomeDict } from './types.ts';
 
-// German copy of the home page, moved verbatim from the components.
+// German copy of the home page.
 export const de: HomeDict = {
 	skip: 'Zum Inhalt springen',
 	aria: {

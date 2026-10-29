@@ -1,4 +1,4 @@
-// Binding a canvas to its CSS box, and the scene space (PLAN-V2 2.3).
+// Binding a canvas to its CSS box, and the scene space.
 //
 // Every canvas follows its CSS box via ResizeObserver. The backing store is CSS x min(DPR, cap).
 // Composed objects live in a reference box (default 1280 x 800) that is fitted into the area
@@ -11,14 +11,6 @@ export interface Fit {
 	f: number;
 	ox: number;
 	oy: number;
-}
-
-/** Visible area in scene space. */
-export interface Area {
-	x0: number;
-	y0: number;
-	x1: number;
-	y1: number;
 }
 
 /** Pointer position in CSS pixels of the canvas area (px, py) and in scene coordinates (x, y). */
@@ -35,16 +27,6 @@ export function fitBox(W: number, H: number, bw = 1280, bh = 800, max = FIT_MAX)
 	return { f, ox: (W - bw * f) / 2, oy: (H - bh * f) / 2 };
 }
 
-/** Visible area in scene space, from (x0, y0) to (x1, y1). Fills the whole canvas area. */
-export function area(W: number, H: number, fit: Fit): Area {
-	return {
-		x0: -fit.ox / fit.f,
-		y0: -fit.oy / fit.f,
-		x1: (W - fit.ox) / fit.f,
-		y1: (H - fit.oy) / fit.f,
-	};
-}
-
 const mq = typeof matchMedia === 'function' ? matchMedia('(pointer: coarse)') : null;
 
 /** Coarse pointer devices (touch): lower caps apply there for large areas. */
@@ -55,7 +37,7 @@ export function isTouch(): boolean {
 /** Hook of the loop: called on every size change (wakes idle scenes). */
 export const wakeHook: { fn: () => void } = { fn() {} };
 
-/** Resolution step derived from the frame time (loop.js lowers it when frames stay slow, 1 = full). */
+/** Resolution step derived from the frame time (loop.ts lowers it when frames stay slow, 1 = full). */
 export const quality = { f: 1 };
 
 /** Maximum area of a backing store in pixels (8 MP = 32 MB): large full-bleed areas on 4K/5K get a smaller factor. */

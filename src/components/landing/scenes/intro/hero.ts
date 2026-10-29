@@ -43,7 +43,7 @@ vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v
 const SCENE = `${HEAD}
 uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
 uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat;
-// Mountain: copper engraving (Codex, technique like the sky of the finale) as a camera move. Image section covers, tighter around the
+// Mountain: copper engraving as a camera move. Image section covers, tighter around the
 // summit in portrait; looking up (uLook) shifts the section into the dark sky. Clouds drift slightly, the
 // pointer is light on the snow, the mark stands as the sun in the sky.
 const float IMGA = 2560. / 3200.;

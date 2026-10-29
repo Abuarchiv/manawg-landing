@@ -1,8 +1,8 @@
-// iPhone: iOS 27, Safari in the "Compact" layout. Timings per INSTALL-FLOWS 2.2, 2.6 and 8.3 (measured on the simulator),
-// loop ≈ 13.5 s. All values are pure functions of time t.
+// iPhone: iOS 27, Safari in the "Compact" layout. Timings measured on the simulator, loop ≈ 13.5 s. All values are pure functions of time t.
 
+import { cl, lerp } from '../../core/math';
 import { fl, put, tf } from './style';
-import { cl, easeOut, io, mix, seg, spring } from './timing';
+import { easeOut, io, seg, spring } from './timing';
 import type { PlaybackPlan } from './types';
 
 // Tap times: ≡, Share, Show More, Add to Home Screen, Add, icon
@@ -69,7 +69,7 @@ export const plan: PlaybackPlan = {
 			d: t > T4 - 0.01 ? 'block' : '',
 			t: tf(0, (1 - dIn) * 800),
 			height: `${797 - 470 * dh}px`,
-			borderRadius: `${mix(40, 30, dh)}px`,
+			borderRadius: `${lerp(40, 30, dh)}px`,
 		});
 		put(E['ios-dlg-in'], { o: seg(t, T4 + 0.4, 0.4) });
 		put(E['ios-caret'], {
@@ -100,14 +100,14 @@ export const plan: PlaybackPlan = {
 		put(E['ios-home'], {
 			d: homeOn ? 'block' : '',
 			o: 1,
-			f: fl(14 * (1 - he) + 14 * lz, mix(0.7, 1, he) * (1 - 0.35 * lz)),
+			f: fl(14 * (1 - he) + 14 * lz, lerp(0.7, 1, he) * (1 - 0.35 * lz)),
 			t: tf(0, 0, 1.08 - 0.08 * he - 0.05 * lz),
 		});
 		// the icon enters the cell only once the home screen is in focus, with a soft spring 0.7 -> 1
 		const ip = spring(t - (T5 + 0.62), 0.6, 20);
 		put(E['ios-icon'], {
 			o: seg(t, T5 + 0.6, 0.12),
-			t: tf(0, 0, mix(0.7, 1, Math.min(ip, 1.15))),
+			t: tf(0, 0, lerp(0.7, 1, Math.min(ip, 1.15))),
 		});
 
 		// ---------- App launch: card grows out of the icon, black launch screen, crossfade ----------

@@ -1,6 +1,6 @@
 // Which language a visitor sees on arrival. German stays the site's default; a visitor whose system
 // prefers another language is sent to the English counterpart once, on entry from outside the site.
-// Same rule as the app (apps/web/src/shared/i18n/locale.ts): the first supported language wins,
+// Same rule as app.manawg.com: the first supported language wins,
 // English when the system only names languages we do not offer.
 
 import { type Locale, counterpartPath } from './locale.ts';
