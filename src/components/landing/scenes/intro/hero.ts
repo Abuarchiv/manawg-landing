@@ -47,9 +47,11 @@ uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat, uInk;
 // summit in portrait; looking up (uLook) shifts the section into the dark sky. Clouds drift slightly, the
 // pointer is light on the snow, the mark stands as the sun in the sky.
 const float IMGA = 2560. / 3200.;
-const float INK_LO = .045, INK_TOP = 1., INK_G = .8, INK_SHARP = 1.4;
-// Light mode tone (curve in photoMountain): paper at the page tone (.04 inverts to #f5f5f5), darkest ink .9
-float ink(float v){ return .04 + .86 * v; }
+// Light mode: exactly the negative of the dark mode (same strokes, same light), paper at the page tone (.04 inverts to
+// #f5f5f5). Faint strokes are far weaker as gray on paper than as gray on black, so a gamma lifts them; the text calm
+// at the bottom is milder for the same reason.
+const float INK_G = .8, INK_CALM = .75;
+float ink(float v){ return .04 + .92 * pow(v, INK_G); }
 vec2 photoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
   float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
   float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
@@ -58,18 +60,12 @@ float photoMountain(vec2 uv){
   vec2 iu = photoUV(gl_FragCoord.xy); iu.y = 1. - iu.y; float msk = texture(uMsk, iu).r; float skyWeight = 1. - texture(uMsk, iu, 2.5).r; // image uploaded flipped
   vec2 wv = (vec2(nz(iu * vec2(6., 14.) + vec2(T * .05, 0.)), nz(iu * vec2(6., 14.) + vec2(3.7, T * .03))) - .5) * .006 * skyWeight;
   float v = texture(uImg, iu + wv).r;
-  // Light mode: local contrast, so the fine gaps inside the lit snow faces stay open when they become dense ink
-  if(uInk > .5){ vec2 tx = 1.2 / vec2(textureSize(uImg, 0)); vec2 q = iu + wv;
-    float bl = (texture(uImg, q + vec2(tx.x, 0.)).r + texture(uImg, q - vec2(tx.x, 0.)).r + texture(uImg, q + vec2(0., tx.y)).r + texture(uImg, q - vec2(0., tx.y)).r) * .25;
-    v = clamp(v + (v - bl) * INK_SHARP * smoothstep(.05, .14, max(v, bl)), 0., 1.); } // not in the empty sky
   // Tone curve like a black-and-white print: deep black in the rock, snow stays bright; dark ground at the bottom for the text
-  // Light mode: inside the mountain (msk) only the gaps between the strokes cut away and a gamma that lifts the faint strokes of
-  // the shaded slopes, which on paper would otherwise read as empty white; the sky keeps a cut so it stays clean
-  v = mix(smoothstep(.04, .97, pow(v, 1.18)), pow(clamp((v - mix(.06, INK_LO, msk)) / (INK_TOP - INK_LO), 0., 1.), mix(.92, INK_G, msk)), uInk); vec2 sv = gl_FragCoord.xy / uR;
+  v = smoothstep(.04, .97, pow(v, 1.18)); vec2 sv = gl_FragCoord.xy / uR;
   // On opening, the engraving draws itself by brightness: first the bright strokes, then the fine ones
   // Retreat (uRetreat): the threshold runs back, the dark strokes go first, the bright ones last
   float th = 1.05 - uPhoto * 1.1 + uRetreat * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
-  v *= mix(1., mix(.5, .9, uInk), smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook))); // dark text needs less calm
+  v *= mix(1., mix(.5, INK_CALM, uInk), smoothstep(.42, 0., sv.y) * (1. - smoothstep(.0, .25, uLook))); // dark text needs less calm
   // Pointer as light: the snow beneath it brightens softly, rock stays dark
   vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   float lm = exp(-length(uv - uM * vec2(.9, .5)) * 3.2); v += smoothstep(.45, .85, v) * msk * lm * .12;
