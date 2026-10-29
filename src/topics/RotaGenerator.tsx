@@ -2,7 +2,7 @@
 
 import type { Locale } from '@/lib/locale';
 import { useState } from 'react';
-import { putzplanRotation, tabelleAlsCsv } from './putzplan-rotation';
+import { cleaningRota, tableToCsv } from './cleaning-rota';
 
 const TEXT: Record<
 	Locale,
@@ -86,7 +86,7 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 	const gewaehlt = AUFGABEN.filter((a) => aufgaben.includes(a));
 	const plan =
 		personen.length >= 2 && gewaehlt.length > 0
-			? putzplanRotation(personen, gewaehlt, wochen, t.weekLabel)
+			? cleaningRota(personen, gewaehlt, wochen, t.weekLabel)
 			: null;
 	const mehrfach = Math.ceil(gewaehlt.length / Math.max(personen.length, 1));
 
@@ -102,7 +102,7 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 	const csv = () => {
 		if (!plan) return;
 		const url = URL.createObjectURL(
-			new Blob([tabelleAlsCsv(plan.kopf, plan.zeilen, t.csvSep)], {
+			new Blob([tableToCsv(plan.header, plan.rows, t.csvSep)], {
 				type: 'text/csv;charset=utf-8',
 			}),
 		);
@@ -183,7 +183,7 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 								<caption className="sr-only">{t.caption}</caption>
 								<thead>
 									<tr>
-										{plan.kopf.map((k) => (
+										{plan.header.map((k) => (
 											<th key={k} scope="col" className={`${zelle} text-left font-normal`}>
 												{k}
 											</th>
@@ -191,7 +191,7 @@ export default function PutzplanGenerator({ locale }: { locale: Locale }) {
 									</tr>
 								</thead>
 								<tbody>
-									{plan.zeilen.map((zeile) => (
+									{plan.rows.map((zeile) => (
 										<tr key={zeile[0]}>
 											{zeile.map((feldtext, j) =>
 												j === 0 ? (

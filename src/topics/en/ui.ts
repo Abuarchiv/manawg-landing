@@ -1,4 +1,4 @@
-import type { TopicUi } from './ui.ts';
+import type { TopicUi } from '../types.ts';
 
 // English topic frame strings. German terms stay out of the frame; pages explain them once.
 export const UI_EN: TopicUi = {

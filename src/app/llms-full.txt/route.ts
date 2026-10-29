@@ -1,15 +1,21 @@
 import { appUrl } from '@/lib/app-origin';
 import { getAppUrl } from '@/lib/app-url';
-import { VERGLEICHS_HINWEIS, gruppeVon } from '@/topics/gruppen';
-import { THEMEN } from '@/topics/themen';
-import type { Thema } from '@/topics/themen';
+import { COMPARISON_NOTICE } from '@/topics/de/comparison';
+import { TOPICS_DE } from '@/topics/de/index';
+import { groupOfSlug } from '@/topics/groups';
+import type { Topic } from '@/topics/types';
 
 export const dynamic = 'force-static';
 
 const zelle = (wert: string) => wert.replace(/\|/g, '\\|');
 
 // Tabelle aus den Themendaten als Markdown, mit Titel und Fußnote.
-function markdownTabelle({ titel, kopf, zeilen, hinweis }: NonNullable<Thema['tabellen']>[number]) {
+function markdownTabelle({
+	title: titel,
+	header: kopf,
+	rows: zeilen,
+	note: hinweis,
+}: NonNullable<Topic['tables']>[number]) {
 	const reihe = (felder: string[]) => `| ${felder.map(zelle).join(' | ')} |`;
 	const tabelle = [reihe(kopf), reihe(kopf.map(() => '---')), ...zeilen.map(reihe)].join('\n');
 	return `### ${titel}\n\n${tabelle}${hinweis ? `\n\n${hinweis}` : ''}`;
@@ -18,26 +24,26 @@ function markdownTabelle({ titel, kopf, zeilen, hinweis }: NonNullable<Thema['ta
 // Alle Themen- und Ratgeberseiten als ein Markdown-Text, damit KI-Systeme den Inhalt ohne Crawl lesen können.
 export function GET() {
 	const base = getAppUrl();
-	const seiten = Object.entries(THEMEN).map(([slug, t]) => {
-		const quellen = (t.quellen ?? []).map(
+	const seiten = Object.entries(TOPICS_DE).map(([slug, t]) => {
+		const quellen = (t.sources ?? []).map(
 			([name, url]) => [name, url.startsWith('/') ? `${base}${url}` : url] as [string, string],
 		);
 		const teile = [
 			`# ${t.h1}`,
-			`Quelle: ${base}/${slug} (Stand ${t.stand})`,
-			...(gruppeVon(slug)?.name === 'Vergleiche' ? [VERGLEICHS_HINWEIS] : []),
+			`Quelle: ${base}/${slug} (Stand ${t.updated})`,
+			...(groupOfSlug(slug)?.name === 'Vergleiche' ? [COMPARISON_NOTICE] : []),
 			[
-				t.einleitung.replaceAll('](/', `](${base}/`),
-				...(t.tabellen ?? []).filter((tab) => tab.nach === 'einleitung').map(markdownTabelle),
+				t.intro.replaceAll('](/', `](${base}/`),
+				...(t.tables ?? []).filter((tab) => tab.after === 'intro').map(markdownTabelle),
 			].join('\n\n'),
-			...t.abschnitte.map(([kopf, text]) => {
-				const tabellen = (t.tabellen ?? []).filter((tab) => tab.nach === kopf).map(markdownTabelle);
+			...t.sections.map(([kopf, text]) => {
+				const tabellen = (t.tables ?? []).filter((tab) => tab.after === kopf).map(markdownTabelle);
 				return [`## ${kopf}\n\n${text.replaceAll('](/', `](${base}/`)}`, ...tabellen].join('\n\n');
 			}),
-			...(t.fragen
+			...(t.faq
 				? [
 						'## Häufige Fragen',
-						...t.fragen.map(([f, a]) => `**${f}**\n\n${a.replaceAll('](/', `](${base}/`)}`),
+						...t.faq.map(([f, a]) => `**${f}**\n\n${a.replaceAll('](/', `](${base}/`)}`),
 					]
 				: []),
 			...(quellen.length > 0

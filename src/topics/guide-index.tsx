@@ -10,7 +10,7 @@ import {
 import { schemaIds } from '@/lib/schema-ids';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { GRUPPEN } from './gruppen';
+import { GROUPS } from './groups';
 import { Fuss, Kopf, mono, rand } from './rahmen';
 import { topics, ui } from './registry';
 
@@ -48,7 +48,7 @@ const THEMENKREISE: Array<[ClusterId, string[]]> = [
 		],
 	],
 ];
-const alle = GRUPPEN.find((g) => g.id === 'guides')?.slugs ?? [];
+const alle = GROUPS.find((g) => g.id === 'guides')?.slugs ?? [];
 const zugeordnet = THEMENKREISE.flatMap(([, slugs]) => slugs);
 const weitere = alle.filter((slug) => !zugeordnet.includes(slug));
 const KREISE_DE: Array<[ClusterId, string[]]> =
@@ -201,7 +201,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 												{t.h1}
 											</Link>
 											<p className="m-0 mt-2 text-[16px] leading-[1.55] text-[var(--text-2)] max-w-[62ch]">
-												{t.beschreibung}
+												{t.description}
 											</p>
 										</li>
 									);

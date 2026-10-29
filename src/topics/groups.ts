@@ -1,7 +1,6 @@
 // Gliederung der Themenseiten für Breadcrumb, "Weiterlesen" und Fußzeile.
-import type { Thema } from './themen';
 
-export const GRUPPEN: Array<{
+export const GROUPS: Array<{
 	id: 'features' | 'compare' | 'guides' | 'about';
 	name: string;
 	slugs: string[];
@@ -56,14 +55,10 @@ export const GRUPPEN: Array<{
 	{ id: 'about', name: 'Über ManaWG', slugs: ['ueber-manawg', 'faq'] },
 ];
 
-export const gruppeVon = (slug: string) => GRUPPEN.find((g) => g.slugs.includes(slug));
-
-/** Anbieterhinweis für Vergleichsseiten: keine unabhängige Rangliste; Belege stehen in den verlinkten Quellen, Unverifiziertes ist als solches gekennzeichnet. Ohne Stichtag, die Seite zeigt t.stand. */
-export const VERGLEICHS_HINWEIS =
-	'Dieser Vergleich wurde von ManaWG, dem Anbieter der hier vorgestellten WG-App, erstellt und ist keine unabhängige Rangliste. Bestätigte Aussagen zu anderen Anbietern verweisen auf die verlinkten Quellen; nicht verifizierte Angaben sind als solche gekennzeichnet. Prüft den aktuellen Stand bei den Anbietern selbst.';
+export const groupOfSlug = (slug: string) => GROUPS.find((g) => g.slugs.includes(slug));
 
 /** Funktionsseite je Ratgeber: Ratgeber und Funktion verweisen in „Weiterlesen“ aufeinander (Themen-Cluster). */
-export const FUNKTION_ZU_RATGEBER: Record<string, string[]> = {
+export const FEATURE_GUIDES: Record<string, string[]> = {
 	'wg-kasse': [
 		'splitwise-splid-wechseln',
 		'wg-kosten-aufteilen',
@@ -91,11 +86,11 @@ export const FUNKTION_ZU_RATGEBER: Record<string, string[]> = {
 		'wg-auszug-checkliste',
 	],
 };
-const funktionVon = (slug: string) =>
-	Object.keys(FUNKTION_ZU_RATGEBER).find((f) => FUNKTION_ZU_RATGEBER[f]?.includes(slug));
+const featureOf = (slug: string) =>
+	Object.keys(FEATURE_GUIDES).find((f) => FEATURE_GUIDES[f]?.includes(slug));
 
 /** Feste, thematisch gewählte „Weiterlesen“-Ziele; alle anderen Seiten nehmen den Rückfall in verwandte(). */
-const WEITERLESEN: Record<string, string[]> = {
+const READ_NEXT: Record<string, string[]> = {
 	'wg-miete-rechner': ['wg-kasse', 'wg-kosten-aufteilen', 'wg-nebenkosten'],
 	'wg-nebenkosten': ['wg-kasse', 'wg-miete-rechner', 'rundfunkbeitrag-wg'],
 	'rundfunkbeitrag-wg': ['wg-nebenkosten', 'wg-anmeldung', 'wg-kasse'],
@@ -127,51 +122,14 @@ const WEITERLESEN: Record<string, string[]> = {
 };
 
 /** Drei verwandte Seiten: Ratgeber zuerst die passende Funktionsseite, Funktionen zuerst ihre Ratgeber, dann die eigene Gruppe. */
-export function verwandte(slug: string): string[] {
-	const w = WEITERLESEN[slug];
+export function relatedSlugs(slug: string): string[] {
+	const w = READ_NEXT[slug];
 	if (w) return w;
-	const g = gruppeVon(slug);
+	const g = groupOfSlug(slug);
 	if (!g) return [];
 	const i = g.slugs.indexOf(slug);
-	const eigene = g.slugs.slice(i + 1).concat(g.slugs.slice(0, i));
-	const rest = (GRUPPEN[2]?.slugs ?? []).filter((s) => s !== slug && !eigene.includes(s));
-	const cluster = FUNKTION_ZU_RATGEBER[slug] ?? [funktionVon(slug)].filter((s) => s !== undefined);
-	return [...new Set([...cluster, ...eigene, ...rest])].slice(0, 3);
-}
-
-/** Zeilen und ManaWG-Spalte der Vergleichstabellen; Zellen zu ManaWG nur aus der App belegt. */
-export const VERGLEICH_ZEILEN = [
-	'Ausgaben teilen',
-	'Putzplan',
-	'Einkaufsliste',
-	'Kalender',
-	'Chat',
-	'Währungen',
-	'Preis',
-];
-export const VERGLEICH_MANAWG = [
-	'gleich oder mit eigenen Beträgen, Fixkosten, Monatsabrechnung',
-	'mit fairer Verteilung, Abwesenheit und Erinnerung',
-	'mit Vorräten',
-	'mit Kalender-Abo',
-	'Chat und Pinnwand',
-	'nur Euro',
-	'kostenlos, ohne Werbung',
-];
-/** Alles, was die Quellen der Seite nicht belegen, steht so in der Tabelle. */
-export const NG = 'nicht geprüft';
-
-/** Tabelle ManaWG gegen einen Anbieter; `zellen` folgt VERGLEICH_ZEILEN, Fehlendes wird „nicht geprüft“. */
-export function vergleichsTabelle(
-	anbieter: string,
-	zellen: string[],
-	hinweis: string,
-): NonNullable<Thema['tabellen']>[number] {
-	return {
-		nach: 'einleitung',
-		titel: `ManaWG und ${anbieter} im Vergleich`,
-		kopf: ['Merkmal', 'ManaWG', anbieter],
-		zeilen: VERGLEICH_ZEILEN.map((z, i) => [z, VERGLEICH_MANAWG[i] ?? NG, zellen[i] ?? NG]),
-		hinweis,
-	};
+	const ownGroup = g.slugs.slice(i + 1).concat(g.slugs.slice(0, i));
+	const rest = (GROUPS[2]?.slugs ?? []).filter((s) => s !== slug && !ownGroup.includes(s));
+	const cluster = FEATURE_GUIDES[slug] ?? [featureOf(slug)].filter((s) => s !== undefined);
+	return [...new Set([...cluster, ...ownGroup, ...rest])].slice(0, 3);
 }

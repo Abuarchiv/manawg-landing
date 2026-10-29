@@ -1,48 +1,5 @@
-import { VERGLEICHS_HINWEIS } from './gruppen.ts';
-
-/** Strings of the topic frame, the topic pages, the guide index and the OG image. German values are the original wording. */
-export interface TopicUi {
-	/** Frame (header and footer). */
-	homeLabel: string;
-	openApp: string;
-	footerNote: string;
-	legal: { notice: string; privacy: string; terms: string };
-	/** Topic page. */
-	breadcrumbLabel: string;
-	contents: string;
-	by: string;
-	authorName: string;
-	published: string;
-	updated: string;
-	faqHeading: (link: string) => string;
-	sources: (date: string) => string;
-	guideNoteLabel: string;
-	/** Text before the contact address; the address and a closing full stop follow. */
-	guideNote: string;
-	ctaTagline: string;
-	ctaButton: string;
-	ctaNote: string;
-	readNext: string;
-	csvDownload: string;
-	printLabel: string;
-	comparisonNotice: string;
-	/** Group display names and the parent crumb of each group as [label, German-or-English path]. */
-	groupNames: Record<'features' | 'compare' | 'guides' | 'about', string>;
-	parentCrumbs: Record<'features' | 'compare' | 'guides', [label: string, path: string]>;
-	/** OG image. */
-	ogSubtitle: string;
-	ogFallback: string;
-	/** Guide index. */
-	guideIndex: {
-		title: string;
-		description: string;
-		h1: string;
-		intro: string;
-		crumb: string;
-		collectionName: string;
-		clusters: { money: string; household: string; together: string; moving: string; more: string };
-	};
-}
+import type { TopicUi } from '../types.ts';
+import { COMPARISON_NOTICE } from './comparison.ts';
 
 export const UI_DE: TopicUi = {
 	homeLabel: 'ManaWG, zur Startseite',
@@ -67,7 +24,7 @@ export const UI_DE: TopicUi = {
 	readNext: 'Weiterlesen',
 	csvDownload: 'Als CSV herunterladen',
 	printLabel: 'Drucken / als PDF speichern',
-	comparisonNotice: VERGLEICHS_HINWEIS,
+	comparisonNotice: COMPARISON_NOTICE,
 	groupNames: {
 		features: 'Funktionen',
 		compare: 'Vergleiche',

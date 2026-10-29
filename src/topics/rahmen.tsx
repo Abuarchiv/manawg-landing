@@ -2,7 +2,7 @@ import { LanguageLink } from '@/components/LanguageLink';
 import { appUrl } from '@/lib/app-origin';
 import { type Locale, TOPIC_SLUG_EN, localiseHref } from '@/lib/locale';
 import Link from 'next/link';
-import { GRUPPEN } from './gruppen';
+import { GROUPS } from './groups';
 import { groupName, topics, ui } from './registry';
 
 // Header and footer of the text pages (topics, guides, guide index).
@@ -63,7 +63,7 @@ export function Fuss({
 			className={`${rand} linie mt-24 md:mt-32 pt-12 pb-[max(2rem,env(safe-area-inset-bottom))]`}
 		>
 			<div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
-				{GRUPPEN.map((g) => {
+				{GROUPS.map((g) => {
 					// Slugs without data in this language are skipped; a group left empty is dropped.
 					const slugs = g.slugs.map(localSlug).filter((s): s is string => !!s && s in data);
 					if (slugs.length === 0) return null;

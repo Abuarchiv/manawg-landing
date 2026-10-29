@@ -1,15 +1,15 @@
 // English money and flatmate-search guides (batch A). Keys are English slugs; the German
 // counterparts live in ../ratgeber.ts and ../ratgeber-geld.ts. Links are prefix-free.
-import { euro, mieteAnteile } from '../miete-rechner.ts';
-import type { Thema } from '../themen.ts';
+import { euro, rentShares } from '../rent-calculator.ts';
+import type { Topic } from '../types.ts';
 import { BGB_EN } from './guides-moving.ts';
 
 // Rent example of the calculator page: values come from mieteAnteile, not from hand.
 const EXAMPLE_ROOMS = [12, 18, 24];
 const EXAMPLE_SHARED = 18;
 const EXAMPLE_RENT_CENT = 90000;
-const without = mieteAnteile(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, 0);
-const withShared = mieteAnteile(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, EXAMPLE_SHARED);
+const without = rentShares(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, 0);
+const withShared = rentShares(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, EXAMPLE_SHARED);
 const total = (a: number[]) =>
 	euro(
 		a.reduce((s, x) => s + x, 0),
@@ -17,24 +17,24 @@ const total = (a: number[]) =>
 	);
 
 // Rundfunkbeitrag per dwelling according to rundfunkbeitrag.de (checked 27 October 2026), in cents.
-const RUNDFUNK_MONAT_CENT = 1836;
-const RUNDFUNK_QUARTAL_CENT = RUNDFUNK_MONAT_CENT * 3;
+const LICENCE_FEE_MONTH_CENT = 1836;
+const LICENCE_FEE_QUARTER_CENT = LICENCE_FEE_MONTH_CENT * 3;
 
 // Free expenses per day according to the Splitwise help centre (checked 27 October 2026).
-const SPLITWISE_TAGESLIMIT = 4;
+const SPLITWISE_DAILY_LIMIT = 4;
 
-export const GUIDES_EN_MONEY: Record<string, Thema> = {
+export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	'split-flat-costs': {
 		link: 'Splitting flat costs',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Split flat costs fairly: three models with examples | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Split flat costs fairly: three models with examples | ManaWG',
+		description:
 			'How to split rent and shared shopping in a flat share: three models with worked examples, settling up without a transfer mess, and rules that prevent arguments.',
 		h1: 'How to split flat costs fairly',
-		einleitung:
+		intro:
 			'Money is the most common source of friction in shared flats, and it is rarely about large sums. Usually there is simply no rule that everyone has agreed on. This guide covers which costs a flat share has, which ways of splitting them work well and how to keep track. It is written for flat shares in Germany, where a shared flat is called a WG (Wohngemeinschaft).',
-		abschnitte: [
+		sections: [
 			[
 				'Which costs a flat share has',
 				'There are three groups. First, fixed costs that are the same every month: rent, the advance payment for Nebenkosten (utility and service charges), internet and electricity. Second, running shared expenses for the [household kitty](/household-kitty), such as washing-up liquid, loo roll, cleaning products and shared groceries. Third, one-off purchases, for example a new vacuum cleaner or kitchen equipment. If you keep the three groups apart, you argue less, because each can follow its own rule.',
@@ -60,7 +60,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Write down what is paid jointly and what is not. Pick a fixed day on which you settle up. Record expenses straight away, while the receipt is still to hand. And decide above which amount you ask first, for example for purchases over €50. Fixed costs such as rent and internet are set up once in ManaWG and then booked automatically every month.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'How do you split rent fairly in a flat share?',
 				'A common approach is to split the rent by room size, with equal shares for shared costs such as internet and electricity. If the rooms are the same size, an equal share for everyone is fair too.',
@@ -78,15 +78,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	'rent-split-calculator': {
 		link: 'Rent split calculator',
 		widget: { after: 'Calculator', kind: 'rent-calculator' },
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Flat-share rent calculator by room size | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Flat-share rent calculator by room size | ManaWG',
+		description:
 			'Split flat-share rent fairly: calculator by room size with shared areas, the formula with an example, and tips on balconies, private bathrooms and utilities.',
 		h1: 'Split flat-share rent by room size',
-		einleitung:
+		intro:
 			'When the rooms in a shared flat (WG) are different sizes, an equal rent share rarely fits. The calculator splits the rent by the floor area of each room and spreads the shared rooms equally across everyone. The result is a proposal that you still need to agree on.',
-		abschnitte: [
+		sections: [
 			[
 				'Calculator',
 				'Enter the rent, the area of each room in square metres and the area of the shared rooms such as the kitchen, bathroom and hallway. Whether you use Kaltmiete (rent excluding utilities) or Warmmiete (rent including heating and other utilities) is up to you; the calculation stays the same. The pre-filled values are an example. What you enter stays in your browser and is neither stored nor sent anywhere.',
@@ -108,17 +108,17 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Set the rent up as a fixed cost in [shared expenses](/shared-expenses): enter the amount, choose an interval of one month, and under “Paid by” pick the person who transfers the rent to the landlord. Under the split, choose “Manually” and enter each person’s amount from the calculator. ManaWG shows whether the shares add up to the rent. Splitting by percentage is not available; you enter euro amounts. After that, the app books the rent as an expense every month automatically.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'The formula with an example',
-				titel: `Example: ${euro(EXAMPLE_RENT_CENT, 'en')} rent split by room size`,
-				kopf: [
+				after: 'The formula with an example',
+				title: `Example: ${euro(EXAMPLE_RENT_CENT, 'en')} rent split by room size`,
+				header: [
 					'Room',
 					'Area',
 					'Share without shared area',
 					`Share with ${EXAMPLE_SHARED} m² shared area`,
 				],
-				zeilen: [
+				rows: [
 					...EXAMPLE_ROOMS.map((m, i) => [
 						`Room ${i + 1}`,
 						`${m} m²`,
@@ -132,11 +132,10 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 						total(withShared),
 					],
 				],
-				hinweis:
-					'Without shared area, each room pays only for its own area. With it, the gap between large and small rooms gets smaller.',
+				note: 'Without shared area, each room pays only for its own area. With it, the gap between large and small rooms gets smaller.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'How do you split rent fairly in a flat share?',
 				'A common approach is to split by room size: the person with more floor area pays more. If the rooms are the same size, an equal share is fair. Shared rooms are spread equally across everyone, as in the calculator above.',
@@ -153,15 +152,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'utilities-and-internet': {
 		link: 'Utilities and internet',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Utilities, electricity and internet in a flat share | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Utilities, electricity and internet in a flat share | ManaWG',
+		description:
 			'How German flat shares split Nebenkosten, electricity, internet and the broadcasting fee: who holds the contract, how to settle up and share back payments.',
 		h1: 'Utilities, electricity and internet in a flat share',
-		einleitung:
+		intro:
 			'After the rent, Nebenkosten (utility and service charges such as heating, water and waste), electricity and internet are the biggest items in a flat-share budget in Germany. Because usually one person holds the contract, questions come up: who pays what, and what happens with back payments? This guide covers the usual solutions.',
-		abschnitte: [
+		sections: [
 			[
 				'Nebenkosten: advance payment and annual statement',
 				'You normally pay Nebenkosten as a monthly advance payment (Vorauszahlung). The following year the landlord sends an annual statement (Abrechnung), at the latest twelve months after the end of the billing period. If it arrives later, the landlord can generally no longer demand a back payment. The statement can lead to a back payment or a credit. Split it the way you split the advance payment, among the people who lived in the flat during the billing period. If someone moves in or out in between, work it out pro rata by month.',
@@ -195,7 +194,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'The Nebenkosten statement often arrives months after someone [moves out](/moving-out-checklist). Agree when they leave how the departing person bears their share of a later back payment or receives a credit, and swap contact details. Some flat shares keep back a small amount until the statement has arrived.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'How are Nebenkosten split in a flat share?',
 				'Usually the same way as the rent, so per head or by room size. Back payments are shared among the people who lived in the flat during the billing period.',
@@ -213,7 +212,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Yes. In ManaWG you set up rent, internet or electricity as fixed costs. They are booked as an expense automatically at an interval of whole months.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 556 BGB, agreements on utility costs (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__556.html',
@@ -227,15 +226,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'rundfunkbeitrag-shared-flat': {
 		link: 'Rundfunkbeitrag in a shared flat',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Rundfunkbeitrag in a shared flat: who pays | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Rundfunkbeitrag in a shared flat: who pays | ManaWG',
+		description:
 			'The German broadcasting fee (Rundfunkbeitrag) in a flat share: one fee per dwelling, how flatmates deregister, how to split it and what applies on moving out.',
 		h1: 'Rundfunkbeitrag (broadcasting fee) in a shared flat in Germany',
-		einleitung:
+		intro:
 			'In Germany, every dwelling pays the Rundfunkbeitrag, the broadcasting fee for public radio and television, once, not once per person. This guide explains who has to pay, how flatmates deregister when someone already pays, and how to split the cost. It gives an overview and is not legal advice. What the Beitragsservice (the contribution service of ARD, ZDF and Deutschlandradio) writes is what counts. Its letters and forms are in German.',
-		abschnitte: [
+		sections: [
 			[
 				'One fee per dwelling',
 				'In the private sphere, § 2 para. 1 of the Rundfunkbeitragsstaatsvertrag (RBStV, the state treaty on the broadcasting fee) requires a fee for every dwelling, payable by the holder of the dwelling. The holder is every adult who lives in the dwelling themselves (§ 2 para. 2). A person is presumed to be the holder if they are registered there under residence registration law (see [Anmeldung in a shared flat](/anmeldung-shared-flat)) or named as a tenant in the tenancy agreement. According to the Beitragsservice, the number of people who live in the flat has no effect on the amount.',
@@ -246,7 +245,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'Splitting the fee',
-				`The fee is ${euro(RUNDFUNK_MONAT_CENT, 'en')} a month per dwelling. Payment every three months is the norm, which is ${euro(RUNDFUNK_QUARTAL_CENT, 'en')} a quarter. On request you can also pay every six months (${euro(RUNDFUNK_MONAT_CENT * 6, 'en')}) or yearly (${euro(RUNDFUNK_MONAT_CENT * 12, 'en')}) in advance. The table shows the amount with an equal share for everyone (as of 27 October 2026, according to rundfunkbeitrag.de). If the fee changes, recalculate. You can find the current amount on rundfunkbeitrag.de. How to split electricity, internet and back payments is covered in [utilities and internet](/utilities-and-internet).`,
+				`The fee is ${euro(LICENCE_FEE_MONTH_CENT, 'en')} a month per dwelling. Payment every three months is the norm, which is ${euro(LICENCE_FEE_QUARTER_CENT, 'en')} a quarter. On request you can also pay every six months (${euro(LICENCE_FEE_MONTH_CENT * 6, 'en')}) or yearly (${euro(LICENCE_FEE_MONTH_CENT * 12, 'en')}) in advance. The table shows the amount with an equal share for everyone (as of 27 October 2026, according to rundfunkbeitrag.de). If the fee changes, recalculate. You can find the current amount on rundfunkbeitrag.de. How to split electricity, internet and back payments is covered in [utilities and internet](/utilities-and-internet).`,
 			],
 			[
 				'Who is liable',
@@ -262,30 +261,30 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 			],
 			[
 				'As a fixed cost in ManaWG',
-				`Set the fee up in [shared expenses](/shared-expenses) as a fixed cost: amount ${euro(RUNDFUNK_QUARTAL_CENT, 'en')}, interval “Quarter”, under “Paid by” the person who pays, and the split “Equally” among everyone taking part. Use the next direct debit date as the first due date. ManaWG then books the fee as an expense every three months automatically, and the shares go into the balance. If you pay yearly, choose the interval “Year” and enter the annual amount.`,
+				`Set the fee up in [shared expenses](/shared-expenses) as a fixed cost: amount ${euro(LICENCE_FEE_QUARTER_CENT, 'en')}, interval “Quarter”, under “Paid by” the person who pays, and the split “Equally” among everyone taking part. Use the next direct debit date as the first due date. ManaWG then books the fee as an expense every three months automatically, and the shares go into the balance. If you pay yearly, choose the interval “Year” and enter the annual amount.`,
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Splitting the fee',
-				titel: 'Rundfunkbeitrag per person with an equal share',
-				kopf: ['People', 'Share per month', 'Share per quarter'],
-				zeilen: [2, 3, 4].map((n) => [
+				after: 'Splitting the fee',
+				title: 'Rundfunkbeitrag per person with an equal share',
+				header: ['People', 'Share per month', 'Share per quarter'],
+				rows: [2, 3, 4].map((n) => [
 					`${n} people`,
-					euro(RUNDFUNK_MONAT_CENT / n, 'en'),
-					euro(RUNDFUNK_QUARTAL_CENT / n, 'en'),
+					euro(LICENCE_FEE_MONTH_CENT / n, 'en'),
+					euro(LICENCE_FEE_QUARTER_CENT / n, 'en'),
 				]),
-				hinweis: `Basis: ${euro(RUNDFUNK_MONAT_CENT, 'en')} a month, ${euro(RUNDFUNK_QUARTAL_CENT, 'en')} a quarter for the whole dwelling. As of 27 October 2026.`,
+				note: `Basis: ${euro(LICENCE_FEE_MONTH_CENT, 'en')} a month, ${euro(LICENCE_FEE_QUARTER_CENT, 'en')} a quarter for the whole dwelling. As of 27 October 2026.`,
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Does everyone in a flat share have to pay the Rundfunkbeitrag?',
 				'No. The fee applies once per dwelling. One person pays, the others deregister, and the flat splits the amount among themselves.',
 			],
 			[
 				'How much is the Rundfunkbeitrag per person in a flat share?',
-				`The fee applies per dwelling and is ${euro(RUNDFUNK_MONAT_CENT, 'en')} a month (as of 27 October 2026). With an equal share, two people pay ${euro(RUNDFUNK_MONAT_CENT / 2, 'en')} each, three people ${euro(RUNDFUNK_MONAT_CENT / 3, 'en')} each and four people ${euro(RUNDFUNK_MONAT_CENT / 4, 'en')} each per month.`,
+				`The fee applies per dwelling and is ${euro(LICENCE_FEE_MONTH_CENT, 'en')} a month (as of 27 October 2026). With an equal share, two people pay ${euro(LICENCE_FEE_MONTH_CENT / 2, 'en')} each, three people ${euro(LICENCE_FEE_MONTH_CENT / 3, 'en')} each and four people ${euro(LICENCE_FEE_MONTH_CENT / 4, 'en')} each per month.`,
 			],
 			[
 				'How do I deregister if my flatmate pays?',
@@ -296,7 +295,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Several people liable for the fee in one dwelling are jointly and severally liable (§ 2 para. 3 RBStV, § 44 AO). The Beitragsservice can therefore turn to any person who counts as a holder of the dwelling.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'Rundfunkbeitrag: information in English (rundfunkbeitrag.de)',
 				'https://www.rundfunkbeitrag.de/welcome/english',
@@ -337,15 +336,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'household-kitty': {
 		link: 'Household kitty',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Flat-share household kitty: cash, account or app? | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Flat-share household kitty: cash, account or app? | ManaWG',
+		description:
 			'A shared household kitty in a flat share: cash tin, joint account or app? Pros and cons, a worked example, rules and settling up without arguments.',
 		h1: 'The flat-share household kitty: three options',
-		einleitung:
+		intro:
 			'Loo roll, cleaning products, dishwasher tablets: small items add up and cause friction. A shared kitty can solve that, as long as it is clear how it is run. This guide covers the three usual ways with their pros and cons, a worked example and the rules that should apply whichever you choose.',
-		abschnitte: [
+		sections: [
 			[
 				'What belongs in the household kitty',
 				'Before you discuss the form, settle the content. Typical items are things everyone uses up: loo roll, washing-up liquid, cleaning products, bin bags, light bulbs, spices and staples such as oil, salt or coffee, if you share those. Private groceries, toiletries and things for your own room do not belong in it. Bigger purchases such as a vacuum cleaner are better kept separate, because when someone moves out the question comes up of who owns the appliance.',
@@ -371,7 +370,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Decide what belongs in it and what does not. Set a limit above which you ask first, for example €30 or €50. Choose a fixed day for settling up, such as the first of the month. And agree what happens when someone [moves out](/moving-out-checklist): open amounts are settled before they leave, and shared purchases either stay in the flat or are bought out. In ManaWG a monthly statement arrives by email at the start of the month with totals per category and the transfer suggestions. Anyone can switch it off.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'How much should go into the household kitty each month?',
 				'It depends on your needs. Add up your actual shared spending over three months and divide by the number of flatmates and months. With the settle-up approach there is no fixed payment in.',
@@ -388,15 +387,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'flatmate-debts': {
 		link: 'Debts in a flat share',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Settling debts between flatmates and friends | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Settling debts between flatmates and friends | ManaWG',
+		description:
 			'Money owed between flatmates or friends in Germany? How to record it, raise it, settle up and when claims expire under German law. With a worked example.',
 		h1: 'Settling debts between flatmates and friends in Germany',
-		einleitung:
+		intro:
 			'Small amounts are easy to forget, which is exactly why they pile up. After a few months nobody knows who owes whom, and the mood suffers. That applies among friends as much as in a flat share. This guide covers how to record, raise and settle debts, what applies to borrowed money and when claims expire. The legal parts describe the position in Germany; this is an overview and not legal advice.',
-		abschnitte: [
+		sections: [
 			[
 				'Why debts build up',
 				'Everyone pays for everyone now and then: pizza, shopping, a repair, the back payment on electricity. Without a record, after a month neither creditor nor debtor knows how much is open. Whoever pays more often feels taken advantage of, and whoever pays less often does not notice. The problem is rarely ill will. Usually nobody has an overview.',
@@ -438,7 +437,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Once the agreed date has passed, send one written reminder with the amount and a new date, by email or message so that it can be proved. If a fixed calendar day was agreed, the person is in default after that day even without a reminder (§ 286 para. 2 no. 1 BGB), provided they are responsible for the late payment (§ 286 para. 4 BGB). If no date was agreed, default only begins when the person fails to pay after a reminder sent once the money is due (§ 286 para. 1 BGB). The next step would be a court order for payment (Mahnbescheid), which costs fees. For small amounts and among friends, it is worth weighing that up first. But do not wait too long: the regular limitation period is three years (§ 195 BGB) and starts at the end of the year in which the claim arose and you knew who owed you the money (§ 199 para. 1 BGB). Example: if repayment was agreed for 15 August 2026, the period starts at the end of 31 December 2026 and ends at the end of 31 December 2029. After that, the debtor may refuse to pay (§ 214 para. 1 BGB).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'How do you settle debts in a flat share?',
 				'With an overview of balances and fixed settling-up dates, for example at the end of the month. An app works out the transfers needed.',
@@ -468,7 +467,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'No, § 488 BGB prescribes no form for a loan between private individuals. Without proof, though, it is hard to show later that it was a loan and by when it was due back. So put the amount and date in writing.',
 			],
 		],
-		quellen: [
+		sources: [
 			BGB_EN,
 			['§ 421 BGB, joint debtors (in German)', 'https://www.gesetze-im-internet.de/bgb/__421.html'],
 			[
@@ -499,15 +498,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'switch-from-splitwise-or-splid': {
 		link: 'Switching from Splitwise or Splid',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Switch from Splitwise or Splid: CSV import | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Switch from Splitwise or Splid: CSV import | ManaWG',
+		description:
 			'Bring Splitwise or Splid expenses into your flat’s shared expenses: upload the CSV, check the preview, match names and undo the import if needed.',
 		h1: 'Switching from Splitwise or Splid to ManaWG',
-		einleitung:
+		intro:
 			'If your flat has been keeping its expenses in Splitwise or Splid, switching does not mean starting from scratch. If you have the expenses as a CSV file, ManaWG brings them into your flat’s shared expenses. You see a preview first and can undo the import afterwards. This guide shows the steps and the limits.',
-		abschnitte: [
+		sections: [
 			[
 				'What you need first',
 				'1. A CSV file with the expenses from Splitwise or Splid. Each provider offers the export, and its menus change, so look there.\n2. A flat in ManaWG in which all flatmates are already members. You match the names in the file to the members later.\n3. Whoever imports the history of other members needs admin rights in the flat.\n4. Euro amounts only: ManaWG works in euros exclusively.',
@@ -537,7 +536,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'From now on everything runs in [shared expenses](/shared-expenses): split expenses, see balances, get settlements suggested with few transfers, plus fixed costs and the monthly statement. It is best to settle open balances from the old system before you switch, or bring them across with the import. How to settle debts fairly is covered in [debts between flatmates](/flatmate-debts). For comparisons of the apps, see [Splitwise alternative](/splitwise-alternative), [Splid alternative](/splid-alternative) and [Tricount alternative](/tricount-alternative), and for all criteria the [best flat-share app](/best-flat-share-app).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Can I import Splitwise expenses into ManaWG?',
 				'Yes, if you have them as a CSV file. Choose Splitwise CSV as the source in the import, check the preview and confirm. Only rows in euros are imported.',
@@ -562,18 +561,18 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'splitwise-free-limit': {
 		link: 'Splitwise free limit',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Splitwise free: daily limit and Pro | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Splitwise free: daily limit and Pro | ManaWG',
+		description:
 			'How many expenses does Splitwise allow for free each day? The limit according to Splitwise’s help centre, what Pro adds and options for flats with many entries.',
 		h1: 'Splitwise free: how many expenses are allowed?',
-		einleitung:
+		intro:
 			'Splitwise is free to use, but the free version limits the number of new expenses per day. This guide sets out what Splitwise’s help page says about it, what Pro adds and what you can do if the limit slows your flat down. The details come from the linked help page, accessed on 27 October 2026.',
-		abschnitte: [
+		sections: [
 			[
 				'In short',
-				`According to Splitwise’s help centre, free users can add ${SPLITWISE_TAGESLIMIT} expenses per day (as of 27 October 2026). Other sites sometimes quote other numbers; Splitwise’s own help page is the one that counts.`,
+				`According to Splitwise’s help centre, free users can add ${SPLITWISE_DAILY_LIMIT} expenses per day (as of 27 October 2026). Other sites sometimes quote other numbers; Splitwise’s own help page is the one that counts.`,
 			],
 			[
 				'What Splitwise Pro adds',
@@ -588,13 +587,13 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative).',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'What Splitwise Pro adds',
-				titel: 'Splitwise Pro according to its help page',
-				kopf: ['Feature', 'Free', 'Pro'],
-				zeilen: [
-					['Expenses', `up to ${SPLITWISE_TAGESLIMIT} per day`, 'unlimited'],
+				after: 'What Splitwise Pro adds',
+				title: 'Splitwise Pro according to its help page',
+				header: ['Feature', 'Free', 'Pro'],
+				rows: [
+					['Expenses', `up to ${SPLITWISE_DAILY_LIMIT} per day`, 'unlimited'],
 					[
 						'Transaction import (selected countries only)',
 						'not included (listed as Pro)',
@@ -606,24 +605,24 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 					['Charts', 'not included (listed as Pro)', 'included'],
 					['Default splits', 'not included (listed as Pro)', 'included'],
 				],
-				hinweis: 'Source: Splitwise help centre, accessed on 27 October 2026.',
+				note: 'Source: Splitwise help centre, accessed on 27 October 2026.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Is Splitwise still free?',
-				`Yes, with limits: according to Splitwise’s help centre, ${SPLITWISE_TAGESLIMIT} expenses per day in the free version.`,
+				`Yes, with limits: according to Splitwise’s help centre, ${SPLITWISE_DAILY_LIMIT} expenses per day in the free version.`,
 			],
 			[
 				'How many expenses per day does Splitwise allow for free?',
-				`According to Splitwise’s help centre, ${SPLITWISE_TAGESLIMIT}, as of 27 October 2026.`,
+				`According to Splitwise’s help centre, ${SPLITWISE_DAILY_LIMIT}, as of 27 October 2026.`,
 			],
 			[
 				'Can I take my Splitwise data with me?',
 				'If your expenses are available as a CSV file, ManaWG imports them with a preview. Amounts in euros are imported.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'Splitwise help centre: What is Splitwise Pro?',
 				'https://kb.splitwise.com/pro/what-is-splitwise-pro',
@@ -633,15 +632,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'organise-flat-shopping': {
 		link: 'Organising flat shopping',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Shopping in a flat share: together or separate? | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Shopping in a flat share: together or separate? | ManaWG',
+		description:
 			'A shared kitty, a shared shopping list or everyone for themselves: how to organise shopping in a flat share without arguments over food and household supplies.',
 		h1: 'Organising shopping in a flat share',
-		einleitung:
+		intro:
 			'Who ate whose butter? Who buys the loo roll? Shopping is one of those things that cause constant friction in shared flats. There are three tried and tested models, and you can combine them.',
-		abschnitte: [
+		sections: [
 			[
 				'Model 1: everything separate',
 				'Everyone buys and cooks for themselves. This causes little conflict among people with different eating habits. Only household items such as cleaning products, loo roll, bin bags and spices are paid for jointly.',
@@ -679,7 +678,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Receipts left in the kitchen get lost. Better to enter amounts in the app straight away. During an import, a photo or screenshot of an expense list can be read using text recognition and corrected before saving. At the end of the month, the balance shows who owes whom how much. How a shared kitty works is covered in [the household kitty](/household-kitty).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Should you shop together in a flat share?',
 				'It depends on how you eat. Shared basics with separate groceries is the most common compromise.',
@@ -700,15 +699,15 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 	},
 	'find-a-flatmate': {
 		link: 'Finding a flatmate',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Find a flatmate in Germany: WG ad template | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Find a flatmate in Germany: WG ad template | ManaWG',
+		description:
 			'Advertise a room in a German WG: WG-Gesucht account, ad titles with examples, the key details as a table, photos, common mistakes, a template and a timeline.',
 		h1: 'Finding a flatmate in Germany: writing and placing a WG ad',
-		einleitung:
+		intro:
 			'A room is becoming free, and in a few weeks someone new should move in. For it to work out, you need an honest ad, a good selection and clear agreements before the move. This guide covers the process from the ad to the first month together, for a WG (Wohngemeinschaft, a shared flat) in Germany. It also explains the German platforms for people who are new to them.',
-		abschnitte: [
+		sections: [
 			[
 				'Clear this first: landlord and contract',
 				'Before you search, find out who holds the tenancy agreement with the landlord. If the flat share is set up through Untermiete (subletting, where the main tenant rents rooms on to the others), you generally need the landlord’s permission for a new person. If everyone has their own contract, the landlord often handles the change. Also decide from when the room is free, what it costs all-in and whether furniture is to be taken over. If you are not looking for a free room but starting a new flat share, the [checklist for starting a flat share](/start-a-flat-share) walks you through the whole process.',
@@ -758,12 +757,12 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Six to eight weeks before: clear up the contract, fix the price and move-in date\nFive to six weeks before: put the ad online with photos\nFour weeks before: bundle viewings into two or three evenings\nThree weeks before: decide together, say yes to one and no to everyone else\nMove-in day: keys, Wohnungsgeberbestätigung, invitation to the flat-share app',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'What belongs in a good WG ad',
-				titel: 'These details belong in the ad',
-				kopf: ['Detail', 'Why', 'Example'],
-				zeilen: [
+				after: 'What belongs in a good WG ad',
+				title: 'These details belong in the ad',
+				header: ['Detail', 'Why', 'Example'],
+				rows: [
 					[
 						'Room size',
 						'the first filter question for people searching',
@@ -793,11 +792,10 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 					],
 					['Reply time', 'applicants know where they stand', 'reply within two days'],
 				],
-				hinweis:
-					'The values are examples, and the details about room, rent, move-in and flat come from the template text. Your tenancy agreement is what counts.',
+				note: 'The values are examples, and the details about room, rent, move-in and flat come from the template text. Your tenancy agreement is what counts.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Where do I find a new flatmate in Germany?',
 				'On WG portals such as WG-Gesucht, in university groups, through noticeboards at the Studierendenwerk, on classified ads sites such as Kleinanzeigen and through your own network.',
@@ -827,7 +825,7 @@ export const GUIDES_EN_MONEY: Record<string, Thema> = {
 				'Long enough for the facts, the flat share and everyday life. WG-Gesucht gives a guideline of at least 150 words, because such ads fill their rooms fastest.',
 			],
 		],
-		quellen: [
+		sources: [
 			['WG-Gesucht (English interface)', 'https://www.wg-gesucht.de/en/'],
 			['WG-Gesucht: portal for rooms in shared flats (in German)', 'https://www.wg-gesucht.de/'],
 			[

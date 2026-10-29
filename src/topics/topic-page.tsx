@@ -14,11 +14,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Fragment } from 'react';
 import { preload } from 'react-dom';
-import MieteRechner from './MieteRechner';
-import PutzplanGenerator from './PutzplanGenerator';
+import MieteRechner from './RentCalculator';
+import PutzplanGenerator from './RotaGenerator';
 import { Fuss, Kopf, mono, rand } from './rahmen';
 import { counterpartOf, groupName, groupOf, related, topics, ui } from './registry';
-import type { Thema } from './themen';
+import type { Topic } from './types';
 
 // Anker-ID aus einer Überschrift (Umlaute umschrieben), für Inhaltsverzeichnis und Sprunglinks.
 const slug = (s: string) =>
@@ -69,35 +69,35 @@ const zelle = 'px-3 py-2 border-b border-white/10';
 // English strings are longer: with up to three short columns the table fits a phone instead of scrolling sideways.
 const zelleEn = 'px-2 md:px-3 py-2 border-b border-white/10';
 
-type TabelleDaten = NonNullable<Thema['tabellen']>[number];
+type TabelleDaten = NonNullable<Topic['tables']>[number];
 
 // Tabelle als Daten: scrollbare, beschriftete Region mit Spaltenköpfen und Zeilenkopf in der ersten Spalte.
 function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
 	// Long cells would wrap to one or two words per line on a phone, so those tables keep the scroll region.
 	const kompakt =
-		locale === 'en' && t.kopf.length <= 3 && t.zeilen.every((z) => z.every((f) => f.length <= 48));
+		locale === 'en' && t.header.length <= 3 && t.rows.every((z) => z.every((f) => f.length <= 48));
 	const zelleKlasse = kompakt ? zelleEn : zelle;
-	const id = `tabelle-${slug(t.titel)}`;
+	const id = `tabelle-${slug(t.title)}`;
 	return (
 		<section aria-labelledby={id} className="linie pt-10 md:pt-14">
 			<h2 id={id} className={`${mono} m-0 mb-8 font-normal`}>
-				{t.titel}
+				{t.title}
 			</h2>
 			<div
 				className="min-w-0 overflow-x-auto"
 				// biome-ignore lint/a11y/useSemanticElements: scrollbare Tabelle braucht beschriftete Region statt Section
 				role="region"
-				aria-label={t.titel}
+				aria-label={t.title}
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollbare Region muss per Tastatur erreichbar sein
 				tabIndex={0}
 			>
 				<table
 					className={`w-full ${kompakt ? 'min-w-0 md:min-w-[540px]' : 'min-w-[540px]'} border-collapse text-left`}
 				>
-					<caption className="sr-only">{t.titel}</caption>
+					<caption className="sr-only">{t.title}</caption>
 					<thead>
 						<tr>
-							{t.kopf.map((k) => (
+							{t.header.map((k) => (
 								<th key={k} scope="col" className={`${zelleKlasse} text-left font-normal`}>
 									{k}
 								</th>
@@ -105,7 +105,7 @@ function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
 						</tr>
 					</thead>
 					<tbody>
-						{t.zeilen.map((zeile) => (
+						{t.rows.map((zeile) => (
 							<tr key={zeile.join('|')}>
 								{zeile.map((feld, j) =>
 									j === 0 ? (
@@ -123,7 +123,7 @@ function Tabelle({ t, locale }: { t: TabelleDaten; locale: Locale }) {
 					</tbody>
 				</table>
 			</div>
-			{t.hinweis && <p className={`${mono} mt-4 mb-0`}>{t.hinweis}</p>}
+			{t.note && <p className={`${mono} mt-4 mb-0`}>{t.note}</p>}
 		</section>
 	);
 }
@@ -150,8 +150,8 @@ export function topicMetadata(locale: Locale, slug: string): Metadata {
 	const languages = alternatesOf(locale, slug);
 	const feed = locale === 'de' ? '/feed.xml' : '/en/feed.xml';
 	return {
-		title: t.titel,
-		description: t.beschreibung,
+		title: t.title,
+		description: t.description,
 		// alternates replaces the layout object completely (no deep merge), so the feed is repeated here.
 		alternates: {
 			canonical: path,
@@ -159,17 +159,17 @@ export function topicMetadata(locale: Locale, slug: string): Metadata {
 			types: { 'application/atom+xml': feed },
 		},
 		openGraph: {
-			title: t.titel,
-			description: t.beschreibung,
+			title: t.title,
+			description: t.description,
 			url: path,
 			siteName: 'ManaWG',
 			locale: OG_LOCALE[locale],
 			type: 'article',
-			publishedTime: zeitpunkt(t.erschienen),
-			modifiedTime: zeitpunkt(t.stand),
+			publishedTime: zeitpunkt(t.published),
+			modifiedTime: zeitpunkt(t.updated),
 			images: [{ url: `${path}/opengraph-image`, width: 1200, height: 630, alt: t.h1 }],
 		},
-		twitter: { title: t.titel, description: t.beschreibung, images: [`${path}/opengraph-image`] },
+		twitter: { title: t.title, description: t.description, images: [`${path}/opengraph-image`] },
 	};
 }
 
@@ -183,10 +183,10 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 	// Der Fließtext (größtes Element, LCP) steht in Inter; das Layout lädt nur Inter Tight und Mono vor.
 	preload('/fonts/inter-latin.woff2', { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' });
 
-	const faqSchema = t.fragen && {
+	const faqSchema = t.faq && {
 		'@context': 'https://schema.org',
 		'@type': 'FAQPage',
-		mainEntity: t.fragen.map(([frage, antwort]) => ({
+		mainEntity: t.faq.map(([frage, antwort]) => ({
 			'@type': 'Question',
 			name: frage,
 			acceptedAnswer: { '@type': 'Answer', text: ohneLinks(antwort) },
@@ -197,7 +197,7 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 	const site = ids.site;
 	const orgId = ids.organisation;
 	const webseiteId = ids.webseite;
-	const quellen = (t.quellen ?? []).map(([name, url]): [string, string] => [
+	const quellen = (t.sources ?? []).map(([name, url]): [string, string] => [
 		name,
 		url.startsWith('/') ? `${site}${url}` : url,
 	]);
@@ -207,11 +207,11 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 		'@type': 'Article',
 		'@id': `${site}${path}#artikel`,
 		headline: t.h1,
-		description: t.beschreibung,
+		description: t.description,
 		image: `${site}${path}/opengraph-image`,
 		inLanguage: IN_LANGUAGE[locale],
-		datePublished: zeitpunkt(t.erschienen),
-		dateModified: zeitpunkt(t.stand),
+		datePublished: zeitpunkt(t.published),
+		dateModified: zeitpunkt(t.updated),
 		mainEntityOfPage: { '@type': 'WebPage', '@id': `${site}${path}` },
 		isAccessibleForFree: true,
 		// Autor ist der Betreiber (Name steht im Impressum); Herausgeber bleibt die Organisation.
@@ -270,7 +270,7 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 			month: 'long',
 			year: 'numeric',
 		}).format(new Date(`${tag}T00:00:00Z`));
-	const aktualisiert = datum(t.stand);
+	const aktualisiert = datum(t.updated);
 
 	// Provider comparison: notice from the provider, above the content.
 	const istVergleich = groupId === 'compare';
@@ -330,15 +330,15 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 					{t.h1}
 				</h1>
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
-					{mitLinks(t.einleitung, locale)}
+					{mitLinks(t.intro, locale)}
 				</p>
 				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
 					{txt.by}{' '}
 					<Link href={locale === 'de' ? '/ueber-manawg' : '/en/about-manawg'}>
 						{txt.authorName}
 					</Link>{' '}
-					· {txt.published} <time dateTime={t.erschienen}>{datum(t.erschienen)}</time> ·{' '}
-					{txt.updated} <time dateTime={t.stand}>{aktualisiert}</time>
+					· {txt.published} <time dateTime={t.published}>{datum(t.published)}</time> · {txt.updated}{' '}
+					<time dateTime={t.updated}>{aktualisiert}</time>
 				</p>
 				{t.widget?.csv && (
 					<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
@@ -350,34 +350,32 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 				)}
 				{istVergleich && <p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>{hinweis}</p>}
 
-				{/* Tabellen mit nach: 'einleitung' stehen direkt unter dem Einleitungstext. */}
-				{t.tabellen
-					?.filter((tab) => tab.nach === 'einleitung')
+				{/* Tabellen mit after: 'intro' stehen direkt unter dem Einleitungstext. */}
+				{t.tables
+					?.filter((tab) => tab.after === 'intro')
 					.map((tab) => (
-						<div key={tab.titel} className="mt-10 md:mt-16">
+						<div key={tab.title} className="mt-10 md:mt-16">
 							<Tabelle t={tab} locale={locale} />
 						</div>
 					))}
 
-				{t.abschnitte.length >= 4 && (
+				{t.sections.length >= 4 && (
 					<nav aria-labelledby="inhalt" className={`${linie} mt-20 md:mt-32 pt-10`}>
 						<h2 id="inhalt" className={`${mono} m-0 mb-6 font-normal`}>
 							{txt.contents}
 						</h2>
 						<ol className="list-none m-0 p-0">
-							{[...t.abschnitte.map(([kopf]) => kopf), ...(t.fragen ? [fragenKopf] : [])].map(
-								(kopf) => (
-									<li key={kopf} className={`${linie} py-3`}>
-										<a href={`#${kopf === fragenKopf ? 'fragen' : slug(kopf)}`}>{kopf}</a>
-									</li>
-								),
-							)}
+							{[...t.sections.map(([kopf]) => kopf), ...(t.faq ? [fragenKopf] : [])].map((kopf) => (
+								<li key={kopf} className={`${linie} py-3`}>
+									<a href={`#${kopf === fragenKopf ? 'fragen' : slug(kopf)}`}>{kopf}</a>
+								</li>
+							))}
 						</ol>
 					</nav>
 				)}
 
-				<div className={t.abschnitte.length >= 4 ? 'mt-10 md:mt-16' : 'mt-20 md:mt-32'}>
-					{t.abschnitte.map(([kopf, text]) => {
+				<div className={t.sections.length >= 4 ? 'mt-10 md:mt-16' : 'mt-20 md:mt-32'}>
+					{t.sections.map(([kopf, text]) => {
 						// Nur Zeilen, die alle mit "1. " beginnen, sind eine Nummerierung; sonst eine Aufzählung.
 						const zeilen = text.split('\n');
 						const nummeriert = zeilen.length > 1 && zeilen.every((z) => /^\d+\.\s/.test(z));
@@ -405,10 +403,10 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 										</p>
 									)}
 								</section>
-								{t.tabellen
-									?.filter((tab) => tab.nach === kopf)
+								{t.tables
+									?.filter((tab) => tab.after === kopf)
 									.map((tab) => (
-										<Tabelle key={tab.titel} t={tab} locale={locale} />
+										<Tabelle key={tab.title} t={tab} locale={locale} />
 									))}
 								{t.widget?.after === kopf &&
 									(t.widget.kind === 'rota-generator' ? (
@@ -421,12 +419,12 @@ export function TopicPage({ locale, slug: thema }: { locale: Locale; slug: strin
 					})}
 				</div>
 
-				{t.fragen && (
+				{t.faq && (
 					<section aria-labelledby="fragen" className={`${linie} pt-10 md:pt-14`}>
 						<h2 id="fragen" className={`${mono} m-0 mb-8 font-normal`}>
 							{fragenKopf}
 						</h2>
-						{t.fragen.map(([frage, antwort]) => (
+						{t.faq.map(([frage, antwort]) => (
 							<div
 								key={frage}
 								id={slug(frage)}

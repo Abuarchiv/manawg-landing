@@ -3,7 +3,7 @@
 import type { Locale } from '@/lib/locale';
 import { INTL_LOCALE } from '@/lib/locale';
 import { useState } from 'react';
-import { euro, mieteAnteile, zahl } from './miete-rechner';
+import { euro, parseAmount, rentShares } from './rent-calculator';
 
 const feld = 'min-h-[44px] px-3 rounded border border-white/20 bg-transparent text-[#fafafa]';
 const knopf =
@@ -65,10 +65,10 @@ export default function MieteRechner({ locale }: { locale: Locale }) {
 	const [flaechen, setFlaechen] = useState(['12', '18', '24']);
 	const [gemeinschaft, setGemeinschaft] = useState('18');
 
-	const zimmer = flaechen.map((f) => zahl(f, locale)).filter((m) => m > 0);
-	const mieteCent = Math.round(zahl(miete, locale) * 100);
+	const zimmer = flaechen.map((f) => parseAmount(f, locale)).filter((m) => m > 0);
+	const mieteCent = Math.round(parseAmount(miete, locale) * 100);
 	const ok = mieteCent > 0 && zimmer.length >= 2 && zimmer.length === flaechen.length;
-	const anteile = ok ? mieteAnteile(mieteCent, zimmer, zahl(gemeinschaft, locale)) : [];
+	const anteile = ok ? rentShares(mieteCent, zimmer, parseAmount(gemeinschaft, locale)) : [];
 
 	return (
 		<div className="pb-10 md:pb-14 md:grid md:grid-cols-12 md:gap-8">

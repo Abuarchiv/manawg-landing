@@ -1,50 +1,20 @@
 // Themenseiten für Suchanfragen, die die Startseite allein nicht abdeckt.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
-import { NG, vergleichsTabelle } from './gruppen.ts';
-import { RATGEBER_GELD } from './ratgeber-geld.ts';
-import { RATGEBER } from './ratgeber.ts';
+import type { Topic } from '../types.ts';
+import { NOT_CHECKED, comparisonTable } from './comparison.ts';
 
-export interface Thema {
-	/** Kurzer Linktext für Querverweise. */
-	link: string;
-	titel: string;
-	beschreibung: string;
-	h1: string;
-	einleitung: string;
-	abschnitte: Array<[string, string]>;
-	/** Tabellen als Daten; `nach` ist die Abschnittsüberschrift, hinter der die Tabelle steht. */
-	tabellen?: Array<{
-		nach: string;
-		titel: string;
-		kopf: string[];
-		zeilen: string[][];
-		/** Fußnote unter der Tabelle. */
-		hinweis?: string;
-	}>;
-	/** Wird zusätzlich als FAQPage-JSON-LD ausgegeben. */
-	fragen?: Array<[string, string]>;
-	/** Letzte inhaltliche Änderung (ISO-Datum), für lastmod in der Sitemap. */
-	stand: string;
-	/** Erste Veröffentlichung (ISO-Datum), für datePublished. */
-	erschienen: string;
-	/** Belege als [Name, URL]; erscheinen als Quellenliste, Article-citation und llms-full. */
-	quellen?: Array<[string, string]>;
-	/** Interactive tool rendered after the section with the exact heading `after`; `csv` adds a download and print link. */
-	widget?: { after: string; kind: 'rota-generator' | 'rent-calculator'; csv?: string };
-}
-
-export const THEMEN: Record<string, Thema> = {
+export const TOPICS_DE_CORE: Record<string, Topic> = {
 	'wg-app': {
 		link: 'WG-App',
-		stand: '2026-10-27',
-		erschienen: '2026-10-10',
-		titel: 'WG-App kostenlos: Ausgaben, Putzplan, Einkauf | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-10',
+		title: 'WG-App kostenlos: Ausgaben, Putzplan, Einkauf | ManaWG',
+		description:
 			'ManaWG ist die kostenlose WG-App für den Alltag, keine Zimmersuche: Ausgaben, Putzplan, Einkaufsliste, Kalender und Chat im Browser, ohne App Store.',
 		h1: 'Die WG-App für Geld, Putzen, Einkauf und Termine',
-		einleitung:
+		intro:
 			'Ein Zettel am Kühlschrank und eine WhatsApp-Gruppe, in der Wichtiges untergeht: So läuft der Alltag in vielen WGs. ManaWG bündelt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand in einer kostenlosen App auf Deutsch.',
-		abschnitte: [
+		sections: [
 			[
 				'Warum eine App statt Zettel und WhatsApp',
 				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Das spart Nachfragen und Streit darüber, wer was zugesagt hatte. Welche Kriterien bei der Wahl zählen, zeigt die Seite [WG-Apps im Vergleich](/beste-wg-app).',
@@ -90,12 +60,12 @@ export const THEMEN: Record<string, Thema> = {
 				'Jedes Mitglied kann die Daten der WG in den Einstellungen unter Daten herunterladen: komplett als JSON oder einzelne Bereiche als CSV, zum Beispiel Ausgaben, Fixkosten, Einkauf, Putzplan, Vorräte, Termine, Pinnwand oder Chat. Die Monatsabrechnung blättert ihr Monat für Monat durch und druckt sie über „Als PDF“ oder speichert sie als PDF.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'einleitung',
-				titel: 'Was die WG-App ManaWG abdeckt',
-				kopf: ['Bereich', 'Das könnt ihr', 'Grenzen'],
-				zeilen: [
+				after: 'intro',
+				title: 'Was die WG-App ManaWG abdeckt',
+				header: ['Bereich', 'Das könnt ihr', 'Grenzen'],
+				rows: [
 					[
 						'Ausgaben',
 						'gleichmäßig oder mit eigenen Eurobeträgen teilen, Fixkosten automatisch buchen, Überweisungsvorschläge, Monatsabrechnung als PDF',
@@ -132,10 +102,10 @@ export const THEMEN: Record<string, Thema> = {
 						'kein App Store, auf Deutsch und Englisch, bis zu 20 aktive Mitglieder',
 					],
 				],
-				hinweis: 'Angaben aus der App, Stand 27. Oktober 2026.',
+				note: 'Angaben aus der App, Stand 27. Oktober 2026.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Was kostet die WG-App ManaWG?',
 				'Nichts. ManaWG ist kostenlos und zeigt keine Werbung. Eine Bezahlstufe oder ein Abo-Modell gibt es in der App nicht, alle Bereiche stehen offen.',
@@ -172,15 +142,15 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	putzplan: {
 		link: 'WG Putzplan App',
-		stand: '2026-10-27',
-		erschienen: '2026-10-09',
-		titel: 'WG Putzplan App: fair verteilt, kostenlos | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-09',
+		title: 'WG Putzplan App: fair verteilt, kostenlos | ManaWG',
+		description:
 			'Kostenlose WG Putzplan App: Aufgaben wiederholen sich im festen Rhythmus, die App verteilt fair, überspringt Abwesende und erinnert, wer dran ist.',
 		h1: 'WG Putzplan App: Aufgaben, faire Verteilung und Abwesenheit',
-		einleitung:
+		intro:
 			'Ihr legt die Aufgaben einmal an, ManaWG rechnet Termine, Zuständigkeit und Abwesenheit selbst aus. Kostenlos und im Browser, ohne Zettel am Kühlschrank, der schnell veraltet. Wer einen Plan zum Ausdrucken sucht, findet ihn in der [Putzplan-Vorlage](/putzplan-vorlage), die Schritte zum eigenen Plan stehen unter [Putzplan erstellen](/putzplan-erstellen).',
-		abschnitte: [
+		sections: [
 			[
 				'Aufgaben mit festem Rhythmus',
 				'Jede Aufgabe wiederholt sich in Tagen oder Monaten, etwa das Bad alle sieben Tage oder die Fenster alle drei Monate. Monatsintervalle bleiben kalendertreu, gerechnet wird nach Berliner Zeit. Eine Aufgabe kann einem Mitglied zugewiesen werden, und jede Erledigung landet in der Historie. So seht ihr später, wer was wann gemacht hat.',
@@ -206,7 +176,7 @@ export const THEMEN: Record<string, Thema> = {
 				'Mitglieder treten per Einladungslink oder E-Mail-Einladung bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und auf Deutsch und Englisch verfügbar. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Was ist der Unterschied zwischen Putzplan-App und Vorlage?',
 				'Eine Vorlage zum Ausdrucken hält nur fest, was ihr von Hand einträgt, und rechnet nicht von selbst weiter. In der App legt ihr die Aufgaben direkt an, Wiederholung, Zuständigkeit und Erledigungshistorie sind eingebaut. Die ausgedruckte Variante gibt es auf der Seite Putzplan-Vorlage.',
@@ -228,12 +198,12 @@ export const THEMEN: Record<string, Thema> = {
 				'Nein, ManaWG ist keine native App. Ihr installiert sie als PWA über den Browser, unter iOS und Firefox mit manuellen Schritten, und könnt Push-Benachrichtigungen je Bereich einstellen.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Vorlage oder App',
-				titel: 'Vorlage zum Ausdrucken und ManaWG im Vergleich',
-				kopf: ['Merkmal', 'Vorlage zum Ausdrucken', 'ManaWG'],
-				zeilen: [
+				after: 'Vorlage oder App',
+				title: 'Vorlage zum Ausdrucken und ManaWG im Vergleich',
+				header: ['Merkmal', 'Vorlage zum Ausdrucken', 'ManaWG'],
+				rows: [
 					['Verteilung', 'von Hand', 'nach Auslastung'],
 					['Abwesenheit', 'selbst eintragen', 'wird bei der Zuweisung übergangen'],
 					['Erinnerung', 'keine', 'Erinnerung an die Zuständigen'],
@@ -243,15 +213,15 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'wg-kasse': {
 		link: 'WG-Kasse',
-		stand: '2026-10-27',
-		erschienen: '2026-10-09',
-		titel: 'WG Kasse App: Ausgaben teilen, Abrechnung | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-09',
+		title: 'WG Kasse App: Ausgaben teilen, Abrechnung | ManaWG',
+		description:
 			'Die kostenlose WG Kasse App: Ausgaben teilen, mit wenigen Überweisungen ausgleichen, Fixkosten buchen und die Monatsabrechnung per Mail bekommen.',
 		h1: 'Die WG Kasse App für Ausgaben, Fixkosten und Abrechnung',
-		einleitung:
+		intro:
 			'Wer hat das Klopapier bezahlt, wer schuldet wem noch etwas? ManaWG ist eine kostenlose, deutschsprachige WG Kasse App. Jede Ausgabe landet sofort im Saldo aller Beteiligten, ohne Zettel und ohne Tabelle.',
-		abschnitte: [
+		sections: [
 			[
 				'Ausgaben teilen in der WG',
 				'Ihr erfasst Betrag, Bezahler und Beteiligte und wählt eine von sechs Kategorien, etwa Lebensmittel oder Haushalt. Geteilt wird gleichmäßig oder mit eigenen Beträgen pro Person. ManaWG rechnet in ganzen Cent: Bei gleicher Teilung unterscheiden sich die Anteile höchstens um einen Cent, die Summe stimmt immer exakt. Ein Foto vom Beleg hängt ihr direkt an die Ausgabe.',
@@ -285,7 +255,7 @@ export const THEMEN: Record<string, Thema> = {
 				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, auf Deutsch und Englisch nutzbar und rechnet nur in Euro. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung. Was die App außer der Kasse bietet, steht unter [WG-App kostenlos](/wg-app).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Ist die WG Kasse App kostenlos?',
 				'Ja, ManaWG kostet nichts und zeigt keine Werbung. Ihr nutzt die App im Browser oder installiert sie als PWA auf dem Handy.',
@@ -310,15 +280,15 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	einkaufsliste: {
 		link: 'Einkaufsliste',
-		stand: '2026-10-23',
-		erschienen: '2026-10-09',
-		titel: 'Gemeinsame Einkaufsliste App für die WG | ManaWG',
-		beschreibung:
+		updated: '2026-10-23',
+		published: '2026-10-09',
+		title: 'Gemeinsame Einkaufsliste App für die WG | ManaWG',
+		description:
 			'Die gemeinsame Einkaufsliste für die WG: alle tragen ein, Vorräte melden Nachschub, und aus dem Einkauf wird direkt eine geteilte Ausgabe. Kostenlos.',
 		h1: 'Eine Einkaufsliste für die ganze WG',
-		einleitung:
+		intro:
 			'Drei Leute, drei Zettel, zweimal Milch gekauft. ManaWG gibt eurer WG eine gemeinsame Einkaufsliste, die auf jedem Handy gleich aussieht, dazu Vorräte und die Übernahme des Einkaufs in die WG-Kasse.',
-		abschnitte: [
+		sections: [
 			[
 				'Alle schreiben mit',
 				'Jede Person in der WG trägt ein, was fehlt, auf Wunsch mit Menge wie „2 Packungen“ oder „1 kg“. Wer einkaufen geht, hakt Artikel ab, und alle anderen sehen den Stand. ManaWG merkt sich, wer abgehakt hat, und erkennt Duplikate, bevor derselbe Artikel zweimal auf der Liste steht. Die Liste gehört der WG, nicht einer einzelnen Person. Welche Einkäufe ihr gemeinsam plant und was privat bleibt, klärt ihr mit der Anleitung [WG-Einkauf organisieren](/wg-einkauf-organisieren).',
@@ -344,7 +314,7 @@ export const THEMEN: Record<string, Thema> = {
 				'ManaWG läuft im Browser unter app.manawg.com und lässt sich ohne App Store auf den Home-Bildschirm legen. Fehlt unterwegs das Netz, merkt die App Aktionen lokal und sendet sie später nach. Nach 7 Tagen werden liegen gebliebene Aktionen nicht mehr automatisch gesendet, sondern euch zur Prüfung angezeigt. Push-Meldungen für Einkauf und Vorräte schaltet jede Person selbst ein oder aus. Was die App sonst noch kann, steht auf der Seite [ManaWG als WG-App](/wg-app).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Ist die gemeinsame Einkaufsliste kostenlos?',
 				'Ja. ManaWG kostet nichts, es gibt keine Bezahlstufe und keine Werbung. Einkaufsliste, Vorräte und alle anderen Bereiche stehen jeder WG offen.',
@@ -369,34 +339,34 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'splitwise-alternative': {
 		link: 'Splitwise-Alternative',
-		stand: '2026-10-27',
-		erschienen: '2026-10-09',
-		titel: 'Splitwise-Alternative ohne Werbung und Paywall | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-09',
+		title: 'Splitwise-Alternative ohne Werbung und Paywall | ManaWG',
+		description:
 			'ManaWG ist eine kostenlose Splitwise-Alternative für WGs: keine Werbung, keine Bezahlstufe, dazu Putzplan, Einkaufsliste und CSV-Import.',
 		h1: 'Eine Splitwise-Alternative ohne Paywall und Werbung',
-		einleitung:
+		intro:
 			'Splitwise teilt Ausgaben zuverlässig und bietet mit Splitwise Pro laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, Belegscan und Währungsumrechnung. Was die kostenlose Version umfasst, steht unter [Splitwise kostenlos](/splitwise-kostenlos). ManaWG kostet nichts, zeigt keine Werbung und kennt keine Bezahlstufe. Dazu kommen Putzplan, Einkaufsliste und Kalender.',
-		quellen: [
+		sources: [
 			['Splitwise Pro', 'https://www.splitwise.com/pro'],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],
 		],
-		tabellen: [
-			vergleichsTabelle(
+		tables: [
+			comparisonTable(
 				'Splitwise',
 				[
 					'ja',
-					NG,
-					NG,
-					NG,
-					NG,
+					NOT_CHECKED,
+					NOT_CHECKED,
+					NOT_CHECKED,
+					NOT_CHECKED,
 					'Umrechnung im Pro-Tarif laut Anbieter',
 					'Pro-Tarif laut Anbieter; Umfang der kostenlosen Version nicht geprüft',
 				],
 				'Angaben zu Splitwise laut Pro-Seite des Anbieters, Stand 14. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Was Splitwise Pro laut Anbieter enthält',
 				'Die Pro-Seite von Splitwise nennt unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Aus Pro lassen sich keine genauen Grenzen der kostenlosen Version ableiten; Details zur kostenlosen Version haben wir hier nicht verifiziert, prüft das bei Splitwise selbst. Tarife ändern sich, verlasst euch deshalb auf die Anbieter-Seite mit Stand 14. Oktober 2026.',
@@ -422,7 +392,7 @@ export const THEMEN: Record<string, Thema> = {
 				'Ihr teilt gleichmäßig oder mit eigenen Beträgen, legt Fixkosten wie Miete an und bekommt Überweisungsvorschläge. Dazu gibt es Monatsabrechnung, Putzplan mit fairer Rotation, Einkaufsliste mit Übernahme als Ausgabe, Kalender-Abo, Pinnwand und Chat. Das Geld überweist ihr selbst, in ManaWG markiert ihr einzelne Anteile oder alles auf einmal als bezahlt. Eine Bankanbindung gibt es nicht. Die Kasse im Detail beschreibt die Seite [WG-Kasse](/wg-kasse), den Putzplan die Seite [WG Putzplan App](/putzplan).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Ist ManaWG wirklich kostenlos?',
 				'Ja. Es gibt keine Bezahlstufe und keine Werbung. Alle Funktionen stehen jeder WG offen, einschließlich Import, Fixkosten und Monatsabrechnung. Die wichtigste Grenze sind 20 aktive Mitglieder pro WG, dazu kommen etwa Euro als einzige Währung und Größenlimits für Bilder.',
@@ -447,26 +417,34 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'splid-alternative': {
 		link: 'Splid-Alternative',
-		stand: '2026-10-27',
-		erschienen: '2026-10-10',
-		titel: 'Splid Alternative mit Putzplan und Einkaufsliste | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-10',
+		title: 'Splid Alternative mit Putzplan und Einkaufsliste | ManaWG',
+		description:
 			'ManaWG ist eine kostenlose Splid Alternative für WGs: Ausgaben teilen plus Putzplan, Einkaufsliste, Fixkosten und Monatsabrechnung, ohne Werbung.',
 		h1: 'Eine Splid Alternative mit Putzplan und Einkaufsliste',
-		einleitung:
+		intro:
 			'Splid teilt Ausgaben in Gruppen und nennt auf seiner deutschen Seite unter anderem über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Für eine WG reicht eine reine Kasse oft nicht lange, denn der Haushalt besteht aus mehr als Rechnungen. ManaWG verbindet die Kasse mit dem Rest.',
-		quellen: [
+		sources: [
 			['Splid auf Deutsch', 'https://splid.app/german'],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],
 		],
-		tabellen: [
-			vergleichsTabelle(
+		tables: [
+			comparisonTable(
 				'Splid',
-				['ja, in Gruppen', NG, NG, NG, NG, 'über 150 laut Anbieter', NG],
+				[
+					'ja, in Gruppen',
+					NOT_CHECKED,
+					NOT_CHECKED,
+					NOT_CHECKED,
+					NOT_CHECKED,
+					'über 150 laut Anbieter',
+					NOT_CHECKED,
+				],
 				'Angaben zu Splid laut deutscher Seite des Anbieters, Stand 14. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Was Splid laut Anbieter kann',
 				'Die deutsche Splid-Seite nennt unter anderem über 150 Währungen, Gruppen vor Ort und online sowie den Export als PDF und Excel. Details zum Funktionsumfang stehen dort mit Stand 14. Oktober 2026. In ManaWG meldet sich dagegen jede Person mit Google oder E-Mail und Passwort an. Dafür gehören Ausgaben, Salden und Verlauf fest zu eurer WG, und Mitbewohner kommen per Link oder Code dazu. Den Code könnt ihr jederzeit erneuern.',
@@ -492,7 +470,7 @@ export const THEMEN: Record<string, Thema> = {
 				'Eine WG fasst höchstens 20 aktive Mitglieder. Die App gibt es auf Deutsch und Englisch, sie rechnet nur in Euro. Es gibt keine App im App Store, ihr nutzt ManaWG im Browser unter app.manawg.com und legt sie auf dem Handy auf den Home-Bildschirm. Auch Kalender-Abo und Push-Hinweise funktionieren so, ohne dass ihr etwas aus dem Store installieren müsst.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Braucht ManaWG ein Konto?',
 				'Ja. Jede Person meldet sich mit Google oder mit E-Mail und Passwort an. Beitreten geht danach per Einladungslink oder Code.',
@@ -517,38 +495,38 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'flatastic-alternative': {
 		link: 'Flatastic-Alternative',
-		stand: '2026-10-27',
-		erschienen: '2026-10-10',
-		titel: 'Flatastic-Alternative ohne Werbung und Premium | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-10',
+		title: 'Flatastic-Alternative ohne Werbung und Premium | ManaWG',
+		description:
 			'ManaWG ist eine kostenlose Flatastic-Alternative für WGs: Putzplan, WG-Kasse, Einkauf, Kalender und Chat, ohne Werbung und ohne Premium-Stufe.',
 		h1: 'Flatastic-Alternative: WG-App ohne Werbung und Premium',
-		einleitung:
+		intro:
 			'Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium unter anderem ohne Werbung und mit Verläufen. Den aktuellen Stand prüft ihr am besten selbst bei Flatastic. ManaWG ist kostenlos und kommt ohne Werbung und ohne Bezahlstufe aus.',
-		quellen: [
+		sources: [
 			['Flatastic', 'https://www.flatastic-app.com/'],
 			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],
 		],
-		tabellen: [
-			vergleichsTabelle(
+		tables: [
+			comparisonTable(
 				'Flatastic',
 				[
 					'Finanzen laut Anbieter',
 					'Aufgaben laut Anbieter',
 					'Einkäufe laut Anbieter',
-					NG,
+					NOT_CHECKED,
 					'Pinnwand laut Anbieter, Chat nicht geprüft',
-					NG,
+					NOT_CHECKED,
 					'Premium kostenpflichtig laut Anbieter; Umfang der kostenlosen Version nicht geprüft',
 				],
 				'Angaben zu Flatastic laut Seiten des Anbieters, Stand 14. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
 			),
 			{
-				nach: 'Was Flatastic Premium freischaltet',
-				titel: 'Flatastic Premium und ManaWG',
-				kopf: ['Funktion', 'Flatastic laut Anbieter', 'ManaWG'],
-				zeilen: [
+				after: 'Was Flatastic Premium freischaltet',
+				title: 'Flatastic Premium und ManaWG',
+				header: ['Funktion', 'Flatastic laut Anbieter', 'ManaWG'],
+				rows: [
 					['Werbung', 'ohne Werbung mit Premium', 'keine Werbung'],
 					['Putzplan-Verlauf', 'Premium', 'Historie jeder Erledigung'],
 					[
@@ -563,11 +541,10 @@ export const THEMEN: Record<string, Thema> = {
 					],
 					['Bilder an Ausgaben', 'Premium', 'Foto am Beleg, wird angehängt, nicht ausgewertet'],
 				],
-				hinweis:
-					'Angaben zu Flatastic laut Premium-Seite des Anbieters, Stand 27. Oktober 2026. Nicht Belegtes steht als „nicht geprüft“ da.',
+				note: 'Angaben zu Flatastic laut Premium-Seite des Anbieters, Stand 27. Oktober 2026. Nicht Belegtes steht als „nicht geprüft“ da.',
 			},
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Kostenlos, ohne Werbung, ohne Premium',
 				'ManaWG zeigt keine Werbung und kennt keine Bezahlstufe: Jede WG nutzt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Ob ihr zu zweit oder zu zehnt seid, ändert daran nichts, solange die WG in das Limit von 20 aktiven Mitgliedern passt. Ausgezogene Personen zählen nicht mit, ihre Historie bleibt erhalten.',
@@ -597,7 +574,7 @@ export const THEMEN: Record<string, Thema> = {
 				'Die Oberfläche gibt es auf Deutsch und Englisch, Beträge nur in Euro, und eine WG fasst höchstens 20 aktive Mitglieder. Es gibt keine App im Store, ManaWG installiert ihr als Web-App auf dem Home-Bildschirm. Ausgleiche markiert ihr selbst als bezahlt, eine Überweisung löst die App nicht aus. Kalender gibt es als Abo für Apple und Google Kalender, aber nur in eine Richtung.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Ist ManaWG wirklich kostenlos?',
 				'Ja. Es gibt keine Bezahlstufe und keine Funktion, die ihr freischalten müsstet. Alle Bereiche stehen jeder WG offen, von Ausgaben bis Chat.',
@@ -630,15 +607,15 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'tricount-alternative': {
 		link: 'Tricount-Alternative',
-		stand: '2026-10-27',
-		erschienen: '2026-10-27',
-		titel: 'Tricount-Alternative für WG und feste Gruppen | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-27',
+		title: 'Tricount-Alternative für WG und feste Gruppen | ManaWG',
+		description:
 			'Tricount rechnet mit mehreren Währungen und passt zu Reisen. Für die WG mit Miete, Fixkosten und Putzplan passt ManaWG: kostenlos, im Browser, mit Abrechnung.',
 		h1: 'Tricount-Alternative für WG und feste Gruppen',
-		einleitung:
+		intro:
 			'Tricount teilt Ausgaben in Gruppen und rechnet laut Anbieter mit mehreren Währungen. Wer dauerhaft zusammenwohnt, braucht dazu meist Miete, Fixkosten und einen Putzplan. ManaWG verbindet das in einer kostenlosen Web-App auf Deutsch. Die Angaben zu Tricount stammen von den verlinkten Seiten des Anbieters und von bunq, abgerufen am 27. Oktober 2026.',
-		quellen: [
+		sources: [
 			['Tricount Funktionen', 'https://tricount.com/features'],
 			[
 				'Tricount im App Store',
@@ -650,14 +627,22 @@ export const THEMEN: Record<string, Thema> = {
 			],
 			['ManaWG WG-App', 'https://manawg.com/wg-app'],
 		],
-		tabellen: [
-			vergleichsTabelle(
+		tables: [
+			comparisonTable(
 				'Tricount',
-				['ja', NG, NG, NG, NG, 'mehrere Währungen laut Anbieter', 'kostenlos laut Anbieter'],
+				[
+					'ja',
+					NOT_CHECKED,
+					NOT_CHECKED,
+					NOT_CHECKED,
+					NOT_CHECKED,
+					'mehrere Währungen laut Anbieter',
+					'kostenlos laut Anbieter',
+				],
 				'Angaben zu Tricount laut Funktionsseite und App-Store-Eintrag des Anbieters, abgerufen am 27. Oktober 2026. Was die Quellen nicht belegen, steht als „nicht geprüft“ da.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Was Tricount gut kann',
 				'Laut Anbieter ist Tricount kostenlos und rechnet mit mehreren Währungen. Ausgaben lassen sich ohne Netz erfassen und später synchronisieren. Tricount gehört seit 2022 zu bunq, und eine bunq-Karte lässt sich mit Tricount koppeln. Tarife und Funktionen ändern sich, prüft den aktuellen Stand bei Tricount selbst.',
@@ -679,7 +664,7 @@ export const THEMEN: Record<string, Thema> = {
 				'Gleicht offene Beträge am besten in Tricount aus und startet in ManaWG ohne Altlasten. Wollt ihr den Stand übernehmen, lest ihr ein Bildschirmfoto der Ausgabenliste im Import ein. ManaWG zeigt eine Vorschau zum Korrigieren und erkennt nur Eurobeträge. Oder jemand trägt für jede Person, die noch Geld bekommt, eine Ausgabe mit ihr als Zahlerin ein und teilt sie von Hand auf die Schuldner auf. Wie ein Import abläuft, steht in der Anleitung zum [Umstieg](/splitwise-splid-wechseln).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Kann ich Daten aus Tricount in ManaWG importieren?',
 				'Nicht direkt. Der Import kennt CSV-Dateien aus Splitwise und Splid sowie Bildschirmfotos von Ausgabenlisten, die per Texterkennung gelesen und vor dem Speichern korrigiert werden. Einen Tricount-Import gibt es nicht.',
@@ -704,23 +689,23 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	'ourhome-alternative': {
 		link: 'OurHome-Alternative',
-		stand: '2026-10-27',
-		erschienen: '2026-10-10',
-		titel: 'OurHome-Alternative für WGs, kostenlos | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-10',
+		title: 'OurHome-Alternative für WGs, kostenlos | ManaWG',
+		description:
 			'ManaWG als Alternative zu OurHome: kostenloser Putzplan und WG-Kasse im Browser. Der aktuelle Funktionsumfang von OurHome wurde nicht verifiziert.',
 		h1: 'Eine OurHome-Alternative für WGs',
-		einleitung:
+		intro:
 			'Ob und in welchem Umfang OurHome aktuell verfügbar ist, haben wir nicht verifiziert (Stand 14. Oktober 2026), prüft das selbst. Im Folgenden beschreiben wir nur, wie ManaWG Putzplan und Kasse für WGs löst.',
-		quellen: [['ManaWG WG-App', 'https://manawg.com/wg-app']],
-		tabellen: [
-			vergleichsTabelle(
+		sources: [['ManaWG WG-App', 'https://manawg.com/wg-app']],
+		tables: [
+			comparisonTable(
 				'OurHome',
-				[NG, NG, NG, NG, NG, NG, NG],
+				[NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED],
 				'Zu OurHome liegt keine geprüfte Quelle vor, deshalb steht dort überall „nicht geprüft“. Die ManaWG-Spalte stammt aus der App.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Fairness statt Punkte',
 				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene und überfällige Aufgaben, Überfälliges zählt stärker. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht, und eine WG braucht auch keins. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
@@ -746,7 +731,7 @@ export const THEMEN: Record<string, Thema> = {
 				'ManaWG läuft unter app.manawg.com und lässt sich auf dem Home-Bildschirm installieren. Die Daten liegen zentral auf dem Server, nicht auf einem einzelnen Gerät. Aktionen ohne Netz merkt sich die App und sendet sie später nach. Anmelden könnt ihr euch mit Google oder E-Mail und Passwort. Beitreten geht per Einladungslink oder E-Mail-Einladung.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Gibt es in ManaWG Punkte oder Belohnungen?',
 				'Nein. ManaWG verteilt Aufgaben nach Auslastung: Je Person zählen zugewiesene und überfällige Aufgaben, Abwesenheiten werden berücksichtigt. Punkte oder Belohnungen gibt es nicht.',
@@ -771,16 +756,16 @@ export const THEMEN: Record<string, Thema> = {
 	},
 	faq: {
 		link: 'Häufige Fragen',
-		stand: '2026-10-27',
-		erschienen: '2026-10-09',
-		titel: 'Häufige Fragen zu ManaWG: Kosten, Anmeldung, Datenort',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-09',
+		title: 'Häufige Fragen zu ManaWG: Kosten, Anmeldung, Datenort',
+		description:
 			'Ist ManaWG kostenlos? Gibt es die WG-App im App Store? Antworten zu Anmeldung, Putzplan, Export, Datenort in Frankfurt und Import aus Splitwise oder Splid.',
 		h1: 'Häufige Fragen zu ManaWG',
-		einleitung:
+		intro:
 			'Das Wichtigste zu ManaWG, der kostenlosen [WG-App](/wg-app) für Wohngemeinschaften: Kosten, Installation, Einladung, Geld, Putzplan, Abwesenheiten, Währung, Datenort und Import.',
-		abschnitte: [],
-		fragen: [
+		sections: [],
+		faq: [
 			[
 				'Was kostet ManaWG?',
 				'Nichts. ManaWG ist kostenlos, ohne Werbung und ohne Bezahlstufe. Eine WG fasst bis zu 20 aktive Mitglieder.',
@@ -855,6 +840,4 @@ export const THEMEN: Record<string, Thema> = {
 			],
 		],
 	},
-	...RATGEBER,
-	...RATGEBER_GELD,
 };

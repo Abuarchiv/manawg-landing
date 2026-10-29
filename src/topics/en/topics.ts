@@ -1,6 +1,6 @@
 // English feature, comparison, FAQ and about pages. Keys are English slugs (see TOPIC_SLUG_EN).
 // Internal links are written without the /en prefix; the renderer adds it.
-import type { Thema } from '../themen.ts';
+import type { Topic } from '../types.ts';
 
 /** Anything the cited sources do not support reads like this in a comparison table. */
 const NC = 'not checked';
@@ -31,28 +31,28 @@ function comparisonTable(
 	provider: string,
 	cells: string[],
 	note: string,
-): NonNullable<Thema['tabellen']>[number] {
+): NonNullable<Topic['tables']>[number] {
 	return {
-		nach: 'einleitung',
-		titel: `ManaWG and ${provider} compared`,
-		kopf: ['Feature', 'ManaWG', provider],
-		zeilen: COMPARISON_ROWS.map((row, i) => [row, MANAWG_CELLS[i] ?? NC, cells[i] ?? NC]),
-		hinweis: note,
+		after: 'intro',
+		title: `ManaWG and ${provider} compared`,
+		header: ['Feature', 'ManaWG', provider],
+		rows: COMPARISON_ROWS.map((row, i) => [row, MANAWG_CELLS[i] ?? NC, cells[i] ?? NC]),
+		note: note,
 	};
 }
 
-export const TOPICS_EN_CORE: Record<string, Thema> = {
+export const TOPICS_EN_CORE: Record<string, Topic> = {
 	'flat-share-app': {
 		link: 'Flat-share app',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Free flat-share app: expenses, rota, shopping | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Free flat-share app: expenses, rota, shopping | ManaWG',
+		description:
 			'ManaWG is the free app for everyday flat life, not a room search: expenses, cleaning rota, shopping list, calendar and chat in your browser, no app store.',
 		h1: 'The flat-share app for money, cleaning, shopping and plans',
-		einleitung:
+		intro:
 			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many shared flats (WGs, as they are called in Germany). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app, in English and German.',
-		abschnitte: [
+		sections: [
 			[
 				'Why an app instead of notes and WhatsApp',
 				'A note cannot work out a balance, and in a group chat the question about the cleaning rota slips away between other messages. In ManaWG every topic has its place: amounts are calculated, tasks move on, events sit in the calendar. What is done stays traceable, and a new flatmate sees straight away how the flat is organised. That saves follow-up questions and arguments about who promised what. Which criteria matter when choosing an app is covered on [Best flat-share app](/best-flat-share-app).',
@@ -98,12 +98,12 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'Any member can download the flat’s data from Settings under Data: everything as JSON, or single areas as CSV, for example expenses, fixed costs, shopping, cleaning rota, supplies, events, noticeboard or chat. You can page through the monthly statement month by month and print it or save it as a PDF.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'einleitung',
-				titel: 'What the ManaWG flat-share app covers',
-				kopf: ['Area', 'What you can do', 'Limits'],
-				zeilen: [
+				after: 'intro',
+				title: 'What the ManaWG flat-share app covers',
+				header: ['Area', 'What you can do', 'Limits'],
+				rows: [
 					[
 						'Expenses',
 						'split equally or with custom euro amounts, book fixed costs automatically, suggested transfers, monthly statement as PDF',
@@ -140,10 +140,10 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 						'no app store, English and German only, up to 20 active members',
 					],
 				],
-				hinweis: 'Details from the app, as of 27 October 2026.',
+				note: 'Details from the app, as of 27 October 2026.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'How much does the ManaWG flat-share app cost?',
 				'Nothing. ManaWG is free and shows no ads. There is no paid tier or subscription, and every area is open to every flat.',
@@ -180,15 +180,15 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'cleaning-rota': {
 		link: 'Cleaning rota app',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Cleaning rota app for flats: fair and free | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Cleaning rota app for flats: fair and free | ManaWG',
+		description:
 			'Free cleaning rota app for a shared flat: tasks repeat on a set rhythm, the app shares them fairly, skips anyone away and reminds whoever is next.',
 		h1: 'Cleaning rota app: tasks, fair rotation and time away',
-		einleitung:
+		intro:
 			'You add the tasks once, and ManaWG works out the dates, who is responsible and who is away. Free and in the browser, with no note on the fridge that goes out of date. If you want a rota to print, use the [cleaning rota template](/cleaning-rota-template). The steps to your own plan are in [Make a cleaning rota](/make-a-cleaning-rota).',
-		abschnitte: [
+		sections: [
 			[
 				'Tasks on a fixed rhythm',
 				'Every task repeats every few days or months, for example the bathroom every seven days or the windows every three months. Monthly intervals stay true to the calendar, and dates are worked out in Berlin time. A task can be assigned to a member, and every completion goes into the history. That way you can see later who did what and when.',
@@ -214,7 +214,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'Members join through an invite link or an email invitation, and up to 20 active people fit in one flat. ManaWG is free, has no ads and is available in English and German. You install it as a PWA through the browser, and there is no app store listing. Besides the cleaning rota there are expenses, shopping, supplies, calendar, chat and noticeboard. All areas are introduced on [Flat-share app](/flat-share-app).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'What is the difference between a cleaning rota app and a template?',
 				'A printable template only holds what you write in by hand and does not carry on by itself. In the app you add the tasks directly, and the rhythm, responsibility and history of completions are built in. The printable version is on the cleaning rota template page.',
@@ -236,12 +236,12 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'No, ManaWG is not a native app. You install it as a PWA through the browser. iOS and Firefox offer no install prompt, so there you follow the manual steps. You can switch push notifications on or off for each area.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Template or app',
-				titel: 'Printable template and ManaWG compared',
-				kopf: ['Feature', 'Printable template', 'ManaWG'],
-				zeilen: [
+				after: 'Template or app',
+				title: 'Printable template and ManaWG compared',
+				header: ['Feature', 'Printable template', 'ManaWG'],
+				rows: [
 					['Distribution', 'by hand', 'by workload'],
 					['Time away', 'enter it yourself', 'skipped at assignment'],
 					['Reminders', 'none', 'reminder to whoever is responsible'],
@@ -251,15 +251,15 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'shared-expenses': {
 		link: 'Shared expenses',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Shared expenses app: split costs, settle up | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Shared expenses app: split costs, settle up | ManaWG',
+		description:
 			'The free app for shared flat expenses: split costs, settle up with few transfers, book fixed costs and get the monthly statement by email.',
 		h1: 'The shared expenses app for costs, fixed costs and statements',
-		einleitung:
+		intro:
 			'Who paid for the loo roll, and who still owes whom? ManaWG is a free shared expenses app in English and German for a WG (shared flat). Every expense lands in everyone’s balance at once, with no notes and no spreadsheet.',
-		abschnitte: [
+		sections: [
 			[
 				'Splitting expenses in a flat',
 				'You enter the amount, who paid and who took part, and pick one of six categories, such as groceries or household. You split equally or with a custom amount per person. ManaWG works in whole cents: with an equal split the shares differ by one cent at most, and the total is always exact. A photo of the receipt can be attached straight to the expense.',
@@ -293,7 +293,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'ManaWG is meant for flats with up to 20 active members, is available in English and German and works in euros only. It is installed as a PWA through the browser, not through an app store. You sign in with Google or email. The app is free and has no ads. What the app offers beyond expenses is on [Flat-share app](/flat-share-app).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Is the shared expenses app free?',
 				'Yes, ManaWG costs nothing and shows no ads. You use the app in the browser or install it as a PWA on your phone.',
@@ -318,15 +318,15 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'shopping-list': {
 		link: 'Shopping list',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Shared shopping list app for your flat | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Shared shopping list app for your flat | ManaWG',
+		description:
 			'The shared shopping list for a flat: everyone adds items, supplies flag what to restock, and a shop becomes a shared expense in one step. Free.',
 		h1: 'One shopping list for the whole flat',
-		einleitung:
+		intro:
 			'Three people, three notes, milk bought twice. ManaWG gives your flat one shopping list that looks the same on every phone, plus supplies and a way to turn a shop into an expense.',
-		abschnitte: [
+		sections: [
 			[
 				'Everyone adds to it',
 				'Anyone in the flat adds what is missing, with a quantity such as “2 packs” or “1 kg” if they like. Whoever goes shopping ticks items off, and everyone else sees the current state. ManaWG remembers who ticked an item and spots duplicates before the same item appears twice. The list belongs to the flat, not to one person. Which purchases you plan together and which stay private is worked out with the guide [Organise flat shopping](/organise-flat-shopping).',
@@ -352,7 +352,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'ManaWG runs in the browser at app.manawg.com and can be added to the home screen without an app store. If the network drops while you are out, the app keeps actions locally and sends them later. After about seven days, actions that were left behind are no longer sent automatically but shown to you for review. Each person switches push notifications for shopping and supplies on or off. What else the app can do is on [Flat-share app](/flat-share-app).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Is the shared shopping list free?',
 				'Yes. ManaWG costs nothing, and there is no paid tier and no ads. The shopping list, supplies and every other area are open to every flat.',
@@ -377,15 +377,15 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'best-flat-share-app': {
 		link: 'Best flat-share app',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Best flat-share app 2026: 7 criteria | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Best flat-share app 2026: 7 criteria | ManaWG',
+		description:
 			'Which flat-share app suits you? Compared on expenses, cleaning rota, shopping, calendar and price: ManaWG, Flatastic, Splitwise, Splid, Tricount, OurHome.',
 		h1: 'The best flat-share app: 7 criteria for choosing',
-		einleitung:
+		intro:
 			'There are many apps for a WG (shared flat), and none is the best for every flat. Some only handle money, others only organise the household. This page is not an independent ranking but the view of ManaWG, the provider. These seven criteria help you find the app that fits your daily life before you ask every flatmate to switch.',
-		quellen: [
+		sources: [
 			['Splitwise Pro', 'https://www.splitwise.com/pro'],
 			['Splid (English)', 'https://splid.app/english'],
 			['Flatastic', 'https://www.flatastic-app.com/en/'],
@@ -397,13 +397,13 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			['What is ManaWG?', 'https://manawg.com/en/about-manawg'],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'einleitung',
-				titel: 'Flat-share apps compared',
-				kopf: ['Feature', 'Flatastic', 'ManaWG', 'OurHome', 'Splid', 'Splitwise', 'Tricount'],
+				after: 'intro',
+				title: 'Flat-share apps compared',
+				header: ['Feature', 'Flatastic', 'ManaWG', 'OurHome', 'Splid', 'Splitwise', 'Tricount'],
 				// Columns are alphabetical so the table does not suggest a ranking.
-				zeilen: COMPARISON_ROWS.map((row, i) => [
+				rows: COMPARISON_ROWS.map((row, i) => [
 					row,
 					...[
 						[
@@ -446,11 +446,10 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 						],
 					].map((column) => column[i] ?? NC),
 				]),
-				hinweis:
-					'Details on other providers come from their English pages, checked on 14 October 2026 (Tricount: 27 October 2026). Anything the sources do not support reads “not checked”. Columns are alphabetical, not a ranking.',
+				note: 'Details on other providers come from their English pages, checked on 14 October 2026 (Tricount: 27 October 2026). Anything the sources do not support reads “not checked”. Columns are alphabetical, not a ranking.',
 			},
 		],
-		abschnitte: [
+		sections: [
 			[
 				'1. What does the app really cost?',
 				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. It works in euros only, is available in English and German, and is meant for at most 20 active members per flat. Plans and features change, so check the current state with the providers themselves.',
@@ -484,7 +483,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'You mostly share money, also on trips and in several currencies: Splid lists over 150 currencies, Tricount multiple currencies and Splitwise conversion in its Pro plan, each per the provider. ManaWG works in euros only.\nYou want money, cleaning rota, shopping, calendar and noticeboard in one app with no subscription and no app store, in English or German: ManaWG is built for that.\nYou want points or rewards for cleaning: ManaWG does not offer that, as the cleaning rota distributes by workload.\nYou have old expenses from Splitwise or Splid as a CSV file: ManaWG imports them with a preview, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).\nThere are more than 20 of you: a flat in ManaWG holds at most 20 active members.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Which flat-share app is free?',
 				'ManaWG is completely free, with no ads and no paid tier. With other apps, what the free plan covers depends on the provider and can change.',
@@ -513,19 +512,19 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'splitwise-alternative': {
 		link: 'Splitwise alternative',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Splitwise alternative with no ads or paywall | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Splitwise alternative with no ads or paywall | ManaWG',
+		description:
 			'ManaWG is a free Splitwise alternative for flats: no ads, no paid tier, plus a cleaning rota, shopping list and CSV import.',
 		h1: 'A Splitwise alternative with no paywall and no ads',
-		einleitung:
+		intro:
 			'Splitwise splits expenses reliably, and its Pro plan lists, per the provider, unlimited expenses, no ads, receipt scanning and currency conversion, among other things. What the free version covers is explained in [Splitwise’s free limit](/splitwise-free-limit). ManaWG costs nothing, shows no ads and has no paid tier. It also adds a cleaning rota, shopping list and calendar.',
-		quellen: [
+		sources: [
 			['Splitwise Pro', 'https://www.splitwise.com/pro'],
 			['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app'],
 		],
-		tabellen: [
+		tables: [
 			comparisonTable(
 				'Splitwise',
 				[
@@ -540,7 +539,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'Details on Splitwise come from the provider’s Pro page, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'What Splitwise Pro includes, per the provider',
 				'The Splitwise Pro page lists unlimited expenses, an ad-free experience, receipt scanning with itemisation and conversion of bills into any currency, among other things. Transaction import from a card is described for the US only. The Pro page does not tell us exactly where the free version stops, and we have not verified the details of the free version here, so check that with Splitwise itself. Plans change, so rely on the provider’s page as of 14 October 2026.',
@@ -566,7 +565,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'You split equally or with custom amounts, add fixed costs such as rent and get suggested transfers. On top of that come the monthly statement, a cleaning rota with fair rotation, a shopping list that turns into an expense, calendar subscription, noticeboard and chat. You make the transfers yourselves, and in ManaWG you mark single shares or everything at once as paid. There is no bank connection. The expenses in detail are on [Shared expenses](/shared-expenses), the cleaning rota on [Cleaning rota app](/cleaning-rota).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Is ManaWG really free?',
 				'Yes. There is no paid tier and no ads. Every feature is open to every flat, including import, fixed costs and the monthly statement. The main limit is 20 active members per flat, along with euros as the only currency and size limits on images.',
@@ -591,26 +590,26 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'splid-alternative': {
 		link: 'Splid alternative',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Splid alternative with a cleaning rota and list | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Splid alternative with a cleaning rota and list | ManaWG',
+		description:
 			'ManaWG is a free Splid alternative for flats: split expenses plus a cleaning rota, shopping list, fixed costs and monthly statement, with no ads.',
 		h1: 'A Splid alternative with a cleaning rota and shopping list',
-		einleitung:
+		intro:
 			'Splid splits expenses in groups and, on its English page, lists over 150 currencies, offline use and PDF and Excel export. For a flat, a pure expense tracker often falls short, because a household is more than bills. ManaWG joins the expenses with the rest.',
-		quellen: [
+		sources: [
 			['Splid (English)', 'https://splid.app/english'],
 			['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app'],
 		],
-		tabellen: [
+		tables: [
 			comparisonTable(
 				'Splid',
 				['yes, in groups', NC, NC, NC, NC, 'over 150, per the provider', 'free, per the provider'],
 				'Details on Splid come from the provider’s English page, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'What Splid does, per the provider',
 				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. The full feature list is on that page (checked on 14 October 2026). ManaWG, by contrast, asks each person to sign in. In return, expenses, balances and history stay tied to your flat, and flatmates join through an invite link or an email invitation.',
@@ -636,7 +635,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'A flat holds at most 20 active members. The app is available in English and German and works in euros only. There is no app in the App Store: you use ManaWG in the browser at app.manawg.com and add it to your phone’s home screen. Calendar subscription and push notifications work that way too, with nothing to install from a store.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Does ManaWG need an account?',
 				'Yes. Each person signs in with Google or with email and password. Joining then works through an invite link or an email invitation.',
@@ -661,20 +660,20 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'flatastic-alternative': {
 		link: 'Flatastic alternative',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Flatastic alternative with no ads or Premium | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Flatastic alternative with no ads or Premium | ManaWG',
+		description:
 			'ManaWG is a free Flatastic alternative for flats: cleaning rota, shared expenses, shopping, calendar and chat, with no ads and no Premium tier.',
 		h1: 'Flatastic alternative: a flat-share app with no ads or Premium',
-		einleitung:
+		intro:
 			'Flatastic covers chores, shopping, finances and a pinboard per the provider, and offers a paid Premium with no ads and a cleaning history, among other things. It is best to check the current state with Flatastic itself. ManaWG is free and manages without ads and without a paid tier.',
-		quellen: [
+		sources: [
 			['Flatastic', 'https://www.flatastic-app.com/en/'],
 			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
 			['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app'],
 		],
-		tabellen: [
+		tables: [
 			comparisonTable(
 				'Flatastic',
 				[
@@ -689,10 +688,10 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'Details on Flatastic come from the provider’s English pages, checked on 14 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 			{
-				nach: 'What Flatastic Premium unlocks',
-				titel: 'Flatastic Premium and ManaWG',
-				kopf: ['Feature', 'Flatastic, per the provider', 'ManaWG'],
-				zeilen: [
+				after: 'What Flatastic Premium unlocks',
+				title: 'Flatastic Premium and ManaWG',
+				header: ['Feature', 'Flatastic, per the provider', 'ManaWG'],
+				rows: [
 					['Ads', 'no advertising with Premium', 'no ads'],
 					['Cleaning history', 'Premium', 'history of every completion'],
 					[
@@ -707,11 +706,10 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 					],
 					['Images on expenses', 'Premium', 'receipt photo on an expense, attached, not analysed'],
 				],
-				hinweis:
-					'Details on Flatastic come from the provider’s Premium page, checked on 27 October 2026. Anything the sources do not support reads “not checked”.',
+				note: 'Details on Flatastic come from the provider’s Premium page, checked on 27 October 2026. Anything the sources do not support reads “not checked”.',
 			},
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Free, no ads, no Premium',
 				'ManaWG shows no ads and has no paid tier: every flat uses expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard. Whether there are two of you or ten makes no difference, as long as the flat fits within the limit of 20 active members. Members who have moved out do not count, and their history is kept.',
@@ -741,7 +739,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'The interface is in English and German, amounts are in euros only, and a flat holds at most 20 active members. There is no app in a store: you install ManaWG as a web app on the home screen. You mark settlements as paid yourselves, and the app does not trigger a transfer. The calendar is available as a subscription for Apple and Google Calendar, but in one direction only.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Is ManaWG really free?',
 				'Yes. There is no paid tier and no feature you would have to unlock. Every area is open to every flat, from expenses to chat.',
@@ -774,15 +772,15 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'tricount-alternative': {
 		link: 'Tricount alternative',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Tricount alternative for flats and fixed groups | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Tricount alternative for flats and fixed groups | ManaWG',
+		description:
 			'Tricount handles several currencies and suits trips. For a flat with rent, fixed costs and a cleaning rota, ManaWG is free, in the browser, with statements.',
 		h1: 'Tricount alternative for flats and fixed groups',
-		einleitung:
+		intro:
 			'Tricount splits expenses in groups and, per the provider, works with several currencies. If you live together long term, you usually also need rent, fixed costs and a cleaning rota. ManaWG joins them in a free web app in English and German. Details on Tricount come from the provider’s linked pages, checked on 27 October 2026.',
-		quellen: [
+		sources: [
 			['Tricount features', 'https://tricount.com/features'],
 			[
 				'Tricount on the App Store (UK)',
@@ -790,14 +788,14 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 			],
 			['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app'],
 		],
-		tabellen: [
+		tables: [
 			comparisonTable(
 				'Tricount',
 				['yes', NC, NC, NC, NC, 'multiple currencies, per the provider', 'free, per the provider'],
 				'Details on Tricount come from the provider’s features page and App Store listing, checked on 27 October 2026. Anything the sources do not support reads “not checked”.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'What Tricount does well',
 				'Per the provider, Tricount is free and works with several currencies. Expenses can be added without a signal and synced later. The provider also lists payment requests and a connection to a bunq card. Plans and features change, so check the current state with Tricount itself.',
@@ -819,7 +817,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'It is best to settle open amounts in Tricount and start in ManaWG with a clean slate. If you want to carry the balance over, read in a screenshot of the expense list in the import. ManaWG shows a preview you can correct and recognises euro amounts only. Alternatively, for each person who is still owed money, enter one expense with that person as the payer and split it by hand across those who owe. How an import works is explained in the guide [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Can I import data from Tricount into ManaWG?',
 				'Not directly. The import handles CSV files from Splitwise and Splid, and screenshots of expense lists that are read with text recognition and corrected before saving. There is no Tricount import.',
@@ -844,23 +842,23 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'ourhome-alternative': {
 		link: 'OurHome alternative',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'OurHome alternative for flats, free | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'OurHome alternative for flats, free | ManaWG',
+		description:
 			'ManaWG as an alternative to OurHome: a free cleaning rota and shared expenses in the browser. OurHome’s current feature set has not been verified.',
 		h1: 'An OurHome alternative for flats',
-		einleitung:
+		intro:
 			'We have not verified whether OurHome is still available or what it offers today (as of 14 October 2026), so check that yourself. Below we only describe how ManaWG handles the cleaning rota and expenses for a WG (shared flat).',
-		quellen: [['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app']],
-		tabellen: [
+		sources: [['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app']],
+		tables: [
 			comparisonTable(
 				'OurHome',
 				[NC, NC, NC, NC, NC, NC, NC],
 				'There is no verified source for OurHome, so every cell there reads “not checked”. The ManaWG column comes from the app.',
 			),
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Fairness instead of points',
 				'When someone completes a task, ManaWG looks at who has the lowest workload at the moment and assigns it to that person. Assigned and overdue tasks are counted, and overdue ones count for more. Someone who already has a lot to do does not get more. In the app, “Next up” shows who is next. Anyone who is away enters their dates and is skipped at the next assignment. Tasks that are already assigned stay with the person. There is no reward system, and a flat does not need one. The feature in detail is on [Cleaning rota app](/cleaning-rota).',
@@ -886,7 +884,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'ManaWG runs at app.manawg.com and can be installed on the home screen. The data is stored centrally on the server, not on a single device. The app remembers actions made offline and sends them later. You can sign in with Google or with email and password. Joining works through an invite link or an email invitation.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Are there points or rewards in ManaWG?',
 				'No. ManaWG distributes tasks by workload: for each person, assigned and overdue tasks are counted, and time away is taken into account. There are no points or rewards.',
@@ -911,16 +909,16 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	faq: {
 		link: 'Frequently asked questions',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'ManaWG FAQ: cost, sign-up, data location | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'ManaWG FAQ: cost, sign-up, data location | ManaWG',
+		description:
 			'Is ManaWG free? Is the flat-share app in the App Store? Answers on sign-up, cleaning rota, export, data in Frankfurt and importing from Splitwise or Splid.',
 		h1: 'Frequently asked questions about ManaWG',
-		einleitung:
+		intro:
 			'The essentials about ManaWG, the free [flat-share app](/flat-share-app) for a WG (shared flat): cost, installation, invitations, money, cleaning rota, time away, currency, data location and import.',
-		abschnitte: [],
-		fragen: [
+		sections: [],
+		faq: [
 			[
 				'What does ManaWG cost?',
 				'Nothing. ManaWG is free, with no ads and no paid tier. A flat holds up to 20 active members.',
@@ -997,20 +995,20 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 	},
 	'about-manawg': {
 		link: 'About ManaWG',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'What is ManaWG? The free flat-share app | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'What is ManaWG? The free flat-share app | ManaWG',
+		description:
 			'ManaWG is a free flat-share app in English and German for expenses, shopping, cleaning rota, calendar, noticeboard and chat. Facts, operator, not WireGuard.',
 		h1: 'What is ManaWG?',
-		einleitung:
+		intro:
 			'ManaWG is a free web app for a WG (Wohngemeinschaft, a shared flat), in English and German. It brings together expense splitting, shopping list, cleaning rota, calendar, noticeboard and chat. ManaWG has nothing to do with the VPN protocol WireGuard.',
-		quellen: [
+		sources: [
 			['Legal notice', '/en/legal-notice'],
 			['Privacy policy', '/en/privacy'],
 			['Terms', '/en/terms'],
 		],
-		abschnitte: [
+		sections: [
 			[
 				'In short',
 				'ManaWG (also written Mana WG) is a household app for shared flats. Flatmates split expenses and settle balances with few transfers, keep a shared shopping list, organise a fairly distributed cleaning rota and record agreements on a noticeboard. The app is free, ad-free and runs in the browser at app.manawg.com.',
@@ -1036,7 +1034,7 @@ export const TOPICS_EN_CORE: Record<string, Thema> = {
 				'For student flats, professional flat shares and anyone who shares a home and a household kitty. It is not meant for large groups of more than 20 members, trips with several currencies or company bookkeeping.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'What is ManaWG?',
 				'A free flat-share app in English and German for expenses, shopping, cleaning rota, calendar, noticeboard and chat. It runs in the browser at app.manawg.com.',

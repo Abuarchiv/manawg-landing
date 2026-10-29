@@ -1,43 +1,43 @@
 // Ratgeber rund ums Geld in der WG; wird in themen.ts eingebunden.
 // Nur Funktionen nennen, die es in manawg-app wirklich gibt.
-import { euro, mieteAnteile } from './miete-rechner.ts';
-import type { Thema } from './themen';
+import { euro, rentShares } from '../rent-calculator.ts';
+import type { Topic } from '../types.ts';
 
 // Beispiel der Mietseite: Werte kommen aus mieteAnteile, nicht von Hand.
-const BEISPIEL_ZIMMER = [12, 18, 24];
-const BEISPIEL_GEMEINSCHAFT = 18;
-const BEISPIEL_MIETE_CENT = 90000;
-const ohne = mieteAnteile(BEISPIEL_MIETE_CENT, BEISPIEL_ZIMMER, 0);
-const mit = mieteAnteile(BEISPIEL_MIETE_CENT, BEISPIEL_ZIMMER, BEISPIEL_GEMEINSCHAFT);
-const summe = (a: number[]) => euro(a.reduce((s, x) => s + x, 0));
+const EXAMPLE_ROOMS = [12, 18, 24];
+const EXAMPLE_SHARED = 18;
+const EXAMPLE_RENT_CENT = 90000;
+const without = rentShares(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, 0);
+const withShared = rentShares(EXAMPLE_RENT_CENT, EXAMPLE_ROOMS, EXAMPLE_SHARED);
+const total = (a: number[]) => euro(a.reduce((s, x) => s + x, 0));
 
 // Rundfunkbeitrag je Wohnung laut rundfunkbeitrag.de (Stand 27.10.2026), in Cent.
-const RUNDFUNK_MONAT_CENT = 1836;
-const RUNDFUNK_QUARTAL_CENT = RUNDFUNK_MONAT_CENT * 3;
+const LICENCE_FEE_MONTH_CENT = 1836;
+const LICENCE_FEE_QUARTER_CENT = LICENCE_FEE_MONTH_CENT * 3;
 
 // Kostenlose Ausgaben pro Tag laut Splitwise-Hilfe (kb.splitwise.com/pro/what-is-splitwise-pro, Stand 27.10.2026).
-const SPLITWISE_TAGESLIMIT = 4;
+const SPLITWISE_DAILY_LIMIT = 4;
 
-export const RATGEBER_GELD: Record<string, Thema> = {
+export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	'wg-miete-rechner': {
 		link: 'WG-Miete Rechner',
 		widget: { after: 'Rechner', kind: 'rent-calculator' },
-		stand: '2026-10-27',
-		erschienen: '2026-10-27',
-		titel: 'WG-Miete aufteilen: Rechner nach Zimmergröße | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-27',
+		title: 'WG-Miete aufteilen: Rechner nach Zimmergröße | ManaWG',
+		description:
 			'WG-Miete fair aufteilen: Rechner nach Zimmergröße mit Gemeinschaftsfläche, Formel mit Beispiel und Tipps zu Balkon, eigenem Bad und Nebenkosten.',
 		h1: 'WG-Miete nach Zimmergröße aufteilen',
-		einleitung:
+		intro:
 			'Sind die Zimmer unterschiedlich groß, passt ein gleicher Mietanteil selten. Der Rechner verteilt die Miete nach der Fläche jedes Zimmers und rechnet die gemeinsam genutzten Räume gleichmäßig auf alle Personen um. Das Ergebnis ist ein Vorschlag, auf den ihr euch noch einigen müsst.',
-		abschnitte: [
+		sections: [
 			[
 				'Rechner',
 				'Tragt die Miete ein, die Fläche jedes Zimmers in Quadratmetern und die Fläche der gemeinsam genutzten Räume wie Küche, Bad und Flur. Ob ihr Kalt- oder Warmmiete nehmt, entscheidet ihr selbst, die Rechnung bleibt gleich. Die vorbelegten Werte sind ein Beispiel. Eure Eingaben bleiben im Browser und werden weder gespeichert noch gesendet.',
 			],
 			[
 				'Die Formel mit Beispiel',
-				`Jedes Zimmer zahlt nach seiner Fläche, die Gemeinschaftsfläche wird gleichmäßig auf alle Personen verteilt. Als Formel: Anteil = Miete × (Zimmerfläche + Gemeinschaftsfläche ÷ Personenzahl) ÷ (Summe aller Zimmerflächen + Gemeinschaftsfläche). Beispiel: ${euro(BEISPIEL_MIETE_CENT)} Miete, drei Zimmer mit 12, 18 und 24 m² und ${BEISPIEL_GEMEINSCHAFT} m² Gemeinschaftsfläche. Jedes Zimmer bekommt 6 m² dazu und zählt dann 18, 24 und 30 m², zusammen 72 m². Auf den Cent wird so gerundet, dass die Anteile genau die Miete ergeben. Andere Modelle, etwa gleiche Anteile oder gemischte Aufteilungen, stehen unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen).`,
+				`Jedes Zimmer zahlt nach seiner Fläche, die Gemeinschaftsfläche wird gleichmäßig auf alle Personen verteilt. Als Formel: Anteil = Miete × (Zimmerfläche + Gemeinschaftsfläche ÷ Personenzahl) ÷ (Summe aller Zimmerflächen + Gemeinschaftsfläche). Beispiel: ${euro(EXAMPLE_RENT_CENT)} Miete, drei Zimmer mit 12, 18 und 24 m² und ${EXAMPLE_SHARED} m² Gemeinschaftsfläche. Jedes Zimmer bekommt 6 m² dazu und zählt dann 18, 24 und 30 m², zusammen 72 m². Auf den Cent wird so gerundet, dass die Anteile genau die Miete ergeben. Andere Modelle, etwa gleiche Anteile oder gemischte Aufteilungen, stehen unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen).`,
 			],
 			[
 				'Zuschläge: Balkon, eigenes Bad, Dachschräge',
@@ -52,30 +52,34 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 				'Legt die Miete in der [WG-Kasse](/wg-kasse) als Fixkosten an: Betrag eintragen, Intervall ein Monat, bei „Bezahlt von“ die Person, die an den Vermieter überweist. Unter „Beteiligte & Aufteilung“ wählt ihr „Manuell“ und tragt für jede Person den Betrag aus dem Rechner ein. ManaWG zeigt an, ob die Anteile zusammen die Miete ergeben. Eine Aufteilung in Prozent gibt es nicht, ihr tragt Eurobeträge ein. Danach bucht die App die Miete jeden Monat automatisch als Ausgabe.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Die Formel mit Beispiel',
-				titel: 'Beispiel: 900 Euro Miete nach Zimmergröße',
-				kopf: [
+				after: 'Die Formel mit Beispiel',
+				title: 'Beispiel: 900 Euro Miete nach Zimmergröße',
+				header: [
 					'Zimmer',
 					'Fläche',
 					'Anteil ohne Gemeinschaftsfläche',
-					`Anteil mit ${BEISPIEL_GEMEINSCHAFT} m² Gemeinschaftsfläche`,
+					`Anteil mit ${EXAMPLE_SHARED} m² Gemeinschaftsfläche`,
 				],
-				zeilen: [
-					...BEISPIEL_ZIMMER.map((m, i) => [
+				rows: [
+					...EXAMPLE_ROOMS.map((m, i) => [
 						`Zimmer ${i + 1}`,
 						`${m} m²`,
-						euro(ohne[i] ?? 0),
-						euro(mit[i] ?? 0),
+						euro(without[i] ?? 0),
+						euro(withShared[i] ?? 0),
 					]),
-					['Summe', `${BEISPIEL_ZIMMER.reduce((s, m) => s + m, 0)} m²`, summe(ohne), summe(mit)],
+					[
+						'Summe',
+						`${EXAMPLE_ROOMS.reduce((s, m) => s + m, 0)} m²`,
+						total(without),
+						total(withShared),
+					],
 				],
-				hinweis:
-					'Ohne Gemeinschaftsfläche zahlt jedes Zimmer nur nach der eigenen Fläche. Mit ihr werden die Unterschiede zwischen großen und kleinen Zimmern kleiner.',
+				note: 'Ohne Gemeinschaftsfläche zahlt jedes Zimmer nur nach der eigenen Fläche. Mit ihr werden die Unterschiede zwischen großen und kleinen Zimmern kleiner.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Wie teilt man die Miete in der WG fair auf?',
 				'Eine gängige Möglichkeit ist die Aufteilung nach Zimmergröße: Wer mehr Fläche hat, zahlt mehr. Sind die Zimmer gleich groß, ist ein gleicher Anteil fair. Gemeinsam genutzte Räume rechnet ihr gleichmäßig auf alle Personen um, wie im Rechner oben.',
@@ -92,15 +96,15 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 	},
 	'rundfunkbeitrag-wg': {
 		link: 'Rundfunkbeitrag in der WG',
-		stand: '2026-10-27',
-		erschienen: '2026-10-27',
-		titel: 'Rundfunkbeitrag in der WG: wer zahlt, wie teilen | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-27',
+		title: 'Rundfunkbeitrag in der WG: wer zahlt, wie teilen | ManaWG',
+		description:
 			'Rundfunkbeitrag in der WG: ein Beitrag pro Wohnung, wie sich Mitbewohner abmelden, wie ihr den Betrag fair teilt und was beim Auszug gilt.',
 		h1: 'Rundfunkbeitrag in der WG',
-		einleitung:
+		intro:
 			'In einer WG fällt der Rundfunkbeitrag einmal pro Wohnung an, nicht pro Person. Hier steht, wer zahlen muss, wie sich Mitbewohner abmelden, wenn schon jemand zahlt, und wie ihr den Betrag teilt. Die Seite gibt einen Überblick und ersetzt keine Rechtsberatung. Verbindlich ist, was der Beitragsservice schreibt.',
-		abschnitte: [
+		sections: [
 			[
 				'Ein Beitrag pro Wohnung',
 				'Im privaten Bereich ist nach § 2 Absatz 1 des Rundfunkbeitragsstaatsvertrags (RBStV) für jede Wohnung ein Rundfunkbeitrag zu entrichten, und zwar vom Inhaber der Wohnung. Inhaber ist jede volljährige Person, die die Wohnung selbst bewohnt (§ 2 Absatz 2). Als Inhaber wird vermutet, wer dort nach dem Melderecht gemeldet ist (siehe [Anmeldung in der WG](/wg-anmeldung)) oder im Mietvertrag als Mieter steht. Wie viele Personen in der Wohnung leben, spielt für die Höhe laut Beitragsservice keine Rolle.',
@@ -111,7 +115,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 			],
 			[
 				'Den Beitrag teilen',
-				`Der Beitrag beträgt ${euro(RUNDFUNK_MONAT_CENT)} im Monat je Wohnung. Üblich ist die Zahlung für drei Monate, also ${euro(RUNDFUNK_QUARTAL_CENT)} im Quartal. Auf Wunsch geht es auch halbjährlich (${euro(RUNDFUNK_MONAT_CENT * 6)}) oder jährlich (${euro(RUNDFUNK_MONAT_CENT * 12)}) im Voraus. Die Tabelle zeigt den Betrag bei gleichem Anteil für alle (Stand 27. Oktober 2026, laut rundfunkbeitrag.de). Ändert sich der Beitrag, rechnet ihr neu. Den aktuellen Betrag findet ihr auf rundfunkbeitrag.de. Wie ihr Strom, Internet und Nachzahlungen teilt, steht unter [WG-Nebenkosten](/wg-nebenkosten).`,
+				`Der Beitrag beträgt ${euro(LICENCE_FEE_MONTH_CENT)} im Monat je Wohnung. Üblich ist die Zahlung für drei Monate, also ${euro(LICENCE_FEE_QUARTER_CENT)} im Quartal. Auf Wunsch geht es auch halbjährlich (${euro(LICENCE_FEE_MONTH_CENT * 6)}) oder jährlich (${euro(LICENCE_FEE_MONTH_CENT * 12)}) im Voraus. Die Tabelle zeigt den Betrag bei gleichem Anteil für alle (Stand 27. Oktober 2026, laut rundfunkbeitrag.de). Ändert sich der Beitrag, rechnet ihr neu. Den aktuellen Betrag findet ihr auf rundfunkbeitrag.de. Wie ihr Strom, Internet und Nachzahlungen teilt, steht unter [WG-Nebenkosten](/wg-nebenkosten).`,
 			],
 			[
 				'Wer haftet',
@@ -127,30 +131,30 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 			],
 			[
 				'In ManaWG als Fixkosten',
-				`Legt den Beitrag in der [WG-Kasse](/wg-kasse) als Fixkosten an: Betrag ${euro(RUNDFUNK_QUARTAL_CENT)}, Intervall „3 Monate (Quartal)“, bei „Bezahlt von“ die zahlende Person und die Aufteilung „Gleichmäßig“ auf alle, die sich beteiligen. Als erste Fälligkeit nehmt ihr den nächsten Abbuchungstermin. ManaWG bucht den Beitrag dann alle drei Monate automatisch als Ausgabe, und die Anteile fließen in den Saldo ein. Zahlt ihr jährlich, wählt ihr als Intervall 12 Monate und tragt den Jahresbetrag ein.`,
+				`Legt den Beitrag in der [WG-Kasse](/wg-kasse) als Fixkosten an: Betrag ${euro(LICENCE_FEE_QUARTER_CENT)}, Intervall „3 Monate (Quartal)“, bei „Bezahlt von“ die zahlende Person und die Aufteilung „Gleichmäßig“ auf alle, die sich beteiligen. Als erste Fälligkeit nehmt ihr den nächsten Abbuchungstermin. ManaWG bucht den Beitrag dann alle drei Monate automatisch als Ausgabe, und die Anteile fließen in den Saldo ein. Zahlt ihr jährlich, wählt ihr als Intervall 12 Monate und tragt den Jahresbetrag ein.`,
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Den Beitrag teilen',
-				titel: 'Rundfunkbeitrag je Person bei gleichem Anteil',
-				kopf: ['Personen', 'Anteil im Monat', 'Anteil im Quartal'],
-				zeilen: [2, 3, 4].map((n) => [
+				after: 'Den Beitrag teilen',
+				title: 'Rundfunkbeitrag je Person bei gleichem Anteil',
+				header: ['Personen', 'Anteil im Monat', 'Anteil im Quartal'],
+				rows: [2, 3, 4].map((n) => [
 					`${n} Personen`,
-					euro(RUNDFUNK_MONAT_CENT / n),
-					euro(RUNDFUNK_QUARTAL_CENT / n),
+					euro(LICENCE_FEE_MONTH_CENT / n),
+					euro(LICENCE_FEE_QUARTER_CENT / n),
 				]),
-				hinweis: `Grundlage: ${euro(RUNDFUNK_MONAT_CENT)} im Monat, ${euro(RUNDFUNK_QUARTAL_CENT)} im Quartal für die ganze Wohnung. Stand 27. Oktober 2026.`,
+				note: `Grundlage: ${euro(LICENCE_FEE_MONTH_CENT)} im Monat, ${euro(LICENCE_FEE_QUARTER_CENT)} im Quartal für die ganze Wohnung. Stand 27. Oktober 2026.`,
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Muss jeder in der WG Rundfunkbeitrag zahlen?',
 				'Nein. Der Rundfunkbeitrag fällt einmal pro Wohnung an. Eine Person zahlt, die anderen melden sich ab, und die WG teilt den Betrag unter sich.',
 			],
 			[
 				'Wie hoch ist der Rundfunkbeitrag pro Person in der WG?',
-				`Der Beitrag gilt je Wohnung und beträgt ${euro(RUNDFUNK_MONAT_CENT)} im Monat (Stand 27. Oktober 2026). Bei gleichem Anteil zahlen zwei Personen je ${euro(RUNDFUNK_MONAT_CENT / 2)}, drei Personen je ${euro(RUNDFUNK_MONAT_CENT / 3)} und vier Personen je ${euro(RUNDFUNK_MONAT_CENT / 4)} im Monat.`,
+				`Der Beitrag gilt je Wohnung und beträgt ${euro(LICENCE_FEE_MONTH_CENT)} im Monat (Stand 27. Oktober 2026). Bei gleichem Anteil zahlen zwei Personen je ${euro(LICENCE_FEE_MONTH_CENT / 2)}, drei Personen je ${euro(LICENCE_FEE_MONTH_CENT / 3)} und vier Personen je ${euro(LICENCE_FEE_MONTH_CENT / 4)} im Monat.`,
 			],
 			[
 				'Wie melde ich mich ab, wenn mein Mitbewohner zahlt?',
@@ -161,7 +165,7 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 				'Mehrere Beitragsschuldner einer Wohnung haften als Gesamtschuldner (§ 2 Absatz 3 RBStV, § 44 AO). Der Beitragsservice kann sich daher an jede Person halten, die als Inhaber der Wohnung gilt.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'Rundfunkbeitrag: Zahlung und Höhe (rundfunkbeitrag.de)',
 				'https://www.rundfunkbeitrag.de/buergerinnen-und-buerger/informationen/zahlung',
@@ -191,18 +195,18 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 	},
 	'splitwise-kostenlos': {
 		link: 'Splitwise kostenlos',
-		stand: '2026-10-27',
-		erschienen: '2026-10-27',
-		titel: 'Splitwise kostenlos: Tageslimit und Pro | ManaWG',
-		beschreibung:
+		updated: '2026-10-27',
+		published: '2026-10-27',
+		title: 'Splitwise kostenlos: Tageslimit und Pro | ManaWG',
+		description:
 			'Wie viele Ausgaben erlaubt Splitwise kostenlos pro Tag? Das Limit laut Splitwise-Hilfe, was Pro ergänzt und welche Wege es für WGs mit vielen Einträgen gibt.',
 		h1: 'Splitwise kostenlos: Wie viele Ausgaben sind erlaubt?',
-		einleitung:
+		intro:
 			'Splitwise lässt sich kostenlos nutzen, begrenzt in der kostenlosen Version aber die Zahl neuer Ausgaben pro Tag. Hier steht, was die Hilfeseite von Splitwise dazu sagt, was Pro ergänzt und was ihr tun könnt, wenn das Limit eure WG bremst. Die Angaben stammen von der verlinkten Hilfeseite, abgerufen am 27. Oktober 2026.',
-		abschnitte: [
+		sections: [
 			[
 				'Kurz gesagt',
-				`Laut Splitwise-Hilfe können kostenlose Nutzer ${SPLITWISE_TAGESLIMIT} Ausgaben pro Tag eintragen (Stand 27. Oktober 2026). Andere Seiten nennen teils andere Zahlen; maßgeblich ist die Hilfeseite von Splitwise.`,
+				`Laut Splitwise-Hilfe können kostenlose Nutzer ${SPLITWISE_DAILY_LIMIT} Ausgaben pro Tag eintragen (Stand 27. Oktober 2026). Andere Seiten nennen teils andere Zahlen; maßgeblich ist die Hilfeseite von Splitwise.`,
 			],
 			[
 				'Was Splitwise Pro ergänzt',
@@ -217,13 +221,13 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Sie rechnet nur in Euro, gibt es auf Deutsch und Englisch und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative).',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Was Splitwise Pro ergänzt',
-				titel: 'Splitwise Pro laut Hilfeseite',
-				kopf: ['Funktion', 'kostenlos', 'Pro'],
-				zeilen: [
-					['Ausgaben', `bis zu ${SPLITWISE_TAGESLIMIT} pro Tag`, 'unbegrenzt'],
+				after: 'Was Splitwise Pro ergänzt',
+				title: 'Splitwise Pro laut Hilfeseite',
+				header: ['Funktion', 'kostenlos', 'Pro'],
+				rows: [
+					['Ausgaben', `bis zu ${SPLITWISE_DAILY_LIMIT} pro Tag`, 'unbegrenzt'],
 					[
 						'Transaktionsimport (nur ausgewählte Länder)',
 						'als Pro-Funktion aufgeführt',
@@ -235,24 +239,24 @@ export const RATGEBER_GELD: Record<string, Thema> = {
 					['Diagramme', 'als Pro-Funktion aufgeführt', 'enthalten'],
 					['Standardaufteilungen', 'als Pro-Funktion aufgeführt', 'enthalten'],
 				],
-				hinweis: 'Quelle: Splitwise-Hilfe, abgerufen am 27. Oktober 2026.',
+				note: 'Quelle: Splitwise-Hilfe, abgerufen am 27. Oktober 2026.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Ist Splitwise noch kostenlos?',
-				`Ja, mit Grenzen: laut Splitwise-Hilfe ${SPLITWISE_TAGESLIMIT} Ausgaben pro Tag in der kostenlosen Version.`,
+				`Ja, mit Grenzen: laut Splitwise-Hilfe ${SPLITWISE_DAILY_LIMIT} Ausgaben pro Tag in der kostenlosen Version.`,
 			],
 			[
 				'Wie viele Ausgaben pro Tag erlaubt Splitwise kostenlos?',
-				`Laut Splitwise-Hilfe ${SPLITWISE_TAGESLIMIT}, Stand 27. Oktober 2026.`,
+				`Laut Splitwise-Hilfe ${SPLITWISE_DAILY_LIMIT}, Stand 27. Oktober 2026.`,
 			],
 			[
 				'Kann ich meine Splitwise-Daten mitnehmen?',
 				'Liegen eure Ausgaben als CSV-Datei vor, importiert ManaWG sie mit Vorschau. Übernommen werden Beträge in Euro.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'Splitwise-Hilfe: What is Splitwise Pro?',
 				'https://kb.splitwise.com/pro/what-is-splitwise-pro',

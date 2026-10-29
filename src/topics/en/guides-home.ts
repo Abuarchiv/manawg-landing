@@ -1,44 +1,44 @@
 // English guides, batch B: household, rules and living together.
 // General tips, not legal advice. ManaWG features only where the app really has them (see topics.ts).
-import { putzplanRotation, tabelleAlsCsv } from '../putzplan-rotation.ts';
-import type { Thema } from '../themen.ts';
+import { cleaningRota, tableToCsv } from '../cleaning-rota.ts';
+import type { Topic } from '../types.ts';
 
 const TASKS_FOUR = ['Bathroom', 'Kitchen', 'Floors', 'Bins and hallway'];
 const TASKS_THREE = ['Bathroom', 'Kitchen', 'Floors and bins'];
 const TASKS_FIVE = [...TASKS_FOUR, 'Living room and balcony'];
 
 /** Single source of the templates: HTML tables and CSV both read from here. A to E stand for example flatmates. */
-const TEMPLATE_FOUR = putzplanRotation(['A', 'B', 'C', 'D'], TASKS_FOUR, undefined, 'Week');
-const TEMPLATE_TWO = putzplanRotation(
+const TEMPLATE_FOUR = cleaningRota(['A', 'B', 'C', 'D'], TASKS_FOUR, undefined, 'Week');
+const TEMPLATE_TWO = cleaningRota(
 	['A', 'B'],
 	['Bathroom', 'Floors', 'Kitchen', 'Bins and hallway'],
 	undefined,
 	'Week',
 );
-const TEMPLATE_THREE = putzplanRotation(['A', 'B', 'C'], TASKS_THREE, undefined, 'Week');
-const TEMPLATE_FIVE = putzplanRotation(['A', 'B', 'C', 'D', 'E'], TASKS_FIVE, undefined, 'Week');
+const TEMPLATE_THREE = cleaningRota(['A', 'B', 'C'], TASKS_THREE, undefined, 'Week');
+const TEMPLATE_FIVE = cleaningRota(['A', 'B', 'C', 'D', 'E'], TASKS_FIVE, undefined, 'Week');
 
 /** The same template data as a CSV. Comma separated, static, no user input. */
 export function cleaningRotaTemplateCsv(): string {
-	return tabelleAlsCsv(TEMPLATE_FOUR.kopf, TEMPLATE_FOUR.zeilen, ',');
+	return tableToCsv(TEMPLATE_FOUR.header, TEMPLATE_FOUR.rows, ',');
 }
 
-export const GUIDES_EN_HOME: Record<string, Thema> = {
+export const GUIDES_EN_HOME: Record<string, Topic> = {
 	'make-a-cleaning-rota': {
 		link: 'Make a cleaning rota',
 		widget: {
 			after: 'Cleaning rota generator: a plan in one minute',
 			kind: 'rota-generator',
 		},
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Make a cleaning rota: weekly plan and generator | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Make a cleaning rota: weekly plan and generator | ManaWG',
+		description:
 			'Make a cleaning rota in five steps: tasks by room and rhythm, a weekly plan as a table, a points system and a free generator for your flatmates’ names.',
 		h1: 'Make a cleaning rota, step by step, for a home or flat share',
-		einleitung:
+		intro:
 			'A cleaning rota rarely fails because people are lazy. It fails because the tasks are vague and nobody keeps the plan up to date. In five steps you get to a rota for a household or flat share: collect tasks by room, estimate the effort, spread them over the week, share them fairly and make the plan visible. All figures and days are examples that you adapt to your own flat.',
-		abschnitte: [
+		sections: [
 			[
 				'Five steps to a cleaning rota',
 				'1. Collect tasks by room\n2. Estimate the effort\n3. Spread them over the week\n4. Share them out: fixed or rotating\n5. Make the plan visible and keep it up to date',
@@ -88,12 +88,12 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'The [cleaning rota template to print](/cleaning-rota-template) comes as a table and as a CSV download. It has ready rotations for two, three, four and five people and a generator for your names.\nThe [cleaning rota in ManaWG](/cleaning-rota) repeats tasks every few days or months and works out who is next based on workload: assigned and overdue tasks count, overdue ones more. Anyone who is away is skipped, and ManaWG sends a push reminder for assigned tasks that are due.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Step 1: collect tasks by room',
-				titel: 'Example: tasks by room and rhythm',
-				kopf: ['Room', 'Task', 'Rhythm'],
-				zeilen: [
+				after: 'Step 1: collect tasks by room',
+				title: 'Example: tasks by room and rhythm',
+				header: ['Room', 'Task', 'Rhythm'],
+				rows: [
 					['Kitchen', 'Hob, worktops, sink, floor', 'weekly'],
 					['Kitchen', 'Empty the dishwasher', 'daily'],
 					['Kitchen', 'Go through the fridge', 'every two weeks'],
@@ -106,22 +106,22 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				],
 			},
 			{
-				nach: 'Step 2: estimate the effort',
-				titel: 'Time needed per task',
-				kopf: ['Task', 'Guide value'],
-				zeilen: [
+				after: 'Step 2: estimate the effort',
+				title: 'Time needed per task',
+				header: ['Task', 'Guide value'],
+				rows: [
 					['Bathroom, thorough', '30 to 45 minutes'],
 					['Kitchen', '20 to 30 minutes'],
 					['Hoover and mop the floors', '30 to 40 minutes'],
 					['Bins and deposit bottles', '10 minutes'],
 				],
-				hinweis: 'Rough guide values, not measurements.',
+				note: 'Rough guide values, not measurements.',
 			},
 			{
-				nach: 'Step 3: spread them over the week',
-				titel: 'Example: weekly cleaning plan',
-				kopf: ['Day', 'Task', 'What it includes'],
-				zeilen: [
+				after: 'Step 3: spread them over the week',
+				title: 'Example: weekly cleaning plan',
+				header: ['Day', 'Task', 'What it includes'],
+				rows: [
 					['Monday', 'Bins', 'Take out rubbish, paper and deposit bottles'],
 					['Tuesday', 'Kitchen', 'Hob, worktops, sink, floor'],
 					['Wednesday', 'Bathroom', 'Sink, shower, toilet, mirror, floor'],
@@ -132,10 +132,10 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				],
 			},
 			{
-				nach: 'Step 4: share them out, fixed or rotating',
-				titel: 'Three ways to share tasks out',
-				kopf: ['Approach', 'Upside', 'Downside'],
-				zeilen: [
+				after: 'Step 4: share them out, fixed or rotating',
+				title: 'Three ways to share tasks out',
+				header: ['Approach', 'Upside', 'Downside'],
+				rows: [
 					[
 						'Fixed areas',
 						'simple, everyone knows what is theirs',
@@ -150,10 +150,10 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				],
 			},
 			{
-				nach: 'Daily, weekly, monthly: what is due when',
-				titel: 'Example: tasks by rhythm',
-				kopf: ['Rhythm', 'Examples', 'How to share them'],
-				zeilen: [
+				after: 'Daily, weekly, monthly: what is due when',
+				title: 'Example: tasks by rhythm',
+				header: ['Rhythm', 'Examples', 'How to share them'],
+				rows: [
 					[
 						'daily',
 						'Empty the dishwasher, wipe the worktop, wash your own dishes',
@@ -177,19 +177,19 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				],
 			},
 			{
-				nach: 'Points system: counting effort fairly',
-				titel: 'Example: points by effort (1 point = 5 minutes)',
-				kopf: ['Task', 'Guide value', 'Points'],
-				zeilen: [
+				after: 'Points system: counting effort fairly',
+				title: 'Example: points by effort (1 point = 5 minutes)',
+				header: ['Task', 'Guide value', 'Points'],
+				rows: [
 					['Bathroom, thorough', 'about 40 minutes', '8'],
 					['Hoover and mop the floors', 'about 35 minutes', '7'],
 					['Kitchen', 'about 25 minutes', '5'],
 					['Bins and deposit bottles', '10 minutes', '2'],
 				],
-				hinweis: 'Rough guide values, not measurements. The points are an example.',
+				note: 'Rough guide values, not measurements. The points are an example.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'What belongs in a cleaning rota?',
 				'A list of tasks by room, a rhythm for each task, someone responsible and a rule for time away. The more concretely a task is described, the less there is to discuss.',
@@ -227,15 +227,15 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			kind: 'rota-generator',
 			csv: '/en/cleaning-rota-template.csv',
 		},
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Cleaning rota template: 2 to 5 flatmates, PDF, CSV | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Cleaning rota template: 2 to 5 flatmates, PDF, CSV | ManaWG',
+		description:
 			'Free flat-share cleaning rota template to print: rotations for 2, 3, 4 and 5 people, a generator with your names, print as PDF or open the CSV in Excel.',
 		h1: 'Flat-share cleaning rota template to print and adapt',
-		einleitung:
+		intro:
 			'Here is a ready-made rotation for two, three, four and five people, free and without an account. In the generator you enter your names and print the plan as a PDF or download it as a CSV.',
-		abschnitte: [
+		sections: [
 			[
 				'Template for four people',
 				'With four people, the bathroom, kitchen, floors and bins plus hallway rotate. Every week each person moves on by one task, and after four weeks everyone has done everything once. A to D stand for your four names.',
@@ -269,36 +269,36 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'A printed plan does not rotate by itself and does not remind anyone. Someone who is away has to be swapped by hand. The [cleaning rota app](/cleaning-rota) from ManaWG sets up tasks with a rhythm, shows who is next, skips anyone who is away and sends a push reminder for tasks that are due. For that you create a flat, send the invite link and add the tasks, free and in the browser.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Template for four people',
-				titel: 'Template: four-week rotation for four people',
+				after: 'Template for four people',
+				title: 'Template: four-week rotation for four people',
 				...TEMPLATE_FOUR,
-				hinweis: 'A, B, C and D stand for four example flatmates.',
+				note: 'A, B, C and D stand for four example flatmates.',
 			},
 			{
-				nach: 'Template for three and five people',
-				titel: 'Template: three-week rotation for three people',
+				after: 'Template for three and five people',
+				title: 'Template: three-week rotation for three people',
 				...TEMPLATE_THREE,
-				hinweis: 'A, B and C stand for three example flatmates.',
+				note: 'A, B and C stand for three example flatmates.',
 			},
 			{
-				nach: 'Template for three and five people',
-				titel: 'Template: five-week rotation for five people',
+				after: 'Template for three and five people',
+				title: 'Template: five-week rotation for five people',
 				...TEMPLATE_FIVE,
-				hinweis: 'A to E stand for five example flatmates.',
+				note: 'A to E stand for five example flatmates.',
 			},
 			{
-				nach: 'Template for two people',
-				titel: 'Template: two-week rotation for two people',
+				after: 'Template for two people',
+				title: 'Template: two-week rotation for two people',
 				...TEMPLATE_TWO,
-				hinweis: 'A and B stand for two example flatmates.',
+				note: 'A and B stand for two example flatmates.',
 			},
 			{
-				nach: 'Tasks with a rhythm',
-				titel: 'Tasks with a rhythm',
-				kopf: ['Task', 'Rhythm', 'What it includes'],
-				zeilen: [
+				after: 'Tasks with a rhythm',
+				title: 'Tasks with a rhythm',
+				header: ['Task', 'Rhythm', 'What it includes'],
+				rows: [
 					['Bathroom', 'weekly', 'Sink, shower, toilet, floor'],
 					['Kitchen', 'weekly', 'Hob, worktops, sink, floor'],
 					['Floors', 'weekly', 'Hoover or mop the living room and shared areas'],
@@ -316,7 +316,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				],
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Is there a free cleaning rota template for a flat share?',
 				'Yes. This page has ready rotations for two, three, four and five people and a generator where you enter your names. The plan is free: you do not need an account, and nothing is stored. If you do not want to print anything, use the cleaning rota in ManaWG.',
@@ -345,20 +345,20 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 	},
 	'house-rules': {
 		link: 'House rules',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'House rules template: 10 rules for a flat share | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'House rules template: 10 rules for a flat share | ManaWG',
+		description:
 			'House rules template with ten rules on quiet hours, guests, cleaning, the fridge and money. With room to flex, agreed consequences and a fill-in sheet to print.',
 		h1: 'House rules for a flat share: a template with ten rules that work',
-		einleitung:
+		intro:
 			'Many flat shares have either no rules at all or a long list that nobody keeps to. Good house rules are short, concrete and agreed by everyone, and ten on one page are usually enough. Below is a template with ten rules to take over, then a fill-in-the-blanks sheet, the individual areas and examples of the consequences you can agree if rules are broken.',
-		tabellen: [
+		tables: [
 			{
-				nach: 'Template: ten house rules to take over',
-				titel: 'Rules with room to flex',
-				kopf: ['Area', 'Default in the template', 'Room to flex'],
-				zeilen: [
+				after: 'Template: ten house rules to take over',
+				title: 'Rules with room to flex',
+				header: ['Area', 'Default in the template', 'Room to flex'],
+				rows: [
 					[
 						'Quiet hours',
 						'from 10 pm on weekdays, from midnight at weekends',
@@ -397,14 +397,13 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 					],
 					['Flat meeting', 'once a month', 'less often after the trial period'],
 				],
-				hinweis:
-					'The values are examples, not a requirement. Your tenancy agreement and the building’s house rules (Hausordnung) take precedence.',
+				note: 'The values are examples, not a requirement. Your tenancy agreement and the building’s house rules (Hausordnung) take precedence.',
 			},
 			{
-				nach: 'When someone breaks the rules repeatedly',
-				titel: 'Consequences you can agree in advance',
-				kopf: ['Breach', 'Agreed consequence', 'The thinking behind it'],
-				zeilen: [
+				after: 'When someone breaks the rules repeatedly',
+				title: 'Consequences you can agree in advance',
+				header: ['Breach', 'Agreed consequence', 'The thinking behind it'],
+				rows: [
 					[
 						'Cleaning task not done',
 						'catch up within two days',
@@ -426,11 +425,10 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 						'fits the rule for settling up',
 					],
 				],
-				hinweis:
-					'The consequences are examples. Agree them before the first breach and write them next to the rules. Fines usually make an argument worse.',
+				note: 'The consequences are examples. Agree them before the first breach and write them next to the rules. Fines usually make an argument worse.',
 			},
 		],
-		abschnitte: [
+		sections: [
 			[
 				'Template: ten house rules to take over',
 				'1. Quiet from 10 pm on weekdays and from midnight at weekends.\n2. Parties are announced at least a day ahead.\n3. Overnight guests are welcome, and anyone staying longer than three nights is agreed in advance.\n4. Dishes are washed up or loaded into the dishwasher on the same day.\n5. The cleaning rota rotates weekly, and anyone who is away is skipped and does not catch up.\n6. Everyone has their own shelf in the fridge, and other people’s food is only eaten after asking.\n7. Cleaning supplies, toilet paper and washing-up liquid are paid for together, private food by each person.\n8. Purchases for the flat over €30 are agreed beforehand.\n9. Expenses are entered at once and settled up on the first of the month.\n10. Once a month there is a short flat meeting where the rules can be adjusted.',
@@ -504,7 +502,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'Flat rules are agreements between flatmates. They add to the tenancy agreement and the building’s house rules (Hausordnung) but do not replace them. What those say, for example quiet hours in the building or rules on keeping pets, applies regardless of your agreements. So check beforehand what the agreement already sets.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Which rules should every flat share have?',
 				'Quiet hours, how to handle guests, cleaning, shared expenses and a regular meeting to agree things. Usually nothing more is needed.',
@@ -545,15 +543,15 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 	},
 	'flatmate-conflict': {
 		link: 'Flatmate conflict',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Flatmate conflict: cleaning, noise and money | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Flatmate conflict: cleaning, noise and money | ManaWG',
+		description:
 			'Rows with flatmates over cleaning, noise or money? How to raise conflicts, find rules that last and stop small irritations from escalating in a flat share.',
 		h1: 'Solving conflict between flatmates',
-		einleitung:
+		intro:
 			'Almost every flat share has a row sooner or later, usually about the same three things: cleaning, noise and money. It is rarely down to ill will. Mostly there are no clear agreements, or small irritations went unmentioned for too long. A few habits settle most conflicts before they spoil the atmosphere.',
-		abschnitte: [
+		sections: [
 			[
 				'Raise things early, do not save them up',
 				'The most common mistake is to swallow annoyance until it all comes out at once. Raise things while they are small, and ideally with the person concerned directly rather than with the others first. A calm moment is better than the instant the dirty dishes are in the sink again.',
@@ -579,7 +577,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'A regular short meeting, say once a month, gives everyone a fixed place for topics. Anyone can bring something, and decisions are written down. If things do not improve despite talking, it is no failure to ask whether the mix of people fits. Sometimes [moving out](/moving-out-checklist) is the fairest solution for everyone. Who may give notice to whom depends on the contract, see [asking a flatmate to leave](/asking-a-flatmate-to-leave).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'What do flat shares argue about most?',
 				'Cleaning, noise and money. In all three cases clear rules that everyone has agreed, and a fixed place where they are written down, help.',
@@ -596,15 +594,15 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 	},
 	'holidays-and-time-away': {
 		link: 'Holidays and time away',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Flat share and holidays: rota and costs while away | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Flat share and holidays: rota and costs while away | ManaWG',
+		description:
 			'What applies in a flat share when someone travels? Cleaning rota, rent, shared costs, a semester abroad and agreements for longer absences, settled fairly.',
 		h1: 'Holidays and time away in a flat share',
-		einleitung:
+		intro:
 			'When someone is gone for weeks, the others wonder who takes over the tasks and who bears which costs. Whether it is a holiday, an internship or a semester abroad, clear rules that are settled beforehand mean no rows.',
-		abschnitte: [
+		sections: [
 			[
 				'Cleaning rota while someone is away',
 				'Someone who is not there cannot clean. When you are [making a cleaning rota](/make-a-cleaning-rota), a rule for this belongs in it. The usual approach is that people who are away are skipped and do not have to catch up on everything afterwards. Some flats agree that before a long trip the person does their own task first, so nobody takes over an uncleaned bathroom. In the [ManaWG cleaning rota](/cleaning-rota) you enter time away with a date range. When a task is marked done, that person is passed over at the next assignment. Tasks already assigned stay with them, the app marks them as away, and someone else can take them over.',
@@ -630,7 +628,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'Say in good time how long you will be away and put the dates in the shared calendar. Settle who looks after plants, post and pets. Empty perishable food from the fridge or offer it to the others. And settle open amounts before you leave, so nobody waits weeks for their money.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Do I still have cleaning duties while I am on holiday?',
 				'That is up to your flat. It is usual to skip people who are away. In ManaWG this is covered by the time away feature.',
@@ -647,15 +645,15 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 	},
 	'wg-casting-questions': {
 		link: 'Flat interviews (WG-Casting)',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'WG-Casting explained: 48 questions, templates | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'WG-Casting explained: 48 questions, templates | ManaWG',
+		description:
 			'What is a WG-Casting and how does it work? 48 questions for the flat and for applicants, off-limits questions, reply templates and a scoring sheet.',
 		h1: 'WG-Casting: how it works and what to ask, for the flat and for applicants',
-		einleitung:
+		intro:
 			'At a WG-Casting, the flat interview for a free room in a German shared flat, twenty minutes decide whether you will live well together for the next few years. Both sides check each other: the flat checks the newcomer, and the applicant checks the flat. With the right questions you learn what really counts, not just who seems the nicest. In short: plan 20 to 30 minutes per appointment, meet applicants one at a time and decide afterwards, separately from the applicants.',
-		abschnitte: [
+		sections: [
 			[
 				'What is a WG-Casting and how does it work?',
 				'A WG-Casting is a get-to-know-you meeting at which a WG (shared flat) and people interested in a free room check whether they suit each other. Some call it a flat viewing or an introduction round. It is not an audition; it is about whether daily life and expectations fit. It usually takes place in the flat, often at the kitchen table, and lasts 20 to 30 minutes. At the end the flat says by when it will get back to you.',
@@ -717,12 +715,12 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'Offer: “Hi Tim, we would be glad if you moved in with us. The room is free from 1 December, €420 all-in. Please tell us by Friday whether you accept, and we will send you the draft contract and our house rules.”\nDecline: “Hi Lena, thank you for the nice chat yesterday. We have chosen someone whose daily life fits a little better. It was not an easy choice. We wish you every success with the search.”\nTiming: send declines on the same day as the offer, so nobody waits.\nContent: no reasons that judge the person, and no comparisons with others.\nAfterwards: what to settle before moving in is covered in [find a flatmate](/find-a-flatmate) and in the [moving-in checklist](/moving-in-checklist).',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'The ten most important questions',
-				titel: 'Typical questions and what is behind them',
-				kopf: ['Question', 'What the flat wants to know', 'An honest answer'],
-				zeilen: [
+				after: 'The ten most important questions',
+				title: 'Typical questions and what is behind them',
+				header: ['Question', 'What the flat wants to know', 'An honest answer'],
+				rows: [
 					[
 						'What does a normal day look like for you?',
 						'Whether your rhythms fit and who needs the bathroom when.',
@@ -766,24 +764,23 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				],
 			},
 			{
-				nach: 'Deciding after the casting',
-				titel: 'Scoring sheet',
-				kopf: ['Criterion', 'Person A', 'Person B', 'Person C'],
-				zeilen: [
+				after: 'Deciding after the casting',
+				title: 'Scoring sheet',
+				header: ['Criterion', 'Person A', 'Person B', 'Person C'],
+				rows: [
 					['Rhythm fits', '', '', ''],
 					['Similar tidiness', '', '', ''],
 					['View on money', '', '', ''],
 					['Expectations of the flat', '', '', ''],
 					['Gut feeling', '', '', ''],
 				],
-				hinweis:
-					'Scale from 1 (does not fit at all) to 5 (fits very well). Each person fills in the sheet alone straight after the meeting, then you compare.',
+				note: 'Scale from 1 (does not fit at all) to 5 (fits very well). Each person fills in the sheet alone straight after the meeting, then you compare.',
 			},
 			{
-				nach: 'What is a WG-Casting and how does it work?',
-				titel: 'How a WG-Casting runs in 30 minutes',
-				kopf: ['Minute', 'What happens', 'What to look out for'],
-				zeilen: [
+				after: 'What is a WG-Casting and how does it work?',
+				title: 'How a WG-Casting runs in 30 minutes',
+				header: ['Minute', 'What happens', 'What to look out for'],
+				rows: [
 					[
 						'0 to 5',
 						'Welcome, brief introductions, offer a drink',
@@ -810,11 +807,10 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 						'name a concrete date, do not promise anything yet',
 					],
 				],
-				hinweis:
-					'Guide values. If you hold several meetings in one evening, allow ten minutes of buffer between people.',
+				note: 'Guide values. If you hold several meetings in one evening, allow ten minutes of buffer between people.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'What is a WG-Casting?',
 				'A get-to-know-you meeting at which a flat share and people interested in a free room check whether they suit each other. It usually lasts 20 to 30 minutes and takes place in the flat, with a tour and a conversation.',
@@ -848,7 +844,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'Questions about origin, religion, health, pregnancy or wanting children, and sexual orientation. They say nothing about living together. Ask about daily life, quiet hours, visitors and money instead.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 551 BGB, limits and investment of rental deposits (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__551.html',
@@ -857,15 +853,15 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 	},
 	'subletting-a-room': {
 		link: 'Subletting a room',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Subletting a room in Germany: permission, contract | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Subletting a room in Germany: permission, contract | ManaWG',
+		description:
 			'Subletting a flat-share room in Germany for a semester abroad or internship: landlord permission, sublease, rent, deposit, address registration and handover.',
 		h1: 'Subletting a room in a German flat share',
-		einleitung:
+		intro:
 			'A semester abroad, an internship in another city or a few months of travel: if you want to keep your room in a WG (shared flat) but not pay rent for an empty one, you look for a Zwischenmiete, a temporary sublet. For this to go well for everyone you need the landlord’s permission, a clear contract and your flatmates’ agreement. This page describes how it works in Germany, gives an overview and is not legal advice.',
-		abschnitte: [
+		sections: [
 			[
 				'Ask first: landlord and flat',
 				'In Germany a sublet is legally a [sublease](/flat-share-tenancy-agreement) (Untermiete) and needs the landlord’s permission, ideally in writing. If a legitimate interest arises after you sign your contract, for example a temporary stay abroad, you can, under certain conditions, demand that permission (§ 553 para. 1 BGB). Your flatmates matter just as much: they will live with the new person for months and should help choose.',
@@ -895,7 +891,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'At the end, do a handover using the handover record from the start. Check the room and inventory, settle open amounts and pay back the deposit if everything is in order. Allow a few days of buffer between the subtenant moving out and your return in case a date shifts. If you still have questions about the rota and costs during your absence, see [holidays and time away in a flat share](/holidays-and-time-away).',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Do I need the landlord’s permission to sublet in Germany?',
 				'Yes. Subletting needs the landlord’s permission. For a temporary stay abroad you can demand it under certain conditions.',
@@ -913,7 +909,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 				'A reasonable supplement for furniture let with the room is usual. Charging clearly more is unfair to the subtenant and can cause trouble with the landlord.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 540 BGB, letting to third parties (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__540.html',

@@ -1,4 +1,4 @@
-import type { Thema } from '../themen.ts';
+import type { Topic } from '../types.ts';
 
 // English guides for starting, moving into and leaving a flat share in Germany (batch C).
 // German law (BGB, BMG) is cited with its German sources; only the German text is binding.
@@ -12,18 +12,18 @@ const BMG_EN: [string, string] = [
 	'https://www.gesetze-im-internet.de/englisch_bmg/',
 ];
 
-export const GUIDES_EN_MOVING: Record<string, Thema> = {
+export const GUIDES_EN_MOVING: Record<string, Topic> = {
 	'start-a-flat-share': {
 		link: 'Start a flat share',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Start a flat share in Germany: steps and checklist | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Start a flat share in Germany: steps and checklist | ManaWG',
+		description:
 			'Start a WG (shared flat) in Germany step by step: the right order, budget, tenancy type, deposit, flat agreement and Anmeldung. With a tick-off checklist.',
 		h1: 'Start a flat share in Germany: steps and checklist',
-		einleitung:
+		intro:
 			'Starting a WG (Wohngemeinschaft, a shared flat) in Germany is mostly about getting the order and the responsibilities right: who moves in, what the flat may cost, which type of tenancy applies and who pays which share when. This checklist runs from the first conversation to the first flat meeting after move-in, with a worked deposit example and a list to tick off at the end. It is general information and not legal advice, particularly on tenancy agreements.',
-		abschnitte: [
+		sections: [
 			[
 				'The order in which a flat share comes together',
 				'Most people who start a flat share from scratch look for flatmates first and the flat second. You then apply as a group and know your budget and expectations before the first viewing. If you are taking over a flat where someone already lives, the order is reversed. The table shows what comes up in each phase and which step on this page covers it. What to do in the first weeks after move-in is in the [moving-in checklist](/moving-in-checklist).',
@@ -89,7 +89,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'1. Flatmates found and expectations discussed\n2. Application documents ready for each person\n3. Type of tenancy chosen and tenancy agreement signed\n4. Deposit paid, shares noted down\n5. Handover record with photos and meter readings\n6. Flat agreement written down and confirmed by everyone\n7. Everyone registered within two weeks\n8. Electricity, internet and Rundfunkbeitrag in one person’s name, costs shared\n9. Liability and contents insurance checked\n10. Rent split and fixed costs agreed\n11. Initial equipment agreed\n12. Cleaning rota, shopping list and house rules set up',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'Can you just start a flat share?',
 				'Yes. You do not register a flat share as such. You need a tenancy agreement that allows people to live together, and each person registers their address with the Bürgeramt within two weeks (§ 17 para. 1 BMG). If one person rents the flat alone and takes in flatmates, they need the landlord’s permission (§ 540 para. 1 BGB).',
@@ -135,12 +135,12 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Yes. One person creates the flat and shares the invite link, and the others are in straight away. The app is free, available in English and German, and needs no installation from an app store.',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: '4. Agree the deposit and the handover',
-				titel: 'Example: deposit with €1,200 Kaltmiete and four people',
-				kopf: ['Item', 'Amount', 'Basis'],
-				zeilen: [
+				after: '4. Agree the deposit and the handover',
+				title: 'Example: deposit with €1,200 Kaltmiete and four people',
+				header: ['Item', 'Amount', 'Basis'],
+				rows: [
 					['Maximum: three months’ rent excluding utilities', '€3,600', '§ 551 para. 1 BGB'],
 					['Share per person with an equal split', '€900', 'your agreement'],
 					[
@@ -149,14 +149,13 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 						'§ 551 para. 2 BGB: first instalment at the start of the tenancy, the other two with the following rent payments',
 					],
 				],
-				hinweis:
-					'Worked example for a cash deposit. With individual tenancy agreements the limit applies to each contract, with subletting to the sublease.',
+				note: 'Worked example for a cash deposit. With individual tenancy agreements the limit applies to each contract, with subletting to the sublease.',
 			},
 			{
-				nach: '3. Choose the right type of tenancy',
-				titel: 'Three tenancy models',
-				kopf: ['Model', 'Liability', 'Moving out', 'Notice'],
-				zeilen: [
+				after: '3. Choose the right type of tenancy',
+				title: 'Three tenancy models',
+				header: ['Model', 'Liability', 'Moving out', 'Notice'],
+				rows: [
 					[
 						'Joint main tenancy',
 						'everyone together for the whole rent',
@@ -176,13 +175,13 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 						'own contract',
 					],
 				],
-				hinweis: 'More in the guide to the flat-share tenancy agreement.',
+				note: 'More in the guide to the flat-share tenancy agreement.',
 			},
 			{
-				nach: 'The order in which a flat share comes together',
-				titel: 'Starting a flat share: the phases',
-				kopf: ['Phase', 'What you settle', 'Step'],
-				zeilen: [
+				after: 'The order in which a flat share comes together',
+				title: 'Starting a flat share: the phases',
+				header: ['Phase', 'What you settle', 'Step'],
+				rows: [
 					[
 						'Before the search',
 						'Who moves in, budget per person, preferred type of tenancy',
@@ -202,31 +201,30 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 						'5, 7, 9, 10, 11',
 					],
 				],
-				hinweis: 'The Anmeldung is due within two weeks of moving in (§ 17 para. 1 BMG).',
+				note: 'The Anmeldung is due within two weeks of moving in (§ 17 para. 1 BMG).',
 			},
 			{
-				nach: 'Budget and flat size before you search',
-				titel: 'Example: number of rooms and budget',
-				kopf: [
+				after: 'Budget and flat size before you search',
+				title: 'Example: number of rooms and budget',
+				header: [
 					'People',
 					'Rooms without living room',
 					'Rooms with living room',
 					'All-in rent at €400 per person',
 				],
-				zeilen: [
+				rows: [
 					['2', '2', '3', '€800'],
 					['3', '3', '4', '€1,200'],
 					['4', '4', '5', '€1,600'],
 					['5', '5', '6', '€2,000'],
 				],
-				hinweis:
-					'Worked example with an equal contribution per person. How you actually split the rent depends on room sizes and your agreement.',
+				note: 'Worked example with an equal contribution per person. How you actually split the rent depends on room sizes and your agreement.',
 			},
 			{
-				nach: 'What starting up costs',
-				titel: 'Costs at the start',
-				kopf: ['Item', 'When', 'Who pays'],
-				zeilen: [
+				after: 'What starting up costs',
+				title: 'Costs at the start',
+				header: ['Item', 'When', 'Who pays'],
+				rows: [
 					[
 						'Deposit',
 						'at the start of the tenancy, three monthly instalments possible for a money deposit (§ 551 para. 2 BGB)',
@@ -247,10 +245,10 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 					['Liability insurance', 'ongoing', 'each person for themselves'],
 					['Contents insurance', 'ongoing', 'depends on the policy, check beforehand'],
 				],
-				hinweis: 'The table at step 4 works out the deposit.',
+				note: 'The table at step 4 works out the deposit.',
 			},
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 551 BGB, limits and investment of rental deposits (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__551.html',
@@ -273,15 +271,15 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 	},
 	'flat-share-tenancy-agreement': {
 		link: 'Flat-share tenancy',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Flat-share tenancy agreement in Germany: 3 models | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Flat-share tenancy agreement in Germany: 3 models | ManaWG',
+		description:
 			'Which tenancy fits a WG (shared flat) in Germany? Joint tenancy, subletting or individual contracts compared, plus a sublease checklist and deposit rules.',
 		h1: 'The flat-share tenancy agreement in Germany: three models compared',
-		einleitung:
+		intro:
 			'Living in a WG (shared flat) in Germany does not automatically give you the same rights as your flatmates. What matters is how the tenancy is set up: whether everyone signs together, one person sublets, or each person has their own contract. That decides who is liable for the rent, who can give notice and how a change of flatmate works. This page gives an overview and is not legal advice. For a specific case, a Mieterverein (tenants’ association) can help.',
-		abschnitte: [
+		sections: [
 			[
 				'Model 1: joint main tenancy (Mietgemeinschaft)',
 				'All flatmates sign one contract with the landlord, which Germans call a Mietgemeinschaft (joint tenancy). Everyone has the same rights, but everyone is jointly liable for the whole rent: if one person does not pay, the landlord can demand the full amount from any of the others. As a rule, only everyone together can give notice, and nobody can [ask a flatmate to leave](/asking-a-flatmate-to-leave). If one person wants to move out, the change needs the consent of the landlord and the other tenants. Some landlords add a clause that expressly allows flatmates to change, so check whether yours has one before you sign.',
@@ -315,12 +313,12 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'For a settled flat share of friends who want to live together for a long time, a joint main tenancy with a clause for changes of tenant fits well. If flatmates change often, as in student cities, subletting is more flexible but puts the burden on the main tenant. Individual contracts are the most convenient, but give the flat share the least influence over who moves in. How you then split rent, utilities and shopping is covered in [splitting flat costs](/split-flat-costs), and everything else you need to get started is in the [checklist for starting a flat share](/start-a-flat-share).',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Sublease checklist',
-				titel: 'Sublease for a flat-share room: points with examples',
-				kopf: ['Point', 'Example entry'],
-				zeilen: [
+				after: 'Sublease checklist',
+				title: 'Sublease for a flat-share room: points with examples',
+				header: ['Point', 'Example entry'],
+				rows: [
 					['Parties', 'Name and address of main tenant and subtenant'],
 					['Rented space', 'Room 2, 14 m², shared use of kitchen, bathroom and hallway'],
 					['Furniture', 'furnished with bed, wardrobe and desk, or unfurnished'],
@@ -333,10 +331,10 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 					['House rules', 'house rules and flat-share rules as an annex'],
 					['Signatures', 'handwritten by both sides, with place and date'],
 				],
-				hinweis: 'Example entries to adapt, not a legally checked contract template.',
+				note: 'Example entries to adapt, not a legally checked contract template.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Which tenancy agreement is best for a flat share?',
 				'It depends on how settled the flat share is. A joint main tenancy gives everyone the same rights but makes changes awkward. Subletting and individual contracts are more flexible.',
@@ -362,7 +360,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'It usually means a person named in the main tenancy alongside others, in other words a co-tenant. Some people also use the word for subtenants. What matters is who signed the contract with whom.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 540 BGB, letting to third parties (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__540.html',
@@ -384,15 +382,15 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 	},
 	'moving-in-checklist': {
 		link: 'Moving in',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Moving into a flat share in Germany: checklist | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Moving into a flat share in Germany: checklist | ManaWG',
+		description:
 			'Checklist for moving into a WG (shared flat) in Germany: contract, Anmeldung, keys, money, cleaning rota and getting to know your flatmates in the first weeks.',
 		h1: 'Moving into a flat share in Germany: the checklist',
-		einleitung:
+		intro:
 			'Moving into a WG (shared flat) in Germany means more than carrying boxes: you also learn new habits. The points below are ordered by timing: before moving in, on move-in day, in the first week and in the first month. That way you start without misunderstandings. If you are setting up the flat share yourselves, the whole process from search to registration is in the [checklist for starting a flat share](/start-a-flat-share).',
-		abschnitte: [
+		sections: [
 			[
 				'Before moving in: contract and paperwork',
 				'Find out whether you get your own tenancy agreement with the landlord or a [sublease](/flat-share-tenancy-agreement) with a flatmate. Ask about the amount and repayment of the Kaution (deposit): it may be at most three months’ Kaltmiete (rent excluding utilities), and can be paid in three monthly instalments. Also ask whether the rent is quoted as Warmmiete (including heating and other utilities) or Kaltmiete (excluding them). Have the rooms, cupboards and fridge shelves that are yours pointed out to you. Ask about the existing [house rules](/house-rules) on quiet, visitors and cleaning, and how costs are split.',
@@ -422,7 +420,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Sit down together once and ask what is going well and what is not. Adjust the cleaning rota if tasks are unevenly spread. At the first settlement, check that the cost split works as you discussed.',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'What should you settle when moving into a flat share?',
 				'Tenancy or sublease, deposit, how costs are split, cleaning rota, quiet hours and how to handle visitors. Plus the landlord’s confirmation of move-in (Wohnungsgeberbestätigung) for the Anmeldung.',
@@ -436,7 +434,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'With the invite link a flatmate sends you, or the invitation they email you. Before that, you sign up with Google or with your email address.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 17 BMG, registration and deregistration (in German)',
 				'https://www.gesetze-im-internet.de/bmg/__17.html',
@@ -455,15 +453,15 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 	},
 	'anmeldung-shared-flat': {
 		link: 'Registering your address (Anmeldung)',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Anmeldung in a flat share: deadline and form | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Anmeldung in a flat share: deadline and form | ManaWG',
+		description:
 			'Register your address (Anmeldung) in a German flat share: the two-week deadline, who issues the landlord’s confirmation of move-in and what to do if it is refused.',
 		h1: 'Anmeldung in a flat share in Germany: landlord’s confirmation of move-in and deadline',
-		einleitung:
+		intro:
 			'If you move into a flat-share room in Germany, you have to register your address at the local citizens’ office (Bürgeramt). This is called the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in). Who issues it depends on your tenancy, and with subletting in particular, many main tenants do not know they are responsible. This page summarises the rules of the Bundesmeldegesetz (BMG, the Federal Registration Act) for people moving to Germany and is not legal advice. Details such as forms and appointments are set by your city.',
-		abschnitte: [
+		sections: [
 			[
 				'Deadline: two weeks after moving in',
 				'Anyone who moves into a flat has to register with the registration authority (Meldebehörde), usually the Bürgeramt, within two weeks of moving in. That includes a room in a flat share. Appointments are scarce in big cities, so book before the move; the deadline runs regardless. Many cities now also offer the registration online with an electronic ID card. If you are new to Germany, the registration certificate (Meldebescheinigung) matters beyond the law itself: banks, employers and authorities regularly ask for it, and the residence permit and your tax ID depend on it.',
@@ -509,12 +507,12 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'With the registration certificate you can switch your bank account, Rundfunkbeitrag (broadcasting fee) and contracts to the new address. A flat share pays the Rundfunkbeitrag only once; how to split it is covered in the guide to the [Rundfunkbeitrag in a flat share](/rundfunkbeitrag-shared-flat). If it is your first registration in Germany, your tax ID (Steuer-ID) is sent by post, so make sure your name is on the letterbox. What else matters in the first days is summarised in the [moving-in checklist](/moving-in-checklist).',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'Model: what the confirmation contains',
-				titel: 'Example of a landlord’s confirmation of move-in (Wohnungsgeberbestätigung)',
-				kopf: ['Field', 'Example'],
-				zeilen: [
+				after: 'Model: what the confirmation contains',
+				title: 'Example of a landlord’s confirmation of move-in (Wohnungsgeberbestätigung)',
+				header: ['Field', 'Example'],
+				rows: [
 					[
 						'Name and address of the Wohnungsgeber (landlord or main tenant)',
 						'Erika Beispiel, Musterweg 1, 12345 Musterstadt',
@@ -524,10 +522,10 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 					['Address of the flat', 'Musterweg 1, 2nd floor left, 12345 Musterstadt'],
 					['Names of the people who must register', 'Jonas Probe'],
 				],
-				hinweis: 'Invented details for illustration. The form of your city is the one that counts.',
+				note: 'Invented details for illustration. The form of your city is the one that counts.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Who issues the landlord’s confirmation of move-in in a flat share?',
 				'With your own contract or a joint main tenancy, the landlord or property management. With subletting, the main tenant.',
@@ -553,7 +551,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Only if you move abroad or give up a secondary residence. For a move within Germany, registering at the new address is enough.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 17 BMG, registration and deregistration (in German)',
 				'https://www.gesetze-im-internet.de/bmg/__17.html',
@@ -580,15 +578,15 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 	},
 	'asking-a-flatmate-to-leave': {
 		link: 'Asking a flatmate to leave',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Asking a flatmate to leave in Germany | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Asking a flatmate to leave in Germany | ManaWG',
+		description:
 			'Can you end a flatmate’s tenancy in Germany? What applies to subletting, joint tenancy and individual contracts, plus notice periods, written form and a model.',
 		h1: 'Asking a flatmate to leave in Germany: what is possible under each contract',
-		einleitung:
+		intro:
 			'When living together stops working, the question comes quickly whether you can simply throw a flatmate out. In Germany the answer depends almost entirely on who has a contract with whom. Only someone who is the flatmate’s landlord can give notice (kündigen), nobody else. This page gives an overview under the Bürgerliches Gesetzbuch (BGB, the German Civil Code) and is not legal advice. For a specific case, a Mieterverein (tenants’ association) or a lawyer specialising in tenancy law can help.',
-		abschnitte: [
+		sections: [
 			[
 				'First settle who has which contract',
 				'In a WG (shared flat) there are three common set-ups: everyone is named in the joint main tenancy, one person is the Hauptmieter (main tenant) and sublets rooms (Untermiete), or each person has their own contract with the landlord. Only in the second case is a flatmate another flatmate’s landlord and able to give them notice. If you want to leave yourself, read [giving notice on a room](/give-notice-on-a-room). How the models differ otherwise is explained in the guide to the [flat-share tenancy agreement](/flat-share-tenancy-agreement).',
@@ -630,12 +628,12 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Most conflicts can be solved before anyone thinks of notice. Raise problems early and write down agreements, so not every topic is renegotiated. How that works is covered in [resolving flatmate conflicts](/flatmate-conflict). If it is about money, a shared overview helps, see [debts between flatmates](/flatmate-debts). If the move-out is settled, clarify the deposit and open amounts with the [moving-out checklist](/moving-out-checklist).',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'einleitung',
-				titel: 'Asking a flatmate to leave: at a glance',
-				kopf: ['Contract', 'Who can give notice', 'Period', 'Reason needed?'],
-				zeilen: [
+				after: 'intro',
+				title: 'Asking a flatmate to leave: at a glance',
+				header: ['Contract', 'Who can give notice', 'Period', 'Reason needed?'],
+				rows: [
 					[
 						'Subletting, room furnished mostly by the main tenant in their own flat, tenant not living there with family or partner',
 						'Main tenant',
@@ -669,10 +667,10 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				],
 			},
 			{
-				nach: 'Getting rid of a flatmate without a tenancy agreement',
-				titel: 'Without a written contract: what applies',
-				kopf: ['Situation', 'Legally', 'Ending it', 'If the person stays'],
-				zeilen: [
+				after: 'Getting rid of a flatmate without a tenancy agreement',
+				title: 'Without a written contract: what applies',
+				header: ['Situation', 'Legally', 'Ending it', 'If the person stays'],
+				rows: [
 					[
 						'pays rent, nothing in writing',
 						'oral tenancy (§ 535 BGB)',
@@ -692,11 +690,10 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 						'eviction lawsuit, no self-help (§ 858 para. 1 BGB)',
 					],
 				],
-				hinweis:
-					'Overview without guarantee for the individual case. In a dispute, a tenants’ association can help.',
+				note: 'Overview without guarantee for the individual case. In a dispute, a tenants’ association can help.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'Can you throw a flatmate out of a flat share?',
 				'Only if you are their landlord, so with subletting. If everyone is on the main tenancy or each person has their own contract, no flatmate can give notice to another.',
@@ -726,7 +723,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Not automatically. If they pay rent to a flatmate, they are a subtenant with tenant rights, even without a written contract. If they pay nothing, they usually have to go when asked. You may never enforce this yourselves, for example with a new lock (§ 858 para. 1 BGB).',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 549 BGB, exceptions to tenant protection (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__549.html',
@@ -769,15 +766,15 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 	},
 	'give-notice-on-a-room': {
 		link: 'Give notice on a room',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Give notice on a flat-share room in Germany | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Give notice on a flat-share room in Germany | ManaWG',
+		description:
 			'Giving notice on a WG room in Germany: notice period by contract type, dated examples, a model letter, a replacement tenant and a joint tenancy.',
 		h1: 'Give notice on a flat-share room in Germany: periods and model letter',
-		einleitung:
+		intro:
 			'You want to move out of your WG (shared flat) and wonder when you must give notice and to whom. In Germany, that depends on who your contract is with and whether the room is furnished in the main tenant’s own flat. This page sets out the notice periods (Kündigungsfristen) under the Bürgerliches Gesetzbuch (BGB, the German Civil Code), dated examples and a model letter. It is an overview and not legal advice. For a specific case, a Mieterverein (tenants’ association) can help.',
-		abschnitte: [
+		sections: [
 			[
 				'Look at the contract first',
 				'In a flat share there are three common set-ups: everyone is named in the joint main tenancy, you live as a subtenant (Untermiete) with a Hauptmieter (main tenant), or you have your own contract with the landlord. With subletting, you give notice to the main tenant; with an individual contract, to the landlord. With a joint contract, you cannot give notice alone. The models are explained in the [flat-share tenancy agreement](/flat-share-tenancy-agreement). If there is no written contract, you still have one as soon as you live there for rent (§ 535 BGB). The same periods then apply.',
@@ -815,12 +812,12 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Tell your flatmates as soon as the notice is out, even if you formally have time. Settle open amounts before you move out. In the [shared expenses](/shared-expenses) in ManaWG you see your balance and the suggested transfers. If the [Rundfunkbeitrag](/rundfunkbeitrag-shared-flat) (broadcasting fee) is in your name, someone has to take it over. At your new address you register (Anmeldung) within two weeks, see [Anmeldung in a flat share](/anmeldung-shared-flat). Handover, deposit and all further points are in the [moving-out checklist](/moving-out-checklist).',
 			],
 		],
-		tabellen: [
+		tables: [
 			{
-				nach: 'einleitung',
-				titel: 'Giving notice on a flat-share room: periods at a glance',
-				kopf: ['Contract', 'Your period', 'Note'],
-				zeilen: [
+				after: 'intro',
+				title: 'Giving notice on a flat-share room: periods at a glance',
+				header: ['Contract', 'Your period', 'Note'],
+				rows: [
 					[
 						'Subletting or individual contract, open-ended',
 						'received by the third working day of a month, ends at the end of the month after next',
@@ -844,18 +841,18 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				],
 			},
 			{
-				nach: 'Furnished room with the main tenant: by the 15th',
-				titel: 'Examples: when does the contract end?',
-				kopf: ['Notice arrives', 'Open-ended, normal period', 'Furnished, with the main tenant'],
-				zeilen: [
+				after: 'Furnished room with the main tenant: by the 15th',
+				title: 'Examples: when does the contract end?',
+				header: ['Notice arrives', 'Open-ended, normal period', 'Furnished, with the main tenant'],
+				rows: [
 					['on the second working day in March', '31 May', '31 March'],
 					['on 10 March', '30 June', '31 March'],
 					['on 20 March', '30 June', '30 April'],
 				],
-				hinweis: 'What counts is the day the notice is received, not the day you send it.',
+				note: 'What counts is the day the notice is received, not the day you send it.',
 			},
 		],
-		fragen: [
+		faq: [
 			[
 				'How long is the notice period for a flat-share room?',
 				'For an open-ended contract, just under three months: notice by the third working day of a month, to take effect at the end of the month after next. For a furnished room in the flat where the main tenant lives, by the 15th of a month for the end of that month.',
@@ -877,7 +874,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'Yes. If you live in a room for rent, you have a tenancy even without paper, and the statutory periods apply.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 573c BGB, notice periods (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__573c.html',
@@ -903,15 +900,15 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 	},
 	'moving-out-checklist': {
 		link: 'Moving out',
-		stand: '2026-10-29',
-		erschienen: '2026-10-29',
-		titel: 'Moving out of a flat share in Germany: checklist | ManaWG',
-		beschreibung:
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Moving out of a flat share in Germany: checklist | ManaWG',
+		description:
 			'Checklist for leaving a WG (shared flat) in Germany: notice, replacement tenant, deposit, open costs, Rundfunkbeitrag, registration and handover.',
 		h1: 'Moving out of a flat share in Germany: the checklist',
-		einleitung:
+		intro:
 			'Leaving a WG (shared flat) in Germany involves more than packing boxes: notice, a successor for the room, the deposit, open amounts and contracts in your name. If you tackle the points early, you leave without unpaid bills and without arguments.',
-		abschnitte: [
+		sections: [
 			[
 				'Notice and deadlines',
 				'Check your [contract](/flat-share-tenancy-agreement) first. For an open-ended tenancy, the notice period (Kündigungsfrist) for tenants is usually three months. For a furnished room in the main tenant’s flat, shorter periods can apply. Examples with dates and a model letter are in [giving notice on a room](/give-notice-on-a-room). Give notice in writing and tell the flat share as early as possible, even if formally you still have time. The others need weeks to find someone.',
@@ -941,7 +938,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'1. Check the contract and give notice in writing in time\n2. Tell the flat share early and help look for a replacement tenant\n3. Switch electricity, internet and Rundfunkbeitrag if they are in your name\n4. Settle open amounts until the balance is at zero\n5. Split shared purchases or have them paid out\n6. Agree what happens with the next utilities statement\n7. Clear the room, hand over with photos, return the keys\n8. Register at your new address within two weeks, set up mail redirection',
 			],
 		],
-		fragen: [
+		faq: [
 			[
 				'What notice period applies when leaving a flat share?',
 				'For an open-ended tenancy, usually three months. For a furnished room in the main tenant’s flat, shorter periods can apply. Your contract is what counts.',
@@ -959,7 +956,7 @@ export const GUIDES_EN_MOVING: Record<string, Thema> = {
 				'After a reasonable review period, which often takes a few months. If a utilities statement is still outstanding, a reasonable part may be kept until then.',
 			],
 		],
-		quellen: [
+		sources: [
 			[
 				'§ 573c BGB, notice periods (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__573c.html',
