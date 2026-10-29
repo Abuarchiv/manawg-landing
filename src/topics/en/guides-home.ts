@@ -258,7 +258,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Open the template in Excel or Google Sheets',
-				'1. Create the plan in the generator and download it as a CSV. The file separates columns with commas and opens directly in English Excel and Google Sheets, with accented letters kept\n2. Excel: double-click the file and it opens as a table, or use Data, From Text/CSV if your version asks\n3. Google Sheets: choose File, Import, Upload, and pick comma as the separator if it is not detected\n4. Numbers: open the file directly\n5. Add columns the printout does not have, such as “Done” and “Swap with”, then share or print',
+				'1. Create the plan in the generator and download it as a CSV. The file separates columns with commas and opens directly in English Excel and Google Sheets, with accented letters kept\n2. Excel: double-click the file and it opens as a table. German-region Excel splits columns on semicolons, so there use Data, From Text/CSV and choose comma as the delimiter\n3. Google Sheets: choose File, Import, Upload, and pick comma as the separator if it is not detected\n4. Numbers: open the file directly\n5. Add columns the printout does not have, such as “Done” and “Swap with”, then share or print',
 			],
 			[
 				'How to use the rotation',
@@ -477,7 +477,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Smoking, pets and instruments',
-				'These three points cause the most trouble when they are not discussed beforehand. Settle whether smoking is allowed in the flat or only on the balcony, whether pets are allowed (the tenancy agreement can set limits here) and at what times people may practise. It is best to ask at the [WG-Casting](/wg-casting-questions) already.',
+				'These three points cause the most trouble when they are not discussed beforehand. Settle whether smoking is allowed in the flat or only on the balcony, whether pets are allowed (the tenancy agreement can set limits here) and at what times people may practise. It is best to ask at the [WG-Casting](/wg-casting-questions) (flat interview) already.',
 			],
 			[
 				'Rules for new flatmates',
@@ -654,7 +654,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			'What is a WG-Casting and how does it work? 48 questions for the flat and for applicants, off-limits questions, reply templates and a scoring sheet.',
 		h1: 'WG-Casting: how it works and what to ask, for the flat and for applicants',
 		einleitung:
-			'At a WG-Casting, the flat interview for a free room in a German shared flat, twenty minutes decide whether you will live well together for the next years. Both sides check each other: the flat checks the newcomer, and the applicant checks the flat. With the right questions you learn what really counts, not just who seems the nicest. In short: plan 20 to 30 minutes per appointment, hold one-to-one meetings and decide afterwards, separately from the applicants.',
+			'At a WG-Casting, the flat interview for a free room in a German shared flat, twenty minutes decide whether you will live well together for the next few years. Both sides check each other: the flat checks the newcomer, and the applicant checks the flat. With the right questions you learn what really counts, not just who seems the nicest. In short: plan 20 to 30 minutes per appointment, hold one-to-one meetings and decide afterwards, separately from the applicants.',
 		abschnitte: [
 			[
 				'What is a WG-Casting and how does it work?',
@@ -902,7 +902,7 @@ export const GUIDES_EN_HOME: Record<string, Thema> = {
 			],
 			[
 				'Does a subtenant have to register their address?',
-				'Someone who is already registered in Germany and stays six months at most, as a rule not. Someone who otherwise lives abroad must register after three months.',
+				'Usually not, if they are already registered in Germany and stay six months at most. Someone who otherwise lives abroad must register after three months.',
 			],
 			[
 				'How much deposit do you take for a sublet?',
