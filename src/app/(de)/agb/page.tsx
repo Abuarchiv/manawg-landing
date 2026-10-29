@@ -14,7 +14,7 @@ export default function TermsPage() {
 	return (
 		<LegalPage locale="de" page="terms" title="Nutzungsbedingungen">
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Geltungsbereich</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">1. Geltungsbereich</h2>
 				<p>
 					Diese Bedingungen gelten für die Nutzung der Web-App ManaWG zur Organisation von
 					Wohngemeinschaften. Betreiber ist Abubakar Abditube. Du erreichst ihn unter{' '}
@@ -26,7 +26,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">2. Leistungen</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">2. Leistungen</h2>
 				<p>
 					ManaWG bietet eine Ausgabenverwaltung, einen Putzplan, eine Einkaufsliste mit Vorräten,
 					einen Kalender, eine Pinnwand und einen Chat. Die Nutzung ist kostenlos. Eine durchgehende
@@ -40,7 +40,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					3. Mitgliedschaft und Pflichten
 				</h2>
 				<p>
@@ -53,7 +53,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">4. Foto-Uploads</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">4. Foto-Uploads</h2>
 				<p>
 					Lade nur Fotos hoch, an denen du die erforderlichen Rechte hast. Achte dabei auf die
 					Urheber- und Persönlichkeitsrechte anderer. Fotos speichern wir bei{' '}
@@ -64,7 +64,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					5. Nutzungsrechte an deinen Inhalten
 				</h2>
 				<p>
@@ -82,7 +82,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					6. Kostenlose Nutzung und gesetzliche Rechte
 				</h2>
 				<p>
@@ -93,7 +93,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">7. Haftung</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">7. Haftung</h2>
 				<p>
 					Bei Vorsatz und grober Fahrlässigkeit, bei Schäden an Leben, Körper oder Gesundheit sowie
 					nach dem Produkthaftungsgesetz haften wir unbeschränkt. Bei einfacher Fahrlässigkeit
@@ -105,7 +105,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">8. Lizenz / Quellcode</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">8. Lizenz / Quellcode</h2>
 				<p>
 					Der Quellcode von ManaWG ist als Open-Source-Software unter der Apache-Lizenz 2.0
 					veröffentlicht. Für Nutzung, Weitergabe und Änderung des Quellcodes gelten die Bedingungen
@@ -114,7 +114,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					9. Meldung rechtswidriger Inhalte (DSA Art. 16)
 				</h2>
 				<p>
@@ -127,7 +127,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">10. Kündigung</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">10. Kündigung</h2>
 				<p>
 					Du kannst deine Mitgliedschaft jederzeit über{' '}
 					<em>Einstellungen → Zugang → WG verlassen</em> beenden. Deine bisherigen Beiträge bleiben
@@ -169,7 +169,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">11. Änderungen</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">11. Änderungen</h2>
 				<p>
 					Wir können diese Bedingungen aus einem sachlichen Grund ändern, etwa wenn sich Funktionen,
 					Hosting oder rechtliche Vorgaben ändern, und nur im gesetzlich zulässigen Rahmen. Über
@@ -182,14 +182,12 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">12. Geltendes Recht</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">12. Geltendes Recht</h2>
 				<p>Es gilt deutsches Recht; das UN-Kaufrecht ist ausgeschlossen.</p>
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					13. Verbraucherschlichtung
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">13. Verbraucherschlichtung</h2>
 				<p>
 					Wir sind weder verpflichtet noch bereit, an einem Streitbeilegungsverfahren vor einer
 					Verbraucherschlichtungsstelle teilzunehmen (§ 36 Abs. 1 Nr. 1 VSBG).
@@ -197,9 +195,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					14. Salvatorische Klausel
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">14. Salvatorische Klausel</h2>
 				<p>
 					Ist eine Bestimmung dieser Bedingungen unwirksam, bleiben die übrigen Bestimmungen
 					unberührt. An die Stelle der unwirksamen Bestimmung tritt die gesetzliche Regelung.

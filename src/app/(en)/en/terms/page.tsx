@@ -17,7 +17,7 @@ export default function TermsPage() {
 			locale="en"
 			page="terms"
 			title="Terms of use"
-			intro=<p className="text-sm text-[var(--text-3)] mb-8">
+			intro=<p className="text-sm text-(--text-3) mb-8">
 				This is a convenience translation. Only the{' '}
 				<a href="/agb" hrefLang="de" lang="de" className={TEXT_LINK}>
 					German version
@@ -26,7 +26,7 @@ export default function TermsPage() {
 			</p>
 		>
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Scope</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">1. Scope</h2>
 				<p>
 					These terms apply to your use of the ManaWG web app, which helps people organise a shared
 					flat (a WG, or Wohngemeinschaft). The operator is Abubakar Abditube. You can reach him at{' '}
@@ -38,7 +38,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">2. Services</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">2. Services</h2>
 				<p>
 					ManaWG offers expense tracking, a cleaning rota, a shopping list with supplies, a
 					calendar, a noticeboard and a chat. Using it is free. We cannot promise uninterrupted
@@ -51,7 +51,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					3. Membership and obligations
 				</h2>
 				<p>
@@ -63,7 +63,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">4. Photo uploads</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">4. Photo uploads</h2>
 				<p>
 					Only upload photos that you have the necessary rights to. Respect the copyright and
 					personality rights of others. We store photos with <strong>Supabase</strong> in Frankfurt
@@ -74,7 +74,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					5. Rights to use your content
 				</h2>
 				<p>
@@ -90,7 +90,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					6. Free use and statutory rights
 				</h2>
 				<p>
@@ -101,7 +101,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">7. Liability</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">7. Liability</h2>
 				<p>
 					We are fully liable for intent and gross negligence, for injury to life, body or health,
 					and under the German Product Liability Act. In cases of simple negligence we are liable
@@ -113,9 +113,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					8. Licence / source code
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">8. Licence / source code</h2>
 				<p>
 					The source code of ManaWG is published as open-source software under the Apache License
 					2.0. Use, distribution and modification of the source code are governed by the terms of
@@ -124,7 +122,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					9. Reporting unlawful content (DSA Art. 16)
 				</h2>
 				<p>
@@ -137,7 +135,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">10. Termination</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">10. Termination</h2>
 				<p>
 					You can end your membership at any time under <em>Settings → Access → Leave flat</em>.
 					Your earlier contributions remain available to the flat; you can read more in sections{' '}
@@ -176,7 +174,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">11. Changes</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">11. Changes</h2>
 				<p>
 					We may change these terms for an objective reason, for example when features, hosting or
 					legal requirements change, and only within the limits the law allows. We will tell you
@@ -188,7 +186,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">12. Governing law</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">12. Governing law</h2>
 				<p>
 					German law applies; the UN Convention on Contracts for the International Sale of Goods is
 					excluded.
@@ -196,7 +194,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					13. Consumer dispute resolution
 				</h2>
 				<p>
@@ -207,7 +205,7 @@ export default function TermsPage() {
 			</section>
 
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">14. Severability</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">14. Severability</h2>
 				<p>
 					If any provision of these terms is invalid, the remaining provisions are unaffected. The
 					invalid provision is replaced by the statutory rule.

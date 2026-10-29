@@ -30,19 +30,17 @@ export function ErrorView({
 
 	return (
 		<div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
-			<h2 className="text-2xl font-semibold text-[var(--text-1)]">{t.title}</h2>
-			<p className="mt-2 text-[var(--text-2)]">{t.hint}</p>
+			<h2 className="text-2xl font-semibold text-(--text-1)">{t.title}</h2>
+			<p className="mt-2 text-(--text-2)">{t.hint}</p>
 
 			{process.env.NODE_ENV === 'development' && (
-				<pre className="mt-4 text-xs text-[var(--text-3)] max-w-2xl overflow-auto">
-					{error.message}
-				</pre>
+				<pre className="mt-4 text-xs text-(--text-3) max-w-2xl overflow-auto">{error.message}</pre>
 			)}
 
 			<button
 				type="button"
 				onClick={() => reset()}
-				className="mt-6 min-h-[44px] rounded-lg border border-current px-4 py-2 text-[var(--text-1)] transition-colors hover:bg-[rgb(var(--ink-rgb)/0.04)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+				className="mt-6 min-h-[44px] rounded-lg border border-current px-4 py-2 text-(--text-1) transition-colors hover:bg-[rgb(var(--ink-rgb)/0.04)] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-(--accent)"
 			>
 				{t.retry}
 			</button>

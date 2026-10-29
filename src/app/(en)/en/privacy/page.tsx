@@ -16,7 +16,7 @@ export default function PrivacyPage() {
 			locale="en"
 			page="privacy"
 			title="Privacy policy"
-			intro=<p className="text-sm text-[var(--text-3)] mb-8">
+			intro=<p className="text-sm text-(--text-3) mb-8">
 				This is a convenience translation. Only the{' '}
 				<a href="/datenschutz" hrefLang="de" lang="de" className={TEXT_LINK}>
 					German version
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
 		>
 			{/* 1. Controller */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Controller</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">1. Controller</h2>
 				<p>Abubakar Abditube</p>
 				<p>
 					Email:{' '}
@@ -38,9 +38,7 @@ export default function PrivacyPage() {
 
 			{/* 2. Data protection officer */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					2. Data protection officer
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">2. Data protection officer</h2>
 				<p>
 					ManaWG is run privately by Abubakar Abditube. No data protection officer has been
 					appointed.
@@ -49,7 +47,7 @@ export default function PrivacyPage() {
 
 			{/* 3. Who we are */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">3. Who we are</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">3. Who we are</h2>
 				<p>
 					ManaWG is an app for shared flats (WGs, or Wohngemeinschaften). We do not sell personal
 					data and we do not show ads. For product analytics we send only the details described in
@@ -61,11 +59,9 @@ export default function PrivacyPage() {
 
 			{/* 4. Processing activities */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					4. Processing activities
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">4. Processing activities</h2>
 
-				<h3 id="4a" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4a" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4a. Account, authentication and local data
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -102,7 +98,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4b" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4b" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4b. Flat data (flat name, memberships, expenses, fixed costs, cleaning rota, shopping
 					list, supplies, calendar, noticeboard, chat)
 				</h3>
@@ -131,7 +127,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4c" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4c" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4c. Technical logs and error diagnostics
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -174,7 +170,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4d" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4d" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4d. Photo uploads
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -222,7 +218,7 @@ export default function PrivacyPage() {
 					or confirm the import, ManaWG sends the recognised data to its own import API.
 				</p>
 
-				<h3 id="4e" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4e" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4e. Rate limiting (protection against misuse)
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -252,7 +248,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4f" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4f" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4f. Product analytics without analytics cookies (PostHog)
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -291,7 +287,7 @@ export default function PrivacyPage() {
 					analytics; ManaWG keeps working in that case.
 				</p>
 
-				<h3 id="4g" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4g" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4g. Push notifications
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -325,9 +321,7 @@ export default function PrivacyPage() {
 
 			{/* 5. Recipients and processors */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					5. Recipients and processors
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">5. Recipients and processors</h2>
 				<p className="mb-2">
 					The following services receive data for the purposes stated in each case:
 				</p>
@@ -378,7 +372,7 @@ export default function PrivacyPage() {
 
 			{/* 6. No advertising and no advertising profiles */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					6. No advertising and no advertising profiles
 				</h2>
 				<p>
@@ -393,7 +387,7 @@ export default function PrivacyPage() {
 
 			{/* 7. Cookies & local storage */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					7. Cookies and local browser storage
 				</h2>
 				<p>
@@ -407,7 +401,7 @@ export default function PrivacyPage() {
 
 			{/* 8. Data subject rights */}
 			<section>
-				<h2 id="rechte" className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 id="rechte" className="text-lg font-semibold text-(--text-1) mb-2">
 					8. Your rights (data subject rights)
 				</h2>
 				<p className="mb-2">You can assert the following rights against us:</p>
@@ -491,7 +485,7 @@ export default function PrivacyPage() {
 
 			{/* 9. No automated decision-making */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					9. No automated decision-making / profiling
 				</h2>
 				<p>
@@ -502,7 +496,7 @@ export default function PrivacyPage() {
 
 			{/* 10. Obligation to provide data */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					10. Obligation to provide data
 				</h2>
 				<p>
@@ -514,9 +508,7 @@ export default function PrivacyPage() {
 
 			{/* 11. Updates */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					11. Updates to this policy
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">11. Updates to this policy</h2>
 				<p>
 					If our data processing changes, we may update this privacy policy. We will tell you about
 					material changes by email or in the app.

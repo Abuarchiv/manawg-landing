@@ -6,11 +6,11 @@ import { INTL_LOCALE } from '@/lib/locale';
 import { euro, parseAmount, rentShares } from './rent-calculator';
 
 const fieldCls =
-	'min-h-[44px] px-3 rounded border border-[rgb(var(--ink-rgb)/0.2)] bg-transparent text-[var(--ink)]';
+	'min-h-[44px] px-3 rounded border border-[rgb(var(--ink-rgb)/0.2)] bg-transparent text-(--ink)';
 const buttonCls =
-	'inline-flex items-center justify-center min-h-[44px] px-6 rounded-full border border-[rgb(var(--ink-rgb)/0.2)] bg-transparent text-[var(--ink)] cursor-pointer hover:bg-[rgb(var(--ink-rgb)/0.1)] transition-colors disabled:opacity-40';
+	'inline-flex items-center justify-center min-h-[44px] px-6 rounded-full border border-[rgb(var(--ink-rgb)/0.2)] bg-transparent text-(--ink) cursor-pointer hover:bg-[rgb(var(--ink-rgb)/0.1)] transition-colors disabled:opacity-40';
 const cellCls = 'px-3 py-2 border-b border-[rgb(var(--ink-rgb)/0.1)]';
-const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
+const mono = 'font-mono text-[12px] tracking-[0.02em] text-(--text-3)';
 
 const TEXT: Record<
 	Locale,

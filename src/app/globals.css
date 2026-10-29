@@ -1,3 +1,15 @@
+/* Tailwind: theme variables and utilities, no preflight. The utilities stay outside a cascade
+   layer, so they keep their weight against landing.css as in Tailwind 3. Classes are only
+   collected from src/ (public/ holds the recorded app with its own CSS). */
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/utilities" source("..");
+
+@theme {
+	--font-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+	--font-display: "Inter Tight", "Inter Tight Fallback", sans-serif;
+	--font-mono: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+}
+
 @font-face {
 	font-family: "Inter";
 	src: url("/fonts/inter-latin.woff2") format("woff2");
@@ -110,7 +122,6 @@ a:hover {
 :root[data-theme="light"] [data-invert] {
 	filter: invert(1);
 }
-@tailwind utilities;
 /* Topic pages: no preflight, so set the box model and the hairline here */
 .topic-page,
 .topic-page *,

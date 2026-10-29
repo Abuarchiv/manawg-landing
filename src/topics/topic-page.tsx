@@ -271,7 +271,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 		<main
 			id="main"
 			tabIndex={-1}
-			className="topic-page min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
+			className="topic-page min-h-screen flex flex-col bg-(--paper) text-(--ink) focus:outline-hidden"
 		>
 			<JsonLd data={breadcrumb} />
 			<JsonLd data={article} />
@@ -300,11 +300,11 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 
 			<div className={`${gutter} flex-1`}>
 				<h1
-					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
+					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} wrap-break-word`}
 				>
 					{t.h1}
 				</h1>
-				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
+				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-(--text-2)">
 					{withLinks(t.intro, locale)}
 				</p>
 				<p className={`${mono} mt-6 mb-0 md:ml-[33.33%]`}>
@@ -372,14 +372,14 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 									</h2>
 									{lines.length > 1 ? (
 										<ListTag
-											className={`m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)] flex flex-col gap-2 ${numbered ? '' : 'list-disc'}`}
+											className={`m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-(--text-2) flex flex-col gap-2 ${numbered ? '' : 'list-disc'}`}
 										>
 											{lines.map((line) => (
 												<li key={line}>{withLinks(line.replace(/^\d+\.\s*/, ''), locale)}</li>
 											))}
 										</ListTag>
 									) : (
-										<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-[var(--text-2)]">
+										<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-(--text-2)">
 											{withLinks(text, locale)}
 										</p>
 									)}
@@ -414,7 +414,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 								<h3 className="font-display font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
 									{question}
 								</h3>
-								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-[var(--text-2)]">
+								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-(--text-2)">
 									{withLinks(answer, locale)}
 								</p>
 							</div>
@@ -446,13 +446,13 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				)}
 
 				<div className="divider mt-16 md:mt-24 pt-14 md:pt-20 md:grid md:grid-cols-12 md:gap-8 items-end">
-					<p className="m-0 md:col-span-7 font-display font-semibold text-[clamp(30px,4.4vw,64px)] leading-[1] tracking-[-0.045em]">
+					<p className="m-0 md:col-span-7 font-display font-semibold text-[clamp(30px,4.4vw,64px)] leading-none tracking-[-0.045em]">
 						{txt.ctaTagline}
 					</p>
 					<div className="mt-8 md:mt-0 md:col-start-9 md:col-span-4">
 						<a
 							href={appUrl(PATHS[locale].signup)}
-							className="inline-flex items-center justify-center min-h-[56px] px-8 rounded-full bg-[var(--ink)] text-[var(--paper)] font-semibold no-underline hover:bg-[rgb(var(--ink-rgb)/0.82)] transition-colors"
+							className="inline-flex items-center justify-center min-h-[56px] px-8 rounded-full bg-(--ink) text-(--paper) font-semibold no-underline hover:bg-[rgb(var(--ink-rgb)/0.82)] transition-colors"
 						>
 							{txt.ctaButton}
 						</a>
@@ -476,7 +476,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 										prefetch={false}
 										className="group flex flex-col md:flex-row md:items-baseline md:justify-between gap-2 py-6 no-underline"
 									>
-										<span className="font-display font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-[var(--text-2)] transition-colors">
+										<span className="font-display font-semibold text-[clamp(22px,2.6vw,36px)] leading-[1.1] tracking-[-0.035em] group-hover:text-(--text-2) transition-colors">
 											{rel.h1}
 										</span>{' '}
 										<span className={mono}>{relGroup && groupName(locale, relGroup.id)}</span>

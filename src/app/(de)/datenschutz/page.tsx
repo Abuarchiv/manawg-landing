@@ -14,7 +14,7 @@ export default function PrivacyPage() {
 		<LegalPage locale="de" page="privacy" title="Datenschutzerklärung">
 			{/* 1. Controller */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">1. Verantwortlicher</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">1. Verantwortlicher</h2>
 				<p>Abubakar Abditube</p>
 				<p>
 					E-Mail:{' '}
@@ -26,9 +26,7 @@ export default function PrivacyPage() {
 
 			{/* 2. Data protection officer */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					2. Datenschutzbeauftragter
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">2. Datenschutzbeauftragter</h2>
 				<p>
 					ManaWG wird von Abubakar Abditube privat betrieben. Ein Datenschutzbeauftragter ist nicht
 					benannt.
@@ -37,7 +35,7 @@ export default function PrivacyPage() {
 
 			{/* 3. Who we are */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">3. Wer wir sind</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">3. Wer wir sind</h2>
 				<p>
 					ManaWG ist eine App für Wohngemeinschaften. Wir verkaufen keine personenbezogenen Daten
 					und schalten keine Werbung. Für die Produktanalyse übermitteln wir nur die in Abschnitt 4f
@@ -49,11 +47,9 @@ export default function PrivacyPage() {
 
 			{/* 4. Processing activities */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
-					4. Verarbeitungstätigkeiten
-				</h2>
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">4. Verarbeitungstätigkeiten</h2>
 
-				<h3 id="4a" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4a" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4a. Konto, Authentifizierung und lokale Daten
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -94,7 +90,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4b" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4b" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4b. WG-Daten (WG-Name, Mitgliedschaften, Ausgaben, Fixkosten, Putzplan, Einkaufsliste,
 					Vorräte, Kalender, Pinnwand, Chat)
 				</h3>
@@ -125,7 +121,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4c" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4c" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4c. Technische Logs und Fehlerdiagnose
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -169,7 +165,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4d" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4d" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4d. Foto-Uploads
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -220,7 +216,7 @@ export default function PrivacyPage() {
 					Import-API.
 				</p>
 
-				<h3 id="4e" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4e" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4e. Rate-Limiting (Missbrauchsschutz)
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -250,7 +246,7 @@ export default function PrivacyPage() {
 					</li>
 				</ul>
 
-				<h3 id="4f" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4f" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4f. Produktanalyse ohne Analyse-Cookies (PostHog)
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -291,7 +287,7 @@ export default function PrivacyPage() {
 					Analyse verhindern; ManaWG funktioniert dann weiter.
 				</p>
 
-				<h3 id="4g" className="text-base font-semibold text-[var(--text-1)] mb-2 mt-4">
+				<h3 id="4g" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
 					4g. Push-Benachrichtigungen
 				</h3>
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
@@ -325,7 +321,7 @@ export default function PrivacyPage() {
 
 			{/* 5. Recipients and processors */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					5. Empfänger und Auftragsverarbeiter
 				</h2>
 				<p className="mb-2">Folgende Dienste erhalten Daten für die jeweils genannten Zwecke:</p>
@@ -377,7 +373,7 @@ export default function PrivacyPage() {
 
 			{/* 6. No advertising and no advertising profiles */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					6. Keine Werbung und keine Werbeprofile
 				</h2>
 				<p>
@@ -392,7 +388,7 @@ export default function PrivacyPage() {
 
 			{/* 7. Cookies & local storage */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					7. Cookies und lokaler Browser-Speicher
 				</h2>
 				<p>
@@ -406,7 +402,7 @@ export default function PrivacyPage() {
 
 			{/* 8. Data subject rights */}
 			<section>
-				<h2 id="rechte" className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 id="rechte" className="text-lg font-semibold text-(--text-1) mb-2">
 					8. Deine Rechte (Betroffenenrechte)
 				</h2>
 				<p className="mb-2">Du kannst folgende Rechte uns gegenüber geltend machen:</p>
@@ -490,7 +486,7 @@ export default function PrivacyPage() {
 
 			{/* 9. No automated decision-making */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					9. Keine automatisierte Entscheidungsfindung / Profiling
 				</h2>
 				<p>
@@ -502,7 +498,7 @@ export default function PrivacyPage() {
 
 			{/* 10. Obligation to provide data */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					10. Pflicht zur Bereitstellung der Daten
 				</h2>
 				<p>
@@ -515,7 +511,7 @@ export default function PrivacyPage() {
 
 			{/* 11. Updates */}
 			<section>
-				<h2 className="text-lg font-semibold text-[var(--text-1)] mb-2">
+				<h2 className="text-lg font-semibold text-(--text-1) mb-2">
 					11. Aktualisierungen dieser Erklärung
 				</h2>
 				<p>

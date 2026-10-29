@@ -378,11 +378,6 @@
 	text-decoration: underline;
 	text-underline-offset: 4px;
 }
-/* Phone in landscape: bottom right next to SCROLLEN so the room cards stay clear on the left */
-#final[data-short] .hint {
-	left: auto;
-	right: calc(var(--margin) + env(safe-area-inset-right) + 96px);
-}
 .hint::after {
 	content: "";
 	position: absolute;
@@ -438,6 +433,11 @@
 [data-phase="after"] .hint,
 .hint[inert] {
 	visibility: hidden;
+}
+/* Phone in landscape: bottom right next to SCROLLEN so the room cards stay clear on the left */
+#final[data-short] .hint {
+	left: auto;
+	right: calc(var(--margin) + env(safe-area-inset-right) + 96px);
 }
 
 /* Header: no veil over the artwork, which runs edge to edge up to the top. When content (text) runs under the

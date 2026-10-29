@@ -125,7 +125,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 		<main
 			id="main"
 			tabIndex={-1}
-			className="topic-page min-h-screen flex flex-col bg-[var(--paper)] text-[var(--ink)] focus:outline-none"
+			className="topic-page min-h-screen flex flex-col bg-(--paper) text-(--ink) focus:outline-hidden"
 		>
 			<JsonLd data={breadcrumb} />
 			<JsonLd data={collection} />
@@ -145,11 +145,11 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 
 			<div className={`${gutter} flex-1`}>
 				<h1
-					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} break-words`}
+					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} wrap-break-word`}
 				>
 					{txt.h1}
 				</h1>
-				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-[var(--text-2)]">
+				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-(--text-2)">
 					{txt.intro}
 				</p>
 
@@ -168,11 +168,11 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 											<Link
 												href={localiseHref(locale, `/${slug}`)}
 												prefetch={false}
-												className="font-display font-semibold text-[19px] leading-[1.25] tracking-[-0.02em] no-underline hover:text-[var(--text-2)]"
+												className="font-display font-semibold text-[19px] leading-[1.25] tracking-[-0.02em] no-underline hover:text-(--text-2)"
 											>
 												{t.h1}
 											</Link>
-											<p className="m-0 mt-2 text-[16px] leading-[1.55] text-[var(--text-2)] max-w-[62ch]">
+											<p className="m-0 mt-2 text-[16px] leading-[1.55] text-(--text-2) max-w-[62ch]">
 												{t.description}
 											</p>
 										</li>

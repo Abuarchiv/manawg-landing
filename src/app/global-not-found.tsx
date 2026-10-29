@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 const BUTTON =
-	'inline-flex h-11 items-center rounded-[10px] bg-[var(--ink)] px-[22px] text-[15px] font-medium text-[var(--paper)] no-underline transition-colors duration-150 hover:bg-[rgb(var(--ink-rgb)/0.88)]';
+	'inline-flex h-11 items-center rounded-[10px] bg-(--ink) px-[22px] text-[15px] font-medium text-(--paper) no-underline transition-colors duration-150 hover:bg-[rgb(var(--ink-rgb)/0.88)]';
 
 // Sets the language before the first paint; the CSS below then shows the matching block. React leaves the
 // lang attribute alone on hydration, unlike the hidden attributes of the blocks.
@@ -30,7 +30,7 @@ export default function NotFound() {
 				/>
 			</head>
 			<body>
-				<main className="min-h-dvh bg-[var(--bg-base)] flex flex-col items-center justify-center px-4 text-center">
+				<main className="min-h-dvh bg-(--bg-base) flex flex-col items-center justify-center px-4 text-center">
 					<img
 						src="/manawg-mark-white-80.webp"
 						data-invert=""
@@ -40,8 +40,8 @@ export default function NotFound() {
 						className="mb-6 h-[60px] w-auto"
 					/>
 					<div data-not-found="de" className="flex flex-col items-center">
-						<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Seite nicht gefunden</h1>
-						<p className="text-[var(--text-2)] mb-6 max-w-sm">
+						<h1 className="text-2xl font-bold text-(--text-1) mb-2">Seite nicht gefunden</h1>
+						<p className="text-(--text-2) mb-6 max-w-sm">
 							Unter dieser Adresse ist keine Seite verfügbar. Prüfe den Link oder gehe zur
 							Startseite.
 						</p>
@@ -49,7 +49,7 @@ export default function NotFound() {
 							Zur Startseite
 						</Link>
 						{/* Without JavaScript the English visitor still gets a line of their own. */}
-						<p lang="en-GB" className="mt-6 text-sm text-[var(--text-3)]">
+						<p lang="en-GB" className="mt-6 text-sm text-(--text-3)">
 							Page not found.{' '}
 							<a href="/en" hrefLang="en" className={TEXT_LINK}>
 								Go to the English home page
@@ -58,8 +58,8 @@ export default function NotFound() {
 						</p>
 					</div>
 					<div data-not-found="en" lang="en-GB" className="flex flex-col items-center">
-						<h1 className="text-2xl font-bold text-[var(--text-1)] mb-2">Page not found</h1>
-						<p className="text-[var(--text-2)] mb-6 max-w-sm">
+						<h1 className="text-2xl font-bold text-(--text-1) mb-2">Page not found</h1>
+						<p className="text-(--text-2) mb-6 max-w-sm">
 							There is no page at this address. Check the link or go to the home page.
 						</p>
 						<a href="/en" className={BUTTON}>

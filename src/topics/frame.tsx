@@ -7,7 +7,7 @@ import { GROUPS } from './groups';
 import { groupName, topics, ui } from './registry';
 
 // Header and footer of the text pages (topics, guides, guide index).
-export const mono = 'font-mono text-[12px] tracking-[0.02em] text-[var(--text-3)]';
+export const mono = 'font-mono text-[12px] tracking-[0.02em] text-(--text-3)';
 export const gutter = 'px-5 md:px-8 lg:px-16 mx-auto w-full max-w-[1440px]';
 
 export function TopicHeader({ locale }: { locale: Locale }) {
@@ -35,7 +35,7 @@ export function TopicHeader({ locale }: { locale: Locale }) {
 			</Link>
 			<a
 				href={appUrl(PATHS[locale].signup)}
-				className="font-mono text-[12px] text-[var(--text-3)] min-h-[44px] inline-flex items-center"
+				className="font-mono text-[12px] text-(--text-3) min-h-[44px] inline-flex items-center"
 			>
 				{t.openApp}
 			</a>
@@ -84,7 +84,7 @@ export function TopicFooter({
 											href={localiseHref(locale, `/${slug}`)}
 											prefetch={false}
 											aria-current={slug === active ? 'page' : undefined}
-											className="inline-block py-[7px] text-[14px] text-[var(--text-2)] no-underline hover:text-[var(--ink)] aria-[current=page]:text-[var(--ink)]"
+											className="inline-block py-[7px] text-[14px] text-(--text-2) no-underline hover:text-(--ink) aria-[current=page]:text-(--ink)"
 										>
 											{data[slug]?.link}
 										</Link>
