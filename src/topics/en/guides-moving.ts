@@ -457,7 +457,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 		published: '2026-10-29',
 		title: 'Anmeldung in a flat share: deadline and form | ManaWG',
 		description:
-			'Register your address (Anmeldung) in a German flat share: the two-week deadline, who issues the landlord’s confirmation of move-in and what to do if it is refused.',
+			'Register your address (Anmeldung) in a German flat share: the two-week deadline, who issues the landlord’s move-in confirmation and what to do if it is refused.',
 		h1: 'Anmeldung in a flat share in Germany: landlord’s confirmation of move-in and deadline',
 		intro:
 			'If you move into a flat-share room in Germany, you have to register your address at the local citizens’ office (Bürgeramt). This is called the Anmeldung, and it needs a Wohnungsgeberbestätigung (landlord’s confirmation of move-in). Who issues it depends on your tenancy, and with subletting in particular, many main tenants do not know they are responsible. This page summarises the rules of the Bundesmeldegesetz (BMG, the Federal Registration Act) for people moving to Germany and is not legal advice. Details such as forms and appointments are set by your city.',

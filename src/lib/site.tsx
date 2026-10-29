@@ -19,9 +19,9 @@ const TEXT = {
 		ogAlt: 'Das ManaWG-Zeichen als 3D-Körper',
 	},
 	en: {
-		title: 'Free flat-share app: expenses, cleaning rota & shopping | ManaWG',
+		title: 'Free flatmate app: split bills, rota & shopping | ManaWG',
 		description:
-			'The free, ad-free app for shared flats, in English and German: split expenses, run a cleaning rota and shop together. In the browser, no app store needed.',
+			'The free, ad-free and open-source app for flatmates and roommates: split bills, run a cleaning rota and shop together. In English and German, in the browser.',
 		path: '/en',
 		feed: '/en/feed.xml',
 		ogAlt: 'The ManaWG mark as a 3D object',
@@ -47,6 +47,7 @@ function organizationSchema(locale: Locale) {
 		},
 		// Operator named in the legal notice
 		founder: { '@type': 'Person', name: 'Abubakar Abditube' },
+		sameAs: ['https://github.com/Abuarchiv/manawg', 'https://github.com/Abuarchiv/manawg-landing'],
 	};
 }
 
@@ -82,6 +83,7 @@ export function siteMetadata(locale: Locale): Metadata {
 			url: path,
 			siteName: 'ManaWG',
 			locale: OG_LOCALE[locale],
+			alternateLocale: OG_LOCALE[locale === 'de' ? 'en' : 'de'],
 			type: 'website',
 			images: [{ url: '/og.png?v=2', width: 1200, height: 630, alt: ogAlt }],
 		},

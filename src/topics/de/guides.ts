@@ -1040,7 +1040,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'beste-wg-app': {
 		link: 'Beste WG-App',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-11',
 		title: 'Beste WG-App 2026: Flatastic, Splitwise, Splid | ManaWG',
 		description:
@@ -1135,7 +1135,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'6. Datenschutz und Sprache',
-				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App gibt es auf Deutsch und Englisch. Andere Währungen als Euro gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
+				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App gibt es auf Deutsch und Englisch. Der Code ist Open Source unter Apache-2.0 und lässt sich selbst hosten, siehe [Open-Source-WG-App](/open-source-wg-app). Andere Währungen als Euro gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
 			],
 			[
 				'7. Wie leicht ist der Umstieg?',
@@ -1175,14 +1175,14 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'ueber-manawg': {
 		link: 'Über ManaWG',
-		updated: '2026-10-16',
+		updated: '2026-10-29',
 		published: '2026-10-11',
 		title: 'Was ist ManaWG? Die kostenlose WG-App im Überblick',
 		description:
-			'ManaWG ist eine kostenlose deutschsprachige WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Fakten, Betreiber, Abgrenzung zu WireGuard.',
+			'ManaWG ist eine kostenlose Open-Source-WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Fakten, Betreiber, Abgrenzung zu WireGuard.',
 		h1: 'Was ist ManaWG?',
 		intro:
-			'ManaWG ist eine kostenlose Web-App für Wohngemeinschaften auf Deutsch. Sie bündelt Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand und Chat. ManaWG hat nichts mit dem VPN-Protokoll WireGuard zu tun.',
+			'ManaWG ist eine kostenlose Open-Source-Web-App für Wohngemeinschaften, auf Deutsch und Englisch. Sie bündelt Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand und Chat. ManaWG hat nichts mit dem VPN-Protokoll WireGuard zu tun.',
 		sources: [
 			['Impressum', '/impressum'],
 			['Datenschutz', '/datenschutz'],
@@ -1195,11 +1195,11 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Fakten auf einen Blick',
-				'Preis: kostenlos, keine Werbung, keine Bezahlstufe. Sprachen: Deutsch und Englisch, Währung: Euro. Plattform: Web-App (PWA), installierbar auf iPhone, Android und Desktop, ohne App Store. Anmeldung: Google oder E-Mail. Größe: bis zu 20 aktive Mitglieder pro WG. Daten: in der EU gespeichert (Frankfurt am Main). Beitritt: per Einladungslink oder Code.',
+				'Preis: kostenlos, keine Werbung, keine Bezahlstufe. Sprachen: Deutsch und Englisch, Währung: Euro. Plattform: Web-App (PWA), installierbar auf iPhone, Android und Desktop, ohne App Store. Anmeldung: Google oder E-Mail. Größe: bis zu 20 aktive Mitglieder pro WG. Daten: in der EU gespeichert (Frankfurt am Main). Beitritt: per Einladungslink. Lizenz: Apache-2.0, Quellcode auf GitHub, selbst hostbar mit Docker, mehr unter [Open-Source-WG-App](/open-source-wg-app).',
 			],
 			[
 				'Funktionen',
-				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import bereits vorhandener passender CSV-Dateien, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht.',
+				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import bereits vorhandener passender CSV-Dateien, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht. Die Einzelheiten stehen unter [WG-App](/wg-app), der Vergleich mit Splitwise unter [Splitwise-Alternative](/splitwise-alternative), häufige Fragen unter [Häufige Fragen](/faq).',
 			],
 			[
 				'Betreiber und Kontakt',
@@ -1217,7 +1217,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 		faq: [
 			[
 				'Was ist ManaWG?',
-				'Eine kostenlose deutschsprachige WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Sie läuft im Browser unter app.manawg.com.',
+				'Eine kostenlose Open-Source-WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Sie läuft im Browser unter app.manawg.com.',
 			],
 			[
 				'Hat ManaWG etwas mit WireGuard zu tun?',
@@ -1421,7 +1421,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'In der ersten Woche',
-				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den Putzplan ein und fragt, wie die Rotation funktioniert. Gibt es noch keinen, hilft die Anleitung [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) spart den Anfang. Wenn die WG [ManaWG als WG-App](/wg-app) nutzt, tretet ihr per Einladungslink oder Code bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
+				'Lernt die Mitbewohner kennen, am besten bei einem gemeinsamen Abendessen. Lasst euch Mülltrennung, Abholtage und Waschmaschinenzeiten erklären. Tragt euch in den Putzplan ein und fragt, wie die Rotation funktioniert. Gibt es noch keinen, hilft die Anleitung [Putzplan erstellen](/putzplan-erstellen), und eine [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) spart den Anfang. Wenn die WG [ManaWG als WG-App](/wg-app) nutzt, tretet ihr per Einladungslink bei und seht Putzplan, Einkaufsliste, Kalender und Pinnwand sofort.',
 			],
 			[
 				'Geld von Anfang an klären',
@@ -1861,7 +1861,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Vor dem Einzug',
-				'Schickt der neuen Person die wichtigsten [Regeln](/wg-regeln) schriftlich: Putzplan, Kostenverteilung, Ruhezeiten, Müll. Klärt die Schlüsselübergabe und die Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG [ManaWG als WG-App](/wg-app) nutzt, schickt ihr einen Einladungslink oder Code. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand sofort, neue Ausgaben werden ab dann mit ihr geteilt.',
+				'Schickt der neuen Person die wichtigsten [Regeln](/wg-regeln) schriftlich: Putzplan, Kostenverteilung, Ruhezeiten, Müll. Klärt die Schlüsselübergabe und die Wohnungsgeberbestätigung für die Anmeldung. Wenn eure WG [ManaWG als WG-App](/wg-app) nutzt, schickt ihr einen Einladungslink. Nach dem Beitritt sieht die neue Person Putzplan, Einkaufsliste, Kalender und Pinnwand sofort, neue Ausgaben werden ab dann mit ihr geteilt.',
 			],
 			[
 				'Vorsicht bei unseriösen Anfragen',
@@ -2464,7 +2464,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 	},
 	'splitwise-splid-wechseln': {
 		link: 'Von Splitwise oder Splid wechseln',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-21',
 		title: 'Von Splitwise oder Splid wechseln: CSV-Import | ManaWG',
 		description:
@@ -2499,7 +2499,7 @@ export const GUIDES_DE: Record<string, Topic> = {
 			],
 			[
 				'Nach dem Wechsel',
-				'Ab jetzt läuft alles in der [WG-Kasse](/wg-kasse): Ausgaben teilen, Salden sehen, Ausgleiche mit wenigen Überweisungen vorschlagen lassen, Fixkosten und Monatsabrechnung. Offene Salden aus dem alten System gleicht ihr am besten aus, bevor ihr wechselt, oder ihr übernehmt sie per Import. Wie ihr Schulden fair ausgleicht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner). Einen Vergleich der Apps findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative) und [Tricount-Alternative](/tricount-alternative), alle Kriterien unter [beste WG-App](/beste-wg-app).',
+				'Ab jetzt läuft alles in der [WG-Kasse](/wg-kasse): Ausgaben teilen, Salden sehen, Ausgleiche mit wenigen Überweisungen vorschlagen lassen, Fixkosten und Monatsabrechnung. Offene Salden aus dem alten System gleicht ihr am besten aus, bevor ihr wechselt, oder ihr übernehmt sie per Import. Wie ihr Schulden fair ausgleicht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner). Einen Vergleich der Apps findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative) und [Tricount-Alternative](/tricount-alternative), alle Kriterien unter [beste WG-App](/beste-wg-app). Wer lieber eine eigene Kopie betreibt: ManaWG ist Open Source und lässt sich selbst hosten, siehe [Open-Source-WG-App](/open-source-wg-app).',
 			],
 		],
 		faq: [

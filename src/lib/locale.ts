@@ -55,6 +55,7 @@ export const TOPIC_SLUG_EN: Readonly<Record<string, string>> = {
 	'mitbewohner-kuendigen': 'asking-a-flatmate-to-leave',
 	'wg-zimmer-kuendigen': 'give-notice-on-a-room',
 	'wg-auszug-checkliste': 'moving-out-checklist',
+	'open-source-wg-app': 'open-source-flat-share-app',
 };
 
 const EN_TO_DE: Readonly<Record<string, string>> = Object.fromEntries(

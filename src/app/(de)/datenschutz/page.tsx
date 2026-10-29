@@ -21,8 +21,11 @@ export const metadata: Metadata = {
 		url: '/datenschutz',
 		siteName: 'ManaWG',
 		locale: 'de_DE',
+		alternateLocale: 'en_GB',
 		type: 'website',
-		images: ['/og.png?v=2'],
+		images: [
+			{ url: '/og.png?v=2', width: 1200, height: 630, alt: 'Das ManaWG-Zeichen als 3D-Körper' },
+		],
 	},
 };
 

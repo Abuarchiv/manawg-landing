@@ -275,11 +275,11 @@ export const en: HomeDict = {
 	},
 	schema: {
 		description:
-			'With ManaWG you share expenses, organise shopping and split tasks on the cleaning rota. The app is free and runs in the browser.',
+			'ManaWG is a free, open-source flat-share app for flatmates and roommates: split bills, organise shopping and share tasks on the cleaning rota. It runs in the browser and can be self-hosted with Docker.',
 		featureList: [
-			'Shared expenses',
+			'Split bills and shared expenses',
 			'Shopping list',
-			'Cleaning rota',
+			'Cleaning rota (chore chart)',
 			'Noticeboard',
 			'Calendar',
 			'Chat',

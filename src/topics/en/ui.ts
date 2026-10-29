@@ -40,7 +40,7 @@ export const UI_EN: TopicUi = {
 	ogSubtitle: 'Free flat-share app · manawg.com',
 	ogFallback: 'The app for everyday flat life',
 	guideIndex: {
-		title: 'Flat-share guides: money, rota, rules, moving | ManaWG',
+		title: 'Shared flat guides for Germany: money, rota, moving | ManaWG',
 		description:
 			'Guides to life in a shared flat in Germany: splitting costs, a cleaning rota, house rules, conflicts, tenancy, notice, registration, moving in and out. Free.',
 		h1: 'Guides to living in a shared flat',

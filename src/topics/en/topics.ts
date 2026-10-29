@@ -46,9 +46,9 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		link: 'Flat-share app',
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Free flat-share app: expenses, rota, shopping | ManaWG',
+		title: 'Free flatmate app: split bills, rota, shopping | ManaWG',
 		description:
-			'ManaWG is the free app for everyday flat life, not a room search: expenses, cleaning rota, shopping list, calendar and chat in your browser, no app store.',
+			'ManaWG is a free flat-share app for flatmates and roommates, not a room search: expenses, cleaning rota, shopping list, calendar and chat in your browser.',
 		h1: 'The flat-share app for money, cleaning, shopping and plans',
 		intro:
 			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many shared flats (WGs, as they are called in Germany). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app, in English and German.',
@@ -182,9 +182,9 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		link: 'Cleaning rota app',
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Cleaning rota app for flats: fair and free | ManaWG',
+		title: 'Cleaning rota & chore chart app for flatmates | ManaWG',
 		description:
-			'Free cleaning rota app for a shared flat: tasks repeat on a set rhythm, the app shares them fairly, skips anyone away and reminds whoever is next.',
+			'Free cleaning rota and chore chart app for flatmates: tasks repeat on a set rhythm, the app shares them fairly, skips anyone away and reminds whoever is next.',
 		h1: 'Cleaning rota app: tasks, fair rotation and time away',
 		intro:
 			'You add the tasks once, and ManaWG works out the dates, who is responsible and who is away. Free and in the browser, with no note on the fridge that goes out of date. If you want a rota to print, use the [cleaning rota template](/cleaning-rota-template). The steps to your own plan are in [Make a cleaning rota](/make-a-cleaning-rota).',
@@ -253,9 +253,9 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		link: 'Shared expenses',
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Shared expenses app: split costs, settle up | ManaWG',
+		title: 'Split bills with flatmates: free expenses app | ManaWG',
 		description:
-			'The free app for shared flat expenses: split costs, settle up with few transfers, book fixed costs and get the monthly statement by email.',
+			'Free app to split bills with flatmates or roommates: equal or custom shares in euros, fixed costs such as rent, few settle-up transfers, monthly statement.',
 		h1: 'The shared expenses app for costs, fixed costs and statements',
 		intro:
 			'Who paid for the loo roll, and who still owes whom? ManaWG is a free shared expenses app in English and German for a WG (shared flat). Every expense lands in everyone’s balance at once, with no notes and no spreadsheet.',
@@ -286,7 +286,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Moving over from Splitwise or Splid',
-				'If your previous accounts exist as a CSV file, you bring them into your flat with the import, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). You see a preview first, an import history shows earlier runs, and an import can be undone. Only euro amounts are imported, and ManaWG rejects other currencies row by row. A photo or screenshot of an expense list can also be read in and corrected before saving. If you come from Tricount, the differences are on [Tricount alternative](/tricount-alternative).',
+				'If your previous accounts exist as a CSV file, you bring them into your flat with the import, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). If the daily expense limit of the free Splitwise version is what drives you away, [Splitwise’s free limit](/splitwise-free-limit) sets out what Splitwise’s help page says. You see a preview first, an import history shows earlier runs, and an import can be undone. Only euro amounts are imported, and ManaWG rejects other currencies row by row. A photo or screenshot of an expense list can also be read in and corrected before saving. If you come from Tricount, the differences are on [Tricount alternative](/tricount-alternative).',
 			],
 			[
 				'What ManaWG is not',
@@ -345,7 +345,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Splitting without rounding arguments',
-				'ManaWG stores amounts in whole cents. With an equal split the shares add up to exactly the amount, and no share differs from another by more than one cent. With custom amounts per person, only those who really ate pay. The balances then show who owes whom. Everything is calculated in euros, and there are no exchange rates.',
+				'ManaWG stores amounts in whole cents. With an equal split the shares add up to exactly the amount, and no share differs from another by more than one cent. With custom amounts per person, only those who really ate pay. The balances then show who owes whom. Everything is calculated in euros, and there are no exchange rates. Whether you pay from a shared pot or settle up afterwards is covered in [Household kitty](/household-kitty).',
 			],
 			[
 				'In the supermarket, even with a weak signal',
@@ -379,7 +379,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		link: 'Best flat-share app',
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Best flat-share app 2026: 7 criteria | ManaWG',
+		title: 'Best flatmate app 2026: Splitwise, Flatastic & more | ManaWG',
 		description:
 			'Which flat-share app suits you? Compared on expenses, cleaning rota, shopping, calendar and price: ManaWG, Flatastic, Splitwise, Splid, Tricount, OurHome.',
 		h1: 'The best flat-share app: 7 criteria for choosing',
@@ -472,7 +472,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'6. Privacy and language',
-				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. There are no currencies other than the euro. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
+				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). There are no currencies other than the euro. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
 			],
 			[
 				'7. How easy is switching?',
@@ -514,10 +514,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		link: 'Splitwise alternative',
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Splitwise alternative with no ads or paywall | ManaWG',
+		title: 'Free Splitwise alternative: no ads, open source | ManaWG',
 		description:
-			'ManaWG is a free Splitwise alternative for flats: no ads, no paid tier, plus a cleaning rota, shopping list and CSV import.',
-		h1: 'A Splitwise alternative with no paywall and no ads',
+			'ManaWG is a free, open-source Splitwise alternative for flats: no ads, no paid tier, no daily expense limit, plus cleaning rota, shopping list and CSV import.',
+		h1: 'A free, open-source Splitwise alternative with no paywall and no ads',
 		intro:
 			'Splitwise splits expenses reliably, and its Pro plan lists, per the provider, unlimited expenses, no ads, receipt scanning and currency conversion, among other things. What the free version covers is explained in [Splitwise’s free limit](/splitwise-free-limit). ManaWG costs nothing, shows no ads and has no paid tier. It also adds a cleaning rota, shopping list and calendar.',
 		sources: [
@@ -546,7 +546,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'No paid tier, no ads',
-				'In ManaWG every feature is open to every flat. There are no ads, no Pro subscription and no feature that unlocks only after a purchase. There is one limit all the same: a flat holds at most 20 active members. For shared flats that is enough, for large groups it is not. Members who have moved out do not count, and their history is kept.',
+				'In ManaWG every feature is open to every flat. There are no ads, no Pro subscription and no feature that unlocks only after a purchase. There is one limit all the same: a flat holds at most 20 active members. For shared flats that is enough, for large groups it is not. Members who have moved out do not count, and their history is kept. ManaWG is also open source under the Apache License 2.0, and you can run your own copy; see [Open-source flat-share app](/open-source-flat-share-app).',
 			],
 			[
 				'Reads photos, but is not a receipt scanner',
@@ -724,7 +724,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'A cleaning rota with fair rotation',
-				'Tasks repeat every few days or months. When one is done, ManaWG decides by workload who is responsible next. Anyone who is away is skipped, and the app says how many people were left out for that reason. Monthly intervals stay true to the calendar, and dates are worked out in Berlin time. Completed tasks go into the history. More is on [Cleaning rota app](/cleaning-rota). Flatastic describes a points system in its chore planner. ManaWG has none.',
+				'Tasks repeat every few days or months. When one is done, ManaWG decides by workload who is responsible next. Anyone who is away is skipped, and the app says how many people were left out for that reason. Monthly intervals stay true to the calendar, and dates are worked out in Berlin time. Completed tasks go into the history. More is on [Cleaning rota app](/cleaning-rota). Flatastic describes a points system in its chore planner. ManaWG has none. If you would rather build a plan of your own first, see [Make a cleaning rota](/make-a-cleaning-rota).',
 			],
 			[
 				'Shared expenses and switching',
@@ -736,7 +736,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'What ManaWG cannot do',
-				'The interface is in English and German, amounts are in euros only, and a flat holds at most 20 active members. There is no app in a store: you install ManaWG as a web app on the home screen. You mark settlements as paid yourselves, and the app does not trigger a transfer. The calendar is available as a subscription for Apple and Google Calendar, but in one direction only.',
+				'The interface is in English and German, amounts are in euros only, and a flat holds at most 20 active members. There is no app in a store: you install ManaWG as a web app on the home screen. You mark settlements as paid yourselves, and the app does not trigger a transfer. The calendar is available as a subscription for Apple and Google Calendar, but in one direction only. How ManaWG and the other apps compare on seven criteria is on [Best flat-share app](/best-flat-share-app).',
 			],
 		],
 		faq: [
@@ -865,7 +865,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'A cleaning rota with a fixed rhythm',
-				'Tasks repeat every few days or months and are assigned to a member. Bathroom, kitchen or bins: you decide how often a task comes back. Monthly intervals stay true to the calendar. Completed tasks stay visible as history. Whoever is responsible gets a push reminder in the morning if the task is due today or up to seven days overdue.',
+				'Tasks repeat every few days or months and are assigned to a member. Bathroom, kitchen or bins: you decide how often a task comes back. Monthly intervals stay true to the calendar. Completed tasks stay visible as history. Whoever is responsible gets a push reminder in the morning if the task is due today or up to seven days overdue. To draw up a plan from scratch first, [Make a cleaning rota](/make-a-cleaning-rota) goes through it step by step.',
 			],
 			[
 				'Expenses and cleaning rota in one app',
@@ -881,7 +881,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Web instead of a store',
-				'ManaWG runs at app.manawg.com and can be installed on the home screen. The data is stored centrally on the server, not on a single device. The app remembers actions made offline and sends them later. You can sign in with Google or with email and password. Joining works through an invite link or an email invitation.',
+				'ManaWG runs at app.manawg.com and can be installed on the home screen. The data is stored centrally on the server, not on a single device. The app remembers actions made offline and sends them later. You can sign in with Google or with email and password. Joining works through an invite link or an email invitation. If you are still choosing an app, [Best flat-share app](/best-flat-share-app) lists seven criteria.',
 			],
 		],
 		faq: [
@@ -916,7 +916,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			'Is ManaWG free? Is the flat-share app in the App Store? Answers on sign-up, cleaning rota, export, data in Frankfurt and importing from Splitwise or Splid.',
 		h1: 'Frequently asked questions about ManaWG',
 		intro:
-			'The essentials about ManaWG, the free [flat-share app](/flat-share-app) for a WG (shared flat): cost, installation, invitations, money, cleaning rota, time away, currency, data location and import.',
+			'The essentials about ManaWG, the free [flat-share app](/flat-share-app) for a WG (shared flat): cost, installation, invitations, money, cleaning rota, time away, currency, data location, import and self-hosting.',
 		sections: [],
 		faq: [
 			[
@@ -968,6 +968,14 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 				'The database is hosted with Supabase in Frankfurt am Main (EU). Resend (USA) is used to send email. Which data goes to whom is set out in the privacy policy.',
 			],
 			[
+				'Is ManaWG open source?',
+				'Yes. ManaWG is licensed under the Apache License 2.0, and the source code is on GitHub at github.com/Abuarchiv/manawg. This website has its own repository, Abuarchiv/manawg-landing. More is on [Open-source flat-share app](/open-source-flat-share-app).',
+			],
+			[
+				'Can I host ManaWG myself?',
+				'Yes, with Docker Compose: the repository includes a setup that runs the app, PostgreSQL, sign-in and image storage on one machine, described in docs/self-hosting.md on GitHub. Most flats do not need it, because app.manawg.com is free, but if you want the data on a machine you control, the steps and limits are on [Open-source flat-share app](/open-source-flat-share-app).',
+			],
+			[
 				'Does ManaWG work without internet?',
 				'In part. If the network drops, ManaWG saves new entries on your device and sends them once you are back online: shopping entries, time away, new and completed cleaning tasks, expenses and fixed costs. After about seven days, actions that were left behind are no longer sent automatically but shown to you for review.',
 			],
@@ -999,10 +1007,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		published: '2026-10-29',
 		title: 'What is ManaWG? The free flat-share app | ManaWG',
 		description:
-			'ManaWG is a free flat-share app in English and German for expenses, shopping, cleaning rota, calendar, noticeboard and chat. Facts, operator, not WireGuard.',
+			'ManaWG is a free, open-source flat-share app for expenses, shopping, cleaning rota, calendar and chat, in English and German. Facts, operator, not WireGuard.',
 		h1: 'What is ManaWG?',
 		intro:
-			'ManaWG is a free web app for a WG (Wohngemeinschaft, a shared flat), in English and German. It brings together expense splitting, shopping list, cleaning rota, calendar, noticeboard and chat. ManaWG has nothing to do with the VPN protocol WireGuard.',
+			'ManaWG is a free, open-source web app for a WG (Wohngemeinschaft, a shared flat), in English and German. It brings together expense splitting, shopping list, cleaning rota, calendar, noticeboard and chat. ManaWG has nothing to do with the VPN protocol WireGuard.',
 		sources: [
 			['Legal notice', '/en/legal-notice'],
 			['Privacy policy', '/en/privacy'],
@@ -1015,11 +1023,11 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Facts at a glance',
-				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro. Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: database in the EU (Frankfurt am Main). Joining: by invite link or email invitation.',
+				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro. Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: database in the EU (Frankfurt am Main). Joining: by invite link or email invitation. Licence: Apache-2.0, source code on GitHub, self-hostable with Docker; see [Open-source flat-share app](/open-source-flat-share-app).',
 			],
 			[
 				'Features',
-				'Splitting expenses equally or with custom amounts, fixed costs and a monthly statement, import of suitable existing CSV files, shopping list with supplies, cleaning rota with fair rotation and time away, calendar with calendar subscription, noticeboard, chat and push reminders. There is no bank connection and no transfers from the app.',
+				'Splitting expenses equally or with custom amounts, fixed costs and a monthly statement, import of suitable existing CSV files, shopping list with supplies, cleaning rota with fair rotation and time away, calendar with calendar subscription, noticeboard, chat and push reminders. There is no bank connection and no transfers from the app. The details are on [Flat-share app](/flat-share-app), the comparison with Splitwise is on [Splitwise alternative](/splitwise-alternative), and common questions are answered in the [FAQ](/faq).',
 			],
 			[
 				'Operator and contact',

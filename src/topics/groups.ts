@@ -50,6 +50,7 @@ export const GROUPS: Array<{
 			'wg-abwesenheit-urlaub',
 			'wg-zwischenmiete',
 			'wg-auszug-checkliste',
+			'open-source-wg-app',
 		],
 	},
 	{ id: 'about', name: 'Über ManaWG', slugs: ['ueber-manawg', 'faq'] },
@@ -117,6 +118,7 @@ const READ_NEXT: Record<string, string[]> = {
 	'tricount-alternative': ['beste-wg-app', 'splitwise-alternative', 'wg-kasse'],
 	'flatastic-alternative': ['beste-wg-app', 'ourhome-alternative', 'putzplan'],
 	'ourhome-alternative': ['beste-wg-app', 'flatastic-alternative', 'putzplan'],
+	'open-source-wg-app': ['wg-app', 'splitwise-alternative', 'splitwise-splid-wechseln'],
 	faq: ['wg-app', 'wg-kasse', 'putzplan'],
 	'ueber-manawg': ['faq', 'wg-app', 'beste-wg-app'],
 };

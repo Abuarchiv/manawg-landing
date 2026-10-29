@@ -32,9 +32,9 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 		},
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Make a cleaning rota: weekly plan and generator | ManaWG',
+		title: 'Make a cleaning rota or chore chart for flatmates | ManaWG',
 		description:
-			'Make a cleaning rota in five steps: tasks by room and rhythm, a weekly plan as a table, a points system and a free generator for your flatmates’ names.',
+			'Make a cleaning rota or chore chart in five steps: tasks by room and rhythm, a weekly plan as a table, a points system and a free generator for flatmates.',
 		h1: 'Make a cleaning rota, step by step, for a home or flat share',
 		intro:
 			'A cleaning rota rarely fails because people are lazy. It fails because the tasks are vague and nobody keeps the plan up to date. In five steps you get to a rota for a household or flat share: collect tasks by room, estimate the effort, spread them over the week, share them fairly and make the plan visible. All figures and days are examples that you adapt to your own flat.',
@@ -229,10 +229,10 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 		},
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Cleaning rota template: 2 to 5 flatmates, PDF, CSV | ManaWG',
+		title: 'Chore chart template for flatmates: 2–5 people | ManaWG',
 		description:
-			'Free flat-share cleaning rota template to print: rotations for 2, 3, 4 and 5 people, a generator with your names, print as PDF or open the CSV in Excel.',
-		h1: 'Flat-share cleaning rota template to print and adapt',
+			'Free printable chore chart and cleaning rota template: rotations for 2 to 5 flatmates, a generator with your names, print as PDF or open the CSV in Excel.',
+		h1: 'Flat-share chore chart and cleaning rota template to print and adapt',
 		intro:
 			'Here is a ready-made rotation for two, three, four and five people, free and without an account. In the generator you enter your names and print the plan as a PDF or download it as a CSV.',
 		sections: [
@@ -613,7 +613,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Shared expenses while someone is away',
-				'Someone who is not there does not eat there. Shopping during that time should only be split between those present. In ManaWG you choose who is involved in each expense and simply leave the absent person out. That way no balance builds up for things they never used.',
+				'Someone who is not there does not eat there. Shopping during that time should only be split between those present. In ManaWG’s [shared expenses](/shared-expenses) you choose who is involved in each expense and simply leave the absent person out. That way no balance builds up for things they never used. The same applies to a [household kitty](/household-kitty): agree whether someone who is away pays in during that time.',
 			],
 			[
 				'Longer absence: internship and semester abroad',

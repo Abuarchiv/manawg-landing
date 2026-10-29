@@ -21,8 +21,11 @@ export const metadata: Metadata = {
 		url: '/en/terms',
 		siteName: 'ManaWG',
 		locale: 'en_GB',
+		alternateLocale: 'de_DE',
 		type: 'website',
-		images: ['/og.png?v=2'],
+		images: [
+			{ url: '/og.png?v=2', width: 1200, height: 630, alt: 'The ManaWG mark as a 3D object' },
+		],
 	},
 };
 

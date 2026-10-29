@@ -339,7 +339,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 	},
 	'splitwise-alternative': {
 		link: 'Splitwise-Alternative',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-09',
 		title: 'Splitwise-Alternative ohne Werbung und Paywall | ManaWG',
 		description:
@@ -373,7 +373,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Keine Bezahlstufe, keine Werbung',
-				'In ManaWG stehen alle Funktionen jeder WG offen. Es gibt keine Anzeigen, kein Pro-Abo und keine Funktion, die erst nach einem Kauf freigeschaltet wird. Eine Grenze gibt es trotzdem: Eine WG fasst höchstens 20 aktive Mitglieder. Für Wohngemeinschaften reicht das, für große Gruppen nicht. Ausgezogene Mitglieder zählen nicht mit, ihre Historie bleibt erhalten.',
+				'In ManaWG stehen alle Funktionen jeder WG offen. Es gibt keine Anzeigen, kein Pro-Abo und keine Funktion, die erst nach einem Kauf freigeschaltet wird. Eine Grenze gibt es trotzdem: Eine WG fasst höchstens 20 aktive Mitglieder. Für Wohngemeinschaften reicht das, für große Gruppen nicht. Ausgezogene Mitglieder zählen nicht mit, ihre Historie bleibt erhalten. ManaWG ist außerdem Open Source unter der Apache-Lizenz 2.0, und ihr könnt eine eigene Kopie betreiben, siehe [Open-Source-WG-App](/open-source-wg-app).',
 			],
 			[
 				'Fotos lesen, aber kein Kassenbon-Scanner',
@@ -447,7 +447,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Was Splid laut Anbieter kann',
-				'Die deutsche Splid-Seite nennt unter anderem über 150 Währungen, Gruppen vor Ort und online sowie den Export als PDF und Excel. Details zum Funktionsumfang stehen dort mit Stand 14. Oktober 2026. In ManaWG meldet sich dagegen jede Person mit Google oder E-Mail und Passwort an. Dafür gehören Ausgaben, Salden und Verlauf fest zu eurer WG, und Mitbewohner kommen per Link oder Code dazu. Den Code könnt ihr jederzeit erneuern.',
+				'Die deutsche Splid-Seite nennt unter anderem über 150 Währungen, Gruppen vor Ort und online sowie den Export als PDF und Excel. Details zum Funktionsumfang stehen dort mit Stand 14. Oktober 2026. In ManaWG meldet sich dagegen jede Person mit Google oder E-Mail und Passwort an. Dafür gehören Ausgaben, Salden und Verlauf fest zu eurer WG, und Mitbewohner kommen per Einladungslink dazu. Einladungen könnt ihr jederzeit widerrufen.',
 			],
 			[
 				'Kasse plus Haushalt in einer App',
@@ -473,7 +473,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		faq: [
 			[
 				'Braucht ManaWG ein Konto?',
-				'Ja. Jede Person meldet sich mit Google oder mit E-Mail und Passwort an. Beitreten geht danach per Einladungslink oder Code.',
+				'Ja. Jede Person meldet sich mit Google oder mit E-Mail und Passwort an. Beitreten geht danach per Einladungslink.',
 			],
 			[
 				'Wie übernehme ich meine Daten aus Splid?',
@@ -756,14 +756,14 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 	},
 	faq: {
 		link: 'Häufige Fragen',
-		updated: '2026-10-27',
+		updated: '2026-10-29',
 		published: '2026-10-09',
 		title: 'Häufige Fragen zu ManaWG: Kosten, Anmeldung, Datenort',
 		description:
 			'Ist ManaWG kostenlos? Gibt es die WG-App im App Store? Antworten zu Anmeldung, Putzplan, Export, Datenort in Frankfurt und Import aus Splitwise oder Splid.',
 		h1: 'Häufige Fragen zu ManaWG',
 		intro:
-			'Das Wichtigste zu ManaWG, der kostenlosen [WG-App](/wg-app) für Wohngemeinschaften: Kosten, Installation, Einladung, Geld, Putzplan, Abwesenheiten, Währung, Datenort und Import.',
+			'Das Wichtigste zu ManaWG, der kostenlosen [WG-App](/wg-app) für Wohngemeinschaften: Kosten, Installation, Einladung, Geld, Putzplan, Abwesenheiten, Währung, Datenort, Import und Selbsthosten.',
 		sections: [],
 		faq: [
 			[
@@ -800,7 +800,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wie melde ich mich an?',
-				'Mit Google oder mit E-Mail und Passwort. Beitreten geht per Einladungslink oder Code, den euch ein Mitbewohner schickt.',
+				'Mit Google oder mit E-Mail und Passwort. Beitreten geht per Einladungslink, den euch ein Mitbewohner schickt.',
 			],
 			[
 				'Funktioniert ManaWG mit anderen Währungen?',
@@ -813,6 +813,14 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			[
 				'Wo liegen meine Daten?',
 				'Die Datenbank liegt bei Supabase in Frankfurt am Main (EU). Für den E-Mail-Versand wird Resend (USA) eingesetzt. Welche Daten an wen gehen, steht in der Datenschutzerklärung.',
+			],
+			[
+				'Ist ManaWG Open Source?',
+				'Ja. ManaWG steht unter der Apache-Lizenz 2.0, der Quellcode liegt auf GitHub unter github.com/Abuarchiv/manawg. Diese Website hat ein eigenes Repository, Abuarchiv/manawg-landing. Mehr steht unter [Open-Source-WG-App](/open-source-wg-app).',
+			],
+			[
+				'Kann ich ManaWG selbst hosten?',
+				'Ja, mit Docker Compose: Das Repository enthält ein Setup, das App, PostgreSQL, Anmeldung und Bildspeicher auf einer Maschine startet, beschrieben in docs/self-hosting.md (deutsch: docs/self-hosting.de.md) auf GitHub. Die meisten WGs brauchen das nicht, weil app.manawg.com kostenlos ist. Wer die Daten auf einer Maschine unter eigener Kontrolle haben will, findet Schritte und Grenzen unter [Open-Source-WG-App](/open-source-wg-app).',
 			],
 			[
 				'Funktioniert ManaWG ohne Internet?',

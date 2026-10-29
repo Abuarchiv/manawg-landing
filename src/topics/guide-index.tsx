@@ -86,6 +86,7 @@ export function guideIndexMetadata(locale: Locale): Metadata {
 			url: path,
 			siteName: 'ManaWG',
 			locale: OG_LOCALE[locale],
+			alternateLocale: OG_LOCALE[locale === 'de' ? 'en' : 'de'],
 			type: 'website',
 			images: [
 				{

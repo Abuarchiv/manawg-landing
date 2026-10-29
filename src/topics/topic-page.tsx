@@ -164,6 +164,7 @@ export function topicMetadata(locale: Locale, slug: string): Metadata {
 			url: path,
 			siteName: 'ManaWG',
 			locale: OG_LOCALE[locale],
+			alternateLocale: OG_LOCALE[locale === 'de' ? 'en' : 'de'],
 			type: 'article',
 			publishedTime: isoDateTime(t.published),
 			modifiedTime: isoDateTime(t.updated),

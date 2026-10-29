@@ -8,7 +8,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
 	title: 'ManaWG privacy policy',
 	description:
-		'What data ManaWG processes, who it is passed to, how long it is kept and what rights you have.',
+		'Privacy policy of ManaWG: what data the app and website process, who it is passed to, how long it is kept and which rights you have under the GDPR.',
 	alternates: {
 		canonical: '/en/privacy',
 		languages: languageAlternates('/datenschutz', '/en/privacy') ?? {},
@@ -17,12 +17,15 @@ export const metadata: Metadata = {
 	openGraph: {
 		title: 'ManaWG privacy policy',
 		description:
-			'What data ManaWG processes, who it is passed to, how long it is kept and what rights you have.',
+			'Privacy policy of ManaWG: what data the app and website process, who it is passed to, how long it is kept and which rights you have under the GDPR.',
 		url: '/en/privacy',
 		siteName: 'ManaWG',
 		locale: 'en_GB',
+		alternateLocale: 'de_DE',
 		type: 'website',
-		images: ['/og.png?v=2'],
+		images: [
+			{ url: '/og.png?v=2', width: 1200, height: 630, alt: 'The ManaWG mark as a 3D object' },
+		],
 	},
 };
 

@@ -80,9 +80,9 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 		widget: { after: 'Calculator', kind: 'rent-calculator' },
 		updated: '2026-10-29',
 		published: '2026-10-29',
-		title: 'Flat-share rent calculator by room size | ManaWG',
+		title: 'Split rent by room size: flatmate rent calculator | ManaWG',
 		description:
-			'Split flat-share rent fairly: calculator by room size with shared areas, the formula with an example, and tips on balconies, private bathrooms and utilities.',
+			'Split rent fairly between flatmates or roommates: calculator by room size with shared areas, the formula with an example, and tips on balconies and utilities.',
 		h1: 'Split flat-share rent by room size',
 		intro:
 			'When the rooms in a shared flat (WG) are different sizes, an equal rent share rarely fits. The calculator splits the rent by the floor area of each room and spreads the shared rooms equally across everyone. The result is a proposal that you still need to agree on.',
@@ -533,7 +533,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'After the switch',
-				'From now on everything runs in [shared expenses](/shared-expenses): split expenses, see balances, get settlements suggested with few transfers, plus fixed costs and the monthly statement. It is best to settle open balances from the old system before you switch, or bring them across with the import. How to settle debts fairly is covered in [debts between flatmates](/flatmate-debts). For comparisons of the apps, see [Splitwise alternative](/splitwise-alternative), [Splid alternative](/splid-alternative) and [Tricount alternative](/tricount-alternative), and for all criteria the [best flat-share app](/best-flat-share-app).',
+				'From now on everything runs in [shared expenses](/shared-expenses): split expenses, see balances, get settlements suggested with few transfers, plus fixed costs and the monthly statement. It is best to settle open balances from the old system before you switch, or bring them across with the import. How to settle debts fairly is covered in [debts between flatmates](/flatmate-debts). For comparisons of the apps, see [Splitwise alternative](/splitwise-alternative), [Splid alternative](/splid-alternative) and [Tricount alternative](/tricount-alternative), and for all criteria the [best flat-share app](/best-flat-share-app). If you would rather run your own copy, ManaWG is open source and can be self-hosted, see [Open-source flat-share app](/open-source-flat-share-app).',
 			],
 		],
 		faq: [
