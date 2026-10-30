@@ -175,7 +175,14 @@ export default function RotaGenerator({ locale }: { locale: Locale }) {
 				{plan ? (
 					<>
 						<h3 className="m-0 mb-4 font-display font-semibold text-[20px]">{t.title(weeks)}</h3>
-						<div className="overflow-x-auto">
+						{/* biome-ignore lint/a11y/useSemanticElements: scrollable table needs a labelled region */}
+						<div
+							className="overflow-x-auto"
+							role="region"
+							aria-label={t.caption}
+							// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollable region must be reachable by keyboard
+							tabIndex={0}
+						>
 							<table className="w-full min-w-[540px] border-collapse text-left">
 								<caption className="sr-only">{t.caption}</caption>
 								<thead>
