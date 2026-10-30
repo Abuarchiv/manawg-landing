@@ -77,3 +77,27 @@ test('machine-readable files', async ({ request }) => {
 		expect((await res.text()).length, path).toBeGreaterThan(100);
 	}
 });
+
+// A horizontally scrolling table must be reachable by keyboard and have a name.
+for (const path of ['/wg-miete-rechner', '/putzplan-erstellen']) {
+	test(`scrollable tables on ${path} are focusable regions`, async ({ page }) => {
+		await page.setViewportSize({ width: 390, height: 844 });
+		await page.goto(path);
+		await expect(page.locator('.overflow-x-auto table').first()).toBeVisible();
+		const scrollers = await page.locator('.overflow-x-auto').evaluateAll((els) =>
+			els
+				.filter((el) => el.scrollWidth > el.clientWidth)
+				.map((el) => ({
+					tabindex: el.getAttribute('tabindex'),
+					role: el.getAttribute('role'),
+					label: el.getAttribute('aria-label') ?? '',
+				})),
+		);
+		expect(scrollers.length).toBeGreaterThan(0);
+		for (const s of scrollers) {
+			expect(s.tabindex).toBe('0');
+			expect(s.role).toBe('region');
+			expect(s.label).not.toBe('');
+		}
+	});
+}
