@@ -27,7 +27,7 @@ export const en: HomeDict = {
 	},
 	hero: {
 		title: ['The flat app ', 'for your flat.'],
-		sub: 'The free flat-share app: expenses, shopping and cleaning rota. In the browser.',
+		sub: 'The free app for flatmates and roommates: split bills, shopping and a cleaning rota. In English and German, in your browser.',
 		install: 'Install',
 	},
 	heroDemo: {
