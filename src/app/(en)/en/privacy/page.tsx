@@ -420,11 +420,11 @@ export default function PrivacyPage() {
 						leave all flats. Data of a flat in which you are the only member is removed from the
 						active database; for the related photos see section <a href="#4d">4d</a>. If other
 						members stay in a flat, your display name remains on your earlier contributions (see
-						section <a href="#4b">4b</a>). The person who created a flat can remove it irrevocably
-						under <em>Settings → Access → Delete flat permanently</em>. All members, expenses,
-						lists, tasks and noticeboard posts of the flat are then removed from the active
-						database. Access to the related images is blocked straight away; the physical deletion
-						follows later (see section <a href="#4d">4d</a>
+						section <a href="#4b">4b</a>). The flat’s admin can remove it irrevocably under{' '}
+						<em>Settings → Access → Delete flat permanently</em>. All members, expenses, lists,
+						tasks and noticeboard posts of the flat are then removed from the active database.
+						Access to the related images is blocked straight away; the physical deletion follows
+						later (see section <a href="#4d">4d</a>
 						). You can request more extensive deletion by emailing{' '}
 						<a href="mailto:info@manawg.com" className="break-all">
 							info@manawg.com
