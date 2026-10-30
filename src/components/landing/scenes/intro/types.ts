@@ -3,7 +3,7 @@
 import type { Fit } from '../../core/canvas';
 import type { Mode } from '../../core/loop';
 
-/** Rectangle of a DOM element with data-hole in stage CSS pixels. kind: 'logo', 'cta', 'hint', 'text'. */
+/** Rectangle of a DOM element with data-hole in stage CSS pixels. kind: 'logo', 'cta', 'text'. */
 export interface Hole {
 	x: number;
 	y: number;

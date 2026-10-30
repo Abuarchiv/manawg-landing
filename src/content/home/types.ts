@@ -54,8 +54,6 @@ export interface HomeDict {
 	header: { cta: string };
 	loader: { label: string };
 	hints: {
-		skipIntro: string;
-		skipIntroAria: string;
 		scroll: string;
 	};
 	hero: { title: Lines; sub: string; install: string };

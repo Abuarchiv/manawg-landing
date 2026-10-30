@@ -24,8 +24,6 @@ export const de: HomeDict = {
 	header: { cta: 'WG erstellen' },
 	loader: { label: 'MANAWG · LÄDT DIE WG' },
 	hints: {
-		skipIntro: 'INTRO ÜBERSPRINGEN ↓',
-		skipIntroAria: 'Intro überspringen',
 		scroll: 'SCROLLEN',
 	},
 	hero: {

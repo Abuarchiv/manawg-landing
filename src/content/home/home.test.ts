@@ -72,7 +72,6 @@ test('headline lengths: hero lines, finale lines', () => {
 
 test('mono labels are uppercase literals', () => {
 	const labels = [
-		en.hints.skipIntro,
 		en.hints.scroll,
 		en.loader.label,
 		en.depth.hint,
@@ -87,7 +86,6 @@ test('mono labels are uppercase literals', () => {
 		...en.people,
 	];
 	for (const l of labels) assert.equal(l, l.toUpperCase(), l);
-	assert.equal(en.hints.skipIntro, 'SKIP INTRO ↓');
 	assert.equal(`${en.howItWorks.prefix}${en.howItWorks.title}`, '[ 05 ] HOW IT WORKS');
 	assert.equal(`${en.questions.prefix}${en.questions.title}`, '[ 06 ] QUESTIONS');
 });

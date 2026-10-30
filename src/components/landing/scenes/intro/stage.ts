@@ -80,7 +80,6 @@ export function createStage({
 	const cvStars = stageEl.querySelector<HTMLCanvasElement>('canvas[data-stars]');
 	// Controls of the title (install button, chapters of the demo film)
 	const heroCtas = [...stageEl.querySelectorAll<HTMLElement>('[data-hero-cta]')];
-	const introOnly = [...root.querySelectorAll<HTMLElement>('[data-intro-only]')];
 	const hints = root.querySelector<HTMLElement>('[data-hints]');
 	const roomsEl = stageEl.querySelector<HTMLElement>('[data-hole="text"]');
 	const hero = createHero(cvHero);
@@ -254,9 +253,6 @@ export function createStage({
 			el.inert = heroOff;
 			el.style.pointerEvents = heroOff ? 'none' : '';
 		}
-		// Hints only while the stage holds still: once it scrolls away, How it works follows right below
-		const hintOff = phase === 'after' || rb.top < -1;
-		for (const el of introOnly) if (el.inert !== hintOff) el.inert = hintOff;
 		return phase;
 	};
 

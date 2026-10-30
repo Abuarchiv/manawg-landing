@@ -554,11 +554,11 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(Q.uL, 0);
 		gl.uniform1f(Q.uMx, mx);
 		gl.uniform1f(Q.uSt, 1);
-		// Holes: logo, button and hint stay dark in the halftone (cells in the rectangle plus 8 px) so their text is legible
+		// Holes: logo and button stay dark in the halftone (cells in the rectangle plus 8 px) so their text is legible
 		HO.fill(0);
 		let ho = 0;
 		for (const l of c.holes ?? []) {
-			if (ho >= 4 || !(l.kind === 'logo' || l.kind === 'cta' || l.kind === 'hint')) continue;
+			if (ho >= 4 || !(l.kind === 'logo' || l.kind === 'cta')) continue;
 			HO[ho * 4] = (l.x - 8) * dpr;
 			HO[ho * 4 + 1] = hh - (l.y + l.h + 8) * dpr;
 			HO[ho * 4 + 2] = (l.x + l.w + 8) * dpr;

@@ -23,8 +23,6 @@ export const en: HomeDict = {
 	header: { cta: 'Create a flat' },
 	loader: { label: 'MANAWG · LOADING YOUR FLAT' },
 	hints: {
-		skipIntro: 'SKIP INTRO ↓',
-		skipIntroAria: 'Skip intro',
 		scroll: 'SCROLL',
 	},
 	hero: {

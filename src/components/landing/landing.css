@@ -354,39 +354,6 @@
 	border: 0;
 }
 
-/* "Skip intro" hint: mono step of the labels, 11 px, letter spacing 0.12 em, no background. Legibility
-   over mountain, halftone and isometry comes from a soft dark shadow. The 44 px hit area comes from
-   ::after; the flood leaves only a narrow gap around the line. Hover and focus: underline. */
-.hint {
-	position: fixed;
-	left: calc(var(--margin) + env(safe-area-inset-left));
-	bottom: max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px));
-	z-index: 20;
-	padding: 6px 0;
-	font-size: 11px;
-	letter-spacing: 0.12em;
-	color: var(--ink);
-	text-shadow:
-		0 0 10px rgb(var(--paper-rgb) / 0.9),
-		0 0 2px rgb(var(--paper-rgb) / 0.7);
-	text-decoration: none;
-	cursor: pointer;
-	opacity: 0.85;
-	transition: opacity var(--time) ease;
-}
-.hint:focus-visible {
-	text-decoration: underline;
-	text-underline-offset: 4px;
-}
-.hint::after {
-	content: "";
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 50%;
-	height: max(100%, 44px);
-	transform: translateY(-50%);
-}
 /* "Skip to content": hidden until focused by keyboard */
 .skip-link {
 	position: fixed;
@@ -418,15 +385,6 @@
 }
 #content:focus {
 	outline: none;
-}
-[data-phase="after"] .hint,
-.hint[inert] {
-	visibility: hidden;
-}
-/* Phone in landscape: bottom right next to SCROLLEN so the room cards stay clear on the left */
-#final[data-short] .hint {
-	left: auto;
-	right: calc(var(--margin) + env(safe-area-inset-right) + 96px);
 }
 
 /* Header: no veil over the artwork, which runs edge to edge up to the top. When content (text) runs under the
@@ -465,11 +423,6 @@
 		text-decoration: underline;
 		text-underline-offset: 3px;
 	}
-	.hint:hover {
-		opacity: 1;
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
 }
 .cta:active {
 	transform: scale(0.98);
@@ -484,8 +437,7 @@
 	.cta,
 	.tab,
 	.faq-mark,
-	.faq-answer,
-	.hint {
+	.faq-answer {
 		transition-property: opacity;
 	}
 	.faq-answer {
