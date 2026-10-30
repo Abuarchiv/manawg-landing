@@ -148,11 +148,12 @@ export default function TermsPage() {
 					<Link href="/en/privacy#rechte">8 of the privacy policy</Link>.
 				</p>
 				<p className="mt-2">
-					The person who created a flat can remove it irrevocably under{' '}
+					The flat’s admin can remove it irrevocably under{' '}
 					<em>Settings → Access → Delete flat permanently</em>. The flat’s data is removed from the
 					active database. From that moment, images can no longer be retrieved; for the physical
 					deletion that follows, see{' '}
-					<Link href="/en/privacy#4d">section 4d of the privacy policy</Link>.
+					<Link href="/en/privacy#4d">section 4d of the privacy policy</Link>. The admin role can be
+					handed over to another active member.
 				</p>
 				<p className="mt-2">
 					You can also ask for data that can be linked to you to be deleted, such as your membership

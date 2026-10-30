@@ -141,11 +141,12 @@ export default function TermsPage() {
 					<Link href="/datenschutz#rechte">8 der Datenschutzerklärung</Link>.
 				</p>
 				<p className="mt-2">
-					Die Erstellerin oder der Ersteller einer WG kann sie über{' '}
+					Wer in der WG Admin ist, kann sie über{' '}
 					<em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich entfernen. Die
 					WG-Daten werden aus der aktiven Datenbank entfernt. Bilder sind sofort nicht mehr
 					abrufbar; zur anschließenden physischen Löschung siehe{' '}
-					<Link href="/datenschutz#4d">Abschnitt 4d der Datenschutzerklärung</Link>.
+					<Link href="/datenschutz#4d">Abschnitt 4d der Datenschutzerklärung</Link>. Die Admin-Rolle
+					kann an ein anderes aktives Mitglied übergeben werden.
 				</p>
 				<p className="mt-2">
 					Du kannst außerdem per E-Mail an{' '}

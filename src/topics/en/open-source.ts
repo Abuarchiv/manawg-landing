@@ -44,7 +44,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'Host it yourself: the steps',
-				'1. Clone the repository with git clone https://github.com/Abuarchiv/manawg.git and go into the manawg folder.\n2. Run ./docker/setup.sh. It creates a .env file with fresh secrets.\n3. Run docker compose up -d. The first start builds the app image from your checkout, which takes about ten minutes, and sets up the database.\n4. Open http://localhost and create an account. Every email, including the sign-in code, lands in Mailpit at http://localhost:8025.\n5. Check with docker compose ps that the setup service has exited with code 0 and the others are running.',
+				'1. Clone the repository with git clone https://github.com/Abuarchiv/manawg.git and go into the manawg folder.\n2. Run ./docker/setup.sh. It creates a .env file with fresh secrets.\n3. Run docker compose up -d. The first start builds the app image from your checkout, which takes about ten minutes, and sets up the database.\n4. Open http://localhost and create an account. Every email, including the sign-in code, lands in Mailpit at http://localhost:8025.\n5. Check with docker compose ps -a that the setup service has exited with code 0 and the others are running.',
 			],
 			[
 				'An instance for more than your own flat',

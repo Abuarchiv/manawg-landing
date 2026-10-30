@@ -222,27 +222,30 @@ export default function PrivacyPage() {
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 					<li>
 						<strong>Zweck:</strong> Zum Schutz vor automatisierten Anfragen, Erraten von Passwörtern
-						(Brute-Force) und anderem Missbrauch. Dafür führen wir Zähler pro IP-Adresse oder
-						Mitgliedskennung.
+						(Brute-Force) und anderem Missbrauch. Dafür führen wir Zähler pro IP-Adresse,
+						Mitgliedskennung, Konto-Kennung, WG-Kennung oder SHA-256-Hash der eingeladenen
+						E-Mail-Adresse.
 					</li>
 					<li>
 						<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (unser berechtigtes
 						Interesse, die Infrastruktur zu schützen).
 					</li>
 					<li>
-						<strong>Zeitfenster:</strong> Die Zähler laufen in gleitenden Zeitfenstern von einer
-						Minute oder einer Stunde.
+						<strong>Zeitfenster:</strong> Die Zähler laufen in gleitenden Zeitfenstern zwischen
+						einer Minute und einem Tag.
 					</li>
 					<li>
 						<strong>Speicherdauer:</strong> Im Produktivbetrieb ist die zusätzliche Upstash-Analyse
 						deaktiviert. Die bis zum 30.09.2026 gespeicherten zusätzlichen Analyse-Metadaten wurden
 						an diesem Tag gelöscht; zuvor hatten sie keine automatische Ablaufzeit. Die
-						Rate-Limit-Zähler verfallen spätestens 2 Stunden und 1 Sekunde nach ihrer Anlage.
+						Rate-Limit-Zähler verfallen spätestens nach der doppelten Fensterlänge plus einer
+						Sekunde, also spätestens 48 Stunden und 1 Sekunde.
 					</li>
 					<li>
 						<strong>Empfänger und Auftragsverarbeiter:</strong> Vercel KV / Upstash, Inc. (USA). Bei
 						IP-basierten Limits erhält der Dienst die ermittelte IP-Adresse ungekürzt und ungehasht
-						als Schlüsselwert. Für andere Limits verwenden wir Mitgliedskennungen.
+						als Schlüsselwert. Für andere Limits verwenden wir Mitglieds-, Konto- oder WG-Kennungen;
+						die eingeladene E-Mail-Adresse wird nur als Hash übermittelt.
 					</li>
 				</ul>
 
@@ -419,12 +422,11 @@ export default function PrivacyPage() {
 						entfernt und du verlässt alle WGs. Daten einer WG, in der du allein bist, werden aus der
 						aktiven Datenbank entfernt; zugehörige Fotos siehe Abschnitt <a href="#4d">4d</a>.
 						Bleiben weitere Mitglieder in einer WG, bleibt dein Anzeigename an deinen bisherigen
-						Beiträgen stehen (siehe Abschnitt <a href="#4b">4b</a>). Die Erstellerin oder der
-						Ersteller kann eine WG über <em>Einstellungen → Zugang → WG dauerhaft löschen</em>{' '}
-						unwiderruflich entfernen. Dann werden alle Mitglieder, Ausgaben, Listen, Aufgaben und
-						Pinnwand-Beiträge der WG aus der aktiven Datenbank entfernt. Der Abruf zugehöriger
-						Bilder wird sofort gesperrt; die physische Löschung folgt später (siehe Abschnitt{' '}
-						<a href="#4d">4d</a>
+						Beiträgen stehen (siehe Abschnitt <a href="#4b">4b</a>). Wer in der WG Admin ist, kann
+						sie über <em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich
+						entfernen. Dann werden alle Mitglieder, Ausgaben, Listen, Aufgaben und Pinnwand-Beiträge
+						der WG aus der aktiven Datenbank entfernt. Der Abruf zugehöriger Bilder wird sofort
+						gesperrt; die physische Löschung folgt später (siehe Abschnitt <a href="#4d">4d</a>
 						). Du kannst eine weitergehende Löschung per E-Mail an{' '}
 						<a href="mailto:info@manawg.com" className="break-all">
 							info@manawg.com

@@ -134,7 +134,14 @@ export default function RentCalculator({ locale }: { locale: Locale }) {
 
 			<div className="md:col-span-12 min-w-0" aria-live="polite">
 				{ok ? (
-					<div className="overflow-x-auto">
+					// biome-ignore lint/a11y/useSemanticElements: scrollable table needs a labelled region
+					<div
+						className="overflow-x-auto"
+						role="region"
+						aria-label={t.caption}
+						// biome-ignore lint/a11y/noNoninteractiveTabindex: scrollable region must be reachable by keyboard
+						tabIndex={0}
+					>
 						<table className="w-full min-w-[540px] border-collapse text-left">
 							<caption className="sr-only">{t.caption}</caption>
 							<thead>

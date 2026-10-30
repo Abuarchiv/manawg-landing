@@ -15,11 +15,11 @@ const BMG_EN: [string, string] = [
 export const GUIDES_EN_MOVING: Record<string, Topic> = {
 	'start-a-flat-share': {
 		link: 'Start a flat share',
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
 		title: 'Start a flat share in Germany: steps and checklist | ManaWG',
 		description:
-			'Start a WG (shared flat) in Germany step by step: the right order, budget, tenancy type, deposit, flat agreement and Anmeldung. With a tick-off checklist.',
+			'Start a WG (shared flat or apartment) in Germany step by step: the right order, budget, tenancy type, deposit, flat agreement and Anmeldung. With a checklist.',
 		h1: 'Start a flat share in Germany: steps and checklist',
 		intro:
 			'Starting a WG (Wohngemeinschaft, a shared flat) in Germany is mostly about getting the order and the responsibilities right: who moves in, what the flat may cost, which type of tenancy applies and who pays which share when. It is general information and not legal advice, particularly on tenancy agreements.',
@@ -1057,14 +1057,14 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 	},
 	'german-flat-share-glossary': {
 		link: 'Flat-share glossary',
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
-		title: 'German flat-share glossary: WG ad terms | ManaWG',
+		title: 'WG meaning and German flat-share terms explained | ManaWG',
 		description:
-			'German flat-share glossary: WG ads and terms explained, from NK, KM and WM to ZW, EG and OG, with notes from practice and links to the matching guides.',
+			'What WG means in Germany and how to read WG ads: NK, KM, WM, ZW, EG, OG and more explained, with notes from practice and links to the matching guides.',
 		h1: 'German flat-share glossary: WG ads and terms explained',
 		intro:
-			'WG (shared flat) ads in Germany say a lot in shorthand: “14 m², möbl., 420 € WM inkl. NK, ab sofort”. If you are new to Germany or looking for your first room, it is easy to guess wrong. This page explains the most common terms in three tables and points to the matching guides. Abbreviations are not standardised, and not every ad means the same. When in doubt, ask before you say yes. This page is not legal advice.',
+			'WG stands for Wohngemeinschaft, the German word for a shared flat or shared apartment where each person rents a room and the kitchen and bathroom are shared. WG ads say a lot in shorthand: “14 m², möbl., 420 € WM inkl. NK, ab sofort”. If you are new to Germany or looking for your first room, it is easy to guess wrong. This page explains the most common terms in three tables and points to the matching guides. Abbreviations are not standardised, and not every ad means the same. When in doubt, ask before you say yes. This page is not legal advice.',
 		sections: [
 			[
 				'Rent and costs',

@@ -78,9 +78,9 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	'rent-split-calculator': {
 		link: 'Rent split calculator',
 		widget: { after: 'Calculator', kind: 'rent-calculator' },
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
-		title: 'Split rent by room size: flatmate rent calculator | ManaWG',
+		title: 'Split rent with roommates by room size: calculator | ManaWG',
 		description:
 			'Split rent fairly between flatmates or roommates: calculator by room size with shared areas, the formula with an example, and tips on balconies and utilities.',
 		h1: 'Split flat-share rent by room size',

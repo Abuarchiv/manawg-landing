@@ -224,27 +224,29 @@ export default function PrivacyPage() {
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 					<li>
 						<strong>Purpose:</strong> To protect against automated requests, password guessing
-						(brute force) and other misuse. For this we keep counters per IP address or membership
-						ID.
+						(brute force) and other misuse. For this we keep counters per IP address, membership ID,
+						account ID, WG ID or a SHA-256 hash of the invited email address.
 					</li>
 					<li>
 						<strong>Legal basis:</strong> Art. 6(1)(f) GDPR (our legitimate interest in protecting
 						the infrastructure).
 					</li>
 					<li>
-						<strong>Time windows:</strong> The counters run in sliding time windows of one minute or
-						one hour.
+						<strong>Time windows:</strong> The counters run in sliding time windows between one
+						minute and one day.
 					</li>
 					<li>
 						<strong>Retention:</strong> In production, the additional Upstash analytics are switched
 						off. The additional analytics metadata stored up to 30 September 2026 was deleted on
-						that day; before then it had no automatic expiry. Rate-limit counters expire 2 hours and
-						1 second after they are created at the latest.
+						that day; before then it had no automatic expiry. Rate-limit counters expire at most
+						twice the window length plus one second after they are created, that is at most 48 hours
+						and 1 second.
 					</li>
 					<li>
 						<strong>Recipients and processors:</strong> Vercel KV / Upstash, Inc. (USA). For
 						IP-based limits, the service receives the detected IP address in full, neither truncated
-						nor hashed, as a key. For other limits we use membership IDs.
+						nor hashed, as a key. For other limits we use membership, account or WG IDs; the invited
+						email address is sent only as a hash.
 					</li>
 				</ul>
 
@@ -418,11 +420,11 @@ export default function PrivacyPage() {
 						leave all flats. Data of a flat in which you are the only member is removed from the
 						active database; for the related photos see section <a href="#4d">4d</a>. If other
 						members stay in a flat, your display name remains on your earlier contributions (see
-						section <a href="#4b">4b</a>). The person who created a flat can remove it irrevocably
-						under <em>Settings → Access → Delete flat permanently</em>. All members, expenses,
-						lists, tasks and noticeboard posts of the flat are then removed from the active
-						database. Access to the related images is blocked straight away; the physical deletion
-						follows later (see section <a href="#4d">4d</a>
+						section <a href="#4b">4b</a>). The flat’s admin can remove it irrevocably under{' '}
+						<em>Settings → Access → Delete flat permanently</em>. All members, expenses, lists,
+						tasks and noticeboard posts of the flat are then removed from the active database.
+						Access to the related images is blocked straight away; the physical deletion follows
+						later (see section <a href="#4d">4d</a>
 						). You can request more extensive deletion by emailing{' '}
 						<a href="mailto:info@manawg.com" className="break-all">
 							info@manawg.com

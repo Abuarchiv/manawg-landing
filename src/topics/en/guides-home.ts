@@ -30,11 +30,11 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			after: 'Cleaning rota generator: a plan in one minute',
 			kind: 'rota-generator',
 		},
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
 		title: 'Make a cleaning rota or chore chart for flatmates | ManaWG',
 		description:
-			'Make a cleaning rota or chore chart in five steps: tasks by room and rhythm, a weekly plan as a table, a points system and a free generator for flatmates.',
+			'Make a cleaning rota or chore chart in five steps: tasks by room and rhythm, a weekly plan as a table, a points system and a free generator for roommates.',
 		h1: 'Make a cleaning rota, step by step, for a home or flat share',
 		intro:
 			'A cleaning rota rarely fails because people are lazy. It fails because the tasks are vague and nobody keeps the plan up to date. In five steps you get to a rota for a household or flat share: collect tasks by room, estimate the effort, spread them over the week, share them fairly and make the plan visible.',
@@ -266,11 +266,11 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			kind: 'rota-generator',
 			csv: '/en/cleaning-rota-template.csv',
 		},
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
-		title: 'Chore chart template for flatmates: 2–5 people | ManaWG',
+		title: 'Roommate chore chart template: 2–5 people, free | ManaWG',
 		description:
-			'Free printable chore chart and cleaning rota template: rotations for 2 to 5 flatmates, a generator with your names, print as PDF or open the CSV in Excel.',
+			'Free printable chore chart for roommates and flatmates: rotations for 2 to 5 people, a generator with your names, print as PDF or open the CSV in Excel.',
 		h1: 'Flat-share chore chart and cleaning rota template to print and adapt',
 		intro:
 			'Here is a ready-made rotation for two, three, four and five people, free and without an account. In the generator you enter your names and print the plan as a PDF or download it as a CSV.',
