@@ -19,7 +19,7 @@ const TEXT = {
 		path: '/',
 	},
 	en: {
-		title: 'Free flatmate app: split bills, rota & shopping | ManaWG',
+		title: 'Free roommate app: split bills, chores & shopping | ManaWG',
 		description:
 			'The free, ad-free and open-source app for flatmates and roommates: split bills, run a cleaning rota and shop together. In English and German, in the browser.',
 		path: '/en',

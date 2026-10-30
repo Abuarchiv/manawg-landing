@@ -44,14 +44,14 @@ function comparisonTable(
 export const TOPICS_EN_CORE: Record<string, Topic> = {
 	'flat-share-app': {
 		link: 'Flat-share app',
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
 		title: 'Free flatmate app: split bills, rota, shopping | ManaWG',
 		description:
 			'ManaWG is a free flat-share app for flatmates and roommates, not a room search: expenses, cleaning rota, shopping list, calendar and chat in your browser.',
 		h1: 'The flat-share app for money, cleaning, shopping and plans',
 		intro:
-			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many shared flats (WGs, as they are called in Germany). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app, in English and German.',
+			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many shared flats (WGs, as they are called in Germany). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app for flatmates and roommates, in English and German.',
 		sections: [
 			[
 				'Why an app instead of notes and WhatsApp',
@@ -169,6 +169,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 				'Yes. Any member downloads the flat’s data from Settings under Data, everything as JSON or single areas as CSV, such as expenses, fixed costs, shopping or cleaning rota. The monthly statement can be printed or saved as a PDF.',
 			],
 			[
+				'Is ManaWG an app for roommates to split bills and chores?',
+				'Yes. Whether you say flatmates, roommates or housemates, ManaWG covers the two things shared homes argue about most: who owes whom and whose turn it is. Expenses are split in euros with suggested settle-up transfers, and the cleaning rota hands each task to whoever has the lowest workload.',
+			],
+			[
 				'Is ManaWG an app for finding a room?',
 				'No. ManaWG matches neither rooms nor flatmates. It organises a flat that already exists. For the search, [Find a flatmate](/find-a-flatmate) and the [WG-Casting questions](/wg-casting-questions) help.',
 			],
@@ -180,14 +184,14 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'cleaning-rota': {
 		link: 'Cleaning rota app',
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
-		title: 'Cleaning rota & chore chart app for flatmates | ManaWG',
+		title: 'Cleaning rota & chore app for flatmates & roommates | ManaWG',
 		description:
 			'Free cleaning rota and chore chart app for flatmates: tasks repeat on a set rhythm, the app shares them fairly, skips anyone away and reminds whoever is next.',
 		h1: 'Cleaning rota app: tasks, fair rotation and time away',
 		intro:
-			'You add the tasks once, and ManaWG works out the dates, who is responsible and who is away. Free and in the browser, with no note on the fridge that goes out of date. If you want a rota to print, use the [cleaning rota template](/cleaning-rota-template). The steps to your own plan are in [Make a cleaning rota](/make-a-cleaning-rota).',
+			'You add the tasks once, and ManaWG works out the dates, who is responsible and who is away. It is a free chore app for flatmates and roommates that runs in the browser, with no note on the fridge that goes out of date. If you want a rota to print, use the [cleaning rota template](/cleaning-rota-template). The steps to your own plan are in [Make a cleaning rota](/make-a-cleaning-rota).',
 		sections: [
 			[
 				'Tasks on a fixed rhythm',
@@ -228,6 +232,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 				'The person enters the dates as time away. At the next assignment after a task is completed, they are skipped. Tasks that were already assigned stay with them and are marked as away. The app shows how many people were left out because of time away.',
 			],
 			[
+				'Is this a chore chart app for roommates?',
+				'Yes. A roommate chore chart and a flat-share cleaning rota are the same thing under two names. ManaWG keeps the chart up to date by itself: tasks repeat on their rhythm, the next person is picked by workload, and whoever is away is skipped.',
+			],
+			[
 				'Does the cleaning rota app cost anything?',
 				'No. ManaWG is free and shows no ads. The app is available in English and German, and a flat can have at most 20 active members.',
 			],
@@ -251,9 +259,9 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'shared-expenses': {
 		link: 'Shared expenses',
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
-		title: 'Split bills with flatmates: free expenses app | ManaWG',
+		title: 'Split bills with roommates and flatmates: free app | ManaWG',
 		description:
 			'Free app to split bills with flatmates or roommates: equal or custom shares in euros, fixed costs such as rent, few settle-up transfers, monthly statement.',
 		h1: 'The shared expenses app for costs, fixed costs and statements',
@@ -305,6 +313,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			[
 				'Can I split fixed costs such as rent automatically?',
 				'Yes, as a template with an interval in months. With an equal split, an odd cent moves on from one booking to the next person.',
+			],
+			[
+				'Can I use ManaWG as a roommate expense tracker?',
+				'Yes, and without a spreadsheet. Every expense updates each person’s balance at once, rent and other fixed costs are booked automatically on their monthly interval, and the monthly statement lists what each roommate paid, their share and the transfers that settle everything.',
 			],
 			[
 				'Can I bring over data from Splitwise?',
@@ -377,11 +389,11 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'best-flat-share-app': {
 		link: 'Best flat-share app',
-		updated: '2026-10-29',
+		updated: '2026-10-30',
 		published: '2026-10-29',
-		title: 'Best flatmate app 2026: Splitwise, Flatastic & more | ManaWG',
+		title: 'Best roommate app 2026: Splitwise, Flatastic & more | ManaWG',
 		description:
-			'Which flat-share app suits you? Compared on expenses, cleaning rota, shopping, calendar and price: ManaWG, Flatastic, Splitwise, Splid, Tricount, OurHome.',
+			'Which flatmate or roommate app suits you? Compared on expenses, chores, shopping, calendar and price: ManaWG, Flatastic, Splitwise, Splid, Tricount, OurHome.',
 		h1: 'The best flat-share app: 7 criteria for choosing',
 		intro:
 			'There are many apps for a WG (shared flat), and none is the best for every flat. Some only handle money, others only organise the household. This page is not an independent ranking but the view of ManaWG, the provider. These seven criteria help you find the app that fits your daily life before you ask every flatmate to switch.',
