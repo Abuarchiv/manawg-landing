@@ -28,7 +28,9 @@ pnpm dev                                                 # http://localhost:3100
 
 - **Both languages.** A page that exists in German and English changes in both. German pages live
   in `src/topics/de/` and `src/app/(de)/`, English in `src/topics/en/` and `src/app/(en)/en/`.
-  A new topic needs an entry in the slug map in `src/lib/locale.ts`.
+  A new topic needs an entry in the slug map in `src/lib/locale.ts`. Both languages use the same
+  files: product and comparison pages in `topics.ts`, guides in `guides-money.ts`,
+  `guides-home.ts` or `guides-moving.ts`, in the same place on both sides.
 - **Facts must match the app.** Describe only what ManaWG really does today. If you are unsure,
   check the app repository.
 - **Legal pages.** The German imprint, privacy policy and terms are the binding versions. Changes
