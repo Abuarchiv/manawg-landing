@@ -44,7 +44,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Selbst hosten: die Schritte',
-				'1. Das Repository mit git clone https://github.com/Abuarchiv/manawg.git klonen und in den Ordner manawg wechseln.\n2. ./docker/setup.sh ausführen. Das Skript legt eine .env-Datei mit frischen Geheimnissen an.\n3. docker compose up -d ausführen. Beim ersten Start wird das App-Image aus eurem Checkout gebaut, das dauert etwa zehn Minuten, und die Datenbank wird eingerichtet.\n4. http://localhost öffnen und ein Konto anlegen. Jede Mail, auch der Anmeldecode, landet in Mailpit unter http://localhost:8025.\n5. Mit docker compose ps prüfen, dass der Dienst setup mit Code 0 beendet ist und die übrigen laufen.',
+				'1. Das Repository mit git clone https://github.com/Abuarchiv/manawg.git klonen und in den Ordner manawg wechseln.\n2. ./docker/setup.sh ausführen. Das Skript legt eine .env-Datei mit frischen Geheimnissen an.\n3. docker compose up -d ausführen. Beim ersten Start wird das App-Image aus eurem Checkout gebaut, das dauert etwa zehn Minuten, und die Datenbank wird eingerichtet.\n4. http://localhost öffnen und ein Konto anlegen. Jede Mail, auch der Anmeldecode, landet in Mailpit unter http://localhost:8025.\n5. Mit docker compose ps -a prüfen, dass der Dienst setup mit Code 0 beendet ist und die übrigen laufen.',
 			],
 			[
 				'Eine Instanz für mehr als die eigene WG',

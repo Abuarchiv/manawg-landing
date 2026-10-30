@@ -76,3 +76,14 @@ test('widget.after matches a heading', () => {
 test('related() for an English slug mirrors the German list', () => {
 	assert.deepEqual(related('en', 'cleaning-rota'), related('de', 'putzplan').map(toEnglishSlug));
 });
+
+test('self-hosting steps list stopped containers with docker compose ps -a', () => {
+	for (const t of [...Object.values(TOPICS_DE), ...Object.values(TOPICS_EN)]) {
+		const texts = [t.intro, ...t.sections.map(([, text]) => text)];
+		for (const text of texts) {
+			for (const m of text.matchAll(/docker compose ps\b(?! -a)/g)) {
+				assert.fail(`plain "${m[0]}" hides the exited setup service`);
+			}
+		}
+	}
+});
