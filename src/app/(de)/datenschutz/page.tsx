@@ -419,12 +419,11 @@ export default function PrivacyPage() {
 						entfernt und du verlässt alle WGs. Daten einer WG, in der du allein bist, werden aus der
 						aktiven Datenbank entfernt; zugehörige Fotos siehe Abschnitt <a href="#4d">4d</a>.
 						Bleiben weitere Mitglieder in einer WG, bleibt dein Anzeigename an deinen bisherigen
-						Beiträgen stehen (siehe Abschnitt <a href="#4b">4b</a>). Die Erstellerin oder der
-						Ersteller kann eine WG über <em>Einstellungen → Zugang → WG dauerhaft löschen</em>{' '}
-						unwiderruflich entfernen. Dann werden alle Mitglieder, Ausgaben, Listen, Aufgaben und
-						Pinnwand-Beiträge der WG aus der aktiven Datenbank entfernt. Der Abruf zugehöriger
-						Bilder wird sofort gesperrt; die physische Löschung folgt später (siehe Abschnitt{' '}
-						<a href="#4d">4d</a>
+						Beiträgen stehen (siehe Abschnitt <a href="#4b">4b</a>). Wer in der WG Admin ist, kann
+						sie über <em>Einstellungen → Zugang → WG dauerhaft löschen</em> unwiderruflich
+						entfernen. Dann werden alle Mitglieder, Ausgaben, Listen, Aufgaben und Pinnwand-Beiträge
+						der WG aus der aktiven Datenbank entfernt. Der Abruf zugehöriger Bilder wird sofort
+						gesperrt; die physische Löschung folgt später (siehe Abschnitt <a href="#4d">4d</a>
 						). Du kannst eine weitergehende Löschung per E-Mail an{' '}
 						<a href="mailto:info@manawg.com" className="break-all">
 							info@manawg.com
