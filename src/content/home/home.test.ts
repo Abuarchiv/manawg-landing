@@ -151,3 +151,11 @@ test('FAQ: four pairs per language, answers filled', () => {
 		for (const [q, a] of d.faq) assert.ok(q.endsWith('?') && a.length > 20);
 	}
 });
+
+test('FAQ: German answers address the group, not one reader', () => {
+	const singular = /(^|[^\p{L}])(du|dein\w*|dir|dich)(?![\p{L}])/iu;
+	for (const [q, a] of de.faq) {
+		assert.doesNotMatch(q, singular);
+		assert.doesNotMatch(a, singular);
+	}
+});
