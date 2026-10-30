@@ -103,8 +103,8 @@ data. Leave it unset for local work.
 
 ## Stack
 
-[Next.js](https://nextjs.org) 15 (App Router, statically prerendered), React 19,
-[Tailwind CSS](https://tailwindcss.com) 3, [Lenis](https://lenis.darkroom.engineering),
+[Next.js](https://nextjs.org) 16 (App Router, statically prerendered), React 19,
+[Tailwind CSS](https://tailwindcss.com) 4, [Lenis](https://lenis.darkroom.engineering),
 TypeScript, [Biome](https://biomejs.dev) and `node --test`. The scenes call the Canvas 2D and
 WebGL APIs directly, without an animation or 3D library.
 
