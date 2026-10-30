@@ -314,11 +314,11 @@
 	display: inline-block;
 	min-width: 3.2em;
 	vertical-align: 0.5em;
-	/* The closed question dims to 0.72; these keep the number at 4.5:1 against the paper. */
+	/* The closed question dims to 0.72; these keep the dimmed number above 4.5:1 against the paper. */
 	color: #a6a6a6;
 }
 :root[data-theme="light"] .faq-num {
-	color: #3d3d3d;
+	color: #333;
 }
 .faq-inner p {
 	margin: 0;
