@@ -55,7 +55,9 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Organise flat shopping](https://manawg.com/en/organise-flat-shopping)
 - [Find a flatmate](https://manawg.com/en/find-a-flatmate): flat ad, WG-Gesucht account, required details, mistakes
 - [WG-Casting questions](https://manawg.com/en/wg-casting-questions): how it works, list of questions, sample texts for accepting and declining
+- [Flat-share glossary](https://manawg.com/en/german-flat-share-glossary): NK, KM, WM, ZW, EG, OG and more from WG ads explained
 - [Flat-share tenancy agreement](https://manawg.com/en/flat-share-tenancy-agreement): joint tenancy, subletting, individual contracts, liability, deposit, sample checklist
+- [Flat-share deposit](https://manawg.com/en/flat-share-deposit): amount, instalments, who pays and holds it, moving out, repayment
 - [Asking a flatmate to leave](https://manawg.com/en/asking-a-flatmate-to-leave): subletting, main tenancy, individual contracts, no contract, notice periods, written form
 - [Anmeldung in a shared flat](https://manawg.com/en/anmeldung-shared-flat): landlord’s confirmation of move-in, deadline, main and secondary residence, deregistering
 - [Subletting a room](https://manawg.com/en/subletting-a-room): permission, contract, rent, deposit, registration
