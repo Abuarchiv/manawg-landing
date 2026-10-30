@@ -13,3 +13,7 @@ node_modules
 
 # System
 .DS_Store
+
+# Playwright
+test-results/
+playwright-report/

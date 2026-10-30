@@ -140,10 +140,10 @@ interface FlatState {
 
 const states = new WeakMap<HTMLCanvasElement, FlatState>();
 
-// Glyph metrics for labels
+// Glyph metrics for labels, measured again once a web font has loaded (loop.fv)
 const widths = new Map<string, number>();
 function textWidth(ctx: CanvasRenderingContext2D, font: string, text: string): number {
-	const k = `${font}|${text}`;
+	const k = `${loop.fv}|${font}|${text}`;
 	let w = widths.get(k);
 	if (w === undefined) {
 		ctx.font = font;

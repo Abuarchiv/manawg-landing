@@ -23,6 +23,7 @@
 		"start": "next start",
 		"typecheck": "tsc --noEmit",
 		"test": "node --test \"src/**/*.test.ts\"",
+		"test:e2e": "playwright test",
 		"lint": "biome check .",
 		"format": "biome format --write .",
 		"clean": "rm -rf .next node_modules/.cache"
@@ -36,6 +37,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.6.4",
+		"@playwright/test": "^1.64.1",
 		"@tailwindcss/postcss": "^4.3.3",
 		"@types/node": "^22",
 		"@types/react": "19.3.0",

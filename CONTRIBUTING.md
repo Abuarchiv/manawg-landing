@@ -41,7 +41,7 @@ pnpm dev                                                 # http://localhost:3100
 ## Before you open the pull request
 
 ```sh
-pnpm lint && pnpm typecheck && pnpm test && pnpm build
+pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e
 ```
 
 Describe what changed and why, and link the issue if there is one. Keep a pull request to one

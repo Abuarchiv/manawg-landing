@@ -44,16 +44,19 @@ pnpm install
 pnpm dev          # http://localhost:3100
 ```
 
-| Script           | What it does                    |
-| ---------------- | ------------------------------- |
-| `pnpm dev`       | Dev server on port 3100         |
-| `pnpm lint`      | Biome check                     |
-| `pnpm typecheck` | `tsc --noEmit`                  |
-| `pnpm test`      | Unit tests (`src/**/*.test.ts`) |
-| `pnpm build`     | Production build                |
+| Script           | What it does                                                               |
+| ---------------- | -------------------------------------------------------------------------- |
+| `pnpm dev`       | Dev server on port 3100                                                    |
+| `pnpm lint`      | Biome check                                                                |
+| `pnpm typecheck` | `tsc --noEmit`                                                             |
+| `pnpm test`      | Unit tests (`src/**/*.test.ts`)                                            |
+| `pnpm build`     | Production build                                                           |
+| `pnpm test:e2e`  | Smoke test of the production build in Chromium, desktop and phone (`e2e/`) |
 
-Before opening a pull request, run `pnpm lint && pnpm typecheck && pnpm test && pnpm build`. If a
-dev server is already running, build into a separate folder with
+Before opening a pull request, run
+`pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e`. The smoke test serves
+the build from `.next` and needs Chromium once: `pnpm exec playwright install chromium`. If a dev
+server is already running, check a build in a separate folder with
 `NEXT_DIST_DIR=.next-check pnpm build` and delete it afterwards.
 
 `NEXT_PUBLIC_APP_URL` sets the public origin used for canonical links, the sitemap and structured

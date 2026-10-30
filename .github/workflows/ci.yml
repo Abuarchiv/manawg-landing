@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Lint, typecheck, test and build
+    name: Lint, typecheck, test, build and smoke test
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -43,3 +43,17 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Smoke test
+        run: pnpm test:e2e
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7
