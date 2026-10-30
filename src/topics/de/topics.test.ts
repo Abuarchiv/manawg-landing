@@ -39,6 +39,20 @@ test('markdown links in the text point to existing pages', () => {
 	}
 });
 
+test('install steps follow the current browser flows', () => {
+	const install = TOPICS_DE['wg-app']?.sections.find(([h]) =>
+		h.startsWith('ManaWG installieren'),
+	)?.[1];
+	const iphone = Object.values(TOPICS_DE)
+		.flatMap((t) => t.faq ?? [])
+		.find(([q]) => q === 'Wie installiere ich ManaWG auf dem iPhone?')?.[1];
+	assert.ok(install && iphone);
+	assert.match(install, /Mehr anzeigen/);
+	assert.match(install, /Verknüpfung erstellen/);
+	assert.match(iphone, /Mehr anzeigen/);
+	for (const text of [install, iphone]) assert.doesNotMatch(text, /Startbildschirm/);
+});
+
 test('files of the app repository named in the text exist there', () => {
 	const existing = new Set(['docs/self-hosting.md', 'LICENSE']);
 	const pattern =

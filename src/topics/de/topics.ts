@@ -49,7 +49,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'ManaWG installieren: iPhone, Android, Desktop',
-				'iPhone: In Safari auf Teilen tippen, „Zum Home-Bildschirm“ wählen und oben rechts auf Hinzufügen tippen. Danach ManaWG vom Home-Bildschirm öffnen und einmal anmelden.\nAndroid: In Chrome im Menü „App installieren“ oder „Zum Startbildschirm“ wählen und bestätigen.\nDesktop: In der Adressleiste auf Installieren klicken oder im Menü „ManaWG installieren“ wählen.',
+				'iPhone: In Safari ≡ antippen, dann „Teilen“ → „Mehr anzeigen“ → „Zum Home-Bildschirm“ → „Hinzufügen“. Danach ManaWG vom Home-Bildschirm öffnen und einmal anmelden.\nAndroid: In Chrome Menü ⋮ → „Installieren und Verknüpfung erstellen“ → „Installieren“.\nDesktop: Symbol „Installieren“ rechts in der Adressleiste klicken, dann im Dialog „App installieren“ auf „Installieren“.',
 			],
 			[
 				'Auch ohne Netz',
@@ -971,7 +971,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wie installiere ich ManaWG auf dem iPhone?',
-				'In Safari app.manawg.com öffnen, auf Teilen tippen, „Zum Home-Bildschirm“ wählen und oben rechts auf Hinzufügen tippen. Danach ManaWG vom Home-Bildschirm öffnen und einmal anmelden.',
+				'In Safari app.manawg.com öffnen, ≡ antippen, dann „Teilen“ → „Mehr anzeigen“ → „Zum Home-Bildschirm“ → „Hinzufügen“. Danach ManaWG vom Home-Bildschirm öffnen und einmal anmelden.',
 			],
 			[
 				'Wer steckt hinter ManaWG?',
