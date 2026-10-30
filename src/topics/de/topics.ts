@@ -1,7 +1,7 @@
 // Topic pages for search queries that the home page alone does not cover.
 // Only name features that really exist in manawg-app.
 import type { Topic } from '../types.ts';
-import { comparisonTable, NOT_CHECKED } from './comparison.ts';
+import { COMPARISON_ROWS, comparisonTable, MANAWG_CELLS, NOT_CHECKED } from './comparison.ts';
 
 export const TOPICS_DE_CORE: Record<string, Topic> = {
 	'wg-app': {
@@ -334,6 +334,141 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			[
 				'Wie funktionieren die Vorräte?',
 				'Ihr legt Vorräte mit Menge, Einheit und Schwellwert an und tragt den Verbrauch ein. „Schnell nachfüllen“ schlägt fast leere und oft verbrauchte Vorräte zum Nachkaufen vor.',
+			],
+		],
+	},
+	'beste-wg-app': {
+		link: 'Beste WG-App',
+		updated: '2026-10-29',
+		published: '2026-10-11',
+		title: 'Beste WG-App 2026: Flatastic, Splitwise, Splid | ManaWG',
+		description:
+			'Welche WG-App passt zu euch? Vergleich nach Ausgaben, Putzplan, Einkauf, Kalender und Preis: ManaWG, Flatastic, Splitwise, Splid, Tricount und OurHome.',
+		h1: 'Die beste WG-App: 7 Kriterien für die Auswahl',
+		intro:
+			'Es gibt viele Apps für Wohngemeinschaften, und keine ist für jede WG die beste. Manche rechnen nur Geld, andere organisieren nur den Haushalt. Diese Seite ist kein unabhängiges Ranking, sondern die Sicht des Anbieters ManaWG. Mit diesen sieben Kriterien findet ihr die App, die zu eurem Alltag passt, bevor ihr alle Mitbewohner zum Umstieg bewegt.',
+		sources: [
+			['Splitwise Pro', 'https://www.splitwise.com/pro'],
+			['Splid auf Deutsch', 'https://splid.app/german'],
+			['Flatastic', 'https://www.flatastic-app.com/'],
+			['Flatastic Premium', 'https://www.flatastic-app.com/en/premium'],
+			['Tricount Funktionen', 'https://tricount.com/features'],
+			[
+				'Tricount im App Store',
+				'https://apps.apple.com/de/app/tricount-ausgaben-teilen/id349866256',
+			],
+			['Was ist ManaWG?', 'https://manawg.com/ueber-manawg'],
+		],
+		tables: [
+			{
+				after: 'intro',
+				title: 'WG-Apps im Vergleich',
+				header: ['Merkmal', 'Flatastic', 'ManaWG', 'OurHome', 'Splid', 'Splitwise', 'Tricount'],
+				// Columns are alphabetical so the table does not suggest a ranking.
+				rows: COMPARISON_ROWS.map((row, i) => [
+					row,
+					...[
+						[
+							'Finanzen laut Anbieter',
+							'Aufgaben laut Anbieter',
+							'Einkäufe laut Anbieter',
+							NOT_CHECKED,
+							'Pinnwand laut Anbieter, Chat nicht geprüft',
+							NOT_CHECKED,
+							'Premium kostenpflichtig laut Anbieter',
+						],
+						MANAWG_CELLS,
+						[],
+						[
+							'ja, in Gruppen',
+							NOT_CHECKED,
+							NOT_CHECKED,
+							NOT_CHECKED,
+							NOT_CHECKED,
+							'über 150 laut Anbieter',
+							NOT_CHECKED,
+						],
+						[
+							'ja',
+							NOT_CHECKED,
+							NOT_CHECKED,
+							NOT_CHECKED,
+							NOT_CHECKED,
+							'Umrechnung im Pro-Tarif laut Anbieter',
+							'Pro-Tarif laut Anbieter',
+						],
+						[
+							'ja',
+							NOT_CHECKED,
+							NOT_CHECKED,
+							NOT_CHECKED,
+							NOT_CHECKED,
+							'mehrere Währungen laut Anbieter',
+							'kostenlos laut Anbieter',
+						],
+					].map((column) => column[i] ?? NOT_CHECKED),
+				]),
+				note: 'Angaben zu anderen Anbietern laut deren Seiten, Stand 14. Oktober 2026 (Tricount: 27. Oktober 2026). Was die Quellen nicht belegen, steht als „nicht geprüft“ da. Die Spalten sind alphabetisch sortiert, kein Ranking.',
+			},
+		],
+		sections: [
+			[
+				'1. Was kostet die App wirklich?',
+				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. Die [kostenlose WG-App ManaWG](/wg-app) kommt ohne Werbung und ohne Bezahlstufe aus. Splitwise Pro nennt laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Was die [kostenlose Version von Splitwise](/splitwise-kostenlos) begrenzt, steht auf einer eigenen Seite. Splid nennt auf seiner deutschen Seite über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium, unter anderem ohne Werbung und mit Verläufen. ManaWG ist kostenlos und werbefrei und verbindet Kasse, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat, Es rechnet nur in Euro, ist auf Deutsch und Englisch verfügbar und für höchstens 20 aktive Mitglieder pro WG gedacht.',
+			],
+			[
+				'2. Deckt sie Geld und Haushalt ab?',
+				'Reine Ausgaben-Apps lösen das Geldproblem, Haushalts-Apps organisieren Aufgaben. Wollt ihr Geld und Haushalt wirklich an einem Ort regeln, braucht ihr eine App mit Kasse, Putzplan und Einkaufsliste, zum Beispiel ManaWG. ManaWG deckt beides ab: Ausgaben, Fixkosten und Monatsabrechnung auf der einen Seite, Putzplan mit Abwesenheiten, Einkaufsliste mit Vorräten, Kalender, Pinnwand und Chat auf der anderen.',
+			],
+			[
+				'3. Wie gut ist die Kasse?',
+				'Gute Kassen teilen ungleich, kennen Fixkosten, zeigen Salden und schlagen Ausgleiche mit wenigen Überweisungen vor. Achtet auch darauf, wie Cent-Reste behandelt werden und ob ihr vorhandene Daten als Datei importieren könnt.',
+			],
+			[
+				'4. Wie fair ist der Putzplan?',
+				'Entscheidend sind faire Rotation, Wiederholung in Tagen oder Monaten, Umgang mit Abwesenheit und Erinnerungen. Ein Punktesystem motiviert manche WGs, andere empfinden es als Gängelung. ManaWG verteilt nach Auslastung und kommt ohne Punkte aus.',
+			],
+			[
+				'5. Müssen alle eine App installieren?',
+				'Je höher die Hürde, desto eher macht jemand nicht mit. Eine Web-App, die im Browser läuft und per Link beitritt, senkt diese Hürde. ManaWG läuft ohne App Store und lässt sich auf den Home-Bildschirm legen.',
+			],
+			[
+				'6. Datenschutz und Sprache',
+				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App gibt es auf Deutsch und Englisch. Der Code ist Open Source unter Apache-2.0 und lässt sich selbst hosten, siehe [Open-Source-WG-App](/open-source-wg-app). Andere Währungen als Euro gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
+			],
+			[
+				'7. Wie leicht ist der Umstieg?',
+				'Wer Daten aus Splitwise oder Splid bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ausführliche Vergleiche findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative), [Flatastic-Alternative](/flatastic-alternative), [Tricount-Alternative](/tricount-alternative) und [OurHome-Alternative](/ourhome-alternative).',
+			],
+			[
+				'Welche App passt zu welcher WG?',
+				'Ihr teilt vor allem Geld, auch auf Reisen und in mehreren Währungen: Splid nennt über 150 Währungen, Tricount mehrere Währungen, Splitwise die Umrechnung im Pro-Tarif, jeweils laut Anbieter. ManaWG rechnet nur in Euro.\nIhr wollt Geld, Putzplan, Einkauf, Kalender und Pinnwand in einer deutschsprachigen App ohne Abo und ohne App Store: dafür ist ManaWG gebaut.\nIhr wollt Punkte oder Belohnungen fürs Putzen: Das bietet ManaWG nicht, der Putzplan verteilt nach Auslastung.\nIhr habt alte Ausgaben aus Splitwise oder Splid als CSV-Datei: ManaWG übernimmt sie mit Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln).\nIhr seid mehr als 20 Personen: Eine WG in ManaWG fasst höchstens 20 aktive Mitglieder.',
+			],
+		],
+		faq: [
+			[
+				'Welche WG-App ist kostenlos?',
+				'ManaWG ist vollständig kostenlos, ohne Werbung und ohne Bezahlstufe. Bei anderen Apps hängt der Umfang des kostenlosen Tarifs vom Anbieter ab und kann sich ändern.',
+			],
+			[
+				'Gibt es eine WG-App mit Putzplan und Kasse in einem?',
+				'Ja. ManaWG verbindet Ausgaben teilen, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat in einer App, auf Deutsch, in Euro und für bis zu 20 Mitglieder pro WG.',
+			],
+			[
+				'Welche App eignet sich für Reisen mit mehreren Währungen?',
+				'Dafür ist eine Ausgaben-App mit Wechselkursen besser geeignet. ManaWG rechnet nur in Euro und ist für den WG-Alltag gedacht.',
+			],
+			[
+				'Wo liegen die Daten von ManaWG?',
+				'Die Datenbank liegt bei Supabase in Frankfurt am Main (EU). Für den E-Mail-Versand wird Resend (USA) eingesetzt. Welche Daten an wen gehen, steht in der Datenschutzerklärung.',
+			],
+			[
+				'Gibt es eine WG-App ohne App Store?',
+				'Ja, zum Beispiel ManaWG: Die Web-App läuft im Browser unter app.manawg.com und lässt sich auf den Home-Bildschirm legen.',
+			],
+			[
+				'Flatastic oder Splitwise: Was passt besser zu einer WG?',
+				'Das hängt davon ab, was ihr braucht. Splitwise ist auf geteilte Ausgaben ausgerichtet. Flatastic verbindet laut Anbieter Putzplan, Einkaufsliste, Finanzen und Pinnwand, Premium ist kostenpflichtig. Wer Geld und Haushalt in einer kostenlosen deutschsprachigen Web-App ohne Werbung möchte, findet das in der [WG-App ManaWG](/wg-app), die dafür nur in Euro und für höchstens 20 Mitglieder rechnet.',
 			],
 		],
 	},
@@ -846,6 +981,59 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 				'Hat ManaWG etwas mit WireGuard zu tun?',
 				'Nein. WireGuard ist ein VPN-Protokoll. ManaWG steht für Wohngemeinschaft (WG) und ist eine Haushalts-App.',
 			],
+		],
+	},
+	'ueber-manawg': {
+		link: 'Über ManaWG',
+		updated: '2026-10-29',
+		published: '2026-10-11',
+		title: 'Was ist ManaWG? Die kostenlose WG-App im Überblick',
+		description:
+			'ManaWG ist eine kostenlose Open-Source-WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Fakten, Betreiber, Abgrenzung zu WireGuard.',
+		h1: 'Was ist ManaWG?',
+		intro:
+			'ManaWG ist eine kostenlose Open-Source-Web-App für Wohngemeinschaften, auf Deutsch und Englisch. Sie bündelt Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand und Chat. ManaWG hat nichts mit dem VPN-Protokoll WireGuard zu tun.',
+		sources: [
+			['Impressum', '/impressum'],
+			['Datenschutz', '/datenschutz'],
+			['AGB', '/agb'],
+		],
+		sections: [
+			[
+				'Kurzfassung',
+				'ManaWG (auch Mana WG) ist eine Haushalts-App für Wohngemeinschaften. Mitbewohner teilen Ausgaben und gleichen Salden mit wenigen Überweisungen aus, führen eine gemeinsame Einkaufsliste, organisieren einen fair verteilten Putzplan und halten Absprachen an einer Pinnwand fest. Die App ist kostenlos, werbefrei und läuft im Browser unter app.manawg.com.',
+			],
+			[
+				'Fakten auf einen Blick',
+				'Preis: kostenlos, keine Werbung, keine Bezahlstufe. Sprachen: Deutsch und Englisch, Währung: Euro. Plattform: Web-App (PWA), installierbar auf iPhone, Android und Desktop, ohne App Store. Anmeldung: Google oder E-Mail. Größe: bis zu 20 aktive Mitglieder pro WG. Daten: in der EU gespeichert (Frankfurt am Main). Beitritt: per Einladungslink. Lizenz: Apache-2.0, Quellcode auf GitHub, selbst hostbar mit Docker, mehr unter [Open-Source-WG-App](/open-source-wg-app).',
+			],
+			[
+				'Funktionen',
+				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import von Splitwise- und Splid-CSV-Dateien, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht. Die Einzelheiten stehen unter [WG-App](/wg-app), der Vergleich mit Splitwise unter [Splitwise-Alternative](/splitwise-alternative), häufige Fragen unter [Häufige Fragen](/faq).',
+			],
+			[
+				'Betreiber und Kontakt',
+				'Betreiber ist Abubakar Abditube. ManaWG wird privat und nicht-kommerziell betrieben. Kontakt: info@manawg.com.',
+			],
+			[
+				'Abgrenzung: ManaWG und WireGuard',
+				'Der Name wird manchmal mit WireGuard verwechselt, einem VPN-Protokoll. Beide haben nichts miteinander zu tun. ManaWG steht für eine Wohngemeinschaft (WG), nicht für WireGuard.',
+			],
+			[
+				'Für wen die App gedacht ist',
+				'Für Studenten-WGs, Zweck-WGs und alle, die sich Wohnung und Haushaltskasse teilen. Für große Gruppen über 20 Mitglieder, Reisen mit mehreren Währungen oder Firmenbuchhaltung ist sie nicht gedacht.',
+			],
+		],
+		faq: [
+			[
+				'Was ist ManaWG?',
+				'Eine kostenlose Open-Source-WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Sie läuft im Browser unter app.manawg.com.',
+			],
+			[
+				'Hat ManaWG etwas mit WireGuard zu tun?',
+				'Nein. ManaWG ist eine Haushalts-App für Wohngemeinschaften. WireGuard ist ein VPN-Protokoll.',
+			],
+			['Wo liegen die Daten von ManaWG?', 'In der EU, auf Servern in Frankfurt am Main.'],
 		],
 	},
 };

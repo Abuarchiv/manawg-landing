@@ -1,4 +1,4 @@
-import { cleaningRotaTemplateCsv } from '@/topics/de/guides';
+import { cleaningRotaTemplateCsv } from '@/topics/de/guides-home';
 
 export const dynamic = 'force-static';
 

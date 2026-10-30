@@ -1055,4 +1055,238 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			BMG_EN,
 		],
 	},
+	'german-flat-share-glossary': {
+		link: 'Flat-share glossary',
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'German flat-share glossary: WG ad terms | ManaWG',
+		description:
+			'German flat-share glossary: WG ads and terms explained, from NK, KM and WM to ZW, EG and OG, with notes from practice and links to the matching guides.',
+		h1: 'German flat-share glossary: WG ads and terms explained',
+		intro:
+			'WG (shared flat) ads in Germany say a lot in shorthand: “14 m², möbl., 420 € WM inkl. NK, ab sofort”. If you are new to Germany or looking for your first room, it is easy to guess wrong. This page explains the most common terms in three tables and points to the matching guides. Abbreviations are not standardised, and not every ad means the same. When in doubt, ask before you say yes. This page is not legal advice.',
+		sections: [
+			[
+				'Rent and costs',
+				'What matters is what the rent includes and what comes on top. KM is the Kaltmiete (rent excluding utilities), WM the Warmmiete (rent including heating and other utilities), and NK, BK and HK are Nebenkosten, Betriebskosten and Heizkosten (utilities, running costs and heating). Which items sit inside the WM is explained in [utilities and internet](/utilities-and-internet), and the broadcasting fee is covered in [Rundfunkbeitrag in a shared flat](/rundfunkbeitrag-shared-flat). The rules on the deposit are in [the flat-share deposit](/flat-share-deposit).',
+			],
+			[
+				'Flat and room',
+				'These terms describe how the flat is laid out and what is in the room. Floors are counted differently from what many internationals expect: the Erdgeschoss (EG) is the ground floor, and the 1. OG is the floor above it, which Britons call the first floor.',
+			],
+			[
+				'Contract and moving in',
+				'These terms cover the contract, moving in and getting to know each other. Which type of contract fits you is explained in [flat-share tenancy agreement](/flat-share-tenancy-agreement), and temporary letting is described in [subletting a room](/subletting-a-room). For registering at the Bürgeramt (citizens’ office) there is the guide [Anmeldung in a shared flat](/anmeldung-shared-flat), and questions for the first meeting are collected in [WG casting questions](/wg-casting-questions).',
+			],
+			[
+				'A sample ad decoded',
+				'“3-Zi-WG, 14 m², möbl., 420 € WM inkl. NK und Internet, Kaution 2 KM, ab 01.12. frei, befristet bis 31.03., Anmeldung möglich” means: a flat with three rooms, in which a furnished room of 14 m² is becoming free. The Warmmiete of €420 includes utilities and internet. The deposit is two months’ Kaltmiete, which is below the limit of three. You can move in from 1 December, the contract ends on 31 March, and you can register at the address. The ad is made up.',
+			],
+			[
+				'Questions to ask before you say yes',
+				'1. Which type of contract applies: main tenancy, sublease or individual agreement?\n2. What is included in the Warmmiete, and what comes on top?\n3. How high is the deposit, and who gets it?\n4. Is there a fixed term, and what does the contract say about the end date?\n5. Is registration possible, and who issues the Wohnungsgeberbestätigung (landlord’s confirmation of move-in)?\n6. What comes with the room, and is there an inventory list?\n7. Do I have to pay anything to the previous tenant, and for exactly what?',
+			],
+		],
+		tables: [
+			{
+				after: 'Rent and costs',
+				title: 'Rent and costs: abbreviations in WG ads',
+				header: ['Term', 'Meaning', 'Note'],
+				rows: [
+					[
+						'KM',
+						'Kaltmiete, rent excluding utilities and heating',
+						'The basis of the deposit, at most three months’ Kaltmiete',
+					],
+					[
+						'WM',
+						'Warmmiete, rent including heating and running costs',
+						'The total you pay monthly. WM can also mean washing machine, the context shows which',
+					],
+					[
+						'NK',
+						'Nebenkosten (utilities), such as water, waste and cleaning, in some ads also heating',
+						'Ask whether they are advance payments with a statement or a flat rate',
+					],
+					[
+						'BK',
+						'Betriebskosten (running costs), legally almost the same as NK',
+						'Unclear in ads, ask what is included',
+					],
+					[
+						'HK',
+						'Heizkosten (heating costs)',
+						'Sometimes listed separately: KM + NK + HK gives the total rent if the NK do not include heating',
+					],
+					[
+						'inkl. / zzgl.',
+						'inclusive (is included) / plus (comes on top)',
+						'“zzgl. NK” means utilities are still added',
+					],
+					[
+						'Kaution (KT)',
+						'The deposit you hand over at the start',
+						'At most three months’ Kaltmiete, payable in three instalments',
+					],
+					[
+						'Ablöse',
+						'Payment to the previous tenant for furniture, kitchen or fittings',
+						'Buying furnishings is possible, but the price must not be clearly out of proportion to their value (otherwise void to that extent, § 4a para. 2 WoVermRG). A payment only for the previous tenant leaving is void (para. 1), though proven moving costs may be reimbursed',
+					],
+					[
+						'Rundfunkbeitrag (formerly GEZ)',
+						'Compulsory broadcasting fee',
+						'It is charged per flat, not per person. One person registers, the flat share splits it',
+					],
+				],
+				note: 'As of 29 October 2026. Abbreviations are not standardised, the meaning can vary from ad to ad.',
+			},
+			{
+				after: 'Flat and room',
+				title: 'Flat and room: abbreviations in WG ads',
+				header: ['Term', 'Meaning', 'Note'],
+				rows: [
+					[
+						'WG',
+						'Wohngemeinschaft, several people share a flat',
+						'Always ask which type of contract applies',
+					],
+					[
+						'Zi. / 3-Zi-WG',
+						'Zimmer (room) / flat with three rooms',
+						'Kitchen and bathroom are not counted. Ask whether the living room is',
+					],
+					[
+						'qm / m²',
+						'square metres',
+						'In a flat share usually the size of the room, and the rent often follows it',
+					],
+					[
+						'EG / OG / DG',
+						'ground floor / upper floor / attic floor',
+						'1. OG is the floor above the ground floor. The DG can get hot in summer. Ask about a lift',
+					],
+					[
+						'möbl. / teilmöbl.',
+						'furnished / partly furnished',
+						'Record the inventory in the contract or on a handover list',
+					],
+					[
+						'EBK',
+						'Einbauküche, fitted kitchen',
+						'Ask what in the kitchen belongs to the flat and what to individual flatmates',
+					],
+					[
+						'Zweck-WG',
+						'a flat share where people mainly live together to save costs',
+						'Little shared daily life. Settle expectations about cleaning and meals first',
+					],
+				],
+				note: 'As of 29 October 2026. Abbreviations are not standardised, the meaning can vary from ad to ad.',
+			},
+			{
+				after: 'Contract and moving in',
+				title: 'Contract and moving in: terms in WG ads',
+				header: ['Term', 'Meaning', 'Note'],
+				rows: [
+					[
+						'Hauptmieter / Untermieter',
+						'The main tenant has the contract with the landlord, the subtenant rents from them',
+						'Subletting needs the landlord’s permission',
+					],
+					[
+						'Zwischenmiete (ZW)',
+						'temporary sublet while the main tenant is away',
+						'ZW is not standardised and often stands for Zwischenmiete. Ask',
+					],
+					[
+						'befristet / unbefristet',
+						'with an end date / open-ended',
+						'A fixed term for housing usually needs a legal reason, and for subletting it depends on the case',
+					],
+					[
+						'ab sofort',
+						'available from now',
+						'Still check the viewing, the start date and the previous tenant’s notice period',
+					],
+					[
+						'NM',
+						'Nachmieter, the person taking over a running contract or a room',
+						'Clarify whether you join the contract or sign a new one',
+					],
+					[
+						'Anmeldung möglich',
+						'You can register officially at the address',
+						'Due two weeks after moving in. Never offer or accept a sham registration',
+					],
+					[
+						'Wohnungsgeberbestätigung',
+						'Form confirming that you moved in',
+						'Needed for the Anmeldung. With a sublease, the main tenant issues it',
+					],
+					[
+						'WBS',
+						'Wohnberechtigungsschein, proof for subsidised flats',
+						'Rare in WG ads. Limits and levels change, ask your city',
+					],
+					[
+						'WG-Casting',
+						'Meeting where applicants introduce themselves to the flat share',
+						'Bring a list of questions. Pay nothing before the contract and a viewing',
+					],
+				],
+				note: 'As of 29 October 2026. Abbreviations are not standardised, the meaning can vary from ad to ad.',
+			},
+		],
+		faq: [
+			[
+				'What does NK mean in a WG ad?',
+				'NK stands for Nebenkosten (utilities), items such as water, waste and cleaning, in some ads also heating. Ask whether they are advance payments with a statement or a flat rate.',
+			],
+			[
+				'What is the difference between KM and WM?',
+				'KM is the Kaltmiete, excluding utilities and heating, and WM the Warmmiete, including heating and running costs. The deposit is based on the Kaltmiete.',
+			],
+			[
+				'What does ZW mean for flat-share rooms?',
+				'ZW is not standardised, but in ads it often stands for Zwischenmiete. That is a temporary sublet, for example during a semester abroad. Ask what is meant.',
+			],
+			[
+				'What is a WG casting?',
+				'A meeting where a flat share meets applicants who answered an ad. Before it, ask about the type of contract, the deposit and the Warmmiete.',
+			],
+		],
+		sources: [
+			[
+				'Hamburg Welcome Center, abbreviations in housing ads (PDF, in German)',
+				'https://welcome.hamburg.de/resource/blob/1056182/fcfffaa0bb0b35d7b539efb84532bb2e/abkuerzungen-in-wohnungsanzeigen-data.pdf',
+			],
+			[
+				'Heidelberg University, encyclopaedia of flat hunting',
+				'https://www.uni-heidelberg.de/en/study/international-studies/study-in-heidelberg/living-and-accomodation/encyclopaedia-of-flat-hunting',
+			],
+			[
+				'FU Berlin, FAQ about WGs',
+				'https://www.fu-berlin.de/en/sites/principles-cultural-dynamics/FAQs/FUB/WG.html',
+			],
+			[
+				'§ 551 BGB, limits and investment of rental deposits (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__551.html',
+			],
+			[
+				'§ 575 BGB, fixed-term tenancy (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__575.html',
+			],
+			[
+				'§ 4a WoVermRG, void agreements (in German)',
+				'https://www.gesetze-im-internet.de/wovermrg/__4a.html',
+			],
+			['§ 17 BMG, registration (in German)', 'https://www.gesetze-im-internet.de/bmg/__17.html'],
+			[
+				'Rundfunkbeitrag, information for citizens (in German)',
+				'https://www.rundfunkbeitrag.de/buergerinnen-und-buerger/informationen',
+			],
+			BGB_EN,
+		],
+	},
 };

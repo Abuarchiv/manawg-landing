@@ -1,5 +1,5 @@
-// English money and flatmate-search guides. Keys are English slugs; the German
-// counterparts live in ../de/guides.ts and ../de/guides-money.ts. Links are prefix-free.
+// English guides on money, shopping and finding flatmates. Keys are English slugs; the German
+// counterparts live in ../de/guides-money.ts. Links are prefix-free.
 import { euro, rentShares } from '../rent-calculator.ts';
 import type { Topic } from '../types.ts';
 import { BGB_EN } from './guides-moving.ts';
@@ -853,6 +853,146 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 				'https://www.wg-gesucht.de/ic/wg-inserieren.html',
 			],
 			['wgfrei.de: offer a WG room (in German)', 'https://wgfrei.de/anbieten/'],
+		],
+	},
+	'flat-share-deposit': {
+		link: 'Flat-share deposit',
+		updated: '2026-10-29',
+		published: '2026-10-29',
+		title: 'Flat-share deposit in Germany: amount, return | ManaWG',
+		description:
+			'The Kaution (deposit) in a WG in Germany: at most three months’ Kaltmiete, three instalments, who pays and holds it, moving out and how long repayment can take.',
+		h1: 'The deposit in a German flat share: amount, instalments, moving out and repayment',
+		intro:
+			'The Kaution (deposit) is often the largest sum you pay in one go when moving into a WG (shared flat). Where it goes and who pays it back depends on how your [tenancy agreement](/flat-share-tenancy-agreement) is set up, and that regularly raises questions when a flatmate leaves. This page summarises the rules of § 551 BGB and common practice and is not legal advice. For a dispute, a Mieterverein (tenants’ association) can help.',
+		sections: [
+			[
+				'Amount: at most three months’ Kaltmiete',
+				'The deposit may be at most three times the monthly rent, not counting utilities that are shown as a flat rate or as an advance payment (§ 551 para. 1 BGB). This means three months’ Kaltmiete (rent excluding utilities). With a Kaltmiete of €1,200 for the whole flat, that is at most €3,600, or, with a joint main tenancy and four people, €900 per person. With individual tenancy agreements the limit applies to each contract, and with subletting to the sublease. An agreement for a higher amount is void to the tenant’s disadvantage (§ 551 para. 4 BGB). If you paid too much, you can claim the excess back.',
+			],
+			[
+				'Three instalments instead of everything at once',
+				'For a cash deposit you may pay in three equal monthly instalments. The first is due at the start of the tenancy, the other two with the next two rent payments (§ 551 para. 2 BGB). So the deposit only falls due when the tenancy is meant to begin as agreed, not at a viewing or before a contract is signed. If someone asks you to transfer money earlier, be wary: the Verbraucherzentrale (consumer advice centre) lists advance payment and a deposit before the contract as a known scam.',
+			],
+			[
+				'Where the deposit is kept',
+				'The landlord has to invest the money separately from their own assets with a bank, at the rate usual for savings accounts with three months’ notice. Another form of investment can be agreed, but it must also be separate from the landlord’s assets. The interest belongs to the tenant and increases the deposit (§ 551 para. 3 BGB). The duty to keep it separate is meant to protect your money if the landlord becomes insolvent, but only if the landlord actually complied. You can ask for proof of where it is held.',
+			],
+			[
+				'Who pays and who holds the deposit?',
+				'That depends on the tenancy model. With subletting, you pay the deposit to the main tenant, not to the landlord. With individual agreements, each person pays their own deposit to the landlord. With a joint main tenancy, one deposit for the whole contract sits with the landlord, and you agree among yourselves who paid which share. The table shows the four common cases. The three tenancy models themselves are explained in [flat-share tenancy agreement](/flat-share-tenancy-agreement).',
+			],
+			[
+				'Moving out and a successor',
+				'When someone leaves, it again depends on the contract. With subletting, only the sublease ends, the main tenant’s own deposit with the landlord is not affected, and you claim your deposit back from the main tenant. With individual agreements, you get it back from the landlord, who usually asks the successor for a new deposit. With a joint main tenancy, the contract continues with the others and the deposit stays with the landlord. The person leaving then usually has no claim against the landlord. Most often the successor pays their share straight to them. This changes nothing as far as the landlord is concerned, so put it in writing. Leaving a joint contract generally needs the landlord’s consent. Everything else that comes up when leaving is in the [moving-out checklist](/moving-out-checklist) and under [giving notice on a room](/give-notice-on-a-room).',
+			],
+			[
+				'Repayment: how long can it take?',
+				'There is no fixed legal deadline. The landlord gets a reasonable period to check whether any claims remain. The Deutscher Mieterbund (German tenants’ association) names two or three months for simple cases, and in an individual case more than six months can be reasonable, for example while a utilities statement for the current year is still outstanding. The often-quoted three to six months is a rule of thumb, not an upper limit. Repayment falls due once that period has passed and the landlord has no remaining claims (BGH, judgment of 20 July 2016, case no. VIII ZR 263/14). With a sublease the main tenant is the landlord of that sublease, so the same rules apply by analogy.',
+			],
+			[
+				'Deductions and damage',
+				'The landlord may only keep amounts for claims that can really be due, such as damage or a utilities back payment. If only the utilities statement is outstanding, they may hold back a generously calculated part and must pay out the rest. Claims for changes or deterioration of the rented property expire six months after the keys are returned (§ 548 para. 1 BGB). In 2024 the Federal Court of Justice ruled that a landlord may still offset even time-barred damage claims against the deposit as long as the deposit has not been settled (case no. VIII ZR 184/23). A handover record at move-in and move-out therefore helps to avoid disputes.',
+			],
+			[
+				'Alternatives: guarantee or deposit insurance',
+				'Instead of cash there is the Kautionsbürgschaft (deposit guarantee) or the Mietkautionsversicherung (deposit insurance). This is a voluntary arrangement: the landlord does not have to accept it, and the contract has to allow this form. The security as a whole must not exceed the limit of three months’ Kaltmiete. Read the terms carefully beforehand, above all whether there are costs and who pays in the worst case. Only take out a policy once the landlord has agreed. We do not recommend any provider.',
+			],
+			[
+				'Handover record and proof',
+				'At move-in, record the condition of the room and the shared rooms in a handover record with photos and meter readings, and have both sides sign it. Also write down who paid which amount to whom and when, preferably by bank transfer rather than in cash. Keep the tenancy agreement, the handover record and the proof of the deposit; the Verbraucherzentrale advises keeping them for three years after moving out. The claim for repayment expires after three years, counted from the end of the year in which it arose (§§ 195, 199 BGB).',
+			],
+			[
+				'What ManaWG can and cannot do',
+				'ManaWG has no feature of its own for the deposit, but it helps elsewhere. Set up the Kaltmiete and utilities as separate fixed costs in [shared expenses](/shared-expenses), and you can always see which Kaltmiete the deposit is based on. If one person advances the deposit for others, you can enter the amount as a one-off expense and pick only the people involved. The balance then shows who owes whom. ManaWG works in euros only. Write down the agreement on who paid which share outside the app.',
+			],
+		],
+		tables: [
+			{
+				after: 'Who pays and who holds the deposit?',
+				title: 'The deposit by type of tenancy',
+				header: ['Tenancy model', 'Deposit goes to', 'When someone moves out'],
+				rows: [
+					[
+						'Main tenant with subtenants',
+						'the main tenant',
+						'subtenant claims it back from the main tenant after a reasonable checking period',
+					],
+					[
+						'Individual agreements',
+						'the landlord, per person',
+						'landlord repays it after the checking period, the successor usually pays a new one',
+					],
+					[
+						'Joint main tenancy',
+						'the landlord, for the whole contract',
+						'stays with the landlord, the share is settled inside the flat share or with the successor',
+					],
+					[
+						'Successor takes over the contract',
+						'stays with the landlord',
+						'the person leaving gets the amount from the successor',
+					],
+				],
+				note: 'Orientation, not legal advice. In an individual case, what the contract says counts.',
+			},
+		],
+		faq: [
+			[
+				'How high can the deposit be in a flat share?',
+				'At most three months’ Kaltmiete, not counting utilities shown as a flat rate or advance payment (§ 551 BGB). With individual agreements the limit applies to each contract, and with subletting to the sublease.',
+			],
+			[
+				'Do I have to pay the deposit all at once?',
+				'No. You may pay it in three equal monthly instalments. The first is due at the start of the tenancy, the other two with the following rent payments.',
+			],
+			[
+				'Who gets the deposit back when I move out of a flat share?',
+				'With subletting, the main tenant repays it, and with individual agreements the landlord. With a joint main tenancy the deposit stays with the landlord, and the successor usually pays your share straight to you.',
+			],
+			[
+				'How long can a landlord keep the deposit?',
+				'There is no fixed deadline, only a reasonable checking period. The Mieterbund names two or three months for simple cases and sometimes more than six. The landlord may only keep amounts for claims they concretely expect.',
+			],
+			[
+				'May I pay the deposit before signing the contract?',
+				'The Verbraucherzentrale advises against it. The first instalment only falls due when the tenancy starts. A payment before the contract or a viewing is a typical sign of a scam.',
+			],
+		],
+		sources: [
+			[
+				'§ 551 BGB, limits and investment of rental deposits (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__551.html',
+			],
+			[
+				'§ 548 BGB, limitation of the landlord’s claims (in German)',
+				'https://www.gesetze-im-internet.de/bgb/__548.html',
+			],
+			[
+				'Deutscher Mieterbund, the tenant’s claim to repayment of the deposit (PDF, in German)',
+				'https://mieterbund.de/app/uploads/2025/02/5-Beate-Flatow-Der-Anspruch-des-Mieters-auf-Rueckgewaehr-der-Kaution.pdf',
+			],
+			[
+				'Deutscher Mieterbund, BGH on offsetting time-barred damage claims against the deposit (in German)',
+				'https://mieterbund.de/aktuelles/meldungen/bgh/bundesgerichtshof-erleichtert-aufrechnung-von-verjaehrten-schadensersatzforderungen-mit-kautionsguthaben/',
+			],
+			[
+				'Verbraucherzentrale, tenancy agreement and deposit (in German)',
+				'https://www.verbraucherzentrale.de/laura-zieht-aus/mietvertrag',
+			],
+			[
+				'Verbraucherzentrale, how long to keep documents (in German)',
+				'https://www.verbraucherzentrale.de/wissen/digitale-welt/datenschutz/aufbewahrungspflichten-welche-unterlagen-muss-ich-wie-lange-behalten-84296',
+			],
+			[
+				'Verbraucherzentrale, fake flats on the internet (in German)',
+				'https://www.verbraucherzentrale.de/wissen/vertraege-reklamation/abzocke/fakewohnungen-im-internet-so-erkennen-sie-falsche-immobilienanzeigen-27576',
+			],
+			[
+				'Juraforum, must a landlord accept deposit insurance? (in German)',
+				'https://www.juraforum.de/news/muss-der-vermieter-eine-mietkautionsversicherung-akzeptieren_248119',
+			],
+			BGB_EN,
 		],
 	},
 };
