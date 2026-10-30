@@ -372,14 +372,14 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 									</h2>
 									{lines.length > 1 ? (
 										<ListTag
-											className={`m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-(--text-2) flex flex-col gap-2 ${numbered ? '' : 'list-disc'}`}
+											className={`m-0 pl-5 md:col-start-6 md:col-span-6 max-w-[62ch] [overflow-wrap:anywhere] text-[17px] md:text-[18px] leading-[1.65] text-(--text-2) flex flex-col gap-2 ${numbered ? '' : 'list-disc'}`}
 										>
 											{lines.map((line) => (
 												<li key={line}>{withLinks(line.replace(/^\d+\.\s*/, ''), locale)}</li>
 											))}
 										</ListTag>
 									) : (
-										<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] md:text-[18px] leading-[1.65] text-(--text-2)">
+										<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] [overflow-wrap:anywhere] text-[17px] md:text-[18px] leading-[1.65] text-(--text-2)">
 											{withLinks(text, locale)}
 										</p>
 									)}
@@ -414,7 +414,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 								<h3 className="font-display font-semibold m-0 mb-3 md:mb-0 md:col-span-4 text-[20px] leading-[1.2] tracking-[-0.02em]">
 									{question}
 								</h3>
-								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] text-[17px] leading-[1.65] text-(--text-2)">
+								<p className="m-0 md:col-start-6 md:col-span-6 max-w-[62ch] [overflow-wrap:anywhere] text-[17px] leading-[1.65] text-(--text-2)">
 									{withLinks(answer, locale)}
 								</p>
 							</div>

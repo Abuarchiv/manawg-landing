@@ -1,6 +1,7 @@
 // Run with: pnpm test (node test runner, no framework)
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
+import { TOPICS_EN } from '../en/index.ts';
 import { relatedSlugs } from '../groups.ts';
 import { TOPICS_DE } from './index.ts';
 
@@ -50,4 +51,13 @@ test('install steps follow the current browser flows', () => {
 	assert.match(install, /Verknüpfung erstellen/);
 	assert.match(iphone, /Mehr anzeigen/);
 	for (const text of [install, iphone]) assert.doesNotMatch(text, /Startbildschirm/);
+});
+
+test('files of the app repository named in the text exist there', () => {
+	const existing = new Set(['docs/self-hosting.md', 'LICENSE']);
+	const pattern =
+		/(?:github\.com\/Abuarchiv\/manawg\/blob\/main\/|\b)(docs\/[\w.-]+\.md|LICENSE)\b/g;
+	for (const [slug, t] of [...Object.entries(TOPICS_DE), ...Object.entries(TOPICS_EN)])
+		for (const m of JSON.stringify(t).matchAll(pattern))
+			assert.ok(existing.has(m[1] ?? ''), `${slug}: ${m[1]}`);
 });

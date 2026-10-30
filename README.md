@@ -94,18 +94,18 @@ data. Leave it unset for local work.
 | Path                      | Contents                                                                                                                                                |
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/app/`                | Routes, split into `(de)` and `(en)` route groups with one root layout each, plus `robots`, `sitemap` and the 404 and error pages                       |
-| `src/components/`         | Shared parts: frame of the legal pages, error view, language link, theme switch                                                                         |
+| `src/components/`         | Shared parts: frame of the legal pages, error view, JSON-LD block, language link, theme switch                                                          |
 | `src/components/landing/` | The home page: frame loop, canvas and scroll code in `core/`, one folder per scene in `scenes/`, header, loader and hints in `shell/`                   |
 | `src/content/`            | Home page copy per language and the app demo paths                                                                                                      |
 | `src/topics/`             | Topic and guide pages: German data in `de/`, English data in `en/`, shared renderers, UI strings, and the feeds and `llms-full.txt` built from the data |
-| `src/lib/`                | Locale helpers and slug map, app and site URLs, security headers, legal page paths and metadata, shared text link style                                 |
+| `src/lib/`                | Locale helpers, slug map and shared paths, app and site URLs, page metadata and legal page paths, security headers, shared text link style              |
 | `public/`                 | Fonts, image sequences, the embedded app demo (one player, `app-demo/demo.js`, for both languages) and install screenshots, `llms.txt` files            |
 
 ## Stack
 
-[Next.js](https://nextjs.org) 15 (App Router, statically prerendered), React 19,
-[Tailwind CSS](https://tailwindcss.com) 3, [Lenis](https://lenis.darkroom.engineering),
-TypeScript, [Biome](https://biomejs.dev) and `node --test`. The scenes call the Canvas 2D and
+[Next.js](https://nextjs.org) 16 (App Router, statically prerendered), React 19,
+[Tailwind CSS](https://tailwindcss.com) 4, [Lenis](https://lenis.darkroom.engineering),
+TypeScript 7, [Biome](https://biomejs.dev) 2 and `node --test`. The scenes call the Canvas 2D and
 WebGL APIs directly, without an animation or 3D library.
 
 ## Contributing
