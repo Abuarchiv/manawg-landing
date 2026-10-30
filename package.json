@@ -45,5 +45,10 @@
 		"postcss": "^8.5.32",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^7.0.2"
+	},
+	"pnpm": {
+		"overrides": {
+			"source-map-js@<1.2.2": "1.2.2"
+		}
 	}
 }
