@@ -20,15 +20,16 @@
 </p>
 
 <p align="center">
-  <a href="https://manawg.com/en"><img src=".github/readme/home.jpg" alt="Home page intro: the ManaWG mark as a halftone sculpture with the headline The flat app for your flat"></a>
+  <a href="https://manawg.com/en"><img src=".github/readme/home.jpg" alt="Home page intro: an engraved mountain range, the headline The flat app for your flat and a phone playing the demo film of the app with its chapters"></a>
 </p>
 <p align="center">
   <img src=".github/readme/flat.jpg" width="49%" alt="Scroll scene: a shared flat drawn in ASCII characters, with flatmates moving between the rooms">
-  <img src=".github/readme/app.jpg" width="49%" alt="Scroll scene: a hand holds a phone with the real ManaWG app on sample data, with the headline Share it all">
+  <img src=".github/readme/how-it-works.jpg" width="49%" alt="How it works: the digits 01 to 03 drawn in ASCII characters above three short steps">
 </p>
 
-The home page is one scroll-driven stage: canvas scenes drawn in halftone and ASCII, and at the end
-a phone with the real app on sample data that visitors can tap through. Around it sit topic pages and guides for shared flats, the legal
+The home page opens on a phone that plays a short film of the real app on sample data: installing it,
+then splitting costs, the cleaning rota, shopping and chat. Below it runs one scroll-driven stage of canvas
+scenes drawn in halftone and ASCII. Around it sit topic pages and guides for shared flats, the legal
 pages, and machine-readable files, all in English and German.
 
 The app itself lives in [Abuarchiv/manawg](https://github.com/Abuarchiv/manawg). This repository
@@ -73,8 +74,8 @@ data. Leave it unset for local work.
 - **Native scroll.** Sections are measured in `core/scroll.ts`. Mouse wheel and trackpad glide
   through [Lenis](https://lenis.darkroom.engineering), driven by the same frame clock; touch
   scrolling stays native, and with reduced motion Lenis is off.
-- **Scenes** live in `scenes/`, one folder each. The phone at the end embeds a recorded run of the
-  real app from `public/app-demo/`.
+- **Scenes** live in `scenes/`, one folder each. The demo film on the hero (`scenes/intro/HeroDemo.tsx`)
+  is one video per language and theme in `public/hero-demo/`.
 
 ## Routes
 
@@ -99,10 +100,10 @@ data. Leave it unset for local work.
 | `src/app/`                | Routes, split into `(de)` and `(en)` route groups with one root layout each, plus `robots`, `sitemap` and the 404 and error pages                       |
 | `src/components/`         | Shared parts: frame of the legal pages, error view, JSON-LD block, language link, theme switch                                                          |
 | `src/components/landing/` | The home page: frame loop, canvas and scroll code in `core/`, one folder per scene in `scenes/`, header, loader and hints in `shell/`                   |
-| `src/content/`            | Home page copy per language and the app demo paths                                                                                                      |
+| `src/content/`            | Home page copy per language                                                                                                                             |
 | `src/topics/`             | Topic and guide pages: German data in `de/`, English data in `en/`, shared renderers, UI strings, and the feeds and `llms-full.txt` built from the data |
 | `src/lib/`                | Locale helpers, slug map and shared paths, app and site URLs, page metadata and legal page paths, security headers, shared text link style              |
-| `public/`                 | Fonts, image sequences, the embedded app demo (one player, `app-demo/demo.js`, for both languages) and install screenshots, `llms.txt` files            |
+| `public/`                 | Fonts, image sequences, the demo film of the hero (`hero-demo/`, per language and theme), `llms.txt` files                                              |
 
 ## Stack
 

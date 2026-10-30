@@ -2,17 +2,15 @@
 //
 // The stage sticks to the window over INTRO_SCREENS screen heights. The scroll distance s (0..1)
 // maps to the choreography progress P: P = warp(s). All scene marks (look, mx, split,
-// zoom, dive, fpA, endA, flood coverage, card curve) stay defined in P.
+// zoom, dive, fpA, card curve) stay defined in P. The stage ends on the overview of the flat at P 0.9.
 
-export const INTRO_SCREENS = 10;
+export const INTRO_SCREENS = 8.5;
 
 // Piecewise linear mapping s -> P, knots (s, P).
 const KNOTS = [
 	[0, 0],
-	[0.496, 0.62],
-	[0.856, 0.9],
-	[0.896, 0.95],
-	[1, 1],
+	[0.5835, 0.62],
+	[1, 0.9],
 ] as const satisfies readonly (readonly [s: number, P: number])[];
 
 /** Knot column: 0 = scroll distance s, 1 = progress P. */

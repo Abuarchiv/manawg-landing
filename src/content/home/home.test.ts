@@ -63,9 +63,7 @@ test('canvas rooms: eight uppercase labels in floor plan order', () => {
 	for (const r of en.rooms) assert.ok(en.canvasRooms.includes(r.room), r.room);
 });
 
-test('headline lengths: hero lines, one-line end, finale lines', () => {
-	assert.equal(en.end.title.length, 1);
-	assert.ok(en.end.title.join('').length <= 15);
+test('headline lengths: hero lines, finale lines', () => {
 	assert.equal(en.hero.title.length, 2);
 	for (const l of en.hero.title) assert.ok(l.trim().length <= 14, `${l} is too long`);
 	assert.equal(en.finale.title.length, 2);
@@ -80,18 +78,18 @@ test('mono labels are uppercase literals', () => {
 		en.depth.hint,
 		en.depth.counter,
 		en.howItWorks.title,
-		en.install.title,
 		en.questions.title,
-		en.phone.hint,
+		en.heroDemo.label,
+		en.heroDemo.pause,
+		en.heroDemo.play,
+		...en.heroDemo.chapters,
 		...en.depth.captions.map((c) => c.label),
 		...en.people,
 	];
 	for (const l of labels) assert.equal(l, l.toUpperCase(), l);
 	assert.equal(en.hints.skipIntro, 'SKIP INTRO ↓');
-	assert.equal(en.phone.hint, 'TAP THE PHONE · THIS IS THE REAL APP');
 	assert.equal(`${en.howItWorks.prefix}${en.howItWorks.title}`, '[ 05 ] HOW IT WORKS');
-	assert.equal(`${en.install.prefix}${en.install.title}`, '[ 06 ] INSTALL');
-	assert.equal(`${en.questions.prefix}${en.questions.title}`, '[ 07 ] QUESTIONS');
+	assert.equal(`${en.questions.prefix}${en.questions.title}`, '[ 06 ] QUESTIONS');
 });
 
 test('amounts use the English format', () => {
@@ -107,30 +105,6 @@ test('no English string contains German-only letters', () => {
 		if (GERMAN_LETTER_ALLOWLIST.includes(s)) continue;
 		assert.ok(!/[äöüÄÖÜß]/.test(s), `${path}: ${s}`);
 	}
-});
-
-test('install steps keep their symbols and the nowrap token', () => {
-	for (const d of [de, en]) {
-		const [ios, android, desktop] = d.install.ways;
-		assert.ok(ios.steps[0].includes('≡'));
-		assert.ok(android.steps[0].includes('⋮'));
-		assert.ok(ios.steps[1].includes(d.install.nowrap));
-		assert.equal(desktop.steps.length, 3);
-	}
-	assert.equal(en.install.nowrap, 'Home Screen');
-});
-
-test('Android menu: same entries and separators in both languages', () => {
-	assert.equal(en.install.android.menu.length, de.install.android.menu.length);
-	assert.deepEqual(
-		en.install.android.menu.map((m) => m === ''),
-		de.install.android.menu.map((m) => m === ''),
-	);
-});
-
-test('iPhone keyboard: QWERTY in English, QWERTZ in German', () => {
-	assert.deepEqual(en.install.ios.keyRows, ['qwertyuiop', 'asdfghjkl', 'zxcvbnm']);
-	assert.equal(de.install.ios.keyRows[0].slice(0, 6), 'qwertz');
 });
 
 test('links and language switch', () => {

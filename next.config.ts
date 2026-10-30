@@ -19,18 +19,6 @@ const securityHeaders = [
 	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
 ];
 
-const demoCsp = [
-	"default-src 'self'",
-	"script-src 'self' 'unsafe-inline'",
-	"style-src 'self' 'unsafe-inline'",
-	"img-src 'self' data: blob:",
-	"font-src 'self' data:",
-	"connect-src 'self'",
-	"frame-ancestors 'self'",
-	"base-uri 'self'",
-	"form-action 'none'",
-	"object-src 'none'",
-].join('; ');
 const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
 
 // manawg.com is the marketing site only. The app lives on its own origin
@@ -49,31 +37,16 @@ const nextConfig: NextConfig = {
 		tsconfigPath: process.env.NEXT_TSCONFIG_PATH ?? 'tsconfig.json',
 	},
 	async headers() {
-		// The last rule with the same key wins: the app's demo document may be embedded from its own
-		// origin (phone in the end scene), everything else stays DENY.
 		return [
 			{ source: '/:path*', headers: securityHeaders },
-			{ source: '/app-demo/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
-			{ source: '/app-demo-en/:path*', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
-			// The demo document sits outside the proxy (dot in the path), so it gets its own CSP here.
-			{
-				source: '/app-demo/index.html',
-				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
-			},
-			{
-				source: '/app-demo-en/index.html',
-				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
-			},
 			// Files from public without a hash in the name: fresh for one day, then revalidated in the background.
 			...[
 				'/manawg-mark.svg',
 				'/icon-512.png',
 				'/og.png',
 				'/apple-touch-icon.png',
-				'/hand/:path*',
-				'/install/:path*',
-				'/install-en/:path*',
 				'/hero/:path*',
+				'/hero-demo/:path*',
 				'/sky/:path*',
 				'/flat/:path*',
 				'/manawg-mark-white-80.webp',
@@ -93,15 +66,6 @@ const nextConfig: NextConfig = {
 					// Google listed the font files as "pages" in the index report; they must never enter search.
 					{ key: 'X-Robots-Tag', value: 'noindex' },
 				],
-			},
-			// Demo files without a hash in the name: always revalidate via ETag so index.html, demo.js and app.css match.
-			{
-				source: '/app-demo/:path*',
-				headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
-			},
-			{
-				source: '/app-demo-en/:path*',
-				headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }],
 			},
 		];
 	},

@@ -1,5 +1,4 @@
 import { JsonLd } from '@/components/JsonLd';
-import { APP_DEMO } from '@/content/app-demo';
 import { HOME_DICT } from '@/content/home';
 import { APP_ORIGIN } from '@/lib/app-origin';
 import type { Locale } from '@/lib/locale';
@@ -41,7 +40,10 @@ function homeSchemas(locale: Locale) {
 		featureList: dict.schema.featureList,
 		isAccessibleForFree: true,
 		browserRequirements: dict.schema.browserRequirements,
-		screenshot: { '@type': 'ImageObject', url: `${schemaIds().site}${APP_DEMO[locale].still}` },
+		screenshot: {
+			'@type': 'ImageObject',
+			url: `${schemaIds().site}/hero-demo/${locale}-light.webp`,
+		},
 		offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
 	};
 	return { softwareApplicationSchema, faqSchema };

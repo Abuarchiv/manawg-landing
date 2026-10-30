@@ -8,7 +8,7 @@ import { useDict } from '../dict';
 export function Hints() {
 	const dict = useDict();
 	return (
-		// display:contents: only carries the variables --p and --e (intro/stage.ts), no box of its own
+		// display:contents: only carries the variable --p (intro/stage.ts), no box of its own
 		<div data-hints="" style={{ display: 'contents' }}>
 			<a
 				className="label hint"
@@ -18,10 +18,6 @@ export function Hints() {
 				href="#so-gehts"
 			>
 				{dict.hints.skipIntro}
-			</a>
-			{/* Focus anchor for keyboard and screen reader: jumps to the app preview at the end of the intro (visible only on focus) */}
-			<a className="label focus-anchor" data-intro-only="1" href="#app-demo">
-				{dict.hints.tryApp}
 			</a>
 			<div
 				aria-hidden="true"

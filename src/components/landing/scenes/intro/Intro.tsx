@@ -2,15 +2,14 @@
 
 import { type CSSProperties, useEffect, useRef } from 'react';
 import { useDict } from '../../dict';
-import { End } from '../end/End';
 import { HeroTitle } from './HeroTitle';
 import { Rooms } from './Rooms';
 import { createStage } from './stage';
-import { INTRO_SCREENS, unwarp } from './timeline';
+import { INTRO_SCREENS } from './timeline';
 
 // Intro: a sticky stage at full window size (100lvh) over (1 + INTRO_SCREENS) screen heights.
-// Layers from bottom to top: mountain and mark (hero), flat, safe box with title and
-// room cards (100svh), end layer. The end layer scrolls away naturally with the stage.
+// Layers from bottom to top: mountain and mark (hero), flat, safe box with title, demo film and
+// room cards (100svh). After the flat the stage scrolls away naturally.
 
 const FILL: CSSProperties = {
 	position: 'absolute',
@@ -44,19 +43,6 @@ export function Intro() {
 			aria-label={aria.intro}
 			style={{ position: 'relative', zIndex: '1', height: `calc(${1 + INTRO_SCREENS} * 100lvh)` }}
 		>
-			{/* Jump target of the app preview (focus anchor): start of the end layer, P 0.985 */}
-			<section
-				id="app-demo"
-				tabIndex={-1}
-				aria-label={aria.appPreview}
-				style={{
-					position: 'absolute',
-					left: '0',
-					width: '1px',
-					height: '1px',
-					top: `calc((100% - 100lvh) * ${(unwarp(0.985) ?? 0).toFixed(4)})`,
-				}}
-			/>
 			<div
 				data-stage="intro"
 				ref={stageRef}
@@ -92,7 +78,6 @@ export function Intro() {
 					<HeroTitle />
 					<Rooms />
 				</div>
-				<End />
 			</div>
 		</section>
 	);

@@ -6,14 +6,11 @@ import './landing.css';
 import { loop, modeOf, qa, setMode, start } from './core/loop';
 import { initScroll, sectionBox } from './core/scroll';
 import { DictProvider, useDict } from './dict';
-import { Decay } from './scenes/decay/Decay';
 import { Depth } from './scenes/depth/Depth';
 import { Faq } from './scenes/faq/Faq';
 import { Finale } from './scenes/finale/Finale';
-import { FloodBand } from './scenes/flood-band/FloodBand';
 import { Footer } from './scenes/footer/Footer';
 import { HowItWorks } from './scenes/how-it-works/HowItWorks';
-import { Install } from './scenes/install/Install';
 import { Intro } from './scenes/intro/Intro';
 import { live } from './scenes/intro/stage';
 import { Header } from './shell/Header';
@@ -88,15 +85,12 @@ function LandingInner() {
 			<Hints />
 			<main id="content" tabIndex={-1}>
 				<Intro />
-				<FloodBand />
 				<HowItWorks />
 				<Depth />
-				<Install />
 				<Faq />
 				<Finale />
 				<Footer />
 			</main>
-			<Decay />
 			<Loader />
 		</div>
 	);

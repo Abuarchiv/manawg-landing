@@ -76,7 +76,7 @@ export function cardOpacity(P: number): number[] {
 	return [0, 1, 2, 3].map((j) => {
 		const d = Math.abs(fs - (j + 1));
 		// the last card (bulletin board & chat) stays during the move to the overview and leaves with its end (P 0.9),
-		// otherwise it would stand grey over the dissolving flat; title and phone of the end layer follow after
+		// so the overview stands alone while the stage scrolls away
 		if (j === 3 && fs > 4) return fpA * (1 - ss((P - 0.87) / 0.03));
 		return fpA * ss((0.5 - d) / 0.25);
 	});
@@ -332,8 +332,8 @@ export function draw(
 	const y1 = (H - ty) / f;
 	const sp = cl((c.P - 0.62) / 0.28);
 	// Build-up on scroll: first the walls draw themselves, then the floors fill in a Bayer grid, last come
-	// residents and labels. Towards the end layer the flat dismantles in reverse order.
-	const build = c.reduced ? 1 : cl((c.P - 0.54) / 0.09) * (1 - cl((c.P - 0.885) / 0.05));
+	// residents and labels.
+	const build = c.reduced ? 1 : cl((c.P - 0.54) / 0.09);
 	const buildWalls = cl(build / 0.55);
 	const buildFloor = cl((build - 0.3) / 0.55);
 	const buildRest = cl((build - 0.75) / 0.25);

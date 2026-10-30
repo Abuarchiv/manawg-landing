@@ -17,20 +17,9 @@ export interface StagePointer {
 	x: number;
 	y: number;
 	in: boolean;
-	down: boolean;
-	type: string;
-	/** Time of the last click (seconds, performance.now()). */
-	clickT: number;
-	moveT: number;
-	/** Start point of the gesture (stage and scroll) to tell swipe and tap apart. */
-	x0: number;
-	y0: number;
-	sy0: number;
-	/** The click came from the app in the phone (Phone.tsx) and has already arrived there. */
-	direct: boolean;
 }
 
-/** Stage context per frame: passed to hero, flat, flood and hand. */
+/** Stage context per frame: passed to hero and flat. */
 export interface StageContext {
 	/** Choreography progress (smoothed) and scroll distance (0..1). */
 	P: number;
@@ -47,14 +36,7 @@ export interface StageContext {
 	fit: Fit;
 	m: StagePointer;
 	fpA: number;
-	endA: number;
-	/** Decay of the hands while the end layer scrolls away (0..1, 0 with reduced motion). */
-	decay: number;
-	endOn: boolean;
-	stageTop: number;
 	visible: boolean;
-	/** Smoothed scroll speed of the page (CSS px/s, positive downwards). */
-	sv: number;
 	/** Pixel ratio of the hero (capped on touch devices). */
 	dprHero?: number;
 	holes?: Hole[];

@@ -371,7 +371,7 @@
 		0 0 2px rgb(var(--paper-rgb) / 0.7);
 	text-decoration: none;
 	cursor: pointer;
-	opacity: calc(0.85 * (1 - var(--e, 0) * 1.38));
+	opacity: 0.85;
 	transition: opacity var(--time) ease;
 }
 .hint:focus-visible {
@@ -387,8 +387,7 @@
 	height: max(100%, 44px);
 	transform: translateY(-50%);
 }
-/* Keyboard jumps (to the app demo, "Skip to content"): hidden until focused by keyboard */
-.focus-anchor,
+/* "Skip to content": hidden until focused by keyboard */
 .skip-link {
 	position: fixed;
 	left: calc(var(--margin) + env(safe-area-inset-left));
@@ -400,16 +399,11 @@
 	color: var(--ink);
 	text-decoration: none;
 }
-.focus-anchor {
-	bottom: calc(max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px)) + 32px);
-	z-index: 21;
-}
 /* The skip link is the first tab stop and appears below the header band */
 .skip-link {
 	top: calc(var(--header-bottom) + 8px);
 	z-index: 22;
 }
-.focus-anchor:focus-visible,
 .skip-link:focus-visible {
 	width: auto;
 	height: auto;
@@ -424,11 +418,6 @@
 }
 #content:focus {
 	outline: none;
-}
-.focus-anchor[inert],
-[data-phase="after"] .focus-anchor,
-[data-phase="end"] .focus-anchor {
-	visibility: hidden;
 }
 [data-phase="after"] .hint,
 .hint[inert] {
@@ -477,7 +466,7 @@
 		text-underline-offset: 3px;
 	}
 	.hint:hover {
-		opacity: calc(1 - var(--e, 0) * 1.38);
+		opacity: 1;
 		text-decoration: underline;
 		text-underline-offset: 3px;
 	}
@@ -508,17 +497,4 @@
 	.faq-question[aria-expanded="false"]:hover .faq-mark {
 		transform: none;
 	}
-}
-
-/* Hint above the phone of the end scene: in portrait the phone sits right below the button */
-#final[data-mode="portrait"] [data-end-hint] {
-	top: -17px !important;
-	font-size: 10px;
-	letter-spacing: 0.07em;
-}
-
-/* lenis.css blocks iframes while the page glides; the app in the phone passes the wheel on itself,
-   so it stays clickable, even right after scrolling */
-.lenis.lenis-smooth iframe[title="ManaWG-App"] {
-	pointer-events: auto;
 }

@@ -57,7 +57,7 @@ interface GridCell {
 	tone: 0 | 2;
 }
 
-/** Cells of one digit on the area W x H (CSS px) with cell size cs. Pure, also used for the transition (scenes/decay). */
+/** Cells of one digit on the area W x H (CSS px) with cell size cs. */
 export function buildGrid(txt: string, W0: number, H0: number, cs: number): GridCell[] {
 	const W = Math.max(1, Math.round(W0));
 	const H = Math.max(1, Math.round(H0));
@@ -99,9 +99,6 @@ export function buildGrid(txt: string, W0: number, H0: number, cs: number): Grid
 /** Cell size and glyph per mode (portrait slightly finer). */
 export const digitMetrics = (portrait: boolean): { cs: number; gl: number } =>
 	portrait ? { cs: 6, gl: 7 } : { cs: 7, gl: 8 };
-
-/** While the transition out of the phone runs, it draws the digits (scenes/decay); the digits themselves rest. */
-export const handover = { covered: false };
 
 function build(s: DigitState, txt: string, cs: number) {
 	const old = s.cells;
@@ -166,13 +163,6 @@ export function registerDigit(
 				s.key = key;
 				build(s, text, cs);
 				s.dirty = true;
-			}
-			// The transition draws the digit: leave empty here and hold at rest so it stands when handed over
-			if (handover.covered) {
-				for (const c of s.cells) c.ox = c.oy = c.vx = c.vy = 0;
-				if (!s.dirty) s.ctx?.clearRect(0, 0, s.cv?.width ?? 0, s.cv?.height ?? 0);
-				s.dirty = true;
-				return;
 			}
 			const R = 110;
 			let moving = false;

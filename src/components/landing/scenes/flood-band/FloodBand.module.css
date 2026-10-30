@@ -1,6 +1,0 @@
-/* Space for the transition phone → How it works (scenes/decay): black, a bit over half the screen height. */
-.band {
-	position: relative;
-	height: 55lvh;
-	background: var(--paper);
-}

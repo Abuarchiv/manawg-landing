@@ -1,5 +1,5 @@
-// The intro stage: a sticky area at full window size on which mountain, mark, organ, flood,
-// flat and the end scene run one after another.
+// The intro stage: a sticky area at full window size on which mountain, mark, organ and flat run
+// one after another.
 //
 // stage.ts reads the scroll distance s each frame, turns it into the progress P (timeline.ts), sets the
 // CSS variables and data-phase on #final and calls the sub-renderers. The variables are set EVERY
@@ -8,8 +8,6 @@
 import { dprFor, type Fit, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
 import { cl, ss } from '../../core/math';
-import { camera } from '../end/camera';
-import * as hand from '../end/hand';
 import * as flat from './flat';
 import { preloadFlat } from './flat-gl';
 import { createHero } from './hero';
@@ -17,8 +15,8 @@ import { drawStars } from './stars';
 import { unwarp, warp } from './timeline';
 import type { HeroMarks, Hole, StageContext, StagePointer } from './types';
 
-/** Phase of the stage (data-phase on #final): intro, end layer or scrolled past. */
-type Phase = 'intro' | 'end' | 'after';
+/** Phase of the stage (data-phase on #final): intro or scrolled past. */
+type Phase = 'intro' | 'after';
 
 /** State of the stage (for the QA hook and the landing page). */
 interface StageState {
@@ -34,8 +32,6 @@ interface StageState {
 	/** Last 15 frame durations. */
 	rb: number[];
 	ready: boolean;
-	endOn: boolean;
-	handsLoaded: boolean;
 	/** Time-smoothed opacity of the room cards. */
 	kv: number[];
 	P: number;
@@ -57,9 +53,6 @@ interface Stage {
 
 /** The running stage (for the QA hook and the landing page). */
 export const live: { stage: Stage | null } = { stage: null };
-
-/** The click from the app in the phone (Phone.tsx) carries direct = true. */
-type StagePointerEvent = PointerEvent & { direct?: boolean };
 
 function required<T>(el: T | null, name: string): T {
 	if (!el) throw new Error(`stage: ${name} missing`);
@@ -85,16 +78,10 @@ export function createStage({
 	const cvFlat = required(q('flat'), 'flat');
 	const safe = required(stageEl.querySelector<HTMLElement>('[data-safe]'), '[data-safe]');
 	const cvStars = stageEl.querySelector<HTMLCanvasElement>('canvas[data-stars]');
-	const hb = stageEl.querySelector<HTMLCanvasElement>('[data-hand="back"]');
-	const hf = stageEl.querySelector<HTMLCanvasElement>('[data-hand="front"]');
-	const ctas = [...stageEl.querySelectorAll<HTMLElement>('[data-cta]')];
-	const header = root.querySelector<HTMLElement>('[data-header]');
-	const headerCta = header?.querySelector<HTMLElement>('[data-hole="cta"]');
-	const endTitle = stageEl.querySelector<HTMLElement>('[data-end-title]');
-	const heroCta = stageEl.querySelector<HTMLElement>('[data-hero-cta]');
+	// Controls of the title (install button, chapters of the demo film)
+	const heroCtas = [...stageEl.querySelectorAll<HTMLElement>('[data-hero-cta]')];
 	const introOnly = [...root.querySelectorAll<HTMLElement>('[data-intro-only]')];
 	const hints = root.querySelector<HTMLElement>('[data-hints]');
-	const endEl = stageEl.querySelector<HTMLElement>('[data-end]');
 	const roomsEl = stageEl.querySelector<HTMLElement>('[data-hole="text"]');
 	const hero = createHero(cvHero);
 
@@ -105,7 +92,6 @@ export function createStage({
 	let safeH = safe.clientHeight;
 	let dpr = dprFor(2, 1.5, W, H);
 	let fit: Fit = fitBox(W, safeH);
-	let cam: Fit = camera(W, H, safeH, loop.mode);
 	let holes: Hole[] = [];
 
 	// State of the stage
@@ -117,8 +103,6 @@ export function createStage({
 		ad: 1, // adaptive resolution of the scene buffer
 		rb: [], // last 15 frame durations
 		ready: false,
-		endOn: false,
-		handsLoaded: false,
 		kv: [0, 0, 0, 0], // time-smoothed opacity of the room cards
 		P: 0,
 		s: 0,
@@ -126,19 +110,7 @@ export function createStage({
 		goneSince: null,
 		released: false,
 	};
-	const m: StagePointer = {
-		x: W / 2,
-		y: H / 2,
-		in: false,
-		down: false,
-		type: 'mouse',
-		clickT: -9,
-		moveT: -9,
-		x0: 0,
-		y0: 0,
-		sy0: 0,
-		direct: false,
-	};
+	const m: StagePointer = { x: W / 2, y: H / 2, in: false };
 	const hm: HeroMarks = { look: 0, mx: 0, split: 0, zoom: 0, dive: 0, sm: st.sm, a0: 0, ad: 1 };
 	const c: StageContext = {
 		P: 0,
@@ -155,14 +127,8 @@ export function createStage({
 		fit,
 		m,
 		fpA: 0,
-		endA: 0,
-		decay: 0,
-		endOn: false,
-		stageTop: 0,
 		visible: false,
-		sv: 0,
 	};
-	let syPrev = window.scrollY;
 
 	// Variables only on the elements that read them, not on #final or the whole stage: a new value makes the
 	// styles of all descendants of the carrier recompute, in the intro every frame.
@@ -193,7 +159,6 @@ export function createStage({
 		safeH = safe.clientHeight;
 		dpr = dprFor(2, 1.5, W, H);
 		fit = fitBox(W, safeH);
-		cam = camera(W, H, safeH, loop.mode);
 		sizeBacking(cvFlat, W, H, dpr);
 		measureHoles();
 	};
@@ -205,38 +170,18 @@ export function createStage({
 		m.x = e.clientX - r.left;
 		m.y = e.clientY - r.top;
 		m.in = true;
-		m.type = e.pointerType || 'mouse';
-		m.moveT = performance.now() / 1000;
 	};
 	const onLeave = () => {
 		m.in = false;
 	};
-	const onDown = (e: StagePointerEvent) => {
+	// A press builds the mark up again
+	const onDown = (e: PointerEvent) => {
 		place(e);
-		m.down = true;
-		// direct: the click came from the app in the phone (Phone.tsx) and has already arrived there, the hand only presses along
-		m.direct = !!e.direct;
-		const tt = performance.now() / 1000;
-		// Mouse and pen: the click counts immediately. Touch: only on release and only without a swipe (see onUp).
-		if (m.type !== 'touch') m.clickT = tt;
-		m.x0 = m.x;
-		m.y0 = m.y;
-		m.sy0 = window.scrollY;
-		if (!st.endOn) st.a0 = tt;
-	};
-	const onUp = (e: PointerEvent) => {
-		if (m.down && m.type === 'touch' && e.type === 'pointerup') {
-			const moved =
-				Math.hypot(m.x - m.x0, m.y - m.y0) >= 8 || Math.abs(window.scrollY - m.sy0) >= 8;
-			if (!moved) m.clickT = performance.now() / 1000;
-		}
-		m.down = false;
+		st.a0 = performance.now() / 1000;
 	};
 	root.addEventListener('pointermove', place);
 	root.addEventListener('pointerleave', onLeave);
 	root.addEventListener('pointerdown', onDown);
-	window.addEventListener('pointerup', onUp);
-	window.addEventListener('pointercancel', onUp);
 
 	const fireReady = () => {
 		st.ready = true;
@@ -281,67 +226,36 @@ export function createStage({
 		P: number,
 		fpA: number,
 		portal: number,
-		endA: number,
 		cards: number[],
 		rb: DOMRect,
-		visible: boolean,
-		headerBottom: number,
-		titleTop: number,
 	): Phase => {
 		// Title and hint need --p only up to 0.09 (after that they are gone entirely). Above that, every new value
 		// in the intro would recompute the styles of all descendants of #final (about 1.5 ms per frame).
 		setVar('--p', Math.min(P, 0.1).toFixed(4), [stageEl, hints]);
-		// Phone.tsx loads still image and app from here on, well before the end layer (building the app page takes 20 to 60 ms):
-		// preferably in the first scroll pause from P 0.2 (building while scrolling stutters), at the latest at P 0.55
-		if (root.dataset.near !== '1' && (P > 0.55 || (P > 0.2 && loop.now - loop.act > 0.5)))
-			root.dataset.near = '1';
 		setVar('--g', (1 - fpA).toFixed(3), [cvHero]);
-		// The flat is gone at endA 0.5, the end layer only begins at 0.35: hardly any overlap, no grey veil
-		setVar('--f', (Math.max(fpA, cl(portal * 8)) * (1 - cl(endA * 2))).toFixed(3), [cvFlat]);
+		setVar('--f', Math.max(fpA, cl(portal * 8)).toFixed(3), [cvFlat]);
 		// Portal: the flat opens as a circle in the hole of the organ, no black frame between dive and flat
 		setVar('--por', portal.toFixed(3), [cvFlat]);
-		setVar('--e', endA.toFixed(3), [endEl, hints]);
 		// Room cards driven by scroll as in the design (curve and overlap freedom: cardOpacity in flat.ts)
 		for (const [j, k] of cards.entries()) {
 			st.kv[j] = k;
 			setVar(`--c${j}`, k.toFixed(3), [roomsEl]);
 		}
-		// Portrait: the header stays visible (the title sits below it), otherwise the button would be left alone after fading out
-		const headerOff = loop.mode === 'portrait' ? 0 : endA * (rb.bottom > headerBottom ? 1 : 0);
-		setVar('--header-off', headerOff.toFixed(3), [header]);
-		// Portrait: title and button of the end layer fade out as soon as they reach the header band
-		// while scrolling out (no text over the logo); to the same degree the header button returns
-		let titleOff = 0;
-		if (loop.mode === 'portrait' && endTitle && endA > 0) {
-			titleOff = 1 - cl((titleTop - headerBottom) / 16);
-		}
-		setVar('--end-title-out', titleOff.toFixed(3), [endTitle]);
-		// Portrait: the header stays but its button goes while the button of the end layer is in view (no duplicate)
-		const headerCtaOff =
-			loop.mode === 'portrait' ? endA * (rb.bottom > headerBottom ? 1 : 0) * (1 - titleOff) : 0;
-		setVar('--header-cta-out', headerCtaOff.toFixed(3), [header]);
-		if (headerCta && headerCta.inert !== headerCtaOff >= 0.6) headerCta.inert = headerCtaOff >= 0.6;
-		if (header && header.inert !== headerOff >= 0.6) header.inert = headerOff >= 0.6;
-		const phase: Phase = rb.bottom <= 0 ? 'after' : P >= 0.9 ? 'end' : 'intro';
+		const phase: Phase = rb.bottom <= 0 ? 'after' : 'intro';
 		if (st.phase !== phase || root.dataset.phase !== phase) {
 			st.phase = phase;
 			root.dataset.phase = phase;
 		}
 
-		// Controls of the end layer are operable only when visible
-		const ctaOn = endA > 0.6 && visible;
-		for (const el of ctas) {
-			const v = ctaOn ? 'auto' : 'none';
-			if (el.style.pointerEvents !== v) el.style.pointerEvents = v;
-			if (el.inert === ctaOn) el.inert = !ctaOn;
-		}
-		// Hero button: only while the title is visible (it fades out until P 0.086, HeroTitle.tsx)
+		// Title controls: only while the title is visible (it fades out until P 0.086, HeroTitle.tsx)
 		const heroOff = P >= 0.07;
-		if (heroCta && heroCta.inert !== heroOff) {
-			heroCta.inert = heroOff;
-			heroCta.style.pointerEvents = heroOff ? 'none' : '';
+		for (const el of heroCtas) {
+			if (el.inert === heroOff) continue;
+			el.inert = heroOff;
+			el.style.pointerEvents = heroOff ? 'none' : '';
 		}
-		const hintOff = endA >= 0.72 || phase === 'after';
+		// Hints only while the stage holds still: once it scrolls away, How it works follows right below
+		const hintOff = phase === 'after' || rb.top < -1;
 		for (const el of introOnly) if (el.inert !== hintOff) el.inert = hintOff;
 		return phase;
 	};
@@ -366,18 +280,10 @@ export function createStage({
 		const rb = stageEl.getBoundingClientRect();
 		const rs = sec.getBoundingClientRect();
 		const visible = rb.bottom > 0 && rb.top < loop.vh;
-		// read all layouts before setStyle writes (otherwise every read forces a style recalculation mid-frame)
-		const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
-		const titleTop = endTitle ? endTitle.getBoundingClientRect().top : 0;
 		const s = cl(-rs.top / travel());
 		const Pz = warp(s);
 		const P = smooth(Pz, dt, visible);
 		manageMemory(visible, now);
-		// Scroll speed (px/s), smoothed: phone and hands lag behind the scroll (hand/index.ts)
-		const sy = window.scrollY;
-		const svRaw = dt > 0 ? cl((sy - syPrev) / Math.max(dt, 0.004), -4000, 4000) : 0;
-		syPrev = sy;
-		c.sv += (svRaw - c.sv) * (1 - Math.exp(-8 * Math.min(dt, 0.1)));
 		const look = ss((P - 0.06) / 0.14);
 		const mx = ss((P - 0.18) / 0.06);
 		const split = ss((P - 0.24) / 0.1) * (1 - ss((P - 0.36) / 0.1));
@@ -386,13 +292,11 @@ export function createStage({
 		const fpA = ss((P - 0.58) / 0.05);
 		const portal = loop.reduced ? 1 : ss((P - 0.54) / 0.06);
 		if (P > 0.3) preloadFlat(); // load render and shader long before the flat appears at P 0.54
-		const endA = ss((P - 0.9) / 0.05);
 		const cards = flat.cardOpacity(P);
 		st.P = P;
 		st.s = s;
 
-		setStyle(P, fpA, portal, endA, cards, rb, visible, headerBottom, titleTop);
-		st.endOn = endA > 0.6 && rb.bottom > 0.625 * H;
+		setStyle(P, fpA, portal, cards, rb);
 		adaptResolution(raw);
 
 		if (st.a0 === null) st.a0 = now;
@@ -413,11 +317,6 @@ export function createStage({
 				fit,
 			});
 			c.fpA = fpA;
-			c.endA = endA;
-			// Decay of the hands: begins as soon as the stage is pushed up (rb.top < 0), running backwards reassembles them
-			c.decay = loop.reduced ? 0 : ss(cl(-rb.top / (0.6 * H)));
-			c.endOn = st.endOn;
-			c.stageTop = rb.top;
 			c.visible = true;
 			c.holes = holes;
 			if (loop.n % 30 === 1) measureHoles();
@@ -443,12 +342,7 @@ export function createStage({
 				heroDrawn = hero.frame(c, hm);
 			}
 			if (cvStars && P < 0.075) drawStars(cvStars, W, safeH, dpr, t);
-			if ((fpA > 0.001 || portal > 0.001) && endA < 0.999) flat.draw(cvFlat, c, rooms, people);
-			if (P > 0.3 && !st.handsLoaded) {
-				st.handsLoaded = true;
-				hand.load();
-			}
-			if (hb && hf) hand.draw(hb, hf, c, cam);
+			if (fpA > 0.001 || portal > 0.001) flat.draw(cvFlat, c, rooms, people);
 		} else {
 			c.visible = false;
 		}
@@ -469,8 +363,6 @@ export function createStage({
 			root.removeEventListener('pointermove', place);
 			root.removeEventListener('pointerleave', onLeave);
 			root.removeEventListener('pointerdown', onDown);
-			window.removeEventListener('pointerup', onUp);
-			window.removeEventListener('pointercancel', onUp);
 			hero.destroy();
 			if (live.stage === api) live.stage = null;
 		},

@@ -25,88 +25,6 @@ interface Step {
 	text: string;
 }
 
-interface InstallWay {
-	/** Tab name. */
-	name: string;
-	/** Three steps; "≡" and "⋮" are swapped for the real icons. */
-	steps: readonly [string, string, string];
-}
-
-interface IosStrings {
-	/** Labels below the app icons of the home screen. */
-	homeFitness: string;
-	homeWatch: string;
-	homeReminders: string;
-	homeFiles: string;
-	homePreview: string;
-	homeUtilities: string;
-	homeContacts: string;
-	search: string;
-	/** Safari page menu ("side menu" in the German UI), eight rows. */
-	pageMenuAria: string;
-	menuShare: string;
-	menuAddBookmark: string;
-	menuAddBookmarkTo: string;
-	menuFind: string;
-	menuZoom: string;
-	menuNotify: string;
-	menuHideItems: string;
-	menuExtension: string;
-	/** Share sheet. */
-	sheetTitle: string;
-	sheetOptions: string;
-	sheetReminders: string;
-	sheetMore: string;
-	actionCopy: string;
-	actionBookmark: Lines;
-	actionReadingList: Lines;
-	actionShowMore: Lines;
-	actionShowLess: Lines;
-	listAddBookmarkTo: string;
-	listFavourites: string;
-	listFind: string;
-	listAddToHome: string;
-	listMarkup: string;
-	listPrint: string;
-	listOpenInSafari: string;
-	/** Add to Home Screen dialog. */
-	dialogTitle: string;
-	dialogAdd: string;
-	dialogWebApp: string;
-	dialogFoot: string;
-	/** Keyboard: suggestion, three letter rows with their side padding [left, right], space bar label. */
-	keySuggestion: string;
-	keyRows: readonly [string, string, string];
-	keyPadding: readonly [
-		readonly [number, number],
-		readonly [number, number],
-		readonly [number, number],
-	];
-	keySpace: string;
-}
-
-interface AndroidStrings {
-	/** Chrome menu entries; an empty string is a separator. */
-	menu: readonly string[];
-	sheetTitle: Lines;
-	sheetInstall: string;
-	sheetShortcut: string;
-	sheetShortcutNote: string;
-	dialogTitle: string;
-	dialogCancel: string;
-	dialogInstall: string;
-	toastInstalling: string;
-	toastInstalled: string;
-}
-
-interface DesktopStrings {
-	chip: string;
-	tooltip: string;
-	dialogTitle: string;
-	dialogCancel: string;
-	dialogInstall: string;
-}
-
 export interface HomeDict {
 	/** Skip link, first tab stop. */
 	skip: string;
@@ -114,7 +32,6 @@ export interface HomeDict {
 	aria: {
 		intro: string;
 		flat: string;
-		appPreview: string;
 		features: string;
 	};
 	/** App routes (path only, joined with the app origin) and site routes behind the buttons and footer links. */
@@ -131,17 +48,27 @@ export interface HomeDict {
 		terms: string;
 		/** Counterpart of this page in the other language. */
 		other: string;
+		/** Install guide for iPhone, Android and desktop (section of the app topic page), behind the hero button. */
+		install: string;
 	};
 	header: { cta: string };
 	loader: { label: string };
 	hints: {
 		skipIntro: string;
 		skipIntroAria: string;
-		/** Focus anchor to the app preview. */
-		tryApp: string;
 		scroll: string;
 	};
 	hero: { title: Lines; sub: string; install: string };
+	/** Demo film on the hero (HeroDemo.tsx). */
+	heroDemo: {
+		aria: string;
+		/** Mono label above the chapters. */
+		label: string;
+		/** Chapter names, uppercase, in film order. */
+		chapters: readonly [string, string, string, string, string];
+		pause: string;
+		play: string;
+	};
 	/** The four room cards. */
 	rooms: readonly [RoomCard, RoomCard, RoomCard, RoomCard];
 	/** Mono labels in the canvas, order of the floor plan: kitchen, bathroom, Jona, hallway, living room, Lea, Lina, Mika. */
@@ -162,25 +89,6 @@ export interface HomeDict {
 	};
 	/** Words flown through in the tunnel, uppercase, at most 13 characters. */
 	tunnelWords: readonly [string, string, string];
-	install: {
-		prefix: string;
-		title: string;
-		/** Heading in two lines; the second one never breaks. */
-		heading: readonly [string, string];
-		lead: string;
-		platformAria: string;
-		ways: readonly [InstallWay, InstallWay, InstallWay];
-		/** Token kept on one line inside the steps. */
-		nowrap: string;
-		iconMenuAria: string;
-		iconDotsAria: string;
-		/** Extra line below the desktop steps. */
-		desktopExtra: string;
-		cta: string;
-		ios: IosStrings;
-		android: AndroidStrings;
-		desktop: DesktopStrings;
-	};
 	faq: readonly (readonly [question: string, answer: string])[];
 	questions: { prefix: string; title: string };
 	finale: { title: Lines; create: string; invite: string };
@@ -202,8 +110,6 @@ export interface HomeDict {
 		privacy: string;
 		terms: string;
 	};
-	end: { title: Lines; cta: string };
-	phone: { aria: string; frameTitle: string; hint: string };
 	schema: {
 		description: string;
 		featureList: readonly string[];

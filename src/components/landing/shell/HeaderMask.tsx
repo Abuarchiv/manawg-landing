@@ -5,8 +5,8 @@ import { onRead } from '../core/loop';
 
 // Hide content in the header band: when text runs under the logo and the button, this gradient covers the band
 // in the colour of the section (header bottom edge plus 28 px of soft falloff). It only acts while the band
-// lies in content (How it works, Body, Install, FAQ, Finale), never over the scenes of flood, flat and depth.
-const IDS = ['flutband', 'so-gehts', 'installieren', 'fragen', 'finale'];
+// lies in content (How it works, FAQ, Finale), never over the scenes of flat and depth.
+const IDS = ['so-gehts', 'fragen', 'finale'];
 // Portrait: depth as well, where the word image would otherwise run under the fixed header
 const IDS_PORTRAIT = [...IDS, 'funktionen'];
 
