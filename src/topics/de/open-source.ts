@@ -24,10 +24,6 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 				'Self-Hosting-Anleitung (GitHub, Englisch)',
 				'https://github.com/Abuarchiv/manawg/blob/main/docs/self-hosting.md',
 			],
-			[
-				'Self-Hosting-Anleitung (GitHub, Deutsch)',
-				'https://github.com/Abuarchiv/manawg/blob/main/docs/self-hosting.de.md',
-			],
 		],
 		sections: [
 			[

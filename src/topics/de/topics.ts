@@ -955,7 +955,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Kann ich ManaWG selbst hosten?',
-				'Ja, mit Docker Compose: Das Repository enthält ein Setup, das App, PostgreSQL, Anmeldung und Bildspeicher auf einer Maschine startet, beschrieben in docs/self-hosting.md (deutsch: docs/self-hosting.de.md) auf GitHub. Die meisten WGs brauchen das nicht, weil app.manawg.com kostenlos ist. Wer die Daten auf einer Maschine unter eigener Kontrolle haben will, findet Schritte und Grenzen unter [Open-Source-WG-App](/open-source-wg-app).',
+				'Ja, mit Docker Compose: Das Repository enthält ein Setup, das App, PostgreSQL, Anmeldung und Bildspeicher auf einer Maschine startet, beschrieben in docs/self-hosting.md (auf Englisch) auf GitHub. Die meisten WGs brauchen das nicht, weil app.manawg.com kostenlos ist. Wer die Daten auf einer Maschine unter eigener Kontrolle haben will, findet Schritte und Grenzen unter [Open-Source-WG-App](/open-source-wg-app).',
 			],
 			[
 				'Funktioniert ManaWG ohne Internet?',
