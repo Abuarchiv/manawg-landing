@@ -885,7 +885,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wie viele Leute passen in eine WG?',
-				'Eine WG fasst bis zu 20 aktive Mitglieder. Ausgezogene Mitglieder zählen nicht mit, ihre Historie bleibt erhalten. Admins können den Code erneuern oder das Beitreten sperren.',
+				'Eine WG fasst bis zu 20 aktive Mitglieder. Ausgezogene Mitglieder zählen nicht mit, ihre Historie bleibt erhalten. Admins können Einladungen jederzeit widerrufen.',
 			],
 		],
 	},
