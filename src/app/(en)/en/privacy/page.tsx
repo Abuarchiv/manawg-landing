@@ -77,17 +77,26 @@ export default function PrivacyPage() {
 						receive your email address and name from Google. With email sign-in, Supabase sends
 						confirmation emails, sign-in codes and password-reset emails to your address. Resend
 						delivers them; the sender appears as noreply@manawg.com. Supabase Auth manages sign-in,
-						and the session is stored in cookies. In addition, flat assignments and name drafts may
-						be held in the browser’s local storage.
+						and the session is stored in cookies. In addition, the app stores data in the browser’s
+						local storage (Local Storage and IndexedDB); section 7 lists what.
+					</li>
+					<li>
+						<strong>Password check:</strong> When you sign up and when you change your password, the
+						server checks the new password against the Have I Been Pwned range API
+						(api.pwnedpasswords.com, Troy Hunt, served through Cloudflare). Only the first 5
+						characters of the password’s SHA-1 hash are sent, with padding switched on and no
+						account data. Nothing is stored, and if the service cannot be reached the password
+						counts as not known.
 					</li>
 					<li>
 						<strong>Retention:</strong> We keep account data until you delete your account under{' '}
-						<em>Settings → Access → Delete account</em>. Local flat assignments and name drafts stay
-						in the browser until you clear its storage manually.
+						<em>Settings → Access → Delete account</em>. Local data stays in the browser until you
+						clear its storage manually; actions queued offline, including receipt photos, are kept
+						for up to about 7 days until they are synced.
 					</li>
 					<li>
 						<strong>Recipients and processors:</strong> Supabase for sign-in and database hosting;
-						Resend for sending email (see section 5).
+						Resend for sending email; Have I Been Pwned for the password check (see section 5).
 					</li>
 					<li>
 						<strong>Storage location and transfers to third countries:</strong> Supabase stores data
@@ -201,21 +210,10 @@ export default function PrivacyPage() {
 				</ul>
 
 				<p className="mb-3 text-sm">
-					If you start text recognition of a screenshot in the import (OCR), the app loads Tesseract
-					worker and core files as well as German and English language models from jsDelivr when
-					needed. Recognition runs in your browser. The screenshot and the recognised text are not
-					sent to jsDelivr. According to the{' '}
-					<a
-						href="https://www.jsdelivr.com/terms/privacy-policy"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						jsDelivr privacy policy
-					</a>
-					, jsDelivr and its CDN providers may receive technical data when the files are retrieved,
-					such as IP address, browser type and version, referring domain, requested file URL, time
-					of retrieval, device identifiers and other diagnostic data. If you then open the preview
-					or confirm the import, ManaWG sends the recognised data to its own import API.
+					If you start text recognition of a screenshot in the import (OCR), recognition runs in
+					your browser with files that app.manawg.com serves itself. The screenshot and the
+					recognised text stay on your device until you open the preview or confirm the import; then
+					ManaWG sends the recognised data to its own import API.
 				</p>
 
 				<h3 id="4e" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
@@ -366,8 +364,9 @@ export default function PrivacyPage() {
 						September 2026.
 					</li>
 					<li>
-						<strong>jsDelivr and CDN providers</strong>: deliver Tesseract worker, core and language
-						files when you explicitly start local OCR (see section 4d).
+						<strong>Have I Been Pwned (Troy Hunt)</strong>: checks through its range API whether a
+						new password appears in known data breaches; receives only the first 5 characters of the
+						SHA-1 hash, served through Cloudflare (see section 4a).
 					</li>
 				</ul>
 			</section>
@@ -395,9 +394,13 @@ export default function PrivacyPage() {
 				<p>
 					ManaWG uses cookies for sign-in with Supabase. If you choose a language in the app, a
 					cookie named manawg_locale stores that choice for one year; with “System”, it is removed.
-					In addition, flat assignments and name drafts may be held in the browser’s local storage (
-					<strong>Local Storage</strong>). If you clear the browser storage, this local data is
-					removed as well.
+					The cookie manawg_signed_in is a hint without content that a session exists. During a
+					password reset, ManaWG also sets the HttpOnly cookie manawg_password_recovery for 10
+					minutes. The browser’s local storage (<strong>Local Storage</strong> and{' '}
+					<strong>IndexedDB</strong>) holds flat assignments, form drafts, actions queued offline
+					including receipt photos (kept for up to about 7 days until they are synced), and display
+					and dismissal settings. If you clear the browser storage, this local data is removed as
+					well; entries that have not been synced yet are discarded with it.
 				</p>
 			</section>
 
