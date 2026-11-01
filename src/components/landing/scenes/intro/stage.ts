@@ -7,7 +7,7 @@
 
 import { dprFor, type Fit, fitBox, isTouch, observe, sizeBacking } from '../../core/canvas';
 import { loop, onFrame } from '../../core/loop';
-import { cl, ss } from '../../core/math';
+import { cl, lerp, ss } from '../../core/math';
 import * as flat from './flat';
 import { preloadFlat } from './flat-gl';
 import { createHero } from './hero';
@@ -317,10 +317,21 @@ export function createStage({
 			c.holes = holes;
 			if (loop.n % 30 === 1) measureHoles();
 
-			// Pointer (-1..1) for mountain and organ, without a pointer an autopilot runs
+			// Pointer (-1..1) for mountain and organ, without a pointer an autopilot runs. Where the demo phone
+			// stands at the top centre (HeroDemo.module.css, portrait), the mark drifts in the free sky left of it:
+			// screen x 14–24 %, mapped back through the shader's mark position (uv.x = sm.x · ax · 0.7, uv / uZ).
+			let autoX = 0.5 * Math.cos(t * 0.12);
+			if (W <= H || W < 700) {
+				const r = W / H;
+				const left =
+					((0.19 + 0.05 * Math.cos(t * 0.12) - 0.5) * r) /
+					Math.min(1, r / 0.9) /
+					(0.7 * Math.min(1, r / 1.6));
+				autoX = lerp(left, autoX, look);
+			}
 			const tm: [number, number] = m.in
 				? [(m.x - W / 2) / (W / 2), (H / 2 - m.y) / (H / 2)]
-				: [0.5 * Math.cos(t * 0.12), 0.4 * Math.sin(t * 0.16)];
+				: [autoX, 0.4 * Math.sin(t * 0.16)];
 			// Design constant 0.06 per frame at 120 Hz, converted to dt
 			const ks = 1 - Math.exp(-7.43 * dt);
 			st.sm[0] += (tm[0] - st.sm[0]) * ks;
