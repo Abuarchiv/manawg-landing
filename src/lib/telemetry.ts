@@ -14,9 +14,15 @@ export const POSTHOG_HOST = 'https://eu.i.posthog.com';
 const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
-/** A local `next start` with pulled production variables must not count as real traffic. */
+/**
+ * A local `next start` with pulled production variables must not count as real traffic, and neither
+ * must automated browsers (QA runs, Lighthouse, headless crawlers set navigator.webdriver).
+ */
 function isLocal(): boolean {
-	return ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+	return (
+		['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ||
+		(typeof navigator !== 'undefined' && navigator.webdriver === true)
+	);
 }
 
 /** Site paths are public; anything outside the route charset (a mistyped URL) collapses to one value. */

@@ -100,6 +100,26 @@ test('the privacy texts name every event the website sends', () => {
 	}
 });
 
+test('automated browsers send nothing', async () => {
+	process.env.NEXT_PUBLIC_POSTHOG_KEY = 'phc_test';
+	const g = globalThis as Record<string, unknown>;
+	g.location = { hostname: 'manawg.com', pathname: '/' };
+	g.document = { referrer: '' };
+	const sendBeacon = (navigator as { sendBeacon?: unknown }).sendBeacon;
+	let sent = 0;
+	Object.defineProperty(navigator, 'webdriver', { value: true, configurable: true });
+	Object.defineProperty(navigator, 'sendBeacon', { value: () => ++sent, configurable: true });
+	try {
+		const fresh = './telemetry.ts?webdriver';
+		const { capture } = (await import(fresh)) as typeof import('./telemetry.ts');
+		capture('$pageview');
+		assert.equal(sent, 0);
+	} finally {
+		Object.defineProperty(navigator, 'webdriver', { value: undefined, configurable: true });
+		Object.defineProperty(navigator, 'sendBeacon', { value: sendBeacon, configurable: true });
+	}
+});
+
 test('a failing analytics call never throws into the page', async () => {
 	process.env.NEXT_PUBLIC_POSTHOG_KEY = 'phc_test';
 	const g = globalThis as Record<string, unknown>;
