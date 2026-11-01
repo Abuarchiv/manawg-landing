@@ -95,7 +95,10 @@ export function TopicFooter({
 					);
 				})}
 			</div>
-			<p className={`${mono} mt-12 mb-0 flex flex-wrap gap-x-5`}>
+			{/* py-1 lifts each link to a 24 px target (WCAG 2.5.8); on a phone the row wraps and the lines would touch */}
+			<p
+				className={`${mono} mt-12 mb-0 flex flex-wrap items-center gap-x-5 [&_a]:inline-block [&_a]:py-1`}
+			>
 				<span>{t.footerNote}</span>
 				<Link href={LEGAL_PAGES.notice[locale].path} prefetch={false}>
 					{t.legal.notice}
