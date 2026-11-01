@@ -44,6 +44,7 @@ export function Header() {
 			</div>
 			<a
 				data-hole="cta"
+				data-cta="header_create"
 				href={appUrl(dict.links.create)}
 				className="cta cta--solid"
 				style={{ pointerEvents: 'auto', opacity: 'calc(1 - var(--header-cta-out,0))' }}

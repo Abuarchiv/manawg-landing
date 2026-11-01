@@ -24,6 +24,11 @@ export function safePath(pathname: string): string {
 	return /^(\/[a-z0-9-]+){0,4}\/?$/.test(pathname) ? pathname : '/[other]';
 }
 
+/** Button ids are fixed strings from the markup; links without one count as `other`. */
+export function ctaId(id: string | undefined): string {
+	return id && /^[a-z_]{1,32}$/.test(id) ? id : 'other';
+}
+
 /** Only the domain of an external referrer, e.g. `www.google.com`; never the full URL. */
 export function referringDomain(referrer: string, ownHost: string): string | undefined {
 	try {
@@ -34,7 +39,8 @@ export function referringDomain(referrer: string, ownHost: string): string | und
 	}
 }
 
-export function capture(event: '$pageview' | 'app_link_clicked'): void {
+/** `cta`: fixed id of the clicked button (data-cta, e.g. `hero_create`), only on app_link_clicked. */
+export function capture(event: '$pageview' | 'app_link_clicked', cta?: string): void {
 	if (!POSTHOG_KEY || isLocal()) return;
 	try {
 		const body = JSON.stringify({
@@ -50,6 +56,7 @@ export function capture(event: '$pageview' | 'app_link_clicked'): void {
 				$pathname: safePath(location.pathname),
 				$raw_user_agent: navigator.userAgent,
 				$referring_domain: referringDomain(document.referrer, location.hostname),
+				cta,
 			},
 		});
 		// A beacon survives the navigation to the app and needs no CORS preflight.
@@ -62,7 +69,7 @@ export function capture(event: '$pageview' | 'app_link_clicked'): void {
 function onClick(event: MouseEvent): void {
 	const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
 	if (link instanceof HTMLAnchorElement && link.href.startsWith(APP_ORIGIN)) {
-		capture('app_link_clicked');
+		capture('app_link_clicked', ctaId(link.dataset.cta));
 	}
 }
 
@@ -78,6 +85,98 @@ if (typeof window !== 'undefined' && SENTRY_DSN && !isLocal()) {
 
 let sentry: Promise<typeof import('@sentry/browser') | null> | undefined;
 
+type SentryEventShape = {
+	user?: unknown;
+	request?: { method?: unknown; url?: unknown; [key: string]: unknown };
+	message?: unknown;
+	logentry?: unknown;
+	extra?: unknown;
+	contexts?: unknown;
+	tags?: unknown;
+	transaction?: unknown;
+	culprit?: unknown;
+	breadcrumbs?: unknown;
+	exception?: {
+		values?: Array<{
+			type?: unknown;
+			value?: unknown;
+			stacktrace?: unknown;
+			[key: string]: unknown;
+		}>;
+	};
+};
+
+const SAFE_ERROR_TYPES = new Set([
+	'Error',
+	'RangeError',
+	'ReferenceError',
+	'SyntaxError',
+	'TypeError',
+	'URIError',
+	'EvalError',
+	'AggregateError',
+	'AbortError',
+	'ChunkLoadError',
+	'NetworkError',
+	'SecurityError',
+	'TimeoutError',
+]);
+
+function safeErrorType(value: unknown): string {
+	return typeof value === 'string' && SAFE_ERROR_TYPES.has(value) ? value : 'Error';
+}
+
+function safeRequestOrigin(value: unknown): string | undefined {
+	if (typeof value !== 'string') return undefined;
+	try {
+		const url = new URL(value);
+		return url.protocol === 'http:' || url.protocol === 'https:' ? url.origin : undefined;
+	} catch {
+		return undefined;
+	}
+}
+
+/** Keep only technical error types, stack traces, request methods and origins. */
+export function sanitizeSentryEvent<T>(event: T): T {
+	const safe = event as unknown as SentryEventShape;
+	delete safe.user;
+	delete safe.message;
+	delete safe.logentry;
+	delete safe.extra;
+	delete safe.contexts;
+	delete safe.tags;
+	delete safe.transaction;
+	delete safe.culprit;
+	delete safe.breadcrumbs;
+
+	if (safe.request) {
+		const method = typeof safe.request.method === 'string' ? safe.request.method : undefined;
+		const origin = safeRequestOrigin(safe.request.url);
+		const request = {
+			...(method ? { method } : {}),
+			...(origin ? { url: origin } : {}),
+		};
+		if (Object.keys(request).length > 0) safe.request = request;
+		else delete safe.request;
+	}
+
+	if (safe.exception?.values) {
+		safe.exception = {
+			values: safe.exception.values.map((value) => ({
+				type: safeErrorType(value.type),
+				value: '[redacted]',
+				...(value.stacktrace !== undefined ? { stacktrace: value.stacktrace } : {}),
+			})),
+		};
+	}
+
+	return event;
+}
+
+export function sanitizeSentryBreadcrumb(_breadcrumb: unknown): null {
+	return null;
+}
+
 function loadSentry(dsn: string) {
 	sentry ??= import('@sentry/browser')
 		.then((Sentry) => {
@@ -88,13 +187,8 @@ function loadSentry(dsn: string) {
 				// No release health: the privacy policy promises no session data.
 				integrations: (integrations) =>
 					integrations.filter((integration) => integration.name !== 'BrowserSession'),
-				beforeBreadcrumb: (crumb) =>
-					crumb.category === 'console' || crumb.category === 'ui' ? null : crumb,
-				beforeSend(event) {
-					delete event.user;
-					if (event.request?.url) event.request.url = event.request.url.replace(/[?#].*/, '');
-					return event;
-				},
+				beforeBreadcrumb: sanitizeSentryBreadcrumb,
+				beforeSend: sanitizeSentryEvent,
 			});
 			removeEventListener('error', keepEarly);
 			removeEventListener('unhandledrejection', keepEarly);

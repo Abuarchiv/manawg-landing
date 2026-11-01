@@ -276,7 +276,8 @@ export default function PrivacyPage() {
 						Zuordnungskennung, der Hostname, der Seitenpfad und die Browserkennung. In der App
 						ersetzen Platzhalter die WG-Codes und Einladungstokens im Seitenpfad. Die Website sendet
 						zusätzlich die Domain der verweisenden Seite (etwa www.google.com), nie deren
-						vollständige Adresse. Die IP-Adresse erreicht PostHog mit der Anfrage.
+						vollständige Adresse, und bei app_link_clicked die feste Kennung des Knopfs (etwa
+						hero_create). Die IP-Adresse erreicht PostHog mit der Anfrage.
 					</li>
 					<li>
 						<strong>Verarbeitungsregion und Drittlandübermittlungen:</strong> PostHog Cloud EU in

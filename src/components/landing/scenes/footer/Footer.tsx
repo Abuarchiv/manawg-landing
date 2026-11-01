@@ -43,13 +43,13 @@ export function Footer() {
 				</div>
 				<div className={s.column}>
 					<span className={s.head}>{footer.account}</span>
-					<a href={appUrl(links.create)} className="footer-link">
+					<a href={appUrl(links.create)} data-cta="footer_create" className="footer-link">
 						{footer.create}
 					</a>
-					<a href={appUrl(links.inviteFooter)} className="footer-link">
+					<a href={appUrl(links.inviteFooter)} data-cta="footer_invite" className="footer-link">
 						{footer.invite}
 					</a>
-					<a href={appUrl(links.login)} className="footer-link">
+					<a href={appUrl(links.login)} data-cta="footer_login" className="footer-link">
 						{footer.login}
 					</a>
 				</div>

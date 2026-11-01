@@ -275,8 +275,8 @@ export default function PrivacyPage() {
 						identifier, a technical assignment identifier, the hostname, the page path and the
 						browser identifier. In the app, placeholders replace flat codes and invitation tokens in
 						the page path. The website also sends the domain of the referring page (for example
-						www.google.com), never its full address. The IP address reaches PostHog with the
-						request.
+						www.google.com), never its full address, and with app_link_clicked the fixed id of the
+						button (for example hero_create). The IP address reaches PostHog with the request.
 					</li>
 					<li>
 						<strong>Processing region and transfers to third countries:</strong> PostHog Cloud EU in

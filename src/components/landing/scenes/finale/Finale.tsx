@@ -61,10 +61,18 @@ export function Finale() {
 						<BrLines lines={finale.title} />
 					</h2>
 					<div data-buttons="1" className={s.buttons}>
-						<a href={appUrl(links.create)} className={`cta cta--solid cta--large ${s.button}`}>
+						<a
+							href={appUrl(links.create)}
+							data-cta="finale_create"
+							className={`cta cta--solid cta--large ${s.button}`}
+						>
 							{finale.create}
 						</a>
-						<a href={appUrl(links.invite)} className={`cta cta--dark cta--large ${s.button}`}>
+						<a
+							href={appUrl(links.invite)}
+							data-cta="finale_invite"
+							className={`cta cta--dark cta--large ${s.button}`}
+						>
 							{finale.invite}
 						</a>
 					</div>
