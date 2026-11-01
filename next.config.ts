@@ -29,6 +29,9 @@ const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
 // the in-page links cannot drift apart.
 
 const nextConfig: NextConfig = {
+	env: { NEXT_PUBLIC_RELEASE: process.env.VERCEL_GIT_COMMIT_SHA ?? 'local' },
+	// The site is open source, so public source maps reveal nothing new; Sentry reads them to resolve stack traces.
+	productionBrowserSourceMaps: true,
 	distDir: process.env.NEXT_DIST_DIR ?? '.next',
 	// no generated AGENTS.md in the repo root on dev start
 	agentRules: false,

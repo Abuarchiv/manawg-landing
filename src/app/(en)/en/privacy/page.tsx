@@ -162,16 +162,17 @@ export default function PrivacyPage() {
 					</li>
 					<li>
 						<strong>Recipients:</strong> Vercel Inc. (USA) provides the hosting and processes server
-						logs. If Sentry is enabled for an app deployment, Sentry (Functional Software, Inc.)
-						receives technical error data, such as error types, stack traces (the sequence of code
-						leading up to an error) and approved diagnostic identifiers. For ManaWG, the EU is set
-						as the Sentry storage region; this does not rule out further transfers. Before anything
-						is sent, variable error messages, user details, context data that has not been approved,
-						and request headers and bodies are removed. Request paths are cleaned; values from URL
-						queries and fragments, flat codes, calendar access tokens and signed file URLs are made
-						unrecognisable. The Sentry integration adds neither user details nor automatically
-						detected IP addresses to error events. It does not send automatically collected session
-						data or performance traces.
+						logs. If Sentry is enabled for an app deployment or for this website (manawg.com),
+						Sentry (Functional Software, Inc.) receives technical error data, such as error types,
+						stack traces (the sequence of code leading up to an error) and approved diagnostic
+						identifiers. For ManaWG, the EU is set as the Sentry storage region; this does not rule
+						out further transfers. Before anything is sent, variable error messages, user details,
+						context data that has not been approved, and request headers and bodies are removed.
+						Request paths are cleaned; values from URL queries and fragments, flat codes, calendar
+						access tokens and signed file URLs are made unrecognisable. The Sentry integration adds
+						neither user details nor automatically detected IP addresses to error events. It does
+						not send automatically collected session data or performance traces. On the website,
+						query values and fragments are removed from page addresses.
 					</li>
 					<li>
 						<strong>Transfer to third countries:</strong> Vercel logs may be routed through servers
@@ -254,7 +255,8 @@ export default function PrivacyPage() {
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 					<li>
 						<strong>Purpose:</strong> To develop ManaWG further, we record page views and count how
-						often a flat is created or someone joins a flat.
+						often a flat is created or someone joins a flat. On this website (manawg.com) we count
+						page views and how often someone opens the app from here.
 					</li>
 					<li>
 						<strong>Legal basis:</strong> Art. 6(1)(f) GDPR (our legitimate interest in developing
@@ -266,11 +268,15 @@ export default function PrivacyPage() {
 					</li>
 					<li>
 						<strong>Recipients and processors:</strong> PostHog Inc. processes the data via PostHog
-						Cloud EU in Frankfurt (eu.i.posthog.com). ManaWG sends only page views and the events
-						wg_created and wg_joined. Other events, and extra details passed on by app features, are
-						removed before sending. Also sent are an event identifier (UUID), the time, the project
-						identifier, a technical assignment identifier, the hostname and the browser identifier.
-						The IP address reaches PostHog with the request.
+						Cloud EU in Frankfurt (eu.i.posthog.com). The app sends only page views and the events
+						wg_created and wg_joined; the website sends only page views and the event
+						app_link_clicked. Other events, and extra details passed on by app features, are removed
+						before sending. Also sent are an event identifier (UUID), the time, the project
+						identifier, a technical assignment identifier, the hostname, the page path and the
+						browser identifier. In the app, placeholders replace flat codes and invitation tokens in
+						the page path. The website also sends the domain of the referring page (for example
+						www.google.com), never its full address. The IP address reaches PostHog with the
+						request.
 					</li>
 					<li>
 						<strong>Processing region and transfers to third countries:</strong> PostHog Cloud EU in

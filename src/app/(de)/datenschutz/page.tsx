@@ -157,17 +157,18 @@ export default function PrivacyPage() {
 					</li>
 					<li>
 						<strong>Empfänger:</strong> Vercel Inc. (USA) betreibt das Hosting und verarbeitet
-						Server-Logs. Wenn Sentry für eine App-Bereitstellung aktiviert ist, erhält Sentry
-						(Functional Software, Inc.) technische Fehlerdaten, etwa Fehlertypen, Stacktraces
-						(Abläufe im Code bis zu einem Fehler) und freigegebene Diagnosekennzeichen. Für ManaWG
-						ist als Sentry-Speicherregion die EU eingestellt; das schließt weitere Übermittlungen
-						nicht aus. Vor dem Versand werden veränderliche Fehlermeldungen, Nutzerangaben, nicht
-						freigegebene Kontextdaten sowie Anfrage-Header und -Inhalte entfernt. Anfragepfade
-						werden bereinigt; Werte aus URL-Abfragen und Fragmenten, WG-Codes,
-						Kalender-Zugriffstokens und signierte Datei-URLs werden unkenntlich gemacht. Die
-						Sentry-Einbindung fügt Fehlerereignissen weder Nutzerangaben noch automatisch ermittelte
-						IP-Adressen hinzu. Automatisch erfasste Sitzungsdaten und Performance-Traces sendet sie
-						nicht.
+						Server-Logs. Wenn Sentry für eine App-Bereitstellung oder für diese Website (manawg.com)
+						aktiviert ist, erhält Sentry (Functional Software, Inc.) technische Fehlerdaten, etwa
+						Fehlertypen, Stacktraces (Abläufe im Code bis zu einem Fehler) und freigegebene
+						Diagnosekennzeichen. Für ManaWG ist als Sentry-Speicherregion die EU eingestellt; das
+						schließt weitere Übermittlungen nicht aus. Vor dem Versand werden veränderliche
+						Fehlermeldungen, Nutzerangaben, nicht freigegebene Kontextdaten sowie Anfrage-Header und
+						-Inhalte entfernt. Anfragepfade werden bereinigt; Werte aus URL-Abfragen und Fragmenten,
+						WG-Codes, Kalender-Zugriffstokens und signierte Datei-URLs werden unkenntlich gemacht.
+						Die Sentry-Einbindung fügt Fehlerereignissen weder Nutzerangaben noch automatisch
+						ermittelte IP-Adressen hinzu. Automatisch erfasste Sitzungsdaten und Performance-Traces
+						sendet sie nicht. Auf der Website werden Abfragewerte und Fragmente aus Seitenadressen
+						entfernt.
 					</li>
 					<li>
 						<strong>Drittlandübermittlung:</strong> Vercel-Logs können über Server in den USA
@@ -253,7 +254,8 @@ export default function PrivacyPage() {
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 					<li>
 						<strong>Zweck:</strong> Um ManaWG weiterzuentwickeln, erfassen wir Seitenaufrufe und
-						zählen, wie oft eine WG erstellt wird oder jemand einer WG beitritt.
+						zählen, wie oft eine WG erstellt wird oder jemand einer WG beitritt. Auf dieser Website
+						(manawg.com) zählen wir Seitenaufrufe und wie oft jemand von hier aus die App öffnet.
 					</li>
 					<li>
 						<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (unser berechtigtes
@@ -266,12 +268,15 @@ export default function PrivacyPage() {
 					</li>
 					<li>
 						<strong>Empfänger und Auftragsverarbeiter:</strong> PostHog Inc. verarbeitet die Daten
-						über PostHog Cloud EU in Frankfurt (eu.i.posthog.com). ManaWG sendet nur Seitenaufrufe
-						und die Ereignisse wg_created und wg_joined. Andere Ereignisse und zusätzliche Angaben,
-						die App-Funktionen übergeben, werden vor dem Senden entfernt. Mitgesendet werden
-						außerdem eine Ereigniskennung (UUID), der Zeitpunkt, die Projektkennung, eine technische
-						Zuordnungskennung, der Hostname und die Browserkennung. Die IP-Adresse erreicht PostHog
-						mit der Anfrage.
+						über PostHog Cloud EU in Frankfurt (eu.i.posthog.com). Die App sendet nur Seitenaufrufe
+						und die Ereignisse wg_created und wg_joined, die Website nur Seitenaufrufe und das
+						Ereignis app_link_clicked. Andere Ereignisse und zusätzliche Angaben, die App-Funktionen
+						übergeben, werden vor dem Senden entfernt. Mitgesendet werden außerdem eine
+						Ereigniskennung (UUID), der Zeitpunkt, die Projektkennung, eine technische
+						Zuordnungskennung, der Hostname, der Seitenpfad und die Browserkennung. In der App
+						ersetzen Platzhalter die WG-Codes und Einladungstokens im Seitenpfad. Die Website sendet
+						zusätzlich die Domain der verweisenden Seite (etwa www.google.com), nie deren
+						vollständige Adresse. Die IP-Adresse erreicht PostHog mit der Anfrage.
 					</li>
 					<li>
 						<strong>Verarbeitungsregion und Drittlandübermittlungen:</strong> PostHog Cloud EU in

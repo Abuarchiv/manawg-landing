@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Telemetry } from '@/components/Telemetry';
 import { SiteHead, siteMetadata, siteViewport } from '@/lib/site';
 import '../globals.css';
 
@@ -9,7 +10,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="de" suppressHydrationWarning>
 			<SiteHead locale="de" />
-			<body>{children}</body>
+			<body>
+				{children}
+				<Telemetry />
+			</body>
 		</html>
 	);
 }

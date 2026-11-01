@@ -63,6 +63,11 @@ server is already running, check a build in a separate folder with
 `NEXT_PUBLIC_APP_URL` sets the public origin used for canonical links, the sitemap and structured
 data. Leave it unset for local work.
 
+Page views and errors are optional (`src/lib/telemetry.ts`). `NEXT_PUBLIC_POSTHOG_KEY` sends
+cookieless page views and app-link clicks to PostHog Cloud EU without loading the PostHog SDK;
+`NEXT_PUBLIC_SENTRY_DSN` loads the Sentry browser SDK once the page is idle. Without them, and on
+localhost, nothing is sent. The CSP allows only the configured endpoints.
+
 ## How the home page works
 
 - **One frame loop.** `src/components/landing/core/loop.ts` runs a single `requestAnimationFrame`

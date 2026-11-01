@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useSyncExternalStore } from 'react';
+import { reportError } from '@/lib/telemetry';
 
 const noSubscription = () => () => {};
 
@@ -13,6 +14,7 @@ export default function GlobalError({
 }) {
 	useEffect(() => {
 		console.error('[error]', error, { boundary: 'global' });
+		reportError(error);
 	}, [error]);
 
 	// The root layouts are gone when this renders, so the language comes from the path. The server

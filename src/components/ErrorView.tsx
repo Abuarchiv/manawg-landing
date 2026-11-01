@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import type { Locale } from '@/lib/locale';
+import { reportError } from '@/lib/telemetry';
 
 const TEXT: Record<Locale, { title: string; hint: string; retry: string }> = {
 	de: {
@@ -24,8 +25,8 @@ export function ErrorView({
 }) {
 	const t = TEXT[locale];
 	useEffect(() => {
-		// console.error goes to the Vercel platform log; there is no third-party error tracker.
 		console.error('[error]', error, { boundary: 'root' });
+		reportError(error);
 	}, [error]);
 
 	return (
