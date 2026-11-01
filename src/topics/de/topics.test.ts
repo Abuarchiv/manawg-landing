@@ -61,3 +61,8 @@ test('files of the app repository named in the text exist there', () => {
 		for (const m of JSON.stringify(t).matchAll(pattern))
 			assert.ok(existing.has(m[1] ?? ''), `${slug}: ${m[1]}`);
 });
+
+test('member limit answers claim no code renewal or join lock', () => {
+	const text = JSON.stringify(TOPICS_DE) + JSON.stringify(TOPICS_EN);
+	assert.doesNotMatch(text, /Code erneuern|Beitreten sperren|renew the code|lock joining/i);
+});
