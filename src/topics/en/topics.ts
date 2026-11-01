@@ -458,7 +458,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 						],
 					].map((column) => column[i] ?? NC),
 				]),
-				note: 'Details on other providers come from their English pages, checked on 14 October 2026 (Tricount: 27 October 2026). Anything the sources do not support reads “not checked”. Columns are alphabetical, not a ranking.',
+				note: 'Details on other providers come from their English pages, checked on 14 October 2026 (Tricount: 27 October 2026). Anything the sources do not support reads “not checked”. Columns are alphabetical, not a ranking. OurHome is no longer available in the App Store or on Google Play (checked on 1 November 2026).',
 			},
 		],
 		sections: [
@@ -854,20 +854,26 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'ourhome-alternative': {
 		link: 'OurHome alternative',
-		updated: '2026-10-29',
+		updated: '2026-11-01',
 		published: '2026-10-29',
-		title: 'OurHome alternative for flats, free | ManaWG',
+		title: 'OurHome no longer available? A free alternative | ManaWG',
 		description:
-			'ManaWG as an alternative to OurHome: a free cleaning rota and shared expenses in the browser. OurHome’s current feature set has not been verified.',
+			'OurHome is no longer in the App Store or on Google Play. ManaWG is a free alternative for flats: cleaning rota, shared expenses and shopping in the browser.',
 		h1: 'An OurHome alternative for flats',
 		intro:
-			'We have not verified whether OurHome is still available or what it offers today (as of 14 October 2026), so check that yourself. Below we only describe how ManaWG handles the cleaning rota and expenses for a WG (shared flat).',
-		sources: [['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app']],
+			'OurHome can no longer be installed: the App Store link on the OurHome website no longer finds a listing, and Google Play reports the page as not found (checked on 1 November 2026). Apps with a similar name in the App Store come from other developers. Below we describe how ManaWG handles the cleaning rota and expenses for a WG (shared flat).',
+		sources: [
+			[
+				'OurHome on Google Play (no longer available)',
+				'https://play.google.com/store/apps/details?id=com.getfairshare.ourhome',
+			],
+			['ManaWG flat-share app', 'https://manawg.com/en/flat-share-app'],
+		],
 		tables: [
 			comparisonTable(
 				'OurHome',
 				[NC, NC, NC, NC, NC, NC, NC],
-				'There is no verified source for OurHome, so every cell there reads “not checked”. The ManaWG column comes from the app.',
+				'OurHome is no longer available, and there is no current source for its last feature set, so every cell there reads “not checked”. The ManaWG column comes from the app.',
 			),
 		],
 		sections: [

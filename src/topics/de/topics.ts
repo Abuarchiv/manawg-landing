@@ -408,7 +408,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 						],
 					].map((column) => column[i] ?? NOT_CHECKED),
 				]),
-				note: 'Angaben zu anderen Anbietern laut deren Seiten, Stand 14. Oktober 2026 (Tricount: 27. Oktober 2026). Was die Quellen nicht belegen, steht als „nicht geprüft“ da. Die Spalten sind alphabetisch sortiert, kein Ranking.',
+				note: 'Angaben zu anderen Anbietern laut deren Seiten, Stand 14. Oktober 2026 (Tricount: 27. Oktober 2026). Was die Quellen nicht belegen, steht als „nicht geprüft“ da. Die Spalten sind alphabetisch sortiert, kein Ranking. OurHome ist nicht mehr im App Store und bei Google Play erhältlich (geprüft am 1. November 2026).',
 			},
 		],
 		sections: [
@@ -824,20 +824,26 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 	},
 	'ourhome-alternative': {
 		link: 'OurHome-Alternative',
-		updated: '2026-10-27',
+		updated: '2026-11-01',
 		published: '2026-10-10',
-		title: 'OurHome-Alternative für WGs, kostenlos | ManaWG',
+		title: 'OurHome nicht mehr verfügbar? Kostenlose Alternative | ManaWG',
 		description:
-			'ManaWG als Alternative zu OurHome: kostenloser Putzplan und WG-Kasse im Browser. Der aktuelle Funktionsumfang von OurHome wurde nicht verifiziert.',
+			'OurHome gibt es nicht mehr im App Store und bei Google Play. ManaWG ist eine kostenlose Alternative für WGs: Putzplan, WG-Kasse und Einkauf im Browser.',
 		h1: 'Eine OurHome-Alternative für WGs',
 		intro:
-			'Ob und in welchem Umfang OurHome aktuell verfügbar ist, haben wir nicht verifiziert (Stand 14. Oktober 2026), prüft das selbst. Im Folgenden beschreiben wir nur, wie ManaWG Putzplan und Kasse für WGs löst.',
-		sources: [['ManaWG WG-App', 'https://manawg.com/wg-app']],
+			'OurHome lässt sich nicht mehr installieren: Der App-Store-Link auf der OurHome-Website findet keinen Eintrag mehr, Google Play meldet die Seite als nicht vorhanden (geprüft am 1. November 2026). Apps mit ähnlichem Namen im App Store stammen von anderen Anbietern. Im Folgenden beschreiben wir, wie ManaWG Putzplan und Kasse für WGs löst.',
+		sources: [
+			[
+				'OurHome bei Google Play (nicht mehr vorhanden)',
+				'https://play.google.com/store/apps/details?id=com.getfairshare.ourhome',
+			],
+			['ManaWG WG-App', 'https://manawg.com/wg-app'],
+		],
 		tables: [
 			comparisonTable(
 				'OurHome',
 				[NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED, NOT_CHECKED],
-				'Zu OurHome liegt keine geprüfte Quelle vor, deshalb steht dort überall „nicht geprüft“. Die ManaWG-Spalte stammt aus der App.',
+				'OurHome ist nicht mehr erhältlich, für den letzten Funktionsumfang gibt es keine aktuelle Quelle. Deshalb steht dort überall „nicht geprüft“. Die ManaWG-Spalte stammt aus der App.',
 			),
 		],
 		sections: [

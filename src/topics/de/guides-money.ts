@@ -672,11 +672,11 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'mitbewohner-finden': {
 		link: 'Mitbewohner finden',
-		updated: '2026-10-29',
+		updated: '2026-11-01',
 		published: '2026-10-19',
-		title: 'WG-Anzeige aufgeben, Mitbewohner finden: Mustertext | ManaWG',
+		title: 'Mitbewohner gesucht: Textvorlage für die WG-Anzeige | ManaWG',
 		description:
-			'WG-Anzeige aufgeben: Konto bei WG-Gesucht, Titel mit Beispielen, alle wichtigen Angaben als Tabelle, Fotos, typische Fehler, Mustertext und Zeitplan.',
+			'WG-Anzeige aufgeben: Textvorlage „Mitbewohner gesucht“, Titel mit Beispielen, alle Angaben als Tabelle, Konto bei WG-Gesucht, Fotos und Zeitplan.',
 		h1: 'Mitbewohner finden: WG-Anzeige schreiben und aufgeben',
 		intro:
 			'Ein Zimmer wird frei, und in wenigen Wochen soll jemand Neues einziehen. Damit es passt, kommt es auf eine ehrliche Anzeige, eine gute Auswahl und klare Absprachen vor dem Einzug an. Hier steht der Ablauf von der Anzeige bis zum ersten gemeinsamen Monat.',
@@ -710,7 +710,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 				'Der Titel entscheidet, ob jemand die Anzeige öffnet. Nennt in dieser Reihenfolge Zimmergröße, Lage, Warmmiete und Einzugsdatum. Drei Beispiele: „16 m² in Dreier-WG, Leipzig-Connewitz, 420 Euro warm, ab 1.12.“, „12 m² Zimmer nahe der Uni, Göttingen, 340 Euro warm, ab sofort“, „20 m² mit Balkon, Köln-Ehrenfeld, 560 Euro warm, ab 1.3., befristet bis August“. Lasst Floskeln wie „tolle Lage“ weg, die Zahlen überzeugen mehr.',
 			],
 			[
-				'Beispiel für eine WG-Anzeige',
+				'Mitbewohner gesucht: Textvorlage für die WG-Anzeige',
 				'„Ab 1. Dezember wird in unserer Dreier-WG in Leipzig-Connewitz ein 16-Quadratmeter-Zimmer frei, 420 Euro warm inklusive Internet. Wir sind Mia (26, Pflege) und Jonas (24, Informatik) und suchen jemanden zwischen 21 und 30. Unter der Woche kocht jeder für sich, sonntags essen wir oft zusammen. Geputzt wird nach Plan im Wochenwechsel, gemeinsame Ausgaben rechnen wir in einer App ab. Schreib uns kurz, was du machst und wie du dir WG-Leben vorstellst.“',
 			],
 			[
