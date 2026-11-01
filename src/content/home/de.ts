@@ -20,6 +20,7 @@ export const de: HomeDict = {
 		terms: '/agb',
 		other: '/en',
 		install: '/wg-app#manawg-installieren-iphone-android-desktop',
+		openSource: '/open-source-wg-app',
 	},
 	header: { cta: 'WG erstellen' },
 	loader: { label: 'MANAWG · LÄDT DIE WG' },
@@ -29,7 +30,9 @@ export const de: HomeDict = {
 	hero: {
 		title: ['Die WG-App ', 'für eure WG.'],
 		sub: 'Die kostenlose WG-App: Ausgaben, Einkauf und Putzplan. Im Browser.',
+		create: 'WG erstellen',
 		install: 'Installieren',
+		trust: { openSource: 'Open Source', rest: ' · werbefrei · Daten in Frankfurt' },
 	},
 	heroDemo: {
 		aria: 'Demo: ManaWG installieren und im WG-Alltag nutzen',

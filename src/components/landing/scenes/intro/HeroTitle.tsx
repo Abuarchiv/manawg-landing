@@ -1,3 +1,4 @@
+import { appUrl } from '@/lib/app-origin';
 import { BrLines, useDict } from '../../dict';
 import { HeroDemo } from './HeroDemo';
 import s from './HeroTitle.module.css';
@@ -35,10 +36,32 @@ export function HeroTitle() {
 					<BrLines lines={hero.title} />
 				</h1>
 				<p className={s.sub}>{hero.sub}</p>
-				{/* Install guide for all platforms on the app topic page; stage.ts makes it inert once the title has faded */}
-				<a href={links.install} data-hero-cta="" className={`cta cta--solid ${s.cta}`}>
-					{hero.install}
-				</a>
+				<p className={s.trust}>
+					<a href={links.openSource} data-hero-cta="">
+						{hero.trust.openSource}
+					</a>
+					{hero.trust.rest}
+				</p>
+				{/* Sign-up in the app, then the install guide for all platforms on the app topic page; stage.ts makes
+				    the links inert once the title has faded */}
+				<div className={s.actions}>
+					<a
+						href={appUrl(links.create)}
+						data-hero-cta=""
+						data-cta="hero_create"
+						className="cta cta--solid"
+					>
+						{hero.create}
+					</a>
+					<a
+						href={links.install}
+						data-hero-cta=""
+						data-cta="hero_install"
+						className="cta cta--dark"
+					>
+						{hero.install}
+					</a>
+				</div>
 			</div>
 		</div>
 	);

@@ -19,6 +19,7 @@ export const en: HomeDict = {
 		terms: '/en/terms',
 		other: '/',
 		install: '/en/flat-share-app#installing-manawg-iphone-android-desktop',
+		openSource: '/en/open-source-flat-share-app',
 	},
 	header: { cta: 'Create a flat' },
 	loader: { label: 'MANAWG · LOADING YOUR FLAT' },
@@ -28,7 +29,9 @@ export const en: HomeDict = {
 	hero: {
 		title: ['The flat app ', 'for your flat.'],
 		sub: 'The free app for flatmates and roommates: split bills, shopping and a cleaning rota. In English and German, in your browser.',
+		create: 'Create a flat',
 		install: 'Install',
+		trust: { openSource: 'Open source', rest: ' · no ads · data stored in Frankfurt' },
 	},
 	heroDemo: {
 		aria: 'Demo: installing ManaWG and using it in everyday flat life',

@@ -234,13 +234,24 @@
 		white-space: nowrap;
 	}
 }
-/* Phone in landscape: the hints sit bottom right, so the chapter line moves left of the phone, on the
-   hint line below the title (mid-height it met the subtitle on 568–667 px wide phones) */
+/* Phone in landscape: no room beside the title, so only the pause button stays, as a small pill on the
+   lower edge of the phone screen */
 @media (orientation: landscape) and (max-height: 499px) {
 	.rail {
-		right: calc(var(--right) + var(--pw) + 20px);
+		right: calc(var(--right) + var(--pw) / 2);
 		top: auto;
-		bottom: max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px));
-		transform: none;
+		bottom: calc(50% - var(--ph) * 0.44 + 10px);
+		width: auto;
+		transform: translateX(50%);
+		padding: 2px 12px;
+		border-radius: 999px;
+	}
+	.head,
+	.list {
+		display: none;
+	}
+	.toggle {
+		margin: 0;
+		white-space: nowrap;
 	}
 }

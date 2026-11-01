@@ -48,15 +48,24 @@ export interface HomeDict {
 		terms: string;
 		/** Counterpart of this page in the other language. */
 		other: string;
-		/** Install guide for iPhone, Android and desktop (section of the app topic page), behind the hero button. */
+		/** Install guide for iPhone, Android and desktop (section of the app topic page), second hero button. */
 		install: string;
+		/** Open source topic page, behind the trust line of the hero. */
+		openSource: string;
 	};
 	header: { cta: string };
 	loader: { label: string };
 	hints: {
 		scroll: string;
 	};
-	hero: { title: Lines; sub: string; install: string };
+	/** create: main button (app sign-up); trust: open source link text, then the plain facts after it. */
+	hero: {
+		title: Lines;
+		sub: string;
+		create: string;
+		install: string;
+		trust: { openSource: string; rest: string };
+	};
 	/** Demo film on the hero (HeroDemo.tsx). */
 	heroDemo: {
 		aria: string;

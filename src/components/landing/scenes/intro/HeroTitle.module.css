@@ -24,16 +24,49 @@
 
 /* Portrait: above the jump link, larger so the line fills the width */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
+	/* 56 px keep the bottom row free for the scroll hint (Hints.tsx) */
 	.title {
-		bottom: max(var(--sp-64), calc(env(safe-area-inset-bottom, 0px) + 84px));
+		bottom: max(var(--sp-64), calc(env(safe-area-inset-bottom, 0px) + 56px));
+	}
+	/* both buttons in one row, as in the finale: tighter tracking and bracket spacing */
+	.actions {
+		gap: 4px 14px;
+	}
+	.actions :global(.cta) {
+		letter-spacing: 0.04em;
+		gap: 0.5em;
 	}
 	.h1 {
 		font-size: clamp(46px, 15vw, 96px);
 	}
 }
 
-.cta {
-	align-self: flex-start;
+/* Trust line: open source link and two plain facts, one small line under the subline */
+.trust {
+	margin: 0;
+	font-family: "Inter Tight", "Inter Tight Fallback", sans-serif;
+	font-weight: 500;
+	font-size: var(--t-13);
+	line-height: 1.3;
+	color: rgb(var(--ink-rgb) / 0.8);
+	text-shadow: 0 1px 10px rgb(var(--paper-rgb) / 0.9);
+}
+.trust a {
+	color: var(--ink);
+	text-decoration: underline;
+	text-decoration-color: rgb(var(--ink-rgb) / 0.45);
+	text-underline-offset: 3px;
+	pointer-events: auto;
+}
+.trust a:hover {
+	text-decoration-color: var(--ink);
+}
+
+/* Sign-up and install side by side, like the buttons of the finale */
+.actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 28px;
 	margin-top: var(--sp-12);
 	pointer-events: auto;
 }
@@ -56,5 +89,17 @@
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
 	.sub {
 		font-size: clamp(15px, 4.4vw, 20px);
+	}
+}
+@media (max-width: 339px) {
+	.actions :global(.cta) {
+		font-size: 11px;
+		letter-spacing: 0.02em;
+	}
+}
+/* Phone in landscape: the demo phone stands at the right edge, the text keeps clear of it */
+@media (orientation: landscape) and (max-height: 499px) {
+	.title {
+		right: 26vw;
 	}
 }
