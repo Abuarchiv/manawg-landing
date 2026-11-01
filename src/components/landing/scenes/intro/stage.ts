@@ -318,10 +318,10 @@ export function createStage({
 			if (loop.n % 30 === 1) measureHoles();
 
 			// Pointer (-1..1) for mountain and organ, without a pointer an autopilot runs. Where the demo phone
-			// stands at the top centre (HeroDemo.module.css, portrait), the mark drifts in the free sky left of it:
+			// stands at the top centre (HeroDemo.module.css, portrait query), the mark drifts in the free sky left of it:
 			// screen x 14–24 %, mapped back through the shader's mark position (uv.x = sm.x · ax · 0.7, uv / uZ).
 			let autoX = 0.5 * Math.cos(t * 0.12);
-			if (W <= H || W < 700) {
+			if (W <= H || (W < 700 && H >= 500)) {
 				const r = W / H;
 				const left =
 					((0.19 + 0.05 * Math.cos(t * 0.12) - 0.5) * r) /

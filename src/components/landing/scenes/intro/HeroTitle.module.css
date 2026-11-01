@@ -23,7 +23,7 @@
 }
 
 /* Portrait: above the jump link, larger so the line fills the width */
-@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
 	.title {
 		bottom: max(var(--sp-64), calc(env(safe-area-inset-bottom, 0px) + 84px));
 	}
@@ -53,7 +53,7 @@
 		0 1px 14px rgb(var(--paper-rgb) / 0.85),
 		0 0 2px rgb(var(--paper-rgb) / 0.5);
 }
-@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
 	.sub {
 		font-size: clamp(15px, 4.4vw, 20px);
 	}

@@ -217,9 +217,9 @@
 	}
 }
 /* Portrait: the phone stands at the top centre above the mountain, the title keeps the lower part */
-@media (max-aspect-ratio: 1 / 1), (max-width: 699px) {
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
 	.demo {
-		--ph: max(180px, min(44svh, 380px, calc(100svh - 480px)));
+		--ph: max(140px, min(44svh, 380px, calc(100svh - 480px)));
 	}
 	.phone {
 		right: auto;
@@ -234,12 +234,13 @@
 		white-space: nowrap;
 	}
 }
-/* Phone in landscape: the hints sit bottom right, so the chapter line moves left of the phone */
+/* Phone in landscape: the hints sit bottom right, so the chapter line moves left of the phone, on the
+   hint line below the title (mid-height it met the subtitle on 568–667 px wide phones) */
 @media (orientation: landscape) and (max-height: 499px) {
 	.rail {
 		right: calc(var(--right) + var(--pw) + 20px);
 		top: auto;
-		bottom: calc(50% - var(--ph) * 0.44);
+		bottom: max(var(--sp-28), calc(env(safe-area-inset-bottom) + 8px));
 		transform: none;
 	}
 }
