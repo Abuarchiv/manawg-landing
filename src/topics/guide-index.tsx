@@ -145,7 +145,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 
 			<div className={`${gutter} flex-1`}>
 				<h1
-					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} wrap-break-word`}
+					className={`font-display font-semibold m-0 text-[clamp(40px,7.2vw,104px)] leading-[0.95] tracking-[-0.05em] max-w-[16ch] md:max-w-[18ch] ${locale === 'de' ? 'hyphens-auto' : 'hyphens-manual'} [hyphenate-limit-chars:10_4_4] wrap-break-word`}
 				>
 					{txt.h1}
 				</h1>
