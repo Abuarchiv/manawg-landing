@@ -69,17 +69,27 @@ export default function PrivacyPage() {
 						Bestätigungs-E-Mails, Anmeldecodes und E-Mails zum Zurücksetzen des Passworts an deine
 						Adresse. Resend übernimmt den Versand; als Absender erscheint noreply@manawg.com.
 						Supabase Auth verwaltet die Anmeldung, die Sitzung wird in Cookies gespeichert. Außerdem
-						können WG-Zuordnungen und Namensentwürfe im lokalen Browserspeicher (Local Storage)
-						liegen.
+						legt die App Daten im lokalen Browserspeicher (Local Storage und IndexedDB) ab; welche,
+						steht in Abschnitt 7.
+					</li>
+					<li>
+						<strong>Passwortprüfung:</strong> Bei der Registrierung und beim Ändern des Passworts
+						prüft der Server das neue Passwort gegen die Range-API von Have I Been Pwned
+						(api.pwnedpasswords.com, Troy Hunt, ausgeliefert über Cloudflare). Dabei werden nur die
+						ersten 5 Zeichen des SHA-1-Hashs des Passworts gesendet, mit aktiviertem Padding und
+						ohne Kontodaten. Es wird nichts gespeichert. Ist der Dienst nicht erreichbar, gilt das
+						Passwort als nicht bekannt.
 					</li>
 					<li>
 						<strong>Speicherdauer:</strong> Kontodaten speichern wir, bis du dein Konto über{' '}
-						<em>Einstellungen → Zugang → Konto löschen</em> löschst. Lokale WG-Zuordnungen und
-						Namensentwürfe bleiben im Browser, bis du dessen Speicher manuell löschst.
+						<em>Einstellungen → Zugang → Konto löschen</em> löschst. Lokale Daten bleiben im
+						Browser, bis du dessen Speicher manuell löschst; offline vorgemerkte Aktionen samt
+						Belegfotos hält die App bis zu etwa 7 Tage vor, bis sie synchronisiert sind.
 					</li>
 					<li>
 						<strong>Empfänger und Auftragsverarbeiter:</strong> Supabase für Anmeldung und
-						Datenbankhosting; Resend für den E-Mail-Versand (siehe Abschnitt 5).
+						Datenbankhosting; Resend für den E-Mail-Versand; Have I Been Pwned für die
+						Passwortprüfung (siehe Abschnitt 5).
 					</li>
 					<li>
 						<strong>Speicherort und Drittlandübermittlungen:</strong> Supabase speichert Daten in
@@ -198,22 +208,10 @@ export default function PrivacyPage() {
 				</ul>
 
 				<p className="mb-3 text-sm">
-					Wenn du die Belegerkennung (OCR, automatische Texterkennung) startest, lädt die App bei
-					Bedarf Tesseract-Worker- und Kerndateien sowie deutsche und englische Sprachmodelle von
-					jsDelivr. Die Erkennung läuft in deinem Browser. Das Belegbild und der erkannte Text
-					werden nicht an jsDelivr übertragen. Laut der{' '}
-					<a
-						href="https://www.jsdelivr.com/terms/privacy-policy"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						jsDelivr-Datenschutzerklärung
-					</a>{' '}
-					können jsDelivr und seine CDN-Dienstleister beim Abruf der Dateien technische Daten wie
-					IP-Adresse, Browsertyp und -version, verweisende Domain, angeforderte Datei-URL,
-					Abrufzeit, Gerätekennungen und weitere Diagnosedaten erhalten. Wenn du danach die Vorschau
-					öffnest oder den Import übernimmst, sendet ManaWG die erkannten Daten an die eigene
-					Import-API.
+					Wenn du die Belegerkennung (OCR, automatische Texterkennung) startest, läuft die Erkennung
+					in deinem Browser mit Dateien, die app.manawg.com selbst ausliefert. Das Belegbild und der
+					erkannte Text bleiben auf deinem Gerät, bis du die Vorschau öffnest oder den Import
+					übernimmst; dann sendet ManaWG die erkannten Daten an die eigene Import-API.
 				</p>
 
 				<h3 id="4e" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
@@ -368,8 +366,9 @@ export default function PrivacyPage() {
 						abgeschlossen.
 					</li>
 					<li>
-						<strong>jsDelivr und CDN-Dienstleister</strong>: liefern Tesseract-Worker-, Kern- und
-						Sprachdateien, wenn du die lokale OCR ausdrücklich startest (siehe Abschnitt 4d).
+						<strong>Have I Been Pwned (Troy Hunt)</strong>: prüft über die Range-API, ob ein neues
+						Passwort in bekannten Datenlecks vorkommt; erhält nur die ersten 5 Zeichen des
+						SHA-1-Hashs, ausgeliefert über Cloudflare (siehe Abschnitt 4a).
 					</li>
 				</ul>
 			</section>
@@ -397,9 +396,14 @@ export default function PrivacyPage() {
 				<p>
 					Für die Anmeldung bei Supabase verwendet ManaWG Cookies. Wenn du in der App eine Sprache
 					wählst, speichert das Cookie manawg_locale diese Wahl ein Jahr lang; mit „System“ wird es
-					entfernt. Außerdem können WG-Zuordnungen und Namensentwürfe im lokalen Browserspeicher (
-					<strong>Local Storage</strong>) abgelegt werden. Wenn du den Browser-Speicher löschst,
-					werden auch diese lokalen Daten entfernt.
+					entfernt. Das Cookie manawg_signed_in ist ein Hinweis ohne Inhalt, dass eine Sitzung
+					besteht. Beim Zurücksetzen des Passworts setzt ManaWG außerdem für 10 Minuten das
+					HttpOnly-Cookie manawg_password_recovery. Im lokalen Browserspeicher (
+					<strong>Local Storage</strong> und <strong>IndexedDB</strong>) liegen WG-Zuordnungen,
+					Formularentwürfe, offline vorgemerkte Aktionen einschließlich Belegfotos (bis zu etwa 7
+					Tage, bis sie synchronisiert sind) sowie Anzeige- und Ausblendeinstellungen. Wenn du den
+					Browser-Speicher löschst, werden auch diese lokalen Daten entfernt; noch nicht
+					synchronisierte Einträge gehen dabei verloren.
 				</p>
 			</section>
 
