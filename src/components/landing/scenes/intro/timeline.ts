@@ -4,12 +4,15 @@
 // maps to the choreography progress P: P = warp(s). All scene marks (look, mx, split,
 // zoom, dive, fpA, card curve) stay defined in P. The stage ends on the overview of the flat at P 0.9.
 
-export const INTRO_SCREENS = 8.5;
+export const INTRO_SCREENS = 6.5;
 
-// Piecewise linear mapping s -> P, knots (s, P).
+// Piecewise linear mapping s -> P, knots (s, P), placed in screens: the title holds for 0.8 screens
+// (fades out by P 0.086), mark, organ and dive (P 0.1–0.62, no text) take 2.2, the flat with its four
+// rooms keeps 3.5.
 const KNOTS = [
 	[0, 0],
-	[0.5835, 0.62],
+	[0.8 / INTRO_SCREENS, 0.1],
+	[3 / INTRO_SCREENS, 0.62],
 	[1, 0.9],
 ] as const satisfies readonly (readonly [s: number, P: number])[];
 

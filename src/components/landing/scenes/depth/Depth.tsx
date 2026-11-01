@@ -23,7 +23,7 @@ export function Depth() {
 			aria-label={depth.srHeading}
 			style={{
 				position: 'relative',
-				height: 'calc(4.5 * 100lvh)',
+				height: 'calc(3 * 100lvh)',
 				background: 'var(--paper)',
 				color: 'var(--ink)',
 			}}
