@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { type Locale, languageAlternates, OG_LOCALE, PATHS } from '@/lib/locale';
 
-const OG_IMAGE = '/og.png?v=2';
+// Preview for shared links: a still of the home page hero (title and the demo phone), one per language
+const OG_IMAGE: Record<Locale, string> = { de: '/og.jpg', en: '/og-en.jpg' };
 const OG_ALT: Record<Locale, string> = {
-	de: 'Das ManaWG-Zeichen als 3D-Körper',
-	en: 'The ManaWG mark as a 3D object',
+	de: 'Die WG-App für eure WG: Titel über einem gestochenen Bergpanorama, daneben ein Handy mit den Salden einer WG in ManaWG',
+	en: 'The flat app for your flat: the title over an engraved mountain range, beside it a phone showing the balances of a flat in ManaWG',
 };
 
 /**
@@ -18,7 +19,7 @@ export function pageMetadata({
 	title,
 	description,
 	languages,
-	image = { url: OG_IMAGE, alt: OG_ALT[locale] },
+	image = { url: OG_IMAGE[locale], alt: OG_ALT[locale] },
 	article,
 }: {
 	locale: Locale;

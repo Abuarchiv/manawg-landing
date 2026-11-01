@@ -34,7 +34,7 @@ function organizationSchema(locale: Locale) {
 		name: 'ManaWG',
 		url: ids.site,
 		logo: { '@type': 'ImageObject', url: `${appUrl}/icon-512.png`, width: 512, height: 512 },
-		image: `${appUrl}/og.png`,
+		image: `${appUrl}/og.jpg`,
 		description: TEXT[locale].description,
 		email: 'info@manawg.com',
 		contactPoint: {

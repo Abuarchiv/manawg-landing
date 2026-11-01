@@ -46,7 +46,8 @@ const nextConfig: NextConfig = {
 			...[
 				'/manawg-mark.svg',
 				'/icon-512.png',
-				'/og.png',
+				'/og.jpg',
+				'/og-en.jpg',
 				'/apple-touch-icon.png',
 				'/hero/:path*',
 				'/hero-demo/:path*',
