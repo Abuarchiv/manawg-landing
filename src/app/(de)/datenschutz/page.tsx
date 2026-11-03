@@ -309,7 +309,7 @@ export default function PrivacyPage() {
 					</li>
 					<li>
 						<strong>Verarbeitete Daten:</strong> Die vom Browser erzeugte Push-Adresse, deren
-						Schlüssel und der Text der Benachrichtigung.
+						Schlüssel, die Browserkennung (User-Agent) des Geräts und der Text der Benachrichtigung.
 					</li>
 					<li>
 						<strong>Speicherdauer:</strong> Bis du Benachrichtigungen ausschaltest, die WG verlässt
