@@ -1,4 +1,4 @@
-# Weekly dependency updates: one grouped PR per ecosystem for minor and patch releases, majors one by one.
+# Weekly dependency updates: one grouped PR per ecosystem for minor and patch releases, majors one by one, all labelled `dependencies`.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -8,6 +8,7 @@ updates:
       day: monday
       time: "06:00"
       timezone: Europe/Berlin
+    labels: [dependencies]
     open-pull-requests-limit: 5
     groups:
       npm-minor-and-patch:
@@ -23,6 +24,7 @@ updates:
       day: monday
       time: "06:00"
       timezone: Europe/Berlin
+    labels: [dependencies]
     groups:
       actions-minor-and-patch:
         update-types: [minor, patch]
