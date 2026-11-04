@@ -73,7 +73,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 					],
 					[
 						'Putzplan',
-						'Wiederholung in Tagen oder Monaten, Verteilung nach Auslastung, Vorschau „Nächste:r“, Abwesenheiten, Push-Erinnerung',
+						'Wiederholung in Tagen oder Monaten, Verteilung nach Auslastung, Vorschau, wer danach dran ist, Abwesenheiten, Push-Erinnerung',
 						'keine feste Reihenfolge, keine Punkte',
 					],
 					[
@@ -157,7 +157,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Rotation nach Fairness',
-				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben, überfällige zählen stärker. Dieselbe Vorhersage zeigt die App vorab als „Nächste:r“ an, ihr wisst also im Voraus, wer als Nächstes dran ist.',
+				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben, überfällige zählen stärker. Dieselbe Vorhersage zeigt die App vorab unter „Danach“ an, ihr wisst also im Voraus, wer als Nächstes dran ist.',
 			],
 			[
 				'Abwesenheit eintragen',
@@ -183,7 +183,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wie funktioniert die faire Rotation?',
-				'Beim Erledigen einer Aufgabe wählt ManaWG die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben (überfällige zählen stärker); wer abwesend ist, wird übergangen. In der Oberfläche seht ihr diese Vorhersage vorab als „Nächste:r“.',
+				'Beim Erledigen einer Aufgabe wählt ManaWG die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben (überfällige zählen stärker); wer abwesend ist, wird übergangen. In der Oberfläche seht ihr diese Vorhersage vorab unter „Danach“.',
 			],
 			[
 				'Was passiert, wenn jemand im Urlaub ist?',
@@ -244,7 +244,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Erinnern ohne Streit',
-				'Auf der Seite Mahnungen löst ein Mitglied per Erinnern-Button eine Zahlungserinnerung aus. Eine Abkühlzeit begrenzt, wie oft das hintereinander möglich ist, und ein Rate-Limit bremst zu viele Anfragen. Der Saldo bleibt für alle jederzeit einsehbar, etwa in der Monatsabrechnung. Wie ihr offene Beträge ohne Streit ansprecht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).',
+				'Auf der Seite Erinnerungen löst ein Mitglied per Erinnern-Button eine Zahlungserinnerung aus. Eine Abkühlzeit begrenzt, wie oft das hintereinander möglich ist, und ein Rate-Limit bremst zu viele Anfragen. Der Saldo bleibt für alle jederzeit einsehbar, etwa in der Monatsabrechnung. Wie ihr offene Beträge ohne Streit ansprecht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).',
 			],
 			[
 				'Umzug aus Splitwise oder Splid',
@@ -690,7 +690,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Erinnerungen, die ihr selbst steuert',
-				'Jedes Mitglied schaltet Push-Benachrichtigungen pro Bereich einzeln ab: Ankündigungen, Putzplan, Ausgaben, Einkauf, Vorräte, Erinnerungen, Chat und Termine. Der Putzplan erinnert an heute fällige und bis zu sieben Tage überfällige Aufgaben, die jemandem zugewiesen sind, höchstens alle 18 Stunden pro Aufgabe. Termine melden sich am Tag davor, auch Serientermine. Mails wie Digest oder Monatsabrechnung lassen sich ebenfalls abschalten.',
+				'Jedes Mitglied schaltet Push-Benachrichtigungen pro Bereich einzeln ab: Ankündigungen, Putzplan, Ausgaben, Einkauf, Vorräte, Erinnerungen, Chat und Termine. Der Putzplan erinnert an heute fällige und bis zu sieben Tage überfällige Aufgaben, die jemandem zugewiesen sind, höchstens alle 18 Stunden pro Aufgabe. Termine melden sich am Tag davor, auch Serientermine. Mails wie die Monatsabrechnung oder Zahlungserinnerungen lassen sich ebenfalls abschalten.',
 			],
 			[
 				'Putzplan mit fairer Rotation',
@@ -728,7 +728,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wie genau lassen sich Erinnerungen einstellen?',
-				'Push-Benachrichtigungen schaltet jedes Mitglied pro Bereich einzeln ab, etwa für Putzplan, Ausgaben oder Chat. Der tägliche Digest und die Monatsabrechnung per Mail haben einen Abmeldelink.',
+				'Push-Benachrichtigungen schaltet jedes Mitglied pro Bereich einzeln ab, etwa für Putzplan, Ausgaben oder Chat. Die Monatsabrechnung und die Zahlungserinnerungen per Mail haben einen Abmeldelink.',
 			],
 			[
 				'Ist Flatastic kostenlos?',
@@ -849,7 +849,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Fairness statt Punkte',
-				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene und überfällige Aufgaben, Überfälliges zählt stärker. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Nächste:r“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
+				'Wenn jemand eine Aufgabe erledigt, schaut ManaWG, wer gerade am wenigsten ausgelastet ist, und weist diese Person zu. Gezählt werden zugewiesene und überfällige Aufgaben, Überfälliges zählt stärker. Wer schon viel zu tun hat, bekommt nicht noch mehr dazu. In der App steht unter „Danach“, wer dran ist. Wer verreist ist, trägt eine Abwesenheit ein und wird bei der nächsten Zuweisung übergangen. Schon zugewiesene Aufgaben bleiben bei der Person. Ein Belohnungssystem gibt es nicht. Die Funktion im Detail steht auf der Seite [WG Putzplan App](/putzplan).',
 			],
 			[
 				'Putzplan mit festem Rhythmus',
@@ -973,7 +973,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wie erinnere ich Mitbewohner ans Bezahlen?',
-				'Auf der Seite Mahnungen gibt es einen Erinnern-Knopf. Für dieselben zwei Personen geht höchstens alle 48 Stunden eine Erinnerung raus.',
+				'Auf der Seite Erinnerungen gibt es einen Erinnern-Knopf. Für dieselben zwei Personen geht höchstens alle 48 Stunden eine Erinnerung raus.',
 			],
 			[
 				'Wie installiere ich ManaWG auf dem iPhone?',

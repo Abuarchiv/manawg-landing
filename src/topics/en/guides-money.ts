@@ -261,7 +261,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'As a fixed cost in ManaWG',
-				`Set the fee up in [shared expenses](/shared-expenses) as a fixed cost: amount ${euro(LICENCE_FEE_QUARTER_CENT, 'en')}, interval “Quarter”, under “Paid by” the person who pays, and the split “Equally” among everyone taking part. Use the next direct debit date as the first due date. ManaWG then books the fee as an expense every three months automatically, and the shares go into the balance. If you pay yearly, choose the interval “Year” and enter the annual amount.`,
+				`Set the fee up in [shared expenses](/shared-expenses) as a fixed cost: amount ${euro(LICENCE_FEE_QUARTER_CENT, 'en')}, interval “3 months”, under “Paid by” the person who pays, and the split “Equally” among everyone taking part. Use the next direct debit date as the first due date. ManaWG then books the fee as an expense every three months automatically, and the shares go into the balance. If you pay yearly, choose the interval “12 months” and enter the annual amount.`,
 			],
 		],
 		tables: [

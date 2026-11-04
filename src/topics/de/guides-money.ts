@@ -252,7 +252,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'In ManaWG als Fixkosten',
-				`Legt den Beitrag in der [WG-Kasse](/wg-kasse) als Fixkosten an: Betrag ${euro(LICENCE_FEE_QUARTER_CENT)}, Intervall „3 Monate (Quartal)“, bei „Bezahlt von“ die zahlende Person und die Aufteilung „Gleichmäßig“ auf alle, die sich beteiligen. Als erste Fälligkeit nehmt ihr den nächsten Abbuchungstermin. ManaWG bucht den Beitrag dann alle drei Monate automatisch als Ausgabe, und die Anteile fließen in den Saldo ein. Zahlt ihr jährlich, wählt ihr als Intervall 12 Monate und tragt den Jahresbetrag ein.`,
+				`Legt den Beitrag in der [WG-Kasse](/wg-kasse) als Fixkosten an: Betrag ${euro(LICENCE_FEE_QUARTER_CENT)}, Intervall „Quartal“, bei „Bezahlt von“ die zahlende Person und die Aufteilung „Gleichmäßig“ auf alle, die sich beteiligen. Als erste Fälligkeit nehmt ihr den nächsten Abbuchungstermin. ManaWG bucht den Beitrag dann alle drei Monate automatisch als Ausgabe, und die Anteile fließen in den Saldo ein. Zahlt ihr jährlich, wählt ihr als Intervall „Jahr“ und tragt den Jahresbetrag ein.`,
 			],
 		],
 		tables: [
