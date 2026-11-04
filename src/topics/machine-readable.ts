@@ -43,7 +43,7 @@ export function atomFeed(locale: Locale): Response {
 	return new Response(xml, { headers: { 'Content-Type': 'application/atom+xml; charset=utf-8' } });
 }
 
-const cell = (value: string) => value.replace(/\|/g, '\\|');
+const cell = (value: string) => value.replace(/[\\|]/g, '\\$&');
 
 /** A table from the topic data as Markdown, with its title and footnote. */
 function markdownTable({ title, header, rows, note }: NonNullable<Topic['tables']>[number]) {
