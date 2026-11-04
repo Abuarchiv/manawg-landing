@@ -1,7 +1,7 @@
 // Run with: pnpm test (node test runner, no framework)
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { languageDecision, preferredLocale } from './language-redirect.ts';
+import { languageDecision, localeCookie, preferredLocale } from './language-redirect.ts';
 
 const visit = (over: Partial<Parameters<typeof languageDecision>[0]> = {}) =>
 	languageDecision({
@@ -66,4 +66,16 @@ test('switching language with the footer link stores the choice', () => {
 	assert.deepEqual(visit({ path: '/putzplan', referer: 'https://evil.example/en/cleaning-rota' }), {
 		redirect: '/en/cleaning-rota',
 	});
+});
+
+test('the language link cookie keeps a visitor without Referer on the chosen language', () => {
+	assert.equal(
+		localeCookie('de', true),
+		'manawg_locale=de; Path=/; Max-Age=31536000; SameSite=Lax; Secure',
+	);
+	assert.equal(
+		localeCookie('en', false),
+		'manawg_locale=en; Path=/; Max-Age=31536000; SameSite=Lax',
+	);
+	assert.deepEqual(visit({ cookie: 'de' }), {});
 });

@@ -15,7 +15,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 
 ## So starten
 
-1. Auf https://app.manawg.com/registrieren?action=create eine WG erstellen
+1. Auf https://app.manawg.com/signup?action=create eine WG erstellen
 2. Mitbewohner melden sich an und treten per Einladungslink bei
 3. Erste Ausgabe, ersten Einkauf oder ersten Putztermin eintragen
 

@@ -45,9 +45,25 @@ export function referringDomain(referrer: string, ownHost: string): string | und
 	}
 }
 
+/**
+ * `document.referrer` stays the entry referrer across client-side navigations, so only the first
+ * page view names it; later views come from this site. Clicks keep it for attribution.
+ */
+export function pageReferrer(
+	event: '$pageview' | 'app_link_clicked',
+	firstView: boolean,
+	referrer: string,
+): string {
+	return event === '$pageview' && !firstView ? '' : referrer;
+}
+
+let firstView = true;
+
 /** `cta`: fixed id of the clicked button (data-cta, e.g. `hero_create`), only on app_link_clicked. */
 export function capture(event: '$pageview' | 'app_link_clicked', cta?: string): void {
 	if (!POSTHOG_KEY || isLocal()) return;
+	const referrer = pageReferrer(event, firstView, document.referrer);
+	if (event === '$pageview') firstView = false;
 	try {
 		const body = JSON.stringify({
 			api_key: POSTHOG_KEY,
@@ -61,7 +77,7 @@ export function capture(event: '$pageview' | 'app_link_clicked', cta?: string): 
 				$host: location.hostname,
 				$pathname: safePath(location.pathname),
 				$raw_user_agent: navigator.userAgent,
-				$referring_domain: referringDomain(document.referrer, location.hostname),
+				$referring_domain: referringDomain(referrer, location.hostname),
 				cta,
 			},
 		});

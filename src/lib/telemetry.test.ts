@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { ctaId, referringDomain, safePath } from './telemetry.ts';
+import { ctaId, pageReferrer, referringDomain, safePath } from './telemetry.ts';
 
 const sentrySanitizers = (await import('./telemetry.ts')) as typeof import('./telemetry.ts') & {
 	sanitizeSentryEvent: <T>(event: T) => T;
@@ -29,6 +29,13 @@ test('only the domain of an external referrer is sent', () => {
 	);
 	assert.equal(referringDomain('https://manawg.com/en', 'manawg.com'), undefined);
 	assert.equal(referringDomain('', 'manawg.com'), undefined);
+});
+
+test('only the first page view carries the entry referrer, clicks keep it', () => {
+	const google = 'https://www.google.com/';
+	assert.equal(pageReferrer('$pageview', true, google), google);
+	assert.equal(pageReferrer('$pageview', false, google), '');
+	assert.equal(pageReferrer('app_link_clicked', false, google), google);
 });
 
 test('Sentry keeps stack traces but removes personal error and request data', () => {

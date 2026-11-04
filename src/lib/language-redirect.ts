@@ -6,6 +6,16 @@
 import { counterpartPath, type Locale } from './locale.ts';
 
 export const LOCALE_COOKIE = 'manawg_locale';
+export const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
+
+/**
+ * The cookie the language link writes on click. The proxy also stores the choice when the request
+ * names the counterpart page as Referer, but browsers that send no Referer would otherwise be sent
+ * straight back to the language they just left.
+ */
+export function localeCookie(locale: Locale, secure: boolean): string {
+	return `${LOCALE_COOKIE}=${locale}; Path=/; Max-Age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax${secure ? '; Secure' : ''}`;
+}
 
 const isLocale = (value: unknown): value is Locale => value === 'de' || value === 'en';
 
