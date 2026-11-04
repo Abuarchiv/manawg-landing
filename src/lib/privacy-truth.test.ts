@@ -40,3 +40,20 @@ test('the privacy texts name the stored User-Agent in the push notification sect
 		assert.match(text(file).match(push[name as keyof typeof push])?.[0] ?? '', /User-Agent/, name);
 	}
 });
+
+test('the privacy texts describe a connected AI assistant and how to disconnect it', () => {
+	const section = {
+		'en/privacy': /4h\. Connected AI assistants.*?<\/section>/,
+		'de/datenschutz': /4h\. Verbundene KI-Assistenten.*?<\/section>/,
+	};
+	const revoke = {
+		'en/privacy': /Settings.{0,40}Access/,
+		'de/datenschutz': /Einstellungen.{0,40}Zugang/,
+	};
+	for (const [name, file] of Object.entries(pages)) {
+		const body = text(file).match(section[name as keyof typeof section])?.[0] ?? '';
+		assert.match(body, /MCP/, name);
+		assert.match(body, /OAuth/, name);
+		assert.match(body, revoke[name as keyof typeof revoke], name);
+	}
+});

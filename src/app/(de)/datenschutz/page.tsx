@@ -324,6 +324,56 @@ export default function PrivacyPage() {
 						nutzen können.
 					</li>
 				</ul>
+
+				<h3 id="4h" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
+					4h. Verbundene KI-Assistenten
+				</h3>
+				<p className="mb-3">
+					Das ist freiwillig und aus, solange du nicht selbst einen Assistenten verbindest. Die
+					offizielle Instanz (app.manawg.com) bietet es in der App unter Einstellungen, Zugang an,
+					zusammen mit der Adresse des ManaWG-MCP-Servers.
+				</p>
+				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
+					<li>
+						<strong>Zweck:</strong> Damit ein KI-Assistent deiner Wahl (z. B. Claude oder ChatGPT)
+						in deinem Auftrag deine WG-Daten lesen und ändern kann, etwa um Fälliges aufzulisten
+						oder einen Eintrag auf die Einkaufsliste zu setzen.
+					</li>
+					<li>
+						<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. a DSGVO (deine Einwilligung auf der
+						Zustimmungsseite der App, die du erlauben oder ablehnen kannst). Du kannst sie jederzeit
+						widerrufen, indem du den Assistenten trennst.
+					</li>
+					<li>
+						<strong>Ablauf der Verbindung:</strong> Der Assistent startet eine Anmeldung per OAuth.
+						Die App zeigt eine Zustimmungsseite mit dem Namen des Assistenten, der Adresse, von der
+						die Anfrage kommt, und deiner E-Mail-Adresse. Erlaubst du es, handelt der Assistent als
+						dein Konto in allen deinen WGs: Er kann Ausgaben, Einkaufsliste, Vorräte, Putzplan,
+						Pinnwand, Chat und Kalender lesen und ändern. Eine ganze WG löschen oder dein Konto
+						ändern kann er nicht. Supabase Auth führt die Autorisierung durch und speichert die
+						Freigabe (Assistent, Datum und ausgestellte Anmeldesitzungen).
+					</li>
+					<li>
+						<strong>MCP-Server:</strong> Der Assistent erreicht ManaWG über den ManaWG-MCP-Server
+						(mcp.manawg.com), der als Funktion bei Vercel läuft. Er prüft das Zugriffstoken deiner
+						Anmeldung und leitet jede Anfrage an die App weiter, die dieselben
+						Mitgliedschaftsprüfungen anwendet wie bei dir. Der Server selbst speichert keine
+						WG-Daten.
+					</li>
+					<li>
+						<strong>Empfänger:</strong> Der Anbieter des Assistenten, den du wählst (z. B. Anthropic
+						oder OpenAI), erhält, was der Assistent aus deinen WGs liest, auch Einträge und
+						Nachrichten deiner Mitbewohner, und verarbeitet es nach seinen eigenen Bedingungen und
+						seiner Datenschutzerklärung. ManaWG hat darauf keinen Einfluss. Verbinde einen
+						Assistenten nur, wenn du das akzeptierst.
+					</li>
+					<li>
+						<strong>Trennen:</strong> In der App unter Einstellungen, Zugang, ist jeder verbundene
+						Assistent aufgelistet und lässt sich trennen. Seine Anmeldesitzungen enden dann und er
+						kann deine Daten nicht mehr lesen oder ändern. Daten, die der Anbieter schon erhalten
+						hat, bleiben bei ihm.
+					</li>
+				</ul>
 			</section>
 
 			{/* 5. Recipients and processors */}
