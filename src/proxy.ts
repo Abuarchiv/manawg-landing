@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { LOCALE_COOKIE, languageDecision } from '@/lib/language-redirect';
+import { LOCALE_COOKIE, LOCALE_COOKIE_MAX_AGE, languageDecision } from '@/lib/language-redirect';
 import { contentSecurityPolicy } from '@/lib/security-headers';
 
 /**
@@ -46,7 +46,7 @@ export function proxy(req: NextRequest): NextResponse {
 	if (language.remember) {
 		res.cookies.set(LOCALE_COOKIE, language.remember, {
 			path: '/',
-			maxAge: 60 * 60 * 24 * 365,
+			maxAge: LOCALE_COOKIE_MAX_AGE,
 			sameSite: 'lax',
 			secure: req.nextUrl.protocol === 'https:',
 		});
