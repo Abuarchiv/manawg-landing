@@ -323,6 +323,54 @@ export default function PrivacyPage() {
 						use servers in the USA.
 					</li>
 				</ul>
+
+				<h3 id="4h" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
+					4h. Connected AI assistants
+				</h3>
+				<p className="mb-3">
+					This is optional and off unless you connect an assistant yourself. The official instance
+					(app.manawg.com) offers it in the app under Settings, Access, together with the address of
+					the ManaWG MCP server.
+				</p>
+				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
+					<li>
+						<strong>Purpose:</strong> So that an AI assistant you choose (for example Claude or
+						ChatGPT) can read and change your flat data on your behalf, for example to list what is
+						due or to add an item to the shopping list.
+					</li>
+					<li>
+						<strong>Legal basis:</strong> Art. 6(1)(a) GDPR (your consent on the consent page of the
+						app, which you can allow or decline). You can withdraw it at any time by disconnecting
+						the assistant.
+					</li>
+					<li>
+						<strong>How the connection works:</strong> The assistant starts a sign-in with OAuth.
+						The app shows a consent page with the name of the assistant, the address it asks from
+						and your email address. If you allow it, the assistant acts as your account in all your
+						flats: it can read and change expenses, the shopping list, supplies, the cleaning rota,
+						the noticeboard, chat and calendar. It cannot delete a whole flat or change your
+						account. Supabase Auth runs the authorization and stores the grant (the assistant, the
+						date and the issued sign-in sessions).
+					</li>
+					<li>
+						<strong>MCP server:</strong> The assistant reaches ManaWG through the ManaWG MCP server
+						(mcp.manawg.com), which runs as a function at Vercel. It checks the access token of your
+						sign-in and forwards each request to the app, which applies the same membership checks
+						as for you. The server itself stores no flat data.
+					</li>
+					<li>
+						<strong>Recipients:</strong> The provider of the assistant you choose (for example
+						Anthropic or OpenAI) receives what the assistant reads from your flats, including
+						entries and messages of your flatmates, and processes it under its own terms and privacy
+						policy. ManaWG does not control that processing. Connect an assistant only if you accept
+						this.
+					</li>
+					<li>
+						<strong>Disconnecting:</strong> In the app under Settings, Access, every connected
+						assistant is listed and can be disconnected. Its sign-in sessions end then and it can no
+						longer read or change your data. Data the provider has already received stays with it.
+					</li>
+				</ul>
 			</section>
 
 			{/* 5. Recipients and processors */}
