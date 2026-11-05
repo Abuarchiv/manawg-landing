@@ -22,7 +22,18 @@ export function Header() {
 				opacity: 'calc(1 - var(--header-off,0))',
 			}}
 		>
-			<div data-hole="logo" style={{ display: 'flex', alignItems: 'center', gap: 'var(--sp-10)' }}>
+			{/* Soft paper shadow like the buttons (.cta): the logo stays legible where bright clouds pass behind it
+			    (phone in landscape); a filter here and not on the img, which carries the light mode's invert */}
+			<div
+				data-hole="logo"
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					gap: 'var(--sp-10)',
+					filter:
+						'drop-shadow(0 0 3px rgb(var(--paper-rgb) / 0.9)) drop-shadow(0 0 10px rgb(var(--paper-rgb) / 0.7))',
+				}}
+			>
 				<img
 					src="/manawg-mark-white-80.webp"
 					data-invert=""
