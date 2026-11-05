@@ -30,11 +30,9 @@ export function HeaderMask() {
 				const e = Math.min(1, Math.max(0, d / band));
 				v = Math.max(v, e);
 			}
-			// Portrait, end layer of the intro: when the stage scrolls away upwards, the phone slides under the band
-			if (portrait && document.getElementById('final')?.dataset.phase === 'end') {
-				const b = document.querySelector('[data-stage]');
-				if (b) v = Math.max(v, Math.min(1, Math.max(0, -b.getBoundingClientRect().top / 24)));
-			}
+			// End of the intro: when the stage scrolls away upwards, the flat and its labels slide under the band
+			const b = document.querySelector('[data-stage]');
+			if (b) v = Math.max(v, Math.min(1, Math.max(0, -b.getBoundingClientRect().top / 24)));
 			// write changed values only
 			const hn = `${band + 28}px`;
 			const on = v.toFixed(3);
