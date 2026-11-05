@@ -3,7 +3,7 @@
 // the class selects the glyph ramp (floorboards . : -, rug up to @, plants ; * &), the brightness selects the glyph.
 // It is drawn into a separate WebGL canvas that flat.ts takes over as its backdrop.
 
-import { buildProgram, sizeBacking } from '../../core/canvas';
+import { buildProgram, pause, sizeBacking } from '../../core/canvas';
 import { loop } from '../../core/loop';
 
 /** Render dimensions: S image pixels per grid unit, origin (OX, OY), size, height of the height encoding. */
@@ -189,9 +189,12 @@ async function load(): Promise<void> {
 	if (!p) return;
 	gl.useProgram(p);
 	const u = (n: string) => gl.getUniformLocation(p, n);
+	// One 2304 x 1488 upload per task: together with the shader they made one long frame while scrolling on phones
+	await pause();
 	tex(gl, 0, lum, true);
-	tex(gl, 1, meta, false);
 	lum.close();
+	await pause();
+	tex(gl, 1, meta, false);
 	meta.close();
 	// Ramps as a table: row = class, column 0 = length, then the atlas positions
 	const R = new Uint8Array(16 * RAMPS.length * 4);

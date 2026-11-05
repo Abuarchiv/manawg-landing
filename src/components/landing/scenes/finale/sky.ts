@@ -2,7 +2,7 @@
 // masks are the layers of the cloud loader (landing-konzept/wolke). No curtain and no scroll opening; the clouds billow slowly, the pointer is wind.
 
 import { isLight } from '@/lib/theme';
-import { buildProgram, dprFor, sizeBacking } from '../../core/canvas';
+import { buildProgram, dprFor, pause, sizeBacking } from '../../core/canvas';
 import { loop, register, type SceneState } from '../../core/loop';
 import { cl } from '../../core/math';
 
@@ -96,9 +96,6 @@ async function loadImage(src: string): Promise<ImageBitmap> {
 	const blob = await (await fetch(src)).blob();
 	return createImageBitmap(blob, { imageOrientation: 'flipY', premultiplyAlpha: 'none' });
 }
-
-/** Wait for the next task: shader, textures and context end up in different frames, not in one. */
-const pause = () => new Promise<void>((ok) => setTimeout(ok, 0));
 
 async function load(s: SkyState): Promise<void> {
 	const names = ['uSkyQ', 'uSkyH', 'uFine', 'uCoarse'];

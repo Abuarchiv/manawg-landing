@@ -172,3 +172,6 @@ export function buildProgram(
 	console.error(`${label}: link`, gl.getProgramInfoLog(p));
 	return null;
 }
+
+/** Wait for the next task: context, shader and texture uploads then end up in different frames, not in one. */
+export const pause = () => new Promise<void>((ok) => setTimeout(ok, 0));
