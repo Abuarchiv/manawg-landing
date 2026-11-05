@@ -3,18 +3,18 @@
 // Scene space: landscape reference box 1280 x 800, portrait its own box 640 units wide (the words sit at
 // depth 9 at 40 to 50 % of the width and so fit every format). Drawing happens in CSS px.
 
+import { SHAPE_GLYPHS, shapeGlyphs } from '../../core/glyph-shape';
 import { loop, qa, register, type SceneState } from '../../core/loop';
 import { cl, cs, hsh, lag, lerp, sn, ss } from '../../core/math';
 
 const MONO = '"JetBrains Mono", monospace';
 const TT = '"Inter Tight", sans-serif';
 const F = 720; // focal length in scene units
-const SPACING = 0.065; // point spacing of the words in world units (portrait only)
 const SP = 26; // spacing of the word islands in depth
 const ISLAND_X = [-4.5, 4.5, -4.5] as const;
 const ISLAND_Y = [0.8, -0.8, 0.8] as const;
 
-/** Sampled word mask: alpha channel d (w x h), center (cx, cy) and width of the occupied area. */
+/** Sampled word mask: alpha channel d (w x h), center (cx, cy), width and height of the occupied area. */
 interface Mask {
 	d: Uint8ClampedArray;
 	w: number;
@@ -22,17 +22,23 @@ interface Mask {
 	cx: number;
 	cy: number;
 	width: number;
+	height: number;
 }
 
 type Pt = [x: number, y: number];
 
-/** Word island: depth z, center (x, y), scale sc, points measured from the center, half word width hw. */
+/**
+ * Word island: depth z, center (x, y), scale sc, points measured from the center with their glyph, cell height ch
+ * (world units, the glyph size), half word width hw.
+ */
 interface Island {
 	z: number;
 	x: number;
 	y: number;
 	sc: number;
 	pts: Pt[];
+	chars: string[];
+	ch: number;
 	hw: number;
 }
 
@@ -145,6 +151,8 @@ interface DepthState extends SceneState {
 	hint: HTMLElement | null;
 	header: HTMLElement | null;
 	raw: Mask[];
+	/** Glyph grid per word (computed one word per warm-up step), with the key it was computed for. */
+	cells: (WordCells | null)[];
 	isl: Island[];
 	P: Cloud;
 	k: number;
@@ -154,7 +162,7 @@ interface DepthState extends SceneState {
 	/** Key of the build (mode and area), null = sample again. */
 	bm: string | null;
 	kk: LastDraw;
-	nb: Bucket[];
+	nb: Map<number, Bucket>;
 	/** Pointer velocity for the repulsion (a = strength). */
 	pv?: { x: number; y: number; a: number };
 	zones: Zone[];
@@ -192,15 +200,19 @@ const sampleT = (word: string, px: number): Mask => {
 				if (y < y0) y0 = y;
 				if (y > y1) y1 = y;
 			}
-	return { d, w, h, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, width: x1 - x0 };
+	return { d, w, h, cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, width: x1 - x0, height: y1 - y0 };
 };
-// Points of the mask on grid step, measured from (ox, oy)
-const gridPoints = (r: Mask, step: number, ox: number, oy: number): Pt[] => {
-	const pts: Pt[] = [];
-	for (let y = 0; y < r.h; y += step)
-		for (let x = 0; x < r.w; x += step)
-			if ((r.d[(y * r.w + x) * 4 + 3] ?? 0) > 128) pts.push([x - ox, y - oy]);
-	return pts;
+
+// Ink of a glyph for the far view, where it is drawn as a square: the fill is a full square, a dot a small one
+const INK: Record<string, number> = {
+	'#': 1,
+	'|': 0.62,
+	'/': 0.72,
+	'\\': 0.72,
+	'(': 0.7,
+	')': 0.7,
+	'-': 0.5,
+	_: 0.5,
 };
 
 // Write inline style only when the value changes (every write invalidates the element style)
@@ -228,17 +240,68 @@ const area = (s: DepthState): number =>
 	s.mode === 'portrait' ? Math.round(cl((s.W * s.H) / 1296000, 0.6, 2) * 4) / 4 : 1;
 const buildKey = (s: DepthState): string => `${s.mode}${area(s)}`;
 
+/** Glyph grid of one word: cell centers in mask pixels, glyphs, cell height in mask pixels, layout key. */
+interface WordCells {
+	key: string;
+	xy: number[];
+	chars: string[];
+	ch: number;
+}
+
+/** Scale of a word: landscape 1, portrait fitted to 82 % of the box width at the reading depth 9. */
+const scaleOf = (s: DepthState, r: Mask): number =>
+	s.mode === 'portrait' ? cl((0.82 * s.bw * 9) / F / (r.width / 85), 0.25, 1.5) : 1;
+
+/**
+ * Rows per cap height: landscape 11; portrait as many as keep the glyph at 7 CSS px or more at the reading depth 9
+ * (at least 6 rows, so letters stay letters).
+ */
+function rowsOf(s: DepthState, r: Mask): number {
+	if (s.mode !== 'portrait') return 11;
+	const capPx = (r.height / 85) * scaleOf(s, r) * (F / 9) * (s.f || 1);
+	return cl(Math.floor(capPx / 7), 6, 11);
+}
+
+/**
+ * The word as ASCII lettering: a grid of mono cells (0.6 x 1) over the mask, every cell gets the glyph of its shape
+ * (stem |, diagonal / \, round ( ), inside #). About 3 ms per word, so the warm-up spreads it over frames.
+ */
+function shapeWord(r: Mask, rows: number): WordCells {
+	const ch = r.height / rows;
+	const cw = ch * 0.6;
+	const cols = Math.ceil(r.width / cw) + 2;
+	const g = {
+		cw,
+		ch,
+		cols,
+		rows: rows + 2,
+		x0: r.cx - (cols * cw) / 2,
+		y0: r.cy - ((rows + 2) * ch) / 2,
+	};
+	const xy: number[] = [];
+	const chars: string[] = [];
+	shapeGlyphs(r.d, r.w, r.h, g).forEach((k, q) => {
+		if (k < 0) return;
+		xy.push(g.x0 + ((q % cols) + 0.5) * cw, g.y0 + (Math.floor(q / cols) + 0.5) * ch);
+		chars.push(SHAPE_GLYPHS[k] ?? '#');
+	});
+	return { key: `${rows}`, xy, chars, ch };
+}
+
 function build(s: DepthState) {
 	const portrait = s.mode === 'portrait';
 	const k = portrait ? 0.5 : 1; // adapt the scatter of the islands and of the pointer offset to the box width
-	const target = ((portrait ? 0.82 : 0.5) * s.bw * 9) / F; // word width in world units at depth 9 (portrait: 82 % of the width)
 	s.isl = s.raw.map((r, i): Island => {
-		// Landscape: scale 1, grid 5 px, center of the sampling area. Portrait: word fitted to the width.
-		const sc = portrait ? cl(target / (r.width / 85), 0.25, 1.5) : 1;
-		const raw = portrait
-			? gridPoints(r, 2 * Math.max(1, Math.round((SPACING * 85) / (sc * 2))), r.cx, r.cy)
-			: gridPoints(r, 5, r.w / 2, r.h / 2);
-		const pts = raw.map((p): Pt => [(p[0] / 85) * sc, (p[1] / 85) * sc]);
+		const sc = scaleOf(s, r);
+		const rows = rowsOf(s, r);
+		const c = s.cells[i]?.key === `${rows}` ? (s.cells[i] as WordCells) : shapeWord(r, rows);
+		s.cells[i] = c;
+		// Landscape: measured from the center of the sampling area, portrait from the center of the word
+		const ox = portrait ? r.cx : r.w / 2;
+		const oy = portrait ? r.cy : r.h / 2;
+		const pts: Pt[] = [];
+		for (let q = 0; q < c.chars.length; q++)
+			pts.push([(((c.xy[2 * q] ?? 0) - ox) / 85) * sc, (((c.xy[2 * q + 1] ?? 0) - oy) / 85) * sc]);
 		// hw: half word width in world units (for clamping at the screen edge)
 		return {
 			z: SP * i,
@@ -246,12 +309,13 @@ function build(s: DepthState) {
 			y: ISLAND_Y[i] ?? 0,
 			sc,
 			pts,
+			chars: c.chars,
+			ch: (c.ch / 85) * sc,
 			hw: (r.width / 85) * sc * 0.5,
 		};
 	});
 	s.k = k;
 	s.clamps = s.isl.map((): Clamp => ({ dx: 0, k: 1 }));
-	const RAMP = '@#%@#%*';
 	const P: Point[] = [];
 	s.isl.forEach((I, kk) => {
 		I.pts.forEach((p, q) => {
@@ -260,8 +324,8 @@ function build(s: DepthState) {
 			P.push([
 				I.x + p[0],
 				I.y + p[1],
-				I.z + (hsh(q, kk) - 0.5) * 0.6,
-				RAMP.charAt(Math.floor(hsh(q, kk + 9) * 6)),
+				I.z, // all cells of a word in one plane: the grid stays a grid
+				I.chars[q] ?? '#',
 				kk,
 				q,
 				Math.cos(w) * r * (portrait ? 0.6 : 1),
@@ -363,20 +427,11 @@ function curl(x: number, y: number, phase: number) {
 }
 
 // Position of a word point in the flow: u = arrival (0 in the tunnel, 1 in the word shape), o = departure (0 in the word, 1 far ahead
-// toward the next word). In between the flow field bends the path; in the word the point breathes finely.
+// toward the next word). In between the flow field bends the path; in the word the point rests on its cell.
 let ox = 0;
 let oy = 0;
 let oz = 0;
-function flow(
-	w: Cloud,
-	i: number,
-	I: Island,
-	N: Island,
-	u: number,
-	o: number,
-	phase: number,
-	time: number,
-) {
+function flow(w: Cloud, i: number, I: Island, N: Island, u: number, o: number, phase: number) {
 	let x = w.x[i] as number;
 	let y = w.y[i] as number;
 	let z = w.z[i] as number;
@@ -397,20 +452,15 @@ function flow(
 		x += cvx * b + (N.x - I.x) * 0.9 * o2 + (w.sx[i] as number) * 0.5 * o2;
 		y += cvy * b + (N.y - I.y) * 0.9 * o2 + (w.sy[i] as number) * 0.5 * o2;
 		z += o2 * (8 + 10 * (w.h[i] as number)); // pulls ahead into the depth instead of flying past the camera
-	} else if (time > 0) {
-		// Breathing: small wave across the word, slightly offset per point
-		const wl = time * 1.5 + x * 1.7 + y * 1.1 + (w.ph[i] as number) * 2.5;
-		x += 0.028 * sn(wl);
-		y += 0.028 * cs(wl * 1.3);
 	}
 	ox = x;
 	oy = y;
 	oz = z;
 }
 
-// Project all points: points as squares, near characters in buckets per font size step (8, 11, 16, 23, 32, 45 px
-// ), then draw the buckets.
-function drawPoints(s: DepthState, nb: Bucket[], a: View) {
+// Project all points: far ones as squares, near ones as glyphs in buckets per font size (0.5 px steps), then draw
+// the buckets. A word glyph is as tall as its grid cell, so the standing word is an exact mono grid.
+function drawPoints(s: DepthState, nb: Map<number, Bucket>, a: View) {
 	const ctx = s.ctx;
 	if (!ctx) return;
 	const { f, ox: bx, oy: by, cx, cy } = s;
@@ -445,7 +495,7 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 			// Arrival between dz 38 and 14 (staggered per point), departure from dz 7.5 (likewise), before the characters get too large
 			u = ss((38 - dz - 8 * qh) / 16);
 			o = ss((7.5 + 1.5 * qh - dz) / 6);
-			flow(W, i, I, s.isl[qi + 1] ?? I, u, o, phase, time);
+			flow(W, i, I, s.isl[qi + 1] ?? I, u, o, phase);
 			x = ox;
 			y = oy;
 			dz = oz - camZ;
@@ -486,6 +536,9 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 				(1 - 0.55 * o) *
 				(0.78 + 0.22 * cl((50 - dz) / 30));
 			if (tq && (Math.imul(qn + 1, 2654435761) + Math.imul(tq, 40503)) >>> 29 === 0) al *= 0.6;
+			// Breathing: a soft band of light runs across the standing word, the grid itself stays still
+			if (time > 0 && u > 0.999 && o < 0.001)
+				al *= 0.84 + 0.16 * sn(time * 1.5 + qx * 1.7 + qy * 1.1);
 		} else
 			al =
 				cl(dz / 1.2) *
@@ -509,46 +562,65 @@ function drawPoints(s: DepthState, nb: Bucket[], a: View) {
 			al *= 1 - z.w * (1 - cl(Math.hypot(zx, zy) / 28));
 		}
 		if (al <= 0.01) continue;
-		const sz = cl(0.07 * fz, 0.8, 64); // character size in scene units
+		const sz = cl(0.07 * fz, 0.8, 64); // dust size in scene units
 		// Dust never becomes a large symbol: it fades out from about 6 units
 		if (!word) al *= cl((9 - sz) / 3);
 		if (al <= 0.01) continue;
-		if (sz < 6) {
-			// Point: square with edge length 0.55 x sz; in portrait with a minimum size
-			const side = portrait ? Math.max(word ? 1 : 1.5 * s.fl, sz * 0.8 * f) : sz * 0.55 * f;
-			ctx.globalAlpha = al;
-			ctx.fillRect(X, Y, side, side);
+		const ch = W.ch[i] ?? '';
+		// Font size in CSS px: a word glyph takes the height of its cell (squeezed with the word), dust grows with nearness
+		const px = word && I ? I.ch * fz * f * kx : sz * 1.33 * f;
+		// Far away a glyph is a square of its ink, near it is the glyph; in between both cross-fade
+		const gt = word ? cl((px - 4.5) / 2) : sz < 6 ? 0 : 1;
+		if (gt < 1) {
+			const side = word
+				? Math.max(1, px * 0.5 * (INK[ch] ?? 0.4))
+				: portrait
+					? Math.max(1.5 * s.fl, sz * 0.8 * f)
+					: sz * 0.55 * f;
+			ctx.globalAlpha = al * (1 - gt);
+			ctx.fillRect(X - side / 2, Y - side / 2, side, side);
 			// Trail: in the flow, faint repeats of the point on its path (every fourth point)
 			if (I && (qn & 3) === 0 && ((u > 0.03 && u < 0.97) || (o > 0.03 && o < 0.97))) {
 				const N = s.isl[qi + 1] ?? I;
 				for (let k = 1; k <= 2; k++) {
-					flow(W, i, I, N, Math.max(0, u - 0.09 * k), Math.max(0, o - 0.09 * k), phase, time);
+					flow(W, i, I, N, Math.max(0, u - 0.09 * k), Math.max(0, o - 0.09 * k), phase);
 					const d2 = oz - camZ;
 					if (d2 < 0.25) break;
 					const g2 = F / d2;
-					ctx.globalAlpha = al * (k === 1 ? 0.5 : 0.25);
+					ctx.globalAlpha = al * (1 - gt) * (k === 1 ? 0.5 : 0.25);
 					ctx.fillRect(
-						bx + (cx + (I.x + (ox - I.x) * kx - camX) * g2 + ddx) * f + (X - (bx + sx * f)),
-						by + (cy + (oy - camY) * g2) * f + (Y - (by + sy * f)),
+						bx +
+							(cx + (I.x + (ox - I.x) * kx - camX) * g2 + ddx) * f +
+							(X - (bx + sx * f)) -
+							side * 0.4,
+						by + (cy + (oy - camY) * g2) * f + (Y - (by + sy * f)) - side * 0.4,
 						side * 0.8,
 						side * 0.8,
 					);
 				}
 			}
-		} else {
-			const e = nb[Math.min(5, Math.floor(Math.log2(sz / 6) * 2))];
-			if (e) {
-				e.xya.push(X, Y, al);
-				e.ch.push(W.ch[i] ?? '');
+		}
+		if (gt > 0) {
+			// The standing word keeps its exact cell size (one bucket, a clean grid); glyphs in flight and dust snap
+			// to six size steps (8 to 45 px), so a frame sets at most a handful of fonts
+			const key =
+				word && u > 0.999 && o < 0.001
+					? Math.round(px * 2) / 2
+					: 8 * 2 ** (cl(Math.round(Math.log2(px / 8) * 2), 0, 5) / 2);
+			let e = nb.get(key);
+			if (!e) {
+				e = { xya: [], ch: [] };
+				nb.set(key, e);
 			}
+			e.xya.push(X, Y, al * gt);
+			e.ch.push(ch);
 		}
 	}
 	ctx.textAlign = 'center';
 	ctx.textBaseline = 'middle';
-	for (let tr = 0; tr < 6; tr++) {
-		const e = nb[tr];
-		if (!e?.ch.length) continue;
-		ctx.font = `500 ${(Math.round(8 * 2 ** (tr / 2)) * f).toFixed(2)}px ${MONO}`;
+	for (const [px, e] of nb) {
+		if (!e.ch.length) continue;
+		ctx.font = `500 ${px.toFixed(2)}px ${MONO}`;
 		for (let i = 0; i < e.ch.length; i++) {
 			ctx.globalAlpha = e.xya[3 * i + 2] ?? 0;
 			ctx.fillText(e.ch[i] ?? '', e.xya[3 * i] ?? 0, e.xya[3 * i + 1] ?? 0);
@@ -565,12 +637,22 @@ function prepare(s: DepthState, words: readonly string[]): boolean {
 	if (s.built !== loop.fv) {
 		s.built = loop.fv;
 		s.raw = [];
+		s.cells = [];
 		s.bm = null;
 	}
 	const nextWord = words[s.raw.length];
 	if (nextWord) {
 		s.raw.push(sampleT(nextWord, 200));
 		return false;
+	}
+	// Glyph grids one word per step (each costs a few milliseconds)
+	for (let i = 0; i < s.raw.length; i++) {
+		const r = s.raw[i] as Mask;
+		const rows = rowsOf(s, r);
+		if (s.cells[i]?.key !== `${rows}`) {
+			s.cells[i] = shapeWord(r, rows);
+			return false;
+		}
 	}
 	if (s.bm !== buildKey(s)) {
 		build(s);
@@ -601,6 +683,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			s.built = -1;
 			s.dp = 0;
 			s.raw = [];
+			s.cells = [];
 			s.isl = [];
 			s.P = pack([]);
 			s.bm = null;
@@ -615,7 +698,7 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 				mIn: false,
 				time: 0,
 			};
-			s.nb = [0, 1, 2, 3, 4, 5].map((): Bucket => ({ xya: [], ch: [] }));
+			s.nb = new Map();
 			s.caps = [...root.querySelectorAll<HTMLElement>('[data-dcap]')];
 			s.zones = s.caps.map((): Zone => ({ x0: 0, y0: 0, x1: 0, y1: 0, w: 0 }));
 			s.dep = root.querySelector<HTMLElement>('[data-depth]');
@@ -708,9 +791,9 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			ctx.fillStyle = '#0A0A0A';
 			ctx.fillRect(0, 0, s.W, s.H);
 			ctx.fillStyle = '#FAFAFA';
-			// Near characters per font size step in reused buckets
+			// Near characters per font size in reused buckets
 			const nb = s.nb;
-			for (const e of nb) {
+			for (const e of nb.values()) {
 				e.xya.length = 0;
 				e.ch.length = 0;
 			}
