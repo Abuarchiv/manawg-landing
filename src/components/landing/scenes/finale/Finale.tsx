@@ -30,6 +30,8 @@ export function Finale() {
 		const block = el?.querySelector<HTMLElement>(`.${s.block}`);
 		if (!foot || !el || !content || !block) return;
 		const set = () => {
+			// Footer height first: the title size depends on it (Finale.module.css), the check below measures the result
+			el.style.setProperty('--foot', `${foot.offsetHeight}px`);
 			const cs = getComputedStyle(content);
 			const needed =
 				block.offsetHeight + Number.parseFloat(cs.paddingTop) + Number.parseFloat(cs.paddingBottom);

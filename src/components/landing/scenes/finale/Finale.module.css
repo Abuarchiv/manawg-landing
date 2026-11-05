@@ -1,6 +1,23 @@
 .section {
 	--h: max(560px, 95svh);
-	--title-fs: var(--t-200);
+	/* In the final view the title shrinks (down to 96 px) where it would not fit between header and footer
+	   (laptops with browser bars, 1440 x 789 or 1366 x 657); --foot is the footer height (Finale.tsx) */
+	--title-fs: min(
+		var(--t-200),
+		max(
+			96px,
+			(
+				100svh -
+				var(--foot, 0px) -
+				var(--pad-top) -
+				var(--gap) -
+				var(--buttons-h) -
+				var(--sp-32) -
+				2px
+			) /
+			1.76
+		)
+	);
 	--buttons-h: 32px;
 	--gap: var(--sp-32);
 	--pad-top: calc(
