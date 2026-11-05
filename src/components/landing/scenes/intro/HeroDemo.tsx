@@ -12,8 +12,11 @@ import { live } from './stage';
 // landing-konzept/werkzeuge/hero-demo). It loads once the first hero frame stands and pauses while the title is gone.
 
 /** Chapter starts in seconds and film length (printed by build.py of the recording). */
-const CHAPTERS = [0, 13.458, 18.667, 22.083, 25.5] as const;
-const LENGTH = 29.5;
+const CHAPTERS = [0, 10, 16.542, 21.125, 25.042] as const;
+const LENGTH = 32.67;
+/** Film and posters are cached for a day under a fixed name: the length in the query gives a new cut a new
+ * address, so the chapters above never run against a film still cached from before. */
+const CUT = `?v=${LENGTH}`;
 /** The title has faded out from here on (HeroTitle.tsx); the film pauses. */
 const AWAY_P = 0.09;
 
@@ -33,7 +36,7 @@ export function HeroDemo() {
 	// Source follows the language and the theme; loading waits for the first hero frame and an idle period
 	useEffect(() => {
 		const v = videoRef.current as HTMLVideoElement;
-		const pick = () => `/hero-demo/${lang}-${isLight() ? 'light' : 'dark'}.mp4`;
+		const pick = () => `/hero-demo/${lang}-${isLight() ? 'light' : 'dark'}.mp4${CUT}`;
 		// The loop reads the preference only once it starts (after this effect), so ask the media query directly
 		if (matchMedia('(prefers-reduced-motion: reduce)').matches) setPaused(true);
 		let started = false;
@@ -113,7 +116,7 @@ export function HeroDemo() {
 					<div className={s.screen}>
 						{/* One poster per theme; the other one is display:none and is not loaded (globals.css [data-only]) */}
 						<img
-							src={`/hero-demo/${lang}-dark.webp`}
+							src={`/hero-demo/${lang}-dark.webp${CUT}`}
 							alt=""
 							width={560}
 							height={1200}
@@ -123,7 +126,7 @@ export function HeroDemo() {
 							className={s.media}
 						/>
 						<img
-							src={`/hero-demo/${lang}-light.webp`}
+							src={`/hero-demo/${lang}-light.webp${CUT}`}
 							alt=""
 							width={560}
 							height={1200}
