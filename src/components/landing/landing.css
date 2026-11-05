@@ -202,6 +202,15 @@
 .cta--dark {
 	color: rgb(var(--ink-rgb) / 0.88);
 }
+/* Light mode: mountain and clouds are drawn in full ink there (hero.ts, sky.ts), the dark mode's single soft halo
+   drowns in the dense strokes. A tighter, stronger paper halo keeps the labels legible. */
+:root[data-theme="light"] .cta {
+	text-shadow:
+		0 0 2px var(--paper),
+		0 0 4px var(--paper),
+		0 0 8px var(--paper),
+		0 0 16px rgb(var(--paper-rgb) / 0.85);
+}
 .cta:focus-visible,
 .tab:focus-visible {
 	color: var(--ink);
