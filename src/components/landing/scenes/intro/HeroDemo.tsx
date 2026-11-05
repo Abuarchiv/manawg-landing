@@ -19,6 +19,9 @@ const LENGTH = 32.67;
 const CUT = `?v=${LENGTH}`;
 /** The title has faded out from here on (HeroTitle.tsx); the film pauses. */
 const AWAY_P = 0.09;
+/** Seconds before the end at which the film fades out over its first frame (the poster beneath, opacity transition
+ * 0.4 s in HeroDemo.module.css): the loop then runs on without a hard cut from the last chapter to the first. */
+const SEAM = 0.5;
 
 export function HeroDemo() {
 	const { heroDemo } = useDict();
@@ -76,12 +79,18 @@ export function HeroDemo() {
 		const rail = railRef.current as HTMLDivElement;
 		let last = -1;
 		let k = '';
+		let seam = false;
 		return onFrame(() => {
 			if (!v.currentSrc) return;
 			const want = !pausedRef.current && !document.hidden && (live.stage?.state.P ?? 0) < AWAY_P;
 			if (want && v.paused) v.play().catch(() => {});
 			else if (!want && !v.paused) v.pause();
 			const t = v.currentTime;
+			const fade = t > (v.duration || LENGTH) - SEAM;
+			if (fade !== seam) {
+				seam = fade;
+				v.style.opacity = fade ? '0' : '1';
+			}
 			let c = 0;
 			for (const [i, start] of CHAPTERS.entries()) if (t >= start) c = i;
 			if (c !== last) {
