@@ -842,8 +842,8 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			const fade = 1 - cl(top / (0.12 * s.H));
 			// whole label "TIEFE 000", not just the number
 			if (s.dep?.parentElement) setStyle(s.dep.parentElement, 'opacity', fade.toFixed(3));
-			// Word image slower: otherwise the last word stands over "Installieren" when scrolling back
-			setStyle(ctx.canvas, 'opacity', (1 - cl(top / (0.4 * s.H))).toFixed(3));
+			// Word image a little slower than the label, but gone before the FAQ title comes in from below
+			setStyle(ctx.canvas, 'opacity', (1 - cl(top / (0.2 * s.H))).toFixed(3));
 			s.caps.forEach((el, i) => {
 				const op = ((zones[i]?.w ?? 0) * cl(((L.caps[i] ?? 0) - L.header) / 28) * fade).toFixed(3);
 				setStyle(el, 'opacity', op);
