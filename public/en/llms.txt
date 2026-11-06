@@ -50,6 +50,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Moving-in checklist](https://manawg.com/en/moving-in-checklist)
 - [Holidays and time away](https://manawg.com/en/holidays-and-time-away)
 - [Debts between flatmates](https://manawg.com/en/flatmate-debts): settling up, borrowed money, reminders, limitation
+- [Who owes whom? Calculator](https://manawg.com/en/who-owes-whom-calculator): enter names and amounts, fewest transfers, no account
 - [Switch from Splitwise or Splid](https://manawg.com/en/switch-from-splitwise-or-splid): CSV import, preview, matching names, undo
 - [Splitwise free limit](https://manawg.com/en/splitwise-free-limit): daily limit according to Splitwise help, Pro, alternatives
 - [Organise flat shopping](https://manawg.com/en/organise-flat-shopping)

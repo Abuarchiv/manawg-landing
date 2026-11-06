@@ -30,7 +30,7 @@ test('tables attach to the intro or to an existing section heading', () => {
 
 test('markdown links in the text point to existing pages', () => {
 	const ok = (target: string) =>
-		target === '/' || target === '/ratgeber' || target.slice(1) in TOPICS_DE;
+		target === '/' || target === '/ratgeber' || target === '/demo' || target.slice(1) in TOPICS_DE;
 	for (const [slug, t] of Object.entries(TOPICS_DE)) {
 		const texts = [t.intro, ...t.sections.map(([, a]) => a), ...(t.faq ?? []).map(([, a]) => a)];
 		for (const text of texts)

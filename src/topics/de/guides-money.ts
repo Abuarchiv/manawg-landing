@@ -1,6 +1,8 @@
 // Guides about money, shopping and finding flatmates. General tips, not legal advice.
 // Only name features that really exist in manawg-app.
+import type { Locale } from '../../lib/locale.ts';
 import { euro, rentShares } from '../rent-calculator.ts';
+import { balances, EXAMPLE_NAMES, EXAMPLE_PAID_CENT, settle } from '../settle-up.ts';
 import type { Topic } from '../types.ts';
 
 // Rent example of the calculator page: values come from rentShares, not from hand.
@@ -18,10 +20,20 @@ const LICENCE_FEE_QUARTER_CENT = LICENCE_FEE_MONTH_CENT * 3;
 // Free expenses per day according to the Splitwise help centre (kb.splitwise.com/pro/what-is-splitwise-pro, as of 27 Oct 2026).
 const SPLITWISE_DAILY_LIMIT = 4;
 
+// Example of the settle-up page: the numbers come from the same functions as the calculator.
+const SETTLE_NAMES = EXAMPLE_NAMES;
+const SETTLE_TOTAL = EXAMPLE_PAID_CENT.reduce((a, b) => a + b, 0);
+const SETTLE_BALANCE = balances(EXAMPLE_PAID_CENT);
+const SETTLE_TRANSFERS = settle(SETTLE_BALANCE);
+const signed = (cent: number, locale: Locale = 'de') =>
+	`${cent > 0 ? '+' : ''}${euro(cent, locale)}`;
+const list = (items: string[], and: string) =>
+	items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} ${and} ${items.at(-1)}`;
+
 export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	'wg-kosten-aufteilen': {
 		link: 'WG-Kosten aufteilen',
-		updated: '2026-10-27',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'WG-Kosten fair aufteilen: drei Modelle mit Beispiel | ManaWG',
 		description:
@@ -48,7 +60,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Ausgleichen ohne Überweisungschaos',
-				'Wenn jeder mal für alle zahlt, entstehen [Schulden in alle Richtungen](/schulden-mitbewohner). Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt.',
+				'Wenn jeder mal für alle zahlt, entstehen [Schulden in alle Richtungen](/schulden-mitbewohner). Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt. Den Ausgleich probiert ihr mit dem [Rechner „Wer schuldet wem?“](/wer-schuldet-wem-rechner) ohne Konto aus.',
 			],
 			[
 				'Regeln, die Streit vermeiden',
@@ -316,7 +328,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'wg-haushaltskasse': {
 		link: 'WG-Haushaltskasse',
-		updated: '2026-10-27',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'WG-Haushaltskasse: Bargeld, Konto oder App? | ManaWG',
 		description:
@@ -343,7 +355,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Beispielrechnung',
-				'Eine WG mit drei Personen kauft im Monat gemeinsam für 90 Euro ein. Anna zahlt Putzmittel für 30 Euro, Ben den Großeinkauf für 51 Euro, Cem Müllbeutel für 9 Euro. Jeder Anteil liegt bei 30 Euro. Anna ist ausgeglichen, Ben hat 21 Euro zu viel gezahlt, Cem 21 Euro zu wenig. Eine einzige Überweisung von Cem an Ben gleicht alles aus. Bei Bargeldkasse oder Konto wären stattdessen drei Einzahlungen und drei Auszahlungen nötig gewesen.',
+				'Eine WG mit drei Personen kauft im Monat gemeinsam für 90 Euro ein. Anna zahlt Putzmittel für 30 Euro, Ben den Großeinkauf für 51 Euro, Cem Müllbeutel für 9 Euro. Jeder Anteil liegt bei 30 Euro. Anna ist ausgeglichen, Ben hat 21 Euro zu viel gezahlt, Cem 21 Euro zu wenig. Eine einzige Überweisung von Cem an Ben gleicht alles aus. Bei Bargeldkasse oder Konto wären stattdessen drei Einzahlungen und drei Auszahlungen nötig gewesen. Eigene Zahlen rechnet der [Rechner „Wer schuldet wem?“](/wer-schuldet-wem-rechner) durch.',
 			],
 			[
 				'Regeln für jede Kasse',
@@ -367,7 +379,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'schulden-mitbewohner': {
 		link: 'Schulden in der WG',
-		updated: '2026-10-27',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'Schulden unter Freunden und Mitbewohnern klären | ManaWG',
 		description:
@@ -390,7 +402,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Beispiel mit vier Personen',
-				'In einer Vierer-WG hat Lea 120 Euro mehr bezahlt, als ihr Anteil war, Tim 20 Euro mehr. Jonas hat 80 Euro zu wenig gezahlt, Mia 60 Euro. Einzeln abgerechnet wären bis zu sechs Überweisungen nötig. Verrechnet reichen drei: Jonas überweist 80 Euro an Lea, Mia 40 Euro an Lea und 20 Euro an Tim. Danach stehen alle auf null.',
+				'In einer Vierer-WG hat Lea 120 Euro mehr bezahlt, als ihr Anteil war, Tim 20 Euro mehr. Jonas hat 80 Euro zu wenig gezahlt, Mia 60 Euro. Einzeln abgerechnet wären bis zu sechs Überweisungen nötig. Verrechnet reichen drei: Jonas überweist 80 Euro an Lea, Mia 40 Euro an Lea und 20 Euro an Tim. Danach stehen alle auf null. Mit euren eigenen Zahlen rechnet das der [Rechner „Wer schuldet wem?“](/wer-schuldet-wem-rechner).',
 			],
 			[
 				'Feste Termine statt ständiger Erinnerungen',
@@ -467,6 +479,67 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 				'https://www.gesetze-im-internet.de/bgb/__199.html',
 			],
 			['§ 214 BGB, Wirkung der Verjährung', 'https://www.gesetze-im-internet.de/bgb/__214.html'],
+		],
+	},
+	'wer-schuldet-wem-rechner': {
+		link: 'Wer schuldet wem Rechner',
+		widget: { after: 'Rechner', kind: 'settle-up' },
+		updated: '2026-11-06',
+		published: '2026-11-06',
+		title: 'Wer schuldet wem? Rechner für WG und Freunde | ManaWG',
+		description:
+			'Kostenloser Rechner ohne Anmeldung: Namen und Beträge eintragen und sehen, wer wem wie viel zahlt. Die wenigsten Überweisungen, auf den Cent genau.',
+		h1: 'Wer schuldet wem? Ausgaben ausgleichen',
+		intro:
+			'In der WG, auf der Reise oder beim Wochenende mit Freunden zahlt jemand die Unterkunft, jemand den Einkauf und jemand die Pizza. Tragt unten ein, wer wie viel bezahlt hat. Der Rechner teilt die Summe gleichmäßig auf alle und zeigt, wer wem wie viel zahlt, damit am Ende alle quitt sind, mit möglichst wenigen Überweisungen. Dafür braucht es kein Konto.',
+		sections: [
+			[
+				'Rechner',
+				'Tragt für jede Person den Namen ein und den Betrag, den sie bezahlt hat. Wer nichts bezahlt hat, bekommt eine 0. Die Summe wird gleichmäßig durch alle Personen in der Liste geteilt. Es sind 2 bis 16 Personen möglich, gerechnet wird in Euro. Die vorbelegten Werte sind ein Beispiel. Eure Eingaben bleiben im Browser und werden weder gespeichert noch gesendet.',
+			],
+			[
+				'So wird gerechnet',
+				'1. Alle Beträge werden in ganze Cent umgerechnet, es gibt keine Rundungsfehler.\n2. Die Summe wird durch die Zahl der Personen geteilt. Bleiben Cent übrig, tragen die ersten Personen der Liste je einen Cent mehr.\n3. Der Saldo einer Person ist ihr bezahlter Betrag minus ihr Anteil. Plus heißt, sie bekommt Geld, minus heißt, sie zahlt.\n4. Der Rechner sucht die kleinste Zahl an Überweisungen, die alle Salden auf null bringt. Bis 16 Personen probiert er dafür alle Möglichkeiten durch.\n5. Gibt es mehrere gleich gute Lösungen, entscheidet die Reihenfolge der Liste. Dieselben Eingaben ergeben immer dieselben Überweisungen, und sie gleichen jeden Saldo auf den Cent aus.',
+			],
+			[
+				'Beispiel mit vier Personen',
+				`${SETTLE_NAMES.map((name, i) => `${name} zahlt ${euro(EXAMPLE_PAID_CENT[i] ?? 0)}`).join(', ')}. Zusammen sind das ${euro(SETTLE_TOTAL)}, jeder Anteil liegt bei ${euro(SETTLE_TOTAL / SETTLE_NAMES.length)}. Die Salden: ${SETTLE_NAMES.map((name, i) => `${name} ${signed(SETTLE_BALANCE[i] ?? 0)}`).join(', ')}. ${SETTLE_TRANSFERS.length} Überweisungen reichen: ${list(
+					SETTLE_TRANSFERS.map(
+						(t) => `${SETTLE_NAMES[t.from]} zahlt ${SETTLE_NAMES[t.to]} ${euro(t.cent)}`,
+					),
+					'und',
+				)}. Danach steht jede Person auf null. Wie ihr solche Salden im Alltag klärt, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).`,
+			],
+			[
+				'Was der Rechner nicht kann',
+				'Er teilt immer gleichmäßig auf alle in der Liste. Ungleiche Anteile, Ausgaben nur für einen Teil der Gruppe, andere Währungen als Euro und Rückzahlungen, die schon geflossen sind, kennt er nicht. Wollt ihr die Miete nach Zimmergröße teilen, hilft der [WG-Miete-Rechner](/wg-miete-rechner), weitere Modelle stehen unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen). Für Ausgaben, die sich über Wochen ansammeln, ist ein Rechner mühsam, weil ihr alles immer wieder neu eintragen müsst.',
+			],
+			[
+				'Wie ManaWG das dauerhaft erledigt',
+				'In ManaWG tragt ihr jede Ausgabe ein, wenn sie anfällt: wer bezahlt hat, wer beteiligt ist, gleichmäßig oder mit eigenen Beträgen pro Person. Die App führt den Saldo jeder Person mit und schlägt daraus Überweisungen vor, nach demselben Verfahren wie dieser Rechner. Bis 16 offene Salden sucht sie die kleinste Zahl an Überweisungen unter allen Möglichkeiten, darüber nimmt sie ein einfacheres Verfahren, das mehr Überweisungen brauchen kann. ManaWG überweist nichts selbst: Ihr zahlt per Bank, bar oder wie ihr wollt und markiert den Ausgleich als bezahlt. Am Monatsanfang kommt eine Abrechnung per Mail mit den Vorschlägen, jede Person kann sie abschalten. Wie das aussieht, zeigt die [Demo ohne Anmeldung](/demo). Mehr zur Funktion steht unter [WG-Kasse](/wg-kasse).',
+			],
+			[
+				'Open Source',
+				'ManaWG ist Open Source unter Apache-2.0, den [Quellcode gibt es auf GitHub](https://github.com/Abuarchiv/manawg).',
+			],
+		],
+		faq: [
+			[
+				'Wie findet der Rechner die wenigsten Überweisungen?',
+				'Er zerlegt die offenen Salden in möglichst viele Gruppen, die für sich genau null ergeben. Eine Gruppe aus k Personen braucht k − 1 Überweisungen, mehr Gruppen heißen also weniger Überweisungen. Bei bis zu 16 Personen probiert er dafür alle Möglichkeiten durch.',
+			],
+			[
+				'Wer bekommt den übrig bleibenden Cent?',
+				'Die ersten Personen in der Liste. Teilt ihr 100,00 Euro durch drei, zahlt die erste Person 33,34 Euro und die anderen beiden je 33,33 Euro. Die Anteile ergeben immer genau die Summe.',
+			],
+			[
+				'Werden meine Eingaben gespeichert?',
+				'Nein. Die Rechnung läuft im Browser, nichts wird gesendet oder gespeichert. Lädt ihr die Seite neu, sind die Eingaben weg.',
+			],
+			[
+				'Überweist ManaWG das Geld?',
+				'Nein. ManaWG berechnet nur Vorschläge. Ihr überweist selbst und markiert den Ausgleich in der App als bezahlt.',
+			],
 		],
 	},
 	'splitwise-splid-wechseln': {

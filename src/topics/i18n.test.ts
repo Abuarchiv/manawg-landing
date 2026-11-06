@@ -36,7 +36,10 @@ test('English markdown links point to /, /guides or a mapped slug', () => {
 			for (const m of text.matchAll(/\]\((\/[a-z0-9-]*)\)/g)) {
 				const target = m[1] ?? '';
 				assert.ok(
-					target === '/' || target === '/guides' || values.has(target.slice(1)),
+					target === '/' ||
+						target === '/guides' ||
+						target === '/demo' ||
+						values.has(target.slice(1)),
 					`${slug} -> ${target}`,
 				);
 			}

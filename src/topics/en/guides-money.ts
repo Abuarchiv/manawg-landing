@@ -1,6 +1,8 @@
 // English guides on money, shopping and finding flatmates. Keys are English slugs; the German
 // counterparts live in ../de/guides-money.ts. Links are prefix-free.
+import type { Locale } from '../../lib/locale.ts';
 import { euro, rentShares } from '../rent-calculator.ts';
+import { balances, EXAMPLE_NAMES, EXAMPLE_PAID_CENT, settle } from '../settle-up.ts';
 import type { Topic } from '../types.ts';
 import { BGB_EN } from './guides-moving.ts';
 
@@ -23,10 +25,20 @@ const LICENCE_FEE_QUARTER_CENT = LICENCE_FEE_MONTH_CENT * 3;
 // Free expenses per day according to the Splitwise help centre (checked 27 October 2026).
 const SPLITWISE_DAILY_LIMIT = 4;
 
+// Example of the settle-up page: the numbers come from the same functions as the calculator.
+const SETTLE_NAMES = EXAMPLE_NAMES;
+const SETTLE_TOTAL = EXAMPLE_PAID_CENT.reduce((a, b) => a + b, 0);
+const SETTLE_BALANCE = balances(EXAMPLE_PAID_CENT);
+const SETTLE_TRANSFERS = settle(SETTLE_BALANCE);
+const signed = (cent: number, locale: Locale = 'de') =>
+	`${cent > 0 ? '+' : ''}${euro(cent, locale)}`;
+const list = (items: string[], and: string) =>
+	items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} ${and} ${items.at(-1)}`;
+
 export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	'split-flat-costs': {
 		link: 'Splitting flat costs',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-29',
 		title: 'Split flat costs fairly: three models with examples | ManaWG',
 		description:
@@ -53,7 +65,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Settling up without a transfer mess',
-				'When everyone pays for everyone now and then, [debts run in all directions](/flatmate-debts). Rather than settle every expense on its own, look at the balance at the end of the month. From the balances you can work out who should transfer money to whom, using as few transfers as possible. ManaWG calculates these suggestions automatically but does not move any money itself: you mark settlements as paid.',
+				'When everyone pays for everyone now and then, [debts run in all directions](/flatmate-debts). Rather than settle every expense on its own, look at the balance at the end of the month. From the balances you can work out who should transfer money to whom, using as few transfers as possible. ManaWG calculates these suggestions automatically but does not move any money itself: you mark settlements as paid. You can try the settling up without an account in the [“Who owes whom?” calculator](/who-owes-whom-calculator).',
 			],
 			[
 				'Rules that prevent arguments',
@@ -336,7 +348,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'household-kitty': {
 		link: 'Household kitty',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-29',
 		title: 'Flat-share household kitty: cash, account or app? | ManaWG',
 		description:
@@ -363,7 +375,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Worked example',
-				'A flat share of three spends €90 a month on shared shopping. Anna pays €30 for cleaning products, Ben €51 for the big shop and Cem €9 for bin bags. Each share is €30. Anna is even, Ben has paid €21 too much and Cem €21 too little. A single transfer from Cem to Ben settles everything. With a cash tin or an account, three payments in and three payments out would have been needed.',
+				'A flat share of three spends €90 a month on shared shopping. Anna pays €30 for cleaning products, Ben €51 for the big shop and Cem €9 for bin bags. Each share is €30. Anna is even, Ben has paid €21 too much and Cem €21 too little. A single transfer from Cem to Ben settles everything. With a cash tin or an account, three payments in and three payments out would have been needed. You can run your own numbers through the [“Who owes whom?” calculator](/who-owes-whom-calculator).',
 			],
 			[
 				'Rules for any kitty',
@@ -387,7 +399,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'flatmate-debts': {
 		link: 'Debts in a flat share',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-29',
 		title: 'Settling debts between flatmates and friends | ManaWG',
 		description:
@@ -410,7 +422,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Example with four people',
-				'In a flat share of four, Lea has paid €120 more than her share and Tim €20 more. Jonas has paid €80 too little, Mia €60. Settled one by one, up to six transfers would be needed. Netted off, three are enough: Jonas transfers €80 to Lea, Mia transfers €40 to Lea and €20 to Tim. After that, everyone is at zero.',
+				'In a flat share of four, Lea has paid €120 more than her share and Tim €20 more. Jonas has paid €80 too little, Mia €60. Settled one by one, up to six transfers would be needed. Netted off, three are enough: Jonas transfers €80 to Lea, Mia transfers €40 to Lea and €20 to Tim. After that, everyone is at zero. You can run your own numbers through the [“Who owes whom?” calculator](/who-owes-whom-calculator).',
 			],
 			[
 				'Fixed dates instead of constant reminders',
@@ -493,6 +505,67 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			[
 				'§ 214 BGB, effect of limitation (in German)',
 				'https://www.gesetze-im-internet.de/bgb/__214.html',
+			],
+		],
+	},
+	'who-owes-whom-calculator': {
+		link: 'Who owes whom calculator',
+		widget: { after: 'Calculator', kind: 'settle-up' },
+		updated: '2026-11-06',
+		published: '2026-11-06',
+		title: 'Who owes whom? Settle-up calculator for flatmates and friends | ManaWG',
+		description:
+			'Free calculator, no sign-up: enter names and amounts and see who pays whom. The fewest transfers, exact to the cent.',
+		h1: 'Who owes whom? Settle shared costs',
+		intro:
+			'In a flat share, on a trip or on a weekend away, one person pays for the place, another for the shopping and another for the pizza. Enter below who paid how much. The calculator splits the total equally between everyone and shows who pays whom so that everyone ends up even, using as few transfers as possible. No account is needed.',
+		sections: [
+			[
+				'Calculator',
+				'Enter a name for each person and the amount they paid. Anyone who paid nothing gets a 0. The total is split equally between everyone in the list. It works for 2 to 16 people and calculates in euros. The pre-filled values are an example. What you enter stays in your browser and is neither stored nor sent anywhere.',
+			],
+			[
+				'How it is calculated',
+				'1. All amounts are converted to whole cents, so there are no rounding errors.\n2. The total is divided by the number of people. If cents are left over, the first people in the list pay one cent more each.\n3. A person’s balance is the amount they paid minus their share. Plus means they get money back, minus means they pay.\n4. The calculator looks for the smallest number of transfers that brings every balance to zero. Up to 16 people it tries every possibility to do so.\n5. If several solutions are equally good, the order of the list decides. The same input always gives the same transfers, and they settle every balance to the cent.',
+			],
+			[
+				'Example with four people',
+				`${SETTLE_NAMES.map((name, i) => `${name} pays ${euro(EXAMPLE_PAID_CENT[i] ?? 0, 'en')}`).join(', ')}. That is ${euro(SETTLE_TOTAL, 'en')} in total, so each share is ${euro(SETTLE_TOTAL / SETTLE_NAMES.length, 'en')}. The balances: ${SETTLE_NAMES.map((name, i) => `${name} ${signed(SETTLE_BALANCE[i] ?? 0, 'en')}`).join(', ')}. ${SETTLE_TRANSFERS.length} transfers are enough: ${list(
+					SETTLE_TRANSFERS.map(
+						(t) => `${SETTLE_NAMES[t.from]} pays ${SETTLE_NAMES[t.to]} ${euro(t.cent, 'en')}`,
+					),
+					'and',
+				)}. After that, everyone is at zero. How to deal with balances like these day to day is covered in [debts between flatmates](/flatmate-debts).`,
+			],
+			[
+				'What the calculator does not do',
+				'It always splits equally between everyone in the list. It does not know unequal shares, expenses for only part of the group, currencies other than euros or repayments that have already been made. If you want to split rent by room size, the [rent split calculator](/rent-split-calculator) helps, and more models are covered in [how to split flat costs fairly](/split-flat-costs). For expenses that pile up over weeks, a calculator is tedious, because you have to enter everything again each time.',
+			],
+			[
+				'How ManaWG keeps this up to date',
+				'In ManaWG you enter every expense when it happens: who paid, who took part, split equally or with an individual amount per person. The app keeps each person’s balance and suggests transfers from it, using the same method as this calculator. Up to 16 open balances it picks the smallest number of transfers out of all possibilities; beyond that it uses a simpler method that can need more transfers. ManaWG does not move any money itself: you pay by bank transfer, in cash or however you like and mark the settlement as paid. At the start of each month an email statement with the suggestions arrives, and anyone can switch it off. The [demo without sign-up](/demo) shows what it looks like. More on the feature is on the [shared expenses](/shared-expenses) page.',
+			],
+			[
+				'Open source',
+				'ManaWG is open source under Apache-2.0, and the [source code is on GitHub](https://github.com/Abuarchiv/manawg).',
+			],
+		],
+		faq: [
+			[
+				'How does the calculator find the fewest transfers?',
+				'It splits the open balances into as many groups as possible that each add up to exactly zero. A group of k people needs k − 1 transfers, so more groups mean fewer transfers. For up to 16 people it tries every possibility.',
+			],
+			[
+				'Who gets the leftover cent?',
+				'The first people in the list. If you split €100.00 between three, the first person pays €33.34 and the other two pay €33.33 each. The shares always add up to exactly the total.',
+			],
+			[
+				'Is what I enter stored?',
+				'No. The calculation runs in your browser and nothing is sent or stored. If you reload the page, the entries are gone.',
+			],
+			[
+				'Does ManaWG transfer the money?',
+				'No. ManaWG only calculates suggestions. You make the transfers yourselves and mark the settlement as paid in the app.',
 			],
 		],
 	},

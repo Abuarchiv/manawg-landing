@@ -24,7 +24,11 @@ export interface Topic {
 	/** Sources as [name, URL]; shown as the source list, Article citation and llms-full. */
 	sources?: Array<[string, string]>;
 	/** Interactive tool rendered after the section with the exact heading `after`; `csv` adds a download and print link. */
-	widget?: { after: string; kind: 'rota-generator' | 'rent-calculator'; csv?: string };
+	widget?: {
+		after: string;
+		kind: 'rota-generator' | 'rent-calculator' | 'settle-up';
+		csv?: string;
+	};
 }
 
 /** Strings of the topic frame, the topic pages, the guide index and the OG image. German values are the original wording. */
