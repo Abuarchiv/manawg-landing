@@ -27,6 +27,7 @@ export const PATHS = {
 /** Pages that exist once per language outside the topic system, as [German path, English path]. */
 export const STATIC_PAIRS: ReadonlyArray<readonly [de: string, en: string]> = [
 	['/', '/en'],
+	['/demo', '/en/demo'],
 	['/ratgeber', '/en/guides'],
 	['/impressum', '/en/legal-notice'],
 	['/datenschutz', '/en/privacy'],

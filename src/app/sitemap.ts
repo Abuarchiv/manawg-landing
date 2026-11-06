@@ -48,6 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 				en && en in TOPICS_EN ? `/en/${en}` : null,
 			);
 		}),
+		entry('/demo', undefined, '/demo', pair('/demo')),
 		entry('/ratgeber', newest(TOPICS_DE), '/ratgeber', pair('/ratgeber')),
 		entry('/agb', undefined, '/agb', pair('/agb')),
 		entry('/datenschutz', undefined, '/datenschutz', pair('/datenschutz')),
