@@ -20,6 +20,7 @@ export const GROUPS: Array<{
 			'flatastic-alternative',
 			'tricount-alternative',
 			'ourhome-alternative',
+			'open-source-splitwise-alternativen',
 		],
 	},
 	{
@@ -128,7 +129,12 @@ const READ_NEXT: Record<string, string[]> = {
 	'tricount-alternative': ['beste-wg-app', 'splitwise-alternative', 'wg-kasse'],
 	'flatastic-alternative': ['beste-wg-app', 'ourhome-alternative', 'putzplan'],
 	'ourhome-alternative': ['beste-wg-app', 'flatastic-alternative', 'putzplan'],
-	'open-source-wg-app': ['wg-app', 'splitwise-alternative', 'splitwise-splid-wechseln'],
+	'open-source-wg-app': ['wg-app', 'open-source-splitwise-alternativen', 'splitwise-alternative'],
+	'open-source-splitwise-alternativen': [
+		'open-source-wg-app',
+		'splitwise-alternative',
+		'beste-wg-app',
+	],
 	faq: ['wg-app', 'wg-kasse', 'putzplan'],
 	'ueber-manawg': ['faq', 'wg-app', 'beste-wg-app'],
 };

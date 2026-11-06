@@ -57,8 +57,10 @@ test('files of the app repository named in the text exist there', () => {
 	const existing = new Set(['docs/self-hosting.md', 'LICENSE']);
 	const pattern =
 		/(?:github\.com\/Abuarchiv\/manawg\/blob\/main\/|\b)(docs\/[\w.-]+\.md|LICENSE)\b/g;
+	// Links into other projects' repositories (comparison page) name their own files.
+	const foreign = /https:\/\/github\.com\/(?!Abuarchiv\/manawg\/)[^"\s]*/g;
 	for (const [slug, t] of [...Object.entries(TOPICS_DE), ...Object.entries(TOPICS_EN)])
-		for (const m of JSON.stringify(t).matchAll(pattern))
+		for (const m of JSON.stringify(t).replace(foreign, '').matchAll(pattern))
 			assert.ok(existing.has(m[1] ?? ''), `${slug}: ${m[1]}`);
 });
 

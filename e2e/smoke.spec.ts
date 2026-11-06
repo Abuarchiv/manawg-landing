@@ -37,12 +37,14 @@ const PAGES = [
 	'/wg-miete-rechner',
 	'/wer-schuldet-wem-rechner',
 	'/nebenkosten-tagesgenau-rechner',
+	'/open-source-splitwise-alternativen',
 	'/impressum',
 	'/datenschutz',
 	'/en/guides',
 	'/en/split-flat-costs',
 	'/en/who-owes-whom-calculator',
 	'/en/split-bill-by-days-calculator',
+	'/en/open-source-splitwise-alternatives',
 	'/en/privacy',
 ];
 
@@ -168,6 +170,27 @@ for (const [path, locale, caption, share, billField, personField] of [
 			await expect(table).toHaveCount(0);
 			await page.getByLabel(personField).fill('2026-05-31');
 			await expect(table).toBeVisible();
+			const overflow = await page.evaluate(
+				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+			);
+			expect(overflow).toBeLessThanOrEqual(0);
+		});
+	});
+}
+
+// The comparison page keeps its tables inside their own scroll regions: the page itself never scrolls sideways on a phone.
+for (const [path, locale] of [
+	['/open-source-splitwise-alternativen', 'de-DE'],
+	['/en/open-source-splitwise-alternatives', 'en-GB'],
+] as const) {
+	test.describe(`comparison page ${path}`, () => {
+		// German pages redirect visitors whose browser prefers English.
+		test.use({ locale });
+
+		test('does not scroll sideways at 320 px', async ({ page }) => {
+			await page.setViewportSize({ width: 320, height: 640 });
+			await page.goto(path);
+			await expect(page.getByRole('table')).toHaveCount(3);
 			const overflow = await page.evaluate(
 				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
 			);

@@ -31,6 +31,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Tricount-Alternative](https://manawg.com/tricount-alternative)
 - [Splid-Alternative](https://manawg.com/splid-alternative)
 - [OurHome-Alternative](https://manawg.com/ourhome-alternative)
+- [Open-Source-Splitwise-Alternativen](https://manawg.com/open-source-splitwise-alternativen): ManaWG, Spliit, SplitPro, Cospend, IHateMoney, Abrechnung nach Lizenz, Selbst-Hosting, Handy und Import
 - [Häufige Fragen](https://manawg.com/faq)
 
 ## Ratgeber
