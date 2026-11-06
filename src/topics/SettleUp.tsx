@@ -13,6 +13,7 @@ import {
 	parseCents,
 	settle,
 } from './settle-up';
+import { useRowFocus } from './use-row-focus';
 
 const fieldCls =
 	'min-h-[44px] min-w-0 w-full px-3 rounded border border-[rgb(var(--ink-rgb)/0.2)] bg-transparent text-(--ink) text-[16px] aria-invalid:border-(--ink) aria-invalid:border-2';
@@ -108,6 +109,8 @@ export default function SettleUp({ locale }: { locale: Locale }) {
 	const nextId = useRef(EXAMPLE.length);
 	const [rows, setRows] = useState<Row[]>(EXAMPLE.map(([name, paid], id) => ({ id, name, paid })));
 
+	const focus = useRowFocus(rows);
+
 	const label = (row: Row, i: number) => row.name.trim() || `${t.person} ${i + 1}`;
 	const update = (id: number, change: Partial<Row>) =>
 		setRows(rows.map((r) => (r.id === id ? { ...r, ...change } : r)));
@@ -135,6 +138,7 @@ export default function SettleUp({ locale }: { locale: Locale }) {
 						{rows.map((row, i) => (
 							<div key={row.id} className={rowCls}>
 								<input
+									ref={focus.nameRef(row.id)}
 									className={fieldCls}
 									type="text"
 									maxLength={40}
@@ -160,7 +164,10 @@ export default function SettleUp({ locale }: { locale: Locale }) {
 									className={removeCls}
 									disabled={rows.length <= MIN_PEOPLE}
 									aria-label={t.removeLabel(label(row, i))}
-									onClick={() => setRows(rows.filter((r) => r.id !== row.id))}
+									onClick={() => {
+										focus.beforeRemove(row.id);
+										setRows(rows.filter((r) => r.id !== row.id));
+									}}
 								>
 									×
 								</button>
@@ -169,6 +176,7 @@ export default function SettleUp({ locale }: { locale: Locale }) {
 					</div>
 					<div className="mt-3">
 						<button
+							ref={focus.addButton}
 							type="button"
 							className={buttonCls}
 							disabled={rows.length >= MAX_PEOPLE}
