@@ -169,7 +169,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 					],
 					[
 						'Spliit',
-						'Ausgaben teilen für Freunde und Familie',
+						'Freie Open-Source-Alternative zu Splitwise: Gruppen mit Freunden teilen',
 						'Keiner (Splitwise-Import nur als möglich gelistet)',
 					],
 					[
@@ -211,7 +211,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Was ManaWG ist und was nicht',
-				'Gebaut für eine WG mit bis zu 20 Mitgliedern: Ausgaben, Putzplan, Einkaufsliste, Kalender, Chat und Pinnwand in einer App.\nNur Euro, keine Währungsumrechnung.\nManaWG bewegt kein Geld: Ihr überweist selbst und markiert den Betrag in der App als bezahlt.\nEine Aufteilung nach Tagen gibt es nicht, nur gleiche oder eigene Beträge. Für Rechnungen nach Tagen gibt es den [Rechner](/nebenkosten-tagesgenau-rechner).\nDie jüngste der sechs Apps mit der kleinsten Community: weniger Leute, die ihr fragen könnt, und weniger Erfahrung im Alltag als bei den anderen.\nKeine Werbung, keine Bezahlstufe, Daten der gehosteten App in der EU.',
+				'Gebaut für eine WG mit bis zu 20 Mitgliedern: Ausgaben, Putzplan, Einkaufsliste, Kalender, Chat und Pinnwand in einer App.\nBeträge in Euro, keine Währungsumrechnung.\nManaWG bewegt kein Geld: Ihr überweist selbst und markiert den Betrag in der App als bezahlt.\nEine Aufteilung nach Tagen gibt es nicht, nur gleiche oder eigene Beträge. Für Rechnungen nach Tagen gibt es den [Rechner](/nebenkosten-tagesgenau-rechner).\nDie jüngste der sechs Apps mit der kleinsten Community: weniger Leute, die ihr fragen könnt, und weniger Erfahrung im Alltag als bei den anderen.\nKeine Werbung, keine Bezahlstufe, Daten der gehosteten App in der EU.',
 			],
 			[
 				'ManaWG ausprobieren oder selbst betreiben',

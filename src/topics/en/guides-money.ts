@@ -770,7 +770,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'What you can do',
-				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works only in euros, comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative). If you want an open-source alternative you can self-host, several are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
+				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works in euros, comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative). If you want an open-source alternative you can self-host, several are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
 			],
 		],
 		tables: [

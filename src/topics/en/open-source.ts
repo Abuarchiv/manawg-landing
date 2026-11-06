@@ -157,7 +157,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 					],
 					[
 						'Spliit',
-						'Shared expenses for friends and family',
+						'Free open-source alternative to Splitwise: groups shared with friends',
 						'None (Splitwise import listed as possible)',
 					],
 					[
@@ -195,7 +195,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'What ManaWG is and what it is not',
-				'Built for one flat of up to 20 members: expenses, cleaning rota, shopping list, calendar, chat and pinboard in one app.\nEuro only, no currency conversion.\nManaWG moves no money: you pay each other yourselves and mark the transfer as paid in the app.\nThere is no split by days, only equal or custom amounts. For bills by days there is the [calculator](/split-bill-by-days-calculator).\nThe youngest of the six with the smallest community: fewer people to ask, and less time in everyday use than the others.\nNo ads and no paid tier; the hosted app keeps its data in the EU.',
+				'Built for one flat of up to 20 members: expenses, cleaning rota, shopping list, calendar, chat and pinboard in one app.\nAmounts are in euros, with no currency conversion.\nManaWG moves no money: you pay each other yourselves and mark the transfer as paid in the app.\nThere is no split by days, only equal or custom amounts. For bills by days there is the [calculator](/split-bill-by-days-calculator).\nThe youngest of the six with the smallest community: fewer people to ask, and less time in everyday use than the others.\nNo ads and no paid tier; the hosted app keeps its data in the EU.',
 			],
 			[
 				'Try ManaWG or run your own',
