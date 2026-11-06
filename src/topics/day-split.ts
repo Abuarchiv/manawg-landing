@@ -32,8 +32,9 @@ export function inclusiveDays(from: string, to: string): number | null {
 
 /**
  * Days a person counts within the period. An empty date means the start or the end of the period,
- * days outside the period are ignored. Null if a date is invalid or the person's end is before the
- * start; 0 if the person's days lie entirely outside the period.
+ * days outside the period are ignored. Null if a date is invalid or, when both are given, the
+ * person's end is before the start; 0 if the person's days lie entirely outside the period, also
+ * when only one date is given.
  */
 export function personDays(
 	period: { from: string; to: string },
@@ -42,11 +43,14 @@ export function personDays(
 ): number | null {
 	const periodFrom = dayNumber(period.from);
 	const periodTo = dayNumber(period.to);
-	const start = from.trim() === '' ? periodFrom : dayNumber(from);
-	const end = to.trim() === '' ? periodTo : dayNumber(to);
-	if (periodFrom === null || periodTo === null || start === null || end === null) return null;
-	if (end < start) return null;
-	return Math.max(0, Math.min(end, periodTo) - Math.max(start, periodFrom) + 1);
+	const given = (text: string) => (text.trim() === '' ? undefined : dayNumber(text));
+	const first = given(from);
+	const last = given(to);
+	if (periodFrom === null || periodTo === null || first === null || last === null) return null;
+	if (first !== undefined && last !== undefined && last < first) return null;
+	const start = Math.max(first ?? periodFrom, periodFrom);
+	const end = Math.min(last ?? periodTo, periodTo);
+	return Math.max(0, end - start + 1);
 }
 
 /**

@@ -48,6 +48,11 @@ test('empty dates mean the whole period, days outside it are cut off', () => {
 	assert.equal(personDays(period, '2025-01-01', '2025-12-31'), 0);
 	assert.equal(personDays(period, '2026-06-02', '2026-06-01'), null);
 	assert.equal(personDays(period, '2026-02-30', ''), null);
+	// One empty bound with a date outside the period: the person was not there, that is 0 days.
+	assert.equal(personDays(period, '', '2025-12-31'), 0);
+	assert.equal(personDays(period, '2027-01-01', ''), 0);
+	assert.equal(personDays(period, '', '2026-01-01'), 1);
+	assert.equal(personDays(period, '2026-12-31', ''), 1);
 });
 
 test('shares add up to the bill, the largest remainder gets the leftover cent', () => {
