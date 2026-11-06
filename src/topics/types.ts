@@ -26,7 +26,7 @@ export interface Topic {
 	/** Interactive tool rendered after the section with the exact heading `after`; `csv` adds a download and print link. */
 	widget?: {
 		after: string;
-		kind: 'rota-generator' | 'rent-calculator' | 'settle-up';
+		kind: 'rota-generator' | 'rent-calculator' | 'settle-up' | 'day-split';
 		csv?: string;
 	};
 }

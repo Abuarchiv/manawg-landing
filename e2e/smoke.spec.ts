@@ -36,11 +36,13 @@ const PAGES = [
 	'/putzplan-vorlage',
 	'/wg-miete-rechner',
 	'/wer-schuldet-wem-rechner',
+	'/nebenkosten-tagesgenau-rechner',
 	'/impressum',
 	'/datenschutz',
 	'/en/guides',
 	'/en/split-flat-costs',
 	'/en/who-owes-whom-calculator',
+	'/en/split-bill-by-days-calculator',
 	'/en/privacy',
 ];
 
@@ -122,6 +124,50 @@ for (const [path, locale, three, amountField] of [
 			await expect(result).toHaveCount(0);
 			await page.getByLabel(amountField).fill('20');
 			await expect(result).toBeVisible();
+			const overflow = await page.evaluate(
+				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+			);
+			expect(overflow).toBeLessThanOrEqual(0);
+		});
+	});
+}
+
+// The by-days calculator splits the example exactly and never scrolls sideways on a phone.
+for (const [path, locale, caption, share, billField, personField] of [
+	[
+		'/nebenkosten-tagesgenau-rechner',
+		'de-DE',
+		'Anteil je Person nach Tagen',
+		'255,37 €',
+		'Betrag der Rechnung in Euro',
+		'Ben: letzter Tag',
+	],
+	[
+		'/en/split-bill-by-days-calculator',
+		'en-GB',
+		'Share per person by days',
+		'€255.37',
+		'Bill amount in euros',
+		'Ben: last day',
+	],
+] as const) {
+	test.describe(`by-days calculator on ${path}`, () => {
+		// German pages redirect visitors whose browser prefers English.
+		test.use({ locale });
+
+		test('works at 320 px', async ({ page }) => {
+			await page.setViewportSize({ width: 320, height: 640 });
+			await page.goto(path);
+			const table = page.getByRole('table', { name: caption, exact: true });
+			await expect(table).toBeVisible();
+			await expect(table.getByRole('cell', { name: share })).toBeVisible();
+			await page.getByLabel(billField).fill('abc');
+			await expect(table).toHaveCount(0);
+			await page.getByLabel(billField).fill('1234.56');
+			await page.getByLabel(personField).fill('2025-12-01');
+			await expect(table).toHaveCount(0);
+			await page.getByLabel(personField).fill('2026-05-31');
+			await expect(table).toBeVisible();
 			const overflow = await page.evaluate(
 				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
 			);

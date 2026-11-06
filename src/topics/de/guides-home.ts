@@ -910,7 +910,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 	},
 	'wg-zwischenmiete': {
 		link: 'Zwischenmiete',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-19',
 		title: 'Zwischenmiete in der WG: Ablauf, Vertrag, Kosten | ManaWG',
 		description:
@@ -933,7 +933,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 			],
 			[
 				'Miete und Kaution',
-				'Üblich ist, dass der Zwischenmieter die Miete für das Zimmer übernimmt, also den Anteil an Kaltmiete, Nebenkosten, Strom und Internet. Ihr selbst zahlt an Vermieter oder WG weiter wie bisher und bekommt das Geld vom Zwischenmieter. Eine Kaution von ein bis zwei Monatsmieten schützt euch vor Schäden und offenen Beträgen. Wer möbliert vermietet, darf dafür einen angemessenen Aufschlag nehmen, ein Gewinn auf Kosten des Zwischenmieters ist aber nicht der Sinn.',
+				'Üblich ist, dass der Zwischenmieter die Miete für das Zimmer übernimmt, also den Anteil an Kaltmiete, Nebenkosten, Strom und Internet. Ihr selbst zahlt an Vermieter oder WG weiter wie bisher und bekommt das Geld vom Zwischenmieter. Eine Kaution von ein bis zwei Monatsmieten schützt euch vor Schäden und offenen Beträgen. Wer möbliert vermietet, darf dafür einen angemessenen Aufschlag nehmen, ein Gewinn auf Kosten des Zwischenmieters ist aber nicht der Sinn. Beginnt oder endet die Zwischenmiete mitten im Abrechnungszeitraum, teilt der [Tagesgenau-Rechner](/nebenkosten-tagesgenau-rechner) Strom, Internet und Nachzahlungen nach Tagen auf.',
 			],
 			[
 				'Anmeldung und Formalitäten',

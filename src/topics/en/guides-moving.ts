@@ -464,7 +464,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 	},
 	'moving-in-checklist': {
 		link: 'Moving in',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-29',
 		title: 'Moving into a flat share in Germany: checklist | ManaWG',
 		description:
@@ -487,7 +487,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'Settle the money from the start',
-				'Ask who holds the electricity, internet and Rundfunkbeitrag (broadcasting fee) contracts and how you pay your share. The [Rundfunkbeitrag in a flat share](/rundfunkbeitrag-shared-flat) is due only once per flat, not from each person individually. Find out whether there is a shared [household kitty](/household-kitty), and whether existing items such as the washing machine or kitchen appliances should be bought out. In ManaWG, after joining you see the flat’s fixed costs, expenses and balances, and new expenses are shared with you from then on.',
+				'Ask who holds the electricity, internet and Rundfunkbeitrag (broadcasting fee) contracts and how you pay your share. The [Rundfunkbeitrag in a flat share](/rundfunkbeitrag-shared-flat) is due only once per flat, not from each person individually. Find out whether there is a shared [household kitty](/household-kitty), and whether existing items such as the washing machine or kitchen appliances should be bought out. In ManaWG, after joining you see the flat’s fixed costs, expenses and balances, and new expenses are shared with you from then on. If you move in during a billing period, the [split by days calculator](/split-bill-by-days-calculator) works out your share of the current bill by days.',
 			],
 			[
 				'Talk about how you live',
@@ -982,7 +982,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 	},
 	'moving-out-checklist': {
 		link: 'Moving out',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-29',
 		title: 'Moving out of a flat share in Germany: checklist | ManaWG',
 		description:
@@ -1001,7 +1001,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'Money: open amounts and the deposit',
-				'Settle all open amounts before you leave, while everyone is still reachable. In the [ManaWG shared expenses](/shared-expenses) you see your balance and the suggested transfers. When the balance is at zero, everything is done. Also clarify what happens to shared purchases: does the vacuum cleaner stay in the flat, and do the others pay your share? You get the [Kaution (deposit)](/flat-share-deposit) back from the landlord or the main tenant. The check can take a few months, especially if the annual utilities statement (Nebenkostenabrechnung, see [utilities in a flat share](/utilities-and-internet)) is still to come.',
+				'Settle all open amounts before you leave, while everyone is still reachable. In the [ManaWG shared expenses](/shared-expenses) you see your balance and the suggested transfers. When the balance is at zero, everything is done. If a bill runs past your moving-out day, the [split by days calculator](/split-bill-by-days-calculator) divides it by days. Also clarify what happens to shared purchases: does the vacuum cleaner stay in the flat, and do the others pay your share? You get the [Kaution (deposit)](/flat-share-deposit) back from the landlord or the main tenant. The check can take a few months, especially if the annual utilities statement (Nebenkostenabrechnung, see [utilities in a flat share](/utilities-and-internet)) is still to come.',
 			],
 			[
 				'Contracts and authorities',

@@ -49,6 +49,7 @@ Hinweis zum Namen: ManaWG ist eine Haushalts-App für Wohngemeinschaften und hat
 - [Urlaub und Abwesenheit](https://manawg.com/wg-abwesenheit-urlaub)
 - [Schulden unter Mitbewohnern](https://manawg.com/schulden-mitbewohner): Ausgleich, geliehenes Geld, Mahnung, Verjährung
 - [Wer schuldet wem? Rechner](https://manawg.com/wer-schuldet-wem-rechner): Namen und Beträge eintragen, wenigste Überweisungen, ohne Konto
+- [Nebenkosten tagesgenau aufteilen: Rechner](https://manawg.com/nebenkosten-tagesgenau-rechner): Rechnung nach Tagen für Einzug, Auszug und Zwischenmiete, ohne Konto
 - [Von Splitwise oder Splid wechseln](https://manawg.com/splitwise-splid-wechseln): CSV-Import, Vorschau, Namen zuordnen, rückgängig
 - [Splitwise kostenlos](https://manawg.com/splitwise-kostenlos): Tageslimit laut Splitwise-Hilfe, Pro, Alternativen
 - [Was ist ManaWG? Fakten](https://manawg.com/ueber-manawg)

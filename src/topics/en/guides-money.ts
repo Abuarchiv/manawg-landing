@@ -1,6 +1,14 @@
 // English guides on money, shopping and finding flatmates. Keys are English slugs; the German
 // counterparts live in ../de/guides-money.ts. Links are prefix-free.
 import type { Locale } from '../../lib/locale.ts';
+import {
+	dayShares,
+	EXAMPLE_BILL_CENT,
+	EXAMPLE_PEOPLE,
+	EXAMPLE_PERIOD,
+	inclusiveDays,
+	personDays,
+} from '../day-split.ts';
 import { euro, rentShares } from '../rent-calculator.ts';
 import { balances, EXAMPLE_NAMES, EXAMPLE_PAID_CENT, settle } from '../settle-up.ts';
 import type { Topic } from '../types.ts';
@@ -34,6 +42,16 @@ const signed = (cent: number, locale: Locale = 'de') =>
 	`${cent > 0 ? '+' : ''}${euro(cent, locale)}`;
 const list = (items: string[], and: string) =>
 	items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} ${and} ${items.at(-1)}`;
+
+// Example of the by-days page: the numbers come from the same functions as the calculator.
+const DAY_DAYS = EXAMPLE_PEOPLE.map((p) => personDays(EXAMPLE_PERIOD, p.from, p.to) ?? 0);
+const DAY_ALL = DAY_DAYS.reduce((a, b) => a + b, 0);
+const DAY_SHARES = dayShares(EXAMPLE_BILL_CENT, DAY_DAYS) ?? [];
+// The person who gets the cent that is left over after rounding down.
+const DAY_EXTRA = DAY_SHARES.findIndex(
+	(cent, i) => cent > Math.floor((EXAMPLE_BILL_CENT * (DAY_DAYS[i] ?? 0)) / DAY_ALL),
+);
+const DAY_NAMES = EXAMPLE_PEOPLE.map((p) => p.name);
 
 export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	'split-flat-costs': {
@@ -164,7 +182,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'utilities-and-internet': {
 		link: 'Utilities and internet',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-29',
 		title: 'Utilities, electricity and internet in a flat share | ManaWG',
 		description:
@@ -179,7 +197,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Example: back payment when people change',
-				'The statement for last year shows a back payment of €360. A and B lived in the flat all year, C moved out after eight months and D moved in for the last four. That makes 12 + 12 + 8 + 4 = 36 person-months, or €10 per month: A and B pay €120 each, C pays €80 and D pays €40. A credit is shared out the same way.',
+				'The statement for last year shows a back payment of €360. A and B lived in the flat all year, C moved out after eight months and D moved in for the last four. That makes 12 + 12 + 8 + 4 = 36 person-months, or €10 per month: A and B pay €120 each, C pays €80 and D pays €40. A credit is shared out the same way. If you would rather count days than months, the [split by days calculator](/split-bill-by-days-calculator) does the counting for you.',
 			],
 			[
 				'Per head or by room size?',
@@ -566,6 +584,101 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			[
 				'Does ManaWG transfer the money?',
 				'No. ManaWG only calculates suggestions. You make the transfers yourselves and mark the settlement as paid in the app.',
+			],
+		],
+	},
+	'split-bill-by-days-calculator': {
+		link: 'Split by days calculator',
+		widget: { after: 'Calculator', kind: 'day-split' },
+		updated: '2026-11-06',
+		published: '2026-11-06',
+		title: 'Split a bill by days: calculator for moving in, out and subletting | ManaWG',
+		description:
+			'Free calculator, no sign-up: split a bill by days between flatmates and subtenants, with move-in and move-out days, leap years and exact to the cent.',
+		h1: 'Split a bill by days',
+		intro:
+			'If you move in, move out or sublet a room in the middle of a billing period, you lived there for only part of the days. Enter the amount of the bill, the period and each person’s first and last day below. The calculator counts the days and splits the bill in proportion, exact to the cent. No account is needed.',
+		sections: [
+			[
+				'Calculator',
+				'Enter the amount of the bill, the period it covers (for example a billing year) and, for each person, the first and the last day they lived there. An empty date means the start or the end of the period. It works for 2 to 16 people and periods of up to 3,660 days, and calculates in euros. The pre-filled values are an example. What you enter stays in your browser and is neither stored nor sent anywhere.',
+			],
+			[
+				'How it is calculated',
+				'1. The amount is converted to whole cents, so there are no rounding errors.\n2. For each person, the days they lived there within the period are counted. The first and the last day both count: 1 to 31 May is 31 days, and “from” and “to” on the same day is 1 day. Days outside the period do not count.\n3. A person’s share is the amount times their days, divided by the total days of everyone in the list. Someone who lived there twice as long pays twice as much.\n4. The calendar is right: a leap year has 366 days, 29 February counts only in a leap year and summer time does not shift a day.\n5. Each share is rounded down to whole cents. The cents left over go one each to the people with the largest fractional parts (the largest remainder method); on a tie, to the person higher in the list. So the shares always add up to exactly the bill, and no share is a cent or more away from the exact value.',
+			],
+			[
+				'Move-in and move-out days',
+				'Both days at the edges count. If one person moves out on 31 May and the next moves in on 1 June, every day belongs to exactly one person. If the next person moves in on 31 May already, that day counts for both and the bill is spread over one more person-day. So enter as the last day the day the person still lives there, and as the first day the day they move in. If a handover day should count only once, give it to just one of the two people. Which days you count is for your flat to agree; the calculator only follows this rule.',
+			],
+			[
+				'Example: an electricity bill with a move-out and a move-in',
+				`The electricity bill for 2026 is ${euro(EXAMPLE_BILL_CENT, 'en')}. ${DAY_NAMES[0]} lives there all year (${DAY_DAYS[0]} days), ${DAY_NAMES[1]} moves out on 31 May (${DAY_DAYS[1]} days) and ${DAY_NAMES[2]} moves in on 1 June (${DAY_DAYS[2]} days). That makes ${DAY_ALL} person-days, so one day costs about ${euro(EXAMPLE_BILL_CENT / DAY_ALL, 'en')} per person. Rounding down leaves one cent over, which goes to ${DAY_NAMES[DAY_EXTRA]} because their remainder is the largest. After that, the shares add up to exactly ${euro(EXAMPLE_BILL_CENT, 'en')}.`,
+			],
+			[
+				'Which bills it suits',
+				'The calculator suits costs that affect everyone equally for as long as they live there: electricity, internet, streaming, the Rundfunkbeitrag (broadcasting fee) or a back payment from the utilities statement. What is usual in a flat share is covered in [utilities in a flat share](/utilities-and-internet), which counts in months. For a sublet, see [subletting a room](/subletting-a-room); for moving out, the [moving-out checklist](/moving-out-checklist); for moving in, the [moving-in checklist](/moving-in-checklist). Rent by room size is split by the [rent split calculator](/rent-split-calculator).',
+			],
+			[
+				'What the calculator does not do',
+				'It spreads the whole bill over the person-days you enter. Days on which nobody is entered are therefore not carried by one person alone; they are spread over everyone. It does not know consumption per person, unequal weights or currencies other than euros. It replaces neither the landlord’s statement nor legal advice.',
+			],
+			[
+				'Enter the result in ManaWG',
+				'ManaWG does not split costs by days. Create the expense in the [shared expenses](/shared-expenses), choose “Manually” under “People involved and split” and enter each person’s amount from the calculator. ManaWG shows whether the shares add up to the expense. ManaWG does not move any money itself: you pay by bank transfer, in cash or however you like and mark the settlement as paid.',
+			],
+			[
+				'Open source',
+				'ManaWG is open source under Apache-2.0, and the [source code is on GitHub](https://github.com/Abuarchiv/manawg).',
+			],
+		],
+		tables: [
+			{
+				after: 'Example: an electricity bill with a move-out and a move-in',
+				title: `Example: a ${euro(EXAMPLE_BILL_CENT, 'en')} electricity bill for 2026 split by days`,
+				header: ['Person', 'Days', 'Share'],
+				rows: [
+					...DAY_NAMES.map((name, i) => [
+						name,
+						String(DAY_DAYS[i] ?? 0),
+						euro(DAY_SHARES[i] ?? 0, 'en'),
+					]),
+					[
+						'Total',
+						String(DAY_ALL),
+						euro(
+							DAY_SHARES.reduce((a, b) => a + b, 0),
+							'en',
+						),
+					],
+				],
+				note: 'Anna lives there from 1 January to 31 December, Ben until 31 May, Cem from 1 June.',
+			},
+		],
+		faq: [
+			[
+				'Do the move-in day and the move-out day count?',
+				'Yes, both. The calculator counts days inclusively: 1 to 31 May is 31 days, and “from” and “to” on the same day is 1 day. If one person moves out on the day the next moves in, that day counts for both, unless you give it to only one of them.',
+			],
+			[
+				'Is the calculator right in a leap year?',
+				`Yes. The period from 1 January to 31 December has ${inclusiveDays('2024-01-01', '2024-12-31')} days in 2024 and ${inclusiveDays('2026-01-01', '2026-12-31')} in 2026. From 28 February to 1 March it is ${inclusiveDays('2024-02-28', '2024-03-01')} days in 2024 and ${inclusiveDays('2025-02-28', '2025-03-01')} in 2025.`,
+			],
+			[
+				'Who gets the leftover cent?',
+				'The person with the largest fractional part of their exact share; on a tie, the one higher in the list. Anyone with no day in the period never gets a cent. The shares always add up to exactly the bill.',
+			],
+			[
+				'What about days when nobody lives in the room?',
+				'The calculator spreads the whole bill over the person-days you enter. Empty days are therefore not carried by one person alone; they are spread over everyone. If you want to handle them differently, take the amount for the empty days out of the bill first.',
+			],
+			[
+				'Is what I enter stored?',
+				'No. The calculation runs in your browser and nothing is sent or stored. If you reload the page, the entries are gone.',
+			],
+			[
+				'Can ManaWG split costs by days?',
+				'No. In ManaWG you split an expense equally or enter an individual amount for each person. You copy the amounts from the calculator by hand.',
 			],
 		],
 	},

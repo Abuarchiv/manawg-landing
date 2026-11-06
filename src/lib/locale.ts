@@ -55,6 +55,7 @@ export const TOPIC_SLUG_EN: Readonly<Record<string, string>> = {
 	'wg-haushaltskasse': 'household-kitty',
 	'schulden-mitbewohner': 'flatmate-debts',
 	'wer-schuldet-wem-rechner': 'who-owes-whom-calculator',
+	'nebenkosten-tagesgenau-rechner': 'split-bill-by-days-calculator',
 	'splitwise-splid-wechseln': 'switch-from-splitwise-or-splid',
 	'splitwise-kostenlos': 'splitwise-free-limit',
 	'wg-einkauf-organisieren': 'organise-flat-shopping',

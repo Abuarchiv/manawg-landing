@@ -16,6 +16,7 @@ import {
 } from '@/lib/locale';
 import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
+import DaySplit from './DaySplit';
 import { gutter, mono, TopicFooter, TopicHeader } from './frame';
 import RentCalculator from './RentCalculator';
 import RotaGenerator from './RotaGenerator';
@@ -80,6 +81,8 @@ const widgetOf = (kind: NonNullable<Topic['widget']>['kind'], locale: Locale) =>
 		<RotaGenerator locale={locale} />
 	) : kind === 'settle-up' ? (
 		<SettleUp locale={locale} />
+	) : kind === 'day-split' ? (
+		<DaySplit locale={locale} />
 	) : (
 		<RentCalculator locale={locale} />
 	);
