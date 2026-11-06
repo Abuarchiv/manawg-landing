@@ -54,6 +54,8 @@ export const TOPIC_SLUG_EN: Readonly<Record<string, string>> = {
 	'rundfunkbeitrag-wg': 'rundfunkbeitrag-shared-flat',
 	'wg-haushaltskasse': 'household-kitty',
 	'schulden-mitbewohner': 'flatmate-debts',
+	'wer-schuldet-wem-rechner': 'who-owes-whom-calculator',
+	'nebenkosten-tagesgenau-rechner': 'split-bill-by-days-calculator',
 	'splitwise-splid-wechseln': 'switch-from-splitwise-or-splid',
 	'splitwise-kostenlos': 'splitwise-free-limit',
 	'wg-einkauf-organisieren': 'organise-flat-shopping',
@@ -75,6 +77,7 @@ export const TOPIC_SLUG_EN: Readonly<Record<string, string>> = {
 	'wg-zimmer-kuendigen': 'give-notice-on-a-room',
 	'wg-auszug-checkliste': 'moving-out-checklist',
 	'open-source-wg-app': 'open-source-flat-share-app',
+	'open-source-splitwise-alternativen': 'open-source-splitwise-alternatives',
 };
 
 const EN_TO_DE: Readonly<Record<string, string>> = Object.fromEntries(

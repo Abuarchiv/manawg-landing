@@ -484,7 +484,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'6. Privacy and language',
-				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). ManaWG supports the euro only. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
+				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). Other open-source apps you can self-host are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives). ManaWG supports the euro only. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
 			],
 			[
 				'7. How easy is switching?',
@@ -558,7 +558,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'No paid tier, no ads',
-				'In ManaWG every feature is open to every flat. There are no ads, no Pro subscription and no feature that unlocks only after a purchase. There is one limit all the same: a flat holds at most 20 active members. For shared flats that is enough, for large groups it is not. Members who have moved out do not count, and their history is kept. ManaWG is also open source under the Apache License 2.0, and you can run your own copy; see [Open-source flat-share app](/open-source-flat-share-app).',
+				'In ManaWG every feature is open to every flat. There are no ads, no Pro subscription and no feature that unlocks only after a purchase. There is one limit all the same: a flat holds at most 20 active members. For shared flats that is enough, for large groups it is not. Members who have moved out do not count, and their history is kept. ManaWG is also open source under the Apache License 2.0, and you can run your own copy; see [Open-source flat-share app](/open-source-flat-share-app). How ManaWG compares with Spliit, SplitPro, Cospend, IHateMoney and Abrechnung is in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
 			],
 			[
 				'Reads photos, but is not a receipt scanner',

@@ -31,6 +31,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Tricount alternative](https://manawg.com/en/tricount-alternative)
 - [Splid alternative](https://manawg.com/en/splid-alternative)
 - [OurHome alternative](https://manawg.com/en/ourhome-alternative)
+- [Open-source Splitwise alternatives](https://manawg.com/en/open-source-splitwise-alternatives): ManaWG, Spliit, SplitPro, Cospend, IHateMoney, Abrechnung by licence, self-hosting, phone use and import
 - [Frequently asked questions](https://manawg.com/en/faq)
 - [What is ManaWG? Facts](https://manawg.com/en/about-manawg)
 - [Best flat-share app: 7 criteria](https://manawg.com/en/best-flat-share-app)
@@ -50,6 +51,8 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Moving-in checklist](https://manawg.com/en/moving-in-checklist)
 - [Holidays and time away](https://manawg.com/en/holidays-and-time-away)
 - [Debts between flatmates](https://manawg.com/en/flatmate-debts): settling up, borrowed money, reminders, limitation
+- [Who owes whom? Calculator](https://manawg.com/en/who-owes-whom-calculator): enter names and amounts, fewest transfers, no account
+- [Split a bill by days: calculator](https://manawg.com/en/split-bill-by-days-calculator): bill by days for moving in, moving out and subletting, no account
 - [Switch from Splitwise or Splid](https://manawg.com/en/switch-from-splitwise-or-splid): CSV import, preview, matching names, undo
 - [Splitwise free limit](https://manawg.com/en/splitwise-free-limit): daily limit according to Splitwise help, Pro, alternatives
 - [Organise flat shopping](https://manawg.com/en/organise-flat-shopping)

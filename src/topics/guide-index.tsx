@@ -30,6 +30,8 @@ const CLUSTERS: Array<[ClusterId, string[]]> = [
 			'wg-kaution',
 			'wg-haushaltskasse',
 			'schulden-mitbewohner',
+			'wer-schuldet-wem-rechner',
+			'nebenkosten-tagesgenau-rechner',
 			'splitwise-splid-wechseln',
 			'splitwise-kostenlos',
 		],

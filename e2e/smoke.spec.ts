@@ -35,10 +35,16 @@ const PAGES = [
 	'/ratgeber',
 	'/putzplan-vorlage',
 	'/wg-miete-rechner',
+	'/wer-schuldet-wem-rechner',
+	'/nebenkosten-tagesgenau-rechner',
+	'/open-source-splitwise-alternativen',
 	'/impressum',
 	'/datenschutz',
 	'/en/guides',
 	'/en/split-flat-costs',
+	'/en/who-owes-whom-calculator',
+	'/en/split-bill-by-days-calculator',
+	'/en/open-source-splitwise-alternatives',
 	'/en/privacy',
 ];
 
@@ -99,6 +105,95 @@ for (const path of ['/wg-miete-rechner', '/putzplan-erstellen']) {
 			expect(s.role).toBe('region');
 			expect(s.label).not.toBe('');
 		}
+	});
+}
+
+// The settle-up calculator answers with the fewest transfers and never scrolls sideways on a phone.
+for (const [path, locale, three, amountField] of [
+	['/wer-schuldet-wem-rechner', 'de-DE', '3 Überweisungen', 'Bezahlt von Jonas in Euro'],
+	['/en/who-owes-whom-calculator', 'en-GB', '3 transfers', 'Amount paid by Jonas in euros'],
+] as const) {
+	test.describe(`settle-up calculator on ${path}`, () => {
+		// German pages redirect visitors whose browser prefers English.
+		test.use({ locale });
+
+		test('works at 320 px', async ({ page }) => {
+			await page.setViewportSize({ width: 320, height: 640 });
+			await page.goto(path);
+			const result = page.getByRole('heading', { level: 3, name: three });
+			await expect(result).toBeVisible();
+			await page.getByLabel(amountField).fill('100');
+			await expect(result).toHaveCount(0);
+			await page.getByLabel(amountField).fill('20');
+			await expect(result).toBeVisible();
+			const overflow = await page.evaluate(
+				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+			);
+			expect(overflow).toBeLessThanOrEqual(0);
+		});
+	});
+}
+
+// The by-days calculator splits the example exactly and never scrolls sideways on a phone.
+for (const [path, locale, caption, share, billField, personField] of [
+	[
+		'/nebenkosten-tagesgenau-rechner',
+		'de-DE',
+		'Anteil je Person nach Tagen',
+		'255,37 €',
+		'Betrag der Rechnung in Euro',
+		'Ben: letzter Tag',
+	],
+	[
+		'/en/split-bill-by-days-calculator',
+		'en-GB',
+		'Share per person by days',
+		'€255.37',
+		'Bill amount in euros',
+		'Ben: last day',
+	],
+] as const) {
+	test.describe(`by-days calculator on ${path}`, () => {
+		// German pages redirect visitors whose browser prefers English.
+		test.use({ locale });
+
+		test('works at 320 px', async ({ page }) => {
+			await page.setViewportSize({ width: 320, height: 640 });
+			await page.goto(path);
+			const table = page.getByRole('table', { name: caption, exact: true });
+			await expect(table).toBeVisible();
+			await expect(table.getByRole('cell', { name: share })).toBeVisible();
+			await page.getByLabel(billField).fill('abc');
+			await expect(table).toHaveCount(0);
+			await page.getByLabel(billField).fill('1234.56');
+			await page.getByLabel(personField).fill('2025-12-01');
+			await expect(table).toBeVisible();
+			const overflow = await page.evaluate(
+				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+			);
+			expect(overflow).toBeLessThanOrEqual(0);
+		});
+	});
+}
+
+// The comparison page keeps its tables inside their own scroll regions: the page itself never scrolls sideways on a phone.
+for (const [path, locale] of [
+	['/open-source-splitwise-alternativen', 'de-DE'],
+	['/en/open-source-splitwise-alternatives', 'en-GB'],
+] as const) {
+	test.describe(`comparison page ${path}`, () => {
+		// German pages redirect visitors whose browser prefers English.
+		test.use({ locale });
+
+		test('does not scroll sideways at 320 px', async ({ page }) => {
+			await page.setViewportSize({ width: 320, height: 640 });
+			await page.goto(path);
+			await expect(page.getByRole('table')).toHaveCount(3);
+			const overflow = await page.evaluate(
+				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+			);
+			expect(overflow).toBeLessThanOrEqual(0);
+		});
 	});
 }
 

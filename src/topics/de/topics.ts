@@ -434,7 +434,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'6. Datenschutz und Sprache',
-				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App gibt es auf Deutsch und Englisch. Der Code ist Open Source unter Apache-2.0 und lässt sich selbst hosten, siehe [Open-Source-WG-App](/open-source-wg-app). Andere Währungen als Euro gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
+				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App gibt es auf Deutsch und Englisch. Der Code ist Open Source unter Apache-2.0 und lässt sich selbst hosten, siehe [Open-Source-WG-App](/open-source-wg-app). Andere quelloffene Apps zum Selbsthosten stehen im Vergleich [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen). Andere Währungen als Euro gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
 			],
 			[
 				'7. Wie leicht ist der Umstieg?',
@@ -508,7 +508,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Keine Bezahlstufe, keine Werbung',
-				'In ManaWG stehen alle Funktionen jeder WG offen. Es gibt keine Anzeigen, kein Pro-Abo und keine Funktion, die erst nach einem Kauf freigeschaltet wird. Eine Grenze gibt es trotzdem: Eine WG fasst höchstens 20 aktive Mitglieder. Für Wohngemeinschaften reicht das, für große Gruppen nicht. Ausgezogene Mitglieder zählen nicht mit, ihre Historie bleibt erhalten. ManaWG ist außerdem Open Source unter der Apache-Lizenz 2.0, und ihr könnt eine eigene Kopie betreiben, siehe [Open-Source-WG-App](/open-source-wg-app).',
+				'In ManaWG stehen alle Funktionen jeder WG offen. Es gibt keine Anzeigen, kein Pro-Abo und keine Funktion, die erst nach einem Kauf freigeschaltet wird. Eine Grenze gibt es trotzdem: Eine WG fasst höchstens 20 aktive Mitglieder. Für Wohngemeinschaften reicht das, für große Gruppen nicht. Ausgezogene Mitglieder zählen nicht mit, ihre Historie bleibt erhalten. ManaWG ist außerdem Open Source unter der Apache-Lizenz 2.0, und ihr könnt eine eigene Kopie betreiben, siehe [Open-Source-WG-App](/open-source-wg-app). Wie ManaWG neben Spliit, SplitPro, Cospend, IHateMoney und Abrechnung dasteht, zeigt der Vergleich [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen).',
 			],
 			[
 				'Fotos lesen, aber kein Kassenbon-Scanner',

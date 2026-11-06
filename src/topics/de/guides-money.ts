@@ -1,6 +1,16 @@
 // Guides about money, shopping and finding flatmates. General tips, not legal advice.
 // Only name features that really exist in manawg-app.
+import type { Locale } from '../../lib/locale.ts';
+import {
+	dayShares,
+	EXAMPLE_BILL_CENT,
+	EXAMPLE_PEOPLE,
+	EXAMPLE_PERIOD,
+	inclusiveDays,
+	personDays,
+} from '../day-split.ts';
 import { euro, rentShares } from '../rent-calculator.ts';
+import { balances, EXAMPLE_NAMES, EXAMPLE_PAID_CENT, settle } from '../settle-up.ts';
 import type { Topic } from '../types.ts';
 
 // Rent example of the calculator page: values come from rentShares, not from hand.
@@ -18,10 +28,30 @@ const LICENCE_FEE_QUARTER_CENT = LICENCE_FEE_MONTH_CENT * 3;
 // Free expenses per day according to the Splitwise help centre (kb.splitwise.com/pro/what-is-splitwise-pro, as of 27 Oct 2026).
 const SPLITWISE_DAILY_LIMIT = 4;
 
+// Example of the settle-up page: the numbers come from the same functions as the calculator.
+const SETTLE_NAMES = EXAMPLE_NAMES;
+const SETTLE_TOTAL = EXAMPLE_PAID_CENT.reduce((a, b) => a + b, 0);
+const SETTLE_BALANCE = balances(EXAMPLE_PAID_CENT);
+const SETTLE_TRANSFERS = settle(SETTLE_BALANCE);
+const signed = (cent: number, locale: Locale = 'de') =>
+	`${cent > 0 ? '+' : ''}${euro(cent, locale)}`;
+const list = (items: string[], and: string) =>
+	items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} ${and} ${items.at(-1)}`;
+
+// Example of the by-days page: the numbers come from the same functions as the calculator.
+const DAY_DAYS = EXAMPLE_PEOPLE.map((p) => personDays(EXAMPLE_PERIOD, p.from, p.to) ?? 0);
+const DAY_ALL = DAY_DAYS.reduce((a, b) => a + b, 0);
+const DAY_SHARES = dayShares(EXAMPLE_BILL_CENT, DAY_DAYS) ?? [];
+// The person who gets the cent that is left over after rounding down.
+const DAY_EXTRA = DAY_SHARES.findIndex(
+	(cent, i) => cent > Math.floor((EXAMPLE_BILL_CENT * (DAY_DAYS[i] ?? 0)) / DAY_ALL),
+);
+const DAY_NAMES = EXAMPLE_PEOPLE.map((p) => p.name);
+
 export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	'wg-kosten-aufteilen': {
 		link: 'WG-Kosten aufteilen',
-		updated: '2026-10-27',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'WG-Kosten fair aufteilen: drei Modelle mit Beispiel | ManaWG',
 		description:
@@ -48,7 +78,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Ausgleichen ohne Überweisungschaos',
-				'Wenn jeder mal für alle zahlt, entstehen [Schulden in alle Richtungen](/schulden-mitbewohner). Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt.',
+				'Wenn jeder mal für alle zahlt, entstehen [Schulden in alle Richtungen](/schulden-mitbewohner). Sinnvoll ist, nicht jede Ausgabe einzeln zu begleichen, sondern am Monatsende den Saldo zu betrachten. Aus den Salden lässt sich ableiten, wer wem etwas überweisen sollte, und zwar mit wenigen Überweisungen. ManaWG berechnet diese Vorschläge automatisch, überweist aber selbst nichts: Ihr markiert Ausgleiche als bezahlt. Den Ausgleich probiert ihr mit dem [Rechner „Wer schuldet wem?“](/wer-schuldet-wem-rechner) ohne Konto aus.',
 			],
 			[
 				'Regeln, die Streit vermeiden',
@@ -147,7 +177,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'wg-nebenkosten': {
 		link: 'WG-Nebenkosten',
-		updated: '2026-10-27',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'WG-Nebenkosten, Strom und Internet fair aufteilen | ManaWG',
 		description:
@@ -162,7 +192,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Beispiel: Nachzahlung bei Wechsel in der WG',
-				'Die Abrechnung für das Vorjahr ergibt 360 Euro Nachzahlung. A und B haben das ganze Jahr in der WG gewohnt, C ist nach acht Monaten ausgezogen, D für die letzten vier Monate eingezogen. Zusammen sind das 12 + 12 + 8 + 4 = 36 Personenmonate, also 10 Euro pro Monat: A und B zahlen je 120 Euro, C 80 Euro und D 40 Euro. Ein Guthaben verteilt ihr genauso.',
+				'Die Abrechnung für das Vorjahr ergibt 360 Euro Nachzahlung. A und B haben das ganze Jahr in der WG gewohnt, C ist nach acht Monaten ausgezogen, D für die letzten vier Monate eingezogen. Zusammen sind das 12 + 12 + 8 + 4 = 36 Personenmonate, also 10 Euro pro Monat: A und B zahlen je 120 Euro, C 80 Euro und D 40 Euro. Ein Guthaben verteilt ihr genauso. Wollt ihr nicht nach Monaten, sondern tagesgenau rechnen, nimmt euch der [Rechner für Nebenkosten nach Tagen](/nebenkosten-tagesgenau-rechner) die Zählarbeit ab.',
 			],
 			[
 				'Nach Köpfen oder nach Zimmergröße?',
@@ -316,7 +346,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'wg-haushaltskasse': {
 		link: 'WG-Haushaltskasse',
-		updated: '2026-10-27',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'WG-Haushaltskasse: Bargeld, Konto oder App? | ManaWG',
 		description:
@@ -343,7 +373,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Beispielrechnung',
-				'Eine WG mit drei Personen kauft im Monat gemeinsam für 90 Euro ein. Anna zahlt Putzmittel für 30 Euro, Ben den Großeinkauf für 51 Euro, Cem Müllbeutel für 9 Euro. Jeder Anteil liegt bei 30 Euro. Anna ist ausgeglichen, Ben hat 21 Euro zu viel gezahlt, Cem 21 Euro zu wenig. Eine einzige Überweisung von Cem an Ben gleicht alles aus. Bei Bargeldkasse oder Konto wären stattdessen drei Einzahlungen und drei Auszahlungen nötig gewesen.',
+				'Eine WG mit drei Personen kauft im Monat gemeinsam für 90 Euro ein. Anna zahlt Putzmittel für 30 Euro, Ben den Großeinkauf für 51 Euro, Cem Müllbeutel für 9 Euro. Jeder Anteil liegt bei 30 Euro. Anna ist ausgeglichen, Ben hat 21 Euro zu viel gezahlt, Cem 21 Euro zu wenig. Eine einzige Überweisung von Cem an Ben gleicht alles aus. Bei Bargeldkasse oder Konto wären stattdessen drei Einzahlungen und drei Auszahlungen nötig gewesen. Eigene Zahlen rechnet der [Rechner „Wer schuldet wem?“](/wer-schuldet-wem-rechner) durch.',
 			],
 			[
 				'Regeln für jede Kasse',
@@ -367,7 +397,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'schulden-mitbewohner': {
 		link: 'Schulden in der WG',
-		updated: '2026-10-27',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'Schulden unter Freunden und Mitbewohnern klären | ManaWG',
 		description:
@@ -390,7 +420,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Beispiel mit vier Personen',
-				'In einer Vierer-WG hat Lea 120 Euro mehr bezahlt, als ihr Anteil war, Tim 20 Euro mehr. Jonas hat 80 Euro zu wenig gezahlt, Mia 60 Euro. Einzeln abgerechnet wären bis zu sechs Überweisungen nötig. Verrechnet reichen drei: Jonas überweist 80 Euro an Lea, Mia 40 Euro an Lea und 20 Euro an Tim. Danach stehen alle auf null.',
+				'In einer Vierer-WG hat Lea 120 Euro mehr bezahlt, als ihr Anteil war, Tim 20 Euro mehr. Jonas hat 80 Euro zu wenig gezahlt, Mia 60 Euro. Einzeln abgerechnet wären bis zu sechs Überweisungen nötig. Verrechnet reichen drei: Jonas überweist 80 Euro an Lea, Mia 40 Euro an Lea und 20 Euro an Tim. Danach stehen alle auf null. Mit euren eigenen Zahlen rechnet das der [Rechner „Wer schuldet wem?“](/wer-schuldet-wem-rechner).',
 			],
 			[
 				'Feste Termine statt ständiger Erinnerungen',
@@ -467,6 +497,151 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 				'https://www.gesetze-im-internet.de/bgb/__199.html',
 			],
 			['§ 214 BGB, Wirkung der Verjährung', 'https://www.gesetze-im-internet.de/bgb/__214.html'],
+		],
+	},
+	'wer-schuldet-wem-rechner': {
+		link: 'Wer schuldet wem Rechner',
+		widget: { after: 'Rechner', kind: 'settle-up' },
+		updated: '2026-11-06',
+		published: '2026-11-06',
+		title: 'Wer schuldet wem? Rechner für WG und Freunde | ManaWG',
+		description:
+			'Kostenloser Rechner ohne Anmeldung: Namen und Beträge eintragen und sehen, wer wem wie viel zahlt. Die wenigsten Überweisungen, auf den Cent genau.',
+		h1: 'Wer schuldet wem? Ausgaben ausgleichen',
+		intro:
+			'In der WG, auf der Reise oder beim Wochenende mit Freunden zahlt jemand die Unterkunft, jemand den Einkauf und jemand die Pizza. Tragt unten ein, wer wie viel bezahlt hat. Der Rechner teilt die Summe gleichmäßig auf alle und zeigt, wer wem wie viel zahlt, damit am Ende alle quitt sind, mit möglichst wenigen Überweisungen. Dafür braucht es kein Konto.',
+		sections: [
+			[
+				'Rechner',
+				'Tragt für jede Person den Namen ein und den Betrag, den sie bezahlt hat. Wer nichts bezahlt hat, bekommt eine 0. Die Summe wird gleichmäßig durch alle Personen in der Liste geteilt. Es sind 2 bis 16 Personen möglich, gerechnet wird in Euro. Die vorbelegten Werte sind ein Beispiel. Eure Eingaben bleiben im Browser und werden weder gespeichert noch gesendet.',
+			],
+			[
+				'So wird gerechnet',
+				'1. Alle Beträge werden in ganze Cent umgerechnet, es gibt keine Rundungsfehler.\n2. Die Summe wird durch die Zahl der Personen geteilt. Bleiben Cent übrig, tragen die ersten Personen der Liste je einen Cent mehr.\n3. Der Saldo einer Person ist ihr bezahlter Betrag minus ihr Anteil. Plus heißt, sie bekommt Geld, minus heißt, sie zahlt.\n4. Der Rechner sucht die kleinste Zahl an Überweisungen, die alle Salden auf null bringt. Bis 16 Personen probiert er dafür alle Möglichkeiten durch.\n5. Gibt es mehrere gleich gute Lösungen, entscheidet die Reihenfolge der Liste. Dieselben Eingaben ergeben immer dieselben Überweisungen, und sie gleichen jeden Saldo auf den Cent aus.',
+			],
+			[
+				'Beispiel mit vier Personen',
+				`${SETTLE_NAMES.map((name, i) => `${name} zahlt ${euro(EXAMPLE_PAID_CENT[i] ?? 0)}`).join(', ')}. Zusammen sind das ${euro(SETTLE_TOTAL)}, jeder Anteil liegt bei ${euro(SETTLE_TOTAL / SETTLE_NAMES.length)}. Die Salden: ${SETTLE_NAMES.map((name, i) => `${name} ${signed(SETTLE_BALANCE[i] ?? 0)}`).join(', ')}. ${SETTLE_TRANSFERS.length} Überweisungen reichen: ${list(
+					SETTLE_TRANSFERS.map(
+						(t) => `${SETTLE_NAMES[t.from]} zahlt ${SETTLE_NAMES[t.to]} ${euro(t.cent)}`,
+					),
+					'und',
+				)}. Danach steht jede Person auf null. Wie ihr solche Salden im Alltag klärt, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).`,
+			],
+			[
+				'Was der Rechner nicht kann',
+				'Er teilt immer gleichmäßig auf alle in der Liste. Ungleiche Anteile, Ausgaben nur für einen Teil der Gruppe, andere Währungen als Euro und Rückzahlungen, die schon geflossen sind, kennt er nicht. Wollt ihr die Miete nach Zimmergröße teilen, hilft der [WG-Miete-Rechner](/wg-miete-rechner), weitere Modelle stehen unter [WG-Kosten fair aufteilen](/wg-kosten-aufteilen). Für Ausgaben, die sich über Wochen ansammeln, ist ein Rechner mühsam, weil ihr alles immer wieder neu eintragen müsst.',
+			],
+			[
+				'Wie ManaWG das dauerhaft erledigt',
+				'In ManaWG tragt ihr jede Ausgabe ein, wenn sie anfällt: wer bezahlt hat, wer beteiligt ist, gleichmäßig oder mit eigenen Beträgen pro Person. Die App führt den Saldo jeder Person mit und schlägt daraus Überweisungen vor, nach demselben Verfahren wie dieser Rechner. Bis 16 offene Salden sucht sie die kleinste Zahl an Überweisungen unter allen Möglichkeiten, darüber nimmt sie ein einfacheres Verfahren, das mehr Überweisungen brauchen kann. ManaWG überweist nichts selbst: Ihr zahlt per Bank, bar oder wie ihr wollt und markiert den Ausgleich als bezahlt. Am Monatsanfang kommt eine Abrechnung per Mail mit den Vorschlägen, jede Person kann sie abschalten. Wie das aussieht, zeigt die [Demo ohne Anmeldung](/demo). Mehr zur Funktion steht unter [WG-Kasse](/wg-kasse).',
+			],
+			[
+				'Open Source',
+				'ManaWG ist Open Source unter Apache-2.0, den [Quellcode gibt es auf GitHub](https://github.com/Abuarchiv/manawg).',
+			],
+		],
+		faq: [
+			[
+				'Wie findet der Rechner die wenigsten Überweisungen?',
+				'Er zerlegt die offenen Salden in möglichst viele Gruppen, die für sich genau null ergeben. Eine Gruppe aus k Personen braucht k − 1 Überweisungen, mehr Gruppen heißen also weniger Überweisungen. Bei bis zu 16 Personen probiert er dafür alle Möglichkeiten durch.',
+			],
+			[
+				'Wer bekommt den übrig bleibenden Cent?',
+				'Die ersten Personen in der Liste. Teilt ihr 100,00 Euro durch drei, zahlt die erste Person 33,34 Euro und die anderen beiden je 33,33 Euro. Die Anteile ergeben immer genau die Summe.',
+			],
+			[
+				'Werden meine Eingaben gespeichert?',
+				'Nein. Die Rechnung läuft im Browser, nichts wird gesendet oder gespeichert. Lädt ihr die Seite neu, sind die Eingaben weg.',
+			],
+			[
+				'Überweist ManaWG das Geld?',
+				'Nein. ManaWG berechnet nur Vorschläge. Ihr überweist selbst und markiert den Ausgleich in der App als bezahlt.',
+			],
+		],
+	},
+	'nebenkosten-tagesgenau-rechner': {
+		link: 'Tagesgenau-Rechner',
+		widget: { after: 'Rechner', kind: 'day-split' },
+		updated: '2026-11-06',
+		published: '2026-11-06',
+		title: 'Nebenkosten tagesgenau aufteilen: Rechner für Ein- und Auszug | ManaWG',
+		description:
+			'Kostenloser Rechner ohne Anmeldung: Rechnung nach Tagen auf Mitbewohner und Zwischenmieter verteilen, mit Ein- und Auszugstag, Schaltjahr und auf den Cent genau.',
+		h1: 'Nebenkosten tagesgenau aufteilen',
+		intro:
+			'Wer mitten im Abrechnungszeitraum einzieht, auszieht oder ein Zimmer zwischenvermietet, hat nur an einem Teil der Tage dort gewohnt. Tragt unten den Betrag der Rechnung, den Zeitraum und für jede Person den ersten und den letzten Tag ein. Der Rechner zählt die Tage und verteilt die Rechnung im Verhältnis dazu, auf den Cent genau. Dafür braucht es kein Konto.',
+		sections: [
+			[
+				'Rechner',
+				'Tragt den Betrag der Rechnung ein, den Zeitraum, den sie abdeckt (zum Beispiel ein Abrechnungsjahr), und für jede Person den ersten und den letzten Tag, an dem sie dort gewohnt hat. Ein leeres Datum gilt für den Anfang oder das Ende des Zeitraums. Es sind 2 bis 16 Personen und Zeiträume bis 3.660 Tage möglich, gerechnet wird in Euro. Die vorbelegten Werte sind ein Beispiel. Eure Eingaben bleiben im Browser und werden weder gespeichert noch gesendet.',
+			],
+			[
+				'So wird gerechnet',
+				'1. Der Betrag wird in ganze Cent umgerechnet, es gibt keine Rundungsfehler.\n2. Für jede Person werden die Tage gezählt, an denen sie im Zeitraum dort gewohnt hat. Der erste und der letzte Tag zählen beide mit: Vom 1. bis 31. Mai sind es 31 Tage, „von“ und „bis“ am selben Tag ergibt 1 Tag. Tage außerhalb des Zeitraums zählen nicht.\n3. Der Anteil einer Person ist der Betrag mal ihre Tage, geteilt durch die Summe der Tage aller Personen in der Liste. Wer doppelt so lange dort gewohnt hat, zahlt doppelt so viel.\n4. Der Kalender stimmt: Ein Schaltjahr hat 366 Tage, der 29. Februar zählt nur in einem Schaltjahr, und die Sommerzeit verschiebt keinen Tag.\n5. Jeder Anteil wird auf ganze Cent abgerundet. Die übrigen Cent bekommen einzeln die Personen mit den größten Nachkommastellen (Größte-Reste-Verfahren), bei Gleichstand die Person weiter oben in der Liste. So ergeben die Anteile immer genau die Rechnung, und kein Anteil weicht um einen Cent oder mehr vom genauen Wert ab.',
+			],
+			[
+				'Ein- und Auszugstag',
+				'Beide Tage an den Rändern zählen mit. Zieht eine Person am 31. Mai aus und die nächste am 1. Juni ein, gehört jeder Tag genau einer Person. Zieht die nächste schon am 31. Mai ein, zählt dieser Tag für beide, und die Rechnung verteilt sich auf einen Personentag mehr. Tragt deshalb als letzten Tag den Tag ein, an dem die Person noch dort wohnt, und als ersten Tag den, an dem sie einzieht. Soll ein Übergabetag nur einmal zählen, gebt ihn nur einer der beiden Personen. Welche Tage ihr zählt, ist eine Absprache in der WG, der Rechner folgt nur dieser Regel.',
+			],
+			[
+				'Beispiel: Stromrechnung mit Auszug und Einzug',
+				`Die Stromrechnung für 2026 beträgt ${euro(EXAMPLE_BILL_CENT)}. ${DAY_NAMES[0]} wohnt das ganze Jahr dort (${DAY_DAYS[0]} Tage), ${DAY_NAMES[1]} zieht am 31. Mai aus (${DAY_DAYS[1]} Tage), ${DAY_NAMES[2]} zieht am 1. Juni ein (${DAY_DAYS[2]} Tage). Zusammen sind das ${DAY_ALL} Personentage, ein Tag kostet also ${euro(EXAMPLE_BILL_CENT / DAY_ALL)} je Person, gerundet. Beim Abrunden bleibt ein Cent übrig, ihn bekommt ${DAY_NAMES[DAY_EXTRA]}, weil sein Rest am größten ist. Danach ergeben die Anteile genau ${euro(EXAMPLE_BILL_CENT)}.`,
+			],
+			[
+				'Welche Rechnungen dazu passen',
+				'Der Rechner passt zu Kosten, die alle gleichermaßen betreffen, solange sie dort wohnen: Strom, Internet, Streaming, Rundfunkbeitrag oder die Nachzahlung aus der Nebenkostenabrechnung. Was dabei in der WG üblich ist, steht unter [WG-Nebenkosten](/wg-nebenkosten), dort wird nach Monaten gerechnet. Für eine Zwischenmiete findet ihr den Ablauf unter [Zwischenmiete](/wg-zwischenmiete), für den Auszug in der [Checkliste zum WG-Auszug](/wg-auszug-checkliste) und für den Einzug in der [Checkliste zum WG-Einzug](/wg-einzug-checkliste). Die Miete nach Zimmergröße teilt der [WG-Miete-Rechner](/wg-miete-rechner).',
+			],
+			[
+				'Was der Rechner nicht kann',
+				'Er verteilt die ganze Rechnung auf die eingetragenen Personentage. Tage, an denen niemand eingetragen ist, trägt deshalb keine Person allein, sie verteilen sich auf alle. Verbrauch pro Person, ungleiche Gewichte und andere Währungen als Euro kennt er nicht. Er ersetzt weder die Abrechnung des Vermieters noch eine Rechtsberatung.',
+			],
+			[
+				'Ergebnis in ManaWG eintragen',
+				'ManaWG teilt Kosten nicht nach Tagen. Legt die Ausgabe in der [WG-Kasse](/wg-kasse) an, wählt unter „Beteiligte & Aufteilung“ „Manuell“ und tragt für jede Person den Betrag aus dem Rechner ein. ManaWG zeigt an, ob die Anteile zusammen die Ausgabe ergeben. ManaWG überweist nichts selbst: Ihr zahlt per Bank, bar oder wie ihr wollt und markiert den Ausgleich als bezahlt.',
+			],
+			[
+				'Open Source',
+				'ManaWG ist Open Source unter Apache-2.0, den [Quellcode gibt es auf GitHub](https://github.com/Abuarchiv/manawg).',
+			],
+		],
+		tables: [
+			{
+				after: 'Beispiel: Stromrechnung mit Auszug und Einzug',
+				title: `Beispiel: ${euro(EXAMPLE_BILL_CENT)} Stromrechnung 2026 nach Tagen`,
+				header: ['Person', 'Tage', 'Anteil'],
+				rows: [
+					...DAY_NAMES.map((name, i) => [name, String(DAY_DAYS[i] ?? 0), euro(DAY_SHARES[i] ?? 0)]),
+					['Summe', String(DAY_ALL), euro(DAY_SHARES.reduce((a, b) => a + b, 0))],
+				],
+				note: 'Anna wohnt vom 1. Januar bis 31. Dezember dort, Ben bis 31. Mai, Cem ab 1. Juni.',
+			},
+		],
+		faq: [
+			[
+				'Zählen der Ein- und der Auszugstag mit?',
+				'Ja, beide. Der Rechner zählt die Tage inklusive: Vom 1. bis 31. Mai sind es 31 Tage, und „von“ und „bis“ am selben Tag ergibt 1 Tag. Zieht eine Person am selben Tag aus, an dem die nächste einzieht, zählt dieser Tag für beide, es sei denn, ihr gebt ihn nur einer von beiden.',
+			],
+			[
+				'Stimmt der Rechner im Schaltjahr?',
+				`Ja. Der Zeitraum vom 1. Januar bis 31. Dezember hat 2024 ${inclusiveDays('2024-01-01', '2024-12-31')} Tage und 2026 ${inclusiveDays('2026-01-01', '2026-12-31')}. Vom 28. Februar bis 1. März sind es 2024 ${inclusiveDays('2024-02-28', '2024-03-01')} Tage und 2025 ${inclusiveDays('2025-02-28', '2025-03-01')}.`,
+			],
+			[
+				'Wer bekommt den übrig bleibenden Cent?',
+				'Die Person mit der größten Nachkommastelle ihres genauen Anteils, bei Gleichstand die weiter oben in der Liste. Wer keinen Tag im Zeitraum hat, bekommt nie einen Cent. Die Anteile ergeben immer genau die Rechnung.',
+			],
+			[
+				'Was ist mit Tagen, an denen niemand im Zimmer wohnt?',
+				'Der Rechner verteilt die ganze Rechnung auf die eingetragenen Personentage. Leere Tage trägt dadurch keine Person allein, sie verteilen sich auf alle. Wollt ihr das anders regeln, rechnet den Betrag für die leeren Tage vorher selbst heraus.',
+			],
+			[
+				'Werden meine Eingaben gespeichert?',
+				'Nein. Die Rechnung läuft im Browser, nichts wird gesendet oder gespeichert. Lädt ihr die Seite neu, sind die Eingaben weg.',
+			],
+			[
+				'Kann ManaWG Kosten nach Tagen teilen?',
+				'Nein. In ManaWG teilt ihr eine Ausgabe gleichmäßig oder tragt für jede Person einen eigenen Betrag ein. Die Beträge aus dem Rechner übernehmt ihr von Hand.',
+			],
 		],
 	},
 	'splitwise-splid-wechseln': {
@@ -557,7 +732,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Was ihr tun könnt',
-				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Sie rechnet nur in Euro, ist auf Deutsch und Englisch verfügbar und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative).',
+				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Sie rechnet in Euro, ist auf Deutsch und Englisch verfügbar und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative). Wer eine quelloffene Alternative zum Selbsthosten sucht, findet mehrere unter [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen).',
 			],
 		],
 		tables: [

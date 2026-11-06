@@ -16,10 +16,12 @@ import {
 } from '@/lib/locale';
 import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
+import DaySplit from './DaySplit';
 import { gutter, mono, TopicFooter, TopicHeader } from './frame';
 import RentCalculator from './RentCalculator';
 import RotaGenerator from './RotaGenerator';
 import { counterpartOf, groupName, groupOf, related, topics, ui } from './registry';
+import SettleUp from './SettleUp';
 import type { Topic } from './types';
 
 // Anchor id from a heading (umlauts transliterated), for the table of contents and jump links.
@@ -34,19 +36,26 @@ const anchorId = (s: string) =>
 		.replace(/^-|-$/g, '');
 
 // Reduce markdown links back to the link word for machine text (schema).
-const stripLinks = (text: string) => text.replace(/\[([^\]]+)\]\(\/[a-z0-9-]*\)/g, '$1');
+const stripLinks = (text: string) =>
+	text.replace(/\[([^\]]+)\]\((?:\/[a-z0-9-]*|https:\/\/[^)\s]+)\)/g, '$1');
 
 // Links in running text as [word](/path): guides point at each other in the text, not only via the list at the end.
-// Data links are written without the /en prefix; localiseHref adds it for English.
+// Data links are written without the /en prefix; localiseHref adds it for English. [word](https://...) is an external link.
 const withLinks = (text: string, locale: Locale) =>
-	text.split(/(\[[^\]]+\]\(\/[a-z0-9-]*\))/).map((part, i) => {
-		const m = /^\[([^\]]+)\]\((\/[a-z0-9-]*)\)$/.exec(part);
-		return m?.[1] && m[2] ? (
+	text.split(/(\[[^\]]+\]\((?:\/[a-z0-9-]*|https:\/\/[^)\s]+)\))/).map((part, i) => {
+		const m = /^\[([^\]]+)\]\((\/[a-z0-9-]*|https:\/\/[^)\s]+)\)$/.exec(part);
+		if (!m?.[1] || !m[2]) return markGerman(part, locale);
+		if (m[2].startsWith('https://')) {
+			return (
+				<a key={`${i}-${m[2]}`} href={m[2]}>
+					{m[1]}
+				</a>
+			);
+		}
+		return (
 			<Link key={`${i}-${m[2]}`} href={localiseHref(locale, m[2])} prefetch={false}>
 				{m[1]}
 			</Link>
-		) : (
-			markGerman(part, locale)
 		);
 	});
 
@@ -66,6 +75,17 @@ const markGerman = (part: string, locale: Locale) =>
 					piece
 				),
 			);
+
+const widgetOf = (kind: NonNullable<Topic['widget']>['kind'], locale: Locale) =>
+	kind === 'rota-generator' ? (
+		<RotaGenerator locale={locale} />
+	) : kind === 'settle-up' ? (
+		<SettleUp locale={locale} />
+	) : kind === 'day-split' ? (
+		<DaySplit locale={locale} />
+	) : (
+		<RentCalculator locale={locale} />
+	);
 
 const cellCls = 'px-3 py-2 border-b border-[rgb(var(--ink-rgb)/0.1)]';
 // English strings are longer: with up to three short columns the table fits a phone instead of scrolling sideways.
@@ -389,12 +409,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 									.map((tab) => (
 										<Table key={tab.title} t={tab} locale={locale} />
 									))}
-								{t.widget?.after === heading &&
-									(t.widget.kind === 'rota-generator' ? (
-										<RotaGenerator locale={locale} />
-									) : (
-										<RentCalculator locale={locale} />
-									))}
+								{t.widget?.after === heading && widgetOf(t.widget.kind, locale)}
 							</Fragment>
 						);
 					})}

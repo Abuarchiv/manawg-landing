@@ -440,7 +440,7 @@ export const GUIDES_DE_MOVING: Record<string, Topic> = {
 	},
 	'wg-einzug-checkliste': {
 		link: 'WG-Einzug',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-11',
 		title: 'Einzug in die WG: Checkliste für die ersten Wochen | ManaWG',
 		description:
@@ -463,7 +463,7 @@ export const GUIDES_DE_MOVING: Record<string, Topic> = {
 			],
 			[
 				'Geld von Anfang an klären',
-				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt und wie ihr euren Anteil zahlt. Der [Rundfunkbeitrag in der WG](/rundfunkbeitrag-wg) wird pro Wohnung nur einmal fällig, also nicht von jedem einzeln. Klärt, ob es eine gemeinsame [Haushaltskasse](/wg-haushaltskasse) gibt und ob bereits vorhandene Dinge wie Waschmaschine oder Küchengeräte abgelöst werden sollen. In ManaWG seht ihr nach dem Beitritt Fixkosten, Ausgaben und Salden der WG, neue Ausgaben werden ab dann mit euch geteilt.',
+				'Fragt, wer Strom, Internet und Rundfunkbeitrag führt und wie ihr euren Anteil zahlt. Der [Rundfunkbeitrag in der WG](/rundfunkbeitrag-wg) wird pro Wohnung nur einmal fällig, also nicht von jedem einzeln. Klärt, ob es eine gemeinsame [Haushaltskasse](/wg-haushaltskasse) gibt und ob bereits vorhandene Dinge wie Waschmaschine oder Küchengeräte abgelöst werden sollen. In ManaWG seht ihr nach dem Beitritt Fixkosten, Ausgaben und Salden der WG, neue Ausgaben werden ab dann mit euch geteilt. Zieht ihr mitten im Abrechnungszeitraum ein, rechnet der [Tagesgenau-Rechner](/nebenkosten-tagesgenau-rechner) euren Anteil an der laufenden Rechnung nach Tagen aus.',
 			],
 			[
 				'Gewohnheiten abgleichen',
@@ -901,7 +901,7 @@ export const GUIDES_DE_MOVING: Record<string, Topic> = {
 	},
 	'wg-auszug-checkliste': {
 		link: 'WG-Auszug',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-19',
 		title: 'WG-Auszug: Checkliste für Kündigung und Kaution | ManaWG',
 		description:
@@ -920,7 +920,7 @@ export const GUIDES_DE_MOVING: Record<string, Topic> = {
 			],
 			[
 				'Geld: offene Beträge und Kaution',
-				'Gleicht alle offenen Beträge vor dem Auszug aus, solange alle noch erreichbar sind. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Wenn der Saldo auf null steht, ist alles erledigt. Klärt außerdem, was mit gemeinsamen Anschaffungen passiert: Bleibt der Staubsauger in der WG, und zahlen die anderen euren Anteil? Die [Kaution](/wg-kaution) bekommt ihr vom Vermieter oder Hauptmieter zurück. Die Prüfung kann einige Monate dauern, vor allem wenn noch eine [Nebenkostenabrechnung](/wg-nebenkosten) aussteht.',
+				'Gleicht alle offenen Beträge vor dem Auszug aus, solange alle noch erreichbar sind. In der [WG-Kasse von ManaWG](/wg-kasse) seht ihr euren Saldo und die vorgeschlagenen Überweisungen. Wenn der Saldo auf null steht, ist alles erledigt. Läuft eine Rechnung über euren Auszugstag hinaus, teilt der [Tagesgenau-Rechner](/nebenkosten-tagesgenau-rechner) sie nach Tagen auf. Klärt außerdem, was mit gemeinsamen Anschaffungen passiert: Bleibt der Staubsauger in der WG, und zahlen die anderen euren Anteil? Die [Kaution](/wg-kaution) bekommt ihr vom Vermieter oder Hauptmieter zurück. Die Prüfung kann einige Monate dauern, vor allem wenn noch eine [Nebenkostenabrechnung](/wg-nebenkosten) aussteht.',
 			],
 			[
 				'Verträge und Behörden',

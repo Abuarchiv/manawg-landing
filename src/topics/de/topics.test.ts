@@ -30,7 +30,7 @@ test('tables attach to the intro or to an existing section heading', () => {
 
 test('markdown links in the text point to existing pages', () => {
 	const ok = (target: string) =>
-		target === '/' || target === '/ratgeber' || target.slice(1) in TOPICS_DE;
+		target === '/' || target === '/ratgeber' || target === '/demo' || target.slice(1) in TOPICS_DE;
 	for (const [slug, t] of Object.entries(TOPICS_DE)) {
 		const texts = [t.intro, ...t.sections.map(([, a]) => a), ...(t.faq ?? []).map(([, a]) => a)];
 		for (const text of texts)
@@ -57,8 +57,10 @@ test('files of the app repository named in the text exist there', () => {
 	const existing = new Set(['docs/self-hosting.md', 'LICENSE']);
 	const pattern =
 		/(?:github\.com\/Abuarchiv\/manawg\/blob\/main\/|\b)(docs\/[\w.-]+\.md|LICENSE)\b/g;
+	// Links into other projects' repositories (comparison page) name their own files.
+	const foreign = /https:\/\/github\.com\/(?!Abuarchiv\/manawg\/)[^"\s]*/g;
 	for (const [slug, t] of [...Object.entries(TOPICS_DE), ...Object.entries(TOPICS_EN)])
-		for (const m of JSON.stringify(t).matchAll(pattern))
+		for (const m of JSON.stringify(t).replace(foreign, '').matchAll(pattern))
 			assert.ok(existing.has(m[1] ?? ''), `${slug}: ${m[1]}`);
 });
 

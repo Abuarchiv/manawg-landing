@@ -924,7 +924,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 	},
 	'subletting-a-room': {
 		link: 'Subletting a room',
-		updated: '2026-10-29',
+		updated: '2026-11-06',
 		published: '2026-10-29',
 		title: 'Subletting a room in Germany: permission, contract | ManaWG',
 		description:
@@ -947,7 +947,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Rent and deposit',
-				'It is usual for the subtenant to take over the rent for the room, meaning their share of the Kaltmiete (rent excluding utilities), the utilities, electricity and internet. You keep paying the landlord or the flat as before and receive the money from the subtenant. A deposit (Kaution) of one to two months’ rent protects you against damage and open amounts. Anyone letting a furnished room may charge a reasonable supplement for it, but profit at the subtenant’s expense is not the point.',
+				'It is usual for the subtenant to take over the rent for the room, meaning their share of the Kaltmiete (rent excluding utilities), the utilities, electricity and internet. You keep paying the landlord or the flat as before and receive the money from the subtenant. A deposit (Kaution) of one to two months’ rent protects you against damage and open amounts. Anyone letting a furnished room may charge a reasonable supplement for it, but profit at the subtenant’s expense is not the point. If the sublet starts or ends in the middle of a billing period, the [split by days calculator](/split-bill-by-days-calculator) divides electricity, internet and back payments by days.',
 			],
 			[
 				'Address registration and formalities',
