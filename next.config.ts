@@ -19,6 +19,18 @@ const securityHeaders = [
 	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
 ];
 
+const demoCsp = [
+	"default-src 'self'",
+	"script-src 'self' 'unsafe-inline'",
+	"style-src 'self' 'unsafe-inline'",
+	"img-src 'self' data: blob:",
+	"font-src 'self' data:",
+	"connect-src 'self'",
+	"frame-ancestors 'self'",
+	"base-uri 'self'",
+	"form-action 'none'",
+	"object-src 'none'",
+].join('; ');
 const publicCache = 'public, max-age=86400, stale-while-revalidate=604800';
 
 // manawg.com is the marketing site only. The app lives on its own origin
@@ -40,8 +52,23 @@ const nextConfig: NextConfig = {
 		tsconfigPath: process.env.NEXT_TSCONFIG_PATH ?? 'tsconfig.json',
 	},
 	async headers() {
+		// The last rule with the same key wins: only the app's demo document may be embedded, by /demo.
 		return [
 			{ source: '/:path*', headers: securityHeaders },
+			...['/app-demo/:path*', '/app-demo-en/:path*'].map((source) => ({
+				source,
+				headers: [
+					{ key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+					{ key: 'X-Robots-Tag', value: 'noindex' },
+					// No hash in the names: always revalidate so index.html, demo.js and app.css match.
+					{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+				],
+			})),
+			// The demo document sits outside the proxy (dot in the path), so it gets its own CSP here.
+			...['/app-demo/index.html', '/app-demo-en/index.html'].map((source) => ({
+				source,
+				headers: [{ key: 'Content-Security-Policy', value: demoCsp }],
+			})),
 			// Files from public without a hash in the name: fresh for one day, then revalidated in the background.
 			...[
 				'/manawg-mark.svg',
