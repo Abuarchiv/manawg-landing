@@ -1,5 +1,4 @@
 import type { Locale } from '../lib/locale.ts';
-import { parseAmount } from './rent-calculator.ts';
 
 export const MIN_PEOPLE = 2;
 /** Up to this many people the search for the fewest transfers is exhaustive. */
@@ -20,16 +19,29 @@ export interface Transfer {
 }
 
 /**
- * Amount typed by a person as whole cents. Empty means 0, anything that is not a number or is
- * negative or too large yields null.
+ * Amount typed by a person as whole cents. Empty means 0. Only the notation of the page language
+ * is accepted: German has "." for thousands in groups of three and "," for the decimals, English
+ * the other way round; a single separator before 1 or 2 digits also counts as the decimal mark
+ * ("12.5" and "12,5" on both pages). At most 2 decimals. Anything else (repeated or mixed
+ * separators, "1,234.50" on the German page, "1.234,50" on the English page, a third decimal),
+ * negative or too large yields null. The cents come from the digits, not from a float.
  */
 export function parseCents(input: string, locale: Locale = 'de'): number | null {
 	const text = input.trim();
 	if (text === '') return 0;
-	if (!/^[\d.,]+$/.test(text)) return null;
-	const value = parseAmount(text, locale);
-	if (value === 0 && !/^0+([.,]0*)?$/.test(text)) return null;
-	const cent = Math.round(value * 100);
+	const [group, decimal] = locale === 'en' ? [',', '.'] : ['.', ','];
+	const g = `\\${group}`;
+	const d = `\\${decimal}`;
+	const grouped = new RegExp(`^(\\d{1,3}(?:${g}\\d{3})+)(?:${d}(\\d{1,2}))?$`).exec(text);
+	const plain = new RegExp(`^(\\d*)(?:${d}(\\d{0,2}))?$`).exec(text);
+	const other = new RegExp(`^(\\d*)${g}(\\d{1,2})$`).exec(text);
+	const match = grouped ?? plain ?? other;
+	if (!match) return null;
+	const whole = (match[1] ?? '').split(group).join('');
+	const fraction = match[2] ?? '';
+	if (whole === '' && fraction === '') return null;
+	if (whole.replace(/^0+/, '').length > 9) return null;
+	const cent = Number(whole || '0') * 100 + Number(fraction.padEnd(2, '0'));
 	return cent > MAX_CENT ? null : cent;
 }
 

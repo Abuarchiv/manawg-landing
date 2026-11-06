@@ -125,3 +125,43 @@ test('amount input in whole cents, invalid input is null', () => {
 	assert.equal(parseCents('-5'), null);
 	assert.equal(parseCents('99999999999'), null);
 });
+
+test('amounts follow the notation of the page language, malformed ones are null', () => {
+	// Mixed or repeated separators used to be cut off at the second one and gave wrong money.
+	for (const text of ['1.2.3', '1,2,3', '1..5', '1,,5', '1.234,56.7', '.', ',', '1.2345']) {
+		assert.equal(parseCents(text, 'de'), null, `de ${text}`);
+		assert.equal(parseCents(text, 'en'), null, `en ${text}`);
+	}
+	assert.equal(parseCents('1,234.50', 'de'), null);
+	assert.equal(parseCents('1.234,50', 'en'), null);
+	assert.equal(parseCents('1.000.000', 'en'), null);
+	assert.equal(parseCents('1.234.567', 'en'), null);
+	assert.equal(parseCents('1,2,3', 'en'), null);
+	assert.equal(parseCents('12.34.56', 'de'), null);
+	assert.equal(parseCents('1.23.456', 'de'), null);
+	assert.equal(parseCents('1.000.000', 'de'), 100_000_000);
+	assert.equal(parseCents('1,000,000', 'en'), 100_000_000);
+	assert.equal(parseCents('1.234.567', 'de'), null);
+	assert.equal(parseCents('1.234.567,89', 'de'), null);
+	assert.equal(parseCents('1.234', 'de'), 123400);
+	assert.equal(parseCents('1,234', 'en'), 123400);
+	assert.equal(parseCents('12,5', 'de'), 1250);
+	assert.equal(parseCents('12.5', 'de'), 1250);
+	assert.equal(parseCents('12.5', 'en'), 1250);
+	assert.equal(parseCents('12,5', 'en'), 1250);
+	assert.equal(parseCents(',5', 'de'), 50);
+	assert.equal(parseCents('0,00', 'de'), 0);
+});
+
+test('at most 2 decimals, the cents are exact for every value', () => {
+	assert.equal(parseCents('1,005', 'de'), null);
+	assert.equal(parseCents('2,675', 'de'), null);
+	assert.equal(parseCents('0,005', 'de'), null);
+	assert.equal(parseCents('0.005', 'en'), null);
+	assert.equal(parseCents('1,015', 'de'), null);
+	for (let cent = 0; cent <= 20_000; cent++) {
+		const text = `${Math.floor(cent / 100)},${String(cent % 100).padStart(2, '0')}`;
+		assert.equal(parseCents(text, 'de'), cent);
+		assert.equal(parseCents(text.replace(',', '.'), 'en'), cent);
+	}
+});
