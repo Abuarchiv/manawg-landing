@@ -13,7 +13,10 @@ export const UI_DE: TopicUi = {
 	published: 'Veröffentlicht am',
 	updated: 'Aktualisiert am',
 	// The FAQ page is itself called "Häufige Fragen"; it keeps this title there.
-	faqHeading: (link) => (link.startsWith('Häufige Fragen') ? link : `Häufige Fragen zu ${link}`),
+	faqHeading: (link) => {
+		if (link.startsWith('Häufige Fragen')) return link;
+		return `Häufige Fragen ${/rechner$/i.test(link) ? 'zum' : 'zu'} ${link}`;
+	},
 	sources: (date) => `Quellen (Stand ${date})`,
 	guideNoteLabel: 'Über diesen Ratgeber',
 	guideNote:

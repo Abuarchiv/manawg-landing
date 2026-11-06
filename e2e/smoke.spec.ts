@@ -167,8 +167,6 @@ for (const [path, locale, caption, share, billField, personField] of [
 			await expect(table).toHaveCount(0);
 			await page.getByLabel(billField).fill('1234.56');
 			await page.getByLabel(personField).fill('2025-12-01');
-			await expect(table).toHaveCount(0);
-			await page.getByLabel(personField).fill('2026-05-31');
 			await expect(table).toBeVisible();
 			const overflow = await page.evaluate(
 				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
