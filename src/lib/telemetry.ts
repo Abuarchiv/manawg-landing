@@ -35,6 +35,30 @@ export function ctaId(id: string | undefined): string {
 	return id && /^[a-z_]{1,32}$/.test(id) ? id : 'other';
 }
 
+/**
+ * Campaign tags of the entry URL (`?utm_source=awesome-list&utm_medium=listing&ref=hn`). Only short
+ * tokens of letters, digits, dot, dash and underscore pass, so an address or a free-text value in
+ * a link never reaches the analytics. Nothing is stored in the browser: the tags are read from the URL in memory. They only
+ * identify campaign links ManaWG sets itself (a directory name), not people.
+ */
+export const CAMPAIGN_KEYS = ['utm_source', 'utm_medium', 'ref'] as const;
+
+type Campaign = Partial<Record<(typeof CAMPAIGN_KEYS)[number], string>>;
+
+export function campaignParams(search: string): Campaign {
+	const found: Campaign = {};
+	try {
+		const params = new URLSearchParams(search);
+		for (const key of CAMPAIGN_KEYS) {
+			const value = params.get(key);
+			if (value && /^[A-Za-z0-9._-]{1,40}$/.test(value)) found[key] = value;
+		}
+	} catch {
+		// A malformed query string just means no tags.
+	}
+	return found;
+}
+
 /** Only the domain of an external referrer, e.g. `www.google.com`; never the full URL. */
 export function referringDomain(referrer: string, ownHost: string): string | undefined {
 	try {
@@ -50,7 +74,7 @@ export function referringDomain(referrer: string, ownHost: string): string | und
  * page view names it; later views come from this site. Clicks keep it for attribution.
  */
 export function pageReferrer(
-	event: '$pageview' | 'app_link_clicked',
+	event: '$pageview' | 'app_link_clicked' | 'demo_link_clicked',
 	firstView: boolean,
 	referrer: string,
 ): string {
@@ -58,13 +82,20 @@ export function pageReferrer(
 }
 
 let firstView = true;
+// Campaign tags of the landing URL; client-side navigation drops the query, so the entry page's tags
+// are kept in memory for the rest of the visit (gone on reload, never written to storage).
+let campaign: Campaign | undefined;
 
-/** `cta`: fixed id of the clicked button (data-cta, e.g. `hero_create`), only on app_link_clicked. */
-export function capture(event: '$pageview' | 'app_link_clicked', cta?: string): void {
+/** `cta`: fixed id of the clicked button (data-cta, e.g. `hero_create`), only on the click events. */
+export function capture(
+	event: '$pageview' | 'app_link_clicked' | 'demo_link_clicked',
+	cta?: string,
+): void {
 	if (!POSTHOG_KEY || isLocal()) return;
 	const referrer = pageReferrer(event, firstView, document.referrer);
 	if (event === '$pageview') firstView = false;
 	try {
+		campaign ??= campaignParams(location.search);
 		const body = JSON.stringify({
 			api_key: POSTHOG_KEY,
 			event,
@@ -78,6 +109,7 @@ export function capture(event: '$pageview' | 'app_link_clicked', cta?: string): 
 				$pathname: safePath(location.pathname),
 				$raw_user_agent: navigator.userAgent,
 				$referring_domain: referringDomain(referrer, location.hostname),
+				...campaign,
 				cta,
 			},
 		});
@@ -88,11 +120,15 @@ export function capture(event: '$pageview' | 'app_link_clicked', cta?: string): 
 	}
 }
 
+/** The demo links of the text pages (`/demo`, `/en/demo`) carry a data-cta like the app links. */
+const isDemoLink = (link: HTMLAnchorElement) =>
+	link.origin === location.origin && /^\/(en\/)?demo\/?$/.test(link.pathname) && !!link.dataset.cta;
+
 function onClick(event: MouseEvent): void {
 	const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
-	if (link instanceof HTMLAnchorElement && link.href.startsWith(APP_ORIGIN)) {
-		capture('app_link_clicked', ctaId(link.dataset.cta));
-	}
+	if (!(link instanceof HTMLAnchorElement)) return;
+	if (link.href.startsWith(APP_ORIGIN)) capture('app_link_clicked', ctaId(link.dataset.cta));
+	else if (isDemoLink(link)) capture('demo_link_clicked', ctaId(link.dataset.cta));
 }
 
 // Errors thrown before the Sentry SDK has loaded (stage set-up, hydration) are kept and sent once it is ready.

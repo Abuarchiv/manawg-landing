@@ -35,11 +35,40 @@ export function TopicHeader({ locale }: { locale: Locale }) {
 			</Link>
 			<a
 				href={appUrl(PATHS[locale].signup)}
+				data-cta="topic_header_open"
 				className="font-mono text-[12px] text-(--text-3) min-h-[44px] inline-flex items-center"
 			>
 				{t.openApp}
 			</a>
 		</header>
+	);
+}
+
+/**
+ * Call to action under the headline of the text pages, so it stays above the fold on small
+ * phones: create a flat (app sign-up) and look at the demo first. One component for every topic, guide, calculator and comparison page. The ids in data-cta
+ * are what the click telemetry sends.
+ */
+export function TopicCta({ locale }: { locale: Locale }) {
+	const t = ui(locale);
+	return (
+		<div className="no-print mt-8 md:mt-12 md:ml-[33.33%] flex flex-wrap items-center gap-x-6 gap-y-1">
+			<a
+				href={appUrl(PATHS[locale].signup)}
+				data-cta="topic_create"
+				className="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full bg-(--ink) text-(--paper) text-[14px] font-semibold no-underline hover:bg-[rgb(var(--ink-rgb)/0.82)] transition-colors"
+			>
+				{t.ctaTopCreate}
+			</a>
+			<Link
+				href={locale === 'de' ? '/demo' : '/en/demo'}
+				prefetch={false}
+				data-cta="topic_demo"
+				className="inline-flex items-center min-h-[44px] text-[14px] text-(--text-2) underline underline-offset-4 hover:text-(--ink)"
+			>
+				{t.ctaTopDemo}
+			</Link>
+		</div>
 	);
 }
 

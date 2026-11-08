@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { ctaId, pageReferrer, referringDomain, safePath } from './telemetry.ts';
+import { campaignParams, ctaId, pageReferrer, referringDomain, safePath } from './telemetry.ts';
 
 const sentrySanitizers = (await import('./telemetry.ts')) as typeof import('./telemetry.ts') & {
 	sanitizeSentryEvent: <T>(event: T) => T;
@@ -20,6 +20,17 @@ test('the button id is a fixed markup id, anything else counts as other', () => 
 	assert.equal(ctaId('hero_create'), 'hero_create');
 	assert.equal(ctaId(undefined), 'other');
 	assert.equal(ctaId('<script>'), 'other');
+});
+
+test('campaign tags pass only as short tokens, anything else is dropped', () => {
+	assert.deepEqual(campaignParams('?utm_source=awesome-list&utm_medium=listing&ref=hn_2026'), {
+		utm_source: 'awesome-list',
+		utm_medium: 'listing',
+		ref: 'hn_2026',
+	});
+	assert.deepEqual(campaignParams('?utm_source=max@example.com&ref=a%20b&utm_medium='), {});
+	assert.deepEqual(campaignParams(`?ref=${'a'.repeat(41)}&q=wg+app`), {});
+	assert.deepEqual(campaignParams(''), {});
 });
 
 test('only the domain of an external referrer is sent', () => {
@@ -100,10 +111,19 @@ test('Sentry breadcrumbs are discarded before they can carry request data', () =
 
 test('the privacy texts name every event the website sends', () => {
 	const source = readFileSync('src/lib/telemetry.ts', 'utf8');
-	const events = source.match(/capture\(event: ([^)]+)\)/)?.[1]?.match(/'([a-z_$]+)'/g) ?? [];
-	assert.deepEqual(events, ["'$pageview'", "'app_link_clicked'"]);
+	const events = source.match(/capture\(\s*event: ([^,)]+)/)?.[1]?.match(/'([a-z_$]+)'/g) ?? [];
+	assert.deepEqual(events, ["'$pageview'", "'app_link_clicked'", "'demo_link_clicked'"]);
 	for (const file of ['src/app/(de)/datenschutz/page.tsx', 'src/app/(en)/en/privacy/page.tsx']) {
-		assert.match(readFileSync(file, 'utf8'), /app_link_clicked/, file);
+		const page = readFileSync(file, 'utf8');
+		for (const name of ['app_link_clicked', 'demo_link_clicked', 'utm_source', 'utm_medium']) {
+			assert.match(page, new RegExp(name), `${file}: ${name}`);
+		}
+		assert.match(page, /Kampagnenkennungen|campaign identifiers/, `${file}: campaign scope`);
+		assert.doesNotMatch(
+			page,
+			/nicht gespeichert\. Die IP|not stored\. The IP/,
+			`${file}: storage claim`,
+		);
 	}
 });
 

@@ -17,7 +17,7 @@ import {
 import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
 import DaySplit from './DaySplit';
-import { gutter, mono, TopicFooter, TopicHeader } from './frame';
+import { gutter, mono, TopicCta, TopicFooter, TopicHeader } from './frame';
 import RentCalculator from './RentCalculator';
 import RotaGenerator from './RotaGenerator';
 import { counterpartOf, groupName, groupOf, related, topics, ui } from './registry';
@@ -324,6 +324,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 				>
 					{t.h1}
 				</h1>
+				<TopicCta locale={locale} />
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-(--text-2)">
 					{withLinks(t.intro, locale)}
 				</p>
@@ -467,6 +468,7 @@ export function TopicPage({ locale, slug: topicSlug }: { locale: Locale; slug: s
 					<div className="mt-8 md:mt-0 md:col-start-9 md:col-span-4">
 						<a
 							href={appUrl(PATHS[locale].signup)}
+							data-cta="topic_bottom_create"
 							className="inline-flex items-center justify-center min-h-[56px] px-8 rounded-full bg-(--ink) text-(--paper) font-semibold no-underline hover:bg-[rgb(var(--ink-rgb)/0.82)] transition-colors"
 						>
 							{txt.ctaButton}

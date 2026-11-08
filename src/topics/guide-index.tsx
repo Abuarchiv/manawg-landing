@@ -12,7 +12,7 @@ import {
 } from '@/lib/locale';
 import { pageMetadata } from '@/lib/page-metadata';
 import { schemaIds } from '@/lib/schema-ids';
-import { gutter, mono, TopicFooter, TopicHeader } from './frame';
+import { gutter, mono, TopicCta, TopicFooter, TopicHeader } from './frame';
 import { GROUPS } from './groups';
 import { topics, ui } from './registry';
 
@@ -151,6 +151,7 @@ export function GuideIndex({ locale }: { locale: Locale }) {
 				>
 					{txt.h1}
 				</h1>
+				<TopicCta locale={locale} />
 				<p className="mt-10 md:mt-16 md:ml-[33.33%] max-w-[60ch] text-[clamp(18px,1.5vw,22px)] leading-[1.5] text-(--text-2)">
 					{txt.intro}
 				</p>
