@@ -5,7 +5,7 @@ import type { Topic } from '../types.ts';
 export const OPEN_SOURCE_DE: Record<string, Topic> = {
 	'open-source-wg-app': {
 		link: 'Open-Source-WG-App',
-		updated: '2026-10-29',
+		updated: '2026-11-08',
 		published: '2026-10-29',
 		title: 'Open-Source-WG-App zum Selbsthosten | ManaWG',
 		description:
@@ -40,7 +40,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Selbst hosten: was ihr braucht',
-				'Selbst hosten lohnt sich, wenn ihr die Daten auf einer Maschine unter eigener Kontrolle haben wollt. Ihr braucht Docker mit Compose v2, git und openssl. Eine laufende Instanz belegt etwa 500 MB Arbeitsspeicher, das Bauen des App-Images einmalig etwa 3 GB. Gestartet werden App, PostgreSQL, Anmeldung, Bildspeicher und ein Caddy-Gateway, alles aus einer Compose-Datei.',
+				'Selbst hosten lohnt sich, wenn ihr die Daten auf einer Maschine unter eigener Kontrolle haben wollt. Ihr braucht Docker mit Compose v2, git und openssl. Eine laufende Instanz belegt etwa 500 MB Arbeitsspeicher, das Bauen des App-Images einmalig etwa 3 GB. Gestartet werden App, PostgreSQL, Anmeldung, Bildspeicher und ein Caddy-Gateway, alles aus einer Compose-Datei. Wer vor allem den Putzplan selbst betreiben will, liest [Putzplan selbst hosten](/putzplan-selbst-hosten).',
 			],
 			[
 				'Selbst hosten: die Schritte',
@@ -242,6 +242,107 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			[
 				'Ist dieser Vergleich unabhängig?',
 				'Nein, er stammt von ManaWG. Die Angaben zu den anderen Projekten kommen aus deren READMEs mit Stand 6. November 2026, die Quellen stehen unten. Wo etwas nicht belegt ist, steht es nicht in den Tabellen.',
+			],
+		],
+	},
+	'putzplan-selbst-hosten': {
+		link: 'Putzplan selbst hosten',
+		updated: '2026-11-08',
+		published: '2026-11-08',
+		title: 'Putzplan selbst hosten: Open-Source-WG-App | ManaWG',
+		description:
+			'Den ManaWG-Putzplan auf dem eigenen Rechner betreiben: Open Source, Docker Compose in drei Schritten, ehrliche Grenzen und ein Vergleich mit Donetick und Grocy.',
+		h1: 'Selbst gehosteter Putzplan für die WG mit Docker',
+		intro:
+			'Wer den Putzplan auf einer Maschine unter eigener Kontrolle haben will, kann ManaWG selbst betreiben. Der Putzplan ist Teil einer WG-App unter der Apache-Lizenz 2.0, die ihr mit Docker Compose startet. Aufgaben wiederholen sich im Rhythmus, rotieren nach Auslastung und übergehen Abwesende. Die meisten WGs müssen nichts hosten, denn die [Putzplan-App](/putzplan) unter app.manawg.com ist kostenlos. Diese Seite ist für WGs, die die Daten bei sich haben wollen.',
+		sources: [
+			['ManaWG-Repository und README (GitHub)', 'https://github.com/Abuarchiv/manawg'],
+			[
+				'Self-Hosting-Anleitung (GitHub, Englisch)',
+				'https://github.com/Abuarchiv/manawg/blob/main/docs/self-hosting.md',
+			],
+			['Donetick-Repository und README (GitHub)', 'https://github.com/donetick/donetick'],
+			['Grocy-Repository und README (GitHub)', 'https://github.com/grocy/grocy'],
+		],
+		sections: [
+			[
+				'Was der Putzplan kann',
+				'Rhythmus: Jede Aufgabe wiederholt sich in Tagen oder Monaten, Monatsintervalle bleiben kalendertreu\nRotation: Beim Erledigen wählt ManaWG die Person mit der geringsten Auslastung, zugewiesene und überfällige Aufgaben zählen, überfällige stärker\nAbwesenheit: Mitglieder tragen Zeiträume ein, wer abwesend ist, wird bei der nächsten Zuweisung übergangen\nHistorie: Jede Erledigung wird festgehalten, ihr seht also, wer was wann gemacht hat\nErinnerung: Täglich eine Push-Nachricht für zugewiesene Aufgaben, die heute fällig oder bis zu sieben Tage überfällig sind, pro Aufgabe höchstens alle 18 Stunden',
+			],
+			[
+				'Was ihr braucht',
+				'Docker mit Compose v2, git und openssl auf einer Maschine, die Container ausführt, vom Laptop über einen kleinen Server bis zum Raspberry Pi (das Image gibt es für amd64 und arm64). Eine laufende Instanz belegt etwa 500 MB Arbeitsspeicher. Compose lädt das veröffentlichte Image, wenn es für eure Version existiert. Nur wenn nicht, wird das Image aus eurem Checkout gebaut, das dauert etwa zehn Minuten und braucht einmalig etwa 3 GB.',
+			],
+			[
+				'In drei Schritten einrichten',
+				'1. Das Repository mit git clone https://github.com/Abuarchiv/manawg.git klonen, in den Ordner manawg wechseln und ./docker/setup.sh ausführen. Das Skript schreibt eine .env-Datei mit frischen Geheimnissen.\n2. docker compose up -d ausführen. Beim ersten Start werden die Images geholt und die Datenbank eingerichtet.\n3. http://localhost öffnen, ein Konto und eine WG anlegen und die Aufgaben eintragen. Jede Mail, auch der Anmeldecode, landet in Mailpit unter http://localhost:8025.',
+			],
+			[
+				'Was auf der Maschine läuft',
+				'Es ist kein einzelner Container. Compose startet die App, PostgreSQL, die Anmeldung (Supabase Auth), den Bildspeicher, ein Caddy-Gateway, einen Setup-Schritt, der bei jedem Start läuft, und einen Cron-Dienst für die geplanten Aufgaben, dazu Mailpit für Mails auf einer lokalen Instanz. Die Daten liegen in zwei Docker-Volumes. Derselbe Stack bedient auch Ausgaben, Einkaufsliste, Kalender und Chat, er ist also mehr zu betreiben als ein Putzplan-Tracker aus einem Container.',
+			],
+			[
+				'Vom Handy erreichbar machen',
+				'Auf localhost ist die Instanz nur von dieser Maschine aus erreichbar. Für die Handys der WG oder für unterwegs braucht ihr eine Domain, die Ports 80 und 443 und ein SMTP-Konto für die Anmelde-Mails, das Gateway holt dann ein Let’s-Encrypt-Zertifikat. Jede Adresse außer localhost braucht HTTPS, weil das Installieren auf dem Home-Bildschirm und das Zurücksetzen des Passworts einen sicheren Kontext verlangen. Die Registrierung steht jedem offen, der die Adresse erreicht. Für eine reine WG-Instanz beschränkt ihr den Zugriff deshalb an einem Proxy, etwa per VPN.',
+			],
+			[
+				'ManaWG, Donetick und Grocy im Vergleich',
+				'Zwei weitere Open-Source-Projekte passen zur selben Suche. Die Tabelle nennt nur, was ihre eigenen Repositories angeben, mit Stand 8. November 2026, und ist keine Rangliste. Donetick ist eine reine Aufgaben- und Putz-App und läuft im Docker-Beispiel als ein Container, ist also leichter zu betreiben, wenn ihr nur einen Putzplan wollt. ManaWG passt, wenn die WG auch Ausgaben, Einkaufsliste und Chat in einer App haben will. Grocys README beschreibt ein Werkzeug für Lebensmittel und Haushalt und verweist für die Funktionsliste auf die Website, prüft dort, ob es euren Plan abdeckt.',
+			],
+			[
+				'Grenzen',
+				'ManaWG ist eine Web-App, die ihr auf den Home-Bildschirm legt, keine App aus einem Store.\nSelbst gehostet: Eine öffentliche Instanz braucht ein SMTP-Konto für die Anmeldung, und Google-Anmeldung und Push-Meldungen bleiben aus, bis ihr eigene Schlüssel einrichtet. Für Push baut ihr zusätzlich ein eigenes Image, wie es die Self-Hosting-Anleitung beschreibt.\nDatum, Erinnerungen und Monatsgrenzen folgen der Berliner Zeit, egal in welcher Zeitzone der Server läuft.\nEine WG fasst höchstens 20 aktive Mitglieder.\nFür die Ausgaben gibt es keine Bankanbindung.\nUpdates, Backups und Support sind eure Sache: Das Repository hat Backup- und Restore-Skripte und eine Anleitung fürs Aktualisieren, Fragen gehen an GitHub Discussions.',
+			],
+			[
+				'Oder die gehostete App nutzen',
+				'Wenn der Putzplan nur funktionieren soll, braucht ihr nichts davon. app.manawg.com ist kostenlos und werbefrei, und die [Demo](/demo) zeigt die App ohne Konto mit Beispieldaten. Die Schritte für eine größere Instanz, Backups und den zweiten Weg mit Vercel und Supabase stehen unter [Open-Source-WG-App](/open-source-wg-app).',
+			],
+		],
+		tables: [
+			{
+				after: 'ManaWG, Donetick und Grocy im Vergleich',
+				title: 'Putzpläne, die ihr selbst hosten könnt',
+				header: ['Projekt', 'Lizenz und Aufbau', 'Aufgaben'],
+				rows: [
+					[
+						'ManaWG',
+						'Apache-2.0. Next.js-App auf PostgreSQL, mehrere Container mit Docker Compose',
+						'Rhythmus, Rotation nach Auslastung, Abwesenheit, Push-Erinnerung. Dazu Ausgaben, Einkaufsliste, Kalender und Chat',
+					],
+					[
+						'Donetick',
+						'AGPL-3.0. Im Docker-Beispiel ein Container mit SQLite',
+						'Rotation nach den wenigsten erledigten Aufgaben, zufällig oder reihum. Punkte, Unteraufgaben, NFC-Tags, Home-Assistant-Anbindung. Android-APK und eine Alpha-iOS-App',
+					],
+					[
+						'Grocy',
+						'MIT. PHP-Anwendung mit SQLite',
+						'README: Lebensmittel und Haushalt, Funktionen auf der Website. Das Repository hat einen Chores-Controller',
+					],
+				],
+				note: 'Quelle: README und Lizenzdatei des jeweiligen Repositorys, 8. November 2026.',
+			},
+		],
+		faq: [
+			[
+				'Kann ich einen Putzplan für die WG selbst hosten?',
+				'Ja. ManaWG ist Open Source unter der Apache-Lizenz 2.0 und startet mit git, ./docker/setup.sh und docker compose up -d. Der Putzplan ist ein Teil einer WG-App, neben Ausgaben, Einkaufsliste, Kalender und Chat.',
+			],
+			[
+				'Was brauche ich, um ManaWG selbst zu hosten?',
+				'Docker mit Compose v2, git und openssl sowie etwa 500 MB Arbeitsspeicher für die laufende Instanz. Für eine öffentliche Instanz kommen eine Domain, die offenen Ports 80 und 443 und ein SMTP-Konto für die Anmelde-Mails dazu.',
+			],
+			[
+				'Ist ManaWG eine leichtere Alternative zu Donetick?',
+				'Nein. Donetick läuft im Docker-Beispiel als ein Container, ManaWG als mehrere. ManaWG ist die Wahl, wenn die WG auch Ausgaben, Einkaufsliste und Chat in derselben App haben will.',
+			],
+			[
+				'Schickt die selbst gehostete Version Push-Erinnerungen?',
+				'Nicht ab Werk. Das veröffentlichte Image hat Push ausgeschaltet. Ihr erzeugt eigene Schlüssel und baut ein eigenes Image, wie es die Self-Hosting-Anleitung beschreibt.',
+			],
+			[
+				'Muss ich ManaWG selbst hosten?',
+				'Nein. app.manawg.com ist kostenlos und werbefrei. Selbst hosten ist für WGs gedacht, die die Daten auf einer eigenen Maschine haben wollen.',
 			],
 		],
 	},

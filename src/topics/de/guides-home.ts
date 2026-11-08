@@ -13,6 +13,14 @@ const TEMPLATE_TWO = cleaningRota(['A', 'B'], ['Bad', 'Böden', 'Küche', 'Müll
 const TEMPLATE_THREE = cleaningRota(['A', 'B', 'C'], TASKS_THREE);
 const TEMPLATE_FIVE = cleaningRota(['A', 'B', 'C', 'D', 'E'], TASKS_FIVE);
 
+/** The four templates by number of people, for the printable PDF and XLSX files (scripts/build-rota-templates.mts). */
+export const ROTA_TEMPLATES = {
+	2: TEMPLATE_TWO,
+	3: TEMPLATE_THREE,
+	4: TEMPLATE_FOUR,
+	5: TEMPLATE_FIVE,
+} as const;
+
 /** The same template data as a CSV. Static, no user input. */
 export function cleaningRotaTemplateCsv(): string {
 	return tableToCsv(TEMPLATE_FOUR.header, TEMPLATE_FOUR.rows);
@@ -22,7 +30,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 	'putzplan-erstellen': {
 		link: 'Putzplan erstellen',
 		widget: { after: 'Putzplan-Generator: in einer Minute zum Plan', kind: 'rota-generator' },
-		updated: '2026-10-29',
+		updated: '2026-11-08',
 		published: '2026-10-11',
 		title: 'Putzplan selber erstellen: Wochenplan & Generator | ManaWG',
 		description:
@@ -89,7 +97,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 			],
 			[
 				'Fertig statt selbst bauen',
-				'Die [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) gibt es als Tabelle und als CSV-Download. Sie enthält fertige Rotationen für zwei, drei, vier und fünf Personen und einen Generator für eure Namen.\nDie [Putzplan-App](/putzplan) von ManaWG wiederholt Aufgaben in Tagen oder Monaten und bestimmt nach Auslastung, wer als Nächstes dran ist: Zugewiesene und überfällige Aufgaben zählen, überfällige stärker. Abwesende werden übersprungen, und an fällige zugewiesene Aufgaben erinnert ManaWG per Push.',
+				'Die [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) gibt es als Tabelle, als PDF und Excel-Datei und als CSV-Download. Sie enthält fertige Rotationen für zwei, drei, vier und fünf Personen und einen Generator für eure Namen.\nDie [Putzplan-App](/putzplan) von ManaWG wiederholt Aufgaben in Tagen oder Monaten und bestimmt nach Auslastung, wer als Nächstes dran ist: Zugewiesene und überfällige Aufgaben zählen, überfällige stärker. Abwesende werden übersprungen, und an fällige zugewiesene Aufgaben erinnert ManaWG per Push.',
 			],
 		],
 		tables: [
@@ -251,7 +259,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 			],
 			[
 				'Kann ich den Putzplan in Excel oder Google Tabellen selbst bauen?',
-				'Ja. Legt eine Tabelle mit den Spalten Woche, Aufgabe, Was dazugehört, Zuständig und Erledigt an, tragt eure Aufgaben aus Schritt 1 ein und lasst die Namen jede Woche eine Zeile weiterrutschen. In Excel, Numbers oder Google Tabellen geht das mit wenigen Zeilen. Wollt ihr nicht von null anfangen, ladet den Plan aus dem Generator als CSV herunter und öffnet ihn dort, die Anleitung steht bei der [Putzplan-Vorlage](/putzplan-vorlage). Das Weiterrücken pflegt ihr danach selbst.',
+				'Ja. Legt eine Tabelle mit den Spalten Woche, Aufgabe, Was dazugehört, Zuständig und Erledigt an, tragt eure Aufgaben aus Schritt 1 ein und lasst die Namen jede Woche eine Zeile weiterrutschen. In Excel, Numbers oder Google Tabellen geht das mit wenigen Zeilen. Wollt ihr nicht von null anfangen, ladet bei der [Putzplan-Vorlage](/putzplan-vorlage) eine fertige Excel-Datei für zwei bis fünf Personen herunter oder den Plan aus dem Generator als CSV. Danach pflegt ihr den Plan selbst.',
 			],
 		],
 	},
@@ -262,22 +270,30 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 			kind: 'rota-generator',
 			csv: '/putzplan-vorlage.csv',
 		},
-		updated: '2026-10-27',
+		updated: '2026-11-08',
 		published: '2026-10-11',
-		title: 'WG-Putzplan Vorlage: 2 bis 5 Personen, PDF & CSV | ManaWG',
+		title: 'Putzplan WG Vorlage: PDF & Excel, 2 bis 5 Personen | ManaWG',
 		description:
-			'Kostenlose WG-Putzplan Vorlage zum Ausdrucken: Rotation für 2, 3, 4 und 5 Personen, Generator mit euren Namen, als PDF drucken oder als CSV für Excel öffnen.',
-		h1: 'WG-Putzplan Vorlage zum Ausdrucken und Anpassen',
+			'Kostenlose WG-Putzplan Vorlage als A4-PDF und Excel-Datei für 2, 3, 4 und 5 Personen, dazu CSV und ein Generator mit euren Namen. Ohne Konto.',
+		h1: 'WG-Putzplan Vorlage als PDF und Excel zum Ausdrucken',
 		intro:
-			'Hier steht eine fertige Rotation für zwei, drei, vier und fünf Personen, kostenlos und ohne Konto. Im Generator tragt ihr eure Namen ein und druckt den Plan als PDF oder ladet ihn als CSV herunter.',
+			'Hier gibt es den WG-Putzplan als fertiges A4-PDF und als Excel-Datei für zwei, drei, vier und fünf Personen, kostenlos und ohne Konto. Wollt ihr eigene Aufgaben, tragt ihr im Generator eure Namen ein, druckt den Plan oder ladet ihn als CSV herunter.',
 		sections: [
+			[
+				'Putzplan als PDF und Excel herunterladen',
+				'2 Personen: [PDF zum Ausdrucken](https://manawg.com/vorlagen/putzplan-vorlage-2-personen.pdf) und [Excel-Datei](https://manawg.com/vorlagen/putzplan-vorlage-2-personen.xlsx)\n3 Personen: [PDF zum Ausdrucken](https://manawg.com/vorlagen/putzplan-vorlage-3-personen.pdf) und [Excel-Datei](https://manawg.com/vorlagen/putzplan-vorlage-3-personen.xlsx)\n4 Personen: [PDF zum Ausdrucken](https://manawg.com/vorlagen/putzplan-vorlage-4-personen.pdf) und [Excel-Datei](https://manawg.com/vorlagen/putzplan-vorlage-4-personen.xlsx)\n5 Personen: [PDF zum Ausdrucken](https://manawg.com/vorlagen/putzplan-vorlage-5-personen.pdf) und [Excel-Datei](https://manawg.com/vorlagen/putzplan-vorlage-5-personen.xlsx)',
+			],
+			[
+				'So sind PDF und Excel-Datei aufgebaut',
+				'Das PDF ist ein A4-Blatt zum Aushängen: Die Namen tragt ihr von Hand ein, die Rotation läuft über mindestens acht Wochen, jede Woche hat eine Spalte für das Datum und jedes Feld ein Kästchen zum Abhaken. In der Excel-Datei tragt ihr eure Namen in die gelben Felder ein, und die Tabelle übernimmt sie. Aufgaben benennt ihr in den Spaltenköpfen um, das Datum jeder Woche tragt ihr selbst ein. Beide Dateien nutzen dieselbe Rotation wie die Tabellen weiter unten.',
+			],
 			[
 				'Vorlage für vier Personen',
 				'Bei vier Personen rotieren Bad, Küche, Böden sowie Müll und Flur. Jede Woche rückt jede Person eine Aufgabe weiter, nach vier Wochen hat jede Person alles einmal gemacht. A bis D stehen für eure vier Namen.',
 			],
 			[
 				'Putzplan-Generator: Namen eintragen, Plan drucken',
-				'Tragt zwei bis sechs Namen ein, wählt die Aufgaben und die Zahl der Wochen, und der Plan steht da. Er lässt sich drucken, auch als PDF speichern, oder als CSV herunterladen. Nichts wird gespeichert, ihr braucht kein Konto. Der Generator rotiert der Reihe nach. Die App verteilt zusätzlich nach überfälligen Aufgaben und überspringt Abwesende.',
+				'Tragt zwei bis sechs Namen ein, wählt die Aufgaben und die Zahl der Wochen, und der Plan steht da. Er lässt sich drucken, auch als PDF speichern, oder als CSV herunterladen, die fertigen Dateien oben sind für zwei bis fünf Personen mit den Standardaufgaben. Nichts wird gespeichert, ihr braucht kein Konto. Der Generator rotiert der Reihe nach. Die App verteilt zusätzlich nach überfälligen Aufgaben und überspringt Abwesende.',
 			],
 			[
 				'Vorlage für drei und fünf Personen',
@@ -365,8 +381,12 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 				'Für drei und fünf Personen stehen fertige Tabellen auf dieser Seite. Bei drei rotieren Bad, Küche sowie Böden und Müll, bei fünf kommen Wohnzimmer und Balkon hinzu. Im Generator wählt ihr Namen und Aufgaben selbst, die Zahl der Wochen ist 4 oder 8.',
 			],
 			[
-				'PDF oder CSV, was nehme ich?',
-				'Für den Aushang nehmt ihr den Druck: Im Druckdialog des Browsers lässt sich der Plan auch als PDF speichern. Die CSV-Datei ist für alle, die den Plan in einem Tabellenprogramm weiterbearbeiten oder in einer geteilten Datei pflegen wollen.',
+				'PDF, Excel oder CSV, was nehme ich?',
+				'Für den Aushang nehmt ihr das fertige PDF: ausdrucken, Namen eintragen, aufhängen. Wollt ihr den Plan am Rechner pflegen, nehmt die Excel-Datei, in der eure Namen in jede Woche übernommen werden. Die CSV-Datei aus dem Generator ist für Pläne mit eigenen Aufgaben, die ihr in einem Tabellenprogramm weiterbearbeitet. Im Druckdialog des Browsers lässt sich auch der Generator-Plan als PDF speichern.',
+			],
+			[
+				'Gibt es die WG-Putzplan Vorlage als PDF zum Ausdrucken?',
+				'Ja. Für zwei, drei, vier und fünf Personen gibt es je ein A4-PDF zum Herunterladen, siehe oben. Es zeigt die Rotation über mindestens acht Wochen mit einer Spalte für das Datum, einem Kästchen zum Abhaken je Feld und Zeilen für die Namen. Es ist kostenlos, ihr braucht kein Konto.',
 			],
 			[
 				'Wie sieht ein Putzplan für zwei Personen aus?',
@@ -374,7 +394,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 			],
 			[
 				'Gibt es die WG-Putzplan Vorlage als Excel-Datei?',
-				'Es gibt eine CSV-Datei, die sich in Excel, Numbers und Google Tabellen öffnen lässt. Sie enthält die Rotation mit euren Namen aus dem Generator. Eine xlsx-Datei mit Formeln gibt es nicht, zusätzliche Spalten wie „Erledigt“ ergänzt ihr selbst.',
+				'Ja. Für zwei, drei, vier und fünf Personen gibt es je eine Excel-Datei (xlsx) zum Herunterladen, siehe oben. Ihr tragt eure Namen in gelbe Felder ein, die Rotation übernimmt sie, und das Datum jeder Woche tragt ihr selbst ein. Zusätzlich gibt es eine CSV-Datei, die sich in Excel, Numbers und Google Tabellen öffnen lässt und die Rotation mit euren Namen aus dem Generator enthält. Zusätzliche Spalten wie „Erledigt“ ergänzt ihr selbst.',
 			],
 		],
 	},

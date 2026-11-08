@@ -184,7 +184,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'cleaning-rota': {
 		link: 'Cleaning rota app',
-		updated: '2026-10-30',
+		updated: '2026-11-08',
 		published: '2026-10-29',
 		title: 'Cleaning rota & chore app for flatmates & roommates | ManaWG',
 		description:
@@ -215,7 +215,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Setting up and scope',
-				'Members join through an invite link or an email invitation, and up to 20 active people fit in one flat. ManaWG is free, has no ads and is available in English and German. You install it as a PWA through the browser, and there is no app store listing. Besides the cleaning rota there are expenses, shopping, supplies, calendar, chat and noticeboard. All areas are introduced on [Flat-share app](/flat-share-app).',
+				'Members join through an invite link or an email invitation, and up to 20 active people fit in one flat. ManaWG is free, has no ads and is available in English and German. You install it as a PWA through the browser, and there is no app store listing. Besides the cleaning rota there are expenses, shopping, supplies, calendar, chat and noticeboard. All areas are introduced on [Flat-share app](/flat-share-app). If you want to run the cleaning rota on a machine of your own, read [Self-hosted chore tracker](/self-hosted-chore-tracker).',
 			],
 		],
 		faq: [

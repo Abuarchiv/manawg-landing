@@ -18,6 +18,14 @@ const TEMPLATE_TWO = cleaningRota(
 const TEMPLATE_THREE = cleaningRota(['A', 'B', 'C'], TASKS_THREE, undefined, 'Week');
 const TEMPLATE_FIVE = cleaningRota(['A', 'B', 'C', 'D', 'E'], TASKS_FIVE, undefined, 'Week');
 
+/** The four templates by number of people, for the printable PDF and XLSX files (scripts/build-rota-templates.mts). */
+export const ROTA_TEMPLATES = {
+	2: TEMPLATE_TWO,
+	3: TEMPLATE_THREE,
+	4: TEMPLATE_FOUR,
+	5: TEMPLATE_FIVE,
+} as const;
+
 /** The same template data as a CSV. Comma separated, static, no user input. */
 export function cleaningRotaTemplateCsv(): string {
 	return tableToCsv(TEMPLATE_FOUR.header, TEMPLATE_FOUR.rows, ',');
@@ -30,7 +38,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			after: 'Cleaning rota generator: a plan in one minute',
 			kind: 'rota-generator',
 		},
-		updated: '2026-10-30',
+		updated: '2026-11-08',
 		published: '2026-10-29',
 		title: 'Make a cleaning rota or chore chart for flatmates | ManaWG',
 		description:
@@ -97,7 +105,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Ready-made instead of building your own',
-				'The [cleaning rota template to print](/cleaning-rota-template) comes as a table and as a CSV download. It has ready rotations for two, three, four and five people and a generator for your names.\nThe [cleaning rota in ManaWG](/cleaning-rota) repeats tasks every few days or months and works out who is next based on workload: assigned and overdue tasks count, overdue ones more. Anyone who is away is skipped, and ManaWG sends a push reminder for assigned tasks that are due.',
+				'The [cleaning rota template to print](/cleaning-rota-template) comes as a table, as a PDF and an Excel file, and as a CSV download. It has ready rotations for two, three, four and five people and a generator for your names.\nThe [cleaning rota in ManaWG](/cleaning-rota) repeats tasks every few days or months and works out who is next based on workload: assigned and overdue tasks count, overdue ones more. Anyone who is away is skipped, and ManaWG sends a push reminder for assigned tasks that are due.',
 			],
 		],
 		tables: [
@@ -255,7 +263,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Can I build the cleaning rota myself in Excel or Google Sheets?',
-				'Yes. Create a table with the columns Week, Task, What it includes, Responsible and Done, enter your tasks from step 1 and let the names move down one row each week. In Excel, Numbers or Google Sheets that takes only a few lines. If you do not want to start from zero, download the plan from the generator as a CSV and open it there, the instructions are on the [cleaning rota template](/cleaning-rota-template) page. You then move the names along each week yourselves.',
+				'Yes. Create a table with the columns Week, Task, What it includes, Responsible and Done, enter your tasks from step 1 and let the names move down one row each week. In Excel, Numbers or Google Sheets that takes only a few lines. If you do not want to start from zero, download a ready-made Excel file for two to five people from the [cleaning rota template](/cleaning-rota-template) page, or the plan from the generator as a CSV. You then keep the plan up yourselves.',
 			],
 		],
 	},
@@ -266,22 +274,30 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			kind: 'rota-generator',
 			csv: '/en/cleaning-rota-template.csv',
 		},
-		updated: '2026-10-30',
+		updated: '2026-11-08',
 		published: '2026-10-29',
-		title: 'Roommate chore chart template: 2–5 people, free | ManaWG',
+		title: 'Roommate chore chart template: PDF & Excel, free | ManaWG',
 		description:
-			'Free printable chore chart for roommates and flatmates: rotations for 2 to 5 people, a generator with your names, print as PDF or open the CSV in Excel.',
-		h1: 'Flat-share chore chart and cleaning rota template to print and adapt',
+			'Free printable chore chart for roommates and flatmates as an A4 PDF and an Excel file for 2 to 5 people, plus a CSV and a name generator.',
+		h1: 'Flat-share chore chart template as PDF and Excel to print and adapt',
 		intro:
-			'Here is a ready-made rotation for two, three, four and five people, free and without an account. In the generator you enter your names and print the plan as a PDF or download it as a CSV.',
+			'Here is the chore chart as a ready-made A4 PDF and as an Excel file for two, three, four and five people, free and without an account. If you want your own tasks, enter your names in the generator and print the plan or download it as a CSV.',
 		sections: [
+			[
+				'Download the chore chart as PDF and Excel',
+				'2 people: [printable PDF](https://manawg.com/vorlagen/cleaning-rota-template-2-people.pdf) and [Excel file](https://manawg.com/vorlagen/cleaning-rota-template-2-people.xlsx)\n3 people: [printable PDF](https://manawg.com/vorlagen/cleaning-rota-template-3-people.pdf) and [Excel file](https://manawg.com/vorlagen/cleaning-rota-template-3-people.xlsx)\n4 people: [printable PDF](https://manawg.com/vorlagen/cleaning-rota-template-4-people.pdf) and [Excel file](https://manawg.com/vorlagen/cleaning-rota-template-4-people.xlsx)\n5 people: [printable PDF](https://manawg.com/vorlagen/cleaning-rota-template-5-people.pdf) and [Excel file](https://manawg.com/vorlagen/cleaning-rota-template-5-people.xlsx)',
+			],
+			[
+				'How the PDF and the Excel file are laid out',
+				'The PDF is an A4 sheet to put on the wall: you write the names in by hand, the rotation runs for at least eight weeks, each week has a column for the date and each cell has a box to tick off. In the Excel file you enter your names in the yellow cells and the table picks them up. You rename the tasks in the column headings and fill in the date of each week yourself. Both files use the same rotation as the tables further down.',
+			],
 			[
 				'Template for four people',
 				'With four people, the bathroom, kitchen, floors and bins plus hallway rotate. Every week each person moves on by one task, and after four weeks everyone has done everything once. A to D stand for your four names.',
 			],
 			[
 				'Cleaning rota generator: enter names, print the plan',
-				'Enter two to six names, choose the tasks and the number of weeks, and the plan appears. You can print it, save it as a PDF too, or download it as a CSV. Nothing is stored and you do not need an account. The generator rotates in turn. The ManaWG app instead assigns each task by workload, where overdue tasks count for more, and skips anyone who is away.',
+				'Enter two to six names, choose the tasks and the number of weeks, and the plan appears. You can print it, save it as a PDF too, or download it as a CSV, while the ready-made files above are for two to five people with the standard tasks. Nothing is stored and you do not need an account. The generator rotates in turn. The ManaWG app instead assigns each task by workload, where overdue tasks count for more, and skips anyone who is away.',
 			],
 			[
 				'Template for three and five people',
@@ -369,8 +385,12 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 				'There are ready tables for three and five people on this page. With three, the bathroom, kitchen, and floors and bins rotate, and with five, living room and balcony is added. In the generator you choose names and tasks yourself, and the number of weeks is 4 or 8.',
 			],
 			[
-				'PDF or CSV, which should I use?',
-				'To put it up on the wall, print it: in the browser’s print dialog you can also save the plan as a PDF. The CSV file is for anyone who wants to keep editing the plan in a spreadsheet or maintain it in a shared file.',
+				'PDF, Excel or CSV, which should I use?',
+				'To put it up on the wall, use the ready-made PDF: print it, write in the names, hang it up. If you want to keep the plan on a computer, use the Excel file, where your names carry into every week. The CSV file from the generator is for plans with your own tasks that you keep editing in a spreadsheet. In the browser’s print dialog you can also save the generator plan as a PDF.',
+			],
+			[
+				'Is there a printable PDF of the cleaning rota template?',
+				'Yes. For two, three, four and five people there is one A4 PDF each to download, see above. It shows the rotation for at least eight weeks with a column for the date, a box to tick off in each cell and lines for the names. It is free and you do not need an account.',
 			],
 			[
 				'What does a cleaning rota for two people look like?',
@@ -378,20 +398,20 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Is the cleaning rota template available as an Excel file?',
-				'There is a CSV file that opens in Excel, Numbers and Google Sheets. It contains the rotation with your names from the generator. There is no xlsx file with formulas, and you add extra columns such as “Done” yourself.',
+				'Yes. For two, three, four and five people there is one Excel file (xlsx) each to download, see above. You enter your names in yellow cells, the rotation picks them up, and you fill in the date of each week yourself. There is also a CSV file that opens in Excel, Numbers and Google Sheets and holds the rotation with your names from the generator. You add extra columns such as “Done” yourself.',
 			],
 		],
 	},
 	'house-rules': {
 		link: 'House rules',
-		updated: '2026-10-29',
+		updated: '2026-11-08',
 		published: '2026-10-29',
-		title: 'House rules template: 10 rules for a flat share | ManaWG',
+		title: 'Roommate agreement template: 10 house rules | ManaWG',
 		description:
-			'House rules template with ten rules on quiet hours, guests, cleaning, the fridge and money. With room to flex, agreed consequences and a fill-in sheet to print.',
-		h1: 'House rules for a flat share: a template with ten rules that work',
+			'Roommate agreement template with ten house rules on quiet hours, guests, cleaning, the fridge and money, with space for signatures.',
+		h1: 'Roommate agreement for a flat share: template with ten house rules',
 		intro:
-			'Many flat shares have either no rules at all or a long list that nobody keeps to. Good house rules are short, concrete and agreed by everyone, and ten on one page are usually enough. Below is a template with ten rules to copy, then a fill-in-the-blanks sheet, the individual areas and examples of the consequences you can agree if rules are broken.',
+			'Many flat shares have either no rules at all or a long list that nobody keeps to. A roommate agreement, also called house rules, works when it is short, concrete and agreed by everyone, and ten rules on one page are usually enough. Below is a template with ten rules to copy, then a fill-in-the-blanks sheet, the individual areas and examples of the consequences you can agree if rules are broken.',
 		tables: [
 			{
 				after: 'Template: ten house rules to copy',
@@ -469,6 +489,10 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 		],
 		sections: [
 			[
+				'Roommate agreement or house rules: what is the difference?',
+				'On this page the two mean the same thing: a short written list of rules that the people in a flat agree on among themselves. It covers daily life such as quiet hours, guests, cleaning, the fridge and shared costs. It is an agreement between you. The tenancy agreement and the building’s house rules (Hausordnung) take precedence, and this page is not legal advice. Questions about the contract go to the landlord or a tenants’ association (Mieterverein).',
+			],
+			[
 				'Template: ten house rules to copy',
 				'1. Quiet from 10 pm on weekdays and from midnight at weekends.\n2. Parties are announced at least a day ahead.\n3. Overnight guests are welcome, and anyone staying longer than three nights is agreed in advance.\n4. Dishes are washed up or loaded into the dishwasher on the same day.\n5. The cleaning rota rotates weekly, and anyone who is away is skipped and does not catch up.\n6. Everyone has their own shelf in the fridge, and other people’s food is only eaten after asking.\n7. Cleaning supplies, toilet paper and washing-up liquid are paid for together, private food by each person.\n8. Purchases for the flat over €30 are agreed beforehand.\n9. Expenses are entered at once and settled up on the first of the month.\n10. Once a month there is a short flat meeting where the rules can be adjusted.',
 			],
@@ -477,7 +501,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 				'1. Quiet from ____ on weekdays and from ____ at weekends.\n2. We announce parties ____ days ahead and agree an end time.\n3. Overnight guests are welcome, and from the ____ night in a row we agree it in advance.\n4. Dishes are washed up or loaded by ____ at the latest.\n5. The cleaning rota changes every ____. Whoever cannot manage a task swaps beforehand or catches up.\n6. Everyone has a shelf in the fridge, and shared food goes on shelf ____.\n7. We pay for ____ together. Each person pays for ____ themselves.\n8. We agree purchases for the flat over €____ beforehand.\n9. We enter expenses at once and settle up on ____.\n10. The flat meeting is on the ____ of each month at ____.',
 			],
 			[
-				'Start date and signatures',
+				'Start date and signatures for your roommate agreement',
 				'Add underneath the sheet: These rules apply from ____, the trial period runs until ____. Signatures: ____',
 			],
 			[
@@ -558,6 +582,18 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 		],
 		faq: [
+			[
+				'What is a roommate agreement?',
+				'A short written list of rules that flatmates agree on among themselves: quiet hours, guests, cleaning, the fridge and shared costs. On this page it is the same thing as the house rules. It is an agreement between you, not legal advice, and the tenancy agreement and the building’s house rules (Hausordnung) take precedence.',
+			],
+			[
+				'Is there a free roommate agreement template?',
+				'Yes. This page has a template with ten rules and a fill-in sheet with gaps and room for a start date and signatures. It is free and needs no account. Take over only what suits your flat and adjust the figures.',
+			],
+			[
+				'What should a roommate agreement include?',
+				'Quiet hours, guests, cleaning, the fridge, shared costs, how you settle up and how often you meet, plus a start date and a trial period. Put it on paper only once everyone has agreed to each point.',
+			],
 			[
 				'Which rules should every flat share have?',
 				'Quiet hours, how to handle guests, cleaning, shared expenses and a regular meeting to agree things. Usually nothing more is needed.',

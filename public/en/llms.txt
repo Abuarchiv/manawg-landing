@@ -42,11 +42,11 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Split flat costs fairly](https://manawg.com/en/split-flat-costs): rent, utilities, internet, three models
 - [Make a cleaning rota](https://manawg.com/en/make-a-cleaning-rota): generator, five steps, weekly plan, rhythm, points system
 - [Start a flat share: checklist](https://manawg.com/en/start-a-flat-share): order of steps, budget, type of contract, deposit, start-up costs
-- [House rules](https://manawg.com/en/house-rules): template, fill-in sheet to print, consequences of breaking the rules
+- [House rules](https://manawg.com/en/house-rules): roommate agreement template with ten rules, fill-in sheet to print, consequences of breaking the rules
 - [Split rent by room size](https://manawg.com/en/rent-split-calculator): calculator, formula, example
 - [Utilities, electricity and internet](https://manawg.com/en/utilities-and-internet)
 - [Rundfunkbeitrag in a shared flat](https://manawg.com/en/rundfunkbeitrag-shared-flat): one fee per home, deregistering, sharing the cost
-- [Cleaning rota template](https://manawg.com/en/cleaning-rota-template): templates for 2 to 5 people, CSV for Excel ([CSV download](https://manawg.com/en/cleaning-rota-template.csv))
+- [Cleaning rota template](https://manawg.com/en/cleaning-rota-template): templates for 2 to 5 people as A4 PDF and Excel file, plus CSV ([CSV download](https://manawg.com/en/cleaning-rota-template.csv))
 - [Household kitty](https://manawg.com/en/household-kitty)
 - [Moving-in checklist](https://manawg.com/en/moving-in-checklist)
 - [Holidays and time away](https://manawg.com/en/holidays-and-time-away)
@@ -68,6 +68,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Give notice on a room](https://manawg.com/en/give-notice-on-a-room): notice periods, examples with dates, template, replacement tenant, joint contract
 - [Moving-out checklist](https://manawg.com/en/moving-out-checklist): notice, replacement tenant, deposit, final statement
 - [Open-source flat-share app](https://manawg.com/en/open-source-flat-share-app): Apache-2.0, use it free or self-host with Docker
+- [Self-hosted chore tracker](https://manawg.com/en/self-hosted-chore-tracker): Docker Compose in three steps, what runs, limits, comparison with Donetick and Grocy
 
 ## More links
 
