@@ -280,8 +280,11 @@ export default function PrivacyPage() {
 						that was opened contains utm_source, utm_medium or ref (for example from a directory
 						listing or a shared link), the website sends their values, but only if each consists of
 						at most 40 letters, digits, dots, hyphens or underscores; other values are discarded.
-						These values are only held in the memory of the open page and are not stored. The IP
-						address reaches PostHog with the request.
+						Only campaign identifiers assigned by ManaWG itself are meant (for example the name of a
+						directory), not personal details. In the browser these values are only held in the
+						memory of the open page (no cookie, no local storage); at PostHog they are stored like
+						the other event data (see retention period). The IP address reaches PostHog with the
+						request.
 					</li>
 					<li>
 						<strong>Processing region and transfers to third countries:</strong> PostHog Cloud EU in

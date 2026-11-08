@@ -40,7 +40,7 @@ export function DemoPage({ locale }: { locale: Locale }) {
 				<a
 					href={appUrl('/signup?action=create')}
 					data-cta="demo_create"
-					className="relative inline-flex h-8 flex-none items-center whitespace-nowrap rounded-full bg-(--ink) px-3 text-[12px] font-semibold text-(--paper) no-underline after:absolute after:inset-x-0 after:-inset-y-[6px] after:content-['']"
+					className="relative inline-flex h-8 flex-none items-center whitespace-nowrap rounded-full bg-(--ink) px-2.5 text-[12px] font-semibold text-(--paper) no-underline after:absolute after:inset-x-0 after:-inset-y-[6px] after:content-['']"
 				>
 					{t.cta}
 				</a>

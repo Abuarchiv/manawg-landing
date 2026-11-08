@@ -38,7 +38,8 @@ export function ctaId(id: string | undefined): string {
 /**
  * Campaign tags of the entry URL (`?utm_source=awesome-list&utm_medium=listing&ref=hn`). Only short
  * tokens of letters, digits, dot, dash and underscore pass, so an address or a free-text value in
- * a link never reaches the analytics. Nothing is stored: the tags are read from the URL in memory.
+ * a link never reaches the analytics. Nothing is stored in the browser: the tags are read from the URL in memory. They only
+ * identify campaign links ManaWG sets itself (a directory name), not people.
  */
 export const CAMPAIGN_KEYS = ['utm_source', 'utm_medium', 'ref'] as const;
 

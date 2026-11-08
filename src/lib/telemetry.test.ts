@@ -118,6 +118,12 @@ test('the privacy texts name every event the website sends', () => {
 		for (const name of ['app_link_clicked', 'demo_link_clicked', 'utm_source', 'utm_medium']) {
 			assert.match(page, new RegExp(name), `${file}: ${name}`);
 		}
+		assert.match(page, /Kampagnenkennungen|campaign identifiers/, `${file}: campaign scope`);
+		assert.doesNotMatch(
+			page,
+			/nicht gespeichert\. Die IP|not stored\. The IP/,
+			`${file}: storage claim`,
+		);
 	}
 });
 

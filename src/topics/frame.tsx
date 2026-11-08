@@ -45,8 +45,8 @@ export function TopicHeader({ locale }: { locale: Locale }) {
 }
 
 /**
- * Call to action under the headline of the text pages, so it stays above the fold on small phones: create a flat (app sign-up) and look at the demo
- * first. One component for every topic, guide, calculator and comparison page. The ids in data-cta
+ * Call to action under the headline of the text pages, so it stays above the fold on small
+ * phones: create a flat (app sign-up) and look at the demo first. One component for every topic, guide, calculator and comparison page. The ids in data-cta
  * are what the click telemetry sends.
  */
 export function TopicCta({ locale }: { locale: Locale }) {

@@ -282,8 +282,11 @@ export default function PrivacyPage() {
 						utm_source, utm_medium oder ref (etwa aus einem Verzeichniseintrag oder einem geteilten
 						Link), sendet die Website deren Wert mit, aber nur, wenn er aus höchstens 40 Buchstaben,
 						Ziffern, Punkten, Bindestrichen oder Unterstrichen besteht; andere Werte werden
-						verworfen. Diese Angaben bleiben nur im Arbeitsspeicher der geöffneten Seite und werden
-						nicht gespeichert. Die IP-Adresse erreicht PostHog mit der Anfrage.
+						verworfen. Gemeint sind nur von ManaWG selbst vergebene Kampagnenkennungen (etwa der
+						Name eines Verzeichnisses), keine persönlichen Angaben. Im Browser werden diese Angaben
+						nur im Arbeitsspeicher der geöffneten Seite gehalten (kein Cookie, kein lokaler
+						Speicher); bei PostHog werden sie wie die übrigen Ereignisdaten gespeichert (siehe
+						Speicherdauer). Die IP-Adresse erreicht PostHog mit der Anfrage.
 					</li>
 					<li>
 						<strong>Verarbeitungsregion und Drittlandübermittlungen:</strong> PostHog Cloud EU in
