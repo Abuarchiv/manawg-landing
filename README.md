@@ -45,14 +45,15 @@ pnpm install
 pnpm dev          # http://localhost:3100
 ```
 
-| Script           | What it does                                                               |
-| ---------------- | -------------------------------------------------------------------------- |
-| `pnpm dev`       | Dev server on port 3100                                                    |
-| `pnpm lint`      | Biome check                                                                |
-| `pnpm typecheck` | `tsc --noEmit`                                                             |
-| `pnpm test`      | Unit tests (`src/**/*.test.ts`)                                            |
-| `pnpm build`     | Production build                                                           |
-| `pnpm test:e2e`  | Smoke test of the production build in Chromium, desktop and phone (`e2e/`) |
+| Script           | What it does                                                                   |
+| ---------------- | ------------------------------------------------------------------------------ |
+| `pnpm dev`       | Dev server on port 3100                                                        |
+| `pnpm lint`      | Biome check                                                                    |
+| `pnpm typecheck` | `tsc --noEmit`                                                                 |
+| `pnpm test`      | Unit tests (`src/**/*.test.ts`)                                                |
+| `pnpm build`     | Production build                                                               |
+| `pnpm test:e2e`  | Smoke test of the production build in Chromium, desktop and phone (`e2e/`)     |
+| `pnpm templates` | Rebuilds the printable cleaning rota PDFs and XLSX files in `public/vorlagen/` |
 
 Before opening a pull request, run
 `pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm test:e2e`. The smoke test serves

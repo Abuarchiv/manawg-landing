@@ -25,6 +25,7 @@
 		"test": "node --test \"src/**/*.test.ts\"",
 		"test:e2e": "playwright test",
 		"lint": "biome check .",
+		"templates": "node scripts/build-rota-templates.mts",
 		"format": "biome format --write .",
 		"clean": "rm -rf .next node_modules/.cache"
 	},
@@ -43,6 +44,8 @@
 		"@types/node": "^22",
 		"@types/react": "19.3.0",
 		"@types/react-dom": "19.3.0",
+		"fflate": "^0.8.3",
+		"pdf-lib": "^1.17.1",
 		"postcss": "^8.5.32",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^7.0.2"
