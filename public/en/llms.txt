@@ -68,6 +68,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Give notice on a room](https://manawg.com/en/give-notice-on-a-room): notice periods, examples with dates, template, replacement tenant, joint contract
 - [Moving-out checklist](https://manawg.com/en/moving-out-checklist): notice, replacement tenant, deposit, final statement
 - [Open-source flat-share app](https://manawg.com/en/open-source-flat-share-app): Apache-2.0, use it free or self-host with Docker
+- [Self-hosted chore tracker](https://manawg.com/en/self-hosted-chore-tracker): Docker Compose in three steps, what runs, limits, comparison with Donetick and Grocy
 
 ## More links
 

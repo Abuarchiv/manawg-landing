@@ -56,6 +56,7 @@ export const GROUPS: Array<{
 			'wg-zwischenmiete',
 			'wg-auszug-checkliste',
 			'open-source-wg-app',
+			'putzplan-selbst-hosten',
 		],
 	},
 	{ id: 'about', name: 'Über ManaWG', slugs: ['ueber-manawg', 'faq'] },
@@ -130,6 +131,7 @@ const READ_NEXT: Record<string, string[]> = {
 	'flatastic-alternative': ['beste-wg-app', 'ourhome-alternative', 'putzplan'],
 	'ourhome-alternative': ['beste-wg-app', 'flatastic-alternative', 'putzplan'],
 	'open-source-wg-app': ['wg-app', 'open-source-splitwise-alternativen', 'splitwise-alternative'],
+	'putzplan-selbst-hosten': ['putzplan', 'open-source-wg-app', 'putzplan-vorlage'],
 	'open-source-splitwise-alternativen': [
 		'open-source-wg-app',
 		'splitwise-alternative',

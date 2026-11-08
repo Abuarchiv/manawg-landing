@@ -40,7 +40,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'Host it yourself: what you need',
-				'Self-hosting is for when you want the data on a machine you control. You need Docker with Compose v2, git and openssl. A running instance uses about 500 MB of memory, and building the app image needs about 3 GB once. The stack that starts is the app, PostgreSQL, sign-in, image storage and a Caddy gateway, all from one compose file.',
+				'Self-hosting is for when you want the data on a machine you control. You need Docker with Compose v2, git and openssl. A running instance uses about 500 MB of memory, and building the app image needs about 3 GB once. The stack that starts is the app, PostgreSQL, sign-in, image storage and a Caddy gateway, all from one compose file. If the cleaning rota is what you mainly want to run, read [Self-hosted chore tracker](/self-hosted-chore-tracker).',
 			],
 			[
 				'Host it yourself: the steps',
@@ -226,6 +226,107 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			[
 				'Is this comparison independent?',
 				'No, it comes from ManaWG. The statements about the other projects come from their READMEs as of 6 November 2026, and the sources are listed below. Where something is not backed, it is not in the tables.',
+			],
+		],
+	},
+	'self-hosted-chore-tracker': {
+		link: 'Self-hosted chore tracker',
+		updated: '2026-11-08',
+		published: '2026-11-08',
+		title: 'Self-hosted chore tracker for a flat share | ManaWG',
+		description:
+			'Run the ManaWG cleaning rota on your own machine: open source, Docker Compose in three steps, honest limits and a comparison with Donetick and Grocy.',
+		h1: 'A self-hosted chore tracker for your flat share',
+		intro:
+			'If you want the cleaning rota on a machine you control, ManaWG is one open-source option. Its chore tracker is part of a flat-share app under the Apache License 2.0 that you start with Docker Compose. Chores repeat on a rhythm, rotate by workload and skip anyone who is away. Most flats do not need to host anything, because the [cleaning rota app](/cleaning-rota) at app.manawg.com is free. This page is for flats that want the data at home.',
+		sources: [
+			['ManaWG repository and README (GitHub)', 'https://github.com/Abuarchiv/manawg'],
+			[
+				'Self-hosting guide (GitHub)',
+				'https://github.com/Abuarchiv/manawg/blob/main/docs/self-hosting.md',
+			],
+			['Donetick repository and README (GitHub)', 'https://github.com/donetick/donetick'],
+			['Grocy repository and README (GitHub)', 'https://github.com/grocy/grocy'],
+		],
+		sections: [
+			[
+				'What the chore tracker does',
+				'Rhythm: each chore repeats in days or months, and monthly intervals stay true to the calendar\nRotation: when a chore is done, ManaWG picks the person with the lightest load, where assigned and overdue chores count and overdue ones count more\nAway: members enter periods of absence, and anyone away is skipped at the next assignment\nHistory: every completion is recorded, so you can see who did what and when\nReminders: a daily push message for assigned chores that are due today or up to seven days overdue, at most every 18 hours per chore',
+			],
+			[
+				'What you need',
+				'Docker with Compose v2, git and openssl on any machine that runs containers, from a laptop to a small server or a Raspberry Pi (the image is built for amd64 and arm64). A running instance uses about 500 MB of memory. Compose pulls the published image when one exists for your version. Only if it does not is the image built from your checkout, which takes about ten minutes and needs about 3 GB once.',
+			],
+			[
+				'Set it up in three steps',
+				'1. Clone the repository with git clone https://github.com/Abuarchiv/manawg.git, go into the manawg folder and run ./docker/setup.sh. It writes a .env file with fresh secrets.\n2. Run docker compose up -d. The first start gets the images and sets up the database.\n3. Open http://localhost, create an account and a flat, and add your chores. Every email, including the sign-in code, lands in Mailpit at http://localhost:8025.',
+			],
+			[
+				'What runs on your machine',
+				'It is not a single container. Compose starts the app, PostgreSQL, sign-in (Supabase Auth), image storage, a Caddy gateway, a setup step that runs on every start and a cron service for the scheduled jobs, plus Mailpit for mail on a local instance. The data lives in two Docker volumes. The same stack also serves the expenses, shopping list, calendar and chat, so it is more to run than a chore tracker that is one container.',
+			],
+			[
+				'Reaching it from your phone',
+				'On localhost the instance is reachable from that machine only. To use it on the phones in the flat or away from home you need a domain, ports 80 and 443 and an SMTP account for the sign-in mails, and the gateway then fetches a Let’s Encrypt certificate. Every address except localhost needs HTTPS, because installing the app on the home screen and resetting a password need a secure context. Registration is open to anyone who can reach the address, so for a flat-only instance restrict access at a proxy, for example with a VPN.',
+			],
+			[
+				'ManaWG, Donetick and Grocy side by side',
+				'Two other open-source projects fit the same search. The table lists only what their own repositories state, as of 8 November 2026, and it is not a ranking. Donetick is a dedicated chore and task app and runs as one container in its Docker example, so it is the lighter one to run if a chore tracker is all you want. ManaWG makes sense when the flat also wants expenses, a shopping list and chat in one app. Grocy’s README describes a groceries and household management tool and points to its website for the feature list, so check there whether it covers your rota.',
+			],
+			[
+				'Limits',
+				'It is a web app that you add to the home screen, not an app in a store.\nSelf-hosted: a public instance needs an SMTP account for sign-in, and Google sign-in and push notifications stay off until you set up your own keys. For push you also build your own image, as the self-hosting guide describes.\nDates, reminders and month boundaries follow Berlin time, whatever time zone the server uses.\nA flat holds at most 20 active members.\nThere is no bank connection for the expenses.\nUpdates, backups and support are yours: the repository has backup and restore scripts and a guide for updating, and questions go to GitHub Discussions.',
+			],
+			[
+				'Or use the hosted app',
+				'If you only want the cleaning rota to work, you need none of this. app.manawg.com is free and has no ads, and the [demo](/demo) shows the app on sample data without an account. The steps for a bigger instance, backups and the second route with Vercel and Supabase are on [Open-source flat-share app](/open-source-flat-share-app).',
+			],
+		],
+		tables: [
+			{
+				after: 'ManaWG, Donetick and Grocy side by side',
+				title: 'Chore trackers you can host yourself',
+				header: ['Project', 'Licence and set-up', 'Chores'],
+				rows: [
+					[
+						'ManaWG',
+						'Apache-2.0. Next.js app on PostgreSQL, several containers with Docker Compose',
+						'Rhythm, rotation by workload, absences, push reminders. Also expenses, shopping list, calendar and chat',
+					],
+					[
+						'Donetick',
+						'AGPL-3.0. One container with SQLite in its Docker example',
+						'Rotation by fewest completed tasks, randomly or in turns. Points, subtasks, NFC tags, Home Assistant integration. Android APK and an alpha iOS app',
+					],
+					[
+						'Grocy',
+						'MIT. PHP application with SQLite',
+						'README: groceries and household management, features listed on its website. The repository has a chores controller',
+					],
+				],
+				note: 'Source: the README and licence file of each repository, 8 November 2026.',
+			},
+		],
+		faq: [
+			[
+				'Can I self-host a chore tracker for my flat share?',
+				'Yes. ManaWG is open source under the Apache License 2.0 and starts with git, ./docker/setup.sh and docker compose up -d. The chore tracker is one part of a flat-share app, next to expenses, shopping list, calendar and chat.',
+			],
+			[
+				'What does it take to self-host ManaWG?',
+				'Docker with Compose v2, git and openssl, and about 500 MB of memory for the running instance. For a public instance you add a domain, open ports 80 and 443 and an SMTP account for the sign-in mails.',
+			],
+			[
+				'Is ManaWG a lighter alternative to Donetick?',
+				'No. Donetick runs as one container in its Docker example, ManaWG as several. ManaWG is the choice when the flat also wants expenses, a shopping list and chat in the same app.',
+			],
+			[
+				'Does the self-hosted version send push reminders?',
+				'Not out of the box. The published image has push turned off. You generate your own keys and build your own image, as the self-hosting guide describes.',
+			],
+			[
+				'Do I have to self-host ManaWG?',
+				'No. app.manawg.com is free and has no ads. Self-hosting is for flats that want the data on their own machine.',
 			],
 		],
 	},

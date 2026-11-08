@@ -38,6 +38,7 @@ const PAGES = [
 	'/wer-schuldet-wem-rechner',
 	'/nebenkosten-tagesgenau-rechner',
 	'/open-source-splitwise-alternativen',
+	'/putzplan-selbst-hosten',
 	'/impressum',
 	'/datenschutz',
 	'/en/guides',
@@ -45,6 +46,7 @@ const PAGES = [
 	'/en/who-owes-whom-calculator',
 	'/en/split-bill-by-days-calculator',
 	'/en/open-source-splitwise-alternatives',
+	'/en/self-hosted-chore-tracker',
 	'/en/privacy',
 ];
 
@@ -208,6 +210,26 @@ for (const [path, locale] of [
 			await page.setViewportSize({ width: 320, height: 640 });
 			await page.goto(path);
 			await expect(page.getByRole('table')).toHaveCount(3);
+			const overflow = await page.evaluate(
+				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+			);
+			expect(overflow).toBeLessThanOrEqual(0);
+		});
+	});
+}
+
+// The self-hosting page has one comparison table in its own scroll region.
+for (const [path, locale] of [
+	['/putzplan-selbst-hosten', 'de-DE'],
+	['/en/self-hosted-chore-tracker', 'en-GB'],
+] as const) {
+	test.describe(`self-hosting page ${path}`, () => {
+		test.use({ locale });
+
+		test('does not scroll sideways at 320 px', async ({ page }) => {
+			await page.setViewportSize({ width: 320, height: 640 });
+			await page.goto(path);
+			await expect(page.getByRole('table')).toHaveCount(1);
 			const overflow = await page.evaluate(
 				() => document.documentElement.scrollWidth - document.documentElement.clientWidth,
 			);

@@ -173,7 +173,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Einrichten und Umfang',
-				'Mitglieder treten per Einladungslink oder E-Mail-Einladung bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und auf Deutsch und Englisch verfügbar. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor.',
+				'Mitglieder treten per Einladungslink oder E-Mail-Einladung bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und auf Deutsch und Englisch verfügbar. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor. Wer den Putzplan auf einer eigenen Maschine betreiben will, liest [Putzplan selbst hosten](/putzplan-selbst-hosten).',
 			],
 		],
 		faq: [
