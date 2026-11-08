@@ -36,9 +36,11 @@ export function DemoPage({ locale }: { locale: Locale }) {
 				</Link>
 				<p className="min-w-0 truncate text-[12px] text-(--text-3)">{t.note}</p>
 				<LanguageLink to={locale === 'de' ? 'en' : 'de'} href={t.other} className={LINK} />
+				{/* Solid pill, the one primary action of the page; ::after keeps the 44 px touch target around the 32 px pill. */}
 				<a
 					href={appUrl('/signup?action=create')}
-					className={`${LINK} font-semibold text-(--text-1)`}
+					data-cta="demo_create"
+					className="relative inline-flex h-8 flex-none items-center whitespace-nowrap rounded-full bg-(--ink) px-3 text-[12px] font-semibold text-(--paper) no-underline after:absolute after:inset-x-0 after:-inset-y-[6px] after:content-['']"
 				>
 					{t.cta}
 				</a>

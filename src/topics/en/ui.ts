@@ -21,6 +21,8 @@ export const UI_EN: TopicUi = {
 	ctaTagline: 'Your flat, in one place.',
 	ctaButton: 'Create a flat for free',
 	ctaNote: 'Free, no ads, in the browser.',
+	ctaTopCreate: 'Create your flat',
+	ctaTopDemo: 'See the demo',
 	readNext: 'Read next',
 	csvDownload: 'Download as CSV',
 	printLabel: 'Print / save as PDF',
