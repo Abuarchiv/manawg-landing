@@ -38,7 +38,8 @@ jobs:
       - name: Rota templates are up to date
         run: |
           pnpm templates
-          git diff --exit-code -- public/vorlagen
+          # The xlsx archives differ byte-wise between Node/zlib builds, so only the PDFs are compared.
+          git diff --exit-code -- 'public/vorlagen/*.pdf'
 
       - name: Lint
         run: pnpm lint
