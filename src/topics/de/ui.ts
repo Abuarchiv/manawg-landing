@@ -24,6 +24,8 @@ export const UI_DE: TopicUi = {
 	ctaTagline: 'Eure WG, an einem Ort.',
 	ctaButton: 'WG kostenlos erstellen',
 	ctaNote: 'Kostenlos, ohne Werbung, im Browser.',
+	ctaTopCreate: 'WG erstellen',
+	ctaTopDemo: 'Demo ansehen',
 	readNext: 'Weiterlesen',
 	csvDownload: 'Als CSV herunterladen',
 	printLabel: 'Drucken / als PDF speichern',

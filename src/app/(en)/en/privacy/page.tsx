@@ -256,7 +256,7 @@ export default function PrivacyPage() {
 					<li>
 						<strong>Purpose:</strong> To develop ManaWG further, we record page views and count how
 						often a flat is created or someone joins a flat. On this website (manawg.com) we count
-						page views and how often someone opens the app from here.
+						page views and how often someone opens the app or the demo from here.
 					</li>
 					<li>
 						<strong>Legal basis:</strong> Art. 6(1)(f) GDPR (our legitimate interest in developing
@@ -269,14 +269,22 @@ export default function PrivacyPage() {
 					<li>
 						<strong>Recipients and processors:</strong> PostHog Inc. processes the data via PostHog
 						Cloud EU in Frankfurt (eu.i.posthog.com). The app sends only page views and the events
-						wg_created and wg_joined; the website sends only page views and the event
-						app_link_clicked. Other events, and extra details passed on by app features, are removed
-						before sending. Also sent are an event identifier (UUID), the time, the project
-						identifier, a technical assignment identifier, the hostname, the page path and the
-						browser identifier. In the app, placeholders replace flat codes and invitation tokens in
-						the page path. The website also sends the domain of the referring page (for example
-						www.google.com), never its full address, and with app_link_clicked the fixed id of the
-						button (for example hero_create). The IP address reaches PostHog with the request.
+						wg_created and wg_joined; the website sends only page views and the events
+						app_link_clicked and demo_link_clicked. Other events, and extra details passed on by app
+						features, are removed before sending. Also sent are an event identifier (UUID), the
+						time, the project identifier, a technical assignment identifier, the hostname, the page
+						path and the browser identifier. In the app, placeholders replace flat codes and
+						invitation tokens in the page path. The website also sends the domain of the referring
+						page (for example www.google.com), never its full address, and with app_link_clicked and
+						demo_link_clicked the fixed id of the button (for example hero_create). If the address
+						that was opened contains utm_source, utm_medium or ref (for example from a directory
+						listing or a shared link), the website sends their values, but only if each consists of
+						at most 40 letters, digits, dots, hyphens or underscores; other values are discarded.
+						Only campaign identifiers assigned by ManaWG itself are meant (for example the name of a
+						directory), not personal details. In the browser these values are only held in the
+						memory of the open page (no cookie, no local storage); at PostHog they are stored like
+						the other event data (see retention period). The IP address reaches PostHog with the
+						request.
 					</li>
 					<li>
 						<strong>Processing region and transfers to third countries:</strong> PostHog Cloud EU in

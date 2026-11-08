@@ -53,6 +53,9 @@ export interface TopicUi {
 	ctaTagline: string;
 	ctaButton: string;
 	ctaNote: string;
+	/** Compact call to action above the fold: primary button and the demo link. */
+	ctaTopCreate: string;
+	ctaTopDemo: string;
 	readNext: string;
 	csvDownload: string;
 	printLabel: string;

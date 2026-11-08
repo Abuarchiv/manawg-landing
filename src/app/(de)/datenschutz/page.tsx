@@ -255,7 +255,8 @@ export default function PrivacyPage() {
 					<li>
 						<strong>Zweck:</strong> Um ManaWG weiterzuentwickeln, erfassen wir Seitenaufrufe und
 						zählen, wie oft eine WG erstellt wird oder jemand einer WG beitritt. Auf dieser Website
-						(manawg.com) zählen wir Seitenaufrufe und wie oft jemand von hier aus die App öffnet.
+						(manawg.com) zählen wir Seitenaufrufe und wie oft jemand von hier aus die App oder die
+						Demo öffnet.
 					</li>
 					<li>
 						<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (unser berechtigtes
@@ -269,15 +270,23 @@ export default function PrivacyPage() {
 					<li>
 						<strong>Empfänger und Auftragsverarbeiter:</strong> PostHog Inc. verarbeitet die Daten
 						über PostHog Cloud EU in Frankfurt (eu.i.posthog.com). Die App sendet nur Seitenaufrufe
-						und die Ereignisse wg_created und wg_joined, die Website nur Seitenaufrufe und das
-						Ereignis app_link_clicked. Andere Ereignisse und zusätzliche Angaben, die App-Funktionen
-						übergeben, werden vor dem Senden entfernt. Mitgesendet werden außerdem eine
-						Ereigniskennung (UUID), der Zeitpunkt, die Projektkennung, eine technische
-						Zuordnungskennung, der Hostname, der Seitenpfad und die Browserkennung. In der App
-						ersetzen Platzhalter die WG-Codes und Einladungstokens im Seitenpfad. Die Website sendet
-						zusätzlich die Domain der verweisenden Seite (etwa www.google.com), nie deren
-						vollständige Adresse, und bei app_link_clicked die feste Kennung des Knopfs (etwa
-						hero_create). Die IP-Adresse erreicht PostHog mit der Anfrage.
+						und die Ereignisse wg_created und wg_joined, die Website nur Seitenaufrufe und die
+						Ereignisse app_link_clicked und demo_link_clicked. Andere Ereignisse und zusätzliche
+						Angaben, die App-Funktionen übergeben, werden vor dem Senden entfernt. Mitgesendet
+						werden außerdem eine Ereigniskennung (UUID), der Zeitpunkt, die Projektkennung, eine
+						technische Zuordnungskennung, der Hostname, der Seitenpfad und die Browserkennung. In
+						der App ersetzen Platzhalter die WG-Codes und Einladungstokens im Seitenpfad. Die
+						Website sendet zusätzlich die Domain der verweisenden Seite (etwa www.google.com), nie
+						deren vollständige Adresse, und bei app_link_clicked und demo_link_clicked die feste
+						Kennung des Knopfs (etwa hero_create). Enthält die aufgerufene Adresse die Angaben
+						utm_source, utm_medium oder ref (etwa aus einem Verzeichniseintrag oder einem geteilten
+						Link), sendet die Website deren Wert mit, aber nur, wenn er aus höchstens 40 Buchstaben,
+						Ziffern, Punkten, Bindestrichen oder Unterstrichen besteht; andere Werte werden
+						verworfen. Gemeint sind nur von ManaWG selbst vergebene Kampagnenkennungen (etwa der
+						Name eines Verzeichnisses), keine persönlichen Angaben. Im Browser werden diese Angaben
+						nur im Arbeitsspeicher der geöffneten Seite gehalten (kein Cookie, kein lokaler
+						Speicher); bei PostHog werden sie wie die übrigen Ereignisdaten gespeichert (siehe
+						Speicherdauer). Die IP-Adresse erreicht PostHog mit der Anfrage.
 					</li>
 					<li>
 						<strong>Verarbeitungsregion und Drittlandübermittlungen:</strong> PostHog Cloud EU in
