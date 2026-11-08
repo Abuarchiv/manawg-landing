@@ -35,6 +35,11 @@ jobs:
       - name: Audit
         run: pnpm audit --prod --audit-level=high
 
+      - name: Rota templates are up to date
+        run: |
+          pnpm templates
+          git diff --exit-code -- public/vorlagen
+
       - name: Lint
         run: pnpm lint
 

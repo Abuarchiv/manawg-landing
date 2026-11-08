@@ -5,7 +5,7 @@ import type { Topic } from '../types.ts';
 export const OPEN_SOURCE_EN: Record<string, Topic> = {
 	'open-source-flat-share-app': {
 		link: 'Open-source flat-share app',
-		updated: '2026-10-29',
+		updated: '2026-11-08',
 		published: '2026-10-29',
 		title: 'Open-source flat-share app you can self-host | ManaWG',
 		description:

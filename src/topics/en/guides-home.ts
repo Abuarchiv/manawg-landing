@@ -278,7 +278,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 		published: '2026-10-29',
 		title: 'Roommate chore chart template: PDF & Excel, free | ManaWG',
 		description:
-			'Free printable chore chart for roommates and flatmates as an A4 PDF and an Excel file for 2 to 5 people, plus a CSV and a generator with your names. No account.',
+			'Free printable chore chart for roommates and flatmates as an A4 PDF and an Excel file for 2 to 5 people, plus a CSV and a name generator.',
 		h1: 'Flat-share chore chart template as PDF and Excel to print and adapt',
 		intro:
 			'Here is the chore chart as a ready-made A4 PDF and as an Excel file for two, three, four and five people, free and without an account. If you want your own tasks, enter your names in the generator and print the plan or download it as a CSV.',
@@ -408,7 +408,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 		published: '2026-10-29',
 		title: 'Roommate agreement template: 10 house rules | ManaWG',
 		description:
-			'Roommate agreement template with ten house rules on quiet hours, guests, cleaning, the fridge and money, plus a fill-in sheet to print with space for signatures.',
+			'Roommate agreement template with ten house rules on quiet hours, guests, cleaning, the fridge and money, with space for signatures.',
 		h1: 'Roommate agreement for a flat share: template with ten house rules',
 		intro:
 			'Many flat shares have either no rules at all or a long list that nobody keeps to. A roommate agreement, also called house rules, works when it is short, concrete and agreed by everyone, and ten rules on one page are usually enough. Below is a template with ten rules to copy, then a fill-in-the-blanks sheet, the individual areas and examples of the consequences you can agree if rules are broken.',

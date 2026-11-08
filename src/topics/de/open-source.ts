@@ -5,7 +5,7 @@ import type { Topic } from '../types.ts';
 export const OPEN_SOURCE_DE: Record<string, Topic> = {
 	'open-source-wg-app': {
 		link: 'Open-Source-WG-App',
-		updated: '2026-10-29',
+		updated: '2026-11-08',
 		published: '2026-10-29',
 		title: 'Open-Source-WG-App zum Selbsthosten | ManaWG',
 		description:

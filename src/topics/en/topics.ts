@@ -184,7 +184,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'cleaning-rota': {
 		link: 'Cleaning rota app',
-		updated: '2026-10-30',
+		updated: '2026-11-08',
 		published: '2026-10-29',
 		title: 'Cleaning rota & chore app for flatmates & roommates | ManaWG',
 		description:

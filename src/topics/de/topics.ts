@@ -142,7 +142,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 	},
 	putzplan: {
 		link: 'WG Putzplan App',
-		updated: '2026-10-27',
+		updated: '2026-11-08',
 		published: '2026-10-09',
 		title: 'WG Putzplan App: fair verteilt, kostenlos | ManaWG',
 		description:
