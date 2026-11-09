@@ -2,7 +2,7 @@
 export const FAQ_DE: [string, string][] = [
 	[
 		'Wie kommen meine Mitbewohner in die WG?',
-		'Eine Person von euch erstellt die WG und teilt den Einladungslink. Die anderen melden sich mit Google oder E-Mail und Passwort an und treten über den Link bei.',
+		'Eine Person von euch erstellt die WG und teilt den Einladungslink. Die anderen melden sich mit Google oder per E-Mail-Code an und treten über den Link bei.',
 	],
 	[
 		'Brauche ich eine App aus dem Store?',

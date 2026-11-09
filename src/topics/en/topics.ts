@@ -51,7 +51,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			'ManaWG is a free flat-share app for flatmates and roommates, not a room search: expenses, cleaning rota, shopping list, calendar and chat in your browser.',
 		h1: 'The flat-share app for money, cleaning, shopping and plans',
 		intro:
-			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many shared flats (WGs, as they are called in Germany). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app for flatmates and roommates, in English and German.',
+			'A note on the fridge and a WhatsApp group where anything important gets buried: that is how daily life runs in many shared flats (WGs, as they are called in Germany). ManaWG brings expenses, cleaning rota, shopping, supplies, calendar, chat and noticeboard into one free app for flatmates and roommates, in English, German and Spanish.',
 		sections: [
 			[
 				'Why an app instead of notes and WhatsApp',
@@ -79,11 +79,11 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Who ManaWG is for',
-				'Student flats, professional flat shares and a couple sharing with a flatmate: up to 20 active members fit in one flat. People join through an invite link, and invitations can also go out by email. You sign in with Google or with email and password. The app runs in the browser and can be added to your home screen. The interface is in English and German and follows the language of your device.',
+				'Student flats, professional flat shares and a couple sharing with a flatmate: up to 20 active members fit in one flat. People join through an invite link, and invitations can also go out by email. You sign up with Google or with your name, email address and an 8-digit code from the email; no password is needed. Whoever opens an invite link sees who is inviting them to which flat before signing up. The app runs in the browser and can be added to your home screen. The interface is in English, German and Spanish and follows the language of your device.',
 			],
 			[
 				'How your flat gets started',
-				'One person signs in with Google or email and password, creates the flat and shares the invite link. The others sign in too and join through the link. Start with one concrete everyday problem: record the [first shared expense](/shared-expenses) or add a repeating cleaning task. That way you use the app together straight away, rather than setting up every area first.',
+				'One person signs up with Google or with name, email address and the 8-digit code from the email, creates the flat and shares the invite link. The others sign up too and join through the link. Start with one concrete everyday problem: record the [first shared expense](/shared-expenses) or add a repeating cleaning task. That way you use the app together straight away, rather than setting up every area first.',
 			],
 			[
 				'Installing ManaWG: iPhone, Android, desktop',
@@ -131,13 +131,13 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 					],
 					[
 						'Data',
-						'import from Splitwise or Splid CSV or from a screenshot, export as JSON and CSV',
-						'no import from Tricount or Flatastic',
+						'import from Splitwise, Splid, Tricount or Settle Up CSV or from a screenshot, export as JSON and CSV',
+						'no import from Flatastic',
 					],
 					[
 						'Access',
 						'in the browser, installable on the home screen, join by invite link or email invitation',
-						'no app store, English and German only, up to 20 active members',
+						'no app store, English, German and Spanish only, up to 20 active members',
 					],
 				],
 				note: 'Details from the app, as of 27 October 2026.',
@@ -150,15 +150,15 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Is ManaWG in the App Store, and is it available in English?',
-				'It is available in English, but not in the App Store. ManaWG is not a native app: you open app.manawg.com in the browser and add it to your home screen. The interface is in English and German, and you enter amounts in euros in the app.',
+				'It is available in English, but not in the App Store. ManaWG is not a native app: you open app.manawg.com in the browser and add it to your home screen. The interface is in English, German and Spanish, and you enter amounts in euros in the app.',
 			],
 			[
 				'How many people fit in one flat?',
 				'Up to 20 active members. People who have moved out do not count, and their history is kept. Admins can revoke invitations at any time.',
 			],
 			[
-				'Can I switch from Splitwise or Splid?',
-				'Yes, with a CSV import that has a preview and an undo. Rows in euros are imported, and rows in other currencies are rejected one by one without stopping the whole import.',
+				'Can I switch from Splitwise, Splid, Tricount or Settle Up?',
+				'Yes, with a CSV import from Splitwise, Splid, Tricount or Settle Up that has a preview and an undo. Rows in euros are imported, and rows in other currencies are rejected one by one without stopping the whole import.',
 			],
 			[
 				'Does ManaWG work without internet?',
@@ -184,7 +184,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'cleaning-rota': {
 		link: 'Cleaning rota app',
-		updated: '2026-11-08',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Cleaning rota & chore app for flatmates & roommates | ManaWG',
 		description:
@@ -215,7 +215,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Setting up and scope',
-				'Members join through an invite link or an email invitation, and up to 20 active people fit in one flat. ManaWG is free, has no ads and is available in English and German. You install it as a PWA through the browser, and there is no app store listing. Besides the cleaning rota there are expenses, shopping, supplies, calendar, chat and noticeboard. All areas are introduced on [Flat-share app](/flat-share-app). If you want to run the cleaning rota on a machine of your own, read [Self-hosted chore tracker](/self-hosted-chore-tracker).',
+				'Members join through an invite link or an email invitation, and up to 20 active people fit in one flat. ManaWG is free, has no ads and is available in English, German and Spanish. You install it as a PWA through the browser, and there is no app store listing. Besides the cleaning rota there are expenses, shopping, supplies, calendar, chat and noticeboard. All areas are introduced on [Flat-share app](/flat-share-app). If you want to run the cleaning rota on a machine of your own, read [Self-hosted chore tracker](/self-hosted-chore-tracker).',
 			],
 		],
 		faq: [
@@ -237,7 +237,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Does the cleaning rota app cost anything?',
-				'No. ManaWG is free and shows no ads. The app is available in English and German, and a flat can have at most 20 active members.',
+				'No. ManaWG is free and shows no ads. The app is available in English, German and Spanish, and a flat can have at most 20 active members.',
 			],
 			[
 				'Is the app in the App Store?',
@@ -266,7 +266,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			'Free app to split bills with flatmates or roommates: equal or custom shares in euros, fixed costs such as rent, few settle-up transfers, monthly statement.',
 		h1: 'The shared expenses app for costs, fixed costs and statements',
 		intro:
-			'Who paid for the loo roll, and who still owes whom? ManaWG is a free shared expenses app in English and German for a WG (shared flat). Every expense lands in everyone’s balance at once, with no notes and no spreadsheet.',
+			'Who paid for the loo roll, and who still owes whom? ManaWG is a free shared expenses app in English, German and Spanish for a WG (shared flat). Every expense lands in everyone’s balance at once, with no notes and no spreadsheet.',
 		sections: [
 			[
 				'Splitting expenses in a flat',
@@ -293,12 +293,12 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 				'On the Reminders page a member can send a payment reminder with the Remind button. The same reminder can go out at most once every 48 hours, so nobody gets pestered. The balance stays visible to everyone at any time, for example in the monthly statement. The page is its own area of the flat, next to expenses, statement and activity. How to bring up open amounts without an argument is covered in [Flatmate debts](/flatmate-debts).',
 			],
 			[
-				'Moving over from Splitwise or Splid',
-				'If your previous accounts exist as a CSV file, you bring them into your flat with the import, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). If the daily expense limit of the free Splitwise version is what drives you away, [Splitwise’s free limit](/splitwise-free-limit) sets out what Splitwise’s help page says. You see a preview first, an import history shows earlier runs, and an import can be undone. Only euro amounts are imported, and ManaWG rejects other currencies row by row. A photo or screenshot of an expense list can also be read in and corrected before saving. If you come from Tricount, the differences are on [Tricount alternative](/tricount-alternative).',
+				'Moving over from Splitwise, Splid, Tricount or Settle Up',
+				'If your previous accounts exist as a CSV file, you bring them into your flat with the import, and the steps are in [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid). If the daily expense limit of the free Splitwise version is what drives you away, [Splitwise’s free limit](/splitwise-free-limit) sets out what Splitwise’s help page says. You see a preview first, an import history shows earlier runs, and an import can be undone. Only euro amounts are imported, and ManaWG rejects other currencies row by row. A photo or screenshot of an expense list can also be read in and corrected before saving. The import reads CSV files from Splitwise, Splid, Tricount and Settle Up. If you come from Tricount, the differences are on [Tricount alternative](/tricount-alternative).',
 			],
 			[
 				'What ManaWG is not',
-				'ManaWG is meant for flats with up to 20 active members, is available in English and German and takes amounts in euros. It is installed as a PWA through the browser, not through an app store. You sign in with Google or email. The app is free and has no ads. What the app offers beyond expenses is on [Flat-share app](/flat-share-app).',
+				'ManaWG is meant for flats with up to 20 active members, is available in English, German and Spanish and takes amounts in euros. It is installed as a PWA through the browser, not through an app store. You sign in with Google or email. The app is free and has no ads. What the app offers beyond expenses is on [Flat-share app](/flat-share-app).',
 			],
 		],
 		faq: [
@@ -320,7 +320,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Can I bring over data from Splitwise?',
-				'If it exists as a CSV file, yes: through the CSV import from Splitwise or Splid, with a preview and an undo. Only amounts in euros are imported, and rows in other currencies are rejected one by one.',
+				'If it exists as a CSV file, yes: through the CSV import from Splitwise, Splid, Tricount or Settle Up, with a preview and an undo. Only amounts in euros are imported, and rows in other currencies are rejected one by one.',
 			],
 			[
 				'How many people fit in one flat?',
@@ -464,7 +464,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'1. What does the app really cost?',
-				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. You enter amounts in euros, the app is available in English and German, and it is meant for at most 20 active members per flat.',
+				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. You enter amounts in euros, the app is available in English, German and Spanish, and it is meant for at most 20 active members per flat.',
 			],
 			[
 				'2. Does it cover money and household?',
@@ -484,15 +484,15 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'6. Privacy and language',
-				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). Other open-source apps you can self-host are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives). In the app you enter amounts in euros only. Swiss francs, US dollars and pounds can only be booked through the API, and there is no conversion. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
+				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English, German and Spanish. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). Other open-source apps you can self-host are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives). In the app you enter amounts in euros only. Swiss francs, US dollars and pounds can only be booked through the API, and there is no conversion. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
 			],
 			[
 				'7. How easy is switching?',
-				'If you already have data from Splitwise or Splid as a CSV file, you should be able to take it with you. ManaWG imports expenses from such CSV files and shows a preview first, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). Detailed comparisons are on [Splitwise alternative](/splitwise-alternative), [Splid alternative](/splid-alternative), [Flatastic alternative](/flatastic-alternative), [Tricount alternative](/tricount-alternative) and [OurHome alternative](/ourhome-alternative).',
+				'If you already have data from Splitwise, Splid, Tricount or Settle Up as a CSV file, you should be able to take it with you. ManaWG imports expenses from such CSV files and shows a preview first, and the steps are in [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid). Detailed comparisons are on [Splitwise alternative](/splitwise-alternative), [Splid alternative](/splid-alternative), [Flatastic alternative](/flatastic-alternative), [Tricount alternative](/tricount-alternative) and [OurHome alternative](/ourhome-alternative).',
 			],
 			[
 				'Which app suits which flat?',
-				'You mostly share money, also on trips and in several currencies: Splid lists over 150 currencies, Tricount multiple currencies and Splitwise conversion in its Pro plan, each per the provider. In ManaWG you enter amounts in euros, and there is no conversion.\nYou want money, cleaning rota, shopping, calendar and noticeboard in one app with no subscription and no app store, in English or German: ManaWG is built for that.\nYou want points or rewards for cleaning: ManaWG does not offer that, as the cleaning rota distributes by workload.\nYou have old expenses from Splitwise or Splid as a CSV file: ManaWG imports them with a preview, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).\nThere are more than 20 of you: a flat in ManaWG holds at most 20 active members.',
+				'You mostly share money, also on trips and in several currencies: Splid lists over 150 currencies, Tricount multiple currencies and Splitwise conversion in its Pro plan, each per the provider. In ManaWG you enter amounts in euros, and there is no conversion.\nYou want money, cleaning rota, shopping, calendar and noticeboard in one app with no subscription and no app store, in English, German or Spanish: ManaWG is built for that.\nYou want points or rewards for cleaning: ManaWG does not offer that, as the cleaning rota distributes by workload.\nYou have old expenses from Splitwise, Splid, Tricount or Settle Up as a CSV file: ManaWG imports them with a preview, and the steps are in [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid).\nThere are more than 20 of you: a flat in ManaWG holds at most 20 active members.',
 			],
 		],
 		faq: [
@@ -502,7 +502,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Is there a flat-share app with a cleaning rota and expenses in one?',
-				'Yes. ManaWG combines expense splitting, cleaning rota, shopping list, calendar, noticeboard and chat in one app, in English and German, in euros and for up to 20 members per flat.',
+				'Yes. ManaWG combines expense splitting, cleaning rota, shopping list, calendar, noticeboard and chat in one app, in English, German and Spanish, in euros and for up to 20 members per flat.',
 			],
 			[
 				'Which app suits trips with several currencies?',
@@ -518,7 +518,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Flatastic or Splitwise: which suits a flat better?',
-				'It depends on what you need. Splitwise is built around shared expenses. Flatastic combines cleaning rota, shopping list, finances and a pinboard per the provider, and Premium is paid. If you want money and household in a free web app with no ads, in English or German, you will find that in the [ManaWG flat-share app](/flat-share-app), which in return takes amounts in euros only and holds at most 20 members per flat.',
+				'It depends on what you need. Splitwise is built around shared expenses. Flatastic combines cleaning rota, shopping list, finances and a pinboard per the provider, and Premium is paid. If you want money and household in a free web app with no ads, in English, German or Spanish, you will find that in the [ManaWG flat-share app](/flat-share-app), which in return takes amounts in euros only and holds at most 20 members per flat.',
 			],
 		],
 	},
@@ -566,7 +566,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'CSV import, if your data exists as a file',
-				'If your Splitwise expenses exist as a CSV file, you open your flat’s import and choose the source. Before anything is saved you see a preview of all recognised rows. Afterwards the import appears in the history and can be undone if something is wrong. So you check beforehand and can go back afterwards. The steps are in the guide [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). Only flat admins may import other members’ history.',
+				'If your Splitwise expenses exist as a CSV file, you open your flat’s import and choose the source. Before anything is saved you see a preview of all recognised rows. Afterwards the import appears in the history and can be undone if something is wrong. So you check beforehand and can go back afterwards. The steps are in the guide [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid). Only flat admins may import other members’ history.',
 			],
 			[
 				'Euros, no conversion',
@@ -624,7 +624,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'What Splid does, per the provider',
-				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. The full feature list is on that page (checked on 14 October 2026). ManaWG, by contrast, asks each person to sign in. In return, expenses, balances and history stay tied to your flat, and flatmates join through an invite link or an email invitation.',
+				'The English Splid page lists over 150 currencies, groups that work offline or online and export as PDF or Excel, and says the app is free. The full feature list is on that page (checked on 14 October 2026). ManaWG, by contrast, asks each person to sign in, with Google or an email code and an optional password. In return, expenses, balances and history stay tied to your flat, and flatmates join through an invite link or an email invitation.',
 			],
 			[
 				'Expenses and household in one app',
@@ -636,7 +636,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Moving over with a CSV import',
-				'If your Splid expenses exist as a CSV file, you upload them under Import in your flat. You see a preview before anything is saved, and you can undo the import from the history. Only euro rows are imported, and ManaWG rejects other currencies one by one. Only flat admins may import other people’s history. If you only have screenshots, you read in a photo of an expense list and correct it before saving. The guide [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid) walks through every step.',
+				'If your Splid expenses exist as a CSV file, you upload them under Import in your flat. You see a preview before anything is saved, and you can undo the import from the history. Only euro rows are imported, and ManaWG rejects other currencies one by one. Only flat admins may import other people’s history. If you only have screenshots, you read in a photo of an expense list and correct it before saving. The guide [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid) walks through every step.',
 			],
 			[
 				'Splitting and settling up',
@@ -644,13 +644,13 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'The limits of ManaWG',
-				'A flat holds at most 20 active members. The app is available in English and German and takes amounts in euros. There is no app in the App Store: you use ManaWG in the browser at app.manawg.com and add it to your phone’s home screen. Calendar subscription and push notifications work that way too, with nothing to install from a store.',
+				'A flat holds at most 20 active members. The app is available in English, German and Spanish and takes amounts in euros. There is no app in the App Store: you use ManaWG in the browser at app.manawg.com and add it to your phone’s home screen. Calendar subscription and push notifications work that way too, with nothing to install from a store.',
 			],
 		],
 		faq: [
 			[
 				'Does ManaWG need an account?',
-				'Yes. Each person signs in with Google or with email and password. Joining then works through an invite link or an email invitation.',
+				'Yes. Each person signs up with Google or with name, email address and an 8-digit code from the email, and no password is needed. Joining then works through an invite link or an email invitation.',
 			],
 			[
 				'How do I bring my data over from Splid?',
@@ -740,7 +740,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Shared expenses and switching',
-				'You split expenses equally or with custom amounts, exact to the cent. ManaWG shows balances and suggests settlements with few transfers. Fixed costs and a monthly statement come on top. If your Splitwise or Splid expenses exist as a CSV file, they can be imported with a preview, see [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). There is no Flatastic import, so you enter old data again by hand if you need it. The expenses are described on [Shared expenses](/shared-expenses).',
+				'You split expenses equally or with custom amounts, exact to the cent. ManaWG shows balances and suggests settlements with few transfers. Fixed costs and a monthly statement come on top. If your expenses from Splitwise, Splid, Tricount or Settle Up exist as a CSV file, they can be imported with a preview, see [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid). There is no Flatastic import, so you enter old data again by hand if you need it. The expenses are described on [Shared expenses](/shared-expenses).',
 			],
 			[
 				'Shopping, noticeboard and chat',
@@ -748,7 +748,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'What ManaWG cannot do',
-				'The interface is in English and German, you enter amounts in euros, and a flat holds at most 20 active members. There is no app in a store: you install ManaWG as a web app on the home screen. You mark settlements as paid yourselves, and the app does not trigger a transfer. The calendar is available as a subscription for Apple and Google Calendar, but in one direction only. How ManaWG and the other apps compare on seven criteria is on [Best flat-share app](/best-flat-share-app).',
+				'The interface is in English, German and Spanish, you enter amounts in euros, and a flat holds at most 20 active members. There is no app in a store: you install ManaWG as a web app on the home screen. You mark settlements as paid yourselves, and the app does not trigger a transfer. The calendar is available as a subscription for Apple and Google Calendar, but in one direction only. How ManaWG and the other apps compare on seven criteria is on [Best flat-share app](/best-flat-share-app).',
 			],
 		],
 		faq: [
@@ -762,7 +762,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Can I bring my data over from Flatastic?',
-				'There is no direct Flatastic import. If your Splitwise or Splid expenses exist as a CSV file, you import them with a preview, an import history and an undo. Only euro amounts are imported, and other currencies are rejected.',
+				'There is no direct Flatastic import. If your expenses from Splitwise, Splid, Tricount or Settle Up exist as a CSV file, you import them with a preview, an import history and an undo. Only euro amounts are imported, and other currencies are rejected.',
 			],
 			[
 				'Is ManaWG in the App Store?',
@@ -791,7 +791,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			'Tricount handles several currencies and suits trips. For a flat with rent, fixed costs and a cleaning rota, ManaWG is free, in the browser, with statements.',
 		h1: 'Tricount alternative for flats and fixed groups',
 		intro:
-			'Tricount splits expenses in groups and, per the provider, works with several currencies. If you live together long term, you usually also need rent, fixed costs and a cleaning rota. ManaWG joins them in a free web app in English and German. Details on Tricount come from the provider’s linked pages, checked on 27 October 2026.',
+			'Tricount splits expenses in groups and, per the provider, works with several currencies. If you live together long term, you usually also need rent, fixed costs and a cleaning rota. ManaWG joins them in a free web app in English, German and Spanish. Details on Tricount come from the provider’s linked pages, checked on 27 October 2026.',
 		sources: [
 			['Tricount features', 'https://tricount.com/features'],
 			[
@@ -822,17 +822,17 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Honest limits',
-				'Amounts in euros only and no conversion, and the import rejects rows in other currencies one by one.\nManaWG runs in the browser and can be added to the home screen. There is no native app in a store.\nA flat holds at most 20 active members.\nNo bank connection: you make the transfers yourselves and then mark amounts as paid.\nNo import from Tricount: the import only reads CSV files from Splitwise and Splid, plus screenshots of expense lists.',
+				'Amounts in euros only and no conversion, and the import rejects rows in other currencies one by one.\nManaWG runs in the browser and can be added to the home screen. There is no native app in a store.\nA flat holds at most 20 active members.\nNo bank connection: you make the transfers yourselves and then mark amounts as paid.\nIncome from a Tricount or Settle Up file is not imported: it is listed as not imported, and you enter it by hand.',
 			],
 			[
 				'Switching from Tricount',
-				'It is best to settle open amounts in Tricount and start in ManaWG with a clean slate. If you want to carry the balance over, read in a screenshot of the expense list in the import. ManaWG shows a preview you can correct and recognises euro amounts only. Alternatively, for each person who is still owed money, enter one expense with that person as the payer and split it by hand across those who owe. How an import works is explained in the guide [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).',
+				'It is best to settle open amounts in Tricount and start in ManaWG with a clean slate. If you want to carry the balance over, save Tricount’s Excel export as a CSV file, choose the source Tricount CSV in the import and check the preview. Money transfers between people are marked as repayments, while income and rows in currencies other than euros are listed as not imported. If you only have screenshots, you can read in one of the expense list instead. Alternatively, for each person who is still owed money, enter one expense with that person as the payer and split it by hand across those who owe. How an import works is explained in the guide [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid).',
 			],
 		],
 		faq: [
 			[
 				'Can I import data from Tricount into ManaWG?',
-				'Not directly. The import handles CSV files from Splitwise and Splid, and screenshots of expense lists that are read with text recognition and corrected before saving. There is no Tricount import.',
+				'Yes, if you have the data as a CSV file: save Tricount’s Excel export as CSV and choose the source Tricount CSV in the import. You see a preview first, and the import can be undone. Only euro rows are imported. Money transfers between people are marked as repayments, while income and rows in other currencies are not imported. A screenshot of the expense list can also be read in and corrected before saving.',
 			],
 			[
 				'Can ManaWG handle foreign currencies?',
@@ -899,7 +899,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Web instead of a store',
-				'ManaWG runs at app.manawg.com and can be installed on the home screen. The data is stored centrally on the server, not on a single device. The app remembers actions made offline and sends them later. You can sign in with Google or with email and password. Joining works through an invite link or an email invitation. If you are still choosing an app, [Best flat-share app](/best-flat-share-app) lists seven criteria.',
+				'ManaWG runs at app.manawg.com and can be installed on the home screen. The data is stored centrally on the server, not on a single device. The app remembers actions made offline and sends them later. You can sign in with Google or with a code sent by email, and no password is needed. Joining works through an invite link or an email invitation. If you are still choosing an app, [Best flat-share app](/best-flat-share-app) lists seven criteria.',
 			],
 		],
 		faq: [
@@ -917,7 +917,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Is ManaWG available in English?',
-				'Yes. The app is available in English and German, follows the language of your device and can be switched in the app. You enter amounts in euros; other currencies can only be booked through the API.',
+				'Yes. The app is available in English, German and Spanish, follows the language of your device and can be switched in the app. You enter amounts in euros; other currencies can only be booked through the API.',
 			],
 			[
 				'How many people fit in one flat?',
@@ -931,7 +931,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		published: '2026-10-29',
 		title: 'ManaWG FAQ: cost, sign-up, data location | ManaWG',
 		description:
-			'Is ManaWG free? Is the flat-share app in the App Store? Answers on sign-up, cleaning rota, export, data in Frankfurt and importing from Splitwise or Splid.',
+			'Is ManaWG free? Is the flat-share app in the App Store? Answers on sign-up, cleaning rota, export, data in Frankfurt and importing from Splitwise, Splid, Tricount or Settle Up.',
 		h1: 'Frequently asked questions about ManaWG',
 		intro:
 			'The essentials about ManaWG, the free [flat-share app](/flat-share-app) for a WG (shared flat): cost, installation, invitations, money, cleaning rota, time away, currency, data location, import and self-hosting.',
@@ -962,7 +962,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 				'Members enter a period of time away, for example for a holiday. Anyone who is away is skipped at the next assignment in the cleaning rota.',
 			],
 			[
-				'Can I take data from Splitwise or Splid with me?',
+				'Can I take data from Splitwise, Splid, Tricount or Settle Up with me?',
 				'If your data exists as a CSV file, through the [CSV import with a preview](/switch-from-splitwise-or-splid). In the import you can also read in a photo or screenshot of an expense list with text recognition and correct it before saving; a photo of a single receipt is only attached, not analysed.',
 			],
 			[
@@ -971,7 +971,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'How do I sign in?',
-				'With Google or with email and password. You join through an invite link or an email invitation from a flatmate.',
+				'With Google or with an 8-digit code that you get by email: when you sign up, you give your name and email address, and no password is needed. You can set one later under Settings → Access. You join through an invite link or an email invitation from a flatmate.',
 			],
 			[
 				'Does ManaWG work with other currencies?',
@@ -1025,10 +1025,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		published: '2026-10-29',
 		title: 'What is ManaWG? The free flat-share app | ManaWG',
 		description:
-			'ManaWG is a free, open-source flat-share app for expenses, shopping, cleaning rota, calendar and chat, in English and German. Facts, operator, not WireGuard.',
+			'ManaWG is a free, open-source flat-share app for expenses, shopping, cleaning rota, calendar and chat, in English, German and Spanish. Facts, operator, not WireGuard.',
 		h1: 'What is ManaWG?',
 		intro:
-			'ManaWG is a free, open-source web app for a WG (Wohngemeinschaft, a shared flat), in English and German. It brings together expense splitting, shopping list, cleaning rota, calendar, noticeboard and chat. ManaWG has nothing to do with the VPN protocol WireGuard.',
+			'ManaWG is a free, open-source web app for a WG (Wohngemeinschaft, a shared flat), in English, German and Spanish. It brings together expense splitting, shopping list, cleaning rota, calendar, noticeboard and chat. ManaWG has nothing to do with the VPN protocol WireGuard.',
 		sources: [
 			['Legal notice', '/en/legal-notice'],
 			['Privacy policy', '/en/privacy'],
@@ -1041,7 +1041,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Facts at a glance',
-				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro in the app, without conversion (Swiss francs, US dollars and pounds through the API only). Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: database in the EU (Frankfurt am Main). Joining: by invite link or email invitation. Licence: Apache-2.0, source code on GitHub, self-hostable with Docker; see [Open-source flat-share app](/open-source-flat-share-app).',
+				'Price: free, no ads, no paid tier. Languages: English, German and Spanish, currency: euro in the app, without conversion (Swiss francs, US dollars and pounds through the API only). Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email code, password optional. Size: up to 20 active members per flat. Data: database in the EU (Frankfurt am Main). Joining: by invite link or email invitation. Licence: Apache-2.0, source code on GitHub, self-hostable with Docker; see [Open-source flat-share app](/open-source-flat-share-app).',
 			],
 			[
 				'Features',
@@ -1063,7 +1063,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		faq: [
 			[
 				'What is ManaWG?',
-				'A free flat-share app in English and German for expenses, shopping, cleaning rota, calendar, noticeboard and chat. It runs in the browser at app.manawg.com.',
+				'A free flat-share app in English, German and Spanish for expenses, shopping, cleaning rota, calendar, noticeboard and chat. It runs in the browser at app.manawg.com.',
 			],
 			[
 				'Does ManaWG have anything to do with WireGuard?',

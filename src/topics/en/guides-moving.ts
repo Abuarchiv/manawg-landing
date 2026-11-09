@@ -15,7 +15,7 @@ const BMG_EN: [string, string] = [
 export const GUIDES_EN_MOVING: Record<string, Topic> = {
 	'start-a-flat-share': {
 		link: 'Start a flat share',
-		updated: '2026-10-30',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Start a flat share in Germany: steps and checklist | ManaWG',
 		description:
@@ -140,7 +140,7 @@ export const GUIDES_EN_MOVING: Record<string, Topic> = {
 			],
 			[
 				'Is ManaWG suitable for new flat shares?',
-				'Yes. One person creates the flat and shares the invite link, and the others are in straight away. The app is free, available in English and German, and needs no installation from an app store.',
+				'Yes. One person creates the flat and shares the invite link, and the others are in straight away. The app is free, available in English, German and Spanish, and needs no installation from an app store.',
 			],
 			[
 				'Which insurance do you need in a new flat share?',

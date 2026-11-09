@@ -56,7 +56,7 @@ const DAY_NAMES = EXAMPLE_PEOPLE.map((p) => p.name);
 export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	'split-flat-costs': {
 		link: 'Splitting flat costs',
-		updated: '2026-11-06',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Split flat costs fairly: three models with examples | ManaWG',
 		description:
@@ -101,7 +101,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Is there an app for splitting flat costs?',
-				'Yes, for example ManaWG: free, with no ads, in English and German, with balances, settlement suggestions and fixed costs. It runs in the browser, so no app store is needed.',
+				'Yes, for example ManaWG: free, with no ads, in English, German and Spanish, with balances, settlement suggestions and fixed costs. It runs in the browser, so no app store is needed.',
 			],
 		],
 	},
@@ -366,7 +366,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'household-kitty': {
 		link: 'Household kitty',
-		updated: '2026-11-06',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Flat-share household kitty: cash, account or app? | ManaWG',
 		description:
@@ -389,7 +389,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Option 3: record expenses and settle up',
-				'Instead of holding money, everyone pays for what is missing and records the amount, for example straight after shopping (see [organising flat shopping](/organise-flat-shopping)). At the end of the month the balances show who owes whom. How to settle open balances fairly is covered in [debts between flatmates](/flatmate-debts). There is no pot for anyone to manage, and nobody is permanently out of pocket. In [ManaWG’s shared expenses](/shared-expenses) you split equally or with individual amounts per person, give each expense a category and see where the money goes. The app suggests settlements with few transfers. You transfer the money yourselves and mark it as paid. If you have been using Splitwise or Splid, bring the old data across with the CSV import, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid).',
+				'Instead of holding money, everyone pays for what is missing and records the amount, for example straight after shopping (see [organising flat shopping](/organise-flat-shopping)). At the end of the month the balances show who owes whom. How to settle open balances fairly is covered in [debts between flatmates](/flatmate-debts). There is no pot for anyone to manage, and nobody is permanently out of pocket. In [ManaWG’s shared expenses](/shared-expenses) you split equally or with individual amounts per person, give each expense a category and see where the money goes. The app suggests settlements with few transfers. You transfer the money yourselves and mark it as paid. If you have been using Splitwise or Splid, bring the old data across with the CSV import, see [Switching from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid).',
 			],
 			[
 				'Worked example',
@@ -411,7 +411,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Is there an app for a household kitty?',
-				'Yes. ManaWG is free, has no ads, works in English and German and shows balances and settlement suggestions.',
+				'Yes. ManaWG is free, has no ads, works in English, German and Spanish and shows balances and settlement suggestions.',
 			],
 		],
 	},
@@ -683,35 +683,35 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 		],
 	},
 	'switch-from-splitwise-or-splid': {
-		link: 'Switching from Splitwise or Splid',
+		link: 'Switching from Splitwise, Splid, Tricount or Settle Up',
 		updated: '2026-11-09',
 		published: '2026-10-29',
-		title: 'Switch from Splitwise or Splid: CSV import | ManaWG',
+		title: 'Switch from Splitwise, Splid, Tricount or Settle Up | ManaWG',
 		description:
-			'Bring Splitwise or Splid expenses into your flat’s shared expenses: upload the CSV, check the preview, match names and undo the import if needed.',
-		h1: 'Switching from Splitwise or Splid to ManaWG',
+			'Bring expenses from Splitwise, Splid, Tricount or Settle Up into your flat’s shared expenses: upload the CSV, check the preview, match names and undo the import if needed.',
+		h1: 'Switching from Splitwise, Splid, Tricount or Settle Up to ManaWG',
 		intro:
-			'If your flat has been keeping its expenses in Splitwise or Splid, switching does not mean starting from scratch. If you have the expenses as a CSV file, ManaWG brings them into your flat’s shared expenses. You see a preview first and can undo the import afterwards. This guide shows the steps and the limits.',
+			'If your flat has been keeping its expenses in Splitwise, Splid, Tricount or Settle Up, switching does not mean starting from scratch. If you have the expenses as a CSV file, ManaWG brings them into your flat’s shared expenses. You see a preview first and can undo the import afterwards. This guide shows the steps and the limits.',
 		sections: [
 			[
 				'What you need first',
-				'1. A CSV file with the expenses from Splitwise or Splid. Each provider offers the export, and its menus change, so look there.\n2. A flat in ManaWG in which all flatmates are already members. You match the names in the file to the members later.\n3. Whoever imports the history of other members needs admin rights in the flat.\n4. Euro amounts only: the import takes rows in euros and converts nothing.',
+				'1. A CSV file with the expenses from Splitwise, Splid, Tricount or Settle Up. Each provider offers the export, and its menus change, so look there. For Tricount, save its Excel export as a CSV file.\n2. A flat in ManaWG in which all flatmates are already members. You match the names in the file to the members later.\n3. Whoever imports the history of other members needs admin rights in the flat.\n4. Euro amounts only: the import takes rows in euros and converts nothing.',
 			],
 			[
 				'The import in four steps',
-				'1. Open the import in your flat and choose the source: Splitwise CSV or Splid CSV.\n2. Choose the CSV file or paste its contents.\n3. Check the preview with all recognised rows and match the names in the file to your flatmates. The app marks suggested matches; check them before you confirm.\n4. Confirm the import. Only then is anything saved.',
+				'1. Open the import in your flat and choose the source: Splitwise CSV, Splid CSV, Tricount CSV or Settle Up CSV.\n2. Choose the CSV file or paste its contents.\n3. Check the preview with all recognised rows and match the names in the file to your flatmates. The app marks suggested matches; check them before you confirm.\n4. Confirm the import. Only then is anything saved.',
 			],
 			[
 				'Matching names and leaving rows out',
-				'The file contains the names you used in Splitwise or Splid. ManaWG suggests matching flatmates, and you match any open names yourself. In the preview you untick individual rows that should not be imported, for example expenses that are already in your shared expenses.',
+				'The file contains the names you used in your previous app. ManaWG suggests matching flatmates, and you match any open names yourself. In the preview you untick individual rows that should not be imported, for example expenses that are already in your shared expenses.',
 			],
 			[
 				'What is not imported',
-				'ManaWG rejects rows in other currencies one by one, as well as rows with an invalid date, an invalid amount or no people involved. The rest is imported, and the result lists the rejected entries with the reason. If you had expenses in a foreign currency, re-enter them by hand in euros if needed.',
+				'ManaWG rejects rows in other currencies one by one, as well as rows with an invalid date, an invalid amount or no people involved. From Tricount and Settle Up, income entries are not imported either: they are listed as not imported, and you enter them by hand. Money transfers between people are marked as repayments, like payments from Splitwise. The rest is imported, and the result lists the rejected entries with the reason. If you had expenses in a foreign currency, re-enter them by hand in euros if needed.',
 			],
 			[
 				'Screenshots instead of a file?',
-				'If you have no CSV file, choose Screenshot as the source. ManaWG reads a photo or screenshot of an expense list using text recognition in your browser and shows the result for you to correct. Only euro amounts are recognised, and reading can take up to 30 seconds. A CSV file is more accurate and the better way if you have one.',
+				'If you have no CSV file, choose Screenshot as the source. ManaWG reads a photo or screenshot of an expense list using text recognition in your browser and shows the result for you to correct. Only euro amounts are recognised, and reading can take up to 30 seconds. The text recognition understands German and English text. A CSV file is more accurate and the better way if you have one. The Splitwise and Splid imports also read files with Spanish column headers.',
 			],
 			[
 				'Undoing an import',
@@ -732,6 +732,14 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 				'Yes, using the source Splid CSV. The steps are the same as for Splitwise: choose the file, check the preview, match names, confirm.',
 			],
 			[
+				'Can I import Tricount expenses into ManaWG?',
+				'Yes, using the source Tricount CSV. Save Tricount’s Excel export as a CSV file, then the steps are the same as for Splitwise. Only euro rows are imported, while income and other currencies are listed as not imported.',
+			],
+			[
+				'Can I import Settle Up expenses into ManaWG?',
+				'Yes, using the source Settle Up CSV. The steps are the same as for Splitwise. Only euro rows are imported, while income and other currencies are listed as not imported.',
+			],
+			[
 				'Can I undo an import?',
 				'Yes, in the import history, by the person who imported or by an admin. If individual shares are already marked as paid, remove the wrong expenses one by one.',
 			],
@@ -741,7 +749,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Is there an import from Flatastic or OurHome?',
-				'No, there is a direct import only for Splitwise and Splid CSV files and for photos of expense lists.',
+				'No, there is a direct import only for CSV files from Splitwise, Splid, Tricount and Settle Up and for photos of expense lists.',
 			],
 		],
 	},
@@ -770,7 +778,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'What you can do',
-				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. You enter amounts in euros, and the app comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative). If you want an open-source alternative you can self-host, several are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
+				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. You enter amounts in euros, and the app comes in English, German and Spanish and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative). If you want an open-source alternative you can self-host, several are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
 			],
 		],
 		tables: [

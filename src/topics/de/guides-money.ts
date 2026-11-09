@@ -51,7 +51,7 @@ const DAY_NAMES = EXAMPLE_PEOPLE.map((p) => p.name);
 export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	'wg-kosten-aufteilen': {
 		link: 'WG-Kosten aufteilen',
-		updated: '2026-11-06',
+		updated: '2026-11-09',
 		published: '2026-10-11',
 		title: 'WG-Kosten fair aufteilen: drei Modelle mit Beispiel | ManaWG',
 		description:
@@ -96,7 +96,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Gibt es eine App zum Aufteilen von WG-Kosten?',
-				'Ja, zum Beispiel ManaWG: kostenlos, auf Deutsch, mit Salden, Ausgleichsvorschlägen und Fixkosten. Sie läuft im Browser, ein App Store ist nicht nötig.',
+				'Ja, zum Beispiel ManaWG: kostenlos, auf Deutsch, Englisch und Spanisch, mit Salden, Ausgleichsvorschlägen und Fixkosten. Sie läuft im Browser, ein App Store ist nicht nötig.',
 			],
 		],
 	},
@@ -346,7 +346,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'wg-haushaltskasse': {
 		link: 'WG-Haushaltskasse',
-		updated: '2026-11-06',
+		updated: '2026-11-09',
 		published: '2026-10-11',
 		title: 'WG-Haushaltskasse: Bargeld, Konto oder App? | ManaWG',
 		description:
@@ -391,7 +391,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Gibt es eine App für die WG-Kasse?',
-				'Ja, ManaWG ist kostenlos, auf Deutsch, ohne Werbung und zeigt Salden und Ausgleichsvorschläge.',
+				'Ja, ManaWG ist kostenlos, auf Deutsch, Englisch und Spanisch, ohne Werbung und zeigt Salden und Ausgleichsvorschläge.',
 			],
 		],
 	},
@@ -645,35 +645,35 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 		],
 	},
 	'splitwise-splid-wechseln': {
-		link: 'Von Splitwise oder Splid wechseln',
+		link: 'Von Splitwise, Splid, Tricount oder Settle Up wechseln',
 		updated: '2026-11-09',
 		published: '2026-10-21',
-		title: 'Von Splitwise oder Splid wechseln: CSV-Import | ManaWG',
+		title: 'Von Splitwise, Splid, Tricount oder Settle Up wechseln | ManaWG',
 		description:
-			'Splitwise- oder Splid-Ausgaben in die WG-Kasse übernehmen: CSV-Datei hochladen, Vorschau prüfen, Namen zuordnen, Import bei Bedarf rückgängig machen.',
-		h1: 'Von Splitwise oder Splid zu ManaWG wechseln',
+			'Ausgaben aus Splitwise, Splid, Tricount oder Settle Up in die WG-Kasse übernehmen: CSV-Datei hochladen, Vorschau prüfen, Namen zuordnen, Import bei Bedarf rückgängig machen.',
+		h1: 'Von Splitwise, Splid, Tricount oder Settle Up zu ManaWG wechseln',
 		intro:
-			'Wenn die WG ihre Ausgaben bisher in Splitwise oder Splid geführt hat, muss beim Wechsel nichts von vorn beginnen. Liegen die Ausgaben als CSV-Datei vor, übernimmt ManaWG sie in die WG-Kasse. Ihr seht vorher eine Vorschau und könnt den Import danach rückgängig machen. Diese Anleitung zeigt den Ablauf und nennt die Grenzen.',
+			'Wenn die WG ihre Ausgaben bisher in Splitwise, Splid, Tricount oder Settle Up geführt hat, muss beim Wechsel nichts von vorn beginnen. Liegen die Ausgaben als CSV-Datei vor, übernimmt ManaWG sie in die WG-Kasse. Ihr seht vorher eine Vorschau und könnt den Import danach rückgängig machen. Diese Anleitung zeigt den Ablauf und nennt die Grenzen.',
 		sections: [
 			[
 				'Was ihr vorher braucht',
-				'1. Eine CSV-Datei mit den Ausgaben aus Splitwise oder Splid. Den Export bietet jeweils der Anbieter an, die Menüs ändern sich, schaut deshalb dort nach.\n2. Eine WG in ManaWG, in der alle Mitbewohner schon Mitglied sind. Die Namen aus der Datei ordnet ihr später den Mitgliedern zu.\n3. Wer die Historie anderer Mitglieder importiert, braucht Admin-Rechte in der WG.\n4. Nur Euro-Beträge: Der Import übernimmt nur Zeilen in Euro und rechnet nichts um.',
+				'1. Eine CSV-Datei mit den Ausgaben aus Splitwise, Splid, Tricount oder Settle Up. Den Export bietet jeweils der Anbieter an, die Menüs ändern sich, schaut deshalb dort nach. Bei Tricount speichert ihr den Excel-Export als CSV-Datei.\n2. Eine WG in ManaWG, in der alle Mitbewohner schon Mitglied sind. Die Namen aus der Datei ordnet ihr später den Mitgliedern zu.\n3. Wer die Historie anderer Mitglieder importiert, braucht Admin-Rechte in der WG.\n4. Nur Euro-Beträge: Der Import übernimmt nur Zeilen in Euro und rechnet nichts um.',
 			],
 			[
 				'Der Import in vier Schritten',
-				'1. Öffnet in eurer WG den Import und wählt die Quelle: Splitwise CSV oder Splid CSV.\n2. Wählt die CSV-Datei aus oder fügt ihren Inhalt ein.\n3. Prüft die Vorschau mit allen erkannten Zeilen und ordnet die Namen aus der Datei euren WG-Mitgliedern zu. Vorgeschlagene Zuordnungen markiert die App, bitte kontrolliert sie.\n4. Bestätigt den Import. Erst jetzt wird gespeichert.',
+				'1. Öffnet in eurer WG den Import und wählt die Quelle: Splitwise CSV, Splid CSV, Tricount CSV oder Settle Up CSV.\n2. Wählt die CSV-Datei aus oder fügt ihren Inhalt ein.\n3. Prüft die Vorschau mit allen erkannten Zeilen und ordnet die Namen aus der Datei euren WG-Mitgliedern zu. Vorgeschlagene Zuordnungen markiert die App, bitte kontrolliert sie.\n4. Bestätigt den Import. Erst jetzt wird gespeichert.',
 			],
 			[
 				'Namen zuordnen und Zeilen abwählen',
-				'In der Datei stehen die Namen, die ihr in Splitwise oder Splid vergeben habt. ManaWG schlägt passende Mitglieder vor, offene Namen müsst ihr selbst zuordnen. In der Vorschau wählt ihr einzelne Zeilen ab, die nicht übernommen werden sollen, etwa Ausgaben, die schon in der Kasse stehen.',
+				'In der Datei stehen die Namen, die ihr in der bisherigen App vergeben habt. ManaWG schlägt passende Mitglieder vor, offene Namen müsst ihr selbst zuordnen. In der Vorschau wählt ihr einzelne Zeilen ab, die nicht übernommen werden sollen, etwa Ausgaben, die schon in der Kasse stehen.',
 			],
 			[
 				'Was nicht übernommen wird',
-				'Zeilen in anderen Währungen lehnt ManaWG einzeln ab, ebenso Zeilen mit ungültigem Datum, ungültigem Betrag oder ohne Beteiligte. Der Rest wird übernommen, die abgelehnten Einträge listet das Ergebnis mit Grund auf. Wer Ausgaben in Fremdwährung hatte, legt diese bei Bedarf von Hand in Euro neu an.',
+				'Zeilen in anderen Währungen lehnt ManaWG einzeln ab, ebenso Zeilen mit ungültigem Datum, ungültigem Betrag oder ohne Beteiligte. Aus Tricount und Settle Up werden zudem Einnahmen nicht übernommen, sie stehen als nicht importiert in der Liste und werden von Hand eingetragen. Überweisungen zwischen Personen markiert der Import wie Zahlungen aus Splitwise als Rückzahlungen. Der Rest wird übernommen, die abgelehnten Einträge listet das Ergebnis mit Grund auf. Wer Ausgaben in Fremdwährung hatte, legt diese bei Bedarf von Hand in Euro neu an.',
 			],
 			[
 				'Nur Screenshots statt Datei?',
-				'Liegt keine CSV-Datei vor, wählt ihr als Quelle Screenshot. ManaWG liest ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung im Browser und zeigt das Ergebnis zum Korrigieren. Erkannt werden nur Eurobeträge, und das Lesen kann bis zu 30 Sekunden dauern. Eine CSV-Datei ist genauer und der bessere Weg, wenn es sie gibt.',
+				'Liegt keine CSV-Datei vor, wählt ihr als Quelle Screenshot. ManaWG liest ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung im Browser und zeigt das Ergebnis zum Korrigieren. Erkannt werden nur Eurobeträge, und das Lesen kann bis zu 30 Sekunden dauern. Die Texterkennung versteht deutschen und englischen Text. Eine CSV-Datei ist genauer und der bessere Weg, wenn es sie gibt. Die Splitwise- und Splid-Importe lesen auch Dateien mit spanischen Spaltenüberschriften.',
 			],
 			[
 				'Import rückgängig machen',
@@ -694,6 +694,14 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 				'Ja, über die Quelle Splid CSV. Der Ablauf ist derselbe wie bei Splitwise: Datei auswählen, Vorschau prüfen, Namen zuordnen, bestätigen.',
 			],
 			[
+				'Kann ich Tricount-Ausgaben in ManaWG importieren?',
+				'Ja, über die Quelle Tricount CSV. Speichert den Excel-Export aus Tricount als CSV-Datei, dann geht es weiter wie bei Splitwise. Übernommen werden nur Euro-Zeilen, Einnahmen und andere Währungen stehen als nicht importiert in der Liste.',
+			],
+			[
+				'Kann ich Settle-Up-Ausgaben in ManaWG importieren?',
+				'Ja, über die Quelle Settle Up CSV. Der Ablauf ist derselbe wie bei Splitwise. Übernommen werden nur Euro-Zeilen, Einnahmen und andere Währungen stehen als nicht importiert in der Liste.',
+			],
+			[
 				'Kann ich einen Import rückgängig machen?',
 				'Ja, im Importverlauf, durch die Person, die importiert hat, oder einen Admin. Sind einzelne Anteile schon als bezahlt markiert, entfernt ihr falsche Ausgaben einzeln.',
 			],
@@ -703,7 +711,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Gibt es einen Import aus Flatastic oder OurHome?',
-				'Nein, einen direkten Import gibt es nur für Splitwise- und Splid-CSV sowie für Fotos von Ausgabenlisten.',
+				'Nein, einen direkten Import gibt es nur für CSV-Dateien aus Splitwise, Splid, Tricount und Settle Up sowie für Fotos von Ausgabenlisten.',
 			],
 		],
 	},
@@ -732,7 +740,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Was ihr tun könnt',
-				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Beträge tragt ihr in Euro ein, die App ist auf Deutsch und Englisch verfügbar und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative). Wer eine quelloffene Alternative zum Selbsthosten sucht, findet mehrere unter [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen).',
+				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Beträge tragt ihr in Euro ein, die App ist auf Deutsch, Englisch und Spanisch verfügbar und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative). Wer eine quelloffene Alternative zum Selbsthosten sucht, findet mehrere unter [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen).',
 			],
 		],
 		tables: [

@@ -11,14 +11,14 @@ const TEXT = {
 		source: (url: string, updated: string) => `Quelle: ${url} (Stand ${updated})`,
 		faq: 'Häufige Fragen',
 		sources: 'Quellen',
-		preamble: `# ManaWG: vollständiger Inhalt\n\nManaWG ist eine kostenlose deutsch- und englischsprachige WG-App (Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand, Chat) und hat nichts mit WireGuard zu tun. Start: ${appUrl(PATHS.de.signup)}`,
+		preamble: `# ManaWG: vollständiger Inhalt\n\nManaWG ist eine kostenlose deutsch-, englisch- und spanischsprachige WG-App (Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand, Chat) und hat nichts mit WireGuard zu tun. Start: ${appUrl(PATHS.de.signup)}`,
 	},
 	en: {
 		feedTitle: 'ManaWG: flat-share guides',
 		source: (url: string, updated: string) => `Source: ${url} (as of ${updated})`,
 		faq: 'Frequently asked questions',
 		sources: 'Sources',
-		preamble: `# ManaWG: full content\n\nManaWG is a free flat-share app in English and German (split expenses, shopping list, cleaning rota, calendar, noticeboard, chat). It has nothing to do with WireGuard. Start: ${appUrl(PATHS.en.signup)}`,
+		preamble: `# ManaWG: full content\n\nManaWG is a free flat-share app in English, German and Spanish (split expenses, shopping list, cleaning rota, calendar, noticeboard, chat). It has nothing to do with WireGuard. Start: ${appUrl(PATHS.en.signup)}`,
 	},
 } as const;
 

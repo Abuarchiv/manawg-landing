@@ -8,7 +8,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 
 - Split expenses: equally or with custom amounts per person, balances, settling up with as few transfers as possible
 - Fixed costs and monthly statement: recurring costs such as rent or internet
-- Import: bring in matching CSV files from Splitwise and Splid (preview, undo); read a photo or screenshot of an expense list with text recognition, a receipt photo on a single expense is an attachment only
+- Import: bring in matching CSV files from Splitwise, Splid, Tricount and Settle Up (preview, undo); read a photo or screenshot of an expense list with text recognition, a receipt photo on a single expense is an attachment only
 - Shopping list and supplies: one list for everyone, ticked-off purchases can be booked straight as an expense
 - Cleaning rota: tasks repeat, rotate fairly, and absent flatmates are skipped
 - Calendar (also as a calendar subscription), noticeboard and chat
@@ -16,7 +16,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 ## Getting started
 
 1. Create a flat at https://app.manawg.com/signup?action=create
-2. Flatmates sign in and join with an invite link
+2. Flatmates sign up (Google or an email code, no password needed) and join with an invite link
 3. Add the first expense, shopping item or cleaning task
 
 ## Pages
@@ -53,7 +53,7 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Debts between flatmates](https://manawg.com/en/flatmate-debts): settling up, borrowed money, reminders, limitation
 - [Who owes whom? Calculator](https://manawg.com/en/who-owes-whom-calculator): enter names and amounts, fewest transfers, no account
 - [Split a bill by days: calculator](https://manawg.com/en/split-bill-by-days-calculator): bill by days for moving in, moving out and subletting, no account
-- [Switch from Splitwise or Splid](https://manawg.com/en/switch-from-splitwise-or-splid): CSV import, preview, matching names, undo
+- [Switch from Splitwise, Splid, Tricount or Settle Up](https://manawg.com/en/switch-from-splitwise-or-splid): CSV import, preview, matching names, undo
 - [Splitwise free limit](https://manawg.com/en/splitwise-free-limit): daily limit according to Splitwise help, Pro, alternatives
 - [Organise flat shopping](https://manawg.com/en/organise-flat-shopping)
 - [Find a flatmate](https://manawg.com/en/find-a-flatmate): flat ad, WG-Gesucht account, required details, mistakes
@@ -80,6 +80,6 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 ## Details
 
 - Price: free
-- Languages: English and German
+- Languages: English, German and Spanish
 - Platform: web app (PWA) for iPhone, Android and desktop
 - No ads; data is stored in Frankfurt am Main (EU)
