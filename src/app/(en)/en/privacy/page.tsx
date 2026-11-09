@@ -81,12 +81,11 @@ export default function PrivacyPage() {
 						local storage (Local Storage and IndexedDB); section 7 lists what.
 					</li>
 					<li>
-						<strong>Password check:</strong> When you sign up and when you change your password, the
-						server checks the new password against the Have I Been Pwned range API
-						(api.pwnedpasswords.com, Troy Hunt, served through Cloudflare). Only the first 5
-						characters of the password’s SHA-1 hash are sent, with padding switched on and no
-						account data. Nothing is stored, and if the service cannot be reached the password
-						counts as not known.
+						<strong>Password check:</strong> When you set or change a password, the server checks
+						the new password against the Have I Been Pwned range API (api.pwnedpasswords.com, Troy
+						Hunt, served through Cloudflare). Only the first 5 characters of the password’s SHA-1
+						hash are sent, with padding switched on and no account data. Nothing is stored, and if
+						the service cannot be reached the password counts as not known.
 					</li>
 					<li>
 						<strong>Retention:</strong> We keep account data until you delete your account under{' '}
