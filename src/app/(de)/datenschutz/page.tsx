@@ -73,8 +73,8 @@ export default function PrivacyPage() {
 						steht in Abschnitt 7.
 					</li>
 					<li>
-						<strong>Passwortprüfung:</strong> Bei der Registrierung und beim Ändern des Passworts
-						prüft der Server das neue Passwort gegen die Range-API von Have I Been Pwned
+						<strong>Passwortprüfung:</strong> Wenn du ein Passwort festlegst oder änderst, prüft der
+						Server das neue Passwort gegen die Range-API von Have I Been Pwned
 						(api.pwnedpasswords.com, Troy Hunt, ausgeliefert über Cloudflare). Dabei werden nur die
 						ersten 5 Zeichen des SHA-1-Hashs des Passworts gesendet, mit aktiviertem Padding und
 						ohne Kontodaten. Es wird nichts gespeichert. Ist der Dienst nicht erreichbar, gilt das
