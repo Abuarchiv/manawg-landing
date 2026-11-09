@@ -115,10 +115,17 @@ test('the privacy texts name every event the website sends', () => {
 	assert.deepEqual(events, ["'$pageview'", "'app_link_clicked'", "'demo_link_clicked'"]);
 	for (const file of ['src/app/(de)/datenschutz/page.tsx', 'src/app/(en)/en/privacy/page.tsx']) {
 		const page = readFileSync(file, 'utf8');
-		for (const name of ['app_link_clicked', 'demo_link_clicked', 'utm_source', 'utm_medium']) {
+		for (const name of [
+			'app_link_clicked',
+			'demo_link_clicked',
+			'utm_source',
+			'utm_medium',
+			'manawg_funnel',
+			'first_expense_created',
+		]) {
 			assert.match(page, new RegExp(name), `${file}: ${name}`);
 		}
-		assert.match(page, /Kampagnenkennungen|campaign identifiers/, `${file}: campaign scope`);
+		assert.match(page, /Kampagnenkennungen|campaign\s+identifiers/, `${file}: campaign scope`);
 		assert.doesNotMatch(
 			page,
 			/nicht gespeichert\. Die IP|not stored\. The IP/,
