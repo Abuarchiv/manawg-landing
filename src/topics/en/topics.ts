@@ -22,7 +22,7 @@ const MANAWG_CELLS = [
 	'with supplies',
 	'with calendar subscription',
 	'chat and noticeboard',
-	'euros only',
+	'euros in the app, no conversion',
 	'free, no ads',
 ];
 
@@ -44,7 +44,7 @@ function comparisonTable(
 export const TOPICS_EN_CORE: Record<string, Topic> = {
 	'flat-share-app': {
 		link: 'Flat-share app',
-		updated: '2026-10-30',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Free flatmate app: split bills, rota, shopping | ManaWG',
 		description:
@@ -107,7 +107,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 					[
 						'Expenses',
 						'split equally or with custom euro amounts, book fixed costs automatically, suggested transfers, monthly statement as PDF',
-						'euros only, no percentage shares, you transfer the money yourselves',
+						'amounts in euros, no percentage shares, you transfer the money yourselves',
 					],
 					[
 						'Cleaning rota',
@@ -150,7 +150,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Is ManaWG in the App Store, and is it available in English?',
-				'It is available in English, but not in the App Store. ManaWG is not a native app: you open app.manawg.com in the browser and add it to your home screen. The interface is in English and German, and amounts are kept in euros only.',
+				'It is available in English, but not in the App Store. ManaWG is not a native app: you open app.manawg.com in the browser and add it to your home screen. The interface is in English and German, and you enter amounts in euros in the app.',
 			],
 			[
 				'How many people fit in one flat?',
@@ -259,7 +259,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'shared-expenses': {
 		link: 'Shared expenses',
-		updated: '2026-10-30',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Split bills with roommates and flatmates: free app | ManaWG',
 		description:
@@ -298,7 +298,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'What ManaWG is not',
-				'ManaWG is meant for flats with up to 20 active members, is available in English and German and works in euros only. It is installed as a PWA through the browser, not through an app store. You sign in with Google or email. The app is free and has no ads. What the app offers beyond expenses is on [Flat-share app](/flat-share-app).',
+				'ManaWG is meant for flats with up to 20 active members, is available in English and German and takes amounts in euros. It is installed as a PWA through the browser, not through an app store. You sign in with Google or email. The app is free and has no ads. What the app offers beyond expenses is on [Flat-share app](/flat-share-app).',
 			],
 		],
 		faq: [
@@ -330,7 +330,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'shopping-list': {
 		link: 'Shopping list',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Shared shopping list app for your flat | ManaWG',
 		description:
@@ -357,7 +357,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Splitting without rounding arguments',
-				'ManaWG stores amounts in whole cents. With an equal split the shares add up to exactly the amount, and no share differs from another by more than one cent. With custom amounts per person, only those who really ate pay. The balances then show who owes whom. Everything is calculated in euros, and there are no exchange rates. Whether you pay from a shared pot or settle up afterwards is covered in [Household kitty](/household-kitty).',
+				'ManaWG stores amounts in whole cents. With an equal split the shares add up to exactly the amount, and no share differs from another by more than one cent. With custom amounts per person, only those who really ate pay. The balances then show who owes whom. You enter the amounts in euros, and there are no exchange rates. Whether you pay from a shared pot or settle up afterwards is covered in [Household kitty](/household-kitty).',
 			],
 			[
 				'In the supermarket, even with a weak signal',
@@ -389,7 +389,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'best-flat-share-app': {
 		link: 'Best flat-share app',
-		updated: '2026-10-30',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Best roommate app 2026: Splitwise, Flatastic & more | ManaWG',
 		description:
@@ -464,7 +464,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'1. What does the app really cost?',
-				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. It works in euros only, is available in English and German, and is meant for at most 20 active members per flat.',
+				'Check whether features are unlocked only with a subscription, whether ads appear and whether there are limits on the number of entries. Plans change, so look at each provider yourself. The [free flat-share app ManaWG](/flat-share-app) has no ads and no paid tier. Splitwise Pro lists, among other things, unlimited expenses, no ads, receipt scanning and currency conversion. The limits of [the free version of Splitwise](/splitwise-free-limit) are covered on their own page. Splid says on its English page that it is free, with over 150 currencies, offline use and PDF and Excel export. Flatastic covers chores, shopping, finances and a pinboard, and offers a paid Premium with no ads and a cleaning history, among other things. ManaWG is free and ad-free and combines expenses, cleaning rota, shopping list, calendar, noticeboard and chat. You enter amounts in euros, the app is available in English and German, and it is meant for at most 20 active members per flat.',
 			],
 			[
 				'2. Does it cover money and household?',
@@ -484,7 +484,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'6. Privacy and language',
-				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). Other open-source apps you can self-host are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives). ManaWG supports the euro only. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
+				'Where is the data stored, are there ads and tracking, and is the app in your language? With ManaWG the database is hosted in the EU (Frankfurt am Main), there are no ads, and the app is available in English and German. The code is open source under Apache-2.0, and you can host it yourself, see [Open-source flat-share app](/open-source-flat-share-app). Other open-source apps you can self-host are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives). In the app you enter amounts in euros only. Swiss francs, US dollars and pounds can only be booked through the API, and there is no conversion. If you split costs in many currencies internationally, an app with currency conversion is the better choice.',
 			],
 			[
 				'7. How easy is switching?',
@@ -492,7 +492,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Which app suits which flat?',
-				'You mostly share money, also on trips and in several currencies: Splid lists over 150 currencies, Tricount multiple currencies and Splitwise conversion in its Pro plan, each per the provider. ManaWG works in euros only.\nYou want money, cleaning rota, shopping, calendar and noticeboard in one app with no subscription and no app store, in English or German: ManaWG is built for that.\nYou want points or rewards for cleaning: ManaWG does not offer that, as the cleaning rota distributes by workload.\nYou have old expenses from Splitwise or Splid as a CSV file: ManaWG imports them with a preview, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).\nThere are more than 20 of you: a flat in ManaWG holds at most 20 active members.',
+				'You mostly share money, also on trips and in several currencies: Splid lists over 150 currencies, Tricount multiple currencies and Splitwise conversion in its Pro plan, each per the provider. In ManaWG you enter amounts in euros, and there is no conversion.\nYou want money, cleaning rota, shopping, calendar and noticeboard in one app with no subscription and no app store, in English or German: ManaWG is built for that.\nYou want points or rewards for cleaning: ManaWG does not offer that, as the cleaning rota distributes by workload.\nYou have old expenses from Splitwise or Splid as a CSV file: ManaWG imports them with a preview, and the steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).\nThere are more than 20 of you: a flat in ManaWG holds at most 20 active members.',
 			],
 		],
 		faq: [
@@ -506,7 +506,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Which app suits trips with several currencies?',
-				'An expense app with exchange rates suits that better. ManaWG works in euros only and is meant for everyday flat life.',
+				'An expense app with exchange rates suits that better. In ManaWG you enter amounts in euros only, and there is no conversion. The app is meant for everyday flat life.',
 			],
 			[
 				'Where is ManaWG’s data stored?',
@@ -518,13 +518,13 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Flatastic or Splitwise: which suits a flat better?',
-				'It depends on what you need. Splitwise is built around shared expenses. Flatastic combines cleaning rota, shopping list, finances and a pinboard per the provider, and Premium is paid. If you want money and household in a free web app with no ads, in English or German, you will find that in the [ManaWG flat-share app](/flat-share-app), which in return works in euros only and for at most 20 members.',
+				'It depends on what you need. Splitwise is built around shared expenses. Flatastic combines cleaning rota, shopping list, finances and a pinboard per the provider, and Premium is paid. If you want money and household in a free web app with no ads, in English or German, you will find that in the [ManaWG flat-share app](/flat-share-app), which in return takes amounts in euros only and holds at most 20 members per flat.',
 			],
 		],
 	},
 	'splitwise-alternative': {
 		link: 'Splitwise alternative',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Free Splitwise alternative: no ads, open source | ManaWG',
 		description:
@@ -569,8 +569,8 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 				'If your Splitwise expenses exist as a CSV file, you open your flat’s import and choose the source. Before anything is saved you see a preview of all recognised rows. Afterwards the import appears in the history and can be undone if something is wrong. So you check beforehand and can go back afterwards. The steps are in the guide [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). Only flat admins may import other members’ history.',
 			],
 			[
-				'Euros only',
-				'ManaWG works in euros only and has no exchange rates. The import rejects rows in other currencies one by one and takes the rest. For trips with several currencies an app with currency conversion is the better choice, and for everyday flat life in euros ManaWG is enough. Amounts are stored in cents, and shares add up with no rounding remainder.',
+				'Euros, no conversion',
+				'In the app you enter amounts in euros only, and nothing is converted; there are no exchange rates. Through the API you can also book Swiss francs, US dollars and pounds, and the balances then run separately per currency. The import rejects rows in other currencies one by one and takes the rest. For trips with several currencies an app with currency conversion is the better choice, and for everyday flat life in euros ManaWG is enough. Amounts are stored in cents, and shares add up with no rounding remainder.',
 			],
 			[
 				'More than a shared purse',
@@ -580,7 +580,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		faq: [
 			[
 				'Is ManaWG really free?',
-				'Yes. There is no paid tier and no ads. Every feature is open to every flat, including import, fixed costs and the monthly statement. The main limit is 20 active members per flat, along with euros as the only currency and size limits on images.',
+				'Yes. There is no paid tier and no ads. Every feature is open to every flat, including import, fixed costs and the monthly statement. The main limit is 20 active members per flat, along with entering amounts in euros only, without conversion, and size limits on images.',
 			],
 			[
 				'Can I take my Splitwise data with me?',
@@ -592,7 +592,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Does ManaWG work with foreign currencies?',
-				'No. ManaWG works in euros only, with no exchange rates. If you split costs in several currencies on trips, an app with currency conversion suits you better.',
+				'Only in part. In the app you enter amounts in euros only. Through the API you can also book Swiss francs, US dollars and pounds, and the balances then run separately per currency. ManaWG converts nothing, and there are no exchange rates. If you split costs in several currencies on trips, an app with currency conversion suits you better.',
 			],
 			[
 				'Is there an app in the App Store?',
@@ -602,7 +602,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'splid-alternative': {
 		link: 'Splid alternative',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Splid alternative with a cleaning rota and list | ManaWG',
 		description:
@@ -644,7 +644,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'The limits of ManaWG',
-				'A flat holds at most 20 active members. The app is available in English and German and works in euros only. There is no app in the App Store: you use ManaWG in the browser at app.manawg.com and add it to your phone’s home screen. Calendar subscription and push notifications work that way too, with nothing to install from a store.',
+				'A flat holds at most 20 active members. The app is available in English and German and takes amounts in euros. There is no app in the App Store: you use ManaWG in the browser at app.manawg.com and add it to your phone’s home screen. Calendar subscription and push notifications work that way too, with nothing to install from a store.',
 			],
 		],
 		faq: [
@@ -662,7 +662,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Can I enter foreign currencies?',
-				'No. ManaWG works in euros only. In an import, rows in other currencies are rejected one by one, and the rest of the import is unaffected.',
+				'Only in part. In the app you enter amounts in euros only. Through the API you can also book Swiss francs, US dollars and pounds, and the balances then run separately per currency. ManaWG converts nothing, and there are no exchange rates. In an import, rows in other currencies are rejected one by one, and the rest of the import is unaffected.',
 			],
 			[
 				'Is ManaWG in the App Store?',
@@ -672,7 +672,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'flatastic-alternative': {
 		link: 'Flatastic alternative',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Flatastic alternative with no ads or Premium | ManaWG',
 		description:
@@ -748,7 +748,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'What ManaWG cannot do',
-				'The interface is in English and German, amounts are in euros only, and a flat holds at most 20 active members. There is no app in a store: you install ManaWG as a web app on the home screen. You mark settlements as paid yourselves, and the app does not trigger a transfer. The calendar is available as a subscription for Apple and Google Calendar, but in one direction only. How ManaWG and the other apps compare on seven criteria is on [Best flat-share app](/best-flat-share-app).',
+				'The interface is in English and German, you enter amounts in euros, and a flat holds at most 20 active members. There is no app in a store: you install ManaWG as a web app on the home screen. You mark settlements as paid yourselves, and the app does not trigger a transfer. The calendar is available as a subscription for Apple and Google Calendar, but in one direction only. How ManaWG and the other apps compare on seven criteria is on [Best flat-share app](/best-flat-share-app).',
 			],
 		],
 		faq: [
@@ -784,7 +784,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'tricount-alternative': {
 		link: 'Tricount alternative',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Tricount alternative for flats and fixed groups | ManaWG',
 		description:
@@ -814,7 +814,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'When to stay with Tricount',
-				'For trips with a foreign currency Tricount is the better choice, because ManaWG works in euros only. The same goes if you split costs for a group of more than 20 people. And if you are only sharing a single trip, you need neither fixed costs nor a cleaning rota.',
+				'For trips with a foreign currency Tricount is the better choice, because ManaWG converts nothing and takes amounts in euros only in the app. The same goes if you split costs for a group of more than 20 people. And if you are only sharing a single trip, you need neither fixed costs nor a cleaning rota.',
 			],
 			[
 				'When ManaWG fits better',
@@ -822,7 +822,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Honest limits',
-				'Amounts in euros only, and the import rejects rows in other currencies one by one.\nManaWG runs in the browser and can be added to the home screen. There is no native app in a store.\nA flat holds at most 20 active members.\nNo bank connection: you make the transfers yourselves and then mark amounts as paid.\nNo import from Tricount: the import only reads CSV files from Splitwise and Splid, plus screenshots of expense lists.',
+				'Amounts in euros only and no conversion, and the import rejects rows in other currencies one by one.\nManaWG runs in the browser and can be added to the home screen. There is no native app in a store.\nA flat holds at most 20 active members.\nNo bank connection: you make the transfers yourselves and then mark amounts as paid.\nNo import from Tricount: the import only reads CSV files from Splitwise and Splid, plus screenshots of expense lists.',
 			],
 			[
 				'Switching from Tricount',
@@ -836,7 +836,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Can ManaWG handle foreign currencies?',
-				'No. ManaWG works in euros only and has no exchange rates. For trips with several currencies Tricount suits you better.',
+				'Only in part. In the app you enter amounts in euros only. Through the API you can also book Swiss francs, US dollars and pounds, and the balances then run separately per currency. ManaWG converts nothing, and there are no exchange rates. For trips with several currencies Tricount suits you better.',
 			],
 			[
 				'What does ManaWG cost?',
@@ -854,7 +854,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'ourhome-alternative': {
 		link: 'OurHome alternative',
-		updated: '2026-11-01',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'OurHome no longer available? A free alternative | ManaWG',
 		description:
@@ -917,7 +917,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Is ManaWG available in English?',
-				'Yes. The app is available in English and German, follows the language of your device and can be switched in the app. Amounts are in euros only.',
+				'Yes. The app is available in English and German, follows the language of your device and can be switched in the app. You enter amounts in euros; other currencies can only be booked through the API.',
 			],
 			[
 				'How many people fit in one flat?',
@@ -927,7 +927,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	faq: {
 		link: 'Frequently asked questions',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'ManaWG FAQ: cost, sign-up, data location | ManaWG',
 		description:
@@ -975,7 +975,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Does ManaWG work with other currencies?',
-				'No. ManaWG works in euros only, with no exchange rates. If you split costs in several currencies on trips, an app with currency conversion suits you better. What matters when choosing an app is covered on [Best flat-share app](/best-flat-share-app).',
+				'Only in part. In the app you enter amounts in euros only. Through the API you can also book Swiss francs, US dollars and pounds, and the balances then run separately per currency. ManaWG converts nothing, and there are no exchange rates. If you split costs in several currencies on trips, an app with currency conversion suits you better. What matters when choosing an app is covered on [Best flat-share app](/best-flat-share-app).',
 			],
 			[
 				'Does ManaWG transfer money automatically?',
@@ -1021,7 +1021,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	'about-manawg': {
 		link: 'About ManaWG',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'What is ManaWG? The free flat-share app | ManaWG',
 		description:
@@ -1041,7 +1041,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Facts at a glance',
-				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro. Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: database in the EU (Frankfurt am Main). Joining: by invite link or email invitation. Licence: Apache-2.0, source code on GitHub, self-hostable with Docker; see [Open-source flat-share app](/open-source-flat-share-app).',
+				'Price: free, no ads, no paid tier. Languages: English and German, currency: euro in the app, without conversion (Swiss francs, US dollars and pounds through the API only). Platform: web app (PWA), installable on iPhone, Android and desktop, no app store. Sign-in: Google or email. Size: up to 20 active members per flat. Data: database in the EU (Frankfurt am Main). Joining: by invite link or email invitation. Licence: Apache-2.0, source code on GitHub, self-hostable with Docker; see [Open-source flat-share app](/open-source-flat-share-app).',
 			],
 			[
 				'Features',

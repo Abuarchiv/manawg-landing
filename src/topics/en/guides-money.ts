@@ -684,7 +684,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'switch-from-splitwise-or-splid': {
 		link: 'Switching from Splitwise or Splid',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Switch from Splitwise or Splid: CSV import | ManaWG',
 		description:
@@ -695,7 +695,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 		sections: [
 			[
 				'What you need first',
-				'1. A CSV file with the expenses from Splitwise or Splid. Each provider offers the export, and its menus change, so look there.\n2. A flat in ManaWG in which all flatmates are already members. You match the names in the file to the members later.\n3. Whoever imports the history of other members needs admin rights in the flat.\n4. Euro amounts only: ManaWG works in euros exclusively.',
+				'1. A CSV file with the expenses from Splitwise or Splid. Each provider offers the export, and its menus change, so look there.\n2. A flat in ManaWG in which all flatmates are already members. You match the names in the file to the members later.\n3. Whoever imports the history of other members needs admin rights in the flat.\n4. Euro amounts only: the import takes rows in euros and converts nothing.',
 			],
 			[
 				'The import in four steps',
@@ -707,7 +707,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'What is not imported',
-				'ManaWG rejects rows in other currencies one by one, as well as rows with an invalid date, an invalid amount or no people involved. The rest is imported, and the result lists the rejected entries with the reason. If you had expenses in a foreign currency, re-enter them by hand if needed.',
+				'ManaWG rejects rows in other currencies one by one, as well as rows with an invalid date, an invalid amount or no people involved. The rest is imported, and the result lists the rejected entries with the reason. If you had expenses in a foreign currency, re-enter them by hand in euros if needed.',
 			],
 			[
 				'Screenshots instead of a file?',
@@ -737,7 +737,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'What happens to expenses in other currencies?',
-				'ManaWG works only in euros. Rows in other currencies are rejected individually and listed in the result, and the rest is imported.',
+				'The import takes euros only and converts nothing. Rows in other currencies are rejected individually and listed in the result, and the rest is imported.',
 			],
 			[
 				'Is there an import from Flatastic or OurHome?',
@@ -747,7 +747,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'splitwise-free-limit': {
 		link: 'Splitwise free limit',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Splitwise free: daily limit and Pro | ManaWG',
 		description:
@@ -770,7 +770,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'What you can do',
-				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. It works in euros, comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative). If you want an open-source alternative you can self-host, several are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
+				'Wait until the next day, switch to Pro or use another app.\nManaWG is a free flat-share app with no paid tier and no daily or monthly limit on expenses. You enter amounts in euros, and the app comes in English and German and holds up to 20 active members.\nYou bring old expenses across from Splitwise with the CSV import and a preview, see [Switching from Splitwise or Splid](/switch-from-splitwise-or-splid). For a comparison, see [Splitwise alternative](/splitwise-alternative). If you want an open-source alternative you can self-host, several are compared in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
 			],
 		],
 		tables: [
@@ -1043,7 +1043,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'flat-share-deposit': {
 		link: 'Flat-share deposit',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Flat-share deposit in Germany: amount, return | ManaWG',
 		description:
@@ -1090,7 +1090,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'What ManaWG can and cannot do',
-				'ManaWG has no feature of its own for the deposit, but it helps elsewhere. Set up the Kaltmiete and utilities as separate fixed costs in [shared expenses](/shared-expenses), and you can always see which Kaltmiete the deposit is based on. If one person advances the deposit for others, you can enter the amount as a one-off expense and pick only the people involved. The balance then shows who owes whom. ManaWG works in euros only. Write down the agreement on who paid which share outside the app.',
+				'ManaWG has no feature of its own for the deposit, but it helps elsewhere. Set up the Kaltmiete and utilities as separate fixed costs in [shared expenses](/shared-expenses), and you can always see which Kaltmiete the deposit is based on. If one person advances the deposit for others, you can enter the amount as a one-off expense and pick only the people involved. The balance then shows who owes whom. You enter amounts in euros. Write down the agreement on who paid which share outside the app.',
 			],
 		],
 		tables: [

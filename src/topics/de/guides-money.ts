@@ -646,7 +646,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'splitwise-splid-wechseln': {
 		link: 'Von Splitwise oder Splid wechseln',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-21',
 		title: 'Von Splitwise oder Splid wechseln: CSV-Import | ManaWG',
 		description:
@@ -657,7 +657,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 		sections: [
 			[
 				'Was ihr vorher braucht',
-				'1. Eine CSV-Datei mit den Ausgaben aus Splitwise oder Splid. Den Export bietet jeweils der Anbieter an, die Menüs ändern sich, schaut deshalb dort nach.\n2. Eine WG in ManaWG, in der alle Mitbewohner schon Mitglied sind. Die Namen aus der Datei ordnet ihr später den Mitgliedern zu.\n3. Wer die Historie anderer Mitglieder importiert, braucht Admin-Rechte in der WG.\n4. Nur Euro-Beträge: ManaWG rechnet ausschließlich in Euro.',
+				'1. Eine CSV-Datei mit den Ausgaben aus Splitwise oder Splid. Den Export bietet jeweils der Anbieter an, die Menüs ändern sich, schaut deshalb dort nach.\n2. Eine WG in ManaWG, in der alle Mitbewohner schon Mitglied sind. Die Namen aus der Datei ordnet ihr später den Mitgliedern zu.\n3. Wer die Historie anderer Mitglieder importiert, braucht Admin-Rechte in der WG.\n4. Nur Euro-Beträge: Der Import übernimmt nur Zeilen in Euro und rechnet nichts um.',
 			],
 			[
 				'Der Import in vier Schritten',
@@ -669,7 +669,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Was nicht übernommen wird',
-				'Zeilen in anderen Währungen lehnt ManaWG einzeln ab, ebenso Zeilen mit ungültigem Datum, ungültigem Betrag oder ohne Beteiligte. Der Rest wird übernommen, die abgelehnten Einträge listet das Ergebnis mit Grund auf. Wer Ausgaben in Fremdwährung hatte, legt diese bei Bedarf von Hand neu an.',
+				'Zeilen in anderen Währungen lehnt ManaWG einzeln ab, ebenso Zeilen mit ungültigem Datum, ungültigem Betrag oder ohne Beteiligte. Der Rest wird übernommen, die abgelehnten Einträge listet das Ergebnis mit Grund auf. Wer Ausgaben in Fremdwährung hatte, legt diese bei Bedarf von Hand in Euro neu an.',
 			],
 			[
 				'Nur Screenshots statt Datei?',
@@ -699,7 +699,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Was passiert mit Ausgaben in anderen Währungen?',
-				'ManaWG rechnet nur in Euro. Zeilen in anderen Währungen werden einzeln abgelehnt und im Ergebnis aufgelistet, der Rest wird übernommen.',
+				'Der Import übernimmt nur Euro und rechnet nichts um. Zeilen in anderen Währungen werden einzeln abgelehnt und im Ergebnis aufgelistet, der Rest wird übernommen.',
 			],
 			[
 				'Gibt es einen Import aus Flatastic oder OurHome?',
@@ -709,7 +709,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'splitwise-kostenlos': {
 		link: 'Splitwise kostenlos',
-		updated: '2026-10-27',
+		updated: '2026-11-09',
 		published: '2026-10-27',
 		title: 'Splitwise kostenlos: Tageslimit und Pro | ManaWG',
 		description:
@@ -732,7 +732,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Was ihr tun könnt',
-				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Sie rechnet in Euro, ist auf Deutsch und Englisch verfügbar und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative). Wer eine quelloffene Alternative zum Selbsthosten sucht, findet mehrere unter [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen).',
+				'Wartet bis zum nächsten Tag, wechselt zu Pro oder nutzt eine andere App.\nManaWG ist eine kostenlose WG-App ohne Bezahlstufe und kennt kein Tages- oder Monatslimit für Ausgaben. Beträge tragt ihr in Euro ein, die App ist auf Deutsch und Englisch verfügbar und fasst bis zu 20 aktive Mitglieder.\nAlte Ausgaben aus Splitwise übernehmt ihr per CSV-Import mit Vorschau, siehe [Umstieg](/splitwise-splid-wechseln). Einen Vergleich findet ihr unter [Splitwise-Alternative](/splitwise-alternative). Wer eine quelloffene Alternative zum Selbsthosten sucht, findet mehrere unter [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen).',
 			],
 		],
 		tables: [
@@ -990,7 +990,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'wg-kaution': {
 		link: 'Kaution in der WG',
-		updated: '2026-10-29',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'WG-Kaution: Höhe, Raten, Auszug und Rückzahlung | ManaWG',
 		description:
@@ -1037,7 +1037,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Was ManaWG dabei kann und was nicht',
-				'ManaWG hat keine eigene Funktion für die Kaution, hilft aber an anderer Stelle. Legt Kaltmiete und Nebenkosten als getrennte Fixkosten in der [WG-Kasse](/wg-kasse) an, dann seht ihr jederzeit, welche Kaltmiete der Kaution zugrunde liegt. Streckt eine Person die Kaution für andere vor, könnt ihr den Betrag als einmalige Ausgabe eintragen und nur die Beteiligten auswählen. Der Saldo zeigt dann, wer wem etwas schuldet. ManaWG rechnet nur in Euro. Wer welchen Anteil eingezahlt hat, haltet ihr außerhalb der App schriftlich fest.',
+				'ManaWG hat keine eigene Funktion für die Kaution, hilft aber an anderer Stelle. Legt Kaltmiete und Nebenkosten als getrennte Fixkosten in der [WG-Kasse](/wg-kasse) an, dann seht ihr jederzeit, welche Kaltmiete der Kaution zugrunde liegt. Streckt eine Person die Kaution für andere vor, könnt ihr den Betrag als einmalige Ausgabe eintragen und nur die Beteiligten auswählen. Der Saldo zeigt dann, wer wem etwas schuldet. Beträge tragt ihr in Euro ein. Wer welchen Anteil eingezahlt hat, haltet ihr außerhalb der App schriftlich fest.',
 			],
 		],
 		tables: [

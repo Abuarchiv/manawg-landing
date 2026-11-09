@@ -5,7 +5,7 @@ import type { Topic } from '../types.ts';
 export const OPEN_SOURCE_EN: Record<string, Topic> = {
 	'open-source-flat-share-app': {
 		link: 'Open-source flat-share app',
-		updated: '2026-11-08',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Open-source flat-share app you can self-host | ManaWG',
 		description:
@@ -56,7 +56,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'Limits',
-				'ManaWG works in euros only, with no exchange rates.\nA flat holds at most 20 active members.\nThere is no bank connection: you make transfers yourselves and mark them as paid.\nIt is a web app you add to the home screen, not an app in a store.\nSelf-hosted: sign-in needs an SMTP account, and Google sign-in and push notifications stay off until you set up your own keys.\nSelf-hosted: dates, reminders and month boundaries follow Berlin time, whatever time zone the server uses, and this is not configurable.\nSelf-hosted: updates, backups, legal pages and support are your job. Questions go to GitHub Discussions.',
+				'In the app you enter amounts in euros only, and there are no exchange rates. Swiss francs, US dollars and pounds can only be booked through the API.\nA flat holds at most 20 active members.\nThere is no bank connection: you make transfers yourselves and mark them as paid.\nIt is a web app you add to the home screen, not an app in a store.\nSelf-hosted: sign-in needs an SMTP account, and Google sign-in and push notifications stay off until you set up your own keys.\nSelf-hosted: dates, reminders and month boundaries follow Berlin time, whatever time zone the server uses, and this is not configurable.\nSelf-hosted: updates, backups, legal pages and support are your job. Questions go to GitHub Discussions.',
 			],
 		],
 		faq: [

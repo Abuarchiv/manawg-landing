@@ -5,7 +5,7 @@ import type { Topic } from '../types.ts';
 export const OPEN_SOURCE_DE: Record<string, Topic> = {
 	'open-source-wg-app': {
 		link: 'Open-Source-WG-App',
-		updated: '2026-11-08',
+		updated: '2026-11-09',
 		published: '2026-10-29',
 		title: 'Open-Source-WG-App zum Selbsthosten | ManaWG',
 		description:
@@ -56,7 +56,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Grenzen',
-				'ManaWG rechnet nur in Euro, ohne Wechselkurse.\nEine WG fasst höchstens 20 aktive Mitglieder.\nEine Bankanbindung gibt es nicht: Ihr überweist selbst und markiert Beträge als bezahlt.\nEs ist eine Web-App, die ihr auf den Home-Bildschirm legt, keine App aus einem Store.\nSelbst gehostet: Die Anmeldung braucht ein SMTP-Konto, und Google-Anmeldung und Push-Meldungen bleiben aus, bis ihr eigene Schlüssel einrichtet.\nSelbst gehostet: Datum, Erinnerungen und Monatsgrenzen folgen der Berliner Zeit, egal in welcher Zeitzone der Server läuft; das lässt sich nicht einstellen.\nSelbst gehostet: Updates, Backups, Rechtstexte und Support liegen bei euch. Fragen gehen an die GitHub Discussions.',
+				'In der App tragt ihr Beträge nur in Euro ein, Wechselkurse gibt es nicht. Franken, US-Dollar und Pfund lassen sich nur über die API buchen.\nEine WG fasst höchstens 20 aktive Mitglieder.\nEine Bankanbindung gibt es nicht: Ihr überweist selbst und markiert Beträge als bezahlt.\nEs ist eine Web-App, die ihr auf den Home-Bildschirm legt, keine App aus einem Store.\nSelbst gehostet: Die Anmeldung braucht ein SMTP-Konto, und Google-Anmeldung und Push-Meldungen bleiben aus, bis ihr eigene Schlüssel einrichtet.\nSelbst gehostet: Datum, Erinnerungen und Monatsgrenzen folgen der Berliner Zeit, egal in welcher Zeitzone der Server läuft; das lässt sich nicht einstellen.\nSelbst gehostet: Updates, Backups, Rechtstexte und Support liegen bei euch. Fragen gehen an die GitHub Discussions.',
 			],
 		],
 		faq: [
