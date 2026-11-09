@@ -20,7 +20,7 @@ export const MANAWG_CELLS = [
 	'mit Vorräten',
 	'mit Kalender-Abo',
 	'Chat und Pinnwand',
-	'nur Euro',
+	'Euro in der App, keine Umrechnung',
 	'kostenlos, ohne Werbung',
 ];
 /** Anything the page's sources do not support reads like this in the table. */
