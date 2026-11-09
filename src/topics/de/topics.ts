@@ -13,7 +13,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			'ManaWG ist die kostenlose WG-App für den Alltag, keine Zimmersuche: Ausgaben, Putzplan, Einkaufsliste, Kalender und Chat im Browser, ohne App Store.',
 		h1: 'Die WG-App für Geld, Putzen, Einkauf und Termine',
 		intro:
-			'Ein Zettel am Kühlschrank und eine WhatsApp-Gruppe, in der Wichtiges untergeht: So läuft der Alltag in vielen WGs. ManaWG bündelt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand in einer kostenlosen App auf Deutsch.',
+			'Ein Zettel am Kühlschrank und eine WhatsApp-Gruppe, in der Wichtiges untergeht: So läuft der Alltag in vielen WGs. ManaWG bündelt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand in einer kostenlosen App auf Deutsch, Englisch und Spanisch.',
 		sections: [
 			[
 				'Warum eine App statt Zettel und WhatsApp',
@@ -41,11 +41,11 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Für wen ManaWG gedacht ist',
-				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Einladungslink, Einladungen gehen auch per Mail. Anmelden könnt ihr euch mit Google oder mit E-Mail und Passwort. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen.',
+				'Für die Studenten-WG, die Zweck-WG und das Paar mit Mitbewohner: Bis zu 20 aktive Mitglieder passen in eine WG. Beigetreten wird per Einladungslink, Einladungen gehen auch per Mail. Ihr registriert euch mit Google oder mit Name, E-Mail und einem 8-stelligen Code aus der Mail, ein Passwort ist nicht nötig. Wer einen Einladungslink öffnet, sieht vor der Anmeldung, wer ihn in welche WG einlädt. Die App läuft im Browser und lässt sich auf den Home-Bildschirm legen.',
 			],
 			[
 				'So startet eure WG',
-				'Eine Person meldet sich mit Google oder E-Mail und Passwort an, erstellt die WG und teilt den Einladungslink. Die anderen melden sich ebenfalls an und treten über den Link bei. Fangt mit einem konkreten Alltagsproblem an: Erfasst die [erste gemeinsame Ausgabe](/wg-kasse) oder legt eine wiederkehrende Putzaufgabe an. So nutzt ihr die App direkt zusammen, statt erst alle Bereiche einzurichten.',
+				'Eine Person registriert sich mit Google oder mit Name, E-Mail und dem 8-stelligen Code aus der Mail, erstellt die WG und teilt den Einladungslink. Die anderen registrieren sich ebenfalls und treten über den Link bei. Fangt mit einem konkreten Alltagsproblem an: Erfasst die [erste gemeinsame Ausgabe](/wg-kasse) oder legt eine wiederkehrende Putzaufgabe an. So nutzt ihr die App direkt zusammen, statt erst alle Bereiche einzurichten.',
 			],
 			[
 				'ManaWG installieren: iPhone, Android, Desktop',
@@ -93,13 +93,13 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 					],
 					[
 						'Daten',
-						'Import aus Splitwise- und Splid-CSV oder per Screenshot, Export als JSON und CSV',
-						'kein Import aus Tricount oder Flatastic',
+						'Import aus Splitwise-, Splid-, Tricount- und Settle-Up-CSV oder per Screenshot, Export als JSON und CSV',
+						'kein Import aus Flatastic',
 					],
 					[
 						'Zugang',
 						'im Browser, auf dem Home-Bildschirm installierbar, Beitritt per Einladungslink oder E-Mail-Einladung',
-						'kein App Store, auf Deutsch und Englisch, bis zu 20 aktive Mitglieder',
+						'kein App Store, auf Deutsch, Englisch und Spanisch, bis zu 20 aktive Mitglieder',
 					],
 				],
 				note: 'Angaben aus der App, Stand 27. Oktober 2026.',
@@ -112,15 +112,15 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Gibt es ManaWG im App Store oder auf Englisch?',
-				'Im App Store nicht, auf Englisch ja. ManaWG ist keine native App: Ihr öffnet app.manawg.com im Browser und legt die App auf den Home-Bildschirm. Die Oberfläche gibt es auf Deutsch und Englisch, Beträge tragt ihr in der App in Euro ein.',
+				'Im App Store nicht, auf Englisch ja. ManaWG ist keine native App: Ihr öffnet app.manawg.com im Browser und legt die App auf den Home-Bildschirm. Die Oberfläche gibt es auf Deutsch, Englisch und Spanisch, Beträge tragt ihr in der App in Euro ein.',
 			],
 			[
 				'Wie viele Leute passen in eine WG?',
 				'Bis zu 20 aktive Mitglieder. Ausgezogene Personen zählen nicht mit, ihre Historie bleibt erhalten. Admins können Einladungen jederzeit widerrufen.',
 			],
 			[
-				'Kann ich von Splitwise oder Splid wechseln?',
-				'Ja, per CSV-Import mit Vorschau und Rückgängig-Funktion. Übernommen werden Zeilen in Euro, andere Währungen lehnt ManaWG zeilenweise ab, ohne den ganzen Import zu stoppen.',
+				'Kann ich von Splitwise, Splid, Tricount oder Settle Up wechseln?',
+				'Ja, per CSV-Import aus Splitwise, Splid, Tricount oder Settle Up, mit Vorschau und Rückgängig-Funktion. Übernommen werden Zeilen in Euro, andere Währungen lehnt ManaWG zeilenweise ab, ohne den ganzen Import zu stoppen.',
 			],
 			[
 				'Funktioniert ManaWG ohne Internet?',
@@ -142,7 +142,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 	},
 	putzplan: {
 		link: 'WG Putzplan App',
-		updated: '2026-11-08',
+		updated: '2026-11-09',
 		published: '2026-10-09',
 		title: 'WG Putzplan App: fair verteilt, kostenlos | ManaWG',
 		description:
@@ -173,7 +173,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Einrichten und Umfang',
-				'Mitglieder treten per Einladungslink oder E-Mail-Einladung bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und auf Deutsch und Englisch verfügbar. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor. Wer den Putzplan auf einer eigenen Maschine betreiben will, liest [Putzplan selbst hosten](/putzplan-selbst-hosten).',
+				'Mitglieder treten per Einladungslink oder E-Mail-Einladung bei, bis zu 20 aktive Personen passen in eine WG. ManaWG ist kostenlos, ohne Werbung und auf Deutsch, Englisch und Spanisch verfügbar. Installiert wird als PWA über den Browser, einen App-Store-Eintrag gibt es nicht. Neben dem Putzplan gibt es Ausgaben, Einkauf, Vorräte, Kalender, Chat und Pinnwand. Alle Bereiche stellt die Seite [WG-App kostenlos](/wg-app) vor. Wer den Putzplan auf einer eigenen Maschine betreiben will, liest [Putzplan selbst hosten](/putzplan-selbst-hosten).',
 			],
 		],
 		faq: [
@@ -191,7 +191,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Kostet die WG Putzplan App etwas?',
-				'Nein. ManaWG ist kostenlos und zeigt keine Werbung. Die App gibt es auf Deutsch und Englisch, und eine WG kann höchstens 20 aktive Mitglieder haben.',
+				'Nein. ManaWG ist kostenlos und zeigt keine Werbung. Die App gibt es auf Deutsch, Englisch und Spanisch, und eine WG kann höchstens 20 aktive Mitglieder haben.',
 			],
 			[
 				'Gibt es die App im App Store?',
@@ -220,7 +220,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			'Die kostenlose WG Kasse App: Ausgaben teilen, mit wenigen Überweisungen ausgleichen, Fixkosten buchen und die Monatsabrechnung per Mail bekommen.',
 		h1: 'Die WG Kasse App für Ausgaben, Fixkosten und Abrechnung',
 		intro:
-			'Wer hat das Klopapier bezahlt, wer schuldet wem noch etwas? ManaWG ist eine kostenlose, deutschsprachige WG Kasse App. Jede Ausgabe landet sofort im Saldo aller Beteiligten, ohne Zettel und ohne Tabelle.',
+			'Wer hat das Klopapier bezahlt, wer schuldet wem noch etwas? ManaWG ist eine kostenlose WG Kasse App auf Deutsch, Englisch und Spanisch. Jede Ausgabe landet sofort im Saldo aller Beteiligten, ohne Zettel und ohne Tabelle.',
 		sections: [
 			[
 				'Ausgaben teilen in der WG',
@@ -247,12 +247,12 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 				'Auf der Seite Erinnerungen löst ein Mitglied per Erinnern-Button eine Zahlungserinnerung aus. Eine Abkühlzeit begrenzt, wie oft das hintereinander möglich ist, und ein Rate-Limit bremst zu viele Anfragen. Der Saldo bleibt für alle jederzeit einsehbar, etwa in der Monatsabrechnung. Wie ihr offene Beträge ohne Streit ansprecht, steht unter [Schulden unter Mitbewohnern](/schulden-mitbewohner).',
 			],
 			[
-				'Umzug aus Splitwise oder Splid',
-				'Falls eure bisherigen Abrechnungen als CSV-Datei vorliegen, übernehmt ihr sie per Import in eurer WG, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren. Wer von Tricount kommt, findet die Unterschiede unter [Tricount-Alternative](/tricount-alternative).',
+				'Umzug aus Splitwise, Splid, Tricount oder Settle Up',
+				'Falls eure bisherigen Abrechnungen als CSV-Datei vorliegen, übernehmt ihr sie per Import in eurer WG, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ihr seht vorher eine Vorschau, ein Importverlauf zeigt frühere Läufe, und ein Import lässt sich rückgängig machen. Übernommen werden nur Euro-Beträge, andere Währungen lehnt ManaWG zeilenweise ab. Auch ein Foto oder Bildschirmfoto einer Ausgabenliste lässt sich einlesen und vor dem Speichern korrigieren. Der Import liest CSV-Dateien aus Splitwise, Splid, Tricount und Settle Up. Wer von Tricount kommt, findet die Unterschiede unter [Tricount-Alternative](/tricount-alternative).',
 			],
 			[
 				'Was ManaWG nicht ist',
-				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, auf Deutsch und Englisch nutzbar, Beträge tragt ihr in Euro ein. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung. Was die App außer der Kasse bietet, steht unter [WG-App kostenlos](/wg-app).',
+				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, auf Deutsch, Englisch und Spanisch nutzbar, Beträge tragt ihr in Euro ein. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung. Was die App außer der Kasse bietet, steht unter [WG-App kostenlos](/wg-app).',
 			],
 		],
 		faq: [
@@ -270,7 +270,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Kann ich Daten aus Splitwise übernehmen?',
-				'Falls sie als CSV-Datei vorliegen: per CSV-Import aus Splitwise oder Splid, mit Vorschau und Rückgängig-Funktion. Übernommen werden nur Beträge in Euro, Zeilen mit anderen Währungen werden einzeln abgelehnt.',
+				'Falls sie als CSV-Datei vorliegen: per CSV-Import aus Splitwise, Splid, Tricount oder Settle Up, mit Vorschau und Rückgängig-Funktion. Übernommen werden nur Beträge in Euro, Zeilen mit anderen Währungen werden einzeln abgelehnt.',
 			],
 			[
 				'Wie viele Leute passen in eine WG?',
@@ -414,7 +414,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'1. Was kostet die App wirklich?',
-				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. Die [kostenlose WG-App ManaWG](/wg-app) kommt ohne Werbung und ohne Bezahlstufe aus. Splitwise Pro nennt laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Was die [kostenlose Version von Splitwise](/splitwise-kostenlos) begrenzt, steht auf einer eigenen Seite. Splid nennt auf seiner deutschen Seite über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium, unter anderem ohne Werbung und mit Verläufen. ManaWG ist kostenlos und werbefrei und verbindet Kasse, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat. Beträge tragt ihr in Euro ein, die App ist auf Deutsch und Englisch verfügbar und für höchstens 20 aktive Mitglieder pro WG gedacht.',
+				'Prüft, ob Funktionen erst im Abo freigeschaltet werden, ob Werbung erscheint und ob es Grenzen bei der Zahl der Einträge gibt. Tarife ändern sich, schaut deshalb bei jedem Anbieter selbst nach. Die [kostenlose WG-App ManaWG](/wg-app) kommt ohne Werbung und ohne Bezahlstufe aus. Splitwise Pro nennt laut Anbieter unter anderem unbegrenzte Ausgaben, keine Werbung, das Scannen von Belegen und die Umrechnung von Währungen. Was die [kostenlose Version von Splitwise](/splitwise-kostenlos) begrenzt, steht auf einer eigenen Seite. Splid nennt auf seiner deutschen Seite über 150 Währungen, Offline-Nutzung sowie PDF- und Excel-Exporte. Flatastic organisiert laut Anbieter Aufgaben, Einkäufe, Finanzen und Pinnwand und bietet ein kostenpflichtiges Premium, unter anderem ohne Werbung und mit Verläufen. ManaWG ist kostenlos und werbefrei und verbindet Kasse, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat. Beträge tragt ihr in Euro ein, die App ist auf Deutsch, Englisch und Spanisch verfügbar und für höchstens 20 aktive Mitglieder pro WG gedacht.',
 			],
 			[
 				'2. Deckt sie Geld und Haushalt ab?',
@@ -434,15 +434,15 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'6. Datenschutz und Sprache',
-				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App gibt es auf Deutsch und Englisch. Der Code ist Open Source unter Apache-2.0 und lässt sich selbst hosten, siehe [Open-Source-WG-App](/open-source-wg-app). Andere quelloffene Apps zum Selbsthosten stehen im Vergleich [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen). In der App tragt ihr Beträge nur in Euro ein, Franken, US-Dollar und Pfund lassen sich nur über die API buchen, eine Umrechnung gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
+				'Wo liegen die Daten, gibt es Werbung und Tracking, ist die App auf Deutsch? Bei ManaWG liegen die Daten in der EU, es gibt keine Werbung, und die App gibt es auf Deutsch, Englisch und Spanisch. Der Code ist Open Source unter Apache-2.0 und lässt sich selbst hosten, siehe [Open-Source-WG-App](/open-source-wg-app). Andere quelloffene Apps zum Selbsthosten stehen im Vergleich [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen). In der App tragt ihr Beträge nur in Euro ein, Franken, US-Dollar und Pfund lassen sich nur über die API buchen, eine Umrechnung gibt es nicht. Wer international in vielen Währungen teilt, ist bei einer App mit Währungsumrechnung besser aufgehoben.',
 			],
 			[
 				'7. Wie leicht ist der Umstieg?',
-				'Wer Daten aus Splitwise oder Splid bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ausführliche Vergleiche findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative), [Flatastic-Alternative](/flatastic-alternative), [Tricount-Alternative](/tricount-alternative) und [OurHome-Alternative](/ourhome-alternative).',
+				'Wer Daten aus Splitwise, Splid, Tricount oder Settle Up bereits als CSV-Datei hat, sollte sie mitnehmen können. ManaWG importiert Ausgaben aus solchen CSV-Dateien und zeigt vorher eine Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln). Ausführliche Vergleiche findet ihr unter [Splitwise-Alternative](/splitwise-alternative), [Splid-Alternative](/splid-alternative), [Flatastic-Alternative](/flatastic-alternative), [Tricount-Alternative](/tricount-alternative) und [OurHome-Alternative](/ourhome-alternative).',
 			],
 			[
 				'Welche App passt zu welcher WG?',
-				'Ihr teilt vor allem Geld, auch auf Reisen und in mehreren Währungen: Splid nennt über 150 Währungen, Tricount mehrere Währungen, Splitwise die Umrechnung im Pro-Tarif, jeweils laut Anbieter. In ManaWG tragt ihr Beträge in Euro ein, eine Umrechnung gibt es nicht.\nIhr wollt Geld, Putzplan, Einkauf, Kalender und Pinnwand in einer deutschsprachigen App ohne Abo und ohne App Store: dafür ist ManaWG gebaut.\nIhr wollt Punkte oder Belohnungen fürs Putzen: Das bietet ManaWG nicht, der Putzplan verteilt nach Auslastung.\nIhr habt alte Ausgaben aus Splitwise oder Splid als CSV-Datei: ManaWG übernimmt sie mit Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln).\nIhr seid mehr als 20 Personen: Eine WG in ManaWG fasst höchstens 20 aktive Mitglieder.',
+				'Ihr teilt vor allem Geld, auch auf Reisen und in mehreren Währungen: Splid nennt über 150 Währungen, Tricount mehrere Währungen, Splitwise die Umrechnung im Pro-Tarif, jeweils laut Anbieter. In ManaWG tragt ihr Beträge in Euro ein, eine Umrechnung gibt es nicht.\nIhr wollt Geld, Putzplan, Einkauf, Kalender und Pinnwand in einer App auf Deutsch, Englisch oder Spanisch ohne Abo und ohne App Store: dafür ist ManaWG gebaut.\nIhr wollt Punkte oder Belohnungen fürs Putzen: Das bietet ManaWG nicht, der Putzplan verteilt nach Auslastung.\nIhr habt alte Ausgaben aus Splitwise, Splid, Tricount oder Settle Up als CSV-Datei: ManaWG übernimmt sie mit Vorschau, die Schritte stehen im [Umstieg](/splitwise-splid-wechseln).\nIhr seid mehr als 20 Personen: Eine WG in ManaWG fasst höchstens 20 aktive Mitglieder.',
 			],
 		],
 		faq: [
@@ -452,7 +452,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Gibt es eine WG-App mit Putzplan und Kasse in einem?',
-				'Ja. ManaWG verbindet Ausgaben teilen, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat in einer App, auf Deutsch, in Euro und für bis zu 20 Mitglieder pro WG.',
+				'Ja. ManaWG verbindet Ausgaben teilen, Putzplan, Einkaufsliste, Kalender, Pinnwand und Chat in einer App, auf Deutsch, Englisch und Spanisch, in Euro und für bis zu 20 Mitglieder pro WG.',
 			],
 			[
 				'Welche App eignet sich für Reisen mit mehreren Währungen?',
@@ -468,7 +468,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Flatastic oder Splitwise: Was passt besser zu einer WG?',
-				'Das hängt davon ab, was ihr braucht. Splitwise ist auf geteilte Ausgaben ausgerichtet. Flatastic verbindet laut Anbieter Putzplan, Einkaufsliste, Finanzen und Pinnwand, Premium ist kostenpflichtig. Wer Geld und Haushalt in einer kostenlosen deutschsprachigen Web-App ohne Werbung möchte, findet das in der [WG-App ManaWG](/wg-app), die dafür Beträge nur in Euro kennt und höchstens 20 Mitglieder pro WG fasst.',
+				'Das hängt davon ab, was ihr braucht. Splitwise ist auf geteilte Ausgaben ausgerichtet. Flatastic verbindet laut Anbieter Putzplan, Einkaufsliste, Finanzen und Pinnwand, Premium ist kostenpflichtig. Wer Geld und Haushalt in einer kostenlosen Web-App auf Deutsch, Englisch oder Spanisch ohne Werbung möchte, findet das in der [WG-App ManaWG](/wg-app), die dafür Beträge nur in Euro kennt und höchstens 20 Mitglieder pro WG fasst.',
 			],
 		],
 	},
@@ -582,7 +582,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Was Splid laut Anbieter kann',
-				'Die deutsche Splid-Seite nennt unter anderem über 150 Währungen, Gruppen vor Ort und online sowie den Export als PDF und Excel. Details zum Funktionsumfang stehen dort mit Stand 14. Oktober 2026. In ManaWG meldet sich dagegen jede Person mit Google oder E-Mail und Passwort an. Dafür gehören Ausgaben, Salden und Verlauf fest zu eurer WG, und Mitbewohner kommen per Einladungslink dazu. Einladungen könnt ihr jederzeit widerrufen.',
+				'Die deutsche Splid-Seite nennt unter anderem über 150 Währungen, Gruppen vor Ort und online sowie den Export als PDF und Excel. Details zum Funktionsumfang stehen dort mit Stand 14. Oktober 2026. In ManaWG meldet sich dagegen jede Person mit Google oder per E-Mail-Code an, ein Passwort ist optional. Dafür gehören Ausgaben, Salden und Verlauf fest zu eurer WG, und Mitbewohner kommen per Einladungslink dazu. Einladungen könnt ihr jederzeit widerrufen.',
 			],
 			[
 				'Kasse plus Haushalt in einer App',
@@ -602,13 +602,13 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Grenzen von ManaWG',
-				'Eine WG fasst höchstens 20 aktive Mitglieder. Die App gibt es auf Deutsch und Englisch, Beträge tragt ihr in Euro ein. Es gibt keine App im App Store, ihr nutzt ManaWG im Browser unter app.manawg.com und legt sie auf dem Handy auf den Home-Bildschirm. Auch Kalender-Abo und Push-Hinweise funktionieren so, ohne dass ihr etwas aus dem Store installieren müsst.',
+				'Eine WG fasst höchstens 20 aktive Mitglieder. Die App gibt es auf Deutsch, Englisch und Spanisch, Beträge tragt ihr in Euro ein. Es gibt keine App im App Store, ihr nutzt ManaWG im Browser unter app.manawg.com und legt sie auf dem Handy auf den Home-Bildschirm. Auch Kalender-Abo und Push-Hinweise funktionieren so, ohne dass ihr etwas aus dem Store installieren müsst.',
 			],
 		],
 		faq: [
 			[
 				'Braucht ManaWG ein Konto?',
-				'Ja. Jede Person meldet sich mit Google oder mit E-Mail und Passwort an. Beitreten geht danach per Einladungslink.',
+				'Ja. Jede Person registriert sich mit Google oder mit Name, E-Mail und einem 8-stelligen Code aus der Mail, ein Passwort ist nicht nötig. Beitreten geht danach per Einladungslink.',
 			],
 			[
 				'Wie übernehme ich meine Daten aus Splid?',
@@ -698,7 +698,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'WG-Kasse und Umstieg',
-				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, lassen sie sich mit Vorschau importieren, siehe [Umstieg](/splitwise-splid-wechseln). Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an. Die Kasse im Überblick beschreibt die Seite [WG Kasse App](/wg-kasse).',
+				'Ausgaben teilt ihr gleichmäßig oder mit eigenen Beträgen, auf den Cent genau. ManaWG zeigt Salden und schlägt Ausgleiche mit wenigen Überweisungen vor. Dazu kommen Fixkosten und eine Monatsabrechnung. Falls eure Ausgaben aus Splitwise, Splid, Tricount oder Settle Up als CSV-Datei vorliegen, lassen sie sich mit Vorschau importieren, siehe [Umstieg](/splitwise-splid-wechseln). Einen Flatastic-Import gibt es nicht, Altdaten legt ihr bei Bedarf von Hand neu an. Die Kasse im Überblick beschreibt die Seite [WG Kasse App](/wg-kasse).',
 			],
 			[
 				'Einkauf, Pinnwand und Chat',
@@ -706,7 +706,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Was ManaWG nicht kann',
-				'Die Oberfläche gibt es auf Deutsch und Englisch, Beträge tragt ihr in Euro ein, und eine WG fasst höchstens 20 aktive Mitglieder. Es gibt keine App im Store, ManaWG installiert ihr als Web-App auf dem Home-Bildschirm. Ausgleiche markiert ihr selbst als bezahlt, eine Überweisung löst die App nicht aus. Kalender gibt es als Abo für Apple und Google Kalender, aber nur in eine Richtung.',
+				'Die Oberfläche gibt es auf Deutsch, Englisch und Spanisch, Beträge tragt ihr in Euro ein, und eine WG fasst höchstens 20 aktive Mitglieder. Es gibt keine App im Store, ManaWG installiert ihr als Web-App auf dem Home-Bildschirm. Ausgleiche markiert ihr selbst als bezahlt, eine Überweisung löst die App nicht aus. Kalender gibt es als Abo für Apple und Google Kalender, aber nur in eine Richtung.',
 			],
 		],
 		faq: [
@@ -720,7 +720,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Kann ich meine Daten aus Flatastic übernehmen?',
-				'Einen direkten Flatastic-Import gibt es nicht. Falls eure Splitwise- oder Splid-Ausgaben als CSV-Datei vorliegen, importiert ihr sie mit Vorschau, Importverlauf und Rückgängig-Funktion. Es werden nur Euro-Beträge übernommen, andere Währungen werden abgelehnt.',
+				'Einen direkten Flatastic-Import gibt es nicht. Falls eure Ausgaben aus Splitwise, Splid, Tricount oder Settle Up als CSV-Datei vorliegen, importiert ihr sie mit Vorschau, Importverlauf und Rückgängig-Funktion. Es werden nur Euro-Beträge übernommen, andere Währungen werden abgelehnt.',
 			],
 			[
 				'Gibt es ManaWG im App Store?',
@@ -749,7 +749,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			'Tricount rechnet mit mehreren Währungen und passt zu Reisen. Für die WG mit Miete, Fixkosten und Putzplan passt ManaWG: kostenlos, im Browser, mit Abrechnung.',
 		h1: 'Tricount-Alternative für WG und feste Gruppen',
 		intro:
-			'Tricount teilt Ausgaben in Gruppen und rechnet laut Anbieter mit mehreren Währungen. Wer dauerhaft zusammenwohnt, braucht dazu meist Miete, Fixkosten und einen Putzplan. ManaWG verbindet das in einer kostenlosen Web-App auf Deutsch. Die Angaben zu Tricount stammen von den verlinkten Seiten des Anbieters und von bunq, abgerufen am 27. Oktober 2026.',
+			'Tricount teilt Ausgaben in Gruppen und rechnet laut Anbieter mit mehreren Währungen. Wer dauerhaft zusammenwohnt, braucht dazu meist Miete, Fixkosten und einen Putzplan. ManaWG verbindet das in einer kostenlosen Web-App auf Deutsch, Englisch und Spanisch. Die Angaben zu Tricount stammen von den verlinkten Seiten des Anbieters und von bunq, abgerufen am 27. Oktober 2026.',
 		sources: [
 			['Tricount Funktionen', 'https://tricount.com/features'],
 			[
@@ -792,17 +792,17 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Grenzen',
-				'Beträge nur in Euro und ohne Umrechnung, Zeilen in anderen Währungen lehnt der Import einzeln ab.\nManaWG läuft im Browser und lässt sich auf den Home-Bildschirm legen. Eine native App im Store gibt es nicht.\nEine WG fasst höchstens 20 aktive Mitglieder.\nKeine Bankanbindung: Ihr überweist selbst und markiert Beträge danach als bezahlt.\nKein Import aus Tricount: Der Import liest nur CSV-Dateien aus Splitwise und Splid sowie Bildschirmfotos von Ausgabenlisten.',
+				'Beträge nur in Euro und ohne Umrechnung, Zeilen in anderen Währungen lehnt der Import einzeln ab.\nManaWG läuft im Browser und lässt sich auf den Home-Bildschirm legen. Eine native App im Store gibt es nicht.\nEine WG fasst höchstens 20 aktive Mitglieder.\nKeine Bankanbindung: Ihr überweist selbst und markiert Beträge danach als bezahlt.\nEinnahmen aus einer Tricount- oder Settle-Up-Datei übernimmt der Import nicht, sie stehen als nicht importiert in der Liste und werden von Hand eingetragen.',
 			],
 			[
 				'Umstieg von Tricount',
-				'Gleicht offene Beträge am besten in Tricount aus und startet in ManaWG ohne Altlasten. Wollt ihr den Stand übernehmen, lest ihr ein Bildschirmfoto der Ausgabenliste im Import ein. ManaWG zeigt eine Vorschau zum Korrigieren und erkennt nur Eurobeträge. Oder jemand trägt für jede Person, die noch Geld bekommt, eine Ausgabe mit ihr als Zahlerin ein und teilt sie von Hand auf die Schuldner auf. Wie ein Import abläuft, steht in der Anleitung zum [Umstieg](/splitwise-splid-wechseln).',
+				'Gleicht offene Beträge am besten in Tricount aus und startet in ManaWG ohne Altlasten. Wollt ihr den Stand übernehmen, speichert den Excel-Export aus Tricount als CSV-Datei, wählt im Import die Quelle Tricount CSV und prüft die Vorschau. Überweisungen zwischen Personen werden als Rückzahlungen markiert, Einnahmen und Zeilen in anderen Währungen als Euro stehen als nicht importiert in der Liste. Habt ihr nur Bildschirmfotos, lest ihr eines der Ausgabenliste ein. Oder jemand trägt für jede Person, die noch Geld bekommt, eine Ausgabe mit ihr als Zahlerin ein und teilt sie von Hand auf die Schuldner auf. Wie ein Import abläuft, steht in der Anleitung zum [Umstieg](/splitwise-splid-wechseln).',
 			],
 		],
 		faq: [
 			[
 				'Kann ich Daten aus Tricount in ManaWG importieren?',
-				'Nicht direkt. Der Import kennt CSV-Dateien aus Splitwise und Splid sowie Bildschirmfotos von Ausgabenlisten, die per Texterkennung gelesen und vor dem Speichern korrigiert werden. Einen Tricount-Import gibt es nicht.',
+				'Ja, falls ihr die Daten als CSV-Datei habt: Speichert den Excel-Export aus Tricount als CSV und wählt im Import die Quelle Tricount CSV. Ihr seht vorher eine Vorschau, und der Import lässt sich rückgängig machen. Übernommen werden nur Euro-Zeilen. Überweisungen zwischen Personen werden als Rückzahlungen markiert, Einnahmen und Zeilen in anderen Währungen werden nicht importiert. Ein Bildschirmfoto der Ausgabenliste lässt sich ebenfalls einlesen und vor dem Speichern korrigieren.',
 			],
 			[
 				'Kann ManaWG Fremdwährungen?',
@@ -869,7 +869,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Web statt Store',
-				'ManaWG läuft unter app.manawg.com und lässt sich auf dem Home-Bildschirm installieren. Die Daten liegen zentral auf dem Server, nicht auf einem einzelnen Gerät. Aktionen ohne Netz merkt sich die App und sendet sie später nach. Anmelden könnt ihr euch mit Google oder E-Mail und Passwort. Beitreten geht per Einladungslink oder E-Mail-Einladung.',
+				'ManaWG läuft unter app.manawg.com und lässt sich auf dem Home-Bildschirm installieren. Die Daten liegen zentral auf dem Server, nicht auf einem einzelnen Gerät. Aktionen ohne Netz merkt sich die App und sendet sie später nach. Anmelden könnt ihr euch mit Google oder per E-Mail-Code, ein Passwort ist nicht nötig. Beitreten geht per Einladungslink oder E-Mail-Einladung.',
 			],
 		],
 		faq: [
@@ -887,7 +887,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Gibt es ManaWG auch auf Englisch?',
-				'Ja. Die App gibt es auf Deutsch und Englisch, sie folgt der Sprache des Geräts und lässt sich in der App umstellen. Währungen außer Euro lassen sich in der Bedienung nicht auswählen, nur über die API.',
+				'Ja. Die App gibt es auf Deutsch, Englisch und Spanisch, sie folgt der Sprache des Geräts und lässt sich in der App umstellen. Währungen außer Euro lassen sich in der Bedienung nicht auswählen, nur über die API.',
 			],
 			[
 				'Wie viele Leute passen in eine WG?',
@@ -901,7 +901,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		published: '2026-10-09',
 		title: 'Häufige Fragen zu ManaWG: Kosten, Anmeldung, Datenort',
 		description:
-			'Ist ManaWG kostenlos? Gibt es die WG-App im App Store? Antworten zu Anmeldung, Putzplan, Export, Datenort in Frankfurt und Import aus Splitwise oder Splid.',
+			'Ist ManaWG kostenlos? Gibt es die WG-App im App Store? Antworten zu Anmeldung, Putzplan, Export, Datenort in Frankfurt und Import aus Splitwise, Splid, Tricount oder Settle Up.',
 		h1: 'Häufige Fragen zu ManaWG',
 		intro:
 			'Das Wichtigste zu ManaWG, der kostenlosen [WG-App](/wg-app) für Wohngemeinschaften: Kosten, Installation, Einladung, Geld, Putzplan, Abwesenheiten, Währung, Datenort, Import und Selbsthosten.',
@@ -932,7 +932,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 				'Mitglieder tragen einen Abwesenheitszeitraum ein, zum Beispiel für einen Urlaub. Wer abwesend ist, wird bei der nächsten Zuweisung im Putzplan übergangen.',
 			],
 			[
-				'Kann ich Daten aus Splitwise oder Splid mitnehmen?',
+				'Kann ich Daten aus Splitwise, Splid, Tricount oder Settle Up mitnehmen?',
 				'Falls eure Daten als CSV-Datei vorliegen: per [CSV-Import mit Vorschau](/splitwise-splid-wechseln). Beim Import lässt sich auch ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung einlesen und vor dem Speichern korrigieren; ein Foto am einzelnen Beleg wird nur angehängt, nicht ausgewertet.',
 			],
 			[
@@ -941,7 +941,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wie melde ich mich an?',
-				'Mit Google oder mit E-Mail und Passwort. Beitreten geht per Einladungslink, den euch ein Mitbewohner schickt.',
+				'Mit Google oder mit einem 8-stelligen Code, den ihr per E-Mail bekommt: Bei der Registrierung gebt ihr Name und E-Mail an, ein Passwort ist nicht nötig. Es lässt sich später unter Einstellungen → Zugang festlegen. Beitreten geht per Einladungslink, den euch ein Mitbewohner schickt.',
 			],
 			[
 				'Funktioniert ManaWG mit anderen Währungen?',
@@ -998,7 +998,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			'ManaWG ist eine kostenlose Open-Source-WG-App für Ausgaben, Einkauf, Putzplan, Kalender, Pinnwand und Chat. Fakten, Betreiber, Abgrenzung zu WireGuard.',
 		h1: 'Was ist ManaWG?',
 		intro:
-			'ManaWG ist eine kostenlose Open-Source-Web-App für Wohngemeinschaften, auf Deutsch und Englisch. Sie bündelt Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand und Chat. ManaWG hat nichts mit dem VPN-Protokoll WireGuard zu tun.',
+			'ManaWG ist eine kostenlose Open-Source-Web-App für Wohngemeinschaften, auf Deutsch, Englisch und Spanisch. Sie bündelt Ausgaben teilen, Einkaufsliste, Putzplan, Kalender, Pinnwand und Chat. ManaWG hat nichts mit dem VPN-Protokoll WireGuard zu tun.',
 		sources: [
 			['Impressum', '/impressum'],
 			['Datenschutz', '/datenschutz'],
@@ -1011,11 +1011,11 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Fakten auf einen Blick',
-				'Preis: kostenlos, keine Werbung, keine Bezahlstufe. Sprachen: Deutsch und Englisch, Währung: Euro in der App, ohne Umrechnung (Franken, US-Dollar und Pfund nur über die API). Plattform: Web-App (PWA), installierbar auf iPhone, Android und Desktop, ohne App Store. Anmeldung: Google oder E-Mail. Größe: bis zu 20 aktive Mitglieder pro WG. Daten: in der EU gespeichert (Frankfurt am Main). Beitritt: per Einladungslink. Lizenz: Apache-2.0, Quellcode auf GitHub, selbst hostbar mit Docker, mehr unter [Open-Source-WG-App](/open-source-wg-app).',
+				'Preis: kostenlos, keine Werbung, keine Bezahlstufe. Sprachen: Deutsch, Englisch und Spanisch, Währung: Euro in der App, ohne Umrechnung (Franken, US-Dollar und Pfund nur über die API). Plattform: Web-App (PWA), installierbar auf iPhone, Android und Desktop, ohne App Store. Anmeldung: Google oder E-Mail-Code, Passwort optional. Größe: bis zu 20 aktive Mitglieder pro WG. Daten: in der EU gespeichert (Frankfurt am Main). Beitritt: per Einladungslink. Lizenz: Apache-2.0, Quellcode auf GitHub, selbst hostbar mit Docker, mehr unter [Open-Source-WG-App](/open-source-wg-app).',
 			],
 			[
 				'Funktionen',
-				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import von Splitwise- und Splid-CSV-Dateien, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht. Die Einzelheiten stehen unter [WG-App](/wg-app), der Vergleich mit Splitwise unter [Splitwise-Alternative](/splitwise-alternative), häufige Fragen unter [Häufige Fragen](/faq).',
+				'Ausgaben gleichmäßig oder mit eigenen Beträgen teilen, Fixkosten und Monatsabrechnung, Import von CSV-Dateien aus Splitwise, Splid, Tricount und Settle Up, Einkaufsliste mit Vorräten, Putzplan mit fairer Rotation und Abwesenheiten, Kalender mit Kalender-Abo, Pinnwand, Chat und Push-Erinnerungen. Eine Bankanbindung und Überweisungen aus der App gibt es nicht. Die Einzelheiten stehen unter [WG-App](/wg-app), der Vergleich mit Splitwise unter [Splitwise-Alternative](/splitwise-alternative), häufige Fragen unter [Häufige Fragen](/faq).',
 			],
 			[
 				'Betreiber und Kontakt',

@@ -28,7 +28,7 @@ export const en: HomeDict = {
 	},
 	hero: {
 		title: ['The flat app ', 'for your flat.'],
-		sub: 'The free app for flatmates and roommates: split bills, shopping and a cleaning rota. In English and German, in your browser.',
+		sub: 'The free app for flatmates and roommates: split bills, shopping and a cleaning rota. In English, German and Spanish, in your browser.',
 		create: 'Create a flat',
 		install: 'Install',
 		trust: { openSource: 'Open source', rest: ' · no ads · data stored in Frankfurt' },
@@ -116,7 +116,7 @@ export const en: HomeDict = {
 	faq: [
 		[
 			'How do my flatmates join the flat?',
-			'You create the flat and share the invite link. Your flatmates sign in with Google or with email and password, then join through the link.',
+			'You create the flat and share the invite link. Your flatmates sign in with Google or with an email code, then join through the link.',
 		],
 		[
 			'Do I need an app from a store?',

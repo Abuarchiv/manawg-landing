@@ -12,7 +12,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			'ManaWG is an open-source flat-share app under Apache-2.0: use it free at app.manawg.com or self-host it with Docker. A Splitwise alternative with no ads.',
 		h1: 'An open-source app for shared flats: use it free or host it yourself',
 		intro:
-			'Most flats want to split bills and share the cleaning, not run a server. ManaWG is built for both. The code is open source under the Apache License 2.0, the hosted app at app.manawg.com is free and ad-free, and anyone who wants the data on their own machine can run a copy with Docker Compose. It works as a Splitwise alternative for flatmates and roommates in Germany, in English and German, in euros.',
+			'Most flats want to split bills and share the cleaning, not run a server. ManaWG is built for both. The code is open source under the Apache License 2.0, the hosted app at app.manawg.com is free and ad-free, and anyone who wants the data on their own machine can run a copy with Docker Compose. It works as a Splitwise alternative for flatmates and roommates in Germany, in English, German and Spanish, in euros.',
 		sources: [
 			['ManaWG app repository (GitHub)', 'https://github.com/Abuarchiv/manawg'],
 			[
@@ -51,8 +51,8 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 				'For an instance that people reach over the internet you need a server with Docker, a domain whose DNS record points at it and ports 80 and 443 open. The gateway then fetches a Let’s Encrypt certificate. Sign-in needs email, so an SMTP account is required, and many providers have a free tier that is enough for a household. Registration is open to anyone who can reach the address, so for a household-only instance restrict access at a proxy, for example with a VPN. If you offer an instance to people outside your household, you need your own legal notice and privacy policy. Backups and updates are yours too: the repository has backup and restore scripts, and an update is a git pull followed by docker compose up -d --build, after a backup. The full guide on GitHub covers all of this, plus a second route with Vercel and Supabase on their free tiers.',
 			],
 			[
-				'Moving from Splitwise or Splid',
-				'If your flat already uses Splitwise or Splid, you do not start from nothing. Export the expenses as a CSV file, check the preview and undo the import if something is wrong, as set out in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). The import is part of the app, so it works the same on a self-hosted copy. Only euro amounts are imported. How ManaWG compares is on [Splitwise alternative](/splitwise-alternative), and what the free Splitwise version allows per day is in [Splitwise’s free limit](/splitwise-free-limit). Other open-source apps you can self-host are set beside ManaWG in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
+				'Moving from Splitwise, Splid, Tricount or Settle Up',
+				'If your flat already uses Splitwise, Splid, Tricount or Settle Up, you do not start from nothing. Export the expenses as a CSV file, check the preview and undo the import if something is wrong, as set out in [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid). The import is part of the app, so it works the same on a self-hosted copy. Only euro amounts are imported. How ManaWG compares is on [Splitwise alternative](/splitwise-alternative), and what the free Splitwise version allows per day is in [Splitwise’s free limit](/splitwise-free-limit). Other open-source apps you can self-host are set beside ManaWG in [Open-source Splitwise alternatives](/open-source-splitwise-alternatives).',
 			],
 			[
 				'Limits',
@@ -74,13 +74,13 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'Can I move my Splitwise data over?',
-				'If your expenses exist as a CSV file, yes: the import shows a preview first and can be undone. Only euro amounts are imported. The steps are in [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid).',
+				'If your expenses exist as a CSV file, yes: the import shows a preview first and can be undone. Only euro amounts are imported. The steps are in [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid).',
 			],
 		],
 	},
 	'open-source-splitwise-alternatives': {
 		link: 'Open-source Splitwise alternatives',
-		updated: '2026-11-06',
+		updated: '2026-11-09',
 		published: '2026-11-06',
 		title: 'Open-source Splitwise alternatives you can self-host | ManaWG',
 		description:
@@ -153,7 +153,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 					[
 						'ManaWG',
 						'One flat: money, rota, shopping, calendar, chat',
-						'Splitwise or Splid CSV, screenshot',
+						'Splitwise, Splid, Tricount or Settle Up CSV, screenshot',
 					],
 					[
 						'Spliit',
@@ -191,7 +191,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'Focus and import',
-				'The projects come in two kinds. Spliit, SplitPro, Cospend, IHateMoney and Abrechnung split expenses for groups of any sort: friends, trips, households. ManaWG is built for one shared flat and adds a cleaning rota, shopping list, calendar and chat; none of that appears in the READMEs of the other five. When you move from Splitwise, import counts: ManaWG reads Splitwise and Splid CSV files and screenshots, Cospend reads CSV from Splitwise and IHateMoney, IHateMoney reads JSON and CSV in the Cospend format, Abrechnung reads JSON of its own groups, and SplitPro brings over friends and groups from Splitwise but not the expenses yet. Spliit lists a Splitwise import as a possible future feature.',
+				'The projects come in two kinds. Spliit, SplitPro, Cospend, IHateMoney and Abrechnung split expenses for groups of any sort: friends, trips, households. ManaWG is built for one shared flat and adds a cleaning rota, shopping list, calendar and chat; none of that appears in the READMEs of the other five. When you move from Splitwise, import counts: ManaWG reads CSV files from Splitwise, Splid, Tricount and Settle Up as well as screenshots, Cospend reads CSV from Splitwise and IHateMoney, IHateMoney reads JSON and CSV in the Cospend format, Abrechnung reads JSON of its own groups, and SplitPro brings over friends and groups from Splitwise but not the expenses yet. Spliit lists a Splitwise import as a possible future feature.',
 			],
 			[
 				'What ManaWG is and what it is not',
@@ -217,7 +217,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'Can I bring my Splitwise data over?',
-				'ManaWG reads Splitwise and Splid CSV files and screenshots, see [Switch from Splitwise or Splid](/switch-from-splitwise-or-splid). Cospend reads CSV from Splitwise, SplitPro brings over friends and groups but not the expenses yet. For Spliit the import is only a possible feature in the README.',
+				'ManaWG reads CSV files from Splitwise, Splid, Tricount and Settle Up as well as screenshots, see [Switch from Splitwise, Splid, Tricount or Settle Up](/switch-from-splitwise-or-splid). Cospend reads CSV from Splitwise, SplitPro brings over friends and groups but not the expenses yet. For Spliit the import is only a possible feature in the README.',
 			],
 			[
 				'Do I have to host ManaWG myself?',

@@ -12,7 +12,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			'ManaWG ist eine Open-Source-WG-App unter Apache-2.0: kostenlos unter app.manawg.com nutzen oder per Docker selbst hosten. Splitwise-Alternative ohne Werbung.',
 		h1: 'Eine Open-Source-App für WGs: kostenlos nutzen oder selbst hosten',
 		intro:
-			'Die meisten WGs wollen Ausgaben teilen und den Putzplan organisieren, keinen Server betreiben. ManaWG ist für beides gebaut. Der Code ist Open Source unter der Apache-Lizenz 2.0, die gehostete App unter app.manawg.com ist kostenlos und werbefrei, und wer die Daten auf einer eigenen Maschine haben will, startet eine Kopie mit Docker Compose. ManaWG ist eine Splitwise-Alternative für Mitbewohner, auf Deutsch und Englisch und in Euro.',
+			'Die meisten WGs wollen Ausgaben teilen und den Putzplan organisieren, keinen Server betreiben. ManaWG ist für beides gebaut. Der Code ist Open Source unter der Apache-Lizenz 2.0, die gehostete App unter app.manawg.com ist kostenlos und werbefrei, und wer die Daten auf einer eigenen Maschine haben will, startet eine Kopie mit Docker Compose. ManaWG ist eine Splitwise-Alternative für Mitbewohner, auf Deutsch, Englisch und Spanisch sowie in Euro.',
 		sources: [
 			['ManaWG-App-Repository (GitHub)', 'https://github.com/Abuarchiv/manawg'],
 			[
@@ -51,8 +51,8 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 				'Für eine Instanz, die Menschen über das Internet erreichen, braucht ihr einen Server mit Docker, eine Domain, deren DNS-Eintrag auf ihn zeigt, und offene Ports 80 und 443. Das Gateway holt sich dann ein Let’s-Encrypt-Zertifikat. Die Anmeldung braucht E-Mail, deshalb ist ein SMTP-Konto Pflicht; viele Anbieter haben ein kostenloses Kontingent, das für einen Haushalt reicht. Die Registrierung steht jedem offen, der die Adresse erreicht. Für eine reine Haushalts-Instanz beschränkt ihr den Zugriff deshalb an einem Proxy, etwa per VPN. Wer eine Instanz auch Menschen außerhalb des eigenen Haushalts anbietet, braucht ein eigenes Impressum und eine eigene Datenschutzerklärung. Auch Backups und Updates liegen bei euch: Das Repository enthält Skripte zum Sichern und Wiederherstellen, ein Update ist nach einem Backup ein git pull und danach docker compose up -d --build. Die vollständige Anleitung auf GitHub deckt das alles ab, dazu einen zweiten Weg mit Vercel und Supabase in deren kostenlosen Tarifen.',
 			],
 			[
-				'Von Splitwise oder Splid umziehen',
-				'Wenn eure WG schon Splitwise oder Splid nutzt, fangt ihr nicht bei null an. Exportiert die Ausgaben als CSV-Datei, prüft die Vorschau und macht den Import rückgängig, falls etwas nicht stimmt, so wie es [Von Splitwise oder Splid wechseln](/splitwise-splid-wechseln) beschreibt. Der Import ist Teil der App und funktioniert deshalb auf einer selbst gehosteten Kopie genauso. Übernommen werden nur Eurobeträge. Wie ManaWG im Vergleich abschneidet, steht unter [Splitwise-Alternative](/splitwise-alternative), und was die kostenlose Splitwise-Version pro Tag erlaubt, unter [Splitwise kostenlos](/splitwise-kostenlos). Andere quelloffene Apps zum Selbsthosten stellt [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen) daneben.',
+				'Von Splitwise, Splid, Tricount oder Settle Up umziehen',
+				'Wenn eure WG schon Splitwise, Splid, Tricount oder Settle Up nutzt, fangt ihr nicht bei null an. Exportiert die Ausgaben als CSV-Datei, prüft die Vorschau und macht den Import rückgängig, falls etwas nicht stimmt, so wie es [Von Splitwise, Splid, Tricount oder Settle Up wechseln](/splitwise-splid-wechseln) beschreibt. Der Import ist Teil der App und funktioniert deshalb auf einer selbst gehosteten Kopie genauso. Übernommen werden nur Eurobeträge. Wie ManaWG im Vergleich abschneidet, steht unter [Splitwise-Alternative](/splitwise-alternative), und was die kostenlose Splitwise-Version pro Tag erlaubt, unter [Splitwise kostenlos](/splitwise-kostenlos). Andere quelloffene Apps zum Selbsthosten stellt [Open-Source-Splitwise-Alternativen](/open-source-splitwise-alternativen) daneben.',
 			],
 			[
 				'Grenzen',
@@ -74,13 +74,13 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Kann ich meine Splitwise-Daten übernehmen?',
-				'Falls eure Ausgaben als CSV-Datei vorliegen, ja: Der Import zeigt vorher eine Vorschau und lässt sich rückgängig machen. Übernommen werden nur Eurobeträge. Die Schritte stehen unter [Von Splitwise oder Splid wechseln](/splitwise-splid-wechseln).',
+				'Falls eure Ausgaben als CSV-Datei vorliegen, ja: Der Import zeigt vorher eine Vorschau und lässt sich rückgängig machen. Übernommen werden nur Eurobeträge. Die Schritte stehen unter [Von Splitwise, Splid, Tricount oder Settle Up wechseln](/splitwise-splid-wechseln).',
 			],
 		],
 	},
 	'open-source-splitwise-alternativen': {
 		link: 'Open-Source-Splitwise-Alternativen',
-		updated: '2026-11-06',
+		updated: '2026-11-09',
 		published: '2026-11-06',
 		title: 'Open-Source-Splitwise-Alternativen zum Selbsthosten | ManaWG',
 		description:
@@ -165,7 +165,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 					[
 						'ManaWG',
 						'Eine WG: Geld, Putzplan, Einkauf, Kalender, Chat',
-						'Splitwise- und Splid-CSV, Screenshot',
+						'Splitwise-, Splid-, Tricount- und Settle-Up-CSV, Screenshot',
 					],
 					[
 						'Spliit',
@@ -207,7 +207,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Schwerpunkt und Import',
-				'Die Projekte gehören zu zwei Sorten. Spliit, SplitPro, Cospend, IHateMoney und Abrechnung teilen Ausgaben für Gruppen aller Art: Freunde, Reisen, Haushalte. ManaWG ist für eine WG gebaut und bringt Putzplan, Einkaufsliste, Kalender und Chat mit; in den READMEs der anderen fünf kommt davon nichts vor. Beim Umzug von Splitwise zählt der Import: ManaWG liest Splitwise- und Splid-CSV und Screenshots, Cospend liest CSV von Splitwise und IHateMoney, IHateMoney liest JSON und CSV im Cospend-Format, Abrechnung liest JSON der eigenen Gruppen, und SplitPro übernimmt Freunde und Gruppen aus Splitwise, aber noch keine Ausgaben. Bei Spliit steht ein Splitwise-Import als mögliche künftige Funktion.',
+				'Die Projekte gehören zu zwei Sorten. Spliit, SplitPro, Cospend, IHateMoney und Abrechnung teilen Ausgaben für Gruppen aller Art: Freunde, Reisen, Haushalte. ManaWG ist für eine WG gebaut und bringt Putzplan, Einkaufsliste, Kalender und Chat mit; in den READMEs der anderen fünf kommt davon nichts vor. Beim Umzug von Splitwise zählt der Import: ManaWG liest CSV aus Splitwise, Splid, Tricount und Settle Up sowie Screenshots, Cospend liest CSV von Splitwise und IHateMoney, IHateMoney liest JSON und CSV im Cospend-Format, Abrechnung liest JSON der eigenen Gruppen, und SplitPro übernimmt Freunde und Gruppen aus Splitwise, aber noch keine Ausgaben. Bei Spliit steht ein Splitwise-Import als mögliche künftige Funktion.',
 			],
 			[
 				'Was ManaWG ist und was nicht',
@@ -233,7 +233,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Kann ich meine Splitwise-Daten übernehmen?',
-				'ManaWG liest Splitwise- und Splid-CSV und Screenshots, siehe [Von Splitwise oder Splid wechseln](/splitwise-splid-wechseln). Cospend liest CSV aus Splitwise, SplitPro übernimmt Freunde und Gruppen, aber noch keine Ausgaben. Bei Spliit steht der Import nur als mögliche Funktion in der README.',
+				'ManaWG liest CSV aus Splitwise, Splid, Tricount und Settle Up sowie Screenshots, siehe [Von Splitwise, Splid, Tricount oder Settle Up wechseln](/splitwise-splid-wechseln). Cospend liest CSV aus Splitwise, SplitPro übernimmt Freunde und Gruppen, aber noch keine Ausgaben. Bei Spliit steht der Import nur als mögliche Funktion in der README.',
 			],
 			[
 				'Muss ich ManaWG selbst hosten?',
