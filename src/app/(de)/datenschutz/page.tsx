@@ -254,9 +254,10 @@ export default function PrivacyPage() {
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 					<li>
 						<strong>Zweck:</strong> Um ManaWG weiterzuentwickeln, erfassen wir Seitenaufrufe und
-						zählen, wie oft eine WG erstellt wird oder jemand einer WG beitritt. Auf dieser Website
-						(manawg.com) zählen wir Seitenaufrufe und wie oft jemand von hier aus die App oder die
-						Demo öffnet.
+						zählen, wie oft eine WG erstellt wird, jemand einer WG beitritt und wie viele Besucher
+						die Schritte von der Registrierung bis zur ersten Ausgabe abschließen. Auf dieser
+						Website (manawg.com) zählen wir Seitenaufrufe und wie oft jemand von hier aus die App
+						oder die Demo öffnet.
 					</li>
 					<li>
 						<strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (unser berechtigtes
@@ -270,23 +271,30 @@ export default function PrivacyPage() {
 					<li>
 						<strong>Empfänger und Auftragsverarbeiter:</strong> PostHog Inc. verarbeitet die Daten
 						über PostHog Cloud EU in Frankfurt (eu.i.posthog.com). Die App sendet nur Seitenaufrufe
-						und die Ereignisse wg_created und wg_joined, die Website nur Seitenaufrufe und die
-						Ereignisse app_link_clicked und demo_link_clicked. Andere Ereignisse und zusätzliche
-						Angaben, die App-Funktionen übergeben, werden vor dem Senden entfernt. Mitgesendet
-						werden außerdem eine Ereigniskennung (UUID), der Zeitpunkt, die Projektkennung, eine
-						technische Zuordnungskennung, der Hostname, der Seitenpfad und die Browserkennung. In
-						der App ersetzen Platzhalter die WG-Codes und Einladungstokens im Seitenpfad. Die
-						Website sendet zusätzlich die Domain der verweisenden Seite (etwa www.google.com), nie
-						deren vollständige Adresse, und bei app_link_clicked und demo_link_clicked die feste
-						Kennung des Knopfs (etwa hero_create). Enthält die aufgerufene Adresse die Angaben
-						utm_source, utm_medium oder ref (etwa aus einem Verzeichniseintrag oder einem geteilten
-						Link), sendet die Website deren Wert mit, aber nur, wenn er aus höchstens 40 Buchstaben,
-						Ziffern, Punkten, Bindestrichen oder Unterstrichen besteht; andere Werte werden
-						verworfen. Gemeint sind nur von ManaWG selbst vergebene Kampagnenkennungen (etwa der
-						Name eines Verzeichnisses), keine persönlichen Angaben. Im Browser werden diese Angaben
-						nur im Arbeitsspeicher der geöffneten Seite gehalten (kein Cookie, kein lokaler
-						Speicher); bei PostHog werden sie wie die übrigen Ereignisdaten gespeichert (siehe
-						Speicherdauer). Die IP-Adresse erreicht PostHog mit der Anfrage.
+						und die Ereignisse wg_created, wg_joined, signup_submitted, signup_confirmed,
+						login_completed, invite_opened, invite_join_failed und first_expense_created, die
+						Website nur Seitenaufrufe und die Ereignisse app_link_clicked und demo_link_clicked.
+						Diese Ereignisse stehen für einen abgeschlossenen Schritt (etwa eine Registrierung, eine
+						Anmeldung, das Öffnen eines Einladungslinks oder die erste in der App sichtbare Ausgabe
+						einer WG) und tragen keine Angaben zur Person. Die einzige zusätzliche Eigenschaft ist
+						bei invite_join_failed der Fehlercode der API (etwa invite_expired), der aus
+						Kleinbuchstaben, Ziffern und Unterstrichen besteht; sonst wird other gesendet. Andere
+						Ereignisse und zusätzliche Angaben, die App-Funktionen übergeben, werden vor dem Senden
+						entfernt. Mitgesendet werden außerdem eine Ereigniskennung (UUID), der Zeitpunkt, die
+						Projektkennung, eine technische Zuordnungskennung, der Hostname, der Seitenpfad und die
+						Browserkennung. In der App ersetzen Platzhalter die WG-Codes und Einladungstokens im
+						Seitenpfad. Die Website sendet zusätzlich die Domain der verweisenden Seite (etwa
+						www.google.com), nie deren vollständige Adresse, und bei app_link_clicked und
+						demo_link_clicked die feste Kennung des Knopfs (etwa hero_create). Enthält die
+						aufgerufene Adresse die Angaben utm_source, utm_medium oder ref (etwa aus einem
+						Verzeichniseintrag oder einem geteilten Link), sendet die Website deren Wert mit, aber
+						nur, wenn er aus höchstens 40 Buchstaben, Ziffern, Punkten, Bindestrichen oder
+						Unterstrichen besteht; andere Werte werden verworfen. Gemeint sind nur von ManaWG selbst
+						vergebene Kampagnenkennungen (etwa der Name eines Verzeichnisses), keine persönlichen
+						Angaben. Im Browser werden diese Angaben nur im Arbeitsspeicher der geöffneten Seite
+						gehalten (kein Cookie, kein lokaler Speicher); bei PostHog werden sie wie die übrigen
+						Ereignisdaten gespeichert (siehe Speicherdauer). Die IP-Adresse erreicht PostHog mit der
+						Anfrage.
 					</li>
 					<li>
 						<strong>Verarbeitungsregion und Drittlandübermittlungen:</strong> PostHog Cloud EU in
@@ -295,12 +303,14 @@ export default function PrivacyPage() {
 				</ul>
 				<p className="mb-3">
 					Die Produktanalyse läuft ohne Analyse-Cookies und speichert dafür nichts im lokalen
-					Browserspeicher. ManaWG erstellt keine Analyseprofile; automatische Klickerfassung,
-					Sitzungsaufzeichnungen und Umfragen sind nicht aktiviert. Namen, E-Mail-Adressen,
-					WG-Namen, WG-Codes, Nachrichten, Einkaufs- und Finanzdaten werden nicht übertragen. Für
-					die Auswertung kann PostHog aus IP-Adresse, Browserkennung und Domain eine täglich
-					wechselnde Kennung bilden. Schutzfunktionen des Browsers oder Inhaltsblocker können die
-					Analyse verhindern; ManaWG funktioniert dann weiter.
+					Browserspeicher. Nur für die Ereignisse signup_confirmed und login_completed setzt die App
+					nach dem Klick auf den Bestätigungslink oder nach der Anmeldung über Google ein
+					technisches Einmal-Cookie (siehe Abschnitt 7). ManaWG erstellt keine Analyseprofile;
+					automatische Klickerfassung, Sitzungsaufzeichnungen und Umfragen sind nicht aktiviert.
+					Namen, E-Mail-Adressen, WG-Namen, WG-Codes, Nachrichten, Einkaufs- und Finanzdaten werden
+					nicht übertragen. Für die Auswertung kann PostHog aus IP-Adresse, Browserkennung und
+					Domain eine täglich wechselnde Kennung bilden. Schutzfunktionen des Browsers oder
+					Inhaltsblocker können die Analyse verhindern; ManaWG funktioniert dann weiter.
 				</p>
 
 				<h3 id="4g" className="text-base font-semibold text-(--text-1) mb-2 mt-4">
@@ -463,7 +473,11 @@ export default function PrivacyPage() {
 					wählst, speichert das Cookie manawg_locale diese Wahl ein Jahr lang; mit „System“ wird es
 					entfernt. Das Cookie manawg_signed_in ist ein Hinweis ohne Inhalt, dass eine Sitzung
 					besteht. Beim Zurücksetzen des Passworts setzt ManaWG außerdem für 10 Minuten das
-					HttpOnly-Cookie manawg_password_recovery. Im lokalen Browserspeicher (
+					HttpOnly-Cookie manawg_password_recovery. Nach der Bestätigung eines Kontos und nach einer
+					Anmeldung über /auth/callback setzt ManaWG für 2 Minuten das technische Cookie
+					manawg_funnel. Es enthält nur den Schrittnamen (signup_confirmed oder login_completed),
+					keine Kennung; die App liest es einmal, löscht es sofort und sendet daraufhin das
+					entsprechende Ereignis (siehe Abschnitt 4f). Im lokalen Browserspeicher (
 					<strong>Local Storage</strong> und <strong>IndexedDB</strong>) liegen WG-Zuordnungen,
 					Formularentwürfe, offline vorgemerkte Aktionen einschließlich Belegfotos (bis zu etwa 7
 					Tage, bis sie synchronisiert sind) sowie Anzeige- und Ausblendeinstellungen. Wenn du den

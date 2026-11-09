@@ -255,8 +255,9 @@ export default function PrivacyPage() {
 				<ul className="list-disc pl-5 space-y-1 text-sm mb-3">
 					<li>
 						<strong>Purpose:</strong> To develop ManaWG further, we record page views and count how
-						often a flat is created or someone joins a flat. On this website (manawg.com) we count
-						page views and how often someone opens the app or the demo from here.
+						often a flat is created, someone joins a flat and how many visitors complete the steps
+						from sign-up to the first expense. On this website (manawg.com) we count page views and
+						how often someone opens the app or the demo from here.
 					</li>
 					<li>
 						<strong>Legal basis:</strong> Art. 6(1)(f) GDPR (our legitimate interest in developing
@@ -269,22 +270,27 @@ export default function PrivacyPage() {
 					<li>
 						<strong>Recipients and processors:</strong> PostHog Inc. processes the data via PostHog
 						Cloud EU in Frankfurt (eu.i.posthog.com). The app sends only page views and the events
-						wg_created and wg_joined; the website sends only page views and the events
-						app_link_clicked and demo_link_clicked. Other events, and extra details passed on by app
-						features, are removed before sending. Also sent are an event identifier (UUID), the
-						time, the project identifier, a technical assignment identifier, the hostname, the page
-						path and the browser identifier. In the app, placeholders replace flat codes and
-						invitation tokens in the page path. The website also sends the domain of the referring
-						page (for example www.google.com), never its full address, and with app_link_clicked and
-						demo_link_clicked the fixed id of the button (for example hero_create). If the address
-						that was opened contains utm_source, utm_medium or ref (for example from a directory
-						listing or a shared link), the website sends their values, but only if each consists of
-						at most 40 letters, digits, dots, hyphens or underscores; other values are discarded.
-						Only campaign identifiers assigned by ManaWG itself are meant (for example the name of a
-						directory), not personal details. In the browser these values are only held in the
-						memory of the open page (no cookie, no local storage); at PostHog they are stored like
-						the other event data (see retention period). The IP address reaches PostHog with the
-						request.
+						wg_created, wg_joined, signup_submitted, signup_confirmed, login_completed,
+						invite_opened, invite_join_failed and first_expense_created; the website sends only page
+						views and the events app_link_clicked and demo_link_clicked. These events stand for a
+						completed step (for example a sign-up, a sign-in, opening an invitation link or the
+						first expense of a flat that the app shows) and carry no details about the person. The
+						only additional property is, for invite_join_failed, the API error code (for example
+						invite_expired), which consists of lowercase letters, digits and underscores; otherwise
+						other is sent. Other events, and extra details passed on by app features, are removed
+						before sending. Also sent are an event identifier (UUID), the time, the project
+						identifier, a technical assignment identifier, the hostname, the page path and the
+						browser identifier. In the app, placeholders replace flat codes and invitation tokens in
+						the page path. The website also sends the domain of the referring page (for example
+						www.google.com), never its full address, and with app_link_clicked and demo_link_clicked
+						the fixed id of the button (for example hero_create). If the address that was opened
+						contains utm_source, utm_medium or ref (for example from a directory listing or a shared
+						link), the website sends their values, but only if each consists of at most 40 letters,
+						digits, dots, hyphens or underscores; other values are discarded. Only campaign
+						identifiers assigned by ManaWG itself are meant (for example the name of a directory),
+						not personal details. In the browser these values are only held in the memory of the
+						open page (no cookie, no local storage); at PostHog they are stored like the other event
+						data (see retention period). The IP address reaches PostHog with the request.
 					</li>
 					<li>
 						<strong>Processing region and transfers to third countries:</strong> PostHog Cloud EU in
@@ -293,7 +299,9 @@ export default function PrivacyPage() {
 				</ul>
 				<p className="mb-3">
 					Product analytics runs without analytics cookies and stores nothing in the browser’s local
-					storage for this purpose. ManaWG does not build analytics profiles; automatic click
+					storage for this purpose. Only for the events signup_confirmed and login_completed, the
+					app sets a technical one-time cookie after you follow the confirmation link or sign in
+					with Google (see section 7). ManaWG does not build analytics profiles; automatic click
 					capture, session recordings and surveys are not enabled. Names, email addresses, flat
 					names, flat codes, messages, shopping data and financial data are not sent. For its
 					analysis, PostHog may form an identifier that changes daily from the IP address, browser
@@ -458,11 +466,15 @@ export default function PrivacyPage() {
 					cookie named manawg_locale stores that choice for one year; with “System”, it is removed.
 					The cookie manawg_signed_in is a hint without content that a session exists. During a
 					password reset, ManaWG also sets the HttpOnly cookie manawg_password_recovery for 10
-					minutes. The browser’s local storage (<strong>Local Storage</strong> and{' '}
-					<strong>IndexedDB</strong>) holds flat assignments, form drafts, actions queued offline
-					including receipt photos (kept for up to about 7 days until they are synced), and display
-					and dismissal settings. If you clear the browser storage, this local data is removed as
-					well; entries that have not been synced yet are discarded with it.
+					minutes. After an account is confirmed and after a sign-in via /auth/callback, ManaWG sets
+					the technical cookie manawg_funnel for 2 minutes. It contains only the step name
+					(signup_confirmed or login_completed), no identifier; the app reads it once, deletes it
+					immediately and then sends the matching event (see section 4f). The browser’s local
+					storage (<strong>Local Storage</strong> and <strong>IndexedDB</strong>) holds flat
+					assignments, form drafts, actions queued offline including receipt photos (kept for up to
+					about 7 days until they are synced), and display and dismissal settings. If you clear the
+					browser storage, this local data is removed as well; entries that have not been synced yet
+					are discarded with it.
 				</p>
 			</section>
 
