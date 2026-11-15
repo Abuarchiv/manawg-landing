@@ -40,15 +40,15 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Selbst hosten: was ihr braucht',
-				'Selbst hosten lohnt sich, wenn ihr die Daten auf einer Maschine unter eigener Kontrolle haben wollt. Ihr braucht Docker mit Compose v2, git und openssl. Eine laufende Instanz belegt etwa 500 MB Arbeitsspeicher, das Bauen des App-Images einmalig etwa 3 GB. Gestartet werden App, PostgreSQL, Anmeldung, Bildspeicher und ein Caddy-Gateway, alles aus einer Compose-Datei. Wer vor allem den Putzplan selbst betreiben will, liest [Putzplan selbst hosten](/putzplan-selbst-hosten).',
+				'Selbst hosten lohnt sich, wenn ihr die Daten auf einer Maschine unter eigener Kontrolle haben wollt. Ihr braucht Docker mit Compose v2, git und openssl. Eine laufende Instanz belegt etwa 500 MB Arbeitsspeicher. Das App-Image ist fertig veröffentlicht (ghcr.io/abuarchiv/manawg, amd64 und arm64), gebaut wird nur, wenn es für eure Version keins gibt. Gestartet werden App, PostgreSQL, Anmeldung, Bildspeicher und ein Caddy-Gateway, alles aus einer Compose-Datei. Wer vor allem den Putzplan selbst betreiben will, liest [Putzplan selbst hosten](/putzplan-selbst-hosten).',
 			],
 			[
 				'Selbst hosten: die Schritte',
-				'1. Das Repository mit git clone https://github.com/Abuarchiv/manawg.git klonen und in den Ordner manawg wechseln.\n2. ./docker/setup.sh ausführen. Das Skript legt eine .env-Datei mit frischen Geheimnissen an.\n3. docker compose up -d ausführen. Beim ersten Start wird das App-Image aus eurem Checkout gebaut, das dauert etwa zehn Minuten, und die Datenbank wird eingerichtet.\n4. http://localhost öffnen und ein Konto anlegen. Jede Mail, auch der Anmeldecode, landet in Mailpit unter http://localhost:8025.\n5. Mit docker compose ps -a prüfen, dass der Dienst setup mit Code 0 beendet ist und die übrigen laufen.',
+				'1. Das Repository mit git clone https://github.com/Abuarchiv/manawg.git klonen und in den Ordner manawg wechseln.\n2. ./docker/setup.sh ausführen. Das Skript legt eine .env-Datei mit frischen Geheimnissen an.\n3. docker compose up -d ausführen. Beim ersten Start lädt Compose das veröffentlichte App-Image und richtet die Datenbank ein. Nur wenn es das Image für eure Version nicht gibt, wird es aus dem Checkout gebaut, das dauert etwa zehn Minuten und braucht einmalig etwa 3 GB.\n4. http://localhost öffnen und ein Konto anlegen. Jede Mail, auch der Anmeldecode, landet in Mailpit unter http://localhost:8025.\n5. Mit docker compose ps -a prüfen, dass der Dienst setup mit Code 0 beendet ist und die übrigen laufen.',
 			],
 			[
 				'Eine Instanz für mehr als die eigene WG',
-				'Für eine Instanz, die Menschen über das Internet erreichen, braucht ihr einen Server mit Docker, eine Domain, deren DNS-Eintrag auf ihn zeigt, und offene Ports 80 und 443. Das Gateway holt sich dann ein Let’s-Encrypt-Zertifikat. Die Anmeldung braucht E-Mail, deshalb ist ein SMTP-Konto Pflicht; viele Anbieter haben ein kostenloses Kontingent, das für einen Haushalt reicht. Die Registrierung steht jedem offen, der die Adresse erreicht. Für eine reine Haushalts-Instanz beschränkt ihr den Zugriff deshalb an einem Proxy, etwa per VPN. Wer eine Instanz auch Menschen außerhalb des eigenen Haushalts anbietet, braucht ein eigenes Impressum und eine eigene Datenschutzerklärung. Auch Backups und Updates liegen bei euch: Das Repository enthält Skripte zum Sichern und Wiederherstellen, ein Update ist nach einem Backup ein git pull und danach docker compose up -d --build. Die vollständige Anleitung auf GitHub deckt das alles ab, dazu einen zweiten Weg mit Vercel und Supabase in deren kostenlosen Tarifen.',
+				'Für eine Instanz, die Menschen über das Internet erreichen, braucht ihr einen Server mit Docker, eine Domain, deren DNS-Eintrag auf ihn zeigt, und offene Ports 80 und 443. Das Gateway holt sich dann ein Let’s-Encrypt-Zertifikat. Die Anmeldung braucht E-Mail, deshalb ist ein SMTP-Konto Pflicht; viele Anbieter haben ein kostenloses Kontingent, das für einen Haushalt reicht. Die Registrierung steht jedem offen, der die Adresse erreicht. Für eine reine Haushalts-Instanz beschränkt ihr den Zugriff deshalb an einem Proxy, etwa per VPN. Wer eine Instanz auch Menschen außerhalb des eigenen Haushalts anbietet, braucht ein eigenes Impressum und eine eigene Datenschutzerklärung. Auch Backups und Updates liegen bei euch: Das Repository enthält Skripte zum Sichern und Wiederherstellen, für ein Update setzt ihr nach einem Backup MANAWG_VERSION in der .env auf die neue Version und führt docker compose pull und docker compose up -d aus. Die vollständige Anleitung auf GitHub deckt das alles ab, dazu einen zweiten Weg mit Vercel und Supabase in deren kostenlosen Tarifen.',
 			],
 			[
 				'Von Splitwise, Splid, Tricount oder Settle Up umziehen',
@@ -70,7 +70,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 			],
 			[
 				'Was brauche ich zum Selbsthosten von ManaWG?',
-				'Docker mit Compose v2, git und openssl, etwa 500 MB Arbeitsspeicher für die laufende Instanz und einmalig etwa 3 GB zum Bauen des Images. Für eine öffentliche Instanz kommen eine Domain und ein SMTP-Konto für die Anmelde-Mails dazu.',
+				'Docker mit Compose v2, git und openssl, etwa 500 MB Arbeitsspeicher für die laufende Instanz. Das App-Image wird fertig heruntergeladen, nur ohne passendes Image baut Compose es einmalig mit etwa 3 GB. Für eine öffentliche Instanz kommen eine Domain und ein SMTP-Konto für die Anmelde-Mails dazu.',
 			],
 			[
 				'Kann ich meine Splitwise-Daten übernehmen?',
