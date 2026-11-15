@@ -563,14 +563,14 @@ function drawPoints(s: DepthState, nb: Map<number, Bucket>, a: View) {
 		}
 		if (al <= 0.01) continue;
 		const sz = cl(0.07 * fz, 0.8, 64); // dust size in scene units
-		// Dust never becomes a large symbol: it fades out from about 6 units
-		if (!word) al *= cl((9 - sz) / 3);
+		// Dust never becomes a large symbol: it fades out from 4.5 units (a glyph of 6 CSS px) and is gone at 7.5
+		if (!word) al *= cl((7.5 - sz) / 3);
 		if (al <= 0.01) continue;
 		const ch = W.ch[i] ?? '';
 		// Font size in CSS px: a word glyph takes the height of its cell (squeezed with the word), dust grows with nearness
 		const px = word && I ? I.ch * fz * f * kx : sz * 1.33 * f;
 		// Far away a glyph is a square of its ink, near it is the glyph; in between both cross-fade
-		const gt = word ? cl((px - 3) / 1.5) : sz < 6 ? 0 : 1;
+		const gt = word ? cl((px - 3) / 1.5) : cl((sz - 3) / 2);
 		if (gt < 1) {
 			const side = word
 				? Math.max(1, px * 0.5 * (INK[ch] ?? 0.4))
@@ -602,11 +602,11 @@ function drawPoints(s: DepthState, nb: Map<number, Bucket>, a: View) {
 		}
 		if (gt > 0) {
 			// The standing word keeps its exact cell size (one bucket, a clean grid); glyphs in flight and dust snap
-			// to six size steps (8 to 45 px), so a frame sets at most a handful of fonts
+			// to seven size steps (5.7 to 45 px), so a frame sets at most a handful of fonts
 			const key =
 				word && u > 0.999 && o < 0.001
 					? Math.round(px * 2) / 2
-					: 8 * 2 ** (cl(Math.round(Math.log2(px / 8) * 2), 0, 5) / 2);
+					: 5.66 * 2 ** (cl(Math.round(Math.log2(px / 5.66) * 2), 0, 6) / 2);
 			let e = nb.get(key);
 			if (!e) {
 				e = { xya: [], ch: [] };
@@ -742,7 +742,8 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			if (s.reduced) s.dp = sp;
 			else s.dp = Math.abs(sp - s.dp) < 1e-5 ? sp : s.dp + (sp - s.dp) * lag(0.1, dt);
 			const p = s.dp;
-			const camZ = -14 + p * (2 * SP + 5);
+			// The drive ends at 85 % of the distance: the last word and its sentence stand while the next scene rises
+			const camZ = -14 + cl(p / 0.85) * (2 * SP + 5);
 			const seg = cl((camZ + 14) / SP, 0, 1.999);
 			const si = Math.floor(seg);
 			const sf = ss(seg - si);
@@ -841,11 +842,20 @@ export function registerDepth(cv: HTMLCanvasElement, sec: HTMLElement, words: re
 			const top = -L.el;
 			const fade = 1 - cl(top / (0.12 * s.H));
 			// whole label "TIEFE 000", not just the number
-			if (s.dep?.parentElement) setStyle(s.dep.parentElement, 'opacity', fade.toFixed(3));
+			// The next scene rises over the lower quarter of the stage during the last tenth of the distance
+			// (landing.css #fragen): the counter in the corner and the sentence are gone before it reaches them
+			if (s.dep?.parentElement)
+				setStyle(s.dep.parentElement, 'opacity', (fade * cl((0.915 - s.dp) / 0.025)).toFixed(3));
+			const rise = cl((0.965 - s.dp) / 0.035);
 			// Word image a little slower than the label, but gone before the FAQ title comes in from below
 			setStyle(ctx.canvas, 'opacity', (1 - cl(top / (0.2 * s.H))).toFixed(3));
 			s.caps.forEach((el, i) => {
-				const op = ((zones[i]?.w ?? 0) * cl(((L.caps[i] ?? 0) - L.header) / 28) * fade).toFixed(3);
+				const op = (
+					(zones[i]?.w ?? 0) *
+					cl(((L.caps[i] ?? 0) - L.header) / 28) *
+					fade *
+					rise
+				).toFixed(3);
 				setStyle(el, 'opacity', op);
 				setStyle(el, '--k', op); // guide line draws with the opacity (landing.css .leit)
 			});

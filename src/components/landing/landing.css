@@ -443,11 +443,30 @@
 	transform: scale(0.98);
 }
 
+/* The stages before these sections end with their lower part empty (the overview of the flat fills the upper
+   58 % in landscape and about 78 % in portrait; the last depth sentence is gone by then, depth/tunnel.ts). The
+   sections rise into that room while the stage still stands, so no empty screen passes between them. */
+#so-gehts {
+	z-index: 2;
+	margin-top: -30lvh;
+}
+#final[data-mode="portrait"] #so-gehts {
+	margin-top: -8lvh;
+}
+#fragen {
+	margin-top: -25lvh;
+}
+
 /* Reduced motion: no transition animation except opacity, intro shortened to four screens
    (the stage reads its distance from the section height, stage.ts) */
 @media (prefers-reduced-motion: reduce) {
 	#intro {
 		height: calc(5 * 100lvh) !important;
+	}
+	#so-gehts,
+	#final[data-mode="portrait"] #so-gehts,
+	#fragen {
+		margin-top: 0;
 	}
 	.cta,
 	.tab,
