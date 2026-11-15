@@ -35,24 +35,25 @@ interface GlyphInput {
 
 // Cell in CSS px: landscape 4 x 6.5, phone finer (3 x 5): the glyphs read as tone first, as characters second
 const cellSize = (W: number): [number, number] => (W < 700 ? [3, 5] : [4, 6.5]);
-const ATLAS = " .:-=+*#%@~oO0|&;,/'";
+const ATLAS = " .:-=+*#%@~oO0|&;,/'!`";
 // Glyph ramps per class (code from meta.png) from empty to full, plus the brightness: floors and walls recede
-// (dot grid as before), furniture, rug and plants carry the image. 14 = wall crown (cut edge).
+// (dot grid as before), furniture, rug and plants carry the image. 14 = wall crown (cut edge). Up to 14 steps;
+// thin glyphs first, so a tone climbs through many light characters before it reaches the dense ones.
 const RAMPS: readonly (readonly [string, number])[] = [
 	['', 0],
-	['  ..:', 0.5], // Floorboards
-	[' ..:+', 0.55], // Tiles
-	[' ..:', 0.32], // Walls
-	[' .:-=+*#%@', 1], // Rug
-	[' .:oO0@', 1], // Upholstery, leather
-	[' .~-=', 0.95], // Bedding, fabric
-	[' .:=#%', 0.9], // Wooden furniture
-	[' .-=|#', 0.9], // Metal
-	[' .oO0', 1], // Ceramics
-	[' .,;*&', 1], // Plants
-	[' .:|#', 0.9], // Books, decor
-	[" .'/", 0.8], // Glass
-	['*@', 1], // Lamps
+	['   ..,:-', 0.5], // Floorboards
+	['  ..,:;+', 0.55], // Tiles
+	['  ..,:', 0.32], // Walls
+	[" .',:-=+*#%@", 1], // Rug
+	[" .',:;oO0@", 1], // Upholstery, leather
+	[" .'`~-=+", 0.95], // Bedding, fabric
+	[" .',:-=+#%", 0.9], // Wooden furniture
+	[" .'-:=|#", 0.9], // Metal
+	[" .',:oO0", 1], // Ceramics
+	[" .',;:*&%", 1], // Plants
+	[" .':;!|#", 0.9], // Books, decor
+	[" .'`/", 0.8], // Glass
+	['+*@', 1], // Lamps
 	['==#', 0.95], // Wall crown
 ];
 
@@ -113,11 +114,14 @@ void main(){
     edge = step(.3, gz - lo);
   }
   float t = clamp(max(L * 1.1 + li * .35, edge * .8), 0., .999);
-  float id = texelFetch(uRamp, ivec2(1 + int(t * n), cls), 0).r * 255.;
+  // Ordered dither between neighbouring steps: a slow gradient becomes a mix of two glyphs instead of a hard band
+  float id = texelFetch(uRamp, ivec2(1 + int(clamp(t * n + (bayer(ci + 2.) - .47) * .9, 0., n - .001)), cls), 0).r * 255.;
   vec2 lu = fract(css / Z);
   vec2 au = vec2((id + lu.x) / uN, lu.y);
   float a = smoothstep(.1, .55, textureGrad(uGly, au, vec2(1. / (Z.x * uDpr * uN), 0.), vec2(0., 1. / (Z.y * uDpr))).r);
   float br = texelFetch(uRamp, ivec2(15, cls), 0).r * clamp(.58 + .42 * lit + .6 * li + .25 * edge, 0., 1.);
+  // The tone also sets the ink: dark surfaces print faint, bright ones full
+  br *= .66 + .34 * smoothstep(0., .7, t);
   o = vec4(vec3(bg + a * (.98 - bg) * br), 1.);
 }`;
 
