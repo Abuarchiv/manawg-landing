@@ -78,8 +78,11 @@ export function createStage({
 	const cvFlat = required(q('flat'), 'flat');
 	const safe = required(stageEl.querySelector<HTMLElement>('[data-safe]'), '[data-safe]');
 	const cvStars = stageEl.querySelector<HTMLCanvasElement>('canvas[data-stars]');
-	// Controls of the title (install button, chapters of the demo film)
+	// Controls of the title (sign-up, install, open source link) and the chapters of the demo film
 	const heroCtas = [...stageEl.querySelectorAll<HTMLElement>('[data-hero-cta]')];
+	const heroRail = stageEl.querySelector<HTMLElement>('[data-hero-rail]');
+	const titleEl = stageEl.querySelector<HTMLElement>('h1')?.parentElement ?? null;
+	let titleBottom = 0;
 	const hints = root.querySelector<HTMLElement>('[data-hints]');
 	const roomsEl = stageEl.querySelector<HTMLElement>('[data-hole="text"]');
 	const hero = createHero(cvHero);
@@ -160,6 +163,8 @@ export function createStage({
 				kind: el.dataset.hole ?? '',
 			};
 		});
+		// Lower edge of the title block (stacked layout: the mountain keeps clear of it)
+		if (titleEl) titleBottom = titleEl.getBoundingClientRect().bottom - r0.top;
 	};
 
 	const resize = () => {
@@ -258,11 +263,19 @@ export function createStage({
 
 		// Title controls: only while the title is visible (it fades out until P 0.086, in the stacked layout
 		// until P 0.016, HeroTitle.module.css)
-		const heroOff = P >= (isStacked(W, H) ? 0.012 : 0.07);
+		const stacked = isStacked(W, H);
+		const heroOff = P >= (stacked ? 0.012 : 0.07);
 		for (const el of heroCtas) {
 			if (el.inert === heroOff) continue;
 			el.inert = heroOff;
 			el.style.pointerEvents = heroOff ? 'none' : '';
+		}
+		// Chapters of the demo film. Stacked: they stand below the window until the phone has risen (P 0.035,
+		// HeroDemo.module.css) and stay usable while it stands large; focus must not pull an off-screen pill into view.
+		const railOff = stacked ? P < 0.03 || P >= 0.09 : P >= 0.07;
+		if (heroRail && heroRail.inert !== railOff) {
+			heroRail.inert = railOff;
+			heroRail.style.pointerEvents = railOff ? 'none' : '';
 		}
 		return phase;
 	};
@@ -357,7 +370,9 @@ export function createStage({
 				hm.dive = dive;
 				hm.a0 = st.a0;
 				hm.ad = st.ad;
-				hm.drop = stacked ? 0.13 : 0;
+				// The highest clouds of the ridge stand at about a third of the height plus the drop; a long title block
+				// (narrow or short phones, four-line subline) pushes the mountain further down so the buttons stay on the sky.
+				hm.drop = stacked ? cl((titleBottom + 14) / H - 0.33, 0.13, 0.28) : 0;
 				c.dprHero = isTouch() ? Math.min(dpr, 1.25) : dpr;
 				heroDrawn = hero.frame(c, hm);
 			}

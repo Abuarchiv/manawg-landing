@@ -47,7 +47,8 @@
 		gap: 0.5em;
 	}
 	.h1 {
-		font-size: clamp(40px, 12.5vw, 96px);
+		/* 9svh: short and wide portrait windows keep the title above the phone */
+		font-size: clamp(40px, min(12.5vw, 9svh), 96px);
 	}
 }
 

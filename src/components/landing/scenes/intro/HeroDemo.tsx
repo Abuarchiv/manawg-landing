@@ -161,7 +161,7 @@ export function HeroDemo() {
 					</div>
 				</div>
 			</figure>
-			<div ref={railRef} className={s.rail} data-hero-cta="">
+			<div ref={railRef} className={s.rail} data-hero-rail="">
 				<p className={`label ${s.head}`}>{heroDemo.label}</p>
 				<ol className={s.list}>
 					{heroDemo.chapters.map((name, i) => (

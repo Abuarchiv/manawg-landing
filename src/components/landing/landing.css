@@ -239,6 +239,8 @@
 }
 /* Questions: accordion with height animation via grid-template-rows */
 .faq-row {
+	/* Width of the number column: 3.2 em of the 11 px label */
+	--faq-num: 35.2px;
 	border-top: 1px solid var(--hairline);
 	padding-bottom: var(--sp-26);
 }
@@ -262,8 +264,11 @@
 	opacity: 0.72;
 	transition: opacity var(--time) ease;
 }
+/* Hanging indent: a wrapped question continues beside its number, not below it */
 .faq-question > span:first-child {
 	min-width: 0;
+	padding-left: var(--faq-num);
+	text-indent: calc(-1 * var(--faq-num));
 }
 .faq-question:focus-visible {
 	outline: 2px solid var(--ink);
@@ -321,7 +326,8 @@
 }
 .faq-num {
 	display: inline-block;
-	min-width: 3.2em;
+	min-width: var(--faq-num);
+	text-indent: 0;
 	vertical-align: 0.5em;
 	/* The closed question dims to 0.72; these keep the dimmed number above 4.5:1 against the paper. */
 	color: #a6a6a6;
@@ -458,6 +464,14 @@
 	.faq-question[aria-expanded="false"]:hover .faq-mark {
 		transform: none;
 	}
+}
+
+/* Light theme: the scroll hint stands on the engraved foot of the mountain, gray ink breaks up in its strokes */
+:root[data-theme="light"] [data-hints] > div {
+	color: var(--ink);
+	text-shadow:
+		0 0 6px var(--paper),
+		0 0 2px var(--paper);
 }
 
 /* Stacked hero (portrait, narrow windows): the demo phone is cut by the lower edge and already says "scroll";
