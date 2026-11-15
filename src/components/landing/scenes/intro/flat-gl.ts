@@ -33,8 +33,8 @@ interface GlyphInput {
 	pointer: readonly [number, number, number];
 }
 
-// Cell in CSS px: landscape 6 x 10, phone finer (4.5 x 7.5), otherwise the overview gets too coarse
-const cellSize = (W: number): [number, number] => (W < 700 ? [4.5, 7.5] : [6, 10]);
+// Cell in CSS px: landscape 4 x 6.5, phone finer (3 x 5): the glyphs read as tone first, as characters second
+const cellSize = (W: number): [number, number] => (W < 700 ? [3, 5] : [4, 6.5]);
 const ATLAS = " .:-=+*#%@~oO0|&;,/'";
 // Glyph ramps per class (code from meta.png) from empty to full, plus the brightness: floors and walls recede
 // (dot grid as before), furniture, rug and plants carry the image. 14 = wall crown (cut edge).

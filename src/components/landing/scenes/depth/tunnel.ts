@@ -253,13 +253,13 @@ const scaleOf = (s: DepthState, r: Mask): number =>
 	s.mode === 'portrait' ? cl((0.82 * s.bw * 9) / F / (r.width / 85), 0.25, 1.5) : 1;
 
 /**
- * Rows per cap height: landscape 11; portrait as many as keep the glyph at 7 CSS px or more at the reading depth 9
- * (at least 6 rows, so letters stay letters).
+ * Rows per cap height: landscape 18; portrait as many as keep the glyph at 5 CSS px or more at the reading depth 9
+ * (at least 8 rows, so letters stay letters).
  */
 function rowsOf(s: DepthState, r: Mask): number {
-	if (s.mode !== 'portrait') return 11;
+	if (s.mode !== 'portrait') return 18;
 	const capPx = (r.height / 85) * scaleOf(s, r) * (F / 9) * (s.f || 1);
-	return cl(Math.floor(capPx / 7), 6, 11);
+	return cl(Math.floor(capPx / 5), 8, 18);
 }
 
 /**
@@ -570,7 +570,7 @@ function drawPoints(s: DepthState, nb: Map<number, Bucket>, a: View) {
 		// Font size in CSS px: a word glyph takes the height of its cell (squeezed with the word), dust grows with nearness
 		const px = word && I ? I.ch * fz * f * kx : sz * 1.33 * f;
 		// Far away a glyph is a square of its ink, near it is the glyph; in between both cross-fade
-		const gt = word ? cl((px - 4.5) / 2) : sz < 6 ? 0 : 1;
+		const gt = word ? cl((px - 3) / 1.5) : sz < 6 ? 0 : 1;
 		if (gt < 1) {
 			const side = word
 				? Math.max(1, px * 0.5 * (INK[ch] ?? 0.4))

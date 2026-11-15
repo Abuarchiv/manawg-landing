@@ -98,7 +98,7 @@ export function buildGrid(txt: string, W0: number, H0: number, cs: number): Grid
 
 /** Cell size and glyph per mode (portrait slightly finer). */
 export const digitMetrics = (portrait: boolean): { cs: number; gl: number } =>
-	portrait ? { cs: 6, gl: 7 } : { cs: 7, gl: 8 };
+	portrait ? { cs: 4, gl: 5 } : { cs: 4.5, gl: 5.5 };
 
 function build(s: DigitState, txt: string, cs: number) {
 	const old = s.cells;
@@ -138,7 +138,7 @@ function buildSheet(s: DigitState, gl: number): Sheet {
 /** Registers a digit. Returns the unregister function. */
 export function registerDigit(
 	cv: HTMLCanvasElement,
-	{ text, cs: cs0 = 7, gl: gl0 = 8 }: DigitOptions,
+	{ text, cs: cs0 = digitMetrics(false).cs, gl: gl0 = digitMetrics(false).gl }: DigitOptions,
 ): () => void {
 	return register<DigitState>({
 		name: `digit ${text}`,
@@ -155,7 +155,7 @@ export function registerDigit(
 			s.sheet = null;
 		},
 		frame(s, _t, dt) {
-			// Portrait: slightly finer grid (cell 6, glyph 7), the digit stays one shape
+			// Portrait: slightly finer grid (cell 4, glyph 5), the digit stays one shape
 			const cs = s.mode === 'portrait' ? digitMetrics(true).cs : cs0;
 			const gl = s.mode === 'portrait' ? digitMetrics(true).gl : gl0;
 			const key = `${text}|${loop.fv}|${s.W}x${s.H}|${s.dpr}|${cs}`;
