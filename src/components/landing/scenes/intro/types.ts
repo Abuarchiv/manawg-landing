@@ -55,4 +55,6 @@ export interface HeroMarks {
 	a0: number;
 	/** Adaptive resolution of the scene buffer. */
 	ad: number;
+	/** Stacked layout: the mountain sits lower by this share of the height, the title takes the sky. */
+	drop: number;
 }

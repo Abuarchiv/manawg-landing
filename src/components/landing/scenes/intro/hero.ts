@@ -41,7 +41,7 @@ float sunD(vec2 uv, vec2 sp, float s){ return org((uv - sp) / s) * s; }
 vec3 outc(float v){ v += (hash(gl_FragCoord.xy) - .5) * .02; return vec3(clamp(v, 0., 1.)); }
 `;
 const SCENE = `${HEAD}
-uniform float uMix, uLook, uK, uSt; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
+uniform float uMix, uLook, uK, uSt, uDrop; uniform vec4 uO[8]; uniform vec3 uC; uniform vec3 uH;
 uniform sampler2D uImg, uMsk; uniform float uPhoto, uRetreat, uInk;
 // Mountain: copper engraving as a camera move. Image section covers, tighter around the
 // summit in portrait; looking up (uLook) shifts the section into the dark sky. Clouds drift slightly, the
@@ -54,7 +54,7 @@ const float IMGA = 2560. / 3200.;
 const float INK_G = .8, FOOT_LO = .03, FOOT_HI = .5;
 float ink(float v){ return .04 + .92 * pow(v, INK_G); }
 vec2 photoUV(vec2 fc){ vec2 s = fc / uR; float A = uR.x / uR.y; float hN = min(IMGA / A, .5); float wN = hN * A / IMGA;
-  float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN, 0., lk);
+  float cx = clamp(.4, wN * .5, 1. - wN * .5); float lk = uLook * uLook * (3. - 2. * uLook); float top = mix(.98 - hN - uDrop * hN, 0., lk);
   float z = 1. + .03 * (1. - lk) * (1. - exp(-T * .08)); vec2 c = vec2(cx, top + hN * .5) + vec2(uM.x * .006, uM.y * .004) * (1. - lk);
   return c + vec2((s.x - .5) * wN, (.5 - s.y) * hN) / z; }
 float photoMountain(vec2 uv){
@@ -69,7 +69,7 @@ float photoMountain(vec2 uv){
   float th = 1.05 - uPhoto * 1.1 + uRetreat * 1.15; v *= smoothstep(th, th + .18, v + hash(floor(gl_FragCoord.xy / 2.)) * .05);
   v *= 1. - .5 * foot * (1. - uInk);
   // Pointer as light: the snow beneath it brightens softly, rock stays dark
-  vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
+  vec2 sp = mix(vec2(uM.x * .7, .3 - uDrop * 2.7 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   float lm = exp(-length(uv - uM * vec2(.9, .5)) * 3.2); v += smoothstep(.45, .85, v) * msk * lm * .12;
   float d = sunD(uv, sp, sc); float sun = (1. - msk) * smoothstep(.002, -.002, d); v = mix(v, .9, sun);
   v += (1. - msk) * exp(-max(d, 0.) * 16. / (1. + uLook * 2.)) * .07 * (1. + uLook * 3.);
@@ -80,7 +80,7 @@ float photoMountain(vec2 uv){
 float mountain(vec2 uv){
   if(uPhoto > .001) return photoMountain(uv);
   float pitch = mix(-.06, .55, uLook); vec3 ro = cam(.045, pitch, 1.85, 2.4), rd = ray(uv);
-  vec2 sp = mix(vec2(uM.x * .7, .3 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
+  vec2 sp = mix(vec2(uM.x * .7, .3 - uDrop * 2.7 + uM.y * .1), vec2(uM.x * .04, uM.y * .03), uLook); float sc = mix(.15, .52, uLook * uLook);
   vec3 L = normalize(RT * (sp.x * 1.5 + .9) + UP * .42 - FW * .2);
   float e = rd.y + .06; float sky = mix(.36, .2, clamp(e * 2.2 + .05, 0., 1.)); float st = fbm(vec2(rd.x * 1.2 + T * .008, e * 15.)); sky += (st - .5) * .18 * smoothstep(-.05, .35, e); if(uSt < .5) sky = .93 - .08 * clamp(e * 2., 0., 1.); if(abs(uSt - 2.) < .5) sky *= .3;
   float v = sky; float t = 45.; if(uLook < .97) t = march(ro, rd); vec3 p = ro + rd * t;
@@ -135,6 +135,7 @@ type SceneU =
 	| 'uB'
 	| 'uMix'
 	| 'uLook'
+	| 'uDrop'
 	| 'uK'
 	| 'uO'
 	| 'uC'
@@ -175,7 +176,7 @@ interface HeroGL {
 /**
  * Attaches the hero to a visible 2D canvas.
  * frame(c, h) draws one frame. c is the stage context (W, H, dpr, t, now, P, m, ...),
- * h carries the derived marks { look, mx, split, zoom, dive, sm, a0, ad }.
+ * h carries the derived marks { look, mx, split, zoom, dive, sm, a0, ad, drop }.
  */
 export function createHero(cv: HTMLCanvasElement) {
 	const ctx = cv.getContext('2d');
@@ -244,6 +245,7 @@ export function createHero(cv: HTMLCanvasElement) {
 				'uB',
 				'uMix',
 				'uLook',
+				'uDrop',
 				'uK',
 				'uO',
 				'uC',
@@ -520,6 +522,7 @@ export function createHero(cv: HTMLCanvasElement) {
 		gl.uniform1f(U.uMix, mx);
 		gl.uniform1f(U.uSt, 1);
 		gl.uniform1f(U.uLook, look);
+		gl.uniform1f(U.uDrop, h.drop);
 		gl.uniform1f(U.uK, lerp(0.5, 0.12, split));
 		gl.uniform1f(U.uZ, uz);
 		gl.uniform3f(U.uC, lerp(0, hx, ss(dive * 1.6)), lerp(0, hy, ss(dive * 1.6)), cz);

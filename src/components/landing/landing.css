@@ -459,3 +459,11 @@
 		transform: none;
 	}
 }
+
+/* Stacked hero (portrait, narrow windows): the demo phone is cut by the lower edge and already says "scroll";
+   the hint would sit on its frame (Hints.tsx) */
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
+	[data-hints] > div {
+		display: none;
+	}
+}
