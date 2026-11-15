@@ -13,7 +13,7 @@ import { live } from './stage';
 
 /** Chapter starts in seconds and film length (printed by build.py of the recording). */
 const CHAPTERS = [0, 10, 16.542, 21.125, 25.042] as const;
-const LENGTH = 32.67;
+const LENGTH = 32.667;
 /** Film and posters are cached for a day under a fixed name: the length in the query gives a new cut a new
  * address, so the chapters above never run against a film still cached from before. */
 const CUT = `?v=${LENGTH}`;
@@ -127,8 +127,8 @@ export function HeroDemo() {
 						<img
 							src={`/hero-demo/${lang}-dark.webp${CUT}`}
 							alt=""
-							width={560}
-							height={1200}
+							width={784}
+							height={1680}
 							loading="lazy"
 							decoding="async"
 							data-only="dark"
@@ -137,8 +137,8 @@ export function HeroDemo() {
 						<img
 							src={`/hero-demo/${lang}-light.webp${CUT}`}
 							alt=""
-							width={560}
-							height={1200}
+							width={784}
+							height={1680}
 							loading="lazy"
 							decoding="async"
 							data-only="light"
