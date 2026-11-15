@@ -204,6 +204,13 @@ function placeLabels(
 			}
 			break;
 		}
+		// Still on an obstacle or another label after the pushes (small overview on a phone: the room centres lie a
+		// few pixels apart): leave it out instead of printing it over the other. Rooms come first, so names yield.
+		const last = rect();
+		if (avoid.some((q) => intersects(last, q)) || placed.some((q) => intersects(last, q))) {
+			it.off = true;
+			continue;
+		}
 		placed.push(rect());
 		it.x = x;
 		it.y = y;

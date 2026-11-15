@@ -239,6 +239,8 @@
 }
 /* Questions: accordion with height animation via grid-template-rows */
 .faq-row {
+	/* Width of the number column: 3.2 em of the 11 px label */
+	--faq-num: 35.2px;
 	border-top: 1px solid var(--hairline);
 	padding-bottom: var(--sp-26);
 }
@@ -262,8 +264,11 @@
 	opacity: 0.72;
 	transition: opacity var(--time) ease;
 }
+/* Hanging indent: a wrapped question continues beside its number, not below it */
 .faq-question > span:first-child {
 	min-width: 0;
+	padding-left: var(--faq-num);
+	text-indent: calc(-1 * var(--faq-num));
 }
 .faq-question:focus-visible {
 	outline: 2px solid var(--ink);
@@ -321,7 +326,8 @@
 }
 .faq-num {
 	display: inline-block;
-	min-width: 3.2em;
+	min-width: var(--faq-num);
+	text-indent: 0;
 	vertical-align: 0.5em;
 	/* The closed question dims to 0.72; these keep the dimmed number above 4.5:1 against the paper. */
 	color: #a6a6a6;
@@ -437,11 +443,30 @@
 	transform: scale(0.98);
 }
 
+/* The stages before these sections end with their lower part empty (the overview of the flat fills the upper
+   58 % in landscape and about 78 % in portrait; the last depth sentence is gone by then, depth/tunnel.ts). The
+   sections rise into that room while the stage still stands, so no empty screen passes between them. */
+#so-gehts {
+	z-index: 2;
+	margin-top: -30lvh;
+}
+#final[data-mode="portrait"] #so-gehts {
+	margin-top: -8lvh;
+}
+#fragen {
+	margin-top: -25lvh;
+}
+
 /* Reduced motion: no transition animation except opacity, intro shortened to four screens
    (the stage reads its distance from the section height, stage.ts) */
 @media (prefers-reduced-motion: reduce) {
 	#intro {
 		height: calc(5 * 100lvh) !important;
+	}
+	#so-gehts,
+	#final[data-mode="portrait"] #so-gehts,
+	#fragen {
+		margin-top: 0;
 	}
 	.cta,
 	.tab,
@@ -457,5 +482,21 @@
 	}
 	.faq-question[aria-expanded="false"]:hover .faq-mark {
 		transform: none;
+	}
+}
+
+/* Light theme: the scroll hint stands on the engraved foot of the mountain, gray ink breaks up in its strokes */
+:root[data-theme="light"] [data-hints] > div {
+	color: var(--ink);
+	text-shadow:
+		0 0 6px var(--paper),
+		0 0 2px var(--paper);
+}
+
+/* Stacked hero (portrait, narrow windows): the demo phone is cut by the lower edge and already says "scroll";
+   the hint would sit on its frame (Hints.tsx) */
+@media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
+	[data-hints] > div {
+		display: none;
 	}
 }

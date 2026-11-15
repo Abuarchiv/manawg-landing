@@ -4,18 +4,18 @@ import { HeroDemo } from './HeroDemo';
 import s from './HeroTitle.module.css';
 
 // Title of the intro: star field (stars.ts), the demo film (HeroDemo.tsx) and the page heading. Full until P 0.04, zero at
-// P 0.086 (a plateau instead of an immediate fade).
+// P 0.086 (a plateau instead of an immediate fade); the stacked layout has its own curve (HeroTitle.module.css).
 
 export function HeroTitle() {
 	const { hero, links } = useDict();
 	return (
 		<div
+			className={s.hero}
 			style={{
 				position: 'absolute',
 				inset: '0',
 				zIndex: '2',
 				pointerEvents: 'none',
-				opacity: 'calc(1.9 - var(--p,0) * 22)',
 			}}
 		>
 			<canvas

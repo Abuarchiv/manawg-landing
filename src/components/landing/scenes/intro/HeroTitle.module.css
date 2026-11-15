@@ -1,3 +1,7 @@
+/* Whole hero layer (stars, demo, title): full until P 0.04, zero at P 0.086 */
+.hero {
+	opacity: calc(1.9 - var(--p, 0) * 22);
+}
 .title {
 	position: absolute;
 	left: var(--margin);
@@ -22,11 +26,17 @@
 		0 1px 3px rgb(var(--paper-rgb) / 0.4);
 }
 
-/* Portrait: above the jump link, larger so the line fills the width */
+/* Stacked layout (portrait, narrow windows): the title stands in the dark sky above the summit, the demo phone
+   rises below it (HeroDemo.module.css). The title leaves first (zero at P 0.016) and makes room for the phone,
+   the whole layer stays until the phone has stood large for a while (full until P 0.076, zero at P 0.096). */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
-	/* 56 px keep the bottom row free for the scroll hint (Hints.tsx) */
+	.hero {
+		opacity: calc((0.096 - var(--p, 0)) * 50);
+	}
 	.title {
-		bottom: max(var(--sp-64), calc(env(safe-area-inset-bottom, 0px) + 56px));
+		top: calc(var(--header-bottom) + 18px);
+		bottom: auto;
+		opacity: calc(1 - var(--p, 0) * 62);
 	}
 	/* both buttons in one row, as in the finale: tighter tracking and bracket spacing */
 	.actions {
@@ -37,7 +47,8 @@
 		gap: 0.5em;
 	}
 	.h1 {
-		font-size: clamp(46px, 15vw, 96px);
+		/* 9svh: short and wide portrait windows keep the title above the phone */
+		font-size: clamp(40px, min(12.5vw, 9svh), 96px);
 	}
 }
 

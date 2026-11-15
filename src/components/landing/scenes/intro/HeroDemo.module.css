@@ -216,21 +216,29 @@
 		margin: 0;
 	}
 }
-/* Portrait: the phone stands at the top centre above the mountain, the title keeps the lower part */
+/* Stacked layout (portrait, narrow windows): the phone is as large as the window allows (about two thirds of the
+   width, the app stays legible) and rises out of the foot of the mountain. At rest its top edge stands at 64 % of the
+   height, below the summit; with the first scroll (--p up to 0.035, stage.ts) it travels up under the header and
+   brings the chapter pill along. Phone and pill move as one piece, so the pill is off screen while it cannot be seen. */
 @media (max-aspect-ratio: 1 / 1), (max-width: 699px) and (min-height: 500px) {
 	.demo {
-		--ph: max(140px, min(44svh, 380px, calc(100svh - 480px)));
+		--ph: max(
+			300px,
+			min(calc(100svh - var(--header-bottom) - 80px), calc(78vw * 620 / 300), 880px)
+		);
+		--rise: calc((1 - clamp(0, var(--p, 0) / 0.035, 1)) * (64svh - var(--header-bottom) - 8px));
 	}
 	.phone {
 		right: auto;
 		left: calc(50% - var(--pw) / 2);
 		top: calc(var(--header-bottom) + 8px);
+		transform: translateY(var(--rise));
 	}
 	.rail {
 		right: auto;
 		left: 50%;
 		top: calc(var(--header-bottom) + 8px + var(--ph) + 12px);
-		transform: translateX(-50%);
+		transform: translate(-50%, var(--rise));
 		white-space: nowrap;
 	}
 }

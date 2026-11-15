@@ -12,7 +12,7 @@ import * as flat from './flat';
 import { preloadFlat } from './flat-gl';
 import { createHero } from './hero';
 import { drawStars } from './stars';
-import { unwarp, warp } from './timeline';
+import { isStacked, unwarp, warp } from './timeline';
 import type { HeroMarks, Hole, StageContext, StagePointer } from './types';
 
 /** Phase of the stage (data-phase on #final): intro or scrolled past. */
@@ -78,8 +78,11 @@ export function createStage({
 	const cvFlat = required(q('flat'), 'flat');
 	const safe = required(stageEl.querySelector<HTMLElement>('[data-safe]'), '[data-safe]');
 	const cvStars = stageEl.querySelector<HTMLCanvasElement>('canvas[data-stars]');
-	// Controls of the title (install button, chapters of the demo film)
+	// Controls of the title (sign-up, install, open source link) and the chapters of the demo film
 	const heroCtas = [...stageEl.querySelectorAll<HTMLElement>('[data-hero-cta]')];
+	const heroRail = stageEl.querySelector<HTMLElement>('[data-hero-rail]');
+	const titleEl = stageEl.querySelector<HTMLElement>('h1')?.parentElement ?? null;
+	let titleBottom = 0;
 	const hints = root.querySelector<HTMLElement>('[data-hints]');
 	const roomsEl = stageEl.querySelector<HTMLElement>('[data-hole="text"]');
 	const hero = createHero(cvHero);
@@ -110,7 +113,17 @@ export function createStage({
 		released: false,
 	};
 	const m: StagePointer = { x: W / 2, y: H / 2, in: false };
-	const hm: HeroMarks = { look: 0, mx: 0, split: 0, zoom: 0, dive: 0, sm: st.sm, a0: 0, ad: 1 };
+	const hm: HeroMarks = {
+		look: 0,
+		mx: 0,
+		split: 0,
+		zoom: 0,
+		dive: 0,
+		sm: st.sm,
+		a0: 0,
+		ad: 1,
+		drop: 0,
+	};
 	const c: StageContext = {
 		P: 0,
 		s: 0,
@@ -150,6 +163,8 @@ export function createStage({
 				kind: el.dataset.hole ?? '',
 			};
 		});
+		// Lower edge of the title block (stacked layout: the mountain keeps clear of it)
+		if (titleEl) titleBottom = titleEl.getBoundingClientRect().bottom - r0.top;
 	};
 
 	const resize = () => {
@@ -246,12 +261,21 @@ export function createStage({
 			root.dataset.phase = phase;
 		}
 
-		// Title controls: only while the title is visible (it fades out until P 0.086, HeroTitle.tsx)
-		const heroOff = P >= 0.07;
+		// Title controls: only while the title is visible (it fades out until P 0.086, in the stacked layout
+		// until P 0.016, HeroTitle.module.css)
+		const stacked = isStacked(W, H);
+		const heroOff = P >= (stacked ? 0.012 : 0.07);
 		for (const el of heroCtas) {
 			if (el.inert === heroOff) continue;
 			el.inert = heroOff;
 			el.style.pointerEvents = heroOff ? 'none' : '';
+		}
+		// Chapters of the demo film. Stacked: they stand below the window until the phone has risen (P 0.035,
+		// HeroDemo.module.css) and stay usable while it stands large; focus must not pull an off-screen pill into view.
+		const railOff = stacked ? P < 0.03 || P >= 0.09 : P >= 0.07;
+		if (heroRail && heroRail.inert !== railOff) {
+			heroRail.inert = railOff;
+			heroRail.style.pointerEvents = railOff ? 'none' : '';
 		}
 		return phase;
 	};
@@ -277,7 +301,8 @@ export function createStage({
 		const rs = sec.getBoundingClientRect();
 		const visible = rb.bottom > 0 && rb.top < loop.vh;
 		const s = cl(-rs.top / travel());
-		const Pz = warp(s);
+		const stacked = isStacked(W, H);
+		const Pz = warp(s, stacked);
 		const P = smooth(Pz, dt, visible);
 		manageMemory(visible, now);
 		const look = ss((P - 0.06) / 0.14);
@@ -317,17 +342,17 @@ export function createStage({
 			c.holes = holes;
 			if (loop.n % 30 === 1) measureHoles();
 
-			// Pointer (-1..1) for mountain and organ, without a pointer an autopilot runs. Where the demo phone
-			// stands at the top centre (HeroDemo.module.css, portrait query), the mark drifts in the free sky left of it:
-			// screen x 14–24 %, mapped back through the shader's mark position (uv.x = sm.x · ax · 0.7, uv / uZ).
+			// Pointer (-1..1) for mountain and organ, without a pointer an autopilot runs. In the stacked layout the
+			// title fills the sky and the phone the centre, so the mark sets behind the ridge at the right:
+			// screen x 79–85 %, mapped back through the shader's mark position (uv.x = sm.x · ax · 0.7, uv / uZ).
 			let autoX = 0.5 * Math.cos(t * 0.12);
-			if (W <= H || (W < 700 && H >= 500)) {
+			if (stacked) {
 				const r = W / H;
-				const left =
-					((0.19 + 0.05 * Math.cos(t * 0.12) - 0.5) * r) /
+				const right =
+					((0.82 + 0.03 * Math.cos(t * 0.12) - 0.5) * r) /
 					Math.min(1, r / 0.9) /
 					(0.7 * Math.min(1, r / 1.6));
-				autoX = lerp(left, autoX, look);
+				autoX = lerp(right, autoX, look);
 			}
 			const tm: [number, number] = m.in
 				? [(m.x - W / 2) / (W / 2), (H / 2 - m.y) / (H / 2)]
@@ -345,6 +370,9 @@ export function createStage({
 				hm.dive = dive;
 				hm.a0 = st.a0;
 				hm.ad = st.ad;
+				// The highest clouds of the ridge stand at about a third of the height plus the drop; a long title block
+				// (narrow or short phones, four-line subline) pushes the mountain further down so the buttons stay on the sky.
+				hm.drop = stacked ? cl((titleBottom + 14) / H - 0.33, 0.13, 0.28) : 0;
 				c.dprHero = isTouch() ? Math.min(dpr, 1.25) : dpr;
 				heroDrawn = hero.frame(c, hm);
 			}
@@ -362,7 +390,7 @@ export function createStage({
 		state: st,
 		yForP(P) {
 			const r = sec.getBoundingClientRect();
-			return r.top + window.scrollY + unwarp(P) * travel();
+			return r.top + window.scrollY + unwarp(P, isStacked(W, H)) * travel();
 		},
 		destroy() {
 			off();
