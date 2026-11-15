@@ -40,15 +40,15 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'Host it yourself: what you need',
-				'Self-hosting is for when you want the data on a machine you control. You need Docker with Compose v2, git and openssl. A running instance uses about 500 MB of memory, and building the app image needs about 3 GB once. The stack that starts is the app, PostgreSQL, sign-in, image storage and a Caddy gateway, all from one compose file. If the cleaning rota is what you mainly want to run, read [Self-hosted chore tracker](/self-hosted-chore-tracker).',
+				'Self-hosting is for when you want the data on a machine you control. You need Docker with Compose v2, git and openssl. A running instance uses about 500 MB of memory. The app image is published (ghcr.io/abuarchiv/manawg, amd64 and arm64), and it is only built when none exists for your version. The stack that starts is the app, PostgreSQL, sign-in, image storage and a Caddy gateway, all from one compose file. If the cleaning rota is what you mainly want to run, read [Self-hosted chore tracker](/self-hosted-chore-tracker).',
 			],
 			[
 				'Host it yourself: the steps',
-				'1. Clone the repository with git clone https://github.com/Abuarchiv/manawg.git and go into the manawg folder.\n2. Run ./docker/setup.sh. It creates a .env file with fresh secrets.\n3. Run docker compose up -d. The first start builds the app image from your checkout, which takes about ten minutes, and sets up the database.\n4. Open http://localhost and create an account. Every email, including the sign-in code, lands in Mailpit at http://localhost:8025.\n5. Check with docker compose ps -a that the setup service has exited with code 0 and the others are running.',
+				'1. Clone the repository with git clone https://github.com/Abuarchiv/manawg.git and go into the manawg folder.\n2. Run ./docker/setup.sh. It creates a .env file with fresh secrets.\n3. Run docker compose up -d. The first start pulls the published app image and sets up the database. Only if there is no image for your version is it built from your checkout, which takes about ten minutes and about 3 GB once.\n4. Open http://localhost and create an account. Every email, including the sign-in code, lands in Mailpit at http://localhost:8025.\n5. Check with docker compose ps -a that the setup service has exited with code 0 and the others are running.',
 			],
 			[
 				'An instance for more than your own flat',
-				'For an instance that people reach over the internet you need a server with Docker, a domain whose DNS record points at it and ports 80 and 443 open. The gateway then fetches a Let’s Encrypt certificate. Sign-in needs email, so an SMTP account is required, and many providers have a free tier that is enough for a household. Registration is open to anyone who can reach the address, so for a household-only instance restrict access at a proxy, for example with a VPN. If you offer an instance to people outside your household, you need your own legal notice and privacy policy. Backups and updates are yours too: the repository has backup and restore scripts, and an update is a git pull followed by docker compose up -d --build, after a backup. The full guide on GitHub covers all of this, plus a second route with Vercel and Supabase on their free tiers.',
+				'For an instance that people reach over the internet you need a server with Docker, a domain whose DNS record points at it and ports 80 and 443 open. The gateway then fetches a Let’s Encrypt certificate. Sign-in needs email, so an SMTP account is required, and many providers have a free tier that is enough for a household. Registration is open to anyone who can reach the address, so for a household-only instance restrict access at a proxy, for example with a VPN. If you offer an instance to people outside your household, you need your own legal notice and privacy policy. Backups and updates are yours too: the repository has backup and restore scripts, and for an update you take a backup, set MANAWG_VERSION in .env to the new version and run docker compose pull and docker compose up -d. The full guide on GitHub covers all of this, plus a second route with Vercel and Supabase on their free tiers.',
 			],
 			[
 				'Moving from Splitwise, Splid, Tricount or Settle Up',
@@ -70,7 +70,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 			],
 			[
 				'What do I need to self-host ManaWG?',
-				'Docker with Compose v2, git and openssl, about 500 MB of memory for the running instance and about 3 GB once to build the image. For a public instance you also need a domain and an SMTP account for the sign-in emails.',
+				'Docker with Compose v2, git and openssl, about 500 MB of memory for the running instance. The app image is downloaded ready-made; only without a matching image does Compose build it, which needs about 3 GB once. For a public instance you also need a domain and an SMTP account for the sign-in emails.',
 			],
 			[
 				'Can I move my Splitwise data over?',

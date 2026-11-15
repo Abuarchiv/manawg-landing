@@ -165,7 +165,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Erinnerung aufs Handy',
-				'Täglich schickt ManaWG eine Push-Nachricht für zugewiesene Aufgaben, die heute fällig oder bis zu sieben Tage überfällig sind. Pro Aufgabe kommt sie höchstens alle 18 Stunden. Den Kanal Putzplan schaltet jedes Mitglied einzeln ab, wenn es keine Hinweise möchte. Die App fragt vorher um Erlaubnis für Push. Aufgaben ohne zugewiesene Person lösen keine Erinnerung aus.',
+				'Täglich schickt ManaWG eine Push-Nachricht für zugewiesene Aufgaben, die heute fällig oder bis zu sieben Tage überfällig sind. Pro Aufgabe kommt sie höchstens alle 18 Stunden. Den Kanal Putzplan schaltet jedes Mitglied einzeln ab, wenn es keine Hinweise möchte. Die App fragt vorher um Erlaubnis für Push. Aufgaben ohne zugewiesene Person kündigt ManaWG der ganzen WG an, ebenfalls höchstens alle 18 Stunden, bis jemand sie übernimmt.',
 			],
 			[
 				'Vorlage oder App',
@@ -690,7 +690,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Erinnerungen, die ihr selbst steuert',
-				'Jedes Mitglied schaltet Push-Benachrichtigungen pro Bereich einzeln ab: Ankündigungen, Putzplan, Ausgaben, Einkauf, Vorräte, Erinnerungen, Chat und Termine. Der Putzplan erinnert an heute fällige und bis zu sieben Tage überfällige Aufgaben, die jemandem zugewiesen sind, höchstens alle 18 Stunden pro Aufgabe. Termine melden sich am Tag davor, auch Serientermine. Mails wie die Monatsabrechnung oder Zahlungserinnerungen lassen sich ebenfalls abschalten.',
+				'Jedes Mitglied schaltet Push-Benachrichtigungen pro Bereich einzeln ab: Ankündigungen, Putzplan, Ausgaben, Einkauf, Vorräte, Erinnerungen, Chat und Termine. Der Putzplan erinnert an heute fällige und bis zu sieben Tage überfällige Aufgaben, die jemandem zugewiesen sind, höchstens alle 18 Stunden pro Aufgabe. Aufgaben ohne zugewiesene Person gehen an die ganze WG. Termine melden sich am Tag davor, auch Serientermine. Mails wie die Monatsabrechnung oder Zahlungserinnerungen lassen sich ebenfalls abschalten.',
 			],
 			[
 				'Putzplan mit fairer Rotation',
