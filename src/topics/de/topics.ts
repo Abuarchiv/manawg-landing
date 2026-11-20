@@ -8,9 +8,9 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		link: 'WG-App',
 		updated: '2026-11-09',
 		published: '2026-10-10',
-		title: 'WG-App kostenlos: Ausgaben, Putzplan, Einkauf | ManaWG',
+		title: 'WG-App kostenlos, ohne Werbung: Kasse, Putzplan | ManaWG',
 		description:
-			'ManaWG ist die kostenlose WG-App für den Alltag, keine Zimmersuche: Ausgaben, Putzplan, Einkaufsliste, Kalender und Chat im Browser, ohne App Store.',
+			'Kostenlose WG-App ohne Werbung und ohne Abo, im Browser statt App Store: Ausgaben teilen, Putzplan, Einkaufsliste, Kalender. Demo ohne Konto testen.',
 		h1: 'Die WG-App für Geld, Putzen, Einkauf und Termine',
 		intro:
 			'Ein Zettel am Kühlschrank und eine WhatsApp-Gruppe, in der Wichtiges untergeht: So läuft der Alltag in vielen WGs. ManaWG bündelt Ausgaben, Putzplan, Einkauf, Vorräte, Kalender, Chat und Pinnwand in einer kostenlosen App auf Deutsch, Englisch und Spanisch.',
