@@ -505,9 +505,9 @@ export const GUIDES_DE_MOVING: Record<string, Topic> = {
 		link: 'Anmeldung in der WG',
 		updated: '2026-10-27',
 		published: '2026-10-20',
-		title: 'Anmeldung in der WG: Meldepflicht, Frist, Muster | ManaWG',
+		title: 'WG-Anmeldung: Wer stellt die Wohnungsgeberbestätigung aus?',
 		description:
-			'Meldepflicht in der WG: zwei Wochen Frist, wer die Wohnungsgeberbestätigung ausstellt, was drinstehen muss (mit Beispiel) und was hilft, wenn sie verweigert wird.',
+			'Bei Untermiete stellt der Hauptmieter die Wohnungsgeberbestätigung aus, binnen zwei Wochen. Mit Muster und Hilfe, falls er sich weigert (bis 1.000 € Bußgeld).',
 		h1: 'Anmeldung in der WG: Wohnungsgeberbestätigung und Frist',
 		intro:
 			'Wer in ein WG-Zimmer zieht, muss sich beim Bürgeramt anmelden, und dafür braucht es eine Wohnungsgeberbestätigung. Wer sie ausstellt, hängt vom Mietvertrag ab, und gerade bei Untermiete wissen viele Hauptmieter nicht, dass sie zuständig sind. Diese Seite fasst die Regeln des Bundesmeldegesetzes zusammen und ersetzt keine Rechtsberatung. Einzelheiten wie Formulare und Termine regelt eure Stadt.',
