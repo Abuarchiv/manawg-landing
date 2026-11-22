@@ -17,7 +17,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Warum eine App statt Zettel und WhatsApp',
-				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Welche Kriterien bei der Wahl zählen, zeigt die Seite [WG-Apps im Vergleich](/beste-wg-app).',
+				'Ein Zettel rechnet keinen Saldo aus, und im Gruppenchat rutscht die Frage nach dem Putzplan zwischen anderen Nachrichten weg. In ManaWG hat jedes Thema seinen Platz: Beträge werden gerechnet, Aufgaben wandern weiter, Termine stehen im Kalender. Was erledigt ist, bleibt nachvollziehbar, und neue Mitbewohner sehen sofort, wie die WG organisiert ist. Welche Kriterien bei der Wahl zählen, zeigt die Seite [WG-Apps im Vergleich](/beste-wg-app). Wer gerade von Flatastic wechselt, findet die Unterschiede unter [Flatastic-Alternative ohne Premium](/flatastic-alternative).',
 			],
 			[
 				'Zimmersuche oder Alltag: was eine WG-App ist',
@@ -157,7 +157,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Rotation nach Fairness',
-				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben, überfällige zählen stärker. Dieselbe Vorhersage zeigt die App vorab unter „Danach“ an, ihr wisst also im Voraus, wer als Nächstes dran ist.',
+				'Eine starre Reihenfolge nach dem Muster „diese Woche A, nächste Woche B“ kippt, sobald jemand aussetzt. ManaWG wählt beim Erledigen die Person mit der geringsten Auslastung. Gezählt werden zugewiesene und überfällige Aufgaben, überfällige zählen stärker. Dieselbe Vorhersage zeigt die App vorab unter „Danach“ an, ihr wisst also im Voraus, wer als Nächstes dran ist. Wer bisher mit Flatastic putzt, sieht den Unterschied auf der Seite [Flatastic-Alternative ohne Werbung](/flatastic-alternative).',
 			],
 			[
 				'Abwesenheit eintragen',
@@ -524,7 +524,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Mehr als eine Kasse',
-				'Ihr teilt gleichmäßig oder mit eigenen Beträgen, legt Fixkosten wie Miete an und bekommt Überweisungsvorschläge. Dazu gibt es Monatsabrechnung, Putzplan mit fairer Rotation, Einkaufsliste mit Übernahme als Ausgabe, Kalender-Abo, Pinnwand und Chat. Das Geld überweist ihr selbst, in ManaWG markiert ihr einzelne Anteile oder alles auf einmal als bezahlt. Eine Bankanbindung gibt es nicht. Die Kasse im Detail beschreibt die Seite [WG-Kasse](/wg-kasse), den Putzplan die Seite [WG Putzplan App](/putzplan).',
+				'Ihr teilt gleichmäßig oder mit eigenen Beträgen, legt Fixkosten wie Miete an und bekommt Überweisungsvorschläge. Dazu gibt es Monatsabrechnung, Putzplan mit fairer Rotation, Einkaufsliste mit Übernahme als Ausgabe, Kalender-Abo, Pinnwand und Chat. Das Geld überweist ihr selbst, in ManaWG markiert ihr einzelne Anteile oder alles auf einmal als bezahlt. Eine Bankanbindung gibt es nicht. Die Kasse im Detail beschreibt die Seite [WG-Kasse](/wg-kasse), den Putzplan die Seite [WG Putzplan App](/putzplan). Splitwise, Splid, Tricount und Flatastic nebeneinander seht ihr unter [alle WG-Apps im Vergleich](/beste-wg-app).',
 			],
 		],
 		faq: [
@@ -602,7 +602,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Grenzen von ManaWG',
-				'Eine WG fasst höchstens 20 aktive Mitglieder. Die App gibt es auf Deutsch, Englisch und Spanisch, Beträge tragt ihr in Euro ein. Es gibt keine App im App Store, ihr nutzt ManaWG im Browser unter app.manawg.com und legt sie auf dem Handy auf den Home-Bildschirm. Auch Kalender-Abo und Push-Hinweise funktionieren so, ohne dass ihr etwas aus dem Store installieren müsst.',
+				'Eine WG fasst höchstens 20 aktive Mitglieder. Die App gibt es auf Deutsch, Englisch und Spanisch, Beträge tragt ihr in Euro ein. Es gibt keine App im App Store, ihr nutzt ManaWG im Browser unter app.manawg.com und legt sie auf dem Handy auf den Home-Bildschirm. Auch Kalender-Abo und Push-Hinweise funktionieren so, ohne dass ihr etwas aus dem Store installieren müsst. Wer noch zwischen mehreren Apps wählt, findet hier [alle WG-Apps im Vergleich](/beste-wg-app).',
 			],
 		],
 		faq: [
@@ -706,7 +706,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Was ManaWG nicht kann',
-				'Die Oberfläche gibt es auf Deutsch, Englisch und Spanisch, Beträge tragt ihr in Euro ein, und eine WG fasst höchstens 20 aktive Mitglieder. Es gibt keine App im Store, ManaWG installiert ihr als Web-App auf dem Home-Bildschirm. Ausgleiche markiert ihr selbst als bezahlt, eine Überweisung löst die App nicht aus. Kalender gibt es als Abo für Apple und Google Kalender, aber nur in eine Richtung.',
+				'Die Oberfläche gibt es auf Deutsch, Englisch und Spanisch, Beträge tragt ihr in Euro ein, und eine WG fasst höchstens 20 aktive Mitglieder. Es gibt keine App im Store, ManaWG installiert ihr als Web-App auf dem Home-Bildschirm. Ausgleiche markiert ihr selbst als bezahlt, eine Überweisung löst die App nicht aus. Kalender gibt es als Abo für Apple und Google Kalender, aber nur in eine Richtung. Wie Flatastic und weitere Apps im Überblick abschneiden, steht unter [alle WG-Apps im Vergleich](/beste-wg-app).',
 			],
 		],
 		faq: [
@@ -784,7 +784,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Wann ihr bei Tricount bleiben solltet',
-				'Für Reisen mit Fremdwährung ist Tricount die bessere Wahl, denn ManaWG rechnet nicht um und nimmt in der App nur Euro an. Das Gleiche gilt, wenn ihr eine Gruppe mit mehr als 20 Personen abrechnet. Auch wer nur eine einzelne Reise teilt, braucht weder Fixkosten noch Putzplan.',
+				'Für Reisen mit Fremdwährung ist Tricount die bessere Wahl, denn ManaWG rechnet nicht um und nimmt in der App nur Euro an. Das Gleiche gilt, wenn ihr eine Gruppe mit mehr als 20 Personen abrechnet. Auch wer nur eine einzelne Reise teilt, braucht weder Fixkosten noch Putzplan. Welche App sonst passt, zeigt der Überblick [alle WG-Apps im Vergleich](/beste-wg-app).',
 			],
 			[
 				'Wann ManaWG besser passt',
@@ -869,7 +869,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Web statt Store',
-				'ManaWG läuft unter app.manawg.com und lässt sich auf dem Home-Bildschirm installieren. Die Daten liegen zentral auf dem Server, nicht auf einem einzelnen Gerät. Aktionen ohne Netz merkt sich die App und sendet sie später nach. Anmelden könnt ihr euch mit Google oder per E-Mail-Code, ein Passwort ist nicht nötig. Beitreten geht per Einladungslink oder E-Mail-Einladung.',
+				'ManaWG läuft unter app.manawg.com und lässt sich auf dem Home-Bildschirm installieren. Die Daten liegen zentral auf dem Server, nicht auf einem einzelnen Gerät. Aktionen ohne Netz merkt sich die App und sendet sie später nach. Anmelden könnt ihr euch mit Google oder per E-Mail-Code, ein Passwort ist nicht nötig. Beitreten geht per Einladungslink oder E-Mail-Einladung. Wer noch andere Apps prüfen will, findet [alle WG-Apps im Vergleich](/beste-wg-app).',
 			],
 		],
 		faq: [

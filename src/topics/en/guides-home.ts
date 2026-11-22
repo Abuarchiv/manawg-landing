@@ -89,7 +89,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Points system: counting effort fairly',
-				'With a points system it is not the number of tasks that counts but the effort. Decide how much time one point is, say five minutes, and give each task points using the guide values from step 2. At the end of the month everyone should have roughly the same number of points. This is more exact than a plain rotation, but someone has to keep count. Example for three people: Anna takes the bathroom for 8 points, Ben the floors for 7, and Cem the kitchen and bins for 7 together. Next week you swap, so nobody is stuck with the bathroom for good.',
+				'With a points system it is not the number of tasks that counts but the effort. Decide how much time one point is, say five minutes, and give each task points using the guide values from step 2. At the end of the month everyone should have roughly the same number of points. This is more exact than a plain rotation, but someone has to keep count. Example for three people: Anna takes the bathroom for 8 points, Ben the floors for 7, and Cem the kitchen and bins for 7 together. Next week you swap, so nobody is stuck with the bathroom for good. If you would rather have an app share tasks by workload instead of points, see the [Flatastic alternative without a points system](/flatastic-alternative).',
 			],
 			[
 				'Step 5: make the plan visible and keep it up to date',
@@ -105,7 +105,7 @@ export const GUIDES_EN_HOME: Record<string, Topic> = {
 			],
 			[
 				'Ready-made instead of building your own',
-				'The [cleaning rota template to print](/cleaning-rota-template) comes as a table, as a PDF and an Excel file, and as a CSV download. It has ready rotations for two, three, four and five people and a generator for your names.\nThe [cleaning rota in ManaWG](/cleaning-rota) repeats tasks every few days or months and works out who is next based on workload: assigned and overdue tasks count, overdue ones more. Anyone who is away is skipped, and ManaWG sends a push reminder for assigned tasks that are due.',
+				'The [cleaning rota template to print](/cleaning-rota-template) comes as a table, as a PDF and an Excel file, and as a CSV download. It has ready rotations for two, three, four and five people and a generator for your names.\nThe [cleaning rota in ManaWG](/cleaning-rota) repeats tasks every few days or months and works out who is next based on workload: assigned and overdue tasks count, overdue ones more. Anyone who is away is skipped, and ManaWG sends a push reminder for assigned tasks that are due. If you used OurHome before, the [OurHome alternative](/ourhome-alternative) shows what replaces it.',
 			],
 		],
 		tables: [
