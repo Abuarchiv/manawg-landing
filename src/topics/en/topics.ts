@@ -55,7 +55,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 		sections: [
 			[
 				'Why an app instead of notes and WhatsApp',
-				'A note cannot work out a balance, and in a group chat the question about the cleaning rota slips away between other messages. In ManaWG, amounts are calculated, tasks move on and events sit in the calendar. Everything stays traceable, so a new flatmate sees straight away how the flat is organised. That saves follow-up questions and arguments about who promised what. Which criteria matter when choosing an app is covered on [Best flat-share app](/best-flat-share-app).',
+				'A note cannot work out a balance, and in a group chat the question about the cleaning rota slips away between other messages. In ManaWG, amounts are calculated, tasks move on and events sit in the calendar. Everything stays traceable, so a new flatmate sees straight away how the flat is organised. That saves follow-up questions and arguments about who promised what. Which criteria matter when choosing an app is covered on [Best flat-share app](/best-flat-share-app). Coming from Flatastic? See the [Flatastic alternative without Premium](/flatastic-alternative).',
 			],
 			[
 				'Room search or everyday life: what a flat-share app is',
@@ -199,7 +199,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Rotation by fairness',
-				'A rigid order of “A this week, B next week” falls apart as soon as someone skips a turn. When a task is done, ManaWG picks the person with the lowest workload. Assigned and overdue tasks are counted, and overdue ones count for more. The app shows the same prediction in advance as “Next up”, so you know who is next before it happens.',
+				'A rigid order of “A this week, B next week” falls apart as soon as someone skips a turn. When a task is done, ManaWG picks the person with the lowest workload. Assigned and overdue tasks are counted, and overdue ones count for more. The app shows the same prediction in advance as “Next up”, so you know who is next before it happens. If you clean with Flatastic today, the [ad-free Flatastic alternative](/flatastic-alternative) shows the difference.',
 			],
 			[
 				'Entering time away',
@@ -574,7 +574,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'More than a shared purse',
-				'You split equally or with custom amounts, add fixed costs such as rent and get suggested transfers. On top of that come the monthly statement, a cleaning rota with fair rotation, a shopping list that turns into an expense, calendar subscription, noticeboard and chat. You make the transfers yourselves, and in ManaWG you mark single shares or everything at once as paid. There is no bank connection. The expenses in detail are on [Shared expenses](/shared-expenses), the cleaning rota on [Cleaning rota app](/cleaning-rota).',
+				'You split equally or with custom amounts, add fixed costs such as rent and get suggested transfers. On top of that come the monthly statement, a cleaning rota with fair rotation, a shopping list that turns into an expense, calendar subscription, noticeboard and chat. You make the transfers yourselves, and in ManaWG you mark single shares or everything at once as paid. There is no bank connection. The expenses in detail are on [Shared expenses](/shared-expenses), the cleaning rota on [Cleaning rota app](/cleaning-rota). To see Splitwise, Splid, Tricount and Flatastic side by side, look at [all flat-share apps compared](/best-flat-share-app).',
 			],
 		],
 		faq: [
@@ -644,7 +644,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'The limits of ManaWG',
-				'A flat holds at most 20 active members. The app is available in English, German and Spanish and takes amounts in euros. There is no app in the App Store: you use ManaWG in the browser at app.manawg.com and add it to your phone’s home screen. Calendar subscription and push notifications work that way too, with nothing to install from a store.',
+				'A flat holds at most 20 active members. The app is available in English, German and Spanish and takes amounts in euros. There is no app in the App Store: you use ManaWG in the browser at app.manawg.com and add it to your phone’s home screen. Calendar subscription and push notifications work that way too, with nothing to install from a store. Still choosing between apps? Here are [all flat-share apps compared](/best-flat-share-app).',
 			],
 		],
 		faq: [
@@ -814,7 +814,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'When to stay with Tricount',
-				'For trips with a foreign currency Tricount is the better choice, because ManaWG converts nothing and takes amounts in euros only in the app. The same goes if you split costs for a group of more than 20 people. And if you are only sharing a single trip, you need neither fixed costs nor a cleaning rota.',
+				'For trips with a foreign currency Tricount is the better choice, because ManaWG converts nothing and takes amounts in euros only in the app. The same goes if you split costs for a group of more than 20 people. And if you are only sharing a single trip, you need neither fixed costs nor a cleaning rota. Which other app might fit is covered in [all flat-share apps compared](/best-flat-share-app).',
 			],
 			[
 				'When ManaWG fits better',

@@ -81,7 +81,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 			],
 			[
 				'Punktesystem: Aufwand fair zählen',
-				'Beim Punktesystem zählt nicht die Zahl der Aufgaben, sondern der Aufwand. Legt fest, wie viel Zeit ein Punkt ist, etwa fünf Minuten, und gebt jeder Aufgabe Punkte nach den Richtwerten aus Schritt 2. Am Monatsende sollten alle ungefähr gleich viele Punkte haben. Das ist genauer als eine reine Rotation, verlangt aber, dass jemand mitzählt. Beispiel für drei Personen: Anna übernimmt das Bad mit 8 Punkten, Ben die Böden mit 7, Cem Küche und Müll mit zusammen 7. In der nächsten Woche tauscht ihr, damit niemand dauerhaft beim Bad bleibt.',
+				'Beim Punktesystem zählt nicht die Zahl der Aufgaben, sondern der Aufwand. Legt fest, wie viel Zeit ein Punkt ist, etwa fünf Minuten, und gebt jeder Aufgabe Punkte nach den Richtwerten aus Schritt 2. Am Monatsende sollten alle ungefähr gleich viele Punkte haben. Das ist genauer als eine reine Rotation, verlangt aber, dass jemand mitzählt. Beispiel für drei Personen: Anna übernimmt das Bad mit 8 Punkten, Ben die Böden mit 7, Cem Küche und Müll mit zusammen 7. In der nächsten Woche tauscht ihr, damit niemand dauerhaft beim Bad bleibt. Wer die Aufgaben lieber ohne Punkte nach Auslastung verteilen lässt, findet den Vergleich bei der [Flatastic-Alternative ohne Punktesystem](/flatastic-alternative).',
 			],
 			[
 				'Schritt 5: Sichtbar machen und pflegen',
@@ -97,7 +97,7 @@ export const GUIDES_DE_HOME: Record<string, Topic> = {
 			],
 			[
 				'Fertig statt selbst bauen',
-				'Die [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) gibt es als Tabelle, als PDF und Excel-Datei und als CSV-Download. Sie enthält fertige Rotationen für zwei, drei, vier und fünf Personen und einen Generator für eure Namen.\nDie [Putzplan-App](/putzplan) von ManaWG wiederholt Aufgaben in Tagen oder Monaten und bestimmt nach Auslastung, wer als Nächstes dran ist: Zugewiesene und überfällige Aufgaben zählen, überfällige stärker. Abwesende werden übersprungen, und an fällige zugewiesene Aufgaben erinnert ManaWG per Push.',
+				'Die [Putzplan-Vorlage zum Ausdrucken](/putzplan-vorlage) gibt es als Tabelle, als PDF und Excel-Datei und als CSV-Download. Sie enthält fertige Rotationen für zwei, drei, vier und fünf Personen und einen Generator für eure Namen.\nDie [Putzplan-App](/putzplan) von ManaWG wiederholt Aufgaben in Tagen oder Monaten und bestimmt nach Auslastung, wer als Nächstes dran ist: Zugewiesene und überfällige Aufgaben zählen, überfällige stärker. Abwesende werden übersprungen, und an fällige zugewiesene Aufgaben erinnert ManaWG per Push. Wer früher OurHome genutzt hat, findet Ersatz unter [OurHome-Alternative](/ourhome-alternative).',
 			],
 		],
 		tables: [
