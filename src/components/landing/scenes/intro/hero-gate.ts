@@ -23,16 +23,13 @@ export function wantsGL({ w, h, reduced, saveData, cores, memory }: Device): boo
 	return !small && !reduced && !saveData && (cores ?? 8) > 2 && (memory ?? 8) > 2;
 }
 
-/** The current device (browser only). */
-export function device(): Device {
+/** What the browser reports about the device and the connection (browser only; size and motion come from the loop). */
+export function device(): Pick<Device, 'saveData' | 'cores' | 'memory'> {
 	const nav = navigator as Navigator & {
 		connection?: { saveData?: boolean };
 		deviceMemory?: number;
 	};
 	return {
-		w: window.innerWidth,
-		h: window.innerHeight,
-		reduced: matchMedia('(prefers-reduced-motion: reduce)').matches,
 		saveData: nav.connection?.saveData,
 		cores: nav.hardwareConcurrency,
 		memory: nav.deviceMemory,
@@ -57,6 +54,11 @@ export function createStaticHero(cv: HTMLCanvasElement) {
 	const ctx = cv.getContext('2d');
 	const img = new Image();
 	img.decoding = 'async';
+	// Image failed: plain paper (the dark tone; light mode inverts the canvas) instead of an empty hero that never gets ready
+	let failed = false;
+	img.onerror = () => {
+		failed = true;
+	};
 	img.src = '/hero/mountain.webp';
 	let key = '';
 	return {
@@ -64,15 +66,21 @@ export function createStaticHero(cv: HTMLCanvasElement) {
 			c: { W: number; H: number; dpr: number; dprHero?: number },
 			h: { drop: number },
 		): boolean {
-			if (!ctx || !img.complete || !img.naturalWidth) return false;
+			if (!ctx) return false;
+			if (!failed && (!img.complete || !img.naturalWidth)) return false;
 			const dpr = c.dprHero ?? c.dpr;
 			const w = Math.max(1, Math.round(c.W * dpr));
 			const hh = Math.max(1, Math.round(c.H * dpr));
-			const k = `${w}x${hh}:${h.drop.toFixed(3)}`;
+			const k = `${w}x${hh}:${h.drop.toFixed(3)}:${failed}`;
 			if (k === key) return true;
 			key = k;
 			cv.width = w;
 			cv.height = hh;
+			if (failed) {
+				ctx.fillStyle = '#0A0A0A';
+				ctx.fillRect(0, 0, w, hh);
+				return true;
+			}
 			const s = section(img.naturalWidth, img.naturalHeight, c.W, c.H, h.drop);
 			ctx.drawImage(img, s.sx, s.sy, s.sw, s.sh, 0, 0, w, hh);
 			const g = ctx.createLinearGradient(0, hh, 0, hh * 0.58);

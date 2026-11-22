@@ -58,6 +58,33 @@ test('hero stays still with reduced motion', async ({ page }) => {
 	expect(urls).toEqual([]);
 });
 
+test('hero switches to the still image when reduced motion turns on after load', async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 }); // large window: WebGL hero
+	await page.goto('/?qa=1');
+	const hero = page.locator('canvas[data-intro="hero"]');
+	await expect(hero).toHaveAttribute('data-hero', 'gl');
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await expect(hero).toHaveAttribute('data-hero', 'still');
+});
+
+test('hero switches to the still image when the window becomes narrow', async ({ page }) => {
+	await page.setViewportSize({ width: 1440, height: 900 }); // large window: WebGL hero
+	await page.goto('/?qa=1');
+	const hero = page.locator('canvas[data-intro="hero"]');
+	await expect(hero).toHaveAttribute('data-hero', 'gl');
+	await page.setViewportSize({ width: 412, height: 823 });
+	await expect(hero).toHaveAttribute('data-hero', 'still');
+});
+
+test('still hero gets ready when the mountain image fails', async ({ page }) => {
+	await page.setViewportSize({ width: 412, height: 823 }); // phone size: still hero
+	await page.route('**/hero/mountain.webp', (r) => r.abort());
+	await page.goto('/?qa=1');
+	await page.waitForFunction(() => window.__landing?.ready === true, null, { timeout: 5000 });
+});
+
 test('animation loop stops while the tab is hidden', async ({ page }) => {
 	await page.addInitScript(() => {
 		const w = window as unknown as { __raf: number };
