@@ -927,7 +927,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 	},
 	faq: {
 		link: 'Frequently asked questions',
-		updated: '2026-11-09',
+		updated: '2026-11-22',
 		published: '2026-10-29',
 		title: 'ManaWG FAQ: cost, sign-up, data location | ManaWG',
 		description:
@@ -948,6 +948,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			[
 				'How do my flatmates join the flat?',
 				'One person creates the flat and shares the invite link. The others sign in with Google or email and join through the link.',
+			],
+			[
+				'The invite link has expired. How do I get a new one?',
+				'An invite link is valid for 14 days. Any member of the flat creates a new one, with “Invite flatmates” on the flat’s start page or with “New invitation” under Settings → Access → Invitations. Old links can also be revoked there.',
 			],
 			[
 				'How are expenses split?',
@@ -972,6 +976,10 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			[
 				'How do I sign in?',
 				'With Google or with an 8-digit code that you get by email: when you sign up, you give your name and email address, and no password is needed. You can set one later under Settings → Access. You join through an invite link or an email invitation from a flatmate.',
+			],
+			[
+				'The code does not arrive. What can I do?',
+				'Check your spam folder and whether the address is spelled correctly; you fix a typo with “Use a different email address”. After a short countdown you can tap “Resend code”. The code is only valid for a short time, so always use the newest one. Or sign in with Google, which needs no code.',
 			],
 			[
 				'Does ManaWG work with other currencies?',

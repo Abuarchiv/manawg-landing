@@ -897,7 +897,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 	},
 	faq: {
 		link: 'Häufige Fragen',
-		updated: '2026-11-09',
+		updated: '2026-11-22',
 		published: '2026-10-09',
 		title: 'Häufige Fragen zu ManaWG: Kosten, Anmeldung, Datenort',
 		description:
@@ -918,6 +918,10 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			[
 				'Wie kommen meine Mitbewohner in die WG?',
 				'Eine Person erstellt die WG und teilt den Einladungslink. Die anderen melden sich mit Google oder E-Mail an und treten per Link bei.',
+			],
+			[
+				'Der Einladungslink ist abgelaufen. Wie bekomme ich einen neuen?',
+				'Ein Einladungslink gilt 14 Tage. Einen neuen erstellt jedes Mitglied der WG, mit „Mitbewohner einladen“ auf der Startseite der WG oder mit „Neue Einladung“ unter Einstellungen → Zugang → Einladungen. Dort lassen sich alte Links auch widerrufen.',
 			],
 			[
 				'Wie werden Ausgaben aufgeteilt?',
@@ -942,6 +946,10 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			[
 				'Wie melde ich mich an?',
 				'Mit Google oder mit einem 8-stelligen Code, den ihr per E-Mail bekommt: Bei der Registrierung gebt ihr Name und E-Mail an, ein Passwort ist nicht nötig. Es lässt sich später unter Einstellungen → Zugang festlegen. Beitreten geht per Einladungslink, den euch ein Mitbewohner schickt.',
+			],
+			[
+				'Der Code kommt nicht an. Was kann ich tun?',
+				'Schaut im Spam-Ordner nach und prüft, ob die Adresse richtig geschrieben ist; einen Tippfehler korrigiert ihr mit „Andere E-Mail-Adresse verwenden“. Nach einem kurzen Countdown könnt ihr „Code erneut senden“ antippen. Der Code gilt nur kurz, nehmt also immer den neuesten. Oder ihr meldet euch mit Google an, dafür braucht ihr keinen Code.',
 			],
 			[
 				'Funktioniert ManaWG mit anderen Währungen?',
