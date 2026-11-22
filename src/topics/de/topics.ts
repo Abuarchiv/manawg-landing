@@ -149,7 +149,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			'Kostenlose WG Putzplan App: Aufgaben wiederholen sich im festen Rhythmus, die App verteilt fair, überspringt Abwesende und erinnert, wer dran ist.',
 		h1: 'WG Putzplan App: Aufgaben, faire Verteilung und Abwesenheit',
 		intro:
-			'Ihr legt die Aufgaben einmal an, ManaWG rechnet Termine, Zuständigkeit und Abwesenheit selbst aus. Kostenlos und im Browser, ohne Zettel am Kühlschrank, der schnell veraltet. Wer einen Plan zum Ausdrucken sucht, findet ihn in der [Putzplan-Vorlage](/putzplan-vorlage), die Schritte zum eigenen Plan stehen unter [Putzplan erstellen](/putzplan-erstellen).',
+			'Ihr legt die Aufgaben einmal an, ManaWG rechnet Termine, Zuständigkeit und Abwesenheit selbst aus. Kostenlos und im Browser, ohne Zettel am Kühlschrank, der schnell veraltet. Wer einen Plan zum Ausdrucken sucht, findet ihn in der [Putzplan-Vorlage](/putzplan-vorlage), die Schritte zum eigenen Plan stehen unter [Putzplan erstellen](/putzplan-erstellen). Die Kurzantwort mit App-Vergleich steht unter [Putzplan-App kostenlos](/putzplan-wg-app-kostenlos).',
 		sections: [
 			[
 				'Aufgaben mit festem Rhythmus',
@@ -220,7 +220,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			'Die kostenlose WG Kasse App: Ausgaben teilen, mit wenigen Überweisungen ausgleichen, Fixkosten buchen und die Monatsabrechnung per Mail bekommen.',
 		h1: 'Die WG Kasse App für Ausgaben, Fixkosten und Abrechnung',
 		intro:
-			'Wer hat das Klopapier bezahlt, wer schuldet wem noch etwas? ManaWG ist eine kostenlose WG Kasse App auf Deutsch, Englisch und Spanisch. Jede Ausgabe landet sofort im Saldo aller Beteiligten, ohne Zettel und ohne Tabelle.',
+			'Wer hat das Klopapier bezahlt, wer schuldet wem noch etwas? ManaWG ist eine kostenlose WG Kasse App auf Deutsch, Englisch und Spanisch. Jede Ausgabe landet sofort im Saldo aller Beteiligten, ohne Zettel und ohne Tabelle. Die Kurzantwort mit Vergleich zu Splitwise, Tricount und Flatastic steht unter [WG-Kosten teilen per App](/wg-kosten-teilen-app).',
 		sections: [
 			[
 				'Ausgaben teilen in der WG',

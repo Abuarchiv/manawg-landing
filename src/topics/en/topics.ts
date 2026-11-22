@@ -191,7 +191,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			'Free cleaning rota and chore chart app for flatmates: tasks repeat on a set rhythm, the app shares them fairly, skips anyone away and reminds whoever is next.',
 		h1: 'Cleaning rota app: tasks, fair rotation and time away',
 		intro:
-			'You add the tasks once, and ManaWG works out the dates, who is responsible and who is away. It is a free chore app for flatmates and roommates that runs in the browser, with no note on the fridge that goes out of date. If you want a rota to print, use the [cleaning rota template](/cleaning-rota-template). The steps to your own plan are in [Make a cleaning rota](/make-a-cleaning-rota).',
+			'You add the tasks once, and ManaWG works out the dates, who is responsible and who is away. It is a free chore app for flatmates and roommates that runs in the browser, with no note on the fridge that goes out of date. If you want a rota to print, use the [cleaning rota template](/cleaning-rota-template). The steps to your own plan are in [Make a cleaning rota](/make-a-cleaning-rota). The short answer with an app comparison is on [Free cleaning rota app](/free-cleaning-rota-app).',
 		sections: [
 			[
 				'Tasks on a fixed rhythm',
@@ -266,7 +266,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			'Free app to split bills with flatmates or roommates: equal or custom shares in euros, fixed costs such as rent, few settle-up transfers, monthly statement.',
 		h1: 'The shared expenses app for costs, fixed costs and statements',
 		intro:
-			'Who paid for the loo roll, and who still owes whom? ManaWG is a free shared expenses app in English, German and Spanish for a WG (shared flat). Every expense lands in everyone’s balance at once, with no notes and no spreadsheet.',
+			'Who paid for the loo roll, and who still owes whom? ManaWG is a free shared expenses app in English, German and Spanish for a WG (shared flat). Every expense lands in everyone’s balance at once, with no notes and no spreadsheet. The short answer with a comparison to Splitwise, Tricount and Flatastic is on [App to split flat costs](/app-to-split-flat-costs).',
 		sections: [
 			[
 				'Splitting expenses in a flat',

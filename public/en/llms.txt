@@ -31,6 +31,8 @@ Note on the name: ManaWG is a household app for shared flats and has nothing to 
 - [Tricount alternative](https://manawg.com/en/tricount-alternative)
 - [Splid alternative](https://manawg.com/en/splid-alternative)
 - [OurHome alternative](https://manawg.com/en/ourhome-alternative)
+- [App to split flat costs](https://manawg.com/en/app-to-split-flat-costs): short answer, five steps, comparison with Splitwise, Tricount and Flatastic
+- [Free cleaning rota app](https://manawg.com/en/free-cleaning-rota-app): short answer, five steps, comparison with Flatastic, Splitwise and Tricount
 - [Open-source Splitwise alternatives](https://manawg.com/en/open-source-splitwise-alternatives): ManaWG, Spliit, SplitPro, Cospend, IHateMoney, Abrechnung by licence, self-hosting, phone use and import
 - [Frequently asked questions](https://manawg.com/en/faq)
 - [What is ManaWG? Facts](https://manawg.com/en/about-manawg)
