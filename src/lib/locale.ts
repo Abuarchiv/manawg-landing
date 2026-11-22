@@ -79,6 +79,8 @@ export const TOPIC_SLUG_EN: Readonly<Record<string, string>> = {
 	'open-source-wg-app': 'open-source-flat-share-app',
 	'open-source-splitwise-alternativen': 'open-source-splitwise-alternatives',
 	'putzplan-selbst-hosten': 'self-hosted-chore-tracker',
+	'wg-kosten-teilen-app': 'app-to-split-flat-costs',
+	'putzplan-wg-app-kostenlos': 'free-cleaning-rota-app',
 };
 
 const EN_TO_DE: Readonly<Record<string, string>> = Object.fromEntries(

@@ -1,4 +1,5 @@
 import type { Topic } from '../types.ts';
+import { ANSWERS_EN } from './answers.ts';
 import { GUIDES_EN_HOME } from './guides-home.ts';
 import { GUIDES_EN_MONEY } from './guides-money.ts';
 import { GUIDES_EN_MOVING } from './guides-moving.ts';
@@ -12,4 +13,5 @@ export const TOPICS_EN: Record<string, Topic> = {
 	...GUIDES_EN_HOME,
 	...GUIDES_EN_MOVING,
 	...OPEN_SOURCE_EN,
+	...ANSWERS_EN,
 };

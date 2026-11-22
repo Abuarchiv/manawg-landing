@@ -21,6 +21,8 @@ export const GROUPS: Array<{
 			'tricount-alternative',
 			'ourhome-alternative',
 			'open-source-splitwise-alternativen',
+			'wg-kosten-teilen-app',
+			'putzplan-wg-app-kostenlos',
 		],
 	},
 	{
@@ -137,6 +139,8 @@ const READ_NEXT: Record<string, string[]> = {
 		'splitwise-alternative',
 		'beste-wg-app',
 	],
+	'wg-kosten-teilen-app': ['wg-kasse', 'wg-kosten-aufteilen', 'splitwise-kostenlos'],
+	'putzplan-wg-app-kostenlos': ['putzplan', 'putzplan-vorlage', 'flatastic-alternative'],
 	faq: ['wg-app', 'wg-kasse', 'putzplan'],
 	'ueber-manawg': ['faq', 'wg-app', 'beste-wg-app'],
 };
