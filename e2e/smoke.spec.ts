@@ -31,6 +31,82 @@ for (const path of ['/', '/en']) {
 	});
 }
 
+// The WebGL hero (hero.ts) requests the GPU probe and the mountain mask when it starts; the still hero does neither (#126)
+const glRequests = (page: Page) => {
+	const urls: string[] = [];
+	page.on('request', (r) => {
+		if (/\/gl-probe\.js|mountain-mask\.webp/.test(r.url())) urls.push(r.url());
+	});
+	return urls;
+};
+
+test('hero loads WebGL only on large screens without reduced motion', async ({ page }, info) => {
+	const urls = glRequests(page);
+	await page.goto('/?qa=1');
+	await page.waitForFunction(() => window.__landing?.ready === true);
+	await page.waitForTimeout(500);
+	if (info.project.name === 'phone') expect(urls).toEqual([]);
+	else expect(urls.length).toBeGreaterThan(0);
+});
+
+test('hero stays still with reduced motion', async ({ page }) => {
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	const urls = glRequests(page);
+	await page.goto('/?qa=1');
+	await page.waitForFunction(() => window.__landing?.ready === true);
+	await page.waitForTimeout(500);
+	expect(urls).toEqual([]);
+});
+
+test('hero switches to the still image when reduced motion turns on after load', async ({
+	page,
+}) => {
+	await page.setViewportSize({ width: 1440, height: 900 }); // large window: WebGL hero
+	await page.goto('/?qa=1');
+	const hero = page.locator('canvas[data-intro="hero"]');
+	await expect(hero).toHaveAttribute('data-hero', 'gl');
+	await page.emulateMedia({ reducedMotion: 'reduce' });
+	await expect(hero).toHaveAttribute('data-hero', 'still');
+});
+
+test('hero switches to the still image when the window becomes narrow', async ({ page }) => {
+	await page.setViewportSize({ width: 1440, height: 900 }); // large window: WebGL hero
+	await page.goto('/?qa=1');
+	const hero = page.locator('canvas[data-intro="hero"]');
+	await expect(hero).toHaveAttribute('data-hero', 'gl');
+	await page.setViewportSize({ width: 412, height: 823 });
+	await expect(hero).toHaveAttribute('data-hero', 'still');
+});
+
+test('still hero gets ready when the mountain image fails', async ({ page }) => {
+	await page.setViewportSize({ width: 412, height: 823 }); // phone size: still hero
+	await page.route('**/hero/mountain.webp', (r) => r.abort());
+	await page.goto('/?qa=1');
+	await page.waitForFunction(() => window.__landing?.ready === true, null, { timeout: 5000 });
+});
+
+test('animation loop stops while the tab is hidden', async ({ page }) => {
+	await page.addInitScript(() => {
+		const w = window as unknown as { __raf: number };
+		w.__raf = 0;
+		const raf = window.requestAnimationFrame.bind(window);
+		window.requestAnimationFrame = (cb) => {
+			w.__raf++;
+			return raf(cb);
+		};
+	});
+	await page.goto('/?qa=1');
+	await page.waitForFunction(() => window.__landing?.ready === true);
+	const count = () => page.evaluate(() => (window as unknown as { __raf: number }).__raf);
+	await page.evaluate(() => {
+		Object.defineProperty(document, 'hidden', { configurable: true, get: () => true });
+		document.dispatchEvent(new Event('visibilitychange'));
+	});
+	const before = await count();
+	await page.waitForTimeout(500);
+	expect((await count()) - before).toBeLessThanOrEqual(1);
+});
+
 const PAGES = [
 	'/ratgeber',
 	'/putzplan-vorlage',

@@ -10,7 +10,7 @@ import { loop, onFrame } from '../../core/loop';
 import { cl, lerp, ss } from '../../core/math';
 import * as flat from './flat';
 import { preloadFlat } from './flat-gl';
-import { createHero } from './hero';
+import { createStaticHero, device, wantsGL } from './hero-gate';
 import { drawStars } from './stars';
 import { isStacked, unwarp, warp } from './timeline';
 import type { HeroMarks, Hole, StageContext, StagePointer } from './types';
@@ -85,7 +85,54 @@ export function createStage({
 	let titleBottom = 0;
 	const hints = root.querySelector<HTMLElement>('[data-hints]');
 	const roomsEl = stageEl.querySelector<HTMLElement>('[data-hole="text"]');
-	const hero = createHero(cvHero);
+	// Still image first; the WebGL hero (own chunk) only on capable devices, after idle and once the stage is visible.
+	// The gate runs every visible frame on the loop's window size and motion preference, so a resize or a change of
+	// prefers-reduced-motion switches between the two (data-hero on the canvas names the active one).
+	type Hero = ReturnType<typeof createStaticHero>;
+	const still = createStaticHero(cvHero);
+	const caps = device();
+	let hero: Hero = still;
+	let gl: Hero | null = null;
+	let want = false;
+	let glAsked = false;
+	let glFailed = false;
+	let gone = false;
+	const setHero = (h: Hero, kind: 'gl' | 'still') => {
+		hero = h;
+		cvHero.dataset.hero = kind;
+	};
+	setHero(still, 'still');
+	const loadGL = () => {
+		glAsked = true;
+		const go = () =>
+			import('./hero')
+				.then((m) => {
+					if (gone || !want) {
+						glAsked = false; // gate closed while loading: ask again when it opens
+						return;
+					}
+					gl = m.createHero(cvHero);
+					setHero(gl, 'gl');
+				})
+				.catch(() => {
+					glFailed = true; // chunk failed to load: keep the still
+					glAsked = false;
+				});
+		if (typeof requestIdleCallback === 'function') requestIdleCallback(go, { timeout: 2000 });
+		else setTimeout(go, 200);
+	};
+	const gate = () => {
+		want =
+			!glFailed && wantsGL({ ...caps, w: loop.vw || W, h: loop.vh || H, reduced: loop.reduced });
+		if (want && !glAsked) loadGL();
+		if (!want && gl) {
+			gl.destroy();
+			gl = null;
+			glAsked = false;
+			still.release(); // redraw the still on the next frame
+			setHero(still, 'still');
+		}
+	};
 
 	let W = stageEl.clientWidth;
 	let H = stageEl.clientHeight;
@@ -374,7 +421,9 @@ export function createStage({
 				// (narrow or short phones, four-line subline) pushes the mountain further down so the buttons stay on the sky.
 				hm.drop = stacked ? cl((titleBottom + 14) / H - 0.33, 0.13, 0.28) : 0;
 				c.dprHero = isTouch() ? Math.min(dpr, 1.25) : dpr;
-				heroDrawn = hero.frame(c, hm);
+				gate();
+				// Capable devices wait for the WebGL hero (the loader covers it); the still would flash before it
+				if (gl || !glAsked) heroDrawn = hero.frame(c, hm);
 			}
 			if (cvStars && P < 0.075) drawStars(cvStars, W, safeH, dpr, t);
 			if (fpA > 0.001 || portal > 0.001) flat.draw(cvFlat, c, rooms, people);
@@ -398,6 +447,7 @@ export function createStage({
 			root.removeEventListener('pointermove', place);
 			root.removeEventListener('pointerleave', onLeave);
 			root.removeEventListener('pointerdown', onDown);
+			gone = true;
 			hero.destroy();
 			if (live.stage === api) live.stage = null;
 		},
