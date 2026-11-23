@@ -213,22 +213,22 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 	},
 	'wg-kasse': {
 		link: 'WG-Kasse',
-		updated: '2026-11-09',
+		updated: '2026-11-23',
 		published: '2026-10-09',
-		title: 'WG Kasse App: Ausgaben teilen, Abrechnung | ManaWG',
+		title: 'WG-Kasse per App: Ausgaben teilen, Abrechnung | ManaWG',
 		description:
-			'Die kostenlose WG Kasse App: Ausgaben teilen, mit wenigen Überweisungen ausgleichen, Fixkosten buchen und die Monatsabrechnung per Mail bekommen.',
-		h1: 'Die WG Kasse App für Ausgaben, Fixkosten und Abrechnung',
+			'WG-Kasse einrichten: Ausgaben eintragen, ManaWG rechnet aus, wer wem was schuldet. Die Abrechnung kommt am Monatsersten per Mail. Kostenlos, ohne Werbung.',
+		h1: 'WG-Kasse per App: Ausgaben, Fixkosten und Abrechnung',
 		intro:
-			'Wer hat das Klopapier bezahlt, wer schuldet wem noch etwas? ManaWG ist eine kostenlose WG Kasse App auf Deutsch, Englisch und Spanisch. Jede Ausgabe landet sofort im Saldo aller Beteiligten, ohne Zettel und ohne Tabelle. Die Kurzantwort mit Vergleich zu Splitwise, Tricount und Flatastic steht unter [WG-Kosten teilen per App](/wg-kosten-teilen-app).',
+			'Eine WG-Kasse hält fest, was die WG gemeinsam bezahlt und wer wem dafür noch Geld schuldet. In ManaWG legt ihr eine WG an, ladet die Mitbewohner per Link ein und tragt jede Ausgabe mit Bezahler und Beteiligten ein; die App rechnet die Salden und schlägt Überweisungen vor. Eine Dose mit Bargeld oder ein Gemeinschaftskonto braucht ihr dafür nicht. ManaWG ist kostenlos, ohne Werbung und auf Deutsch, Englisch und Spanisch nutzbar. Die Kurzantwort mit Vergleich zu Splitwise, Tricount und Flatastic steht unter [WG-Kosten teilen per App](/wg-kosten-teilen-app).',
 		sections: [
 			[
 				'Ausgaben teilen in der WG',
 				'Ihr erfasst Betrag, Bezahler und Beteiligte und wählt eine von sechs Kategorien, etwa Lebensmittel oder Haushalt. Geteilt wird gleichmäßig oder mit eigenen Beträgen pro Person. ManaWG rechnet in ganzen Cent: Bei gleicher Teilung unterscheiden sich die Anteile höchstens um einen Cent, die Summe stimmt immer exakt. Ein Foto vom Beleg hängt ihr direkt an die Ausgabe.',
 			],
 			[
-				'Rechenbeispiel: 120 Euro für drei Personen',
-				'Ein fiktives Beispiel: Lea bezahlt 90 Euro für gemeinsame Lebensmittel, Jona 30 Euro für Haushaltsbedarf und Lina noch nichts. Beide Einkäufe werden gleichmäßig auf alle drei verteilt. Zusammen sind das 120 Euro, also 40 Euro pro Person. Lea hat 50 Euro mehr bezahlt als ihren Anteil, Jona fehlen 10 Euro und Lina 40 Euro. Zum Ausgleich zahlt Jona 10 Euro an Lea und Lina 40 Euro an Lea. Diese Zahlungen erledigt ihr außerhalb der App und markiert sie anschließend als bezahlt. Weitere Beispiele und Regeln für unterschiedliche Anteile findet ihr im Ratgeber [WG-Kosten aufteilen](/wg-kosten-aufteilen).',
+				'WG-Abrechnung per App: wer wem was schuldet',
+				'Für jede Person zählt eine Zahl: was sie bezahlt hat, minus ihr Anteil. Ist der Saldo positiv, bekommt sie Geld, ist er negativ, zahlt sie. ManaWG führt die Salden laufend mit. Ein erfundenes Beispiel für einen Monat mit vier Personen: Mia kauft für 100 Euro Lebensmittel, Sam zahlt 40 Euro Internet, Ben kauft für 20 Euro Putzmittel, Ali zahlt nichts. Alles wird gleichmäßig geteilt. Das sind 160 Euro, also 40 Euro pro Person. Mia steht bei plus 60 Euro, Sam bei null, Ben bei minus 20 und Ali bei minus 40 Euro. Zum Ausgleich überweist Ben 20 Euro an Mia und Ali 40 Euro an Mia. Nach zwei Überweisungen sind alle quitt. Genau diese Vorschläge stehen in der Monatsabrechnung, die am Monatsersten per Mail kommt. Ihr überweist selbst, per Bank oder bar, und markiert den Ausgleich danach als bezahlt. Weitere Beispiele und Regeln für unterschiedliche Anteile findet ihr im Ratgeber [WG-Kosten aufteilen](/wg-kosten-aufteilen).',
 			],
 			[
 				'Ausgleich mit wenigen Überweisungen',
@@ -255,10 +255,36 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 				'ManaWG ist für WGs mit bis zu 20 aktiven Mitgliedern gedacht, auf Deutsch, Englisch und Spanisch nutzbar, Beträge tragt ihr in Euro ein. Es wird als PWA über den Browser installiert, nicht über App Store oder Play Store. Ihr meldet euch per Google oder E-Mail an. Die App ist kostenlos und ohne Werbung. Was die App außer der Kasse bietet, steht unter [WG-App kostenlos](/wg-app).',
 			],
 		],
+		tables: [
+			{
+				after: 'WG-Abrechnung per App: wer wem was schuldet',
+				title: 'Beispiel: Monatsabrechnung einer Vierer-WG (erfundene Zahlen)',
+				header: ['Person', 'Bezahlt', 'Anteil', 'Saldo', 'Ausgleich'],
+				rows: [
+					['Mia', '100 €', '40 €', '+60 €', 'bekommt 60 €'],
+					['Sam', '40 €', '40 €', '0 €', 'quitt'],
+					['Ben', '20 €', '40 €', '−20 €', 'überweist 20 € an Mia'],
+					['Ali', '0 €', '40 €', '−40 €', 'überweist 40 € an Mia'],
+				],
+				note: 'Summe 160 €, gleichmäßig auf vier Personen geteilt.',
+			},
+		],
 		faq: [
 			[
-				'Ist die WG Kasse App kostenlos?',
+				'Ist die WG-Kasse in ManaWG kostenlos?',
 				'Ja, ManaWG kostet nichts und zeigt keine Werbung. Ihr nutzt die App im Browser oder installiert sie als PWA auf dem Handy.',
+			],
+			[
+				'Barkasse oder App: was passt besser?',
+				'Bei einer Barkasse zahlen alle jeden Monat einen festen Betrag in eine Dose. Jemand muss den Bestand zählen und die Belege sammeln. Mit einer App zahlt jeder, wenn etwas anfällt, und trägt es ein. Der Saldo zeigt dann, wer wem etwas schuldet, und niemand verwaltet Bargeld. Die Vor- und Nachteile aller drei Wege stehen im Ratgeber [WG-Haushaltskasse: Bargeld, Konto oder App](/wg-haushaltskasse).',
+			],
+			[
+				'Braucht die WG ein Gemeinschaftskonto?',
+				'Nein. In ManaWG bezahlt jede Person von ihrem eigenen Konto oder bar und trägt die Ausgabe ein. ManaWG hat keine Bankanbindung und überweist nichts selbst. Habt ihr schon ein Gemeinschaftskonto, etwa für die Miete, könnt ihr es behalten.',
+			],
+			[
+				'Was gehört in die WG-Kasse?',
+				'Alles, was mehrere von euch nutzen: gemeinsame Lebensmittel, Putzmittel, Klopapier, Internet, Strom oder ein geteiltes Streaming-Abo. Private Einkäufe gehören nicht hinein. Nutzen nur zwei von vier Personen etwas, wählt ihr bei der Ausgabe nur diese beiden aus. Wie ihr Strom, Internet und Nachzahlungen verteilt, steht im Ratgeber [WG-Nebenkosten aufteilen](/wg-nebenkosten).',
 			],
 			[
 				'Wie funktioniert der Ausgleich mit wenigen Überweisungen?',
