@@ -131,10 +131,13 @@ function onClick(event: MouseEvent): void {
 	else if (isDemoLink(link)) capture('demo_link_clicked', ctaId(link.dataset.cta));
 }
 
-// Errors thrown before the Sentry SDK has loaded (stage set-up, hydration) are kept and sent once it is ready.
+// The Sentry SDK (about 140 KB) loads only when the first error happens, so a visit without errors never
+// downloads or runs it. That first error is kept and sent once the SDK is ready; later ones go to the SDK.
 const early: unknown[] = [];
-const keepEarly = (event: ErrorEvent | PromiseRejectionEvent) =>
+const keepEarly = (event: ErrorEvent | PromiseRejectionEvent) => {
 	early.push('reason' in event ? event.reason : event.error);
+	if (SENTRY_DSN) void loadSentry(SENTRY_DSN);
+};
 
 if (typeof window !== 'undefined' && SENTRY_DSN && !isLocal()) {
 	addEventListener('error', keepEarly);
@@ -267,17 +270,5 @@ export function reportError(error: unknown): void {
 export function startTelemetry(): () => void {
 	if (isLocal()) return () => {};
 	if (POSTHOG_KEY) document.addEventListener('click', onClick, { capture: true });
-	const dsn = SENTRY_DSN;
-	// The SDK is not needed for the first paint; it loads once the page is idle (Safari has no
-	// requestIdleCallback, so a timer stands in).
-	const load = () => dsn && loadSentry(dsn);
-	const idle = typeof requestIdleCallback === 'function';
-	const handle = idle
-		? requestIdleCallback(load, { timeout: 4000 })
-		: window.setTimeout(load, 2000);
-	return () => {
-		document.removeEventListener('click', onClick, { capture: true });
-		if (idle) cancelIdleCallback(handle);
-		else clearTimeout(handle);
-	};
+	return () => document.removeEventListener('click', onClick, { capture: true });
 }

@@ -171,3 +171,23 @@ test('a failing analytics call never throws into the page', async () => {
 		Object.defineProperty(crypto, 'randomUUID', { value: randomUUID, configurable: true });
 	}
 });
+
+test('the Sentry SDK is not scheduled on page load, only an error loads it', async () => {
+	process.env.NEXT_PUBLIC_SENTRY_DSN = 'https://key@o0.ingest.example.test/1';
+	const g = globalThis as Record<string, unknown>;
+	g.location = { hostname: 'manawg.com', pathname: '/' };
+	g.document = { referrer: '', addEventListener() {}, removeEventListener() {} };
+	let scheduled = 0;
+	g.requestIdleCallback = () => ++scheduled;
+	g.cancelIdleCallback = () => {};
+	try {
+		const fresh = './telemetry.ts?sentry-on-error';
+		const { startTelemetry } = (await import(fresh)) as typeof import('./telemetry.ts');
+		startTelemetry()();
+		assert.equal(scheduled, 0);
+	} finally {
+		delete process.env.NEXT_PUBLIC_SENTRY_DSN;
+		delete g.requestIdleCallback;
+		delete g.cancelIdleCallback;
+	}
+});
