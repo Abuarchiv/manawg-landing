@@ -172,66 +172,120 @@ test('a failing analytics call never throws into the page', async () => {
 	}
 });
 
-test('the Sentry SDK is not scheduled on page load, only an error loads it', async () => {
-	process.env.NEXT_PUBLIC_SENTRY_DSN = 'https://key@o0.ingest.example.test/1';
-	const g = globalThis as Record<string, unknown>;
-	g.location = { hostname: 'manawg.com', pathname: '/' };
-	g.document = { referrer: '', addEventListener() {}, removeEventListener() {} };
-	let scheduled = 0;
-	g.requestIdleCallback = () => ++scheduled;
-	g.cancelIdleCallback = () => {};
-	try {
-		const fresh = './telemetry.ts?sentry-on-error';
-		const { startTelemetry } = (await import(fresh)) as typeof import('./telemetry.ts');
-		startTelemetry()();
-		assert.equal(scheduled, 0);
-	} finally {
-		delete process.env.NEXT_PUBLIC_SENTRY_DSN;
-		delete g.requestIdleCallback;
-		delete g.cancelIdleCallback;
-	}
-});
-
-// The SDK keeps the first fetch it sees for its transport, so both cases share one stand-in.
+// The SDK keeps the first fetch it sees for its transport, so all Sentry cases share one stand-in.
 const sentryBodies: string[] = [];
 const sentryFetch = (async (_url: unknown, init?: { body?: unknown }) => {
 	sentryBodies.push(String(init?.body ?? ''));
 	return new Response('{}');
 }) as typeof globalThis.fetch;
 
-for (const [type, event] of [
-	['error', { error: new TypeError('stage set-up failed') }],
-	['unhandledrejection', { reason: new TypeError('hydration failed') }],
+type SentryException = {
+	type?: string;
+	value?: string;
+	stacktrace?: { frames?: Array<{ function?: string }> };
+};
+
+/** The exceptions in the Sentry envelopes sent since `from`. */
+function sentExceptions(from: number): SentryException[] {
+	return sentryBodies.slice(from).flatMap((body) =>
+		body
+			.split('\n')
+			.flatMap((line) => {
+				try {
+					return [JSON.parse(line) as { exception?: { values?: SentryException[] } }];
+				} catch {
+					return [];
+				}
+			})
+			.flatMap((item) => item.exception?.values ?? []),
+	);
+}
+
+/** A page with a Sentry DSN on manawg.com; returns the window handlers the module registers. */
+function sentryPage() {
+	process.env.NEXT_PUBLIC_SENTRY_DSN = 'https://key@o0.ingest.example.test/1';
+	const g = globalThis as Record<string, unknown>;
+	g.location = { hostname: 'manawg.com', pathname: '/', href: 'https://manawg.com/' };
+	g.document = { referrer: '', addEventListener() {}, removeEventListener() {} };
+	g.window = globalThis;
+	const handlers: Record<string, (event: unknown) => void> = {};
+	g.addEventListener = (name: string, fn: (event: unknown) => void) => {
+		handlers[name] = fn;
+	};
+	g.removeEventListener = () => {};
+	const fetch = globalThis.fetch;
+	globalThis.fetch = sentryFetch;
+	const restore = () => {
+		globalThis.fetch = fetch;
+		delete process.env.NEXT_PUBLIC_SENTRY_DSN;
+		delete g.window;
+		delete g.addEventListener;
+		delete g.removeEventListener;
+	};
+	return { handlers, restore };
+}
+
+const sentryStarted = () => '__SENTRY__' in globalThis;
+
+// Runs before the error cases below, which start the SDK for the rest of this file.
+test('without an error the Sentry SDK never loads, not on idle and not on a timer', async (t) => {
+	const { restore } = sentryPage();
+	const g = globalThis as Record<string, unknown>;
+	g.requestIdleCallback = (fn: () => void) => {
+		fn();
+		return 1;
+	};
+	g.cancelIdleCallback = () => {};
+	t.mock.timers.enable({ apis: ['setTimeout', 'setInterval'] });
+	try {
+		const fresh = './telemetry.ts?no-error';
+		const { startTelemetry } = (await import(fresh)) as typeof import('./telemetry.ts');
+		startTelemetry();
+		t.mock.timers.tick(60_000);
+		t.mock.timers.reset();
+		// Give a scheduled dynamic import time to resolve and run Sentry.init.
+		await new Promise((resolve) => setTimeout(resolve, 2000));
+		assert.equal(sentryStarted(), false, 'Sentry started without an error');
+	} finally {
+		t.mock.timers.reset();
+		delete g.requestIdleCallback;
+		delete g.cancelIdleCallback;
+		restore();
+	}
+});
+
+// Named functions, so the sent stack trace shows it is the original error and not a stand-in.
+function setUpStage() {
+	return new TypeError('stage set-up failed');
+}
+function hydrate() {
+	return new TypeError('hydration failed');
+}
+
+for (const [type, frame, event] of [
+	['error', 'setUpStage', { error: setUpStage() }],
+	['unhandledrejection', 'hydrate', { reason: hydrate() }],
 ] as const) {
 	test(`the first ${type} loads the Sentry SDK and sends that error`, async () => {
-		process.env.NEXT_PUBLIC_SENTRY_DSN = 'https://key@o0.ingest.example.test/1';
-		const g = globalThis as Record<string, unknown>;
-		g.location = { hostname: 'manawg.com', pathname: '/', href: 'https://manawg.com/' };
-		g.document = { referrer: '', addEventListener() {}, removeEventListener() {} };
-		g.window = globalThis;
-		const handlers: Record<string, (event: unknown) => void> = {};
-		g.addEventListener = (name: string, fn: (event: unknown) => void) => {
-			handlers[name] = fn;
-		};
-		g.removeEventListener = () => {};
-		const fetch = globalThis.fetch;
-		globalThis.fetch = sentryFetch;
-		const before = sentryBodies.length;
-		const delivered = () => sentryBodies.slice(before).some((body) => body.includes('"TypeError"'));
+		const { handlers, restore } = sentryPage();
+		const from = sentryBodies.length;
+		const original = () =>
+			sentExceptions(from).find((e) =>
+				e.stacktrace?.frames?.some((f) => f.function?.endsWith(frame)),
+			);
 		try {
 			const fresh = `./telemetry.ts?first-${type}`;
 			const { startTelemetry } = (await import(fresh)) as typeof import('./telemetry.ts');
 			startTelemetry();
 			handlers[type]?.(event);
 			const deadline = Date.now() + 5000;
-			while (!delivered() && Date.now() < deadline) await new Promise((r) => setTimeout(r, 20));
-			assert.ok(delivered(), `the early ${type} reaches Sentry`);
+			while (!original() && Date.now() < deadline) await new Promise((r) => setTimeout(r, 20));
+			const sent = original();
+			assert.ok(sent, `the original ${type} (frame ${frame}) reaches Sentry`);
+			assert.equal(sent.type, 'TypeError');
+			assert.equal(sent.value, '[redacted]');
 		} finally {
-			globalThis.fetch = fetch;
-			delete process.env.NEXT_PUBLIC_SENTRY_DSN;
-			delete g.window;
-			delete g.addEventListener;
-			delete g.removeEventListener;
+			restore();
 		}
 	});
 }
