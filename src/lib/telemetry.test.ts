@@ -191,3 +191,47 @@ test('the Sentry SDK is not scheduled on page load, only an error loads it', asy
 		delete g.cancelIdleCallback;
 	}
 });
+
+// The SDK keeps the first fetch it sees for its transport, so both cases share one stand-in.
+const sentryBodies: string[] = [];
+const sentryFetch = (async (_url: unknown, init?: { body?: unknown }) => {
+	sentryBodies.push(String(init?.body ?? ''));
+	return new Response('{}');
+}) as typeof globalThis.fetch;
+
+for (const [type, event] of [
+	['error', { error: new TypeError('stage set-up failed') }],
+	['unhandledrejection', { reason: new TypeError('hydration failed') }],
+] as const) {
+	test(`the first ${type} loads the Sentry SDK and sends that error`, async () => {
+		process.env.NEXT_PUBLIC_SENTRY_DSN = 'https://key@o0.ingest.example.test/1';
+		const g = globalThis as Record<string, unknown>;
+		g.location = { hostname: 'manawg.com', pathname: '/', href: 'https://manawg.com/' };
+		g.document = { referrer: '', addEventListener() {}, removeEventListener() {} };
+		g.window = globalThis;
+		const handlers: Record<string, (event: unknown) => void> = {};
+		g.addEventListener = (name: string, fn: (event: unknown) => void) => {
+			handlers[name] = fn;
+		};
+		g.removeEventListener = () => {};
+		const fetch = globalThis.fetch;
+		globalThis.fetch = sentryFetch;
+		const before = sentryBodies.length;
+		const delivered = () => sentryBodies.slice(before).some((body) => body.includes('"TypeError"'));
+		try {
+			const fresh = `./telemetry.ts?first-${type}`;
+			const { startTelemetry } = (await import(fresh)) as typeof import('./telemetry.ts');
+			startTelemetry();
+			handlers[type]?.(event);
+			const deadline = Date.now() + 5000;
+			while (!delivered() && Date.now() < deadline) await new Promise((r) => setTimeout(r, 20));
+			assert.ok(delivered(), `the early ${type} reaches Sentry`);
+		} finally {
+			globalThis.fetch = fetch;
+			delete process.env.NEXT_PUBLIC_SENTRY_DSN;
+			delete g.window;
+			delete g.addEventListener;
+			delete g.removeEventListener;
+		}
+	});
+}
