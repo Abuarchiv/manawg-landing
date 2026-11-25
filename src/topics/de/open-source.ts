@@ -267,7 +267,7 @@ export const OPEN_SOURCE_DE: Record<string, Topic> = {
 		sections: [
 			[
 				'Was der Putzplan kann',
-				'Rhythmus: Jede Aufgabe wiederholt sich in Tagen oder Monaten, Monatsintervalle bleiben kalendertreu\nRotation: Beim Erledigen wählt ManaWG die Person mit der geringsten Auslastung, zugewiesene und überfällige Aufgaben zählen, überfällige stärker\nAbwesenheit: Mitglieder tragen Zeiträume ein, wer abwesend ist, wird bei der nächsten Zuweisung übergangen\nHistorie: Jede Erledigung wird festgehalten, ihr seht also, wer was wann gemacht hat\nErinnerung: Täglich eine Push-Nachricht für zugewiesene Aufgaben, die heute fällig oder bis zu sieben Tage überfällig sind, pro Aufgabe höchstens alle 18 Stunden',
+				'Rhythmus: Jede Aufgabe wiederholt sich in Tagen oder Monaten, Monatsintervalle bleiben kalendertreu\nRotation: Beim Erledigen wählt ManaWG die Person mit der geringsten Auslastung, zugewiesene und überfällige Aufgaben zählen, überfällige stärker\nAbwesenheit: Mitglieder tragen Zeiträume ein, wer abwesend ist, wird bei der nächsten Zuweisung übergangen\nHistorie: Jede Erledigung wird festgehalten, ihr seht also, wer was wann gemacht hat\nErinnerung: Täglich eine Push-Nachricht für zugewiesene Aufgaben am Fälligkeitstag und am Tag danach, pro Aufgabe höchstens alle 18 Stunden',
 			],
 			[
 				'Was ihr braucht',

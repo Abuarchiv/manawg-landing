@@ -673,7 +673,7 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Nur Screenshots statt Datei?',
-				'Liegt keine CSV-Datei vor, wählt ihr als Quelle Screenshot. ManaWG liest ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung im Browser und zeigt das Ergebnis zum Korrigieren. Erkannt werden nur Eurobeträge, und das Lesen kann bis zu 30 Sekunden dauern. Die Texterkennung versteht deutschen und englischen Text. Eine CSV-Datei ist genauer und der bessere Weg, wenn es sie gibt. Die Splitwise- und Splid-Importe lesen auch Dateien mit spanischen Spaltenüberschriften.',
+				'Liegt keine CSV-Datei vor, wählt ihr als Quelle Screenshot. ManaWG liest ein Foto oder Bildschirmfoto einer Ausgabenliste per Texterkennung im Browser und zeigt das Ergebnis zum Korrigieren. Erkannt werden nur Eurobeträge, und das Lesen kann bis zu 30 Sekunden dauern. Die Texterkennung versteht deutschen und englischen Text, bei spanischer Oberfläche zusätzlich spanischen. Eine CSV-Datei ist genauer und der bessere Weg, wenn es sie gibt. Die Splitwise- und Splid-Importe lesen auch Dateien mit spanischen Spaltenüberschriften.',
 			],
 			[
 				'Import rückgängig machen',

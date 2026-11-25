@@ -251,7 +251,7 @@ export const OPEN_SOURCE_EN: Record<string, Topic> = {
 		sections: [
 			[
 				'What the chore tracker does',
-				'Rhythm: each chore repeats in days or months, and monthly intervals stay true to the calendar\nRotation: when a chore is done, ManaWG picks the person with the lightest load, where assigned and overdue chores count and overdue ones count more\nAway: members enter periods of absence, and anyone away is skipped at the next assignment\nHistory: every completion is recorded, so you can see who did what and when\nReminders: a daily push message for assigned chores that are due today or up to seven days overdue, at most every 18 hours per chore',
+				'Rhythm: each chore repeats in days or months, and monthly intervals stay true to the calendar\nRotation: when a chore is done, ManaWG picks the person with the lightest load, where assigned and overdue chores count and overdue ones count more\nAway: members enter periods of absence, and anyone away is skipped at the next assignment\nHistory: every completion is recorded, so you can see who did what and when\nReminders: a daily push message for assigned chores on the due day and the day after, at most every 18 hours per chore',
 			],
 			[
 				'What you need',

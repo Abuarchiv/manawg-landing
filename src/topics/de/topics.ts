@@ -165,7 +165,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Erinnerung aufs Handy',
-				'Täglich schickt ManaWG eine Push-Nachricht für zugewiesene Aufgaben, die heute fällig oder bis zu sieben Tage überfällig sind. Pro Aufgabe kommt sie höchstens alle 18 Stunden. Den Kanal Putzplan schaltet jedes Mitglied einzeln ab, wenn es keine Hinweise möchte. Die App fragt vorher um Erlaubnis für Push. Aufgaben ohne zugewiesene Person kündigt ManaWG der ganzen WG an, ebenfalls höchstens alle 18 Stunden, bis jemand sie übernimmt.',
+				'Täglich schickt ManaWG eine Push-Nachricht für zugewiesene Aufgaben am Fälligkeitstag und am Tag danach. Pro Aufgabe kommt sie höchstens alle 18 Stunden. Danach bleibt die Aufgabe ohne weitere Push im Plan sichtbar. Den Kanal Putzplan schaltet jedes Mitglied einzeln ab, wenn es keine Hinweise möchte. Die App fragt vorher um Erlaubnis für Push. Aufgaben ohne zugewiesene Person kündigt ManaWG der ganzen WG an, ebenfalls am Fälligkeitstag und am Tag danach.',
 			],
 			[
 				'Vorlage oder App',
@@ -716,7 +716,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Erinnerungen, die ihr selbst steuert',
-				'Jedes Mitglied schaltet Push-Benachrichtigungen pro Bereich einzeln ab: Ankündigungen, Putzplan, Ausgaben, Einkauf, Vorräte, Erinnerungen, Chat und Termine. Der Putzplan erinnert an heute fällige und bis zu sieben Tage überfällige Aufgaben, die jemandem zugewiesen sind, höchstens alle 18 Stunden pro Aufgabe. Aufgaben ohne zugewiesene Person gehen an die ganze WG. Termine melden sich am Tag davor, auch Serientermine. Mails wie die Monatsabrechnung oder Zahlungserinnerungen lassen sich ebenfalls abschalten.',
+				'Jedes Mitglied schaltet Push-Benachrichtigungen pro Bereich einzeln ab: Ankündigungen, Putzplan, Ausgaben, Einkauf, Vorräte, Erinnerungen, Chat und Termine. Der Putzplan erinnert an zugewiesene Aufgaben am Fälligkeitstag und am Tag danach, höchstens alle 18 Stunden pro Aufgabe. Aufgaben ohne zugewiesene Person gehen an die ganze WG. Termine melden sich am Tag davor, auch Serientermine. Mails wie die Monatsabrechnung oder Zahlungserinnerungen lassen sich ebenfalls abschalten.',
 			],
 			[
 				'Putzplan mit fairer Rotation',
@@ -879,7 +879,7 @@ export const TOPICS_DE_CORE: Record<string, Topic> = {
 			],
 			[
 				'Putzplan mit festem Rhythmus',
-				'Aufgaben wiederholen sich in Tagen oder Monaten und sind einem Mitglied zugewiesen. Ob Bad, Küche oder Müll: Ihr entscheidet, wie oft eine Aufgabe wiederkommt. Monatsintervalle bleiben kalendertreu. Erledigte Aufgaben bleiben als Historie sichtbar. Wer zuständig ist, bekommt morgens eine Push-Erinnerung, wenn die Aufgabe heute fällig ist oder bis zu sieben Tage überfällig.',
+				'Aufgaben wiederholen sich in Tagen oder Monaten und sind einem Mitglied zugewiesen. Ob Bad, Küche oder Müll: Ihr entscheidet, wie oft eine Aufgabe wiederkommt. Monatsintervalle bleiben kalendertreu. Erledigte Aufgaben bleiben als Historie sichtbar. Wer zuständig ist, bekommt morgens eine Push-Erinnerung, am Fälligkeitstag und am Tag danach.',
 			],
 			[
 				'Kasse und Putzplan in einer App',
