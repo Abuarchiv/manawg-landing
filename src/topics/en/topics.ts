@@ -207,7 +207,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Reminders on your phone',
-				'Every day ManaWG sends a push notification for assigned tasks that are due today or up to seven days overdue. It arrives at most every 18 hours for each task. Each member can switch off cleaning rota notifications. The app asks for permission before sending push. Tasks without an assigned person are announced to the whole flat, also at most every 18 hours, until someone takes them on.',
+				'Every day ManaWG sends a push notification for assigned tasks on the due day and the day after. It arrives at most every 18 hours for each task. After that the task stays visible in the plan without further push. Each member can switch off cleaning rota notifications. The app asks for permission before sending push. Tasks without an assigned person are announced to the whole flat, also on the due day and the day after.',
 			],
 			[
 				'Template or app',
@@ -732,7 +732,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'Reminders you control yourself',
-				'Each member switches push notifications off for each area individually: noticeboard, cleaning rota, expenses, reminders, shopping, supplies, chat and calendar. The cleaning rota reminds about tasks that are due today or up to seven days overdue and assigned to someone, at most every 18 hours for each task. Tasks without an assigned person go to the whole flat. Events notify you the day before, repeating ones too. Emails such as the monthly statement or payment reminders can be switched off as well.',
+				'Each member switches push notifications off for each area individually: noticeboard, cleaning rota, expenses, reminders, shopping, supplies, chat and calendar. The cleaning rota reminds about assigned tasks on the due day and the day after, at most every 18 hours for each task. Tasks without an assigned person go to the whole flat. Events notify you the day before, repeating ones too. Emails such as the monthly statement or payment reminders can be switched off as well.',
 			],
 			[
 				'A cleaning rota with fair rotation',
@@ -883,7 +883,7 @@ export const TOPICS_EN_CORE: Record<string, Topic> = {
 			],
 			[
 				'A cleaning rota with a fixed rhythm',
-				'Tasks repeat every few days or months and are assigned to a member. Bathroom, kitchen or bins: you decide how often a task comes back. Monthly intervals stay true to the calendar. Completed tasks stay visible as history. Whoever is responsible gets a push reminder in the morning if the task is due today or up to seven days overdue. To draw up a plan from scratch first, [Make a cleaning rota](/make-a-cleaning-rota) goes through it step by step.',
+				'Tasks repeat every few days or months and are assigned to a member. Bathroom, kitchen or bins: you decide how often a task comes back. Monthly intervals stay true to the calendar. Completed tasks stay visible as history. Whoever is responsible gets a push reminder in the morning on the due day and the day after. To draw up a plan from scratch first, [Make a cleaning rota](/make-a-cleaning-rota) goes through it step by step.',
 			],
 			[
 				'Expenses and cleaning rota in one app',

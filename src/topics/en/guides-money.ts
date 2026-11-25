@@ -711,7 +711,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Screenshots instead of a file?',
-				'If you have no CSV file, choose Screenshot as the source. ManaWG reads a photo or screenshot of an expense list using text recognition in your browser and shows the result for you to correct. Only euro amounts are recognised, and reading can take up to 30 seconds. The text recognition understands German and English text. A CSV file is more accurate and the better way if you have one. The Splitwise and Splid imports also read files with Spanish column headers.',
+				'If you have no CSV file, choose Screenshot as the source. ManaWG reads a photo or screenshot of an expense list using text recognition in your browser and shows the result for you to correct. Only euro amounts are recognised, and reading can take up to 30 seconds. The text recognition understands German and English text, and Spanish as well when the app is set to Spanish. A CSV file is more accurate and the better way if you have one. The Splitwise and Splid imports also read files with Spanish column headers.',
 			],
 			[
 				'Undoing an import',
