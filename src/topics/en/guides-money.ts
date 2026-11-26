@@ -182,26 +182,30 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 	},
 	'utilities-and-internet': {
 		link: 'Utilities and internet',
-		updated: '2026-11-06',
+		updated: '2026-11-26',
 		published: '2026-10-29',
 		title: 'Utilities, electricity and internet in a flat share | ManaWG',
 		description:
 			'How German flat shares split Nebenkosten, electricity, internet and the broadcasting fee: who holds the contract, how to settle up and share back payments.',
 		h1: 'Utilities, electricity and internet in a flat share',
 		intro:
-			'After the rent, Nebenkosten (utility and service charges such as heating, water and waste), electricity and internet are the biggest items in a flat-share budget in Germany. Because usually one person holds the contract, questions come up: who pays what, and what happens with back payments? This guide covers the usual solutions.',
+			'Agree how to split utility costs: for example, service charges by room area and electricity and internet equally per person. First check which advance payments are already included in the warm rent, so you do not count them twice. The person paying a bill can collect the agreed shares from the others.',
 		sections: [
 			[
+				'Example: splitting monthly costs',
+				'Three people split a €300 service charge advance by room area: rooms of 20, 16 and 14 m² give shares of €120, €96 and €84. Electricity is €90 and internet €30, each split equally: €30 and €10 per person. Their total shares are €160, €136 and €124, adding up to €420. If the advance is already included in the warm rent, do not add it again. Then account for who paid each bill. For rent and shared shopping, see [splitting flat costs](/split-flat-costs).',
+			],
+			[
 				'Nebenkosten: advance payment and annual statement',
-				'You normally pay Nebenkosten as a monthly advance payment (Vorauszahlung). The following year the landlord sends an annual statement (Abrechnung), at the latest twelve months after the end of the billing period. If it arrives later, the landlord can generally no longer demand a back payment. The statement can lead to a back payment or a credit. Split it the way you split the advance payment, among the people who lived in the flat during the billing period. If someone moves in or out in between, work it out pro rata by month.',
+				'You normally pay Nebenkosten as a monthly advance. The landlord must generally provide the annual statement within twelve months after the billing period ends; a late back-payment claim is generally excluded. The statement can result in a back payment or credit. Check the statement and rental contracts, then agree how to allocate it internally, considering advance payments and time in the flat. A simple monthly calculation may be inaccurate for usage-based costs or unequal shares.',
 			],
 			[
 				'Example: back payment when people change',
-				'The statement for last year shows a back payment of €360. A and B lived in the flat all year, C moved out after eight months and D moved in for the last four. That makes 12 + 12 + 8 + 4 = 36 person-months, or €10 per month: A and B pay €120 each, C pays €80 and D pays €40. A credit is shared out the same way. If you would rather count days than months, the [split by days calculator](/split-bill-by-days-calculator) does the counting for you.',
+				'For an agreed equal split by time in the flat, without individual consumption data, the statement for last year shows a back payment of €360. A and B lived in the flat all year, C moved out after eight months and D moved in for the last four. That makes 12 + 12 + 8 + 4 = 36 person-months, or €10 per month: A and B pay €120 each, C pays €80 and D pays €40. A credit is shared out the same way. If you would rather count days than months, the [split by days calculator](/split-bill-by-days-calculator) does the counting for you.',
 			],
 			[
 				'Per head or by room size?',
-				'Per head is the simplest and usual when rooms are about the same size. If they differ clearly, split by area. Example: rooms of 20, 16 and 14 square metres give shares of 40, 32 and 28 per cent. With €300 of Nebenkosten, the three pay €120, €96 and €84. Many flat shares mix the two: heating by area, everything else per head. How to split the rent itself by room size is shown in the [rent split calculator](/rent-split-calculator).',
+				'Per head is the simplest and usual when rooms are about the same size. If they differ clearly, split by area. Example: rooms of 20, 16 and 14 square metres give shares of 40, 32 and 28 per cent. With €300 of Nebenkosten, the three pay €120, €96 and €84. You can agree on different keys; the landlord’s heating statement may follow its own rules. How to split the rent itself by room size is shown in the [rent split calculator](/rent-split-calculator).',
 			],
 			[
 				'Electricity and gas',
@@ -227,11 +231,11 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 		faq: [
 			[
 				'How are Nebenkosten split in a flat share?',
-				'Usually the same way as the rent, so per head or by room size. Back payments are shared among the people who lived in the flat during the billing period.',
+				'Agree on a key, such as equal shares or room area, and check what is already in the warm rent. For back payments, consider your agreement and the billing period.',
 			],
 			[
 				'Who pays the back payment if someone has moved out?',
-				'Everyone who lived in the flat during the billing period, pro rata by month. The person who moved out pays for the months they were there.',
+				'Check your rental contracts and agreement. You can account for time spent in the flat; an equal monthly calculation is one possible model, not a general legal rule.',
 			],
 			[
 				'Who pays the Rundfunkbeitrag in a flat share?',

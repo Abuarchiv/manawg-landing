@@ -177,26 +177,30 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 	},
 	'wg-nebenkosten': {
 		link: 'WG-Nebenkosten',
-		updated: '2026-11-06',
+		updated: '2026-11-26',
 		published: '2026-10-11',
 		title: 'WG-Nebenkosten, Strom und Internet fair aufteilen | ManaWG',
 		description:
 			'Wie WGs Nebenkosten, Strom, Internet und Rundfunkbeitrag aufteilen: Wer den Vertrag führt, wie ihr abrechnet und wie Nachzahlungen fair verteilt werden.',
 		h1: 'Nebenkosten, Strom und Internet in der WG',
 		intro:
-			'Neben der Miete sind Nebenkosten, Strom und Internet die größten Posten im WG-Budget. Weil meist eine Person den Vertrag führt, entstehen Fragen: Wer zahlt was, und was passiert bei Nachzahlungen? Hier stehen die gängigen Lösungen.',
+			'Teilt WG-Nebenkosten nach einer gemeinsam vereinbarten Regel: zum Beispiel Betriebskosten nach Zimmerfläche und Strom und Internet gleich pro Person. Prüft zuerst, welche Vorauszahlung schon in der Warmmiete steckt, damit ihr sie nicht doppelt zählt. Wer den Vertrag bezahlt, bekommt die vereinbarten Anteile von den anderen zurück.',
 		sections: [
 			[
+				'Beispiel: laufende WG-Kosten aufteilen',
+				'Drei Personen teilen 300 Euro Nebenkosten-Vorauszahlung nach Zimmerfläche: 20, 16 und 14 m² ergeben 120, 96 und 84 Euro. Dazu kommen 90 Euro Strom und 30 Euro Internet, jeweils zu gleichen Teilen: 30 und 10 Euro pro Person. Insgesamt entfallen damit 160, 136 und 124 Euro auf die drei, zusammen 420 Euro. Ist die Vorauszahlung bereits in der Warmmiete enthalten, addiert sie nicht noch einmal. Wer was vorgestreckt hat, verrechnet ihr anschließend mit den jeweiligen Anteilen. Weitere Modelle für Miete und gemeinsame Einkäufe findet ihr unter [WG-Kosten aufteilen](/wg-kosten-aufteilen).',
+			],
+			[
 				'Nebenkosten: Vorauszahlung und Abrechnung',
-				'Die Nebenkosten bezahlt ihr in der Regel als monatliche Vorauszahlung, im Folgejahr kommt die Abrechnung des Vermieters, spätestens zwölf Monate nach Ende des Abrechnungszeitraums. Kommt sie später, kann der Vermieter in der Regel keine Nachzahlung mehr verlangen. Sie kann zu einer Nachzahlung oder einem Guthaben führen. Verteilt diese so wie die Vorauszahlung, und zwar unter denjenigen, die im Abrechnungszeitraum in der WG gewohnt haben. Zieht jemand zwischendurch aus oder ein, rechnet ihr anteilig nach Monaten.',
+				'Die Nebenkosten bezahlt ihr in der Regel als monatliche Vorauszahlung, im Folgejahr kommt die Abrechnung des Vermieters, spätestens zwölf Monate nach Ende des Abrechnungszeitraums. Kommt sie später, kann der Vermieter in der Regel keine Nachzahlung mehr verlangen. Sie kann zu einer Nachzahlung oder einem Guthaben führen. Prüft zuerst die Abrechnung und eure Mietverträge. Für eure interne Verteilung könnt ihr vereinbaren, Nachzahlung oder Guthaben entsprechend den Vorauszahlungen und der Wohndauer aufzuteilen. Bei verbrauchsabhängigen Kosten und unterschiedlichen Anteilen kann eine einfache Monatsrechnung ungenau sein.',
 			],
 			[
 				'Beispiel: Nachzahlung bei Wechsel in der WG',
-				'Die Abrechnung für das Vorjahr ergibt 360 Euro Nachzahlung. A und B haben das ganze Jahr in der WG gewohnt, C ist nach acht Monaten ausgezogen, D für die letzten vier Monate eingezogen. Zusammen sind das 12 + 12 + 8 + 4 = 36 Personenmonate, also 10 Euro pro Monat: A und B zahlen je 120 Euro, C 80 Euro und D 40 Euro. Ein Guthaben verteilt ihr genauso. Wollt ihr nicht nach Monaten, sondern tagesgenau rechnen, nimmt euch der [Rechner für Nebenkosten nach Tagen](/nebenkosten-tagesgenau-rechner) die Zählarbeit ab.',
+				'Beispiel für eine vereinbarte gleiche Verteilung nach Wohndauer, ohne individuelle Verbrauchsdaten: Die Abrechnung für das Vorjahr ergibt 360 Euro Nachzahlung. A und B haben das ganze Jahr in der WG gewohnt, C ist nach acht Monaten ausgezogen, D für die letzten vier Monate eingezogen. Zusammen sind das 12 + 12 + 8 + 4 = 36 Personenmonate, also 10 Euro pro Monat: A und B zahlen je 120 Euro, C 80 Euro und D 40 Euro. Ein Guthaben verteilt ihr genauso. Wollt ihr nicht nach Monaten, sondern tagesgenau rechnen, nimmt euch der [Rechner für Nebenkosten nach Tagen](/nebenkosten-tagesgenau-rechner) die Zählarbeit ab.',
 			],
 			[
 				'Nach Köpfen oder nach Zimmergröße?',
-				'Nach Köpfen ist am einfachsten und üblich, wenn die Zimmer ähnlich groß sind. Unterscheiden sie sich deutlich, teilt ihr nach Fläche. Beispiel: Zimmer mit 20, 16 und 14 Quadratmetern ergeben Anteile von 40, 32 und 28 Prozent. Bei 300 Euro Nebenkosten zahlen die drei 120, 96 und 84 Euro. Viele WGs mischen auch: Heizung nach Fläche, alles andere nach Köpfen. Wie ihr die Miete selbst nach Zimmergröße teilt, rechnet der [WG-Miete-Rechner](/wg-miete-rechner) vor.',
+				'Nach Köpfen ist einfach. Alternativ könnt ihr nach Zimmerfläche aufteilen, etwa wenn die Zimmer unterschiedlich groß sind. Beispiel: Zimmer mit 20, 16 und 14 Quadratmetern ergeben Anteile von 40, 32 und 28 Prozent. Bei 300 Euro Nebenkosten zahlen die drei 120, 96 und 84 Euro. Ihr könnt auch verschiedene Schlüssel vereinbaren; die Heizkostenabrechnung des Vermieters kann eigene Vorgaben haben. Wie ihr die Miete selbst nach Zimmergröße teilt, rechnet der [WG-Miete-Rechner](/wg-miete-rechner) vor.',
 			],
 			[
 				'Strom und Gas',
@@ -222,11 +226,11 @@ export const GUIDES_DE_MONEY: Record<string, Topic> = {
 		faq: [
 			[
 				'Wie werden Nebenkosten in der WG aufgeteilt?',
-				'Meist wie die Miete, also nach Köpfen oder Zimmergröße. Nachzahlungen verteilt ihr unter denen, die im Abrechnungszeitraum in der WG wohnten.',
+				'Vereinbart einen Schlüssel, etwa gleiche Anteile oder Zimmerfläche, und prüft, was bereits in der Warmmiete enthalten ist. Für Nachzahlungen berücksichtigt eure Vereinbarung und den Abrechnungszeitraum.',
 			],
 			[
 				'Wer zahlt die Nachzahlung, wenn jemand ausgezogen ist?',
-				'Alle, die im Abrechnungszeitraum in der WG gewohnt haben, anteilig nach Monaten. Die ausgezogene Person zahlt also für die Monate, in denen sie da war.',
+				'Prüft Mietverträge und eure Vereinbarung. Für die interne Aufteilung könnt ihr die Wohndauer berücksichtigen; eine gleichmäßige Monatsrechnung ist ein mögliches Modell, keine allgemeine Rechtsregel.',
 			],
 			[
 				'Wer zahlt den Rundfunkbeitrag in der WG?',
