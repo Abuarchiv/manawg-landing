@@ -17,7 +17,7 @@ export default function PrivacyPage() {
 			page="privacy"
 			title="Privacy policy"
 			intro=<p className="text-sm text-(--text-3) mb-8">
-				This is a convenience translation. Only the{' '}
+				Last updated: 26 November 2026. This is a convenience translation. Only the{' '}
 				<a href="/datenschutz" hrefLang="de" lang="de" className={TEXT_LINK}>
 					German version
 				</a>{' '}

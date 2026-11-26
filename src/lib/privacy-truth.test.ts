@@ -10,6 +10,11 @@ const pages = {
 
 const text = (file: string) => readFileSync(file, 'utf8').replace(/\s+/g, ' ');
 
+test('both privacy texts show the same last-updated date', () => {
+	assert.match(text(pages['de/datenschutz']), /Stand: 26\. November 2026/);
+	assert.match(text(pages['en/privacy']), /Last updated: 26 November 2026/);
+});
+
 test('both privacy texts list invite analytics and share methods', () => {
 	for (const [name, file] of Object.entries(pages)) {
 		const body = text(file).match(/4f\..*?<\/section>/)?.[0] ?? '';
