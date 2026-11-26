@@ -205,7 +205,7 @@ export const GUIDES_EN_MONEY: Record<string, Topic> = {
 			],
 			[
 				'Per head or by room size?',
-				'Per head is the simplest and usual when rooms are about the same size. If they differ clearly, split by area. Example: rooms of 20, 16 and 14 square metres give shares of 40, 32 and 28 per cent. With €300 of Nebenkosten, the three pay €120, €96 and €84. You can agree on different keys; the landlord’s heating statement may follow its own rules. How to split the rent itself by room size is shown in the [rent split calculator](/rent-split-calculator).',
+				'A per-head split is simple. Alternatively, agree to split by room area, for example if the rooms differ in size. Example: rooms of 20, 16 and 14 square metres give shares of 40, 32 and 28 per cent. With €300 of Nebenkosten, the three pay €120, €96 and €84. You can agree on different keys; the landlord’s heating statement may follow its own rules. How to split the rent itself by room size is shown in the [rent split calculator](/rent-split-calculator).',
 			],
 			[
 				'Electricity and gas',
