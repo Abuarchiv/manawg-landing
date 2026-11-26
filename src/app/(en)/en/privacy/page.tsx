@@ -17,7 +17,7 @@ export default function PrivacyPage() {
 			page="privacy"
 			title="Privacy policy"
 			intro=<p className="text-sm text-(--text-3) mb-8">
-				This is a convenience translation. Only the{' '}
+				Last updated: 26 November 2026. This is a convenience translation. Only the{' '}
 				<a href="/datenschutz" hrefLang="de" lang="de" className={TEXT_LINK}>
 					German version
 				</a>{' '}
@@ -270,26 +270,29 @@ export default function PrivacyPage() {
 						<strong>Recipients and processors:</strong> PostHog Inc. processes the data via PostHog
 						Cloud EU in Frankfurt (eu.i.posthog.com). The app sends only page views and the events
 						wg_created, wg_joined, signup_submitted, signup_confirmed, login_completed,
-						invite_opened, invite_join_failed and first_expense_created; the website sends only page
-						views and the events app_link_clicked and demo_link_clicked. These events stand for a
-						completed step (for example a sign-up, a sign-in, opening an invitation link or the
-						first expense of a flat that the app shows) and carry no details about the person. The
-						only additional property is, for invite_join_failed, the API error code (for example
-						invite_expired), which consists of lowercase letters, digits and underscores; otherwise
-						other is sent. Other events, and extra details passed on by app features, are removed
-						before sending. Also sent are an event identifier (UUID), the time, the project
-						identifier, a technical assignment identifier, the hostname, the page path and the
-						browser identifier. In the app, placeholders replace flat codes and invitation tokens in
-						the page path. The website also sends the domain of the referring page (for example
-						www.google.com), never its full address, and with app_link_clicked and demo_link_clicked
-						the fixed id of the button (for example hero_create). If the address that was opened
-						contains utm_source, utm_medium or ref (for example from a directory listing or a shared
-						link), the website sends their values, but only if each consists of at most 40 letters,
-						digits, dots, hyphens or underscores; other values are discarded. Only campaign
-						identifiers assigned by ManaWG itself are meant (for example the name of a directory),
-						not personal details. In the browser these values are only held in the memory of the
-						open page (no cookie, no local storage); at PostHog they are stored like the other event
-						data (see retention period). The IP address reaches PostHog with the request.
+						invite_opened, invite_join_failed, first_expense_created, invite_card_shown,
+						invite_card_shared, invite_card_dismissed, invite_step_shown, invite_step_shared and
+						invite_step_skipped; the website sends only page views and the events app_link_clicked
+						and demo_link_clicked. These events describe a step (for example a sign-up, a sign-in,
+						opening an invitation link or the first expense of a flat that the app shows) and carry
+						no details about the person. Additional properties are, for invite_join_failed, the API
+						error code (for example invite_expired), which consists of lowercase letters, digits and
+						underscores; otherwise other is sent; for invite_card_shared, method is share or copy;
+						and for invite_step_shared, method is share, copy or whatsapp. Other events, and extra
+						details passed on by app features, are removed before sending. Also sent are an event
+						identifier (UUID), the time, the project identifier, a technical assignment identifier,
+						the hostname, the page path and the browser identifier. In the app, placeholders replace
+						flat codes and invitation tokens in the page path. The website also sends the domain of
+						the referring page (for example www.google.com), never its full address, and with
+						app_link_clicked and demo_link_clicked the fixed id of the button (for example
+						hero_create). If the address that was opened contains utm_source, utm_medium or ref (for
+						example from a directory listing or a shared link), the website sends their values, but
+						only if each consists of at most 40 letters, digits, dots, hyphens or underscores; other
+						values are discarded. Only campaign identifiers assigned by ManaWG itself are meant (for
+						example the name of a directory), not personal details. In the browser these values are
+						only held in the memory of the open page (no cookie, no local storage); at PostHog they
+						are stored like the other event data (see retention period). The IP address reaches
+						PostHog with the request.
 					</li>
 					<li>
 						<strong>Processing region and transfers to third countries:</strong> PostHog Cloud EU in
