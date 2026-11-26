@@ -10,6 +10,27 @@ const pages = {
 
 const text = (file: string) => readFileSync(file, 'utf8').replace(/\s+/g, ' ');
 
+test('both privacy texts list invite analytics and share methods', () => {
+	for (const [name, file] of Object.entries(pages)) {
+		const body = text(file).match(/4f\..*?<\/section>/)?.[0] ?? '';
+		for (const event of [
+			'invite_card_shown',
+			'invite_card_shared',
+			'invite_card_dismissed',
+			'invite_step_shown',
+			'invite_step_shared',
+			'invite_step_skipped',
+		])
+			assert.ok(body.includes(event), `${name}: ${event}`);
+		assert.match(body, /invite_card_shared.{0,100}method.{0,100}share.{0,20}copy/, name);
+		assert.match(
+			body,
+			/invite_step_shared.{0,100}method.{0,100}share.{0,20}copy.{0,20}whatsapp/,
+			name,
+		);
+	}
+});
+
 test('the privacy texts do not name jsDelivr, because the app serves the OCR files itself', () => {
 	for (const [name, file] of Object.entries(pages)) {
 		assert.doesNotMatch(text(file), /jsdelivr/i, name);

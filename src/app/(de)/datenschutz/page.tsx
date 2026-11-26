@@ -11,7 +11,12 @@ export const metadata = legalMetadata({
 
 export default function PrivacyPage() {
 	return (
-		<LegalPage locale="de" page="privacy" title="Datenschutzerklärung">
+		<LegalPage
+			locale="de"
+			page="privacy"
+			title="Datenschutzerklärung"
+			intro={<p className="text-sm text-(--text-3) mb-8">Stand: 26. November 2026</p>}
+		>
 			{/* 1. Controller */}
 			<section>
 				<h2 className="text-lg font-semibold text-(--text-1) mb-2">1. Verantwortlicher</h2>
@@ -272,13 +277,16 @@ export default function PrivacyPage() {
 						<strong>Empfänger und Auftragsverarbeiter:</strong> PostHog Inc. verarbeitet die Daten
 						über PostHog Cloud EU in Frankfurt (eu.i.posthog.com). Die App sendet nur Seitenaufrufe
 						und die Ereignisse wg_created, wg_joined, signup_submitted, signup_confirmed,
-						login_completed, invite_opened, invite_join_failed und first_expense_created, die
-						Website nur Seitenaufrufe und die Ereignisse app_link_clicked und demo_link_clicked.
-						Diese Ereignisse stehen für einen abgeschlossenen Schritt (etwa eine Registrierung, eine
-						Anmeldung, das Öffnen eines Einladungslinks oder die erste in der App sichtbare Ausgabe
-						einer WG) und tragen keine Angaben zur Person. Die einzige zusätzliche Eigenschaft ist
-						bei invite_join_failed der Fehlercode der API (etwa invite_expired), der aus
-						Kleinbuchstaben, Ziffern und Unterstrichen besteht; sonst wird other gesendet. Andere
+						login_completed, invite_opened, invite_join_failed, first_expense_created,
+						invite_card_shown, invite_card_shared, invite_card_dismissed, invite_step_shown,
+						invite_step_shared und invite_step_skipped, die Website nur Seitenaufrufe und die
+						Ereignisse app_link_clicked und demo_link_clicked. Diese Ereignisse beschreiben einen
+						Schritt (etwa eine Registrierung, eine Anmeldung, das Öffnen eines Einladungslinks oder
+						die erste in der App sichtbare Ausgabe einer WG) und tragen keine Angaben zur Person.
+						Zusätzliche Eigenschaften sind bei invite_join_failed der Fehlercode der API (etwa
+						invite_expired), der aus Kleinbuchstaben, Ziffern und Unterstrichen besteht; sonst wird
+						other gesendet; bei invite_card_shared die Eigenschaft method mit share oder copy und
+						bei invite_step_shared die Eigenschaft method mit share, copy oder whatsapp. Andere
 						Ereignisse und zusätzliche Angaben, die App-Funktionen übergeben, werden vor dem Senden
 						entfernt. Mitgesendet werden außerdem eine Ereigniskennung (UUID), der Zeitpunkt, die
 						Projektkennung, eine technische Zuordnungskennung, der Hostname, der Seitenpfad und die
